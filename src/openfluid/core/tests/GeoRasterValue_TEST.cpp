@@ -61,7 +61,7 @@ class GeoRasterValueSub: public openfluid::core::GeoRasterValue
 {
   public:
 
-    GeoRasterValueSub(std::string PrefixPath, std::string RelativePath) :
+    GeoRasterValueSub(const std::string& PrefixPath, const std::string& RelativePath) :
         openfluid::core::GeoRasterValue(PrefixPath, RelativePath)
     { }
 

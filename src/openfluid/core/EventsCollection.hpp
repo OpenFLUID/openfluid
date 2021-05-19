@@ -96,7 +96,7 @@ class OPENFLUID_API EventsCollection
       instead
     */
     [[deprecated]] bool getEventsBetween(const DateTime& BeginDate, const DateTime& EndDate,
-                                         EventsCollection *Events) const ;
+                                         EventsCollection* Events) const ;
 
     /**
       Returns an event collection extracted from the current event collection, taking into account a time period

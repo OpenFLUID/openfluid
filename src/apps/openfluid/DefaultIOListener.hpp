@@ -61,7 +61,7 @@ class DefaultIOListener : public openfluid::base::IOListener
     { }
 
 
-    void onFileLoad(std::string Filename)
+    void onFileLoad(const std::string& Filename)
     {
       std::cout << "    file: " << Filename << " ";
     }

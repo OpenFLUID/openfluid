@@ -88,7 +88,9 @@ class OPENFLUID_API SimulationLogger : public openfluid::tools::FileLogger
     }
 
     void addError(const std::string& Context, const std::string& Msg)
-    { add(LOG_ERROR,Context,Msg); }
+    { 
+      add(LOG_ERROR,Context,Msg);
+    }
 
 
     inline void resetCurrentWarningFlag()

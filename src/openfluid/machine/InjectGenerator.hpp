@@ -56,7 +56,6 @@ class OPENFLUID_API InjectGenerator : public Generator
 {
   private:
 
-
     bool m_IsMin;
     bool m_IsMax;
 

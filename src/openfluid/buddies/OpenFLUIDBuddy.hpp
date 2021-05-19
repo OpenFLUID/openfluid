@@ -60,9 +60,9 @@ class OPENFLUID_API OpenFLUIDBuddy
     std::map<std::string,std::string> m_RequiredOptionsHelp;
     std::map<std::string,std::string> m_OtherOptionsHelp;
 
-    void setOptionIfNotSet(std::string OptionName, std::string OptionValue);
+    void setOptionIfNotSet(const std::string& OptionName, const std::string& OptionValue);
 
-    std::string getYesNoFromOneZero(std::string VStr);
+    std::string getYesNoFromOneZero(const std::string& VStr);
 
     openfluid::buddies::BuddiesListener* mp_Listener;
 
@@ -73,7 +73,7 @@ class OPENFLUID_API OpenFLUIDBuddy
 
     virtual ~OpenFLUIDBuddy();
 
-    bool parseOptions(std::string OptsStr);
+    bool parseOptions(const std::string& OptsStr);
 
     void streamOptions(std::ostream& OStream);
 

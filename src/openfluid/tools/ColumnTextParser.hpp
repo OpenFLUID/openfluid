@@ -125,7 +125,7 @@ class OPENFLUID_API ColumnTextParser
       @param[out] Value the requested value if exists
       @return true if the value has been found, false otherwise
     */
-    bool getStringValue(unsigned int Line, unsigned int Column, std::string *Value) const;
+    bool getStringValue(unsigned int Line, unsigned int Column, std::string* Value) const;
 
     /**
       Gets the value at a specified row-column, as a long int

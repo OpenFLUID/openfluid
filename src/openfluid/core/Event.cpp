@@ -135,7 +135,7 @@ bool Event::isInfoEqual(const std::string& Key, const DoubleValue& Value) const
 // =====================================================================
 
 
-bool Event::getInfoAsString(const std::string& Key, std::string *Info) const
+bool Event::getInfoAsString(const std::string& Key, std::string* Info) const
 {
   return getInfoAsString(Key,*Info);
 }

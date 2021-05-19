@@ -196,7 +196,7 @@ class OPENFLUID_API FluidHubAPIClient
       Returns the corresponding user unixname if connected and not deprecated API
       @return the connected user unixname
     */
-    std::string getUserUnixname(std::string Email, std::string Password);
+    std::string getUserUnixname(const std::string& Email, const std::string& Password);
 
     /**
       Returns the list of all available wares in the current FluidHub

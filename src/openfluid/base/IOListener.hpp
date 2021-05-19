@@ -65,7 +65,7 @@ class IOListener : public openfluid::base::Listener
     virtual void onLoaded(openfluid::base::Listener::Status /*Status*/)
     { }
 
-    virtual void onFileLoad(std::string /*Filename*/)
+    virtual void onFileLoad(const std::string& /*Filename*/)
     { }
 
     virtual void onFileLoaded(openfluid::base::Listener::Status /*Status*/)
@@ -77,7 +77,7 @@ class IOListener : public openfluid::base::Listener
     virtual void onWritten(openfluid::base::Listener::Status /*Status*/)
     { }
 
-    virtual void onFileWrite(std::string /*Filename*/)
+    virtual void onFileWrite(const std::string& /*Filename*/)
     { }
 
     virtual void onFileWritten(openfluid::base::Listener::Status /*Status*/)

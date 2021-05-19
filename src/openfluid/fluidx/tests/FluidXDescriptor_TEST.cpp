@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 
 
-void TestDataset(std::string DatasetPath, bool /*AggregatedAttributes*/ = false)
+void TestDataset(const std::string& DatasetPath, bool /*AggregatedAttributes*/ = false)
 {
   std::cout << "Checking " << DatasetPath << std::endl;
   BOOST_TEST_CHECKPOINT("Checking " << DatasetPath);

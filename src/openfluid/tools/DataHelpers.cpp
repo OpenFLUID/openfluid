@@ -114,7 +114,7 @@ std::vector<std::string> splitString(const std::string& StrToSplit,
 // =====================================================================
 
 
-void stringReplace(std::string& Data, std::string ToSearch, std::string ReplaceStr)
+void stringReplace(std::string& Data, const std::string& ToSearch, const std::string& ReplaceStr)
 {
     boost::replace_all(Data, ToSearch, ReplaceStr);
 }

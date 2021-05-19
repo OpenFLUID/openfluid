@@ -73,7 +73,7 @@ class OPENFLUID_API MachineListener : public openfluid::base::Listener
     { }
 
     virtual void onSimulatorInitParamsDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*SimulatorID*/)
+                                           const std::string& /*SimulatorID*/)
     { }
 
     virtual void onPrepareData()
@@ -86,7 +86,7 @@ class OPENFLUID_API MachineListener : public openfluid::base::Listener
     { }
 
     virtual void onSimulatorPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*SimulatorID*/)
+                                            const std::string& /*SimulatorID*/)
     { }
 
     virtual void onCheckConsistency()
@@ -112,7 +112,7 @@ class OPENFLUID_API MachineListener : public openfluid::base::Listener
     { }
 
     virtual void onSimulatorInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*SimulatorID*/)
+                                              const std::string& /*SimulatorID*/)
     { }
 
     virtual void onBeforeRunSteps()
@@ -128,7 +128,7 @@ class OPENFLUID_API MachineListener : public openfluid::base::Listener
     { }
 
     virtual void onSimulatorRunStepDone(const openfluid::base::Listener::Status& /*Status*/,
-                                       const std::string& /*SimulatorID*/)
+                                        const std::string& /*SimulatorID*/)
     { }
 
     virtual void onAfterRunSteps()

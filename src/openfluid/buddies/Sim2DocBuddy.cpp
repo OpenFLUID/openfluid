@@ -117,7 +117,6 @@ std::string Sim2DocBuddy::extractBetweenTags(std::string Content,
   }
 
   return Content;
-
 }
 
 
@@ -325,7 +324,7 @@ void Sim2DocBuddy::clearParsedParam()
 // =====================================================================
 
 
-void Sim2DocBuddy::storeDataIntoString(std::string *Str)
+void Sim2DocBuddy::storeDataIntoString(std::string* Str)
 {
   if (!m_CurrentBuiltParam.empty())
   {
@@ -343,7 +342,7 @@ void Sim2DocBuddy::storeDataIntoString(std::string *Str)
 // =====================================================================
 
 
-void Sim2DocBuddy::storeDataIntoVector(std::vector<std::string> *List)
+void Sim2DocBuddy::storeDataIntoVector(std::vector<std::string>* List)
 {
   if (!m_CurrentBuiltParam.empty())
   {
@@ -361,7 +360,7 @@ void Sim2DocBuddy::storeDataIntoVector(std::vector<std::string> *List)
 // =====================================================================
 
 
-void Sim2DocBuddy::storeDataIntoKey(SignatureData_t *SignatureData, const std::string& State)
+void Sim2DocBuddy::storeDataIntoKey(SignatureData_t* SignatureData, const std::string& State)
 {
   m_CurrentKeyValue.clear();
 
@@ -389,7 +388,7 @@ void Sim2DocBuddy::storeDataIntoKey(SignatureData_t *SignatureData, const std::s
 // =====================================================================
 
 
-void Sim2DocBuddy::storeDataIntoSignatureData(SignatureData_t *SignatureData)
+void Sim2DocBuddy::storeDataIntoSignatureData(SignatureData_t* SignatureData)
 {
   if (!m_CurrentKeyValue.empty())
   {
@@ -439,9 +438,8 @@ void Sim2DocBuddy::storeDataIntoStatus()
 // =====================================================================
 
 
-void Sim2DocBuddy::storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureUnitsClassItem>*
-                                           UpdatedUnitsClass,
-    int Attr)
+void Sim2DocBuddy::storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureUnitsClassItem>* UpdatedUnitsClass,
+                                           int Attr)
 {
   if (UpdatedUnitsClass)
   {

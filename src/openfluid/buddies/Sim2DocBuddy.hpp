@@ -158,13 +158,13 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
       Stores data parsed in the string parameter
       @param[out] Str Pointer to the string receiving the value
     */
-    void storeDataIntoString(std::string *Str);
+    void storeDataIntoString(std::string* Str);
 
     /**
       Adds data parsed in the list parameter
       @param[out] List Pointer to the vector receiving the value
      */
-    void storeDataIntoVector(std::vector<std::string> *List);
+    void storeDataIntoVector(std::vector<std::string>* List);
 
     /**
       Stores the new key value parsed into SignatureData parameter
@@ -172,13 +172,13 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
       @param[in] State of the attribute or variable stored into the map
               (required, used, produced, updated)
     */
-    void storeDataIntoKey(SignatureData_t *SignatureData, const std::string& State);
+    void storeDataIntoKey(SignatureData_t* SignatureData, const std::string& State);
 
     /**
       Adds data parsed in the SignatureData attribute received as parameter
       @param[out] SignatureData Pointer to the map receiving the value
     */
-    void storeDataIntoSignatureData(SignatureData_t *SignatureData);
+    void storeDataIntoSignatureData(SignatureData_t* SignatureData);
 
     /**
       Checks data parsed and stores it into status attribute
@@ -190,8 +190,7 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
       @param[out] UpdatedUnitsClass Vector of Units class
       @param[in] Attr Attribute of the new UnitsClass receiving the value
     */
-    void storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureUnitsClassItem> *UpdatedUnitsClass,
-            int Attr);
+    void storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureUnitsClassItem>* UpdatedUnitsClass, int Attr);
 
     /**
       Sets fixed scheduling of TimeScheduling attribute
@@ -237,7 +236,7 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
     struct SimSignatureGrammar : public grammar<SimSignatureGrammar>
     {
       Sim2DocBuddy *mp_Owner;       // Object of the class containing methods to be called
-      SimSignatureGrammar(Sim2DocBuddy *Owner) : mp_Owner(Owner) {}
+      SimSignatureGrammar(Sim2DocBuddy* Owner) : mp_Owner(Owner) {}
 
 
       template <typename ScannerT>
@@ -430,7 +429,10 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
         /**
           @return Main rule of parsing content
         */
-        rule<ScannerT> const& start() const { return signature; }
+        rule<ScannerT> const& start() const 
+        { 
+          return signature; 
+        }
       };
     };
 

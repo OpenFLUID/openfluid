@@ -185,7 +185,7 @@ class OPENFLUID_API Event
       @deprecated Since version 1.7.1.
       Use openfluid::core::Event::getInfoAsString(const std::string&,std::string&) const instead
     */
-    [[deprecated]] bool getInfoAsString(const std::string& Key, std::string *Info) const;
+    [[deprecated]] bool getInfoAsString(const std::string& Key, std::string* Info) const;
 
     /**
       Gets an information as a string
@@ -220,7 +220,7 @@ class OPENFLUID_API Event
       @deprecated Since version 1.7.1.
       Use openfluid::core::Event::getInfoAsDouble(const std::string&,double&) const instead
     */
-    [[deprecated]] bool getInfoAsDouble(const std::string& Key, double *Info) const;
+    [[deprecated]] bool getInfoAsDouble(const std::string& Key, double* Info) const;
 
     /**
       Gets an information as a double

@@ -81,7 +81,7 @@ class OPENFLUID_API PluggableModalExtension : public QDialog, public PluggableFe
 
 
     virtual bool initialize()
-    { return true; };
+    { return true; }
 
 };
 

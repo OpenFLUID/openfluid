@@ -89,7 +89,6 @@ class OPENFLUID_API SimulationBlob
       return m_RunDescriptor;
     }
 
-
     inline openfluid::base::SimulationStatus& simulationStatus()
     {
       return m_Status;

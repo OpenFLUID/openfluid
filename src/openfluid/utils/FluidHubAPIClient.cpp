@@ -377,7 +377,7 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
 
 
 std::string fetchFieldFromEndpoint(const RESTClient& Client, const std::string Method, const std::string Url, 
-                                   const std::string WantedKey, const std::string RequestData="")
+                                   const std::string& WantedKey, const std::string& RequestData="")
 {
   RESTClient::Reply Reply;
   if (Method == "GET")
@@ -422,7 +422,7 @@ std::string fetchFieldFromEndpoint(const RESTClient& Client, const std::string M
 // =====================================================================
 
 
-std::string FluidHubAPIClient::getUserUnixname(const std::string Email, const std::string Password)
+std::string FluidHubAPIClient::getUserUnixname(const std::string& Email, const std::string& Password)
 {
   if (!m_IsV0ofAPI && isConnected())
   {

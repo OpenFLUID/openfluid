@@ -156,7 +156,7 @@ std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string& Selec
 
 
 std::string buildMultiColsdHeader(const MultiCSVFormat& Format, const std::string& FilePath,
-                        const std::string ColumnsHeaders)
+                                  const std::string& ColumnsHeaders)
 {
   std::ostringstream HeaderSStr;
 
@@ -184,7 +184,7 @@ std::string buildMultiColsdHeader(const MultiCSVFormat& Format, const std::strin
 
 
 std::string buildMultiColsFilename(const std::string& OutputDir, const std::string& OutFileExt,
-                          const std::string& SetName)
+                                   const std::string& SetName)
 {
   std::ostringstream oss;
   oss << OutputDir << "/" << SetName << "." << OutFileExt;
@@ -198,7 +198,7 @@ std::string buildMultiColsFilename(const std::string& OutputDir, const std::stri
 
 
 std::vector<std::string> parseMultiColsSetsFromParamsTree(const openfluid::ware::WareParamsTree& ParamsTree,
-                                                 MultiSetMap_t& Sets)
+                                                          MultiSetMap_t& Sets)
 {
   std::vector<std::string> Messages;
 
@@ -224,7 +224,7 @@ std::vector<std::string> parseMultiColsSetsFromParamsTree(const openfluid::ware:
 
 
 std::vector<std::string> parseMultiColsFormatsFromParamsTree(const openfluid::ware::WareParamsTree& ParamsTree,
-                                                    MultiFormatMap_t& Formats)
+                                                             MultiFormatMap_t& Formats)
 {
   std::vector<std::string> Messages;
 

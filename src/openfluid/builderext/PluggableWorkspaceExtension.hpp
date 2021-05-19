@@ -75,8 +75,7 @@ class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public Pluggab
 
 
     virtual bool initialize()
-    { return true; };
-
+    { return true; }
 };
 
 

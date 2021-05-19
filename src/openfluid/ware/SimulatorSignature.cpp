@@ -44,10 +44,10 @@
 namespace openfluid { namespace ware {
 
 
-SignatureTypedSpatialDataItem::SignatureTypedSpatialDataItem(std::string DName,
-                                                             openfluid::core::UnitsClass_t UClass,
-                                                             std::string DDescription,
-                                                             std::string DUnit):
+SignatureTypedSpatialDataItem::SignatureTypedSpatialDataItem(const std::string& DName,
+                                                             const openfluid::core::UnitsClass_t& UClass,
+                                                             const std::string& DDescription,
+                                                             const std::string& DUnit):
  SignatureSpatialDataItem(DName,UClass,DDescription,DUnit)
 {
 

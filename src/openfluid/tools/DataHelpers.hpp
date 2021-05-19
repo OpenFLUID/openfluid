@@ -247,7 +247,7 @@ std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit
   @param[in] ToSearch the target substring
   @param[in] ReplaceStr the replacement substring
 */
-void OPENFLUID_API stringReplace(std::string& Data, std::string ToSearch, std::string ReplaceStr);
+void OPENFLUID_API stringReplace(std::string& Data, const std::string& ToSearch, const std::string& ReplaceStr);
 
 
 } } // namespaces

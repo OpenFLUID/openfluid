@@ -70,7 +70,7 @@ OpenFLUIDBuddy::~OpenFLUIDBuddy()
 // =====================================================================
 
 
-void OpenFLUIDBuddy::setOptionIfNotSet(std::string OptionName, std::string OptionValue)
+void OpenFLUIDBuddy::setOptionIfNotSet(const std::string& OptionName, const std::string& OptionValue)
 {
   if (m_Options.find(OptionName) == m_Options.end())
   {
@@ -83,7 +83,7 @@ void OpenFLUIDBuddy::setOptionIfNotSet(std::string OptionName, std::string Optio
 // =====================================================================
 
 
-std::string OpenFLUIDBuddy::getYesNoFromOneZero(std::string VStr)
+std::string OpenFLUIDBuddy::getYesNoFromOneZero(const std::string& VStr)
 {
   if (VStr == "1")
   {
@@ -100,7 +100,7 @@ std::string OpenFLUIDBuddy::getYesNoFromOneZero(std::string VStr)
 // =====================================================================
 
 
-bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
+bool OpenFLUIDBuddy::parseOptions(const std::string& OptsStr)
 {
   // example inputdir=/usr/lib,outputdir=./toto,withfoo=1
 

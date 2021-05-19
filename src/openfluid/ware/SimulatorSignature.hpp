@@ -76,7 +76,7 @@ class OPENFLUID_API SignatureDataItem
       DataName(""),Description(""),DataUnit("")
     {  }
 
-    SignatureDataItem(std::string DName, std::string DDescription, std::string DUnit) :
+    SignatureDataItem(const std::string& DName, const std::string& DDescription, const std::string& DUnit) :
       DataName(DName),Description(DDescription),DataUnit(DUnit)
     {  }
 };
@@ -99,8 +99,8 @@ class OPENFLUID_API SignatureSpatialDataItem : public SignatureDataItem
       SignatureDataItem(), UnitsClass("")
     {  }
 
-    SignatureSpatialDataItem(std::string DName, openfluid::core::UnitsClass_t UClass,
-                             std::string DDescription, std::string DUnit) :
+    SignatureSpatialDataItem(const std::string& DName, const openfluid::core::UnitsClass_t& UClass,
+                             const std::string& DDescription, const std::string& DUnit) :
       SignatureDataItem(DName,DDescription,DUnit),UnitsClass(UClass)
     {  }
 };
@@ -124,8 +124,8 @@ class OPENFLUID_API SignatureTypedSpatialDataItem : public SignatureSpatialDataI
       SignatureSpatialDataItem(), DataType(openfluid::core::Value::NONE) 
     {  }
 
-    SignatureTypedSpatialDataItem(std::string DName, openfluid::core::UnitsClass_t UClass,
-                                  std::string DDescription, std::string DUnit);
+    SignatureTypedSpatialDataItem(const std::string& DName, const openfluid::core::UnitsClass_t& UClass,
+                                  const std::string& DDescription, const std::string& DUnit);
 };
 
 
@@ -211,7 +211,7 @@ class OPENFLUID_API SignatureUnitsClassItem
       UnitsClass(""),Description("") 
     { }
 
-    SignatureUnitsClassItem(openfluid::core::UnitsClass_t UClass,std::string DDescription) :
+    SignatureUnitsClassItem(const openfluid::core::UnitsClass_t& UClass,const std::string& DDescription) :
       UnitsClass(UClass),Description(DDescription) 
     { }
 };

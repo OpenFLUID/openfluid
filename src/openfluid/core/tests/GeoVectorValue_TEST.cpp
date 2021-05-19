@@ -58,7 +58,7 @@ class GeoVectorValueSub: public openfluid::core::GeoVectorValue
 {
   public:
 
-    GeoVectorValueSub(std::string PrefixPath, std::string RelativePath) :
+    GeoVectorValueSub(const std::string& PrefixPath, const std::string& RelativePath) :
         openfluid::core::GeoVectorValue(PrefixPath, RelativePath)
     { }
 

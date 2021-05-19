@@ -81,67 +81,67 @@ class OPENFLUID_API RunConfigurationDescriptor
     inline openfluid::core::DateTime getBeginDate() const
     {
       return m_BeginDate;
-    };
+    }
 
     inline void setBeginDate(const openfluid::core::DateTime BeginDate)
     {
       m_BeginDate = BeginDate;
-    };
+    }
 
     inline openfluid::core::DateTime getEndDate() const
     {
       return m_EndDate;
-    };
+    }
 
     inline void setEndDate(const openfluid::core::DateTime EndDate)
     {
       m_EndDate = EndDate;
-    };
+    }
 
     inline int getDeltaT() const
     {
       return m_DeltaT;
-    };
+    }
 
     inline void setDeltaT(const int DeltaT)
     {
       m_DeltaT = DeltaT;
-    };
+    }
 
     inline void setValuesBufferSize(const unsigned int StepsNbr)
     {
       m_ValuesBufferSize = StepsNbr;  m_IsUserValuesBufferSize = true;
-    };
+    }
 
     inline bool isUserValuesBufferSize() const
     {
       return m_IsUserValuesBufferSize;
-    };
+    }
 
     inline unsigned int getValuesBufferSize() const
     {
       return m_ValuesBufferSize;
-    };
+    }
 
     inline openfluid::base::SimulationStatus::SchedulingConstraint getSchedulingConstraint() const
     {
       return m_SchedConstraint;
-    };
+    }
 
     inline void setSchedulingConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst)
     {
       m_SchedConstraint = SConst;
-    };
+    }
 
     inline bool isFilled() const
     {
       return m_Filled;
-    };
+    }
 
     inline void setFilled(const bool Filled)
     {
       m_Filled = Filled;
-    };
+    }
 
     inline void unsetUserValuesBufferSize()
     {
