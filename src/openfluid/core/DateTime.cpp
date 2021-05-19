@@ -247,11 +247,6 @@ void DateTime::updateRawTimeFromYMDHMS()
                                     (Month-2-(Month-14)/12*12)/12-3*((Year+4900+(Month-14)/12)/100)/4)-1721059);
 
   m_RawTime = (RawTime_t)((JDN*86400) + (m_TM.tm_hour*3600) + (m_TM.tm_min*60) + m_TM.tm_sec);
-
-  #if 0
-  std::cerr << "JDN: " << JDN << "    RawTime: " << m_RawTime << std::endl;
-  #endif
-
 }
 
 

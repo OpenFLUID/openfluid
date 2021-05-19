@@ -333,49 +333,49 @@ class OPENFLUID_API DateTime
       Returns the number of seconds for one minute
     */
     static inline RawTime_t Minute() 
-    { return 60; };
+    { return 60; }
 
     /**
       Returns the number of seconds for N minutes
     */
     static inline RawTime_t Minutes(int N) 
-    { return (60*N); };
+    { return (60*N); }
 
     /**
       Returns the number of seconds for one hour
     */
     static inline RawTime_t Hour()
-    { return 3600; };
+    { return 3600; }
 
     /**
       Returns the number of seconds for N hours
     */
     static inline RawTime_t Hours(int N) 
-    { return (3600*N); };
+    { return (3600*N); }
 
     /**
       Returns the number of seconds for one day
     */
     static inline RawTime_t Day()
-    { return 86400; };
+    { return 86400; }
 
     /**
       Returns the number of seconds for N days
     */
     static inline RawTime_t Days(int N)
-    { return (86400*N); };
+    { return (86400*N); }
 
     /**
       Returns the number of seconds for one week
     */
     static inline RawTime_t Week()
-    { return 604800; };
+    { return 604800; }
 
     /**
       Returns the number of seconds for N weeks
     */
     static inline RawTime_t Weeks(int N)
-    { return (604800*N); };
+    { return (604800*N); }
 
     /**
       Returns true if the given year is a leap year
