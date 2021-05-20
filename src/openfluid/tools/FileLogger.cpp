@@ -37,9 +37,6 @@
 */
 
 
-#include <QMutex>
-#include <QMutexLocker>
-
 #include <openfluid/tools/FileLogger.hpp>
 
 
@@ -47,9 +44,9 @@ namespace openfluid { namespace tools {
 
 
 FileLogger::FileLogger() :
-    m_InfosCount(0), m_WarningsCount(0), m_IsError(false)
+    m_LogMutex(std::mutex()), m_InfosCount(0), m_WarningsCount(0), m_IsError(false)
 {
-  mp_LogMutex = new QMutex;
+
 }
 
 
@@ -60,7 +57,6 @@ FileLogger::FileLogger() :
 FileLogger::~FileLogger()
 {
   close();
-  delete mp_LogMutex;
 }
 
 
@@ -122,7 +118,7 @@ void FileLogger::close()
 
 void FileLogger::add(LogType LType, const std::string& Sender, const std::string& Msg)
 {
-  QMutexLocker Locker(mp_LogMutex);
+  std::scoped_lock<std::mutex> Lock(m_LogMutex);
 
   std::string LTypeStr = logTypeToString(LType);
 

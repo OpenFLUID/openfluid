@@ -37,7 +37,7 @@
  */
 
 
-#include <QRegExp>
+#include <regex>
 
 #include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -59,12 +59,9 @@ std::string classIDToString(const openfluid::core::UnitsClass_t& Class, openflui
 bool isValidAlphaNumName(const std::string& Name)
 {
   // authorized chars: a to z, A to Z, 0 to 9
+  std::regex Exp("[A-Za-z0-9]+");
 
-  QRegExp Exp("[A-Za-z0-9]+");
-
-  QString NameQStr = QString::fromStdString(Name);
-
-  return Exp.exactMatch(NameQStr);
+  return std::regex_match(Name,Exp);
 }
 
 
@@ -76,12 +73,9 @@ bool isValidWareID(const openfluid::ware::WareID_t& ID)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
+  std::regex  Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
-  QRegExp Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
-
-  QString IDQStr = QString::fromStdString(ID);
-
-  return Exp.exactMatch(IDQStr);
+  return std::regex_match(ID,Exp);
 }
 
 
@@ -93,12 +87,9 @@ bool isValidVariableName(const openfluid::core::VariableName_t& Name)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
+  std::regex Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
-  QRegExp Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
-
-  QString NameQStr = QString::fromStdString(Name);
-
-  return Exp.exactMatch(NameQStr);
+  return std::regex_match(Name,Exp);
 }
 
 
@@ -111,12 +102,10 @@ bool isValidTypedVariableName(const openfluid::core::VariableName_t& Name)
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
   // can have a type between square brackets at the end
+  std::regex 
+    Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)(\\[(|double|integer|boolean|string|vector|matrix|map|tree|null)\\])?");
 
-  QRegExp Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)(\\[(|double|integer|boolean|string|vector|matrix|map|tree|null)\\])?");
-
-  QString NameQStr = QString::fromStdString(Name);
-
-  return Exp.exactMatch(NameQStr);
+  return std::regex_match(Name,Exp);
 }
 
 
@@ -128,12 +117,9 @@ bool isValidAttributeName(const openfluid::core::AttributeName_t& Name)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
+  std::regex Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
-  QRegExp Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
-
-  QString NameQStr = QString::fromStdString(Name);
-
-  return Exp.exactMatch(NameQStr);
+  return std::regex_match(Name,Exp);
 }
 
 

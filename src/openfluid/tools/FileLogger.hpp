@@ -42,11 +42,9 @@
 
 
 #include <fstream>
+#include <mutex>
 
 #include <openfluid/dllexport.hpp>
-
-
-class QMutex;
 
 
 namespace openfluid { namespace tools {
@@ -56,7 +54,7 @@ class OPENFLUID_API FileLogger
 {
   private:
 
-    QMutex* mp_LogMutex;
+    std::mutex m_LogMutex;
 
     std::ofstream m_LogFile;
 
