@@ -19,6 +19,7 @@ SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp
                         Filesystem.hpp
                         FileLogger.hpp
                         DataHelpers.hpp IDHelpers.hpp QtHelpers.hpp MiscHelpers.hpp
+                        Timer.hpp
                         FortranCPP.hpp
                         )
 

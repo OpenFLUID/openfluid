@@ -59,29 +59,7 @@
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/core/TreeValue.hpp>
 #include <openfluid/core/StringValue.hpp>
-
-
-// =====================================================================
-// =====================================================================
-
-
-#define DECLARE_TEST_TICKER(name) \
-  std::chrono::high_resolution_clock::time_point _M_Start_##name; \
-  std::chrono::high_resolution_clock::time_point _M_Stop_##name; \
-  std::chrono::milliseconds _M_Duration_##name;
-
-
-#define START_TEST_TICKER(name) \
-  _M_Start_##name = std::chrono::high_resolution_clock::now();
-
-
-#define MARK_TEST_TICKER(name) \
-  _M_Stop_##name = std::chrono::high_resolution_clock::now(); \
-  _M_Duration_##name = std::chrono::duration_cast<std::chrono::milliseconds>(_M_Stop_##name - _M_Start_##name);
-
-
-#define TEST_DURATION_AS_MS(name) \
-  (_M_Duration_##name.count())
+#include <openfluid/tools/Timer.hpp>
 
 
 // =====================================================================
@@ -260,9 +238,8 @@ BOOST_AUTO_TEST_CASE(check_performance)
 
   std::cout << "======== check_performance ========" << std::endl;
 
-
-  DECLARE_TEST_TICKER(DBL);
-  DECLARE_TEST_TICKER(DBLVAL);
+  openfluid::tools::Timer DblTimer;
+  openfluid::tools::Timer DblValTimer;
 
 
   const unsigned int ElementsNbr = 10000000;
@@ -274,57 +251,50 @@ BOOST_AUTO_TEST_CASE(check_performance)
 
   // ------
 
-  START_TEST_TICKER(DBL);
-
+  DblTimer.restart();
   for (unsigned int i=0; i< ElementsNbr;i++)
   {
     BufferDouble.push_back(static_cast<double>(i)/ElementsNbr);
   }
 
-  MARK_TEST_TICKER(DBL);
-  std::cout << "Duration [double], populating: " << TEST_DURATION_AS_MS(DBL) << "ms" << std::endl;
+  DblTimer.stop();
+  std::cout << "Duration [double], populating: " << DblTimer.elapsed() << "ms" << std::endl;
 
 
   // ------
 
-  START_TEST_TICKER(DBLVAL);
-
+  DblValTimer.restart();
   for (unsigned int i=0; i< ElementsNbr;i++)
   {
     BufferValue.push_back(std::shared_ptr<openfluid::core::Value>(
         new openfluid::core::DoubleValue(static_cast<double>(i)/ElementsNbr)));
   }
-
-  MARK_TEST_TICKER(DBLVAL);
-  std::cout << "Duration [DoubleValue], populating: " << TEST_DURATION_AS_MS(DBLVAL) << "ms" << std::endl;
+  DblValTimer.stop();
+  std::cout << "Duration [DoubleValue], populating: " << DblValTimer.elapsed() << "ms" << std::endl;
 
 
   // ------
 
-  START_TEST_TICKER(DBL);
-
+  DblTimer.restart();
   for (unsigned int i=0; i< BufferSize;i++)
   {
     double Tmp = BufferDouble[i];
     std::cout << Tmp << std::endl;
   }
-
-  MARK_TEST_TICKER(DBL);
-  std::cout << "Duration [double], accessing: " << TEST_DURATION_AS_MS(DBL) << "ms" << std::endl;
+  DblTimer.stop();
+  std::cout << "Duration [double], accessing: " << DblTimer.elapsed() << "ms" << std::endl;
 
 
   // ------
 
-  START_TEST_TICKER(DBLVAL);
-
+  DblValTimer.restart();
   for (unsigned int i=0; i< BufferSize;i++)
   {
     double Tmp = BufferValue[i].get()->asDoubleValue().get();
     std::cout << Tmp << std::endl;
   }
-
-  MARK_TEST_TICKER(DBLVAL);
-  std::cout << "Duration [DoubleValue], accessing: " << TEST_DURATION_AS_MS(DBLVAL) << "ms" << std::endl;
+  DblValTimer.stop();
+  std::cout << "Duration [DoubleValue], accessing: " << DblValTimer.elapsed() << "ms" << std::endl;
 }
 
 

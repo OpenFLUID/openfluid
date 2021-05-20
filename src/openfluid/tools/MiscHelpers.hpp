@@ -116,27 +116,6 @@ std::string OPENFLUID_API generatePseudoUniqueIdentifier(const unsigned int Leng
 
 
 /**
-  Splits the given duration in milliseconds into days, hours, minutes, seconds and milliseconds.
-  @param[in] MSecsDuration the duration in milliseconds
-  @param[out] Days the number of days
-  @param[out] Hours the number of hours
-  @param[out] Minutes the number of minutes
-  @param[out] Seconds the number of seconds
-  @param[out] MSecs the number of milliseconds
-*/
-void OPENFLUID_API splitDuration(long int MSecsDuration, int& Days, int& Hours, int& Minutes, int& Seconds, int& MSecs);
-
-
-/**
-  Returns the given duration as a pretty string representing days, hours, minutes and decimal seconds.
-  @snippet misc/mischelpers.cpp durationstr
-  @param[in] MSecsDuration the duration in milliseconds
-  @return the converted duration as a string
-*/
-std::string OPENFLUID_API getDurationAsPrettyString(long int MSecsDuration);
-
-
-/**
   Returns the given regex pattern string with special chars that are escaped
   @param[in] Str the regex pattern
   @return the regex pattern with special chars that are escaped

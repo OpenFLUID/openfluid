@@ -41,10 +41,9 @@
 #include <chrono>
 #include <random>
 #include <sstream>
-#include <iomanip>
 #include <regex>
 
-#include <QString>
+#include <boost/algorithm/string.hpp>
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
@@ -59,11 +58,11 @@ bool matchWithWildcard(const std::string& Pattern, const std::string& Str)
 
   // source : http://www.codeproject.com/KB/string/wildcmp.aspx
 
-  const char *cp = nullptr;
-  const char *mp = nullptr;
+  const char* cp = nullptr;
+  const char* mp = nullptr;
 
-  const char *StrToCheck = Str.c_str();
-  const char *WildStr = Pattern.c_str();
+  const char* StrToCheck = Str.c_str();
+  const char* WildStr = Pattern.c_str();
 
   while ((*StrToCheck) && (*WildStr != '*'))
   {
@@ -131,8 +130,8 @@ std::string replaceEmptyString(std::string SourceStr,
 
 int compareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict)
 {
-  std::string LowCaseA = QString::fromStdString(VersionA).toLower().toStdString();
-  std::string LowCaseB = QString::fromStdString(VersionB).toLower().toStdString();
+  std::string LowCaseA = boost::to_lower_copy(VersionA);
+  std::string LowCaseB = boost::to_lower_copy(VersionB);
 
   if (LowCaseA == LowCaseB)
   {
@@ -285,80 +284,6 @@ std::string generatePseudoUniqueIdentifier(const unsigned int Length)
   }
 
   return PUI;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void splitDuration(long int MSecsDuration, int& Days, int& Hours, int& Minutes, int& Seconds, int& MSecs)
-{
-  MSecs = (int) (MSecsDuration % 1000);
-  Seconds = (int) (MSecsDuration / 1000) % 60;
-  Minutes = (int) ((MSecsDuration / (1000*60)) % 60);
-  Hours   = (int) ((MSecsDuration / (1000*60*60)) % 24);
-  Days   = (int) (MSecsDuration / (1000*60*60*24));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string getDurationAsPrettyString(long int MSecsDuration)
-{
-  int MSecs, Seconds, Minutes, Hours, Days  = 0;
-
-  splitDuration(MSecsDuration,Days,Hours,Minutes,Seconds,MSecs);
-
-  std::stringstream MSecsSS;
-  MSecsSS << std::setw(3) << std::setfill('0') << MSecs;
-
-  std::string TmpStr = MSecsSS.str()+"s";
-
-  if (!Days)
-  {
-    if (!Hours)
-    {
-      if (!Minutes)
-      {
-        if (!Seconds)
-        {
-          TmpStr = "0."+
-                   TmpStr;
-        }
-        else
-        {
-          TmpStr = openfluid::tools::convertValue(Seconds)+"."+
-                   TmpStr;
-        }
-      }
-      else
-      {
-        TmpStr = openfluid::tools::convertValue(Minutes)+"m "+
-                 openfluid::tools::convertValue(Seconds)+"."+
-                 TmpStr;
-      }
-    }
-    else
-    {
-      TmpStr = openfluid::tools::convertValue(Hours)+"h "+
-               openfluid::tools::convertValue(Minutes)+"m "+
-               openfluid::tools::convertValue(Seconds)+"."+
-               TmpStr;
-    }
-  }
-  else
-  {
-    TmpStr = openfluid::tools::convertValue(Days)+"d "+
-             openfluid::tools::convertValue(Hours)+"h "+
-             openfluid::tools::convertValue(Minutes)+"m "+
-             openfluid::tools::convertValue(Seconds)+"."+
-             TmpStr;
-  }
-
-  return TmpStr;
 }
 
 

@@ -38,10 +38,10 @@
 
 
 #include <cmath>
-#include <chrono>
 
 #include <openfluid/ware/ThreadedLoopMacros.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/tools/Timer.hpp>
 
 
 // =====================================================================
@@ -216,106 +216,91 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest runStep()
   {
     openfluid::core::SpatialUnit* TU;
+    openfluid::tools::Timer T;
 
     std::cout << std::endl;
 
-    std::chrono::high_resolution_clock::time_point StartTime, EndTime;
-    std::chrono::milliseconds Duration;
 
-
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     m_LastOrd = 0;
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
       processUnit(TU);
     }
+    T.stop();
+    std::cout << "TU Classic: " << T.elapsed() << "ms" << std::endl;
 
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "TU Classic: " << Duration.count() << "ms" << std::endl;
-
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     m_LastOrd = 0;
     APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::processUnit);
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "TU Threaded: " << Duration.count() << "ms" << std::endl;
+    T.stop();
+    std::cout << "TU Threaded: " << T.elapsed() << "ms" << std::endl;
 
 
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
       produceDataOnTUSequenced(TU,double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
     }
+    T.stop();
+    std::cout << "TU Production Sequenced: " << T.elapsed() << "ms"  << std::endl;
 
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "TU Production Sequenced: " << Duration.count() << "ms"  << std::endl;
-
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::produceDataOnTUThreaded,
                                       double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "TU Production Threaded: " << Duration.count() << "ms"  << std::endl;
+    T.stop();
+    std::cout << "TU Production Threaded: " << T.elapsed() << "ms"  << std::endl;
 
 
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     m_LastOrd = 0;
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
     {
       processUnitXTimes(TU,3);
     }
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "TU Classic 3 times: " << Duration.count() << "ms"  << std::endl;
+    T.stop();
+    std::cout << "TU Classic 3 times: " << T.elapsed() << "ms"  << std::endl;
 
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     m_LastOrd = 0;
     APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsSimulator::processUnitXTimes,3);
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "TU Threaded 3 times: " << Duration.count() << "ms"  << std::endl;
+    T.stop();
+    std::cout << "TU Threaded 3 times: " << T.elapsed() << "ms"  << std::endl;
 
 
     // _-_-_-_-_-_-_-_-_-_-_-_-_
+    std::cout << std::endl;
 
-
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     m_LastOrd = 0;
     OPENFLUID_ALLUNITS_ORDERED_LOOP(TU)
     {
       processUnit(TU);
     }
-    EndTime = std::chrono::high_resolution_clock::now();
-    std::cout << std::endl;
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "Full Classic: " << Duration.count() << "ms"  << std::endl;
+    T.stop();
+    std::cout << "Full Classic: " << T.elapsed() << "ms"  << std::endl;
 
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     m_LastOrd = 0;
     APPLY_ALLUNITS_ORDERED_LOOP_THREADED(ThreadedLoopsSimulator::processUnit);
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "Full Threaded: " << Duration.count() << "ms"  << std::endl;
+    T.stop();
+    std::cout << "Full Threaded: " << T.elapsed() << "ms"  << std::endl;
 
 
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     m_LastOrd = 0;
     OPENFLUID_ALLUNITS_ORDERED_LOOP(TU)
     {
       processUnitXTimes(TU,4);
     }
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "Full Classic 4 times: " << Duration.count() << "ms"  << std::endl;
+    T.stop();
+    std::cout << "Full Classic 4 times: " << T.elapsed() << "ms"  << std::endl;
 
-    StartTime = std::chrono::high_resolution_clock::now();
+    T.restart();
     m_LastOrd = 0;
     APPLY_ALLUNITS_ORDERED_LOOP_THREADED(ThreadedLoopsSimulator::processUnitXTimes,4);
-    EndTime = std::chrono::high_resolution_clock::now();
-    Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-    std::cout << "Full Threaded 4 times: " << Duration.count() << "ms"  << std::endl;
+    T.stop();
+    std::cout << "Full Threaded 4 times: " << T.elapsed() << "ms"  << std::endl;
 
 
     return DefaultDeltaT();

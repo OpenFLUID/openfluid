@@ -717,8 +717,7 @@ void WareSrcContainer::processErrorOutput()
 void WareSrcContainer::processFinishedOutput(int ExitCode)
 {
   QString ElapsedString =
-      QString("execution time : %1")
-      .arg(QString::fromStdString(openfluid::tools::getDurationAsPrettyString(m_ProcessTimer.elapsed())));
+      QString("execution time : %1").arg(QString::fromStdString(m_ProcessTimer.elapsedAsPrettyString()));
 
   if (!ExitCode)
   {
@@ -763,7 +762,7 @@ void WareSrcContainer::runCommand(const openfluid::utils::CMakeProxy::CommandInf
     mp_Process->close();
   }
 
-  m_ProcessTimer.start();
+  m_ProcessTimer.restart();
 
   mp_Process->setType(CmdType);
 

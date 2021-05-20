@@ -42,11 +42,11 @@
 
 
 #include <QObject>
-#include <QElapsedTimer>
 #include <QCloseEvent>
 
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
+#include <openfluid/tools/Timer.hpp>
 #include <openfluid/ui/common/RunSimulationWorker.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
 #include <openfluid/base/Exception.hpp>
@@ -81,7 +81,7 @@ class OPENFLUID_API RunSimulationDialog : public MessageDialog
 
     openfluid::ui::common::RunSimulationListener* mp_Listener;
 
-    QElapsedTimer m_ElapsedTimer;
+    openfluid::tools::Timer m_ElapsedTimer;
 
     bool m_Launched;
 

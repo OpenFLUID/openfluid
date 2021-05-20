@@ -36,10 +36,9 @@
 */
 
 
-#include <chrono>
-
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
+#include <openfluid/tools/Timer.hpp>
 
 
 // =====================================================================
@@ -166,13 +165,12 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
     openfluid::base::SchedulingRequest runStep()
     {
       openfluid::core::SpatialUnit* TU;
-      std::chrono::high_resolution_clock::time_point StartTime, EndTime;
-      std::chrono::milliseconds Duration;
       double XVal;
       double VarDouble = 0.0;
       openfluid::core::DoubleValue VarDoubleVal;
       openfluid::core::IndexedValue IndVal;
       int Repeats = 10000;
+      openfluid::tools::Timer T;
 
       std::cout << std::endl;
 
@@ -180,7 +178,7 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
       // -----------------------------
 
 
-      StartTime = std::chrono::high_resolution_clock::now();
+      T.restart();
       for (int i = 0;i<Repeats;i++)
       {
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -191,13 +189,12 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
           XVal += VarDouble;
         }
       }
-      EndTime = std::chrono::high_resolution_clock::now();
+      T.stop();
 
-      Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-      std::cout << "attribute by return: " << Duration.count() << "ms" << std::endl;
+      std::cout << "attribute by return: " << T.elapsed() << "ms" << std::endl;
 
 
-      StartTime = std::chrono::high_resolution_clock::now();
+      T.restart();
       for (int i = 0;i<Repeats;i++)
       {
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -208,16 +205,15 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
           XVal += VarDouble;
         }
       }
-      EndTime = std::chrono::high_resolution_clock::now();
+      T.stop();
 
-      Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-      std::cout << "attribute by reference: " << Duration.count() << "ms" << std::endl;
+      std::cout << "attribute by reference: " << T.elapsed() << "ms" << std::endl;
 
 
       // -----------------------------
 
 
-      StartTime = std::chrono::high_resolution_clock::now();
+      T.restart();
       for (int i = 0;i<Repeats;i++)
       {
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -226,13 +222,12 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
                  OPENFLUID_GetVariable(TU,"tests.doubleval",OPENFLUID_GetCurrentTimeIndex())->asDoubleValue();
         }
       }
-      EndTime = std::chrono::high_resolution_clock::now();
+      T.stop();
 
-      Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-      std::cout << "current variable by return: " << Duration.count() << "ms" << std::endl;
+      std::cout << "current variable by return: " << T.elapsed() << "ms" << std::endl;
 
 
-      StartTime = std::chrono::high_resolution_clock::now();
+      T.restart();
       for (int i = 0;i<Repeats;i++)
       {
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -245,16 +240,15 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
           XVal = VarDouble + VarDoubleVal;
         }
       }
-      EndTime = std::chrono::high_resolution_clock::now();
+      T.stop();
 
-      Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-      std::cout << "current variable by reference: " << Duration.count() << "ms" << std::endl;
+      std::cout << "current variable by reference: " << T.elapsed() << "ms" << std::endl;
 
 
       // -----------------------------
 
 
-      StartTime = std::chrono::high_resolution_clock::now();
+      T.restart();
       for (int i = 0;i<Repeats;i++)
       {
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -262,13 +256,12 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
           XVal = OPENFLUID_GetLatestVariable(TU,"tests.doubleval").value()->asDoubleValue();
         }
       }
-      EndTime = std::chrono::high_resolution_clock::now();
+      T.stop();
 
-      Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-      std::cout << "latest variable by return: " << Duration.count() << "ms" << std::endl;
+      std::cout << "latest variable by return: " << T.elapsed() << "ms" << std::endl;
 
 
-      StartTime = std::chrono::high_resolution_clock::now();
+      T.restart();
       for (int i = 0;i<Repeats;i++)
       {
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -277,10 +270,9 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
           XVal = IndVal.value()->asDoubleValue();
         }
       }
-      EndTime = std::chrono::high_resolution_clock::now();
+      T.stop();
 
-      Duration = std::chrono::duration_cast<std::chrono::milliseconds>(EndTime - StartTime);
-      std::cout << "latest variable by reference: " << Duration.count() << "ms" << std::endl;
+      std::cout << "latest variable by reference: " << T.elapsed() << "ms" << std::endl;
 
 
       return DefaultDeltaT();

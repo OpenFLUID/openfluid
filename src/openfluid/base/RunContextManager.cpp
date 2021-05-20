@@ -37,9 +37,6 @@
 */
 
 
-#include <QFile>
-#include <QDir>
-
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -268,7 +265,7 @@ bool RunContextManager::createProject(const std::string& Path,
 
   std::string AbsPath = openfluid::tools::Filesystem::absolutePath(Path);
 
-  if (QDir().mkpath(QString::fromStdString(getInputDirFromProjectPath(AbsPath))))
+  if (openfluid::tools::Filesystem::makeDirectory(getInputDirFromProjectPath(AbsPath)))
   {
     m_ProjectPath = AbsPath;
     m_InputDir = getInputDirFromProjectPath(AbsPath);

@@ -30,15 +30,30 @@
 */
 
 /**
-  @file mischelpers.cpp
+  @file timer.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
 
 #include <string>
 
-#include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/Timer.hpp>
+
+
+void snippets_usage()
+{
+//! [usage]
+openfluid::tools::Timer MyTimer;
+
+MyTimer.start();
+// here is the code we want to measure the duration of execution
+MyTimer.stop();
+
+auto Duration = MyTimer.elapsed();  // e.g. 13536
+std::string DurationStr = MyTimer.elapsedAsPrettyString();  // e.g. 13.536s
+//! [usage]
+}
 
 
 void snippets_getDurationAsPrettyString()
@@ -46,10 +61,10 @@ void snippets_getDurationAsPrettyString()
 //! [durationstr]
 std::string DurationStr;
 
-DurationStr = openfluid::tools::getDurationAsPrettyString(123456789); // "1d 10h 17m 36.789s"
-DurationStr = openfluid::tools::getDurationAsPrettyString(12345678);  // "3h 25m 45.678s"
-DurationStr = openfluid::tools::getDurationAsPrettyString(123456);    // "2m 3.456s"
-DurationStr = openfluid::tools::getDurationAsPrettyString(1234);      // "1.234s"
-DurationStr = openfluid::tools::getDurationAsPrettyString(12);        // "0.012s"
+DurationStr = openfluid::tools::Timer::getDurationAsPrettyString(123456789); // "1d 10h 17m 36.789s"
+DurationStr = openfluid::tools::Timer::getDurationAsPrettyString(12345678);  // "3h 25m 45.678s"
+DurationStr = openfluid::tools::Timer::getDurationAsPrettyString(123456);    // "2m 3.456s"
+DurationStr = openfluid::tools::Timer::getDurationAsPrettyString(1234);      // "1.234s"
+DurationStr = openfluid::tools::Timer::getDurationAsPrettyString(12);        // "0.012s"
 //! [durationstr]
 }

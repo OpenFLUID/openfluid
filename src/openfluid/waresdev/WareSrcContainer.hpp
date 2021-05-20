@@ -44,12 +44,12 @@
 
 #include <QString>
 #include <QObject>
-#include <QElapsedTimer>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/waresdev/WareSrcMsgStream.hpp>
 #include <openfluid/waresdev/WareSrcProcess.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/tools/Timer.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -129,7 +129,7 @@ class OPENFLUID_API WareSrcContainer: public QObject
 
     WareSrcProcess* mp_Process;
 
-    QElapsedTimer m_ProcessTimer;
+    openfluid::tools::Timer m_ProcessTimer;
 
     QString m_OFVersion;
 

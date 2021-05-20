@@ -43,11 +43,10 @@
 
 #include <boost/algorithm/string/join.hpp>
 
-#include <QElapsedTimer>
-
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/tools/Timer.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/Console.hpp>
@@ -305,8 +304,8 @@ void OpenFLUIDApp::printEnvInfos()
 
 void OpenFLUIDApp::runSimulation()
 {
-  QElapsedTimer FullTimer;
-  QElapsedTimer EffectiveRunTimer;
+  openfluid::tools::Timer FullTimer;
+  openfluid::tools::Timer EffectiveRunTimer;
 
 
   FullTimer.start();
@@ -450,7 +449,7 @@ void OpenFLUIDApp::runSimulation()
 
   EffectiveRunTimer.start();
   mp_Engine->run();
-  qint64 EffectiveTime = EffectiveRunTimer.elapsed();
+  EffectiveRunTimer.stop();
 
   std::cout << "**** Simulation completed ****" << std::endl << std::endl;
   std::cout << std::endl;
@@ -458,11 +457,12 @@ void OpenFLUIDApp::runSimulation()
 
   printlnExecMessagesStats();
 
-  std::cout << std::endl;
+  FullTimer.stop();
 
-  std::cout << "Simulation run time: " << openfluid::tools::getDurationAsPrettyString(EffectiveTime) << std::endl;
+  std::cout << std::endl;
+  std::cout << "Simulation run time: " << EffectiveRunTimer.elapsedAsPrettyString() << std::endl;
   std::cout << "     Total run time: "
-            << openfluid::tools::getDurationAsPrettyString(FullTimer.elapsed()) << std::endl;
+            << FullTimer.elapsedAsPrettyString() << std::endl;
   std::cout << std::endl;
 
   mp_Engine->finalize();
