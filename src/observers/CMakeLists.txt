@@ -25,5 +25,3 @@ OFBUILD_ADD_OBSERVER(export.vars.plot.gnuplot ${OFBUILD_DIST_OBSERVERS_DIR})
 
                       
 OFBUILD_ADD_OBSERVER(export.spatial-graph.files.dot ${OFBUILD_DIST_OBSERVERS_DIR})
-
-                            

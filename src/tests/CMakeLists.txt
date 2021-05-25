@@ -10,4 +10,3 @@ ADD_SUBDIRECTORY(integration)
 OFBUILD_CREATE_01_VAR(OFBUILD_TESTS_ALLOW_NETWORK_REQUESTS)
 
 CONFIGURE_FILE(tests-config.hpp.in tests-config.hpp)
- 

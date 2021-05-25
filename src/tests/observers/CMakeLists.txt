@@ -198,4 +198,4 @@ OPENFLUID_ADD_TEST(NAME observers-GDALGeoVector
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.GDALGeoVector/ContDelaySU_init.shp"
                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.GDALGeoVector/geovector-continuous/ContSU_252000.shp"
                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.GDALGeoVector/geovector-continuous-delay/ContDelayRS_324000.json"
-                  )                             
+                  )

@@ -101,6 +101,7 @@ class SourceTreeChecker:
         self.CheckStyles["SEPS"] = (self.checkSeparators, "lines")
         self.CheckStyles["TABC"] = (self.checkTabs, "lines")
         self.CheckStyles["BRAC"] = (self.checkBrackets, "lines")
+        self.CheckStyles["ELAE"] = (self.checkEmptyLineAtEnd, "lines")
 
         self.ActiveStyles = list()
         self.ErrorsCount = dict()
@@ -123,11 +124,35 @@ class SourceTreeChecker:
             for Filename in Filenames:
                 RelFilename = os.path.relpath(os.path.join(Dirname, Filename),self.SrcRootPath)
                 if not RelFilename.startswith('.') and not RelFilename.startswith('_'):
-                    if (RelFilename.endswith('.cpp') or RelFilename.endswith('.hpp') or
-                        RelFilename.endswith('.hpp.in')) :
+                    if self.isCppFile(RelFilename) or self.isCMakeFile(RelFilename):
                         self.FileList.append(RelFilename)
 
         self.FileList.sort()
+
+
+############################################################################
+
+
+    @staticmethod
+    def isCppFile(Filename):
+        return (Filename.endswith('.cpp') or 
+                Filename.endswith('.hpp') or Filename.endswith('.hpp.in'))
+
+
+    def cppOnly(func):
+        def checker(self,name,data):
+            if self.isCppFile(name):
+                func(self,name,data)
+        
+        return checker
+
+
+############################################################################
+
+
+    @staticmethod
+    def isCMakeFile(Filename):
+        return (Filename.endswith('CMakeLists.txt') or Filename.endswith('.cmake'))
 
 
 ############################################################################
@@ -175,6 +200,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkLineLength(self, Filename, Lines):
 
         i = 1
@@ -201,6 +227,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkLicenseHeader(self, Filename, Content):
 
         if not Content.startswith(self.LicenseHeader):
@@ -210,6 +237,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkFilename(self, Filename, Content):
 
         ExpectedFilename = os.path.basename(Filename)
@@ -228,6 +256,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkFileAuthor(self, Filename, Content):
 
         Result = re.search( r'\@author \w+', Content)
@@ -238,6 +267,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkHeaderGuard(self, Filename, Content):
 
         ExpectedFilename = Filename
@@ -289,6 +319,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkIncludesOrder(self, Filename, Lines):
 
         LocalIncStarted = False
@@ -320,6 +351,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkIncludesSpacing(self, Filename, Lines):
 
         FirstIncLine = 0;
@@ -357,6 +389,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkTooMuchSpacing(self, Filename, Lines):
 
         RunningTMS = 0
@@ -375,6 +408,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkSeparators(self, Filename, Lines):
 
         FirstProcessed = False
@@ -425,6 +459,7 @@ class SourceTreeChecker:
 ############################################################################
 
 
+    @cppOnly
     def checkBrackets(self, Filename, Lines):
 
         i = 1
@@ -487,6 +522,15 @@ class SourceTreeChecker:
                         else:
                             IsPartialInstruction = True
             i += 1
+
+
+############################################################################
+
+
+    def checkEmptyLineAtEnd(self,Filename, Lines):
+
+        if len(Lines[-1]) > 0 :
+            self.addProblem('ELAE',Filename,len(Lines),'empty linebreak not found at the end of file')
 
 
 ############################################################################

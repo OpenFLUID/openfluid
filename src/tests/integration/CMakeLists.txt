@@ -920,5 +920,3 @@ IF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 ELSE()
   SET_TESTS_PROPERTIES(integration-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "OpenFLUID debugging mode is enabled")
 ENDIF() 
-  
-  

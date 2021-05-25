@@ -56,4 +56,3 @@ INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.hpp"
               "${CMAKE_CURRENT_BINARY_DIR}/global.hpp"
               "${CMAKE_CURRENT_BINARY_DIR}/buildinfo.hpp"
         DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH})
-                       
