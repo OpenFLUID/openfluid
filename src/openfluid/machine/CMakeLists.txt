@@ -6,6 +6,7 @@ SET(OPENFLUID_MACHINE_CPP ModelItemInstance.cpp GhostSimulatorFileIO.cpp
                           Generator.cpp FixedGenerator.cpp RandomGenerator.cpp InjectGenerator.cpp InterpGenerator.cpp
                           ObserverInstance.cpp 
                           ModelInstance.cpp MonitoringInstance.cpp
+                          DynamicLib.cpp
                           SimulatorPluginsManager.cpp ObserverPluginsManager.cpp
                           SimulatorSignatureRegistry.cpp ObserverSignatureRegistry.cpp
                           ExecutionTimePoint.cpp
@@ -22,7 +23,8 @@ SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp GhostSimulatorFileIO.hpp
                           SimulationProfiler.hpp
                           SimulationBlob.hpp
                           WareSignatureInstance.hpp
-                          WareContainer.hpp 
+                          WareContainer.hpp
+                          DynamicLib.hpp
                           WarePluginsManager.hpp WareSignatureRegistry.hpp 
                           WarePluginsSearchResults.hpp WarePluginsSearchResultsSerializer.hpp
                           SimulatorPluginsManager.hpp SimulatorSignatureRegistry.hpp
@@ -49,6 +51,10 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-fluidx
                       Qt5::Core
                      )
+
+IF(UNIX)
+  TARGET_LINK_LIBRARIES(openfluid-machine dl)
+ENDIF(UNIX)
 
 
 INSTALL(TARGETS openfluid-machine

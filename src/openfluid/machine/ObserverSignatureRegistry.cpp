@@ -71,12 +71,11 @@ ObserverSignatureRegistry::~ObserverSignatureRegistry()
 
 const ObserverSignatureInstance* ObserverSignatureRegistry::signature(const std::string& ObserverID) const
 {
-  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::const_iterator it =
-      m_AvailableSignatures.begin(); it != m_AvailableSignatures.end(); ++it)
+  for (auto SignInst: m_AvailableSignatures)
   {
-    if ((*it)->Signature->ID == ObserverID)
+    if (SignInst->Signature->ID == ObserverID)
     {
-      return (*it);
+      return (SignInst);
     }
   }
   return nullptr;

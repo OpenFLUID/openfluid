@@ -147,16 +147,16 @@ void SimulatorSignatureRegistry::addGeneratorSignature(openfluid::machine::Model
 void SimulatorSignatureRegistry::update()
 {
   unloadAll();
-
+  
   // searching for pluggable simulators
   const std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
       openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures().availablePlugins();
 
-  for (unsigned int i = 0; i < Signatures.size(); i++)
+  for (auto SignInst: Signatures)
   {
-    if (Signatures[i]->Signature)
+    if (SignInst->Signature)
     {
-      addSimulatorSignature(Signatures[i]);
+      addSimulatorSignature(SignInst);
     }
   }
 
@@ -167,13 +167,13 @@ void SimulatorSignatureRegistry::update()
   std::vector<openfluid::machine::ModelItemSignatureInstance*> GhostsSignatures =
         openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures();
 
-  for (unsigned int i = 0; i < GhostsSignatures.size(); i++)
+  for (auto SignInst: GhostsSignatures)
   {
-    if (GhostsSignatures[i]->Signature &&
-        m_SimSignatures[openfluid::ware::WareType::SIMULATOR].find(GhostsSignatures[i]->Signature->ID)
+    if (SignInst->Signature &&
+        m_SimSignatures[openfluid::ware::WareType::SIMULATOR].find(SignInst->Signature->ID)
           == m_SimSignatures[openfluid::ware::WareType::SIMULATOR].end())
     {
-      addSimulatorSignature(GhostsSignatures[i]);
+      addSimulatorSignature(SignInst);
     }
   }
 }

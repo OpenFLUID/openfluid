@@ -1,4 +1,7 @@
 
+IF(OFBUILD_ENABLE_TESTING)
+  ADD_SUBDIRECTORY(tests)
+ENDIF()
 
 # desktop file on UNIX systems
 IF(UNIX AND NOT APPLE)
@@ -145,3 +148,5 @@ IF(APPLE)
   
   CONFIGURE_FILE("tools/ofpack-osx-brewcask.cmake.in" "${CMAKE_BINARY_DIR}/ofpack-osx-brewcask.cmake" @ONLY)
 ENDIF()
+
+
