@@ -37,11 +37,21 @@
 */
 
 
+// OpenFLUID:stylecheck:!incs
+// OpenFLUID:stylecheck:!inco
+
+
+#include <openfluid/global.hpp>
+
 #include <filesystem>
 #include <thread>
 #include <ostream>
 #include <fstream>
 #include <regex>
+
+#if defined(OPENFLUID_OS_WINDOWS)
+#include <userenv.h>
+#endif
 
 #include <boost/algorithm/string/join.hpp>
 
@@ -169,6 +179,44 @@ std::string Filesystem::toNativePath(const std::string& Path)
 std::string Filesystem::toGenericPath(const std::string& Path)
 {
   return std::filesystem::path(openfluid::tools::Filesystem::cleanPath(Path)).generic_string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::homePath()
+{
+  std::string HomeDir;
+
+#ifdef OPENFLUID_OS_UNIX
+  HomeDir = std::string(std::getenv("HOME"));
+#endif
+
+#ifdef OPENFLUID_OS_WINDOWS
+  HANDLE Token = 0;
+  DWORD PathLen = MAX_PATH;
+  char Buf[MAX_PATH] = {'\0'};
+  if (OpenProcessToken(GetCurrentProcess(),TOKEN_QUERY,&Token)) 
+  {
+    GetUserProfileDirectory(Token,Buf,&PathLen);
+    CloseHandle(Token);
+    HomeDir = std::string(Buf);
+  }
+#endif
+
+  return std::filesystem::path(HomeDir).generic_string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::tempPath()
+{
+  return std::filesystem::temp_directory_path().generic_string();
 }
 
 

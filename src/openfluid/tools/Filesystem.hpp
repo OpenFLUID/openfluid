@@ -115,6 +115,18 @@ class OPENFLUID_API Filesystem
     static std::string toGenericPath(const std::string& Path);
 
     /**
+      Returns the user home path (e.g. '/home/username' on Linux, 'C:/Users/username' on Windows, ...)
+      @return the user home path
+    */
+    static std::string homePath();
+
+    /**
+      Returns the system path for temporary files (e.g. '/tmp' on Linux, ...)
+      @return the path for temporary files
+    */
+    static std::string tempPath();
+
+    /**
       Returns the name of the file in the given path
       @snippet misc/filesystem.cpp filename
       @param[in] Path the given path

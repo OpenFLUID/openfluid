@@ -109,6 +109,23 @@ BOOST_AUTO_TEST_CASE(std_filesystem)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_system_paths)
+{
+  auto hP = openfluid::tools::Filesystem::homePath();
+  auto tP = openfluid::tools::Filesystem::tempPath();
+
+  std::cout << "homePath(): " << hP << std::endl;
+  std::cout << "tempPath(): " << tP << std::endl;
+
+  BOOST_CHECK(hP.size() > 0);
+  BOOST_CHECK(tP.size() > 0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(check_path_operations)
 {
   std::cout << "System path separator is " << openfluid::tools::Filesystem::pathSeparator() << std::endl;

@@ -67,6 +67,7 @@ BOOST_AUTO_TEST_CASE(check_init)
   std::cout << "Install prefix: " << openfluid::base::Environment::getInstallPrefix() << std::endl;
   std::cout << "Home dir: " << openfluid::base::Environment::getUserHomeDir() << std::endl;
   std::cout << "Temp dir: " << openfluid::base::Environment::getTempDir() << std::endl;
+  std::cout << "User data dir: " << openfluid::base::Environment::getUserDataDir() << std::endl;  
   std::cout << "MarketBag dir: " << openfluid::base::Environment::getMarketBagDir() << std::endl;
   std::cout << "User examples dir: " << openfluid::base::Environment::getUserExamplesDir() << std::endl;
   std::cout << "Provided examples dir: " << openfluid::base::Environment::getProvidedExamplesDir() << std::endl;

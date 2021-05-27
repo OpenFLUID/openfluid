@@ -39,8 +39,6 @@
 
 #include <thread>
 
-#include <QDir>
-
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -167,7 +165,7 @@ void Environment::init()
     m_InstallPrefix = std::string(INSTALLEnvVar);
   }
 
-  m_TempDir = QDir(QDir::tempPath()+"/openfluid-tmp").absolutePath().toStdString();
+  m_TempDir = openfluid::tools::Filesystem::tempPath();
 
   char *TEMPEnvVar = std::getenv("OPENFLUID_TEMP_PATH");
 
@@ -179,7 +177,7 @@ void Environment::init()
 
   // ====== User directories ======
 
-  m_UserHomeDir = QDir::homePath().toStdString();
+  m_UserHomeDir = openfluid::tools::Filesystem::homePath();
 
   // UNIX: user directory for OpenFLUID : <m_HomeDir>/.openfluid
   // WINDOWS:user directory for OpenFLUID : <m_HomeDir>/openfluid

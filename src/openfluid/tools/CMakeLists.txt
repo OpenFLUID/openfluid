@@ -41,6 +41,10 @@ TARGET_LINK_LIBRARIES(openfluid-tools
                       Qt5::Xml
                      )
 
+IF(WIN32)
+  TARGET_LINK_LIBRARIES(openfluid-tools "userenv.lib")
+ENDIF()
+
 
 INSTALL(TARGETS openfluid-tools
         RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
