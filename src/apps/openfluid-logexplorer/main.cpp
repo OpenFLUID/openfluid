@@ -33,7 +33,7 @@
 /**
   @file main.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
 
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 {
   try
   {
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc, argv);
+    INIT_OPENFLUID_QT_APPLICATION_WITH_GUI(argc, argv);
 
     // translations management
     QString Lang = openfluid::base::PreferencesManager::instance()->getLang();
@@ -74,8 +74,8 @@ int main(int argc, char** argv)
           QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
           QString(openfluid::base::Environment::getTranslationsDir().c_str()));
     }
-    OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
-    OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);
+    OPENFLUID_QT_APPLICATION.installTranslator(&QtTranslator);
+    OPENFLUID_QT_APPLICATION.installTranslator(&OpenFLUIDTranslator);
 
 // TODO remove the #if linux when icons problem on win32 will be solved
 #if linux
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
 
     LogDlg.show();
 
-    return CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
+    return CLOSE_OPENFLUID_QT_APPLICATION_WITH_GUI;
   }
   catch (std::bad_alloc & E)
   {

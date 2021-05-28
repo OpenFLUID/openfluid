@@ -33,7 +33,7 @@
 /**
   @file main.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
  */
 
 
@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 
     int ExitCode = 0;
 
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
+    INIT_OPENFLUID_QT_APPLICATION_WITH_GUI(argc,argv);
 
     do
     {
@@ -90,10 +90,10 @@ int main(int argc, char** argv)
         OpenFLUIDTranslator.load(QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
                                  QString(openfluid::base::Environment::getTranslationsDir().c_str()));
       }
-      OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
-      OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);
+      OPENFLUID_QT_APPLICATION.installTranslator(&QtTranslator);
+      OPENFLUID_QT_APPLICATION.installTranslator(&OpenFLUIDTranslator);
 
-      OPENFLUID_APPLICATION.setStyleSheet(QString("QToolTip { color: #FFFFFF; background-color: %1; "
+      OPENFLUID_QT_APPLICATION.setStyleSheet(QString("QToolTip { color: #FFFFFF; background-color: %1; "
                                                   "border: 1px solid %2; }")
                                           .arg(openfluid::ui::config::TOOLTIP_BGCOLOR,
                                                openfluid::ui::config::TOOLTIP_BORDERCOLOR));
@@ -106,9 +106,9 @@ int main(int argc, char** argv)
 
       Splash.finish(App.mainWindow());
 
-      ExitCode = CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
+      ExitCode = CLOSE_OPENFLUID_QT_APPLICATION_WITH_GUI;
 
-      OPENFLUID_APPLICATION.flush();
+      OPENFLUID_QT_APPLICATION.flush();
 
     }
     while (ExitCode == openfluid::ui::config::EXIT_CODE_FOR_RESTART);

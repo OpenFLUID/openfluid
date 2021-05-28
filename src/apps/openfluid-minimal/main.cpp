@@ -33,11 +33,9 @@
 /**
   @file main.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
-
-#include <QCoreApplication>
 
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
@@ -54,7 +52,7 @@
 
 int main(int argc, char **argv)
 {
-  INIT_OPENFLUID_APPLICATION(argc,argv);
+  INIT_OPENFLUID_APPLICATION();
 
   try
   {

@@ -15,7 +15,6 @@ TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP}
                       openfluid-machine
                       openfluid-tools
                       openfluid-fluidx
-                      Qt5::Core
                      )
 
 

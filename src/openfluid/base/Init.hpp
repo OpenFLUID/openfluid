@@ -33,7 +33,7 @@
 /**
   @file Init.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
  */
 
 
@@ -49,23 +49,29 @@
 // =====================================================================
 
 
-#define OPENFLUID_APPLICATION _M_qapp
+#define OPENFLUID_QT_APPLICATION _M_qapp
 
-#define INIT_OPENFLUID_APPLICATION(ac,av) \
+
+#define INIT_OPENFLUID_APPLICATION() \
   OFDBG_BANNER; \
-  QCoreApplication OPENFLUID_APPLICATION(ac,av); \
   openfluid::base::Environment::init(); \
   openfluid::base::Environment::prepareUserDataDirectory();
 
-#define INIT_OPENFLUID_APPLICATION_WITH_GUI(ac,av) \
+#define INIT_OPENFLUID_QT_APPLICATION(ac,av) \
   OFDBG_BANNER; \
-  QApplication OPENFLUID_APPLICATION(ac,av); \
+  QCoreApplication OPENFLUID_QT_APPLICATION(ac,av); \
+  openfluid::base::Environment::init(); \
+  openfluid::base::Environment::prepareUserDataDirectory();
+
+#define INIT_OPENFLUID_QT_APPLICATION_WITH_GUI(ac,av) \
+  OFDBG_BANNER; \
+  QApplication OPENFLUID_QT_APPLICATION(ac,av); \
   openfluid::base::Environment::init(); \
   openfluid::base::Environment::prepareUserDataDirectory();
 
 
-#define CLOSE_OPENFLUID_APPLICATION_WITH_GUI \
-  OPENFLUID_APPLICATION.exec();
+#define CLOSE_OPENFLUID_QT_APPLICATION_WITH_GUI \
+  OPENFLUID_QT_APPLICATION.exec();
 
 
 #endif /* __OPENFLUID_BASE_INIT_HPP__ */

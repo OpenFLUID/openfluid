@@ -11,14 +11,4 @@ TARGET_LINK_LIBRARIES(openfluid-minimal
                       openfluid-machine
                       openfluid-tools
                       openfluid-fluidx
-                      Qt5::Core                      
                      )
-
-
-
-#INSTALL(TARGETS openfluid-minimal
-#        RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH})
-
-       
-      
-

@@ -42,8 +42,6 @@
 
 #include <clocale>
 
-#include <QCoreApplication>
-
 #include <openfluid/config.hpp>
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/IOListener.hpp>
@@ -85,9 +83,6 @@
 */
 #define OPENFLUID_BINDING_DEFINE(erroutclass)\
   bool openfluid::utils::Binding::m_Initialized = false; \
-  int openfluid::utils::Binding::m_qapp_argc = 1; \
-  char openfluid::utils::Binding::m_qapp_arg0[] = "OpenFLUID_Binding"; \
-  char* openfluid::utils::Binding::m_qapp_argv[] = { openfluid::utils::Binding::m_qapp_arg0  , NULL }; \
   std::string openfluid::utils::Binding::m_LastErrorMsg = ""; \
   const openfluid::utils::BindingAbstractOutErr* openfluid::utils::Binding::mp_OutErr = new erroutclass();
 
@@ -126,10 +121,6 @@ class Binding
   private:
 
     static bool m_Initialized;
-
-    static int m_qapp_argc;
-    static char m_qapp_arg0[];
-    static char* m_qapp_argv[];
 
     static std::string m_LastErrorMsg;
 
@@ -213,10 +204,10 @@ class Binding
         return;
       }
 
-      INIT_OPENFLUID_APPLICATION(m_qapp_argc,m_qapp_argv);
+      INIT_OPENFLUID_APPLICATION();
 
       // reset locale for "LC_NUMERIC" To "C"
-      // to prevent from Qt changing locale on init
+      // to prevent changing locale on init
       std::setlocale(LC_NUMERIC,"C");
 
       m_Initialized = true;

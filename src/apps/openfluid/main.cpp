@@ -33,11 +33,9 @@
 /**
   @file main.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
-
-#include <QCoreApplication>
 
 #include <openfluid/base/Init.hpp>
 
@@ -48,7 +46,7 @@ int main(int argc, char **argv)
 {
   int ReturnValue = 0;
 
-  INIT_OPENFLUID_APPLICATION(argc,argv);
+  INIT_OPENFLUID_APPLICATION();
 
   OpenFLUIDApp App;
 
