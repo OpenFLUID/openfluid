@@ -75,7 +75,7 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
 
   switchGeneratorOptions();
 
-  m_Method = openfluid::fluidx::GeneratorDescriptor::Fixed;
+  m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED;
 
   ui->FixedRadioButton->setChecked(true);
   ui->DoubleRadioButton->setChecked(true);
@@ -115,22 +115,22 @@ void AddGeneratorDialog::switchGeneratorOptions()
 {
   if (ui->FixedRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor::Fixed;
+    m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED;
     ui->OptionsWidget->setCurrentIndex(0);
   }
   else if (ui->RandomRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor::Random;
+    m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM;
     ui->OptionsWidget->setCurrentIndex(1);
   }
   else if (ui->InterpRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor::Interp;
+    m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP;
     ui->OptionsWidget->setCurrentIndex(2);
   }
   else if (ui->InjectRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor::Inject;
+    m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT;
     ui->OptionsWidget->setCurrentIndex(2);
   }
 }
@@ -202,14 +202,14 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
 {
   openfluid::ware::WareParams_t Params;
 
-  if (m_Method == openfluid::fluidx::GeneratorDescriptor::Fixed)
+  if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED)
   {
     if (!ui->ValueEdit->text().isEmpty())
     {
       Params["fixedvalue"] = ui->ValueEdit->text().toStdString();
     }
   }
-  else if (m_Method == openfluid::fluidx::GeneratorDescriptor::Random)
+  else if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM)
   {
     if (!ui->MinValueEdit->text().isEmpty())
     {
@@ -220,7 +220,7 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
       Params["max"] = ui->MaxValueEdit->text().toStdString();
     }
   }
-  else if (m_Method == openfluid::fluidx::GeneratorDescriptor::Interp)
+  else if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP)
   {
     if (!ui->SourcesFileEdit->text().isEmpty())
     {
@@ -231,7 +231,7 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
       Params["distribution"] = ui->DistriFileEdit->text().toStdString();
     }
   }
-  else if (m_Method == openfluid::fluidx::GeneratorDescriptor::Inject)
+  else if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
   {
     if (!ui->SourcesFileEdit->text().isEmpty())
     {

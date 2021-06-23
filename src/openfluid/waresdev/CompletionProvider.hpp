@@ -72,7 +72,7 @@ class OPENFLUID_API CompletionProvider : public QObject
       UNDEFINED
     };
     
-    enum ContextFlags
+    enum class ContextFlags
     {
        ANYWARE = 1 << 0,
        SIMULATOR = 1 << 2,

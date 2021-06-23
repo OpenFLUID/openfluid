@@ -65,7 +65,7 @@ class OPENFLUID_API RunSimulationListener : public QObject, public openfluid::ma
 
   public:
 
-    enum Stage { RUNW_BEFORE, RUNW_PRESIM, RUNW_INIT, RUNW_RUN, RUNW_FINAL, RUNW_AFTER };
+    enum class Stage { BEFORE, PRESIM, INIT, RUN, FINAL, AFTER };
 
   private:
 

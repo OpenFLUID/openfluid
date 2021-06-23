@@ -51,11 +51,11 @@
 namespace openfluid { namespace builderext {
 
 
-enum ExtensionCategory { CAT_SPATIAL, CAT_MODEL, CAT_RESULTS, CAT_OTHER };
+enum class ExtensionCategory { SPATIAL, MODEL, RESULTS, OTHER };
 
-enum ExtensionType { TYPE_UNKNOWN, TYPE_FEATURE, TYPE_PARAMETERIZATION};
+enum class ExtensionType { UNKNOWN, FEATURE, PARAMETERIZATION};
 
-enum ExtensionMode { MODE_UNKNOWN, MODE_MODAL, MODE_MODELESS, MODE_WORKSPACE};
+enum class ExtensionMode { UNKNOWN, MODAL, MODELESS, WORKSPACE};
 
 
 class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSignature
@@ -74,7 +74,7 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
 
 
     BuilderExtensionSignature():
-      Category(CAT_OTHER), Mode(MODE_UNKNOWN), Type(TYPE_UNKNOWN)
+      Category(ExtensionCategory::OTHER), Mode(ExtensionMode::UNKNOWN), Type(ExtensionType::UNKNOWN)
     {  }
 
 };

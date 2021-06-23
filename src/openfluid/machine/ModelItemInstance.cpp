@@ -45,7 +45,7 @@ namespace openfluid { namespace machine {
 
 GeneratorExtraInfo::GeneratorExtraInfo():
   VariableName(""),UnitsClass(""),VariableSize(1),
-  GeneratorMethod(openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
+  GeneratorMethod(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE)
 {
 
 }

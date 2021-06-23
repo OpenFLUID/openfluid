@@ -69,19 +69,19 @@ class DefaultIOListener : public openfluid::base::IOListener
 
     void onFileLoaded(openfluid::base::Listener::Status Status)
     {
-      if (Status == openfluid::base::Listener::LISTEN_OK)
+      if (Status == openfluid::base::Listener::Status::OK_STATUS)
       {
         openfluid::tools::Console::setOKColor();
         std::cout << "[OK]";
         openfluid::tools::Console::resetAttributes();
       }
-      else if (Status == openfluid::base::Listener::LISTEN_WARNING)
+      else if (Status == openfluid::base::Listener::Status::WARNING_STATUS)
       {
         openfluid::tools::Console::setWarningColor();
         std::cout << "[Warning]";
         openfluid::tools::Console::resetAttributes();
       }
-      else if (Status == openfluid::base::Listener::LISTEN_ERROR)
+      else if (Status == openfluid::base::Listener::Status::ERROR_STATUS)
       {
         openfluid::tools::Console::setErrorColor();
         std::cout << "[Error]";

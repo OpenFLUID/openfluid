@@ -55,7 +55,8 @@ class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public Pluggab
 
   signals:
 
-    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags = FluidXUpdateFlags::FLUIDX_ALL);
+    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags = 
+                         FluidXUpdateFlags::Flag::FLUIDX_ALL);
 
 
   public slots:

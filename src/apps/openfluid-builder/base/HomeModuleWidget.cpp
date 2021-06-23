@@ -274,7 +274,7 @@ bool HomeModuleWidget::whenCloseAsked()
 bool HomeModuleWidget::whenPreferencesAsked()
 {
   openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),
-                                                    openfluid::ui::common::PreferencesDialog::MODE_BUILDER);
+    openfluid::ui::common::PreferencesDialog::DisplayMode::BUILDER);
 
   PrefsDlg.exec();
 

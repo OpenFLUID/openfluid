@@ -114,7 +114,7 @@ class OPENFLUID_API PreferencesManager
 
     typedef std::map<QString, QString> MarketPlaces_t;
 
-    enum ExternalToolContext { WORKSPACE, WARE, FILE };
+    enum class ExternalToolContext { WORKSPACE, WARE, FILE };
 
     /* Used only if we want to set another file name for the conf file
      * instead of the default one (for tests eg.)

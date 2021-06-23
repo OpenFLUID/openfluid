@@ -66,12 +66,16 @@ typedef parse_info<std::string::const_iterator>   Parser_t;
 Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
   OpenFLUIDBuddy(Listener),
   m_PDFLatexProgram(
-      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::PdfLatexProgram)),
+      openfluid::utils::ExternalProgram::getRegisteredProgram(
+        openfluid::utils::ExternalProgram::RegisteredPrograms::PdfLatex)),
   m_BibtexProgram(
-      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::BibTexProgram)),
+      openfluid::utils::ExternalProgram::getRegisteredProgram(
+        openfluid::utils::ExternalProgram::RegisteredPrograms::BibTex)),
   m_Latex2HTMLProgram(
-      openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::Latex2HTMLProgram)),
-  m_GCCProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GccProgram)),
+      openfluid::utils::ExternalProgram::getRegisteredProgram(
+        openfluid::utils::ExternalProgram::RegisteredPrograms::Latex2HTML)),
+  m_GCCProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(
+    openfluid::utils::ExternalProgram::RegisteredPrograms::Gcc)),
   m_Title("No title"),m_SimID("undefined.id"),m_SimName("Not available"),
   m_SimVersion("Undefined"),m_SimStatus("Unknown status"),m_SimDomain("Undefined"),
   m_SimDescription("Not available"),

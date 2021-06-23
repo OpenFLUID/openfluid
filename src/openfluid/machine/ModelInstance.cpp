@@ -80,10 +80,10 @@ namespace openfluid { namespace machine {
                                         std::chrono::high_resolution_clock::now() - _M_TimeProfileStart)); \
         } \
         if (mp_SimLogger->isCurrentWarningFlag()) \
-          mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_WARNING,\
+          mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::Status::WARNING_STATUS,\
                                                          _M_CurrentSimulator->Signature->ID); \
         else \
-          mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_OK,\
+          mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::Status::OK_STATUS,\
                                                          _M_CurrentSimulator->Signature->ID); \
         mp_SimLogger->resetCurrentWarningFlag(); \
       } \
@@ -361,22 +361,26 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
     if (CurrentSimulator->ItemType == openfluid::ware::WareType::GENERATOR &&
         CurrentSimulator->GeneratorInfo != nullptr)
     {
-      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Fixed)
+      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == 
+            openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED)
       {
         CurrentSimulator->Body.reset(new FixedGenerator());
       }
 
-      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Random)
+      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == 
+            openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM)
       {
         CurrentSimulator->Body.reset(new RandomGenerator());
       }
 
-      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Inject)
+      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == 
+            openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
       {
         CurrentSimulator->Body.reset(new InjectGenerator());
       }
 
-      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Interp)
+      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == 
+            openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP)
       {
         CurrentSimulator->Body.reset(new InterpGenerator());
       }
@@ -563,12 +567,12 @@ void ModelInstance::call_initializeRun()
 
       if (mp_SimLogger->isCurrentWarningFlag())
       {
-        mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING,
+        mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::Status::WARNING_STATUS,
                                                   CurrentSimulator->Signature->ID);
       }
       else
       {
-        mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK,
+        mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::Status::OK_STATUS,
                                                   CurrentSimulator->Signature->ID);
       }
       mp_SimLogger->resetCurrentWarningFlag();
@@ -642,11 +646,13 @@ void ModelInstance::processNextTimePoint()
     if (mp_SimLogger->isCurrentWarningFlag())
     {
       AtLeastOneWarningFlag = true;
-      mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING,NextItem->Signature->ID);
+      mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::Status::WARNING_STATUS,
+                                          NextItem->Signature->ID);
     }
     else
     {
-      mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_OK,NextItem->Signature->ID);
+      mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::Status::OK_STATUS,
+                                          NextItem->Signature->ID);
     }
 
     mp_SimLogger->resetCurrentWarningFlag();
@@ -667,11 +673,11 @@ void ModelInstance::processNextTimePoint()
 
   if (AtLeastOneWarningFlag)
   {
-    mp_Listener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+    mp_Listener->onRunStepDone(openfluid::machine::MachineListener::Status::WARNING_STATUS);
   }
   else
   {
-    mp_Listener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_OK);
+    mp_Listener->onRunStepDone(openfluid::machine::MachineListener::Status::OK_STATUS);
   }
 
   m_TimePointList.pop_front();

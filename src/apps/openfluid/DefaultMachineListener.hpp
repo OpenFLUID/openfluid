@@ -56,17 +56,17 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     {
       switch (Status)
       {
-        case openfluid::machine::MachineListener::LISTEN_ERROR :
+        case openfluid::machine::MachineListener::Status::ERROR_STATUS :
           openfluid::tools::Console::setErrorColor();
           std::cout << " [Error]";
           openfluid::tools::Console::resetAttributes();
           break;
-        case openfluid::machine::MachineListener::LISTEN_OK :
+        case openfluid::machine::MachineListener::Status::OK_STATUS :
           openfluid::tools::Console::setOKColor();
           std::cout << " [OK]";
           openfluid::tools::Console::resetAttributes();
           break;
-        case openfluid::machine::MachineListener::LISTEN_WARNING :
+        case openfluid::machine::MachineListener::Status::WARNING_STATUS :
           openfluid::tools::Console::setWarningColor();
           std::cout << " [Warning]";
           openfluid::tools::Console::resetAttributes();
@@ -82,17 +82,17 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     {
       switch (Status)
       {
-        case openfluid::machine::MachineListener::LISTEN_ERROR :
+        case openfluid::machine::MachineListener::Status::ERROR_STATUS :
           openfluid::tools::Console::setErrorColor();
           std::cout << std::setw(12) << "[Error]";
           openfluid::tools::Console::resetAttributes();
           break;
-        case openfluid::machine::MachineListener::LISTEN_OK :
+        case openfluid::machine::MachineListener::Status::OK_STATUS :
           openfluid::tools::Console::setOKColor();
           std::cout << std::setw(12) << "[OK]";
           openfluid::tools::Console::resetAttributes();
           break;
-        case openfluid::machine::MachineListener::LISTEN_WARNING :
+        case openfluid::machine::MachineListener::Status::WARNING_STATUS :
           openfluid::tools::Console::setWarningColor();
           std::cout << std::setw(12) << "[Warning]";
           openfluid::tools::Console::resetAttributes();

@@ -117,11 +117,14 @@ class OPENFLUID_API WareSrcFactory
             ParamsUiRootHppFilename("ParamsUiWidget.hpp"), ParamsUiComment("//"), Sim2docModeIndex(0),
             Sim2docInstall(false), BuilderExtModeIndex(-1), BuilderExtCategoryIndex(0)
         {
-          BextMode_Data << openfluid::builderext::MODE_MODAL << openfluid::builderext::MODE_MODELESS
-                        << openfluid::builderext::MODE_WORKSPACE;
+          BextMode_Data << openfluid::builderext::ExtensionMode::MODAL
+                        << openfluid::builderext::ExtensionMode::MODELESS
+                        << openfluid::builderext::ExtensionMode::WORKSPACE;
 
-          BextCategory_Data << "openfluid::builderext::CAT_SPATIAL" << "openfluid::builderext::CAT_MODEL"
-                            << "openfluid::builderext::CAT_RESULTS" << "openfluid::builderext::CAT_OTHER";
+          BextCategory_Data << "openfluid::builderext::ExtensionCategory::SPATIAL" 
+                            << "openfluid::builderext::ExtensionCategory::MODEL"
+                            << "openfluid::builderext::ExtensionCategory::RESULTS"
+                            << "openfluid::builderext::ExtensionCategory::OTHER";
 
           Sim2docMode_Data << "ON" << "AUTO" << "OFF";
         }
@@ -152,7 +155,7 @@ class OPENFLUID_API WareSrcFactory
 
         openfluid::builderext::ExtensionMode getBuilderExtType() const
         {
-          return BextMode_Data.value(BuilderExtModeIndex, openfluid::builderext::MODE_UNKNOWN);
+          return BextMode_Data.value(BuilderExtModeIndex, openfluid::builderext::ExtensionMode::UNKNOWN);
         }
 
         QString getBuilderExtCategory() const
@@ -219,7 +222,7 @@ class OPENFLUID_API WareSrcFactory
 
     /**
       Creates a main cpp file in the ware directory, from the source file template of the ware type,
-      depending on the builder extension type (set to TYPE_UNKNOWN means it is not a Builder extension).
+      depending on the builder extension type (set to UNKNOWN means it is not a Builder extension).
       @param R Replacements struct containing the replacements to perform
       @param NewFilePath A QString that will be filled with the absolute path of the created file
       @param ErrMsg A QString that will be filled with error messages if the file creation fails
@@ -229,7 +232,7 @@ class OPENFLUID_API WareSrcFactory
 
     /**
       Creates a main hpp file in the ware directory, from the header file template of the ware type
-      depending on the builder extension type (set to TYPE_UNKNOWN means it is not a Builder extension).
+      depending on the builder extension type (set to UNKNOWN means it is not a Builder extension).
       @param R Replacements struct containing the replacements to perform
       @param NewFilePath A QString that will be filled with the absolute path of the created file
       @param ErrMsg A QString that will be filled with error messages if the file creation fails

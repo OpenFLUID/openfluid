@@ -82,7 +82,7 @@ void GeoVectorValue::destroyDataSource()
 
 openfluid::core::UnstructuredValue::UnstructuredType GeoVectorValue::getType() const
 {
-  return openfluid::core::UnstructuredValue::GeoVectorValue;
+  return openfluid::core::UnstructuredValue::UnstructuredType::VECTOR;
 }
 
 

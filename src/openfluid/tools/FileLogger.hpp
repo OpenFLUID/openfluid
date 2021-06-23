@@ -67,7 +67,8 @@ class OPENFLUID_API FileLogger
 
   public:
 
-    enum LogType {LOG_INFO, LOG_WARNING, LOG_ERROR, LOG_DEBUG };
+    // warning: key 'ERROR' causes a compilation error on Windows/MinGW systems
+    enum class LogType {INFO_MSG, WARNING_MSG, ERROR_MSG, DEBUG_MSG };
 
     FileLogger();
 

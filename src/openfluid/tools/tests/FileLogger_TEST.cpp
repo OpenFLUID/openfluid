@@ -60,11 +60,11 @@ BOOST_AUTO_TEST_CASE(check_operations_1)
 
   Log.init(CONFIGTESTS_OUTPUT_DATA_DIR+"/filelogger1.log");
 
-  Log.add(openfluid::tools::FileLogger::LOG_INFO,"test","info 1");
-  Log.add(openfluid::tools::FileLogger::LOG_DEBUG,"test","debug 1");
-  Log.add(openfluid::tools::FileLogger::LOG_INFO,"test","info 2");
-  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning 1");
-  Log.add(openfluid::tools::FileLogger::LOG_ERROR,"test","error");
+  Log.add(openfluid::tools::FileLogger::LogType::INFO_MSG,"test","info 1");
+  Log.add(openfluid::tools::FileLogger::LogType::DEBUG_MSG,"test","debug 1");
+  Log.add(openfluid::tools::FileLogger::LogType::INFO_MSG,"test","info 2");
+  Log.add(openfluid::tools::FileLogger::LogType::WARNING_MSG,"test","warning 1");
+  Log.add(openfluid::tools::FileLogger::LogType::ERROR_MSG,"test","error");
 
   BOOST_REQUIRE_EQUAL(Log.getWarningsCount(),1);
   BOOST_REQUIRE_EQUAL(Log.getInfosCount(),2);
@@ -82,14 +82,14 @@ BOOST_AUTO_TEST_CASE(check_operations_2)
 
   Log.init(CONFIGTESTS_OUTPUT_DATA_DIR+"/filelogger2.log");
 
-  Log.add(openfluid::tools::FileLogger::LOG_INFO,"test","info 1");
-  Log.add(openfluid::tools::FileLogger::LOG_DEBUG,"test","debug 1");
-  Log.add(openfluid::tools::FileLogger::LOG_INFO,"test","info 2");
-  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
-  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
-  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
-  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
-  Log.add(openfluid::tools::FileLogger::LOG_WARNING,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LogType::INFO_MSG,"test","info 1");
+  Log.add(openfluid::tools::FileLogger::LogType::DEBUG_MSG,"test","debug 1");
+  Log.add(openfluid::tools::FileLogger::LogType::INFO_MSG,"test","info 2");
+  Log.add(openfluid::tools::FileLogger::LogType::WARNING_MSG,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LogType::WARNING_MSG,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LogType::WARNING_MSG,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LogType::WARNING_MSG,"test","warning");
+  Log.add(openfluid::tools::FileLogger::LogType::WARNING_MSG,"test","warning");
 
   BOOST_REQUIRE_EQUAL(Log.getWarningsCount(),5);
   BOOST_REQUIRE_EQUAL(Log.getInfosCount(),2);

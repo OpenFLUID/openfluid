@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
            CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat",
            openfluid::core::DateTime(1997,1,1,11,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),227,
-           openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
+           openfluid::tools::ChronFileInterpolator::CUMULATE);
 
     CFLI.runInterpolation();
   }
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
            CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat",
            openfluid::core::DateTime(1997,1,1,11,0,0),openfluid::core::DateTime(1998,1,1,15,30,17),227,
-           openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
+           openfluid::tools::ChronFileInterpolator::CUMULATE);
     BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::FrameworkException,validateException);
   }
 
@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
            CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat",
            openfluid::core::DateTime(1997,1,1,1,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),227,
-           openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
+           openfluid::tools::ChronFileInterpolator::CUMULATE);
 
     BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::FrameworkException,validateException);
   }
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
            CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat",
            openfluid::core::DateTime(1998,1,1,11,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),227,
-           openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
+           openfluid::tools::ChronFileInterpolator::CUMULATE);
 
     BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::FrameworkException,validateException);
   }

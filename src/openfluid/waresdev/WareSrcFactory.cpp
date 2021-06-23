@@ -136,13 +136,13 @@ bool WareSrcFactory::createCppFile(const Replacements& R, QString& NewFilePath, 
   QString TplFilename;
   switch (R.getBuilderExtType())
   {
-    case openfluid::builderext::MODE_MODAL:
+    case openfluid::builderext::ExtensionMode::MODAL:
       TplFilename = "source_modal.cpp.tpl";
       break;
-    case openfluid::builderext::MODE_MODELESS:
+    case openfluid::builderext::ExtensionMode::MODELESS:
       TplFilename = "source_modeless.cpp.tpl";
       break;
-    case openfluid::builderext::MODE_WORKSPACE:
+    case openfluid::builderext::ExtensionMode::WORKSPACE:
       TplFilename = "source_workspace.cpp.tpl";
       break;
     default:
@@ -164,13 +164,13 @@ bool WareSrcFactory::createHppFile(const Replacements& R, QString& NewFilePath, 
   QString TplFilename;
   switch (R.getBuilderExtType())
   {
-    case openfluid::builderext::MODE_MODAL:
+    case openfluid::builderext::ExtensionMode::MODAL:
       TplFilename = "source_modal.hpp.tpl";
       break;
-    case openfluid::builderext::MODE_MODELESS:
+    case openfluid::builderext::ExtensionMode::MODELESS:
       TplFilename = "source_modeless.hpp.tpl";
       break;
-    case openfluid::builderext::MODE_WORKSPACE:
+    case openfluid::builderext::ExtensionMode::WORKSPACE:
       TplFilename = "source_workspace.hpp.tpl";
       break;
     default:
@@ -576,16 +576,16 @@ QString WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::Simulat
 
   TmpStr += "\n  // Scheduling\n";
 
-  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
+  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT)
   {
     TmpStr += "  DECLARE_SCHEDULING_DEFAULT\n";
   }
-  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED)
+  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED)
   {
     std::string TmpValueStr = (QString::fromStdString("%1").arg(Signature.TimeScheduling.Min)).toStdString();
     TmpStr += "  DECLARE_SCHEDULING_FIXED("+TmpValueStr+")\n";
   }
-  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::RANGE)
+  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE)
   {
     std::string TmpValueStr = (QString::fromStdString("%1,%2")
                                .arg(Signature.TimeScheduling.Min)
@@ -710,8 +710,8 @@ QString WareSrcFactory::getSimulatorSchedulingReturn(const openfluid::ware::Simu
 {
   QString TmpStr = "DefaultDeltaT()";
 
-  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED ||
-      Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::RANGE)
+  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED ||
+      Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE)
   {
     TmpStr = QString("Duration(%1)").arg(Signature.TimeScheduling.Min);
   }

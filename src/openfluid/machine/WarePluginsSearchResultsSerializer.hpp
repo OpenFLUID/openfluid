@@ -271,15 +271,15 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSchedulingDet
 {
   std::ostringstream oss;
 
-  if (Sign->TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
+  if (Sign->TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT)
   {
     oss << "fixed to default deltaT";
   }
-  else if (Sign->TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED)
+  else if (Sign->TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED)
   {
     oss << "fixed to " <<  Sign->TimeScheduling.Min << " seconds";
   }
-  else if (Sign->TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::RANGE)
+  else if (Sign->TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE)
   {
     oss << "range between " <<  Sign->TimeScheduling.Min << " and " << Sign->TimeScheduling.Max << " seconds";
   }

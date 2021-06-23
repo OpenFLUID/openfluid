@@ -74,22 +74,22 @@ class OPENFLUID_API SimulationLogger : public openfluid::tools::FileLogger
 
     void addInfo(const std::string& Context, const std::string& Msg)
     {
-      add(LOG_INFO,Context,Msg);
+      add(LogType::INFO_MSG,Context,Msg);
     }
 
     void addDebug(const std::string& Context, const std::string& Msg)
     {
-      add(LOG_DEBUG,Context,Msg);
+      add(LogType::DEBUG_MSG,Context,Msg);
     }
 
     void addWarning(const std::string& Context, const std::string& Msg)
     {
-      add(LOG_WARNING,Context,Msg);
+      add(LogType::WARNING_MSG,Context,Msg);
     }
 
     void addError(const std::string& Context, const std::string& Msg)
-    { 
-      add(LOG_ERROR,Context,Msg);
+    {
+      add(LogType::ERROR_MSG,Context,Msg);
     }
 
 

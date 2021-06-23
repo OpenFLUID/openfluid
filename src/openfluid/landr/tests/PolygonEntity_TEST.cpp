@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
     new openfluid::landr::PolygonEntity(dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
                                         FirstFeature->GetFieldAsInteger("OFLD_ID"));
 
-  BOOST_CHECK_EQUAL(Val.getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(Val.getType(),openfluid::core::UnstructuredValue::UnstructuredType::VECTOR);
 
   BOOST_CHECK(Entity->polygon()->equals(GeosGeom));
 

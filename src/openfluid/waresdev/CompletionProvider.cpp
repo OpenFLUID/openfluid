@@ -65,17 +65,17 @@ CompletionProvider::CompletionProvider()
 
 void CompletionProvider::addRule(const CompletionProvider::Rule& R)
 {
-  if (R.DevContext.testFlag(ANYWARE) || R.DevContext.testFlag(SIMULATOR))
+  if (R.DevContext.testFlag(ContextFlags::ANYWARE) || R.DevContext.testFlag(ContextFlags::SIMULATOR))
   {
     m_Rules[R.ProgLangCode][openfluid::ware::WareType::SIMULATOR].append(R);
   }
   
-  if (R.DevContext.testFlag(ANYWARE) || R.DevContext.testFlag(OBSERVER))
+  if (R.DevContext.testFlag(ContextFlags::ANYWARE) || R.DevContext.testFlag(ContextFlags::OBSERVER))
   {
     m_Rules[R.ProgLangCode][openfluid::ware::WareType::OBSERVER].append(R);
   }
   
-  if (R.DevContext.testFlag(ANYWARE) || R.DevContext.testFlag(BUILDEREXT))
+  if (R.DevContext.testFlag(ContextFlags::ANYWARE) || R.DevContext.testFlag(ContextFlags::BUILDEREXT))
   {
     m_Rules[R.ProgLangCode][openfluid::ware::WareType::BUILDEREXT].append(R);
   }
@@ -109,7 +109,7 @@ void CompletionProvider::initializeCppRules()
 {
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -118,7 +118,7 @@ void CompletionProvider::initializeCppRules()
             "bool %%SEL_START%%Val%%SEL_END%%")
          );
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -128,7 +128,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -138,7 +138,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -148,7 +148,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -158,7 +158,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -168,7 +168,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -178,7 +178,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -188,7 +188,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -198,7 +198,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Simples")
@@ -208,7 +208,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Containers")
@@ -218,7 +218,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Containers")
@@ -228,7 +228,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Containers")
@@ -238,7 +238,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Types"),
               CompletionProvider::tr("Containers")
@@ -248,7 +248,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Streams")
             },
@@ -257,7 +257,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Math")
             },
@@ -266,7 +266,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Math")
             },
@@ -275,7 +275,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Math")
             },
@@ -284,7 +284,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Math")
             },
@@ -293,7 +293,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Math")
             },
@@ -302,7 +302,7 @@ void CompletionProvider::initializeCppRules()
           );
 
   addRule(Rule(
-            "cpp",Origin::CPP,ANYWARE,
+            "cpp",Origin::CPP,ContextFlags::ANYWARE,
             {
               CompletionProvider::tr("Math")
             },

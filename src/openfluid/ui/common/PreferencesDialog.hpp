@@ -67,15 +67,15 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
 
   public:
 
-    enum DisplayMode { MODE_FULL,
-                       MODE_BUILDER,
-                       MODE_DEVSTUDIO
+    enum class DisplayMode { FULL,
+                       BUILDER,
+                       DEVSTUDIO
                       };
 
 
   private:
 
-    enum PagesIndexes { ENVIRONMENT_PAGE = 0,
+    enum class PagesIndexes { ENVIRONMENT_PAGE = 0,
                         BUILDER_PAGE = 1,
                         SIMULATION_PAGE = 2,
                         DEVENV_PAGE = 3,
@@ -216,7 +216,7 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
 
   public:
 
-    PreferencesDialog(QWidget *Parent, DisplayMode Mode = MODE_FULL);
+    PreferencesDialog(QWidget *Parent, DisplayMode Mode = DisplayMode::FULL);
 
     virtual ~PreferencesDialog();
 

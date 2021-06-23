@@ -57,13 +57,13 @@ class BindingVerboseMachineListener : public openfluid::machine::MachineListener
     {
       switch (Status)
       {
-        case openfluid::base::Listener::LISTEN_ERROR :
+        case openfluid::base::Listener::Status::ERROR_STATUS :
           mp_OutErr->printfOut("%14s\n","[Error]");
           break;
-        case openfluid::base::Listener::LISTEN_OK :
+        case openfluid::base::Listener::Status::OK_STATUS :
           mp_OutErr->printfOut("%14s\n","[OK]");
           break;
-        case openfluid::base::Listener::LISTEN_WARNING :
+        case openfluid::base::Listener::Status::WARNING_STATUS :
           mp_OutErr->printfOut("%14s\n","[Warning]");
           break;
       }
@@ -83,13 +83,13 @@ class BindingVerboseMachineListener : public openfluid::machine::MachineListener
     {
       switch (Status)
       {
-        case openfluid::base::Listener::LISTEN_ERROR :
+        case openfluid::base::Listener::Status::ERROR_STATUS :
           mp_OutErr->printfOut(" [Error]\n");
           break;
-        case openfluid::base::Listener::LISTEN_OK :
+        case openfluid::base::Listener::Status::OK_STATUS :
           mp_OutErr->printfOut(" [OK]\n");
           break;
-        case openfluid::base::Listener::LISTEN_WARNING :
+        case openfluid::base::Listener::Status::WARNING_STATUS :
           mp_OutErr->printfOut(" [Warning]\n");
           break;
       }

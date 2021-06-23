@@ -290,22 +290,22 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
 
   std::string SchedStr;
 
-  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::UNDEFINED)
+  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED)
   {
     SchedStr = "mode=\"undefined\"";
   }
-  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
+  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT)
   {
     SchedStr = "mode=\"default\"";
   }
-  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED)
+  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED)
   {
     SchedStr = "mode=\"fixed\"";
     QString ExtraAttr(" value=\"%1\"");
     ExtraAttr = ExtraAttr.arg(Signature.TimeScheduling.Min);
     SchedStr += ExtraAttr.toStdString();
   }
-  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::RANGE)
+  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE)
   {
     SchedStr = "mode=\"range\"";
     QString ExtraAttr(" min=\"%1\" max=\"%2\"");

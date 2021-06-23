@@ -190,7 +190,7 @@ class RainSUFromFilesSimulator : public openfluid::ware::PluggableSimulator
                                                            OutFilePath,
                                                            OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),
                                                            OPENFLUID_GetDefaultDeltaT(),
-                                                           openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE
+                                                           openfluid::tools::ChronFileInterpolator::CUMULATE
                                                            );
 
         CFLI.runInterpolation();

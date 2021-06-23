@@ -58,7 +58,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::ware::SignatureHandledData SignatureData;
   openfluid::ware::SignatureDataItem SignatureDataItem;
 
-  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature.TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED));
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Max,0);
 }
@@ -124,7 +125,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->Status,openfluid::ware::BETA);
 
 
-  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::RANGE);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature->TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE));
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,10);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,30);
 
@@ -164,18 +166,21 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // ----------------------------------------------------------
 
   DECLARE_SCHEDULING_DEFAULT;
-  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::DEFAULT);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature->TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT));
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,0);
 
 
   DECLARE_SCHEDULING_FIXED(51);
-  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::FIXED);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature->TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED));
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,51);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,51);
 
   DECLARE_SCHEDULING_UNDEFINED;
-  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature->TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED));
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,0);
 

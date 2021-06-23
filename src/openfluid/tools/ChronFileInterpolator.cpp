@@ -234,7 +234,7 @@ void ChronFileInterpolator::loadInFile(ChronologicalSerie& Data)
 
 
   // cumulate if necessary
-  if (m_PreProcess == PREPROCESS_CUMULATE)
+  if (m_PreProcess == CUMULATE)
   {
     double CumulatedValue = 0;
 

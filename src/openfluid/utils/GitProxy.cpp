@@ -81,7 +81,8 @@ void GitProxy::findGitProgram()
 {
   if (m_ExecutablePath.isEmpty())
   {
-    m_ExecutablePath = ExternalProgram::getRegisteredProgram(ExternalProgram::GitProgram).getFullProgramPath();
+    m_ExecutablePath = ExternalProgram::getRegisteredProgram(
+      ExternalProgram::RegisteredPrograms::Git).getFullProgramPath();
 
     if (!m_ExecutablePath.isEmpty())
     {

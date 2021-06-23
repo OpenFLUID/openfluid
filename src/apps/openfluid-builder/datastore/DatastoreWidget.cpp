@@ -172,7 +172,7 @@ void DatastoreWidget::addItem()
           QDir::fromNativeSeparators(QString::fromStdString(
               openfluid::base::RunContextManager::instance()->getInputDir()) + "/"+Subdir+"/"+SourceFilename);
 
-      if (AddItemDlg.getItemType() == openfluid::core::UnstructuredValue::GeoVectorValue)
+      if (AddItemDlg.getItemType() == openfluid::core::UnstructuredValue::UnstructuredType::VECTOR)
       {
         // copy vector file
         GDALDataset_COMPAT* SrcDS =
@@ -318,7 +318,7 @@ void DatastoreWidget::addItem()
 
       m_Datastore.appendItem(DSItemDesc);
 
-      emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+      emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
 
       refresh();
     }
@@ -364,7 +364,7 @@ void DatastoreWidget::removeItem()
     {
       m_Datastore.removeItem(DSItemIndex);
 
-      emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+      emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
 
       refresh();
     }
@@ -392,7 +392,7 @@ void DatastoreWidget::moveItemUp()
 
     m_Datastore.moveItem(From,To);
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
 
     refresh();
 
@@ -423,7 +423,7 @@ void DatastoreWidget::moveItemDown()
 
     m_Datastore.moveItem(From,To);
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
 
     refresh();
 

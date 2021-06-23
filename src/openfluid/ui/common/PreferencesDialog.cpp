@@ -90,26 +90,26 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
 
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0,tr("Environment"));
-  PrefItem->setData(0,Qt::UserRole,ENVIRONMENT_PAGE);
+  PrefItem->setData(0,Qt::UserRole,static_cast<int>(PagesIndexes::ENVIRONMENT_PAGE));
 
-  if (m_Mode == MODE_BUILDER || m_Mode == MODE_FULL)
+  if (m_Mode == DisplayMode::BUILDER || m_Mode == DisplayMode::FULL)
   {
     PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
     PrefItem->setText(0,tr("Interface"));
-    PrefItem->setData(0,Qt::UserRole,BUILDER_PAGE);
+    PrefItem->setData(0,Qt::UserRole,static_cast<int>(PagesIndexes::BUILDER_PAGE));
 
     PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
     PrefItem->setText(0,tr("Simulations"));
-    PrefItem->setData(0,Qt::UserRole,SIMULATION_PAGE);
+    PrefItem->setData(0,Qt::UserRole,static_cast<int>(PagesIndexes::SIMULATION_PAGE));
   }
 
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0,tr("Development tools"));
-  PrefItem->setData(0,Qt::UserRole,DEVENV_PAGE);
+  PrefItem->setData(0,Qt::UserRole,static_cast<int>(PagesIndexes::DEVENV_PAGE));
 
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0,tr("Code editor"));
-  PrefItem->setData(0,Qt::UserRole,DEVEDITOR_PAGE);
+  PrefItem->setData(0,Qt::UserRole,static_cast<int>(PagesIndexes::DEVEDITOR_PAGE));
 
 #if OPENFLUID_MARKET_ENABLED
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
@@ -121,7 +121,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   ui->WorkspacesPathsWidget->setAllowEmpty(false);
   ui->WaresPathsTabWidget->setCurrentIndex(0);
 
-  if (!(m_Mode == MODE_BUILDER || m_Mode == MODE_FULL))
+  if (!(m_Mode == DisplayMode::BUILDER || m_Mode == DisplayMode::FULL))
   {
     ui->WaresPathsTabWidget->removeTab(2);
   }
@@ -182,7 +182,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   connect(ui->DetectQtDevButton,SIGNAL(clicked()),this,SLOT(detectQtDevToolsMinGW()));
 #endif
 
-  if(Mode == MODE_DEVSTUDIO || Mode == MODE_FULL)
+  if(Mode == DisplayMode::DEVSTUDIO || Mode == DisplayMode::FULL)
   {
     connect(ui->SslNoVerifyCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateDevSslNoVerify(bool)));
   }
@@ -267,7 +267,7 @@ void PreferencesDialog::initialize()
   m_OriginalActiveWorkspace = PrefsMan->getBuilderWorkspacePath();
 
 
-  if (m_Mode == MODE_BUILDER || m_Mode == MODE_FULL)
+  if (m_Mode == DisplayMode::BUILDER || m_Mode == DisplayMode::FULL)
   {
     // Wares search paths
     ui->SimulatorsSearchPathsWidget->initialize(PrefsMan->getBuilderExtraSimulatorsPaths(),

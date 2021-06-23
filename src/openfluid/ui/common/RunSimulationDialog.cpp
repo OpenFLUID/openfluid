@@ -107,7 +107,7 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, const openfluid::fluid
 
   ui->ButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);
 
-  setStage(openfluid::ui::common::RunSimulationListener::RUNW_BEFORE);
+  setStage(openfluid::ui::common::RunSimulationListener::Stage::BEFORE);
 
   mp_Listener = new openfluid::ui::common::RunSimulationListener();
   QThread* WThread = new QThread;
@@ -324,32 +324,32 @@ void RunSimulationDialog::setPeriod(QString /*Begin*/, QString /*End*/, int Dura
 
 void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener::Stage S)
 {
-  if (S == openfluid::ui::common::RunSimulationListener::RUNW_BEFORE)
+  if (S == openfluid::ui::common::RunSimulationListener::Stage::BEFORE)
   {
     ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::NOTSTARTED);
     ui->StageLabel->setText("-");
   }
-  else if (S == openfluid::ui::common::RunSimulationListener::RUNW_PRESIM)
+  else if (S == openfluid::ui::common::RunSimulationListener::Stage::PRESIM)
   {
     ui->StageLabel->setText(tr("pre-simulation"));
     ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
-  else if (S == openfluid::ui::common::RunSimulationListener::RUNW_INIT)
+  else if (S == openfluid::ui::common::RunSimulationListener::Stage::INIT)
   {
     ui->StageLabel->setText(tr("initialization"));
     ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
-  else if (S == openfluid::ui::common::RunSimulationListener::RUNW_RUN)
+  else if (S == openfluid::ui::common::RunSimulationListener::Stage::RUN)
   {
     ui->StageLabel->setText(tr("simulation"));
     ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
-  else if (S == openfluid::ui::common::RunSimulationListener::RUNW_FINAL)
+  else if (S == openfluid::ui::common::RunSimulationListener::Stage::FINAL)
   {
     ui->StageLabel->setText(tr("finalization"));
     ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::RUNNING);
   }
-  else if (S == openfluid::ui::common::RunSimulationListener::RUNW_AFTER)
+  else if (S == openfluid::ui::common::RunSimulationListener::Stage::AFTER)
   {
     ui->StageLabel->setText("-");
     ui->StatusLabel->setStatus(ExecutionStatusLabel::Status::SUCCEEDED);

@@ -333,7 +333,8 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       if (m_Plot.TryOpenGNUplot)
       {
         openfluid::utils::ExternalProgram GNUPlotProgram =
-            openfluid::utils::ExternalProgram::getRegisteredProgram(openfluid::utils::ExternalProgram::GnuplotProgram);
+            openfluid::utils::ExternalProgram::getRegisteredProgram(
+              openfluid::utils::ExternalProgram::RegisteredPrograms::Gnuplot);
 
         if (GNUPlotProgram.isFound())
         {          

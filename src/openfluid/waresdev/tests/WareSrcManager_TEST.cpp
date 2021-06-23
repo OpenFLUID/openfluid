@@ -202,7 +202,8 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
   BOOST_CHECK_EQUAL(Info.m_isAWare, true);
   BOOST_CHECK_EQUAL(Info.m_isAWareFile, false);
   BOOST_CHECK_EQUAL(Info.m_AbsolutePath.toStdString(), QDir(m_RealDirs.at(3)).absolutePath().toStdString());
-  BOOST_CHECK(Info.m_WareType == openfluid::ware::WareType::SIMULATOR);
+  BOOST_CHECK_EQUAL(static_cast<int>(Info.m_WareType), 
+                    static_cast<int>(openfluid::ware::WareType::SIMULATOR));
   BOOST_CHECK_EQUAL(Info.m_WareName.toStdString(), "ware1");
   BOOST_CHECK_EQUAL(Info.m_AbsolutePathOfWare.toStdString(), QString("%1/ware1").arg(m_SimulatorsPath).toStdString());
 
@@ -278,7 +279,8 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
   BOOST_CHECK_EQUAL(Info.m_isAWare, false);
   BOOST_CHECK_EQUAL(Info.m_isAWareFile, true);
   BOOST_CHECK_EQUAL(Info.m_AbsolutePath.toStdString(), QDir(m_RealFiles.at(6)).absolutePath().toStdString());
-  BOOST_CHECK(Info.m_WareType == openfluid::ware::WareType::SIMULATOR);
+  BOOST_CHECK_EQUAL(static_cast<int>(Info.m_WareType), 
+                    static_cast<int>(openfluid::ware::WareType::SIMULATOR));
   BOOST_CHECK_EQUAL(Info.m_WareName.toStdString(), "ware1");
   BOOST_CHECK_EQUAL(Info.m_RelativePathToWareDir.toStdString(), "file6.txt");
   BOOST_CHECK_EQUAL(Info.m_AbsolutePathOfWare.toStdString(), QString("%1/ware1").arg(m_SimulatorsPath).toStdString());
@@ -289,7 +291,8 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
   BOOST_CHECK_EQUAL(Info.m_isAWare, false);
   BOOST_CHECK_EQUAL(Info.m_isAWareFile, true);
   BOOST_CHECK_EQUAL(Info.m_AbsolutePath.toStdString(), QDir(m_RealFiles.at(7)).absolutePath().toStdString());
-  BOOST_CHECK(Info.m_WareType == openfluid::ware::WareType::SIMULATOR);
+  BOOST_CHECK_EQUAL(static_cast<int>(Info.m_WareType), 
+                    static_cast<int>(openfluid::ware::WareType::SIMULATOR));
   BOOST_CHECK_EQUAL(Info.m_WareName.toStdString(), "ware1");
   BOOST_CHECK_EQUAL(Info.m_RelativePathToWareDir.toStdString(), "subdir1/file7.txt");
   BOOST_CHECK_EQUAL(Info.m_AbsolutePathOfWare.toStdString(), QString("%1/ware1").arg(m_SimulatorsPath).toStdString());
@@ -300,7 +303,8 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
   BOOST_CHECK_EQUAL(Info.m_isAWare, false);
   BOOST_CHECK_EQUAL(Info.m_isAWareFile, true);
   BOOST_CHECK_EQUAL(Info.m_AbsolutePath.toStdString(), QDir(m_RealFiles.at(8)).absolutePath().toStdString());
-  BOOST_CHECK(Info.m_WareType == openfluid::ware::WareType::SIMULATOR);
+  BOOST_CHECK_EQUAL(static_cast<int>(Info.m_WareType), 
+                    static_cast<int>(openfluid::ware::WareType::SIMULATOR));
   BOOST_CHECK_EQUAL(Info.m_WareName.toStdString(), "ware1");
   BOOST_CHECK_EQUAL(Info.m_RelativePathToWareDir.toStdString(), "subdir1/subdir2/file8.txt");
   BOOST_CHECK_EQUAL(Info.m_AbsolutePathOfWare.toStdString(), QString("%1/ware1").arg(m_SimulatorsPath).toStdString());
@@ -311,7 +315,8 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
   BOOST_CHECK_EQUAL(Info.m_isAWare, false);
   BOOST_CHECK_EQUAL(Info.m_isAWareFile, true);
   BOOST_CHECK_EQUAL(Info.m_AbsolutePath.toStdString(), QDir(m_RealFiles.at(9)).absolutePath().toStdString());
-  BOOST_CHECK(Info.m_WareType == openfluid::ware::WareType::SIMULATOR);
+  BOOST_CHECK_EQUAL(static_cast<int>(Info.m_WareType), 
+                    static_cast<int>(openfluid::ware::WareType::SIMULATOR));
   BOOST_CHECK_EQUAL(Info.m_WareName.toStdString(), "ware2");
   BOOST_CHECK_EQUAL(Info.m_RelativePathToWareDir.toStdString(), "file9.txt");
   BOOST_CHECK_EQUAL(Info.m_AbsolutePathOfWare.toStdString(), QString("%1/ware2").arg(m_SimulatorsPath).toStdString());
@@ -322,7 +327,8 @@ BOOST_FIXTURE_TEST_CASE(getPathInfo,F)
   BOOST_CHECK_EQUAL(Info.m_isAWare, false);
   BOOST_CHECK_EQUAL(Info.m_isAWareFile, true);
   BOOST_CHECK_EQUAL(Info.m_AbsolutePath.toStdString(), QDir(m_RealFiles.at(10)).absolutePath().toStdString());
-  BOOST_CHECK(Info.m_WareType == openfluid::ware::WareType::SIMULATOR);
+  BOOST_CHECK_EQUAL(static_cast<int>(Info.m_WareType), 
+                    static_cast<int>(openfluid::ware::WareType::SIMULATOR));
   BOOST_CHECK_EQUAL(Info.m_WareName.toStdString(), "ware2");
   BOOST_CHECK_EQUAL(Info.m_RelativePathToWareDir.toStdString(), "subdir1/file10.txt");
   BOOST_CHECK_EQUAL(Info.m_AbsolutePathOfWare.toStdString(), QString("%1/ware2").arg(m_SimulatorsPath).toStdString());

@@ -11,7 +11,7 @@
 // =====================================================================
 
 
-BEGIN_BUILDEREXT_SIGNATURE("%%WAREID%%", openfluid::builderext::MODE_MODELESS)
+BEGIN_BUILDEREXT_SIGNATURE("%%WAREID%%", openfluid::builderext::ExtensionMode::MODELESS)
 
   DECLARE_CATEGORY(%%BUILDEREXTCATEGORY%%)
   DECLARE_MENUTEXT("%%BUILDEREXTMENUTEXT%%")

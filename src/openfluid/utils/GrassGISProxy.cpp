@@ -76,7 +76,8 @@ void GrassGISProxy::findGrassGISProgram()
 {
   if (m_ExecutablePath.isEmpty())
   {
-    m_ExecutablePath = ExternalProgram::getRegisteredProgram(ExternalProgram::GrassGisProgram).getFullProgramPath();
+    m_ExecutablePath = ExternalProgram::getRegisteredProgram(
+      ExternalProgram::RegisteredPrograms::GrassGis).getFullProgramPath();
 
     if (!m_ExecutablePath.isEmpty())
     {

@@ -334,7 +334,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
     KmlFilesPlotObserver() :
       KmlObserverBase(), m_GNUPlotSubDir("gnuplot"),
       m_PlotProgram(openfluid::utils::ExternalProgram::getRegisteredProgram(
-          openfluid::utils::ExternalProgram::GnuplotProgram))
+          openfluid::utils::ExternalProgram::RegisteredPrograms::Gnuplot))
     {
       m_TmpSubDirRoot = "export.vars.files.kml-plot";
       m_OutputFileName = "kmlplot.kmz";

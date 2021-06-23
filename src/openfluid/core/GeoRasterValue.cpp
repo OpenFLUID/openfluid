@@ -71,7 +71,7 @@ GeoRasterValue::~GeoRasterValue()
 
 openfluid::core::UnstructuredValue::UnstructuredType GeoRasterValue::getType() const
 {
-  return openfluid::core::UnstructuredValue::GeoRasterValue;
+  return openfluid::core::UnstructuredValue::UnstructuredType::RASTER;
 }
 
 

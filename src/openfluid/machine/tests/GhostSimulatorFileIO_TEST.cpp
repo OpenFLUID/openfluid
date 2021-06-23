@@ -162,7 +162,8 @@ void CheckOriginalSignature(const openfluid::ware::SimulatorSignature& Signature
   BOOST_REQUIRE_EQUAL(Signature.HandledUnitsGraph.UpdatedUnitsClass[1].Description,"");
 
 
-  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::DEFAULT);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature.TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT));
 }
 
 
@@ -245,7 +246,8 @@ void CheckModifiedSignature(const openfluid::ware::SimulatorSignature& Signature
   BOOST_REQUIRE_EQUAL(Signature.HandledUnitsGraph.UpdatedUnitsClass.size(),0);
 
 
-  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::DEFAULT);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature.TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT));
 }
 
 
@@ -310,21 +312,22 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // scheduling fixed
   Signature.ID = "simB.fixed";
-  Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::FIXED;
+  Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED;
   Signature.TimeScheduling.Min = 1955;
   Signature.TimeScheduling.Max = 1955;
 
   BOOST_REQUIRE(openfluid::machine::GhostSimulatorFileIO::saveToFile(Signature,ModifiedDirPath));
 
   Signature.clear();
-  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
+  BOOST_REQUIRE(Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED);
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Max,0);
 
   BOOST_REQUIRE(openfluid::machine::GhostSimulatorFileIO::loadFromFile(ModifiedDirPath+"/simB.fixed_ofghost-sim.xml",
                                                                        Signature));
 
-  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::FIXED);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature.TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED));
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Min,1955);
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Max,1955);
 
@@ -334,21 +337,23 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // scheduling range
   Signature.ID = "simB.range";
-  Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::RANGE;
+  Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE;
   Signature.TimeScheduling.Min = 1955;
   Signature.TimeScheduling.Max = 1976;
 
   BOOST_REQUIRE(openfluid::machine::GhostSimulatorFileIO::saveToFile(Signature,ModifiedDirPath));
 
   Signature.clear();
-  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature.TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED));
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Max,0);
 
   BOOST_REQUIRE(openfluid::machine::GhostSimulatorFileIO::loadFromFile(ModifiedDirPath+"/simB.range_ofghost-sim.xml",
                                                                        Signature));
 
-  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::RANGE);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature.TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE));
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Min,1955);
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Max,1976);
 
@@ -359,7 +364,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // scheduling undefined
 
   Signature.ID = "simB.undefined";
-  Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::UNDEFINED;
+  Signature.TimeScheduling.Type = openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED;
   Signature.TimeScheduling.Min = 0;
   Signature.TimeScheduling.Max = 0;
 
@@ -372,7 +377,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::machine::GhostSimulatorFileIO::loadFromFile(ModifiedDirPath+"/simB.undefined_ofghost-sim.xml",
                                                              Signature));
 
-  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(Signature.TimeScheduling.Type),
+                      static_cast<int>(openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED));
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Max,0);
 

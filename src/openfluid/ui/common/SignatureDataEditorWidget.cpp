@@ -101,28 +101,30 @@ void SignatureDataEditorWidget::initialize(const QList<DataColumns>& Columns)
 
   for (auto& Col : m_Columns)
   {
-    if (Col == DATACOL_DATAID)
+    if (Col == DataColumns::DATAID)
     {
       ColHeaders << tr("Name");
     }
-    else if (Col == DATACOL_UNITSCLASS)
+    else if (Col == DataColumns::UNITSCLASS)
     {
       ColHeaders << tr("Units class");
     }
-    else if (Col == DATACOL_ROCONDITION || Col == DATACOL_RWCONDITION || Col == DATACOL_RWUCONDITION)
+    else if (Col == DataColumns::ROCONDITION || 
+             Col == DataColumns::RWCONDITION || 
+             Col == DataColumns::RWUCONDITION)
     {
       ColHeaders << tr("I/O condition");
     }
-    else if (Col == DATACOL_DATATYPE)
+    else if (Col == DataColumns::DATATYPE)
     {
       ColHeaders << tr("Type");
     }
-    else if (Col == DATACOL_DESCRIPTION)
+    else if (Col == DataColumns::DESCRIPTION)
     {
       ColHeaders << tr("Description");
       StretchedCol = i;
     }
-    else if (Col == DATACOL_SIUNIT)
+    else if (Col == DataColumns::SIUNIT)
     {
       ColHeaders << tr("SI unit");
     }
@@ -150,79 +152,79 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
 
   for (auto& Col : m_Columns)
   {
-    if (Col == DATACOL_DATAID)
+    if (Col == DataColumns::DATAID)
     {
       QString TmpStr = "name";
-      if (DataLine.contains(DATACOL_DATAID))
+      if (DataLine.contains(static_cast<int>(DataColumns::DATAID)))
       {
-        TmpStr = DataLine.value(DATACOL_DATAID).toString();
+        TmpStr = DataLine.value(static_cast<int>(DataColumns::DATAID)).toString();
       }
       ui->DataTableWidget->setItem(RowCount,i,new QTableWidgetItem(TmpStr));
     }
-    else if (Col == DATACOL_UNITSCLASS)
+    else if (Col == DataColumns::UNITSCLASS)
     {
       QString TmpStr = "CLASS";
-      if (DataLine.contains(DATACOL_UNITSCLASS))
+      if (DataLine.contains(static_cast<int>(DataColumns::UNITSCLASS)))
       {
-        TmpStr = DataLine.value(DATACOL_UNITSCLASS).toString();
+        TmpStr = DataLine.value(static_cast<int>(DataColumns::UNITSCLASS)).toString();
       }
       ui->DataTableWidget->setItem(RowCount,i,new QTableWidgetItem(TmpStr));
     }
-    else if (Col == DATACOL_DESCRIPTION)
+    else if (Col == DataColumns::DESCRIPTION)
     {
       QString TmpStr = "";
-      if (DataLine.contains(DATACOL_DESCRIPTION))
+      if (DataLine.contains(static_cast<int>(DataColumns::DESCRIPTION)))
       {
-        TmpStr = DataLine.value(DATACOL_DESCRIPTION).toString();
+        TmpStr = DataLine.value(static_cast<int>(DataColumns::DESCRIPTION)).toString();
       }
       ui->DataTableWidget->setItem(RowCount,i,new QTableWidgetItem(TmpStr));
     }
-    else if (Col == DATACOL_SIUNIT)
+    else if (Col == DataColumns::SIUNIT)
     {
       QString TmpStr = "";
-      if (DataLine.contains(DATACOL_SIUNIT))
+      if (DataLine.contains(static_cast<int>(DataColumns::SIUNIT)))
       {
-        TmpStr = DataLine.value(DATACOL_SIUNIT).toString();
+        TmpStr = DataLine.value(static_cast<int>(DataColumns::SIUNIT)).toString();
       }
       ui->DataTableWidget->setItem(RowCount,i,new QTableWidgetItem(TmpStr));
     }
-    else if (Col == DATACOL_ROCONDITION)
+    else if (Col == DataColumns::ROCONDITION)
     {
       QComboBox* Combo = new QComboBox();
-      Combo->addItem(tr("Used"),DATACOND_USED);
-      Combo->addItem(tr("Required"),DATACOND_REQUIRED);
-      if (DataLine.contains(DATACOL_ROCONDITION))
+      Combo->addItem(tr("Used"),static_cast<int>(DataConditionsIndices::USED));
+      Combo->addItem(tr("Required"),static_cast<int>(DataConditionsIndices::REQUIRED));
+      if (DataLine.contains(static_cast<int>(DataColumns::ROCONDITION)))
       {
-        Combo->setCurrentIndex(DataLine.value(DATACOL_ROCONDITION).toInt());
+        Combo->setCurrentIndex(DataLine.value(static_cast<int>(DataColumns::ROCONDITION)).toInt());
       }
       ui->DataTableWidget->setCellWidget(RowCount,i,Combo);
     }
-    else if (Col == DATACOL_RWCONDITION)
+    else if (Col == DataColumns::RWCONDITION)
     {
       QComboBox* Combo = new QComboBox();
-      Combo->addItem(tr("Used"),DATACOND_USED);
-      Combo->addItem(tr("Required"),DATACOND_REQUIRED);
-      Combo->addItem(tr("Produced"),DATACOND_PRODUCED);
-      if (DataLine.contains(DATACOL_RWCONDITION))
+      Combo->addItem(tr("Used"),static_cast<int>(DataConditionsIndices::USED));
+      Combo->addItem(tr("Required"),static_cast<int>(DataConditionsIndices::REQUIRED));
+      Combo->addItem(tr("Produced"),static_cast<int>(DataConditionsIndices::PRODUCED));
+      if (DataLine.contains(static_cast<int>(DataColumns::RWCONDITION)))
       {
-        Combo->setCurrentIndex(DataLine.value(DATACOL_RWCONDITION).toInt());
+        Combo->setCurrentIndex(DataLine.value(static_cast<int>(DataColumns::RWCONDITION)).toInt());
       }
       ui->DataTableWidget->setCellWidget(RowCount,i,Combo);
     }
-    else if (Col == DATACOL_RWUCONDITION)
+    else if (Col == DataColumns::RWUCONDITION)
     {
       QComboBox* Combo = new QComboBox();
-      Combo->addItem(tr("Used"),DATACOND_USED);
-      Combo->addItem(tr("Required"),DATACOND_REQUIRED);
-      Combo->addItem(tr("Produced"),DATACOND_PRODUCED);
-      Combo->addItem(tr("Updated"),DATACOND_UPDATED);
-      if (DataLine.contains(DATACOL_RWUCONDITION))
+      Combo->addItem(tr("Used"),static_cast<int>(DataConditionsIndices::USED));
+      Combo->addItem(tr("Required"),static_cast<int>(DataConditionsIndices::REQUIRED));
+      Combo->addItem(tr("Produced"),static_cast<int>(DataConditionsIndices::PRODUCED));
+      Combo->addItem(tr("Updated"),static_cast<int>(DataConditionsIndices::UPDATED));
+      if (DataLine.contains(static_cast<int>(DataColumns::RWUCONDITION)))
       {
-        Combo->setCurrentIndex(DataLine.value(DATACOL_RWUCONDITION).toInt());
+        Combo->setCurrentIndex(DataLine.value(static_cast<int>(DataColumns::RWUCONDITION)).toInt());
       }
       ui->DataTableWidget->setCellWidget(RowCount,i,Combo);
     }
-    else if (Col == DATACOL_DATATYPE)
+    else if (Col == DataColumns::DATATYPE)
     {
       QComboBox* Combo = new QComboBox();
       for (int TypeInt = openfluid::core::Value::NONE; TypeInt <= openfluid::core::Value::NULLL; TypeInt++)
@@ -230,9 +232,9 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
         Combo->addItem(QString::fromStdString(
           openfluid::core::Value::getStringFromValueType(static_cast<openfluid::core::Value::Type>(TypeInt))),TypeInt);
       }
-      if (DataLine.contains(DATACOL_DATATYPE))
+      if (DataLine.contains(static_cast<int>(DataColumns::DATATYPE)))
       {
-        Combo->setCurrentIndex(DataLine.value(DATACOL_DATATYPE).toInt());
+        Combo->setCurrentIndex(DataLine.value(static_cast<int>(DataColumns::DATATYPE)).toInt());
       }
       ui->DataTableWidget->setCellWidget(RowCount,i,Combo);
     }

@@ -87,7 +87,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,"GeoVectorValue");
 
-  BOOST_CHECK_EQUAL(Val->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(static_cast<int>(Val->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
 
   BOOST_CHECK_EQUAL(Val->getAbsolutePath(),CONFIGTESTS_INPUT_MISCDATA_DIR+"/GeoVectorValue");
 

@@ -175,7 +175,7 @@ class F
     void launchGitCommand(const QString& Args)
     {
       QString GitPgm = openfluid::utils::ExternalProgram::getRegisteredProgram(
-          openfluid::utils::ExternalProgram::GitProgram).getFullProgramPath();
+          openfluid::utils::ExternalProgram::RegisteredPrograms::Git).getFullProgramPath();
 
       QProcess Process;
       Process.setWorkingDirectory(DestPath);
@@ -399,7 +399,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_untracked,F)
     QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, false);
-    BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::UNTRACKED);
+    BOOST_CHECK_EQUAL(static_cast<int>(Paths["new_file.txt"].m_IndexStatus), 
+                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::UNTRACKED));
   }
   else
   {
@@ -429,7 +430,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_added,F)
     QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, false);
-    BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::ADDED);
+    BOOST_CHECK_EQUAL(static_cast<int>(Paths["new_file.txt"].m_IndexStatus), 
+                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::ADDED));
   }
   else
   {
@@ -463,7 +465,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_added_modified,F)
     QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, true);
-    BOOST_CHECK(Paths["new_file.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::ADDED);
+    BOOST_CHECK_EQUAL(static_cast<int>(Paths["new_file.txt"].m_IndexStatus), 
+                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::ADDED));
   }
   else
   {
@@ -494,7 +497,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified,F)
     QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, true);
-    BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::TRACKED);
+    BOOST_CHECK_EQUAL(static_cast<int>(Paths["a/a1.txt"].m_IndexStatus), 
+                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::TRACKED));
   }
   else
   {
@@ -527,7 +531,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_staged,F)
     QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, false);
-    BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::MODIFIED);
+    BOOST_CHECK_EQUAL(static_cast<int>(Paths["a/a1.txt"].m_IndexStatus), 
+                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::MODIFIED));
   }
   else
   {
@@ -564,7 +569,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_partially_staged,F)
     QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, true);
-    BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::MODIFIED);
+    BOOST_CHECK_EQUAL(static_cast<int>(Paths["a/a1.txt"].m_IndexStatus), 
+                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::MODIFIED));
   }
   else
   {
@@ -591,7 +597,8 @@ BOOST_FIXTURE_TEST_CASE(status_git_deleted,F)
     QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, false);
-    BOOST_CHECK(Paths["a/a1.txt"].m_IndexStatus == openfluid::utils::GitProxy::FileStatus::DELETED);
+    BOOST_CHECK_EQUAL(static_cast<int>(Paths["a/a1.txt"].m_IndexStatus), 
+                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::DELETED));
   }
   else
   {

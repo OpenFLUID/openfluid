@@ -59,9 +59,9 @@
 // =====================================================================
 
 
-BEGIN_BUILDEREXT_SIGNATURE("import.spatial-graph.ogr-gdal", openfluid::builderext::MODE_MODAL)
+BEGIN_BUILDEREXT_SIGNATURE("import.spatial-graph.ogr-gdal", openfluid::builderext::ExtensionMode::MODAL)
 
-  DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)
+  DECLARE_CATEGORY(openfluid::builderext::ExtensionCategory::SPATIAL)
   DECLARE_MENUTEXT(QT_TRANSLATE_NOOP("signature","Spatial data import (OGR/GDAL)"))
 
 END_BUILDEREXT_SIGNATURE
@@ -800,8 +800,8 @@ void OGRGDALImportExtension::updateEmptyStringReplacement()
 void OGRGDALImportExtension::handleCloseRequired()
 {
   openfluid::builderext::FluidXUpdateFlags::Flags ChangesFlags =
-      openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
-      openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS;
+      openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
+      openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS;
 
   bool DatastoreChanged = false;
 
@@ -812,7 +812,7 @@ void OGRGDALImportExtension::handleCloseRequired()
 
   if (DatastoreChanged)
   {
-    ChangesFlags = ChangesFlags | openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE;
+    ChangesFlags = ChangesFlags | openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE;
   }
 
   emit fluidxChanged(ChangesFlags);

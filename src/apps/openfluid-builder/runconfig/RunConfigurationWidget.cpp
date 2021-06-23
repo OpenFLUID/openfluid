@@ -158,7 +158,7 @@ void RunConfigurationWidget::updateConstraintFXDesc(int Index)
 {
   m_FluidxDesc.runConfiguration().setSchedulingConstraint(
       openfluid::base::SimulationStatus::SchedulingConstraint(Index));
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
+  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_RUNCONFIG);
 }
 
 
@@ -170,7 +170,7 @@ void RunConfigurationWidget::runConfigChange()
 {
   refresh();
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
+  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_RUNCONFIG);
 }
 
 

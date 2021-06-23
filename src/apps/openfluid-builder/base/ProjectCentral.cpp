@@ -507,8 +507,8 @@ void ProjectCentral::checkModel()
           openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
               (static_cast<openfluid::fluidx::GeneratorDescriptor*>(*itModelItem))->getGeneratorMethod();
 
-          if (Method == openfluid::fluidx::GeneratorDescriptor::Interp ||
-              Method == openfluid::fluidx::GeneratorDescriptor::Inject)
+          if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP ||
+              Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
           {
             // sources file
             std::string FileNameFromParam = (*itModelItem)->getParameters()["sources"];
@@ -606,18 +606,18 @@ void ProjectCentral::checkModel()
           openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
               (static_cast<openfluid::ware::GeneratorSignature*>(Sign))->m_GeneratorMethod;
 
-          if (Method == openfluid::fluidx::GeneratorDescriptor::Random && !RandomMinMaxChecked)
+          if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM && !RandomMinMaxChecked)
           {
             checkGeneratorParam("min", "max", *itModelItem, ID);
             RandomMinMaxChecked = true;
           }
-          else if (Method == openfluid::fluidx::GeneratorDescriptor::Interp &&
+          else if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP &&
               !InterpMinMaxChecked)
           {
             checkGeneratorParam("thresholdmin", "thresholdmax", *itModelItem, ID);
             InterpMinMaxChecked = true;
           }
-          else if (Method == openfluid::fluidx::GeneratorDescriptor::Inject &&
+          else if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT &&
               !InjectMinMaxChecked)
           {
             checkGeneratorParam("thresholdmin", "thresholdmax", *itModelItem, ID);

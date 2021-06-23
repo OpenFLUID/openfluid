@@ -250,7 +250,7 @@ bool ImportWorker::processFilesAndDatastore(int Step)
           new openfluid::fluidx::DatastoreItemDescriptor(m_SourcesInfos[i].DatastoreID.toStdString(),
                                                          m_InputDir.toStdString(),
                                                          RelativePath.toStdString(),
-                                                         openfluid::core::UnstructuredValue::GeoVectorValue);
+            openfluid::core::UnstructuredValue::UnstructuredType::VECTOR);
       DSItem->setUnitsClass(m_SourcesInfos[i].UnitsClass.toStdString());
 
       mp_Desc->datastore().appendItem(DSItem);

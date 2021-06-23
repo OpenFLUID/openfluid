@@ -187,7 +187,7 @@ void RunSimulationListener::onInitParams()
 {
   HANDLE_USER_PAUSE_ABORT;
 
-  emit stageChanged(RUNW_BEFORE);
+  emit stageChanged(Stage::BEFORE);
 };
 
 
@@ -199,7 +199,7 @@ void RunSimulationListener::onInitializeRun()
 {
   HANDLE_USER_PAUSE_ABORT;
 
-  emit stageChanged(RUNW_INIT);
+  emit stageChanged(Stage::INIT);
 };
 
 
@@ -211,7 +211,7 @@ void RunSimulationListener::onBeforeRunSteps()
 {
   HANDLE_USER_PAUSE_ABORT;
 
-  emit stageChanged(RUNW_RUN);
+  emit stageChanged(Stage::RUN);
   emit progressValueChanged(0);
 };
 
@@ -252,7 +252,7 @@ void RunSimulationListener::onFinalizeRunDone(const openfluid::base::Listener::S
   HANDLE_USER_PAUSE_ABORT;
 
   emit progressValueChanged(m_SimDuration);
-  emit stageChanged(RUNW_AFTER);
+  emit stageChanged(Stage::AFTER);
 };
 
 

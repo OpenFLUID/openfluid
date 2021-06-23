@@ -66,7 +66,7 @@
         new openfluid::builderext::BuilderExtensionSignature(); \
       Signature->ID = (id); \
       Signature->Mode = (extmode);\
-      Signature->Type = openfluid::builderext::TYPE_FEATURE; \
+      Signature->Type = openfluid::builderext::ExtensionType::FEATURE; \
       Signature->BuildInfo.SDKVersion = openfluid::config::VERSION_FULL; \
       Signature->BuildInfo.BuildType = (WAREBUILD_BUILD_TYPE); \
       Signature->BuildInfo.CompilerID = (WAREBUILD_COMPILER_ID); \

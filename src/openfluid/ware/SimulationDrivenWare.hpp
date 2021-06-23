@@ -108,7 +108,7 @@
   @endcond
 */
 #define OPENFLUID_LogWarning(_stream) \
-  appendToLog(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
+  appendToLog(openfluid::tools::FileLogger::LogType::WARNING_MSG,_STREAMTOSTRING(_stream))
 
 /**
   Displays a warning message to stdout (on screen by default)
@@ -126,7 +126,7 @@
   @endcond
 */
 #define OPENFLUID_DisplayWarning(_stream) \
-  displayToConsole(openfluid::tools::FileLogger::LOG_WARNING,_STREAMTOSTRING(_stream))
+  displayToConsole(openfluid::tools::FileLogger::LogType::WARNING_MSG,_STREAMTOSTRING(_stream))
 
 /**
   Adds a warning message to simulation log file and displays it to stdout (on screen by default)
@@ -166,7 +166,7 @@
   @endcond
 */
 #define OPENFLUID_LogInfo(_stream) \
-  appendToLog(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
+  appendToLog(openfluid::tools::FileLogger::LogType::INFO_MSG,_STREAMTOSTRING(_stream))
 
 /**
   Displays an information message to stdout (on screen by default)
@@ -184,7 +184,7 @@
   @endcond
 */
 #define OPENFLUID_DisplayInfo(_stream) \
-  displayToConsole(openfluid::tools::FileLogger::LOG_INFO,_STREAMTOSTRING(_stream))
+  displayToConsole(openfluid::tools::FileLogger::LogType::INFO_MSG,_STREAMTOSTRING(_stream))
 
 /**
   Adds an information message to simulation log file and displays it to stdout (on screen by default)
@@ -261,10 +261,10 @@
 #ifndef NDEBUG
 
 #define OPENFLUID_LogDebug(_stream) \
-  appendToLog(openfluid::tools::FileLogger::LOG_DEBUG,_STREAMTOSTRING(_stream))
+  appendToLog(openfluid::tools::FileLogger::LogType::DEBUG_MSG,_STREAMTOSTRING(_stream))
 
 #define OPENFLUID_DisplayDebug(_stream) \
-  displayToConsole(openfluid::tools::FileLogger::LOG_DEBUG,_STREAMTOSTRING(_stream))
+  displayToConsole(openfluid::tools::FileLogger::LogType::DEBUG_MSG,_STREAMTOSTRING(_stream))
 
 #define OPENFLUID_LogAndDisplayDebug(_stream) \
   OPENFLUID_LogDebug(_stream); \

@@ -114,8 +114,8 @@ void TestDataset(const std::string& DatasetPath, bool /*AggregatedAttributes*/ =
                       "tests.generator.interp");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 1);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
-                      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
+                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),
                       2);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["sources"].get(),
@@ -137,8 +137,8 @@ void TestDataset(const std::string& DatasetPath, bool /*AggregatedAttributes*/ =
                       "tests.generator.fixed");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 11);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
-                      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
+                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),
                       1);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"].get(),
@@ -151,8 +151,8 @@ void TestDataset(const std::string& DatasetPath, bool /*AggregatedAttributes*/ =
                       "tests.generator.random");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 1);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
-                      openfluid::fluidx::GeneratorDescriptor::Random);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
+                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM));
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),
                       2);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["min"].get(),
@@ -248,21 +248,24 @@ void TestDataset(const std::string& DatasetPath, bool /*AggregatedAttributes*/ =
 
   BOOST_REQUIRE_EQUAL((*DataIt)->getID(), "mymap");
   BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(), "datastore/testvect");
-  BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_REQUIRE_EQUAL(static_cast<int>((*DataIt)->getType()), 
+                      static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
   BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(), "unitsA");
 
   ++DataIt;
 
   BOOST_REQUIRE_EQUAL((*DataIt)->getID(), "mymap2");
   BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(), "datastore/testvect.shp");
-  BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_REQUIRE_EQUAL(static_cast<int>((*DataIt)->getType()), 
+                      static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
   BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(), "");
 
   ++DataIt;
 
   BOOST_REQUIRE_EQUAL((*DataIt)->getID(),"myrast");
   BOOST_REQUIRE_EQUAL((*DataIt)->getRelativePath(),"datastore/testrast.tif");
-  BOOST_REQUIRE_EQUAL((*DataIt)->getType(),openfluid::core::UnstructuredValue::GeoRasterValue);
+  BOOST_REQUIRE_EQUAL(static_cast<int>((*DataIt)->getType()), 
+                      static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::RASTER));
   BOOST_REQUIRE_EQUAL((*DataIt)->getUnitsClass(),"");
 
 

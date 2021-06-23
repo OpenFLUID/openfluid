@@ -56,7 +56,7 @@ class OPENFLUID_API ChronFileInterpolator
 {
   public:
 
-    enum PreProcess { PREPROCESS_NONE, PREPROCESS_CUMULATE };
+    enum PreProcess { NONE, CUMULATE };
 
 
   private:
@@ -114,7 +114,7 @@ class OPENFLUID_API ChronFileInterpolator
 
     ChronFileInterpolator(const std::string& InFilePath, const std::string& OutFilePath,
                           const openfluid::core::DateTime& BeginDate, const openfluid::core::DateTime& EndDate,
-                          const openfluid::core::Duration_t& DeltaT, PreProcess PrePcs = PREPROCESS_NONE);
+                          const openfluid::core::Duration_t& DeltaT, PreProcess PrePcs = NONE);
 
     virtual ~ChronFileInterpolator();
 

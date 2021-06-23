@@ -68,19 +68,19 @@ std::string FileLogger::logTypeToString(LogType LType)
 {
   std::string LTypeStr = "";
 
-  if (LType == LOG_INFO)
+  if (LType == LogType::INFO_MSG)
   {
     LTypeStr = "Info";
   }
-  else  if (LType == LOG_WARNING)
+  else  if (LType == LogType::WARNING_MSG)
   {
     LTypeStr = "Warning";
   }
-  else if (LType == LOG_DEBUG)
+  else if (LType == LogType::DEBUG_MSG)
   {
     LTypeStr = "Debug";
   }
-  else if (LType == LOG_ERROR)
+  else if (LType == LogType::ERROR_MSG)
   {
     LTypeStr = "Error";
   }
@@ -122,15 +122,15 @@ void FileLogger::add(LogType LType, const std::string& Sender, const std::string
 
   std::string LTypeStr = logTypeToString(LType);
 
-  if (LType == LOG_INFO)
+  if (LType == LogType::INFO_MSG)
   {
     m_InfosCount++;
   }
-  else  if (LType == LOG_WARNING)
+  else  if (LType == LogType::WARNING_MSG)
   {
     m_WarningsCount++;
   }
-  else if (LType == LOG_ERROR)
+  else if (LType == LogType::ERROR_MSG)
   {
     m_IsError = true;
   }

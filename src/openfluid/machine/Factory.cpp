@@ -259,31 +259,32 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
         IInstance->GeneratorInfo->UnitsClass = GenDesc->getUnitsClass();
         IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
 
-        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Fixed)
+        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED)
         {
-          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Fixed;
+          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED;
         }
 
-        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Random)
+        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM)
         {
-          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Random;
+          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM;
         }
 
-        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Interp)
+        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP)
         {
-          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Interp;
+          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP;
           Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
           Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
         }
 
-        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Inject)
+        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
         {
-          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Inject;
+          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT;
           Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
           Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
         }
 
-        if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
+        if (IInstance->GeneratorInfo->GeneratorMethod == 
+              openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE)
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "unknown generator type");

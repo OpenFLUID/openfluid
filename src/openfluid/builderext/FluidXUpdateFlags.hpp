@@ -53,7 +53,7 @@ class OPENFLUID_API FluidXUpdateFlags
 {
   public:
 
-    enum Flag
+    enum class Flag
     {
       FLUIDX_MODELDEF = 1 << 0,
       FLUIDX_MODELPARAMS = 1 << 2,

@@ -97,8 +97,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   GeoRasterValueSub* Val = new GeoRasterValueSub(CONFIGTESTS_INPUT_MISCDATA_DIR,
                                                  "GeoRasterValue/dem.jpeg");
 
-  BOOST_CHECK_EQUAL(Val->getType(),
-                    openfluid::core::UnstructuredValue::GeoRasterValue);
+  BOOST_CHECK_EQUAL(static_cast<int>(Val->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::RASTER));
 
   BOOST_CHECK_EQUAL(Val->getAbsolutePath(),CONFIGTESTS_INPUT_MISCDATA_DIR + "/GeoRasterValue/dem.jpeg");
 

@@ -57,7 +57,7 @@ class OPENFLUID_API PluggableModalExtension : public QDialog, public PluggableFe
   signals:
 
     void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
-                         openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
+                         openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL);
 
 
   public slots:

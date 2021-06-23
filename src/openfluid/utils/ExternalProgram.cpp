@@ -92,7 +92,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
 
   QStringList ModSearchPaths = SearchPaths;
 
-  if (Prog == CMakeProgram)
+  if (Prog == RegisteredPrograms::CMake)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "cmake";
@@ -102,7 +102,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "cmake.exe";
 #endif
   }
-  else if (Prog == ZipProgram)
+  else if (Prog == RegisteredPrograms::Zip)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "zip";
@@ -112,7 +112,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "zip.exe";
 #endif
   }
-  else if (Prog == SevenZipProgram)
+  else if (Prog == RegisteredPrograms::SevenZip)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "7z";
@@ -123,7 +123,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "7z.exe";
 #endif
   }
-  else if (Prog == GnuplotProgram)
+  else if (Prog == RegisteredPrograms::Gnuplot)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "gnuplot";
@@ -133,7 +133,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "gnuplot.exe";
 #endif
   }
-  else if (Prog == GoogleEarthProgram)
+  else if (Prog == RegisteredPrograms::GoogleEarth)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "google-earth";
@@ -148,7 +148,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "google-earth.exe";
 #endif
   }
-  else if (Prog == GccProgram)
+  else if (Prog == RegisteredPrograms::Gcc)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "gcc";
@@ -158,7 +158,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "gcc.exe";
 #endif
   }
-  else if (Prog == PdfLatexProgram)
+  else if (Prog == RegisteredPrograms::PdfLatex)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "pdflatex";
@@ -168,7 +168,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "pdflatex.exe";
 #endif
   }
-  else if (Prog == BibTexProgram)
+  else if (Prog == RegisteredPrograms::BibTex)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "bibtex";
@@ -178,7 +178,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "bibtex.exe";
 #endif
   }
-  else if (Prog == Latex2HTMLProgram)
+  else if (Prog == RegisteredPrograms::Latex2HTML)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "latex2html";
@@ -188,7 +188,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "latex2html.exe";
 #endif
   }
-  else if (Prog == GitProgram)
+  else if (Prog == RegisteredPrograms::Git)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "git";
@@ -198,7 +198,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "git.exe";
 #endif
   }
-  else if (Prog == GrassGisProgram)
+  else if (Prog == RegisteredPrograms::GrassGis)
   {
 #if defined(OPENFLUID_OS_UNIX)
     ProgNames << "grass";

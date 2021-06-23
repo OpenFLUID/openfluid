@@ -42,9 +42,10 @@
 #include "DummyWorkspaceOtherSimple.hpp"
 
 
-BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.workspace-other.simple", openfluid::builderext::MODE_WORKSPACE)
+BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.workspace-other.simple", 
+                           openfluid::builderext::ExtensionMode::WORKSPACE)
 
-  DECLARE_CATEGORY(openfluid::builderext::CAT_OTHER)
+  DECLARE_CATEGORY(openfluid::builderext::ExtensionCategory::OTHER)
   DECLARE_MENUTEXT("Other simple (Workspace)")
 
 END_BUILDEREXT_SIGNATURE

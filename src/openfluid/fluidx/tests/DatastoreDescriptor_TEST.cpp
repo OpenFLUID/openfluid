@@ -71,39 +71,39 @@ BOOST_AUTO_TEST_CASE(check_construction)
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it = Items.begin();
 
   BOOST_CHECK_EQUAL((*it)->getID(), "units_A");
-  BOOST_CHECK_EQUAL((*it)->getType(),
-                    openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(static_cast<int>((*it)->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/units_A.shp");
   BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "unitsA");
 
   it++;
 
   BOOST_CHECK_EQUAL((*it)->getID(), "units_B");
-  BOOST_CHECK_EQUAL((*it)->getType(),
-                    openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(static_cast<int>((*it)->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "units_B.shp");
   BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "unitsB");
 
   it++;
 
   BOOST_CHECK_EQUAL((*it)->getID(), "VectWOClass");
-  BOOST_CHECK_EQUAL((*it)->getType(),
-                    openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(static_cast<int>((*it)->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/Vect.shp");
   BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "");
 
   it++;
 
   BOOST_CHECK_EQUAL((*it)->getID(), "RastWOClass");
-  BOOST_CHECK_EQUAL((*it)->getType(),
-                    openfluid::core::UnstructuredValue::GeoRasterValue);
+  BOOST_CHECK_EQUAL(static_cast<int>((*it)->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::RASTER));
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/Rast.tif");
 
   it++;
 
   BOOST_CHECK_EQUAL((*it)->getID(), "wrong_class");
-  BOOST_CHECK_EQUAL((*it)->getType(),
-                    openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(static_cast<int>((*it)->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/wrong_class.shp");
   BOOST_CHECK_EQUAL((*it)->getUnitsClass(), "wrongClass");
 
@@ -128,8 +128,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::fluidx::DatastoreItemDescriptor* Item =DS.item("units_A");
   BOOST_CHECK_EQUAL(Item->getID(), "units_A");
-  BOOST_CHECK_EQUAL(Item->getType(),
-                    openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(static_cast<int>(Item->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
   BOOST_CHECK_EQUAL(Item->getRelativePath(), "shapes/units_A.shp");
 
 
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // appendItem
   openfluid::fluidx::DatastoreItemDescriptor AppItem(
       "appended.item", "", "shape/appened.shp",
-      openfluid::core::UnstructuredValue::GeoVectorValue);
+      openfluid::core::UnstructuredValue::UnstructuredType::VECTOR);
   DS.appendItem(&AppItem);
 
   BOOST_CHECK_EQUAL(DS.items().size(), 6);
@@ -152,14 +152,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::advance(it, 5);
 
   BOOST_CHECK_EQUAL((*it)->getID(), "appended.item");
-  BOOST_CHECK_EQUAL((*it)->getType(),
-                    openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(static_cast<int>((*it)->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shape/appened.shp");
 
   //insertItem
   openfluid::fluidx::DatastoreItemDescriptor InsItem(
       "inserted.item", "", "inserted.tif",
-      openfluid::core::UnstructuredValue::GeoRasterValue);
+      openfluid::core::UnstructuredValue::UnstructuredType::RASTER);
 
   BOOST_CHECK_THROW(DS.insertItem(&InsItem, 6), openfluid::base::FrameworkException);
 
@@ -173,8 +173,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK_EQUAL((*(++it))->getID(), "units_B");
   BOOST_CHECK_EQUAL((*(++it))->getID(), "VectWOClass");
   BOOST_CHECK_EQUAL((*(++it))->getID(), "inserted.item");
-  BOOST_CHECK_EQUAL((*it)->getType(),
-                    openfluid::core::UnstructuredValue::GeoRasterValue);
+  BOOST_CHECK_EQUAL(static_cast<int>((*it)->getType()), 
+                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::RASTER));
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "inserted.tif");
   BOOST_CHECK_EQUAL((*(++it))->getID(), "RastWOClass");
   BOOST_CHECK_EQUAL((*(++it))->getID(), "wrong_class");

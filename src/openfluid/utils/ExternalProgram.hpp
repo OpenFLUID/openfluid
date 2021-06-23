@@ -69,10 +69,10 @@ class OPENFLUID_API ExternalProgram
     /**
       List of pre-registered external programs
     */
-    enum RegisteredPrograms { CMakeProgram, ZipProgram, SevenZipProgram,
-                              GnuplotProgram, GoogleEarthProgram, GccProgram,
-                              PdfLatexProgram, BibTexProgram, Latex2HTMLProgram,
-                              GitProgram, GrassGisProgram };
+    enum class RegisteredPrograms { CMake, Zip, SevenZip,
+                                    Gnuplot, GoogleEarth, Gcc,
+                                    PdfLatex, BibTex, Latex2HTML,
+                                    Git, GrassGis };
 
     ExternalProgram() = delete;
 

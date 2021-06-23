@@ -67,20 +67,22 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(SimDesc.getParameters().size(),0);
 
   openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",
-                                                  openfluid::fluidx::GeneratorDescriptor::Fixed);
+                                                  openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED);
 
   BOOST_REQUIRE_EQUAL(GenDesc1.getVariableName(),"test.var");
   BOOST_REQUIRE_EQUAL(GenDesc1.getUnitsClass(),"test.unitclass");
-  BOOST_REQUIRE_EQUAL(GenDesc1.getGeneratorMethod(),openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(GenDesc1.getGeneratorMethod()), 
+                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
   BOOST_REQUIRE_EQUAL(GenDesc1.getVariableSize(),1);
   BOOST_REQUIRE_EQUAL(GenDesc1.getParameters().size(),0);
 
   openfluid::fluidx::GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",
-                                                  openfluid::fluidx::GeneratorDescriptor::Interp,13);
+                                                  openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP,13);
 
   BOOST_REQUIRE_EQUAL(GenDesc2.getVariableName(),"test.var2");
   BOOST_REQUIRE_EQUAL(GenDesc2.getUnitsClass(),"test.unitclass2");
-  BOOST_REQUIRE_EQUAL(GenDesc2.getGeneratorMethod(),openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(GenDesc2.getGeneratorMethod()), 
+                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
   BOOST_REQUIRE_EQUAL(GenDesc2.getVariableSize(),13);
   BOOST_REQUIRE_EQUAL(GenDesc2.getParameters().size(),0);
 
@@ -104,11 +106,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   SimDesc.setParameter("param2",std::string("var22"));
 
   openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",
-                                                  openfluid::fluidx::GeneratorDescriptor::Fixed,7);
+                                                  openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED,7);
   GenDesc1.setParameter("fixedvalue",std::string("20.5"));
 
   openfluid::fluidx::GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",
-                                                  openfluid::fluidx::GeneratorDescriptor::Interp);
+                                                  openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP);
   GenDesc2.setParameter("sources",std::string("datasources.xml"));
   GenDesc2.setParameter("distribution",std::string("distribution.dat"));
 
@@ -133,8 +135,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR),true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),"test.var");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(),"test.unitclass");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
-                      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
+                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(),7);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->isScalarVariable(),false);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->isVectorVariable(),true);
@@ -149,8 +151,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR),true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),"test.var2");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(),"test.unitclass2");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod(),
-                      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
+                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(),1);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->isScalarVariable(),true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->isVectorVariable(),false);
@@ -179,21 +181,21 @@ BOOST_AUTO_TEST_CASE(check_construction_from_dataset)
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin();
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it)->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
       "tests.simulatorA");
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Random);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
@@ -264,25 +266,25 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
 
   it = Items->begin();
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it)->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
       "tests.simulatorA");
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
       "inserted.item");
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Random);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
@@ -301,9 +303,8 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
 
   it = Items->begin();
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_CHECK_EQUAL(static_cast<int>(dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it)->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
@@ -313,17 +314,17 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
       "tests.simulatorB");
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
       "inserted.item");
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Random);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
@@ -333,13 +334,12 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
 
   it = Items->begin();
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_CHECK_EQUAL(static_cast<int>(dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it)->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
@@ -353,9 +353,9 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
       "inserted.item");
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Random);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
@@ -365,13 +365,12 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
 
   it = Items->begin();
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_CHECK_EQUAL(static_cast<int>(dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it)->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
@@ -389,9 +388,9 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
       "appended.item");
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Random);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM));
 
   //removeItem
 
@@ -401,13 +400,12 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
 
   it = Items->begin();
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Fixed);
+  BOOST_CHECK_EQUAL(static_cast<int>(dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it)->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Interp);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
 
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
@@ -421,8 +419,8 @@ BOOST_AUTO_TEST_CASE(check_advanced_operations)
       (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getID(),
       "appended.item");
 
-  BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it)))->getGeneratorMethod(),
-      openfluid::fluidx::GeneratorDescriptor::Random);
+  BOOST_CHECK_EQUAL(static_cast<int>(
+                      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*(++it))->getGeneratorMethod()), 
+                    static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM));
 }
 

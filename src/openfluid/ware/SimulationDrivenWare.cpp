@@ -303,7 +303,7 @@ openfluid::base::SimulationStatus::SchedulingConstraint SimulationDrivenWare::OP
 
 void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& Msg)
 {
-  appendToLog(openfluid::tools::FileLogger::LOG_WARNING,Msg);
+  appendToLog(openfluid::tools::FileLogger::LogType::WARNING_MSG,Msg);
 }
 
 
@@ -313,7 +313,7 @@ void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& Msg)
 
 void SimulationDrivenWare::OPENFLUID_RaiseWarning(const std::string& /*Source*/, const std::string& Msg)
 {
-  appendToLog(openfluid::tools::FileLogger::LOG_WARNING,Msg);
+  appendToLog(openfluid::tools::FileLogger::LogType::WARNING_MSG,Msg);
 }
 
 

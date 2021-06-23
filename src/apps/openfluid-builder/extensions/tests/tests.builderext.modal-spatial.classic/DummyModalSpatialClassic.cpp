@@ -43,9 +43,9 @@
 #include "DummyModalSpatialClassic.hpp"
 
 
-BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modal-spatial.classic", openfluid::builderext::MODE_MODAL)
+BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modal-spatial.classic", openfluid::builderext::ExtensionMode::MODAL)
 
-  DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)
+  DECLARE_CATEGORY(openfluid::builderext::ExtensionCategory::SPATIAL)
   DECLARE_MENUTEXT("Spatial classic")
 
 END_BUILDEREXT_SIGNATURE
@@ -105,7 +105,7 @@ void DummyModalSpatialClassic::addUnitClass()
     UDesc.setProcessOrder(1);
     mp_Desc->spatialDomain().addUnit(UDesc);
 
-    emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
+    emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
   }
 }
 
@@ -118,8 +118,8 @@ void DummyModalSpatialClassic::clearSpatialDomain()
 {
   mp_Desc->spatialDomain().clearDomain();
 
-  emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
-                     openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+  emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
+                     openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
 
 }
 
@@ -130,9 +130,9 @@ void DummyModalSpatialClassic::clearSpatialDomain()
 
 void DummyModalSpatialClassic::update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
-  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
-      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
-      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT))
+  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL) ||
+      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS) ||
+      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT))
   {
     ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)")
                             .arg(mp_Desc->spatialDomain().getClassNames().size()));

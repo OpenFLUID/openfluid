@@ -51,7 +51,7 @@ namespace openfluid { namespace fluidx {
 class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 {
   public:
-    enum GeneratorMethod { NoGenMethod, Fixed, Random, Interp, Inject };
+    enum class GeneratorMethod { NONE, FIXED, RANDOM, INTERP, INJECT };
 
 
   private:
@@ -108,11 +108,11 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
     {
       if (isVectorVariable())
       {
-        return openfluid::core::Value::VECTOR;
+        return openfluid::core::Value::Type::VECTOR;
       }
       else
       {
-        return openfluid::core::Value::DOUBLE;
+        return openfluid::core::Value::Type::DOUBLE;
       }
     }
 

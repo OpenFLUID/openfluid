@@ -70,7 +70,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
                         QColor LineColor,
                         QColor FillColor)
 {
-  if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
+  if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::UnstructuredType::VECTOR)
   {
     openfluid::core::DatastoreItem* DSItem = nullptr;
 

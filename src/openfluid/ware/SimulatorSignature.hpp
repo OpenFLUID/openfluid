@@ -252,7 +252,7 @@ class OPENFLUID_API SignatureTimeScheduling
 {
   public:
 
-    enum SchedulingType { UNDEFINED, DEFAULT, FIXED, RANGE };
+    enum class SchedulingType { UNDEFINED, DEFAULT, FIXED, RANGE };
 
     SchedulingType Type;
 
@@ -268,28 +268,28 @@ class OPENFLUID_API SignatureTimeScheduling
 
     void setAsUndefined()
     {
-      Type = UNDEFINED;
+      Type = SchedulingType::UNDEFINED;
       Min = 0;
       Max = 0;
     }
 
     void setAsDefaultDeltaT()
     {
-      Type = DEFAULT;
+      Type = SchedulingType::DEFAULT;
       Min = 0;
       Max = 0;
     }
 
     void setAsFixed(openfluid::core::Duration_t Val)
     {
-      Type = FIXED;
+      Type = SchedulingType::FIXED;
       Min = Val;
       Max = Val;
     }
 
     void setAsRange(openfluid::core::Duration_t MinVal, openfluid::core::Duration_t MaxVal)
     {
-      Type = RANGE;
+      Type = SchedulingType::RANGE;
       Min = MinVal;
       Max = MaxVal;
     }

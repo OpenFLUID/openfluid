@@ -51,7 +51,8 @@ class OPENFLUID_API Listener
 {
   public:
 
-    enum Status {LISTEN_OK, LISTEN_WARNING, LISTEN_ERROR};
+    // warning: key 'ERROR' causes a compilation error on Windows/MinGW systems
+    enum class Status {OK_STATUS, WARNING_STATUS, ERROR_STATUS};
 
     Listener() = default;
 

@@ -379,7 +379,7 @@ void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::Da
     mp_LayerSource = DSList.front();
 
     // retreive informations from layer
-    if (mp_LayerSource->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
+    if (mp_LayerSource->getType() == openfluid::core::UnstructuredValue::UnstructuredType::VECTOR)
     {
       std::unique_ptr<openfluid::core::DatastoreItem> DSItem = 
         std::make_unique<openfluid::core::DatastoreItem>(mp_LayerSource->getID(),

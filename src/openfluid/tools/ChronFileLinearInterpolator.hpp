@@ -55,7 +55,7 @@ class OPENFLUID_API ChronFileLinearInterpolator : public ChronFileInterpolator
 
     ChronFileLinearInterpolator(const std::string& InFilePath, const std::string& OutFilePath,
                                 const openfluid::core::DateTime& BeginDate, const openfluid::core::DateTime& EndDate,
-                                const openfluid::core::Duration_t& DeltaT, PreProcess PrePcs = PREPROCESS_NONE);
+                                const openfluid::core::Duration_t& DeltaT, PreProcess PrePcs = NONE);
 
 
     ~ChronFileLinearInterpolator();

@@ -51,16 +51,16 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
 
   switch (m_GeneratorMethod)
   {
-    case openfluid::fluidx::GeneratorDescriptor::Fixed:
+    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED:
       setFixedInfo();
       break;
-    case openfluid::fluidx::GeneratorDescriptor::Random:
+    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM:
       setRandomInfo();
       break;
-    case openfluid::fluidx::GeneratorDescriptor::Interp:
+    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP:
       setInterpInfo();
       break;
-    case openfluid::fluidx::GeneratorDescriptor::Inject:
+    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT:
       setInjectInfo();
       break;
     default:
