@@ -58,7 +58,7 @@ WareSrcManager::WareSrcManager() :
 {
   openfluid::base::Environment::init();
 
-  switchWorkspace(openfluid::base::PreferencesManager::instance()->getBuilderWorkspacePath());
+  switchWorkspace(QString::fromStdString(openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath()));
 }
 
 
@@ -121,12 +121,11 @@ QString WareSrcManager::getWareTypePath(openfluid::ware::WareType WareSrcType)
 // =====================================================================
 
 
-QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::WareType OFWareType,
-                                    QString& ErrMsg)
+QString WareSrcManager::getWarePath(const QString& WareID, openfluid::ware::WareType OFWareType, QString& ErrMsg)
 {
   openfluid::ware::WareType Type;
 
-  switch (OFWareType)
+  switch (OFWareType)  // TODO check why BUILDEREXT WareType is not managed
   {
     case openfluid::ware::WareType::SIMULATOR:
       Type = openfluid::ware::WareType::SIMULATOR;

@@ -143,7 +143,7 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     int getClassIndex(const QString& ClassName);
 
-    QStringList getClassesOrderedStringList();
+    std::vector<std::string> getClassesOrderedStringList();
 
     openfluid::core::UnitID_t getUnitIDFromAttributesTableRow(int Row);
 

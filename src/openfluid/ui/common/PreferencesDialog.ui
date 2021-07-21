@@ -91,10 +91,10 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>1</number>
       </property>
-      <widget class="QWidget" name="EnvironmentPage">
-       <layout class="QVBoxLayout" name="verticalLayout_11" stretch="0,1">
+      <widget class="QWidget" name="GeneralPage">
+       <layout class="QVBoxLayout" name="verticalLayout_20">
         <item>
          <widget class="QGroupBox" name="LanguageGroupBox">
           <property name="title">
@@ -121,9 +121,82 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox">
+         <spacer name="verticalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="WorkspacesPage">
+       <layout class="QVBoxLayout" name="verticalLayout_11" stretch="0,1">
+        <item>
+         <widget class="QGroupBox" name="CurrentWksGroupBox">
           <property name="title">
-           <string>Workspaces</string>
+           <string>Current Workspace</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_18">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLabel" name="RecentLabel">
+               <property name="text">
+                <string>Recent projects</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_14">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>10</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ClearRecentsButton">
+               <property name="text">
+                <string>Clear list</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="AvailWksGroupBox">
+          <property name="title">
+           <string>Available Workspaces</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_12" stretch="1,0">
            <item>
@@ -160,44 +233,7 @@
            <string>Projects</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Maximum number of recent projects:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="RecentMaxSpinBox">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>12</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="ClearRecentsButton">
-             <property name="text">
-              <string>Clear list</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" colspan="4">
+           <item row="0" column="0" colspan="2">
             <widget class="QCheckBox" name="RunAutoSaveCheckBox">
              <property name="text">
               <string>Save project automatically before simulation run</string>

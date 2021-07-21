@@ -135,32 +135,29 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   ExtToolMenu.setEnabled(false);
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-  QMap<QString, QString> Commands;
-  
+  std::list<openfluid::base::PreferencesManager::ExternalTool_t> ExternalTools; 
+  openfluid::base::PreferencesManager::ExternalToolContext ExternalToolsCtxt;
+
   if (currentIndex().isValid() && mp_Model->isDir(currentIndex()))
   {
-    Commands = 
-      PrefMgr->getWaresdevExternalToolsCommandsInContext(
-        openfluid::base::PreferencesManager::ExternalToolContext::WARE);
+    ExternalToolsCtxt = openfluid::base::PreferencesManager::ExternalToolContext::WARE;
   }
   else
   {
-    Commands = 
-      PrefMgr->getWaresdevExternalToolsCommandsInContext(
-        openfluid::base::PreferencesManager::ExternalToolContext::FILE);
+    ExternalToolsCtxt = openfluid::base::PreferencesManager::ExternalToolContext::FILE;
   }
-  QList<QString> ExternalToolsOrder = PrefMgr->getWaresdevExternalToolsOrder();
-  QMap<QString, QAction*> m_ExternalToolsActions;
-  for (auto const& Command : ExternalToolsOrder)
+  
+  ExternalTools = PrefMgr->getWaresdevExternalToolsInContext(ExternalToolsCtxt);
+
+  QMap<QString, QAction*> ExternalToolsActions;
+  for (auto const& Tool : ExternalTools)
   {
-    if (Commands.contains(Command))
-    {
-      ExtToolMenu.setEnabled(true);
-      m_ExternalToolsActions[Command] = new QAction(Command, this);
-      m_ExternalToolsActions[Command]->setData(Commands.value(Command));
-      ExtToolMenu.addAction(m_ExternalToolsActions[Command]);
-      connect(m_ExternalToolsActions[Command], SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));
-    }
+    QString ToolName = QString::fromStdString(Tool.Name);
+    ExtToolMenu.setEnabled(true);
+    ExternalToolsActions[ToolName] = new QAction(ToolName, this);
+    ExternalToolsActions[ToolName]->setData(QString::fromStdString(Tool.getCommand(ExternalToolsCtxt)));
+    ExtToolMenu.addAction(ExternalToolsActions[ToolName]);
+    connect(ExternalToolsActions[ToolName], SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));
   }
   Menu.addMenu(&ExtToolMenu);
 

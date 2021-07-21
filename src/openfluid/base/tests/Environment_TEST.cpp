@@ -40,7 +40,7 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_openfluidenv
+#define BOOST_TEST_MODULE unittest_environment
 
 
 #include <iostream>
@@ -87,14 +87,14 @@ BOOST_AUTO_TEST_CASE(check_init)
   std::cout << "Common resources dir: " << openfluid::base::Environment::getCommonResourcesDir() << std::endl;
   std::cout << "App resources dir (appname = foo): " <<
                openfluid::base::Environment::getAppResourcesDir("foo") << std::endl;
-  std::cout << "Default config file: " << openfluid::base::Environment::getConfigFile() << std::endl;
+  std::cout << "Default config file: " << openfluid::base::Environment::getSettingsFile() << std::endl;
   std::cout << "Ideal thread count: " << openfluid::base::Environment::getIdealThreadCount() << std::endl;
 
   BOOST_REQUIRE(!openfluid::base::Environment::getSystemArch().empty());
   BOOST_REQUIRE(!openfluid::base::Environment::getInstallPrefix().empty());
   BOOST_REQUIRE(!openfluid::base::Environment::getUserHomeDir().empty());
   BOOST_REQUIRE(!openfluid::base::Environment::getUserDataDir().empty());
-  BOOST_REQUIRE_GT(openfluid::base::Environment::getConfigFile().size(),0);
+  BOOST_REQUIRE_GT(openfluid::base::Environment::getSettingsFile().size(),0);
 
   BOOST_REQUIRE(!openfluid::base::Environment::getVersion().empty());
   BOOST_REQUIRE(!openfluid::base::Environment::getVersionFull().empty());

@@ -250,6 +250,46 @@ std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit
 void OPENFLUID_API stringReplace(std::string& Data, const std::string& ToSearch, const std::string& ReplaceStr);
 
 
+/**
+  Converts a string to lower case
+  @param[in] Str the string to convert
+  @return the string converted to lower case
+*/
+std::string OPENFLUID_API toLowerCase(const std::string& Str);
+
+
+/**
+  Converts a string to upper case
+  @param[in] Str the string to convert
+  @return the string converted to upper case
+*/
+std::string OPENFLUID_API toUpperCase(const std::string& Str);
+
+
+/**
+  Trims all the whitespaces character located on the right side of the string
+  @param[in] Str the string to trim
+  @return the trimmed string
+*/
+std::string OPENFLUID_API trimRight(const std::string& Str);
+
+
+/**
+  Trims all the whitespaces character located on the left side of the string
+  @param[in] Str the string to trim
+  @return the trimmed string
+*/
+std::string OPENFLUID_API trimLeft(const std::string& Str);
+
+
+/**
+  Trims all the whitespaces character located on both right and left sides of the string
+  @param[in] Str the string to trim
+  @return the trimmed string
+*/
+std::string OPENFLUID_API trim(const std::string& Str);
+
+
 } } // namespaces
 
 

@@ -57,12 +57,13 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
   Q_OBJECT
 
   private:
-    QMap<QString, QString> m_ExternalTools;
-    QList<QString> m_ExternalToolsOrder;
+
+    std::list<openfluid::base::PreferencesManager::ExternalTool_t> m_ExternalTools;
+
     QMap<QString, QAction*> m_Actions;
+    QMap<QString, QAction*> m_ExternalToolsActions;
 
     WareBuildOptionsWidget* mp_OptionsWidget;
-    QMap<QString, QAction*> m_ExternalToolsActions;
 
     void createActions();
 

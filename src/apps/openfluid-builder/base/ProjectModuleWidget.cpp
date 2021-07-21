@@ -455,12 +455,12 @@ bool ProjectModuleWidget::whenPreferencesAsked()
 
   if (PrefsDlg.isSimPathsChanged())
   {
-    QStringList ExtraPaths = PrefsMgr->getBuilderExtraSimulatorsPaths();
+    auto ExtraPaths = PrefsMgr->getBuilderExtraSimulatorsPaths();
 
     openfluid::base::Environment::resetExtraSimulatorsDirs();
-    for (int i=0;i<ExtraPaths.size(); i++)
+    for (const auto& P : ExtraPaths)
     {
-      openfluid::base::Environment::addExtraSimulatorsDirs(ExtraPaths[i].toStdString());
+      openfluid::base::Environment::addExtraSimulatorsDirs(P);
     }
 
     updateWaresWatchersPaths();
@@ -471,12 +471,12 @@ bool ProjectModuleWidget::whenPreferencesAsked()
 
   if (PrefsDlg.isObsPathsChanged())
   {
-    QStringList ExtraPaths = PrefsMgr->getBuilderExtraObserversPaths();
+    auto ExtraPaths = PrefsMgr->getBuilderExtraObserversPaths();
 
     openfluid::base::Environment::resetExtraObserversDirs();
-    for (int i=0;i<ExtraPaths.size(); i++)
+    for (const auto& P : ExtraPaths)
     {
-      openfluid::base::Environment::addExtraObserversDirs(ExtraPaths[i].toStdString());
+      openfluid::base::Environment::addExtraObserversDirs(P);
     }
 
     updateWaresWatchersPaths();
@@ -525,10 +525,10 @@ void ProjectModuleWidget::whenRecentProjectsActionsChanged()
 void ProjectModuleWidget::whenRunAsked()
 {
   // Get run mode
-  QString ModeStr =
+  std::string ModeStr =
     openfluid::base::RunContextManager::instance()
-      ->getProjectConfigValue("builder.simulation.options","mode").toString();
-  ProjectCentral::RunMode Mode = ProjectCentral::getRunModeValue(ModeStr);
+      ->getProjectContextValue("/builder/simulation/mode").get<std::string>("default");
+  ProjectCentral::RunMode Mode = ProjectCentral::getRunModeValue(QString::fromStdString(ModeStr));
 
   // Save if automatic or specific run mode
   if (openfluid::base::PreferencesManager::instance()->isBuilderAutomaticSaveBeforeRun() || 
@@ -572,7 +572,7 @@ void ProjectModuleWidget::whenRunAsked()
 void ProjectModuleWidget::whenRunModeAsked(ProjectCentral::RunMode Mode)
 {
   openfluid::base::RunContextManager::instance()
-    ->setProjectConfigValue("builder.simulation.options","mode",ProjectCentral::getRunModeStr(Mode));
+    ->setProjectContextValue("/builder/simulation","mode",ProjectCentral::getRunModeStr(Mode).toStdString());
 }
 
 

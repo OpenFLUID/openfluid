@@ -37,9 +37,12 @@
 */
 
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
+
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -48,7 +51,8 @@ namespace openfluid { namespace base {
 
 OPENFLUID_SINGLETON_INITIALIZATION(RunContextManager)
 
-QString RunContextManager::m_ProjectFileGroupName = "OpenFLUID Project";
+
+const std::string RunContextManager::m_ProjectRole = "openfluid-project";
 
 
 // =====================================================================
@@ -90,16 +94,6 @@ RunContextManager::~RunContextManager()
 // =====================================================================
 
 
-std::string RunContextManager::getNow()
-{
-  return QDateTime::currentDateTime().toString("yyyyMMdd'T'hhmmss").toStdString();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 std::string RunContextManager::getFilePathFromProjectPath(const std::string& ProjectPath)
 {
   return openfluid::tools::Filesystem::joinPath({ProjectPath,openfluid::config::PROJECT_FILE});
@@ -130,25 +124,213 @@ std::string RunContextManager::getOuputDirFromProjectPath(const std::string& Pro
 // =====================================================================
 
 
+void RunContextManager::updateProjectFile(const std::string& ProjectFilePath)
+{
+
+#if (OPENFLUID_VERSION_NUMERIC >= OPENFLUID_VERSION_COMPUTE(2,3,0))
+# warning "the project file format compatibility is deprecated and should be removed"
+#endif
+
+
+  if (!openfluid::tools::Filesystem::isFile(ProjectFilePath))
+  {
+    std::string FormerPrjFilePath = 
+      openfluid::tools::Filesystem::joinPath({
+        openfluid::tools::Filesystem::dirname(ProjectFilePath),
+        "openfluid-project.conf"
+      });
+
+    if (openfluid::tools::Filesystem::isFile(FormerPrjFilePath))
+    {
+      boost::property_tree::ptree INI;
+      boost::property_tree::ini_parser::read_ini(FormerPrjFilePath,INI);
+
+      openfluid::tools::SettingsBackend SB(ProjectFilePath,m_ProjectRole,false);
+      SB.setValue("/","name","");
+      SB.setValue("/","description","");
+      SB.setValue("/","authors","");
+      SB.setValue("/","creation_date","");
+      SB.setValue("/","lastmod_date","");
+      SB.setValue("/","inc_outdir",false);
+
+
+      auto cleanKeyValue = [](const std::string& Key, const std::string& Value)
+      {
+         std::string UnquotedVal = Value;
+         if (Value.front() == '"' && Value.back() == '"')
+         {
+           UnquotedVal = Value.substr(1,UnquotedVal.length()-2);
+         }
+
+         return std::make_pair(
+           openfluid::tools::trim(Key),
+           openfluid::tools::trim(UnquotedVal)
+         );
+      };
+
+
+      for(const auto& Section : INI)
+      {
+        if (Section.first == "OpenFLUID%20Project" || Section.first == "OpenFLUID Project")
+        {
+          for(const auto& Entry : Section.second)
+          {
+            auto [Key,Value] = cleanKeyValue(Entry.first,Entry.second.get_value<std::string>());
+
+            if (openfluid::tools::toLowerCase(Key) == "name")
+            {
+              SB.setValue("/","name",Value);
+            }
+            else if (openfluid::tools::toLowerCase(Key) == "authors")
+            {
+              SB.setValue("/","authors",Value);
+            }
+            else if (openfluid::tools::toLowerCase(Key) == "description")
+            {
+              SB.setValue("/","description",Value);
+            }
+            else if (openfluid::tools::toLowerCase(Key) == "creationdate")
+            {
+              SB.setValue("/","creation_date",Value);
+            }
+            else if (openfluid::tools::toLowerCase(Key) == "lastmoddate")
+            {
+              SB.setValue("/","lastmod_date",Value);
+            }
+            else if (openfluid::tools::toLowerCase(Key) == "incoutput")
+            {
+              SB.setValue("/","inc_outdir",Value=="true");
+            }
+          }
+        }
+        else if (Section.first == "builder.model.warescolors")
+        {
+          for(const auto& Entry : Section.second)
+          {
+            auto [Key,Value] = cleanKeyValue(Entry.first,Entry.second.get_value<std::string>());
+
+            SB.setValue("/context/builder/model/colors",Key,Value);
+          }
+        }
+        else if (Section.first == "builder.model.graphicalview")
+        {
+          for(const auto& Entry : Section.second)
+          {
+            auto [Key,Value] = cleanKeyValue(Entry.first,Entry.second.get_value<std::string>());
+
+            SB.setValue("/context/builder/model/graphicalview/positions",Key,Value);
+          }
+        }
+        else if (Section.first == "builder.model.render")
+        {
+          for(const auto& Entry : Section.second)
+          {
+            auto [Key,Value] = cleanKeyValue(Entry.first,Entry.second.get_value<std::string>());
+
+            if (openfluid::tools::toLowerCase(Key) == "color.mode")
+            {
+              SB.setValue("/context/builder/model/graphicalview","color_mode",Value);
+            }
+          }
+        }
+        else if (Section.first == "builder.spatial.unitsclasses")
+        {
+          for(const auto& Entry : Section.second)
+          {
+            auto [Key,Value] = cleanKeyValue(Entry.first,Entry.second.get_value<std::string>());
+
+            if (openfluid::tools::toLowerCase(Key) == "order")
+            {
+              std::vector<std::string> OrderArray;
+              auto Classes = openfluid::tools::splitString(Value,",");
+
+              for (const auto& C : Classes)
+              {
+                OrderArray.push_back(openfluid::tools::trim(C));
+              }
+
+              SB.setValue("/context/builder/spatial/unitsclasses","order",OrderArray);
+            }
+            else
+            {
+              auto SplittedKey = openfluid::tools::splitString(Key,".");
+              if (SplittedKey.size() == 2)
+              {
+                auto ClassName = openfluid::tools::trim(SplittedKey[0]);
+                auto StyleName = openfluid::tools::trim(SplittedKey[1]);
+
+                if (StyleName == "linewidth")
+                {
+                  try
+                  {
+                    int Width = std::stoi(Value);
+                    SB.setValue("/context/builder/spatial/unitsclasses/styles/"+ClassName,StyleName,Width);
+                  }
+                  catch (std::invalid_argument&)
+                  { }
+                }
+                else
+                {
+                  SB.setValue("/context/builder/spatial/unitsclasses/styles/"+ClassName,StyleName,Value);
+                }
+              }
+            }
+          }
+        }
+        else if (Section.first == "builder.runconfig.options")
+        {
+          for(const auto& Entry : Section.second)
+          {
+            auto [Key,Value] = cleanKeyValue(Entry.first,Entry.second.get_value<std::string>());
+
+            if (openfluid::tools::toLowerCase(Key) == "clearoutdir")
+            {
+              SB.setValue("/context/builder/runconfig","clear_outdir",Value == "true");
+            }
+            else if (openfluid::tools::toLowerCase(Key) == "profiling")
+            {
+              SB.setValue("/context/builder/runconfig","profiling",Value == "true");
+            }
+            else if (openfluid::tools::toLowerCase(Key) == "maxthreads")
+            {
+              try
+              {
+                int Max = std::stoi(Value);
+                SB.setValue("/context/builder/runconfig","maxthreads",Max);
+              }
+              catch (std::invalid_argument&)
+              { }
+            }
+          }
+        }
+        else if (Section.first == "builder.simulation.options")
+        {
+          for(const auto& Entry : Section.second)
+          {
+            auto [Key,Value] = cleanKeyValue(Entry.first,Entry.second.get_value<std::string>());
+
+            SB.setValue("/context/builder/simulation",Key,Value);
+          }
+        }
+      }
+
+      SB.save();
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool RunContextManager::checkProject(const std::string& ProjectPath)
 {
   std::string AbsPath = openfluid::tools::Filesystem::absolutePath(ProjectPath);
-
   std::string PrjFilePath = getFilePathFromProjectPath(AbsPath);
 
-  // TODO to be removed in a later version (after mid-2016)
-  // try to convert a former .openfluidprj project
-  if (!openfluid::tools::Filesystem::isFile(PrjFilePath))
-  {
-    std::string FormerPrjFilePath = openfluid::tools::Filesystem::joinPath({AbsPath,".openfluidprj"});
-
-    // Rename the former .openfluidprj file into the new name, only if exists
-    if (openfluid::tools::Filesystem::isFile(FormerPrjFilePath))
-    {
-      openfluid::tools::Filesystem::renameFile(FormerPrjFilePath,PrjFilePath);
-    }
-  }
-
+  // try to convert a former openfluid-project.conf file if necessary
+  updateProjectFile(PrjFilePath);
 
   if (!openfluid::tools::Filesystem::isFile(PrjFilePath))
   {
@@ -160,16 +342,13 @@ bool RunContextManager::checkProject(const std::string& ProjectPath)
     return false;
   }
 
-  QSettings PrjFile(QString::fromStdString(PrjFilePath),QSettings::IniFormat);
+  openfluid::tools::SettingsBackend SB(PrjFilePath,m_ProjectRole);
 
-  PrjFile.beginGroup(m_ProjectFileGroupName);
-  bool OK = PrjFile.contains("Name") &&
-            PrjFile.contains("Description") &&
-            PrjFile.contains("Authors") &&
-            PrjFile.contains("CreationDate") &&
-            PrjFile.contains("LastModDate");
-
-  PrjFile.endGroup();
+  bool OK = SB.exists("/name") &&
+            SB.exists("/description") &&
+            SB.exists("/authors") &&
+            SB.exists("/creation_date") &&
+            SB.exists("/lastmod_date");
 
   return OK;
 }
@@ -228,17 +407,15 @@ bool RunContextManager::openProject(const std::string& Path)
     m_InputDir = getInputDirFromProjectPath(m_ProjectPath);
     m_OutputDir = getOuputDirFromProjectPath(m_ProjectPath);
 
-    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(m_ProjectPath));
-    mp_ProjectFile = new QSettings(PrjFilePath,QSettings::IniFormat);
+    std::string PrjFilePath = getFilePathFromProjectPath(m_ProjectPath);
+    mp_ProjectFile = new openfluid::tools::SettingsBackend(PrjFilePath,m_ProjectRole);
 
-    mp_ProjectFile->beginGroup(m_ProjectFileGroupName);
-    m_ProjectName = openfluid::tools::fromIniCompatible(mp_ProjectFile->value("Name"));
-    m_ProjectDescription = openfluid::tools::fromIniCompatible(mp_ProjectFile->value("Description"));
-    m_ProjectAuthors = openfluid::tools::fromIniCompatible(mp_ProjectFile->value("Authors"));
-    m_ProjectCreationDate = mp_ProjectFile->value("CreationDate").toString().toStdString();
-    m_ProjectLastModDate = mp_ProjectFile->value("LastModDate").toString().toStdString();
-    m_ProjectIncOutputDir = mp_ProjectFile->value("IncOutput").toBool();
-    mp_ProjectFile->endGroup();
+    m_ProjectName = mp_ProjectFile->getValue("/name").get<std::string>("");
+    m_ProjectDescription = mp_ProjectFile->getValue("/description").get<std::string>("");
+    m_ProjectAuthors = mp_ProjectFile->getValue("/authors").get<std::string>("");
+    m_ProjectCreationDate = mp_ProjectFile->getValue("/creation_date").get<std::string>("19700101T000000");
+    m_ProjectLastModDate = mp_ProjectFile->getValue("/lastmod_date").get<std::string>("19700101T000000");
+    m_ProjectIncOutputDir = mp_ProjectFile->getValue("/inc_outdir").get<bool>(false);
 
     updateWaresEnvironment();
 
@@ -271,14 +448,14 @@ bool RunContextManager::createProject(const std::string& Path,
     m_InputDir = getInputDirFromProjectPath(AbsPath);
     m_OutputDir = getOuputDirFromProjectPath(AbsPath);
 
-    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(AbsPath));
-    mp_ProjectFile = new QSettings(PrjFilePath,QSettings::IniFormat);
+    std::string PrjFilePath = getFilePathFromProjectPath(AbsPath);
+    mp_ProjectFile = new openfluid::tools::SettingsBackend(PrjFilePath,m_ProjectRole);
 
     m_ProjectName = Name;
     m_ProjectDescription = Description;
     m_ProjectAuthors = Authors;
     m_ProjectIncOutputDir = Inc;
-    m_ProjectCreationDate = getNow();
+    m_ProjectCreationDate = openfluid::tools::getNowAsString("%Y%m%dT%H%M%S");
 
     updateWaresEnvironment();
 
@@ -302,17 +479,14 @@ bool RunContextManager::saveProject()
     return false;
   }
 
-  m_ProjectLastModDate = getNow();
+  m_ProjectLastModDate = openfluid::tools::getNowAsString("%Y%m%dT%H%M%S");
 
-  mp_ProjectFile->beginGroup(m_ProjectFileGroupName);
-  mp_ProjectFile->setValue("Name",openfluid::tools::toIniCompatible(m_ProjectName));
-  mp_ProjectFile->setValue("Description",openfluid::tools::toIniCompatible(m_ProjectDescription));
-  mp_ProjectFile->setValue("Authors",openfluid::tools::toIniCompatible(m_ProjectAuthors));
-  mp_ProjectFile->setValue("CreationDate",QString::fromStdString(m_ProjectCreationDate));
-  mp_ProjectFile->setValue("LastModDate",QString::fromStdString(m_ProjectLastModDate));
-  mp_ProjectFile->setValue("IncOutput",m_ProjectIncOutputDir);
-  mp_ProjectFile->endGroup();
-  mp_ProjectFile->sync();
+  mp_ProjectFile->setValue("/","name",m_ProjectName);
+  mp_ProjectFile->setValue("/","description",m_ProjectDescription);
+  mp_ProjectFile->setValue("/","authors",m_ProjectAuthors);
+  mp_ProjectFile->setValue("/","creation_date",m_ProjectCreationDate);
+  mp_ProjectFile->setValue("/","lastmod_date",m_ProjectLastModDate);
+  mp_ProjectFile->setValue("/","inc_outdir",m_ProjectIncOutputDir);
 
   return true;
 }
@@ -331,8 +505,6 @@ void RunContextManager::closeProject()
                     m_ProjectCreationDate = m_ProjectLastModDate = "";
 
     m_ProjectIncOutputDir = m_ProjectIsOpen = false;
-
-    mp_ProjectFile->sync();
 
     delete mp_ProjectFile;
     mp_ProjectFile = nullptr;
@@ -372,7 +544,7 @@ void RunContextManager::setDateTimeOutputDir()
 {
   closeProject();
 
-  std::string DateDir = "OPENFLUID."+QDateTime::currentDateTime().toString("yyyyMMdd'T'hhmmss").toStdString()+".OUT";
+  std::string DateDir = "OPENFLUID."+openfluid::tools::getNowAsString("%Y%m%dT%H%M%S")+".OUT";
   m_OutputDir = openfluid::tools::Filesystem::joinPath({m_UserDataDir,DateDir});
 
   updateWaresEnvironment();
@@ -387,7 +559,7 @@ void RunContextManager::updateProjectOutputDir()
 {
   if (m_ProjectIsOpen && m_ProjectIncOutputDir)
   {
-    std::string Now = getNow();
+    std::string Now = openfluid::tools::getNowAsString("%Y%m%dT%H%M%S");
     Now.replace(8,1,"-");
 
     m_OutputDir = getOuputDirFromProjectPath(m_ProjectPath).append("_").append(Now);
@@ -425,16 +597,15 @@ bool RunContextManager::getProjectInfos(const std::string& Path,
 
   if (checkProject(Path))
   {
-    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(Path));
-    QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
 
-    PrjFile.beginGroup(m_ProjectFileGroupName);
-    Name = openfluid::tools::fromIniCompatible(PrjFile.value("Name"));
-    Description = openfluid::tools::fromIniCompatible(PrjFile.value("Description"));
-    Authors = openfluid::tools::fromIniCompatible(PrjFile.value("Authors"));
-    CreationDate = PrjFile.value("CreationDate").toString().toStdString();
-    LastModDate = PrjFile.value("LastModDate").toString().toStdString();
-    PrjFile.endGroup();
+    std::string PrjFilePath = getFilePathFromProjectPath(Path);
+    openfluid::tools::SettingsBackend PrjFile(PrjFilePath,m_ProjectRole);
+
+    Name = PrjFile.getValue("/name").get<std::string>("");
+    Description = PrjFile.getValue("/description").get<std::string>("");
+    Authors = PrjFile.getValue("/authors").get<std::string>("");
+    CreationDate = PrjFile.getValue("/creation_date").get<std::string>("19700101T000000");
+    LastModDate = PrjFile.getValue("/lastmod_date").get<std::string>("19700101T000000");
 
     return true;
   }
@@ -446,14 +617,14 @@ bool RunContextManager::getProjectInfos(const std::string& Path,
 // =====================================================================
 
 
-QVariant RunContextManager::getProjectConfigValue(const QString& Group, const QString& Key) const
+openfluid::tools::SettingValue RunContextManager::getProjectContextValue(const std::string& Pointer) const
 {
   if (!m_ProjectIsOpen)
   {
-    return QVariant();
+    return openfluid::tools::SettingValue();
   }
 
-  return mp_ProjectFile->value(Group+"/"+Key);
+  return mp_ProjectFile->getValue("/context"+Pointer);
 }
 
 
@@ -461,14 +632,10 @@ QVariant RunContextManager::getProjectConfigValue(const QString& Group, const QS
 // =====================================================================
 
 
-void RunContextManager::setProjectConfigValue(const QString& Group, const QString& Key, const QVariant& Value)
+openfluid::tools::SettingValue RunContextManager::getProjectContextValue(const std::string& Pointer,
+                                                                         const std::string& Key) const
 {
-  if (!m_ProjectIsOpen)
-  {
-    return;
-  }
-
-  mp_ProjectFile->setValue(Group+"/"+Key,Value);
+  return getProjectContextValue(Pointer+"/"+Key);
 }
 
 
@@ -476,14 +643,30 @@ void RunContextManager::setProjectConfigValue(const QString& Group, const QStrin
 // =====================================================================
 
 
-void RunContextManager::removeProjectConfigValue(const QString& Group, const QString& Key)
+void RunContextManager::setProjectContextValue(const std::string& ParentPointer, const std::string& Key, 
+                                               const openfluid::tools::SettingValue& Value)
 {
   if (!m_ProjectIsOpen)
   {
     return;
   }
 
-  mp_ProjectFile->remove(Group+"/"+Key);
+  mp_ProjectFile->setValue("/context"+ParentPointer,Key,Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunContextManager::removeProjectContextValue(const std::string& Pointer)
+{
+  if (!m_ProjectIsOpen)
+  {
+    return;
+  }
+
+  mp_ProjectFile->remove(Pointer);
 }
 
 

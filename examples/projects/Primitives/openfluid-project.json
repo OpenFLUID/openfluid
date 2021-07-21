@@ -1,0 +1,25 @@
+{
+  "openfluid-project": {
+    "name": "Primitives",
+    "description": "Example project, showing usage of OpenFLUID primitives",
+    "authors": "Jean-Christophe Fabre",
+    "creation_date": "20130312T085754",
+    "lastmod_date": "20130312T085754",
+    "inc_outdir": false,
+    "context": {
+      "builder": {
+        "model": {
+          "graphicalview": {
+            "positions": {
+              "examples.primitives.unitsA.prod": "@Point(254 -167)",
+              "examples.primitives.unitsA.up": "@Point(254 111)",
+              "examples.primitives.unitsB.prod": "@Point(244 315)",
+              "var10.unitsA.genscalar": "@Point(528 -166)",
+              "var11.unitsA.genscalar": "@Point(786 -165)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -77,9 +77,7 @@ class OPENFLUID_API ExternalToolsManagementWidget : public QWidget
 
     Ui::ExternalToolsManagementWidget* ui;
 
-    openfluid::base::PreferencesManager::ExternalToolsCommands_t m_ToolCommands;
-
-    QList<QString> m_ToolsOrder;
+    std::list<openfluid::base::PreferencesManager::ExternalTool_t> m_ExternalTools;
 
     bool m_NeedRestart = false;
 
@@ -97,21 +95,12 @@ class OPENFLUID_API ExternalToolsManagementWidget : public QWidget
 
     virtual ~ExternalToolsManagementWidget();
 
+    const std::list<openfluid::base::PreferencesManager::ExternalTool_t>& getToolsList() const;
 
-    /**
-      Returns the map of tools
-      @return The map of tools
-    */
-    openfluid::base::PreferencesManager::ExternalToolsCommands_t getToolsList() const;
-
-
-    /**
-      Returns the ordered list of tools
-      @return The ordered list of tools
-    */
-    QList<QString> getToolsOrder() const;
-
-    bool getNeedRestart() {return m_NeedRestart;}
+    bool getNeedRestart() 
+    {
+      return m_NeedRestart;
+    }
 
 };
 

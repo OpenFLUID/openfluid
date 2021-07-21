@@ -50,6 +50,7 @@
 #include <QString>
 #include <QStringList>
 #include <QDateTime>
+#include <QPoint>
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/dllexport.hpp>
@@ -87,7 +88,7 @@ std::list<std::string> OPENFLUID_API toStdStringList(const QStringList& StrList)
   @param[in] StrList the QStringList to transform
   @return The QStringList transformed into a std::vector of std::string
 */
-std::vector<std::string> toStdStringVector(const QStringList& StrList);
+std::vector<std::string> OPENFLUID_API toStdStringVector(const QStringList& StrList);
 
 
 /**
@@ -152,6 +153,22 @@ QString OPENFLUID_API escapeXMLEntities(const QString& Str);
   @return The decoded string
 */
 QString OPENFLUID_API decodeXMLEntities(const QString& Str);
+
+
+/**
+  Converts a \@Point formatted string to a QPoint
+  @param[in] Str the \@Point formatted string (e.g. "\@Point(-127 53)")
+  @return the QPoint object
+*/
+QPoint OPENFLUID_API toQPoint(const std::string& Str);
+
+
+/**
+  Converts a QPoint to a \@Point formatted string
+  @param[in] Point the QPoint object to convert 
+  @return the \@Point formatted string (e.g. "\@Point(-127 53)")
+*/
+std::string OPENFLUID_API fromQPoint(const QPoint& Point);
 
 
 } } // namespaces

@@ -211,22 +211,24 @@ void SpatialDomainWidget::refresh()
   // -------- prepare classes list --------
 
   QStringList OriginalClassesList = openfluid::tools::toQStringList(m_Domain.getClassNames());
-
   QStringList ClassesList;
 
   // get display order for classes from project config file
-  QVariant TmpList =
-      openfluid::base::RunContextManager::instance()->getProjectConfigValue("builder.spatial.unitsclasses","order");
+  std::vector<std::string> TmpList =
+    openfluid::base::RunContextManager::instance()
+      ->getProjectContextValue("/builder/spatial/unitsclasses/order")
+        .get<std::vector<std::string>>(std::vector<std::string>());
 
-  if (!TmpList.isValid())
+  if (TmpList.empty())
   {
-    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses","order",
-                                                                          OriginalClassesList);
+    openfluid::base::RunContextManager::instance()
+    ->setProjectContextValue("/builder/spatial/unitsclasses","order",
+                             openfluid::tools::toStdStringVector(OriginalClassesList));
     ClassesList = OriginalClassesList;
   }
   else
   {
-    ClassesList = TmpList.toStringList();
+    ClassesList = openfluid::tools::toQStringList(TmpList);
 
     // find classes in project config file that are not in original dataset
     QStringList ClassesToRemove;
@@ -262,8 +264,9 @@ void SpatialDomainWidget::refresh()
       }
     }
 
-    openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses","order",
-                                                                          ClassesList);
+    openfluid::base::RunContextManager::instance()
+      ->setProjectContextValue("/builder/spatial/unitsclasses","order",
+                               openfluid::tools::toStdStringVector(ClassesList));
   }
 
 
@@ -974,9 +977,9 @@ void SpatialDomainWidget::moveUnitsClassUp(QString ClassName)
 
   updateUpDownButtons();
 
-  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
-                                                                        "order",
-                                                                        getClassesOrderedStringList());
+  openfluid::base::RunContextManager::instance()->setProjectContextValue("/builder/spatial/unitsclasses","order",
+                                                                         getClassesOrderedStringList());
+
 
   refreshMap();
 }
@@ -1010,9 +1013,8 @@ void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
 
   updateUpDownButtons();
 
-  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.spatial.unitsclasses",
-                                                                        "order",
-                                                                        getClassesOrderedStringList());
+  openfluid::base::RunContextManager::instance()->setProjectContextValue("/builder/spatial/unitsclasses","order",
+                                                                         getClassesOrderedStringList());
 
   refreshMap();
 }
@@ -1514,16 +1516,16 @@ int SpatialDomainWidget::getClassIndex(const QString& ClassName)
 // =====================================================================
 
 
-QStringList SpatialDomainWidget::getClassesOrderedStringList()
+std::vector<std::string> SpatialDomainWidget::getClassesOrderedStringList()
 {
-  QStringList StrList;
+  std::vector<std::string> StrList;
 
   QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
 
   for (int i=0;i<Layout->count()-1;i++)
   {
     UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
-    StrList.append(ClassW->getClassName());
+    StrList.push_back(ClassW->getClassName().toStdString());
   }
 
   return StrList;

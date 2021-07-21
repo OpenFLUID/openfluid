@@ -42,13 +42,12 @@
 
 #include <map>
 #include <vector>
+#include <string>
 
-#include <QSettings>
-#include <QStringList>
-
-#include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/tools/SettingsBackend.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace base {
@@ -65,276 +64,260 @@ class OPENFLUID_API PreferencesManager
 
   private:
 
-    static QString m_FileName;
+    static std::string m_SettingsFile;
 
-    QSettings* mp_ConfFile;
+    std::unique_ptr<openfluid::tools::SettingsBackend> m_Settings;
+
+    static const std::string m_SettingsRole;
 
     PreferencesManager();
 
-    ~PreferencesManager();
+    ~PreferencesManager()
+    { }
+
+    void updateSettingsFile(const std::string& FilePath) const;
+
+    void loadSettings();
 
     void setDefaultValues();
 
-    void setBuilderExtraPaths(const QString& Key, const QStringList& Paths);
+    void setBuilderExtraPaths(const std::string& Key, const std::vector<std::string>& Paths);
 
-    void addBuilderExtraPath(const QString& Key, const QString& Path);
+    void addBuilderExtraPath(const std::string& Key, const std::string& Path);
 
-    void removeBuilderExtraPath(const QString& Key, const QString& Path);
+    void removeBuilderExtraPath(const std::string& Key, const std::string& Path);
 
-    QStringList getBuilderExtraPaths(const QString& Key);
+    std::vector<std::string> getBuilderExtraPaths(const std::string& Key) const;
 
-    static QString guessLang();
+    static std::string guessLanguage();
 
 
   public:
 
-    static const int RecentProjectsLimit;
-
-    class RecentProject_t
-    {
-      public:
-        QString Name;
-        QString Path;
-    };
-
     struct SyntaxHighlightingRule_t
     {
-        QString m_Color;
-        QStringList m_Decoration;
-
-        SyntaxHighlightingRule_t(const QString& Color,const QStringList& Decoration)
-        : m_Color(Color),m_Decoration(Decoration) {}
+      std::string Color;
+      std::vector<std::string> Decoration;
     };
-
-    typedef std::vector<RecentProject_t> RecentProjectsList_t;
-
-    typedef QMap<QString, QStringList> ExternalToolsCommands_t;
-
-    typedef QMap<QString, SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
-
-    typedef std::map<QString, QString> MarketPlaces_t;
 
     enum class ExternalToolContext { WORKSPACE, WARE, FILE };
 
-    /* Used only if we want to set another file name for the conf file
-     * instead of the default one (for tests eg.)
-     * To be set before the first call of instance().
-     */
-    static void setFileName(const QString& AbsoluteFileName);
+    struct ExternalTool_t
+    {
+      std::string Name;
 
-    QString getFileName();
+      std::map<ExternalToolContext,std::string> Commands;
 
-    bool isValidKey(const QString& Group, const QString& Key);
+      std::string getCommand(ExternalToolContext Ctxt) const
+      {
+        auto it = Commands.find(Ctxt);
+        if (it != Commands.end())
+        {
+          return (*it).second;
+         } 
+         return "";
+      }
+    };
 
+    typedef std::map<std::string, SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
 
-    void setLang(const QString& Lang);
-
-    QString getLang();
-
-    static QStringList getAvailableLangs();
-
-    static bool isAvailableLang(const QString& Lang);
-
-    void setBuilderRecentMax(int RecentMax);
-
-    int getBuilderRecentMax();
-
-    bool addBuilderRecentProject(const QString& ProjectName, const QString& ProjectPath = "");
-
-    RecentProjectsList_t getBuilderRecentProjects();
-
-    void clearBuilderRecentProjects();
-
-    void adaptBuilderRecentProjects();
+    typedef std::map<std::string, std::string> MarketPlaces_t; // TODO market is deprecated and will be removed
 
 
-    void setBuilderWorkspacesPaths(const QStringList& Paths);
+    /** 
+       Used only if we want to set another file name for the settings file
+       instead of the default one (e.g. for testing). To be set before the first call of instance().
+    */
+    static void setSettingsFile(const std::string& FilePath);
 
-    QStringList getBuilderWorkspacesPaths();
-
-    QString getBuilderWorkspacePath();
-
-    QString getBuilderProjectsPath();
-
-
-    void setBuilderExtraSimulatorsPaths(const QStringList& Paths);
-
-    void addBuilderExtraSimulatorsPath(const QString& Path);
-
-    void removeBuilderExtraSimulatorsPath(const QString& Path);
-
-    QStringList getBuilderExtraSimulatorsPaths();
+    std::string getSettingsFile() const;
 
 
-    void setBuilderExtraExtensionsPaths(const QStringList& Paths);
+    void setUILanguage(const std::string& Lang); 
 
-    void addBuilderExtraExtensionsPath(const QString& Path);
+    std::string getUILanguage() const; 
 
-    void removeBuilderExtraExtensionsPath(const QString& Path);
+    static std::vector<std::string> getAvailableUILanguages();
 
-    QStringList getBuilderExtraExtensionsPaths();
+    static bool isUILanguageAvailable(const std::string& Lang);
 
 
-    void setBuilderExtraObserversPaths(const QStringList& Paths);
+    void setWorkspacesPaths(const std::vector<std::string>& Paths);
 
-    void addBuilderExtraObserversPath(const QString& Path);
+    std::vector<std::string> getWorkspacesPaths() const;
 
-    void removeBuilderExtraObserversPath(const QString& Path);
+    std::string getCurrentWorkspacePath() const;
 
-    QStringList getBuilderExtraObserversPaths();
+     
+    void setBuilderExtraSimulatorsPaths(const std::vector<std::string>& Paths);
+
+    void addBuilderExtraSimulatorsPath(const std::string& Path);
+
+    void removeBuilderExtraSimulatorsPath(const std::string& Path);
+
+    std::vector<std::string> getBuilderExtraSimulatorsPaths() const;
+
+
+    void setBuilderExtraExtensionsPaths(const std::vector<std::string>& Paths);
+
+    void addBuilderExtraExtensionsPath(const std::string& Path);
+
+    void removeBuilderExtraExtensionsPath(const std::string& Path);
+
+    std::vector<std::string> getBuilderExtraExtensionsPaths() const;
+
+
+    void setBuilderExtraObserversPaths(const std::vector<std::string>& Paths);
+
+    void addBuilderExtraObserversPath(const std::string& Path);
+
+    void removeBuilderExtraObserversPath(const std::string& Path);
+
+    std::vector<std::string> getBuilderExtraObserversPaths() const;
 
 
     void setBuilderDeltaT(openfluid::core::Duration_t DeltaT);
 
-    openfluid::core::Duration_t getBuilderDeltaT();
+    openfluid::core::Duration_t getBuilderDeltaT() const;
 
 
-    void setBuilderBegin(const QString& Begin);
+    void setBuilderBeginDate(const std::string& Begin);
 
-    QString getBuilderBegin();
+    std::string getBuilderBeginDate() const;
 
-    void setBuilderEnd(const QString& End);
+    void setBuilderEndDate(const std::string& End);
 
-    QString getBuilderEnd();
-
-
-    bool addMarketplace(const QString& PlaceName, const QString& PlaceUrl);
-
-    void removeMarketplace(const QString& PlaceName);
-
-    MarketPlaces_t getMarketplaces();
+    std::string getBuilderEndDate() const;
 
 
-    bool isBuilderExtensionValueExist(const QString& PluginName, const QString& Key);
+    bool addMarketplace(const std::string& PlaceName, const std::string& PlaceUrl);
 
-    QString getBuilderExtensionValue(const QString& PluginName, const QString& Key);
+    void removeMarketplace(const std::string& PlaceName);
 
-    void setBuilderExtensionValue(const QString& PluginName, const QString& Key, const QString& Value);
-
-
-    Qt::DockWidgetArea getBuilderDockPosition();
-
-    void setBuilderDockPosition(Qt::DockWidgetArea Position);
-
-    Qt::ToolBarArea getBuilderToolBarPosition();
-
-    void setBuilderToolBarPosition(Qt::ToolBarArea Position);
+    MarketPlaces_t getMarketplaces() const;
 
 
-    bool isBuilderItemRemovalConfirm();
+    int getBuilderDockArea() const;
 
-    void setBuilderItemRemovalConfirm(bool Confirm);
+    void setBuilderDockArea(int Area);
 
-    bool isBuilderParamRemovalConfirm();
+    int getBuilderToolBarArea() const;
+
+    void setBuilderToolBarArea(int Area);
+
+
+    bool isBuilderWareRemovalConfirm() const;
+
+    void setBuilderWareRemovalConfirm(bool Confirm);
+
+    bool isBuilderParamRemovalConfirm() const;
 
     void setBuilderParamRemovalConfirm(bool Confirm);
 
-    bool isBuilderWaresWatchersActive();
+    bool isBuilderWaresWatchersActive() const;
 
     void setBuilderWaresWatchersActive(bool Active);
 
-    bool isBuilderAutomaticSaveBeforeRun();
+    bool isBuilderAutomaticSaveBeforeRun() const;
 
     void setBuilderAutomaticSaveBeforeRun(bool AutoSave);
 
-    bool isBuilderSpatialUnitsRemovalConfirm();
+    bool isBuilderSpatialUnitsRemovalConfirm() const;
 
     void setBuilderSpatialUnitsRemovalConfirm(bool Confirm);
 
-    bool isBuilderSpatialConnsRemovalConfirm();
+    bool isBuilderSpatialConnsRemovalConfirm() const;
 
     void setBuilderSpatialConnsRemovalConfirm(bool Confirm);
 
-    bool isBuilderSpatialAttrsRemovalConfirm();
+    bool isBuilderSpatialAttrsRemovalConfirm() const;
 
     void setBuilderSpatialAttrsRemovalConfirm(bool Confirm);
 
 
-    bool isWaresdevAutomaticSaveBeforeBuild();
+    bool isWaresdevAutomaticSaveBeforeBuild() const;
 
     void setWaresdevAutomaticSaveBeforeBuild(bool AutoSave);
 
-    QList<QString> getWaresdevExternalToolsOrder();
+    std::list<ExternalTool_t> getWaresdevExternalTools() const;
 
-    ExternalToolsCommands_t getWaresdevExternalToolsCommands();
+    std::list<ExternalTool_t> getWaresdevExternalToolsInContext(const ExternalToolContext Context) const;
 
-    QMap<QString, QString> getWaresdevExternalToolsCommandsInContext(const ExternalToolContext Context);
-
-    void setWaresdevExternalToolsCommands(const ExternalToolsCommands_t& Commands);
-
-    void setWaresdevExternalToolsOrder(QList<QString> ToolsOrder);
+    void setWaresdevExternalTools(const std::list<ExternalTool_t>& Tools);
 
     void setWaresdevTextEditorDefaults(bool ForceReset);
 
-    bool isWaresdevSyntaxHighlightingEnabled();
+    bool isWaresdevSyntaxHighlightingEnabled() const;
 
     void setWaresdevSyntaxHighlightingEnabled(bool Enabled);
 
-    SyntaxHighlightingRules_t getWaresdevSyntaxHighlightingRules();
+    SyntaxHighlightingRules_t getWaresdevSyntaxHighlightingRules() const;
 
     void setWaresdevSyntaxHighlightingRules(const SyntaxHighlightingRules_t& Rules);
 
-    bool isWaresdevCurrentlineHighlightingEnabled();
+    bool isWaresdevCurrentlineHighlightingEnabled() const;
 
     void setWaresdevCurrentlineHighlightingEnabled(bool Enabled);
 
-    QString getWaresdevCurrentlineColor();
+    std::string getWaresdevCurrentlineColor() const;
 
-    void setWaresdevCurrentlineColor(const QString& Color);
+    void setWaresdevCurrentlineColor(const std::string& Color);
 
-    QString getWaresdevFontName();
+    std::string getWaresdevFontName() const;
 
-    void setWaresdevFontName(const QString& FontName);
+    void setWaresdevFontName(const std::string& FontName);
 
-    bool isWaresdevLineWrappingEnabled();
+    bool isWaresdevLineWrappingEnabled() const;
 
     void setWaresdevLineWrappingEnabled(bool Enabled);
 
-    int getWaresdevIndentSpaceNb();
+    int getWaresdevIndentSpaceNb() const;
 
-    bool isWaresdevInvisibleCharsDisplayEnabled();
+    bool isWaresdevSpaceTabDisplayEnabled() const;
 
-    void setWaresdevInvisibleCharsDisplayEnabled(bool Enabled);
+    void setWaresdevSpaceTabDisplayEnabled(bool Enabled);
 
-    bool isWaresdevCarriageReturnDisplayEnabled();
+    bool isWaresdevCarriageReturnDisplayEnabled() const;
 
     void setWaresdevCarriageReturnDisplayEnabled(bool Enabled);
 
     void setWaresdevIndentSpaceNb(int SpaceNumber);
 
-    QString getWaresdevConfigEnv(const QString& Name);
+    std::string getWaresdevConfigureEnv(const std::string& Name) const;
 
-    void setWaresdevConfigEnv(const QString& Name, const QString& Value);
+    void setWaresdevConfigureEnv(const std::string& Name, const std::string& Value);
 
-    QString getWaresdevConfigOptions();
+    std::string getWaresdevConfigureOptions() const;
 
-    void setWaresdevConfigOptions(const QString& Options);
+    void setWaresdevConfigureOptions(const std::string& Options);
 
-    QString getWaresdevConfigGenerator();
+    std::string getWaresdevConfigureGenerator() const;
 
-    void setWaresdevConfigGenerator(const QString& Generator);
+    void setWaresdevConfigureGenerator(const std::string& Generator);
 
-    QString getWaresdevBuildEnv(const QString& Name);
+    std::string getWaresdevBuildEnv(const std::string& Name) const;
 
-    void setWaresdevBuildEnv(const QString& Name, const QString& Value);
+    void setWaresdevBuildEnv(const std::string& Name, const std::string& Value);
 
-    bool isWaresdevShowCommandEnv(const QString& Name);
+    bool isWaresdevShowCommandEnv(const std::string& Name) const;
 
-    void setWaresdevShowCommandEnv(const QString& Name, bool Enabled);
+    void setWaresdevShowCommandEnv(const std::string& Name, bool Enabled);
 
-    bool isWaresdevGitSslNoVerify();
+    bool isWaresdevGitSslNoVerify() const;
 
     void setWaresdevGitSslNoVerify(bool NoVerify);
 
-    QString getWaresdevImportWaresHubLastUrl();
+    std::string getWaresdevImportHubUrl() const;
 
-    void setWaresdevImportWaresHubLastUrl(const QString& Url);
+    void setWaresdevImportHubUrl(const std::string& Url);
 
-    QString getWaresdevImportWaresHubLastUsername();
+    std::string getWaresdevImportHubUsername() const;
 
-    void setWaresdevImportWaresHubLastUsername(const QString& Username);
+    void setWaresdevImportHubUsername(const std::string& Username);
 };
 
+
 } } //namespaces
+
 
 #endif /* __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__ */

@@ -105,8 +105,8 @@ void WareSrcContainer::update()
       m_AbsoluteUiParamCppPath = "";
 
   QDir Dir(m_AbsolutePath);
-
   QString CMakeListsFilePath = Dir.absoluteFilePath("CMakeLists.txt");
+
   if (QFile::exists(CMakeListsFilePath))
   {
     m_AbsoluteCMakeListsPath = CMakeListsFilePath;
@@ -365,7 +365,7 @@ std::map<QString,QString> WareSrcContainer::getConfigureVariables() const
 
 QString WareSrcContainer::getConfigureGenerator() const
 {
-  return openfluid::base::PreferencesManager::instance()->getWaresdevConfigGenerator();
+  return QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevConfigureGenerator());
 }
 
 
@@ -375,7 +375,7 @@ QString WareSrcContainer::getConfigureGenerator() const
 
 QString WareSrcContainer::getConfigureExtraOptions() const
 {
-  return openfluid::base::PreferencesManager::instance()->getWaresdevConfigOptions();
+  return QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevConfigureOptions());
 }
 
 
@@ -389,7 +389,8 @@ QProcessEnvironment WareSrcContainer::getConfigureEnvironment() const
   QProcessEnvironment Env = QProcessEnvironment::systemEnvironment();
 
   // Set PATH env. var. if configured
-  QString CustomPath = openfluid::base::PreferencesManager::instance()->getWaresdevConfigEnv("PATH");
+  QString CustomPath = 
+    QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevConfigureEnv("PATH"));
   if (!CustomPath.isEmpty())
   {
     QByteArray ExistingPath = qgetenv("PATH");
@@ -413,7 +414,8 @@ QProcessEnvironment WareSrcContainer::getBuildEnvironment() const
   QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
 
   // Set PATH env. var. if configured
-  QString CustomPath = openfluid::base::PreferencesManager::instance()->getWaresdevBuildEnv("PATH");
+  QString CustomPath = 
+    QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevBuildEnv("PATH"));
   if (!CustomPath.isEmpty())
   {
     QByteArray ExistingPath = qgetenv("PATH");
@@ -438,7 +440,7 @@ void WareSrcContainer::prepareBuildDirectory() const
 
   if (BuildDir.exists())
   {
-    openfluid::tools::Filesystem::emptyDirectory(QString(m_BuildDirPath).toStdString());
+    openfluid::tools::Filesystem::emptyDirectory(m_BuildDirPath.toStdString());
   }
   else if (!QDir().mkpath(m_BuildDirPath))
   {

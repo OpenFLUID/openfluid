@@ -41,6 +41,7 @@
 #include <QTime>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
@@ -48,6 +49,7 @@
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include "BuilderApp.hpp"
 #include "ExtensionsRegistry.hpp"
@@ -78,6 +80,7 @@ BuilderApp::~BuilderApp()
   WaresTranslationsRegistry::kill();
   ExtensionsRegistry::kill();
   ExtensionPluginsManager::kill();
+  openfluid::base::WorkspaceManager::kill();
   openfluid::base::PreferencesManager::kill();
   openfluid::base::RunContextManager::kill();
 }
@@ -93,23 +96,28 @@ void BuilderApp::initialize()
     openfluid::base::PreferencesManager::instance();
 
 
+  mp_Splash->setMessage(tr("Initializing workspace"));
+
+  openfluid::base::WorkspaceManager::instance()->openWorkspace(PrefsMgr->getCurrentWorkspacePath());
+
+
   // TODO see if this is moved into ProjectCoordinator or ProjectModule
 
   mp_Splash->setMessage(tr("Initializing wares paths"));
 
-  QStringList ExtraPaths = PrefsMgr->getBuilderExtraSimulatorsPaths();
+  QStringList ExtraPaths = openfluid::tools::toQStringList(PrefsMgr->getBuilderExtraSimulatorsPaths());
   for (int i=0;i<ExtraPaths.size(); i++)
   {
     openfluid::base::Environment::addExtraSimulatorsDirs(ExtraPaths[i].toStdString());
   }
 
-  ExtraPaths = PrefsMgr->getBuilderExtraObserversPaths();
+  ExtraPaths = openfluid::tools::toQStringList(PrefsMgr->getBuilderExtraObserversPaths());
   for (int i=0;i<ExtraPaths.size(); i++)
   {
     openfluid::base::Environment::addExtraObserversDirs(ExtraPaths[i].toStdString());
   }
 
-  ExtraPaths = PrefsMgr->getBuilderExtraExtensionsPaths();
+  ExtraPaths = openfluid::tools::toQStringList(PrefsMgr->getBuilderExtraExtensionsPaths());
   for (int i=0;i<ExtraPaths.size(); i++)
   {
     openfluid::base::Environment::addExtraBuilderextsDirs(ExtraPaths[i].toStdString());

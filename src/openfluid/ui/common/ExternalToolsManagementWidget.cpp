@@ -82,21 +82,7 @@ ExternalToolsManagementWidget::ExternalToolsManagementWidget(QWidget* Parent):
   connect(ui->UpButton,SIGNAL(clicked()),this,SLOT(moveupTool()));
   connect(ui->DownButton,SIGNAL(clicked()),this,SLOT(movedownTool()));
 
-  m_ToolCommands = openfluid::base::PreferencesManager::instance()->getWaresdevExternalToolsCommands();
-  QList<QString> FullToolsOrder = openfluid::base::PreferencesManager::instance()->getWaresdevExternalToolsOrder();
-
-  for (const auto& Command : FullToolsOrder)
-  {
-    if (m_ToolCommands.contains(Command) && !m_ToolsOrder.contains(Command))
-    {
-      m_ToolsOrder.append(Command);
-    }
-  }
-
-  if (m_ToolsOrder.isEmpty())
-  {
-    m_ToolsOrder = m_ToolCommands.keys();
-  }
+  m_ExternalTools = openfluid::base::PreferencesManager::instance()->getWaresdevExternalTools();
 
   update();
 }
@@ -119,9 +105,9 @@ ExternalToolsManagementWidget::~ExternalToolsManagementWidget()
 void ExternalToolsManagementWidget::update()
 {
   ui->ToolsListWidget->clear();
-  for (const auto& Tool : m_ToolsOrder)
+  for (const auto& Tool : m_ExternalTools)
   {
-    ui->ToolsListWidget->addItem(Tool);
+    ui->ToolsListWidget->addItem(QString::fromStdString(Tool.Name));
   }
 }
 
@@ -132,15 +118,12 @@ void ExternalToolsManagementWidget::update()
 
 void ExternalToolsManagementWidget::addTool()
 {
-  EditExternalToolDialog ExtToolDlg(this, "", QStringList(), m_ToolCommands);
+  EditExternalToolDialog ExtToolDlg(this, openfluid::base::PreferencesManager::ExternalTool_t(), m_ExternalTools);
 
   if (ExtToolDlg.exec() == QDialog::Accepted)
   {
-    QString ToolLabel = ExtToolDlg.getLabel();
-    QStringList FullCommands = ExtToolDlg.getFullCommands();
-    m_ToolCommands[ToolLabel] = FullCommands;
-    m_ToolsOrder << ToolLabel;
-    m_NeedRestart = true;
+    m_ExternalTools.push_back(ExtToolDlg.getTool());
+
     update();
     emit toolsUpdated();
   }
@@ -153,30 +136,19 @@ void ExternalToolsManagementWidget::addTool()
 
 void ExternalToolsManagementWidget::editTool()
 {
-  int CurrentRow = ui->ToolsListWidget->currentRow();
+  auto Index = ui->ToolsListWidget->currentRow();
 
-  if (CurrentRow >= 0)
+  if (Index >= 0 && static_cast<unsigned int>(Index) < m_ExternalTools.size())
   {
-    QListWidgetItem* CurrentItem = ui->ToolsListWidget->item(CurrentRow);
-    QString SelectedToolLabel = CurrentItem->text();
-    EditExternalToolDialog ExtToolDlg(this, SelectedToolLabel, 
-                                      m_ToolCommands[SelectedToolLabel], m_ToolCommands);
+    auto it = m_ExternalTools.begin();
+    std::advance(it,Index);
+    EditExternalToolDialog ExtToolDlg(this,*it,m_ExternalTools);
 
     if (ExtToolDlg.exec() == QDialog::Accepted)
     {
-      QString FromDlgToolLabel = ExtToolDlg.getLabel();
-      QStringList FullCommands = ExtToolDlg.getFullCommands();
-      if (SelectedToolLabel != FromDlgToolLabel)
-      {
-        m_ToolCommands.insert(FromDlgToolLabel, FullCommands);
-        m_ToolCommands.remove(SelectedToolLabel);
-        m_ToolsOrder.removeAt(CurrentRow);
-        m_ToolsOrder << FromDlgToolLabel;
-      }
-      else
-      {
-        m_ToolCommands[FromDlgToolLabel] = FullCommands;
-      }
+      auto EditedTool = ExtToolDlg.getTool();
+      *it = EditedTool;
+
       m_NeedRestart = true;
       update();
       emit toolsUpdated();
@@ -191,7 +163,9 @@ void ExternalToolsManagementWidget::editTool()
 
 void ExternalToolsManagementWidget::removeTool()
 {
-  if (ui->ToolsListWidget->currentRow() >= 0)
+  auto Index = ui->ToolsListWidget->currentRow();
+
+  if (Index >= 0)
   {
     if (QMessageBox::question(this,tr("Delete tool from list"),
                               tr("Deleting this tool will erase all corresponding commands.")+
@@ -199,8 +173,11 @@ void ExternalToolsManagementWidget::removeTool()
                               tr("Proceed anyway?"),
                               QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
     {
-      m_ToolCommands.remove(ui->ToolsListWidget->currentItem()->text());
-      m_ToolsOrder.removeAt(ui->ToolsListWidget->currentRow());
+      auto it = m_ExternalTools.begin();
+      std::advance(it,Index);
+
+      m_ExternalTools.erase(it);
+
       m_NeedRestart = true;
       update();
       emit toolsUpdated();
@@ -215,11 +192,17 @@ void ExternalToolsManagementWidget::removeTool()
 
 void ExternalToolsManagementWidget::moveupTool()
 {
-  int Index = ui->ToolsListWidget->currentRow();
+  auto Index = ui->ToolsListWidget->currentRow();
 
-  if (Index >= 1)
+  if (Index >= 1 && static_cast<unsigned int>(Index) < m_ExternalTools.size())
   {
-    m_ToolsOrder.move(Index, Index-1);
+    auto itFirst = m_ExternalTools.begin();
+    std::advance(itFirst,Index-1);
+    auto itSecond = m_ExternalTools.begin();
+    std::advance(itSecond,Index);
+   
+    std::iter_swap(itFirst,itSecond);
+
     m_NeedRestart = true;
     update();
     ui->ToolsListWidget->setCurrentRow(Index-1);
@@ -234,15 +217,21 @@ void ExternalToolsManagementWidget::moveupTool()
 
 void ExternalToolsManagementWidget::movedownTool()
 {
-  int Index = ui->ToolsListWidget->currentRow();
+  auto Index = ui->ToolsListWidget->currentRow();
 
-  if (Index + 1 < ui->ToolsListWidget->count())
+  if (Index>= 0 && static_cast<unsigned int>(Index+1) < m_ExternalTools.size())
   {
-    m_ToolsOrder.move(Index+1, Index);
+    auto itFirst = m_ExternalTools.begin();
+    std::advance(itFirst,Index);
+    auto itSecond = m_ExternalTools.begin();
+    std::advance(itSecond,Index+1);
+   
+    std::iter_swap(itFirst,itSecond);
+
     m_NeedRestart = true;
     update();
     ui->ToolsListWidget->setCurrentRow(Index+1);
-    emit toolsUpdated();
+    emit toolsUpdated();    
   }
 }
 
@@ -251,19 +240,10 @@ void ExternalToolsManagementWidget::movedownTool()
 // =====================================================================
 
 
-openfluid::base::PreferencesManager::ExternalToolsCommands_t ExternalToolsManagementWidget::getToolsList() const
+const std::list<openfluid::base::PreferencesManager::ExternalTool_t>& 
+  ExternalToolsManagementWidget::getToolsList() const
 {
-  return m_ToolCommands;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QList<QString> ExternalToolsManagementWidget::getToolsOrder() const
-{
-  return m_ToolsOrder;
+  return m_ExternalTools;
 }
 
 

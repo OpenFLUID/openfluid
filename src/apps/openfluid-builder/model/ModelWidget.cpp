@@ -97,8 +97,9 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::FluidXDescriptor& F
     ui->ColoringComboBox->addItem(ColouringModeTexts[i], ColouringModeCodes[i]);
   }
   
-  QString ColouringMode = openfluid::base::RunContextManager::instance()->getProjectConfigValue(
-    PROJECT_COLORMODE_CATEGORY.first, PROJECT_COLORMODE_CATEGORY.second).toString();
+  QString ColouringMode = 
+    QString::fromStdString(openfluid::base::RunContextManager::instance()
+      ->getProjectContextValue("/builder/model/graphicalview","color_mode").get<std::string>("NONE"));
   for (int i=0; i<ColouringModeCodes.size();i++)
   {
     if (ColouringModeCodes[i] == ColouringMode)
@@ -144,9 +145,9 @@ ModelWidget::~ModelWidget()
 
 void ModelWidget::changeColouringMode(int /*index*/)
 {
-  openfluid::base::RunContextManager::instance()->setProjectConfigValue(PROJECT_COLORMODE_CATEGORY.first, 
-                                                                        PROJECT_COLORMODE_CATEGORY.second,
-                                                                        ui->ColoringComboBox->currentData());
+  openfluid::base::RunContextManager::instance()
+    ->setProjectContextValue("/builder/model/graphicalview","color_mode",
+                             ui->ColoringComboBox->currentData().toString().toStdString());
   mp_ModelScene->refresh();
 }
 

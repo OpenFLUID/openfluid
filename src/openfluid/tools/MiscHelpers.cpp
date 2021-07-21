@@ -39,9 +39,11 @@
 
 #include <thread>
 #include <chrono>
+#include <ctime>
 #include <random>
 #include <sstream>
 #include <regex>
+#include <iomanip> 
 
 #include <boost/algorithm/string.hpp>
 
@@ -259,6 +261,21 @@ void millisleep(const unsigned long MSec)
 void microsleep(const unsigned long USec)
 {
   std::this_thread::sleep_for(std::chrono::microseconds(USec));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string getNowAsString(const std::string& Format)
+{
+  auto Now = std::chrono::system_clock::now();
+  auto RawTime = std::chrono::system_clock::to_time_t(Now);
+ 
+   std::stringstream ss;
+  ss << std::put_time(std::localtime(&RawTime),Format.c_str());
+  return ss.str();
 }
 
 

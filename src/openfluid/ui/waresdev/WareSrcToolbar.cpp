@@ -67,8 +67,8 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
   }
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-  m_ExternalTools = PrefMgr->getWaresdevExternalToolsCommandsInContext(
-    openfluid::base::PreferencesManager::ExternalToolContext::WARE);
+  m_ExternalTools = 
+    PrefMgr->getWaresdevExternalToolsInContext(openfluid::base::PreferencesManager::ExternalToolContext::WARE);
 
   createActions();
 
@@ -128,14 +128,10 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     QMenu* ExtToolSubSubMenu = SubMenu->addMenu(tr("Open in external tool"));
     ExtToolSubSubMenu->setEnabled(false);
 
-    QList<QString> ExternalToolsOrder = PrefMgr->getWaresdevExternalToolsOrder();
-    for (auto const& Alias : ExternalToolsOrder)
+    for (auto const& Tool : m_ExternalTools)
     {
-      if (m_ExternalToolsActions.contains(Alias))
-      {
-        ExtToolSubSubMenu->setEnabled(true);
-        ExtToolSubSubMenu->addAction(m_ExternalToolsActions[Alias]);
-      }
+      ExtToolSubSubMenu->setEnabled(true);
+      ExtToolSubSubMenu->addAction(m_ExternalToolsActions[QString::fromStdString(Tool.Name)]);
     }
     
     SubMenu = Menu->addMenu(tr("Help"));
@@ -278,10 +274,13 @@ void WareSrcToolbar::createActions()
   m_Actions["OpenTerminal"] = new QAction(tr("Open in terminal"), this);
   m_Actions["OpenExplorer"] = new QAction(tr("Open in file explorer"), this);
 
-  for (auto const& Command : m_ExternalTools.keys())
+
+  for (auto const& Tool : m_ExternalTools)
   {
-    m_ExternalToolsActions[Command] = new QAction(Command, this);
-    m_ExternalToolsActions[Command]->setData(m_ExternalTools.value(Command));
+    QString ToolName = QString::fromStdString(Tool.Name);
+    m_ExternalToolsActions[ToolName] = new QAction(ToolName, this);
+    m_ExternalToolsActions[ToolName]->setData(
+      QString::fromStdString(Tool.getCommand(openfluid::base::PreferencesManager::ExternalToolContext::WARE)));
   }
 
   // ====== Help ======

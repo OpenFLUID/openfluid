@@ -216,10 +216,11 @@ void WareSrcFileEditor::updateSettings()
 
   // Current line highlighting
 
-  if (PrefMgr->isWaresdevCurrentlineHighlightingEnabled()
-      && QColor::isValidColor(PrefMgr->getWaresdevCurrentlineColor()))
+  QString CurrentLineColor = QString::fromStdString(PrefMgr->getWaresdevCurrentlineColor());
+
+  if (PrefMgr->isWaresdevCurrentlineHighlightingEnabled() && QColor::isValidColor(CurrentLineColor))
   {
-    m_LineColor.setNamedColor(PrefMgr->getWaresdevCurrentlineColor());
+    m_LineColor.setNamedColor(CurrentLineColor);
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
     highlightCurrentLine();
@@ -253,7 +254,7 @@ void WareSrcFileEditor::updateSettings()
 
   //   Invisible characters
   QFlags<QTextOption::Flag> CurrentTextFlags = Option.flags();
-  CurrentTextFlags.setFlag(QTextOption::ShowTabsAndSpaces, PrefMgr->isWaresdevInvisibleCharsDisplayEnabled());
+  CurrentTextFlags.setFlag(QTextOption::ShowTabsAndSpaces, PrefMgr->isWaresdevSpaceTabDisplayEnabled());
   CurrentTextFlags.setFlag(QTextOption::ShowLineAndParagraphSeparators, 
                            PrefMgr->isWaresdevCarriageReturnDisplayEnabled());
   Option.setFlags(CurrentTextFlags);
@@ -263,7 +264,7 @@ void WareSrcFileEditor::updateSettings()
   // Fonts
 
   QFont Font;
-  Font.setFamily(PrefMgr->getWaresdevFontName());
+  Font.setFamily(QString::fromStdString(PrefMgr->getWaresdevFontName()));
   Font.setFixedPitch(true);
   Font.setPointSize(10);
   setFont(Font);

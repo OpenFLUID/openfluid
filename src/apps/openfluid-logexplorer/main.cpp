@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     INIT_OPENFLUID_QT_APPLICATION_WITH_GUI(argc, argv);
 
     // translations management
-    QString Lang = openfluid::base::PreferencesManager::instance()->getLang();
+    QString Lang = QString::fromStdString(openfluid::base::PreferencesManager::instance()->getUILanguage());
 
     QTranslator QtTranslator;
     QTranslator OpenFLUIDTranslator;

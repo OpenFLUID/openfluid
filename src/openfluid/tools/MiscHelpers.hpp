@@ -49,11 +49,6 @@
 #include <openfluid/core/TypeDefs.hpp>
 
 
-namespace openfluid { namespace core {
-  class DateTime;
-} }
-
-
 #define STRINGIFY(x) XSTRINGIFY(x)
 #define XSTRINGIFY(x) #x
 
@@ -93,18 +88,26 @@ std::string OPENFLUID_API replaceEmptyString(std::string SourceStr,
 int OPENFLUID_API compareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
 
 
-/*
+/**
   Suspends execution of current thread for milliseconds
   @param[in] MSec the milliseconds interval
 */
 void OPENFLUID_API millisleep(const unsigned long MSec);
 
 
-/*
+/**
   Suspend execution of current thread for microseconds
   @param[in] USec the microseconds interval
 */
 void OPENFLUID_API microsleep(const unsigned long USec);
+
+
+/**
+  Returns the current date and time as a formatted string
+  @param[in] Format an strftime()-like format string
+  @return the formatted date-time
+*/
+std::string OPENFLUID_API getNowAsString(const std::string& Format);
 
 
 /**

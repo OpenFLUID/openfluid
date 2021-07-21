@@ -50,12 +50,13 @@
 namespace openfluid { namespace ui { namespace common {
 
 
-EditExternalToolDialog::EditExternalToolDialog(QWidget* Parent,
-                                     const QString& Label, 
-                                     const QStringList& ToolCommands,
-                                     const openfluid::base::PreferencesManager::ExternalToolsCommands_t& AllCommands):
-  MessageDialog(Parent), ui(new Ui::EditExternalToolDialog),
-  m_IsEditMode(!Label.isEmpty()), m_OriginalLabel(Label), m_AllCommands(AllCommands)
+EditExternalToolDialog::EditExternalToolDialog(
+  QWidget* Parent,
+  const openfluid::base::PreferencesManager::ExternalTool_t& ExistingTool, 
+  std::list<openfluid::base::PreferencesManager::ExternalTool_t>& AllTools):
+    MessageDialog(Parent), ui(new Ui::EditExternalToolDialog),
+    m_IsEditMode(!ExistingTool.Name.empty()), m_OriginalLabel(ExistingTool.Name), 
+    m_AllTools(AllTools)
 {
   ui->setupUi(this);
 
@@ -83,24 +84,15 @@ EditExternalToolDialog::EditExternalToolDialog(QWidget* Parent,
   }
 
 
-  ui->LabelEdit->setText(Label);
+  ui->LabelEdit->setText(QString::fromStdString(ExistingTool.Name));
 
-  for (int ContextNumber=0 ; ContextNumber<ToolCommands.size() ; ContextNumber++)
-  {
-    QString Command = ToolCommands[ContextNumber];
-    if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE))
-    {
-      ui->WorkspaceCommandEdit->setText(Command);
-    }
-    else if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::ExternalToolContext::WARE))
-    {
-      ui->WareCommandEdit->setText(Command);
-    }
-    else if (ContextNumber == static_cast<int>(openfluid::base::PreferencesManager::ExternalToolContext::FILE))
-    {
-      ui->FileCommandEdit->setText(Command);
-    }
-  }
+  ui->WorkspaceCommandEdit->setText(QString::fromStdString(
+    ExistingTool.getCommand(openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE)));
+  ui->WareCommandEdit->setText(QString::fromStdString(
+    ExistingTool.getCommand(openfluid::base::PreferencesManager::ExternalToolContext::WARE)));
+  ui->FileCommandEdit->setText(QString::fromStdString(
+    ExistingTool.getCommand(openfluid::base::PreferencesManager::ExternalToolContext::FILE)));
+  
 
   // "required" placeholder
   QString PlaceholderStr = getPlaceholderRequired();
@@ -136,13 +128,24 @@ EditExternalToolDialog::~EditExternalToolDialog()
 
 void EditExternalToolDialog::checkGlobally()
 {
+  auto checkLabelExist = [&]()
+  {
+    for (const auto& C : m_AllTools)
+    {
+      if (C.Name == ui->LabelEdit->text().toStdString())
+      {
+        return true;
+      }
+    }
+    return false;
+  };
+
   if (ui->LabelEdit->text().isEmpty())
   {
     setMessage(tr("The label cannot be empty"));
   }
-  else if (m_AllCommands.contains(ui->LabelEdit->text()) && 
-            (!m_IsEditMode || 
-            (m_IsEditMode && m_OriginalLabel != ui->LabelEdit->text())))
+  else if (checkLabelExist() && 
+           (!m_IsEditMode || (m_IsEditMode && m_OriginalLabel != ui->LabelEdit->text().toStdString())))
   {
     setMessage(tr("This label already exists"));
   }
@@ -242,25 +245,32 @@ void EditExternalToolDialog::addTargetToFileLine()
 // =====================================================================
 
 
-QStringList EditExternalToolDialog::getFullCommands() const
+openfluid::base::PreferencesManager::ExternalTool_t EditExternalToolDialog::getTool() const
 {
-  QStringList Commands;
-  Commands << ui->WorkspaceCommandEdit->text()
-           << ui->WareCommandEdit->text()
-           << ui->FileCommandEdit->text();
-  return Commands;
+  openfluid::base::PreferencesManager::ExternalTool_t Tool;
+
+  Tool.Name = ui->LabelEdit->text().toStdString();
+
+  if (!ui->WorkspaceCommandEdit->text().isEmpty())
+  {
+    Tool.Commands[openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE] = 
+      ui->WorkspaceCommandEdit->text().toStdString();
+  }
+
+  if (!ui->WareCommandEdit->text().isEmpty())
+  {
+    Tool.Commands[openfluid::base::PreferencesManager::ExternalToolContext::WARE] = 
+      ui->WareCommandEdit->text().toStdString();
+  }
+
+  if (!ui->FileCommandEdit->text().isEmpty())
+  {
+    Tool.Commands[openfluid::base::PreferencesManager::ExternalToolContext::FILE] = 
+      ui->FileCommandEdit->text().toStdString();
+  }  
+
+  return Tool;
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString EditExternalToolDialog::getLabel() const
-{
-  return ui->LabelEdit->text();
-}
-
 
 } } } // namespaces
 

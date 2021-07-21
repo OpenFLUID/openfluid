@@ -92,6 +92,10 @@ const std::string INSTALL_INCLUDE_PATH = "@OFBUILD_INCLUDE_INSTALL_PATH@";
 const std::string INSTALL_SHARE_PATH = "@OFBUILD_SHARE_INSTALL_PATH@";
 
 
+// Workspaces
+const std::string WORKSPACE_CONFIGFILE = "@OPENFLUID_WORKSPACE_CONFIGFILE@";
+
+
 // Plugins extension
 const std::string PLUGINS_EXT = "@OPENFLUID_PLUGINS_BINARY_EXTENSION@";
 

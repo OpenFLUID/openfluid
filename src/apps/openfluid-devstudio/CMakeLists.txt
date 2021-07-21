@@ -1,11 +1,8 @@
-
-
-CONFIGURE_FILE(devstudioconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/devstudioconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
-SET(DEVSTUDIO_CPP MainWindow.cpp DevStudioPreferencesManager.cpp)
+SET(DEVSTUDIO_CPP MainWindow.cpp)
 
-SET(DEVSTUDIO_HPP MainWindow.hpp DevStudioPreferencesManager.hpp)
+SET(DEVSTUDIO_HPP MainWindow.hpp)
 
 QT5_WRAP_UI(DEVSTUDIO_UI MainWindow.ui)
 

@@ -68,7 +68,8 @@ struct F
 
     F()
     {
-      m_WorkspacePath = openfluid::base::PreferencesManager::instance()->getBuilderWorkspacePath();
+      m_WorkspacePath = 
+        QString::fromStdString(openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath());
 
       m_WaresdevPath = QString("%1/%2").arg(m_WorkspacePath).arg(
           QString::fromStdString(openfluid::config::WARESDEV_PATH));

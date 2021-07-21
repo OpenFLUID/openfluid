@@ -46,6 +46,7 @@
 #include <QLabel>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
@@ -159,9 +160,12 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 
   m_MainWindow.setQuitAction(m_Actions.action("ProjectQuit"));
 
-  QString TmpLabel = tr("Current workspace: %1")
-                     .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
-                                                     ->getBuilderWorkspacePath()));
+  QString TmpLabel = 
+    tr("Current workspace: %1").arg(
+      QDir::toNativeSeparators(
+        QString::fromStdString(openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath())
+    )
+  );
   m_MainWindow.statusBar()->addPermanentWidget(new QLabel(TmpLabel),1);
 }
 
@@ -273,7 +277,8 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
 
     DashboardFrame* DockedWidget =
       static_cast<DashboardFrame*>(static_cast<ProjectModuleWidget*>(Module)->dockWidgetRebuilt(mp_DockWidget));
-    DockedWidget->updateOrientation(openfluid::base::PreferencesManager::instance()->getBuilderDockPosition());
+    DockedWidget->updateOrientation(
+      static_cast<Qt::DockWidgetArea>(openfluid::base::PreferencesManager::instance()->getBuilderDockArea()));
 
     mp_DockWidget->setObjectName("DockWidget");
     mp_DockWidget->setWidget(DockedWidget);
@@ -285,8 +290,9 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
                                          "QDockWidget::title {padding : 5px; font: bold; }")
                                         .arg(openfluid::ui::config::TOOLBAR_BGCOLOR));
 
-    m_MainWindow.addDockWidget(openfluid::base::PreferencesManager::instance()->getBuilderDockPosition(),
-                               mp_DockWidget);
+    m_MainWindow.addDockWidget(
+      static_cast<Qt::DockWidgetArea>(openfluid::base::PreferencesManager::instance()->getBuilderDockArea()),
+      mp_DockWidget);
 
     connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
             DockedWidget,SLOT(updateOrientation(Qt::DockWidgetArea)));
@@ -349,9 +355,9 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
     openfluid::base::IOListener Listener;
     openfluid::fluidx::FluidXDescriptor FXD(&Listener);
     openfluid::core::DateTime DT;
-    DT.setFromISOString(PrefsMan->getBuilderBegin().toStdString());
+    DT.setFromISOString(PrefsMan->getBuilderBeginDate());
     FXD.runConfiguration().setBeginDate(DT);
-    DT.setFromISOString(PrefsMan->getBuilderEnd().toStdString());
+    DT.setFromISOString(PrefsMan->getBuilderEndDate());
     FXD.runConfiguration().setEndDate(DT);
     FXD.runConfiguration().setDeltaT(PrefsMan->getBuilderDeltaT());
     FXD.runConfiguration().setFilled(true);
@@ -380,9 +386,9 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
 void AppCoordinator::openProject(const QString& Name, const QString& Path)
 {
   // update recents projects
-  openfluid::base::PreferencesManager::instance()->addBuilderRecentProject(
-        QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectName()),
-        QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectPath()));
+  openfluid::base::WorkspaceManager::instance()->insertRecentProject(
+        openfluid::base::RunContextManager::instance()->getProjectName(),
+        openfluid::base::RunContextManager::instance()->getProjectPath());
 
   if (setProjectModule(Path))
   {
@@ -502,8 +508,10 @@ void AppCoordinator::whenOpenAsked()
   {
     // TODO develop custom dialog for opening projects
     QString SelectedDir =
-        QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"),
-                                          openfluid::base::PreferencesManager::instance()->getBuilderProjectsPath());
+        QFileDialog::getExistingDirectory(
+          &m_MainWindow,tr("Open project"),
+          QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getProjectsPath()));
+
     if (SelectedDir !=  "")
     {
       if (openfluid::base::RunContextManager::isProject(SelectedDir.toStdString()))
@@ -648,14 +656,13 @@ void AppCoordinator::whenSaveAsAsked()
 {
   if (mp_CurrentModule->whenSaveAsAsked())
   {
-    openfluid::base::RunContextManager* PrjMan = openfluid::base::RunContextManager::instance();
+    openfluid::base::RunContextManager* CtxtMan = openfluid::base::RunContextManager::instance();
 
-    openfluid::base::PreferencesManager::instance()->addBuilderRecentProject(
-          QString::fromStdString(PrjMan->getProjectName()),
-          QString::fromStdString(PrjMan->getProjectPath()));
+    openfluid::base::WorkspaceManager::instance()->insertRecentProject(CtxtMan->getProjectName(),
+                                                                       CtxtMan->getProjectPath());
 
     m_Actions.updateRecentProjectsActions();
-    m_MainWindow.setProjectName(QString::fromStdString(PrjMan->getProjectName()));
+    m_MainWindow.setProjectName(QString::fromStdString(CtxtMan->getProjectName()));
   }
 }
 
@@ -818,7 +825,7 @@ void AppCoordinator::whenViewRestoreAsked()
 {
   m_MainWindow.removeDockWidget(mp_DockWidget);
   m_MainWindow.addDockWidget(Qt::LeftDockWidgetArea, mp_DockWidget);
-  openfluid::base::PreferencesManager::instance()->setBuilderDockPosition(Qt::LeftDockWidgetArea);
+  openfluid::base::PreferencesManager::instance()->setBuilderDockArea(Qt::LeftDockWidgetArea);
   mp_DockWidget->setFloating(false);
   mp_DockWidget->setVisible(true);
 
@@ -1046,7 +1053,7 @@ void AppCoordinator::disableSave()
 
 void AppCoordinator::saveDockArea(Qt::DockWidgetArea Area)
 {
-  openfluid::base::PreferencesManager::instance()->setBuilderDockPosition(Area);
+  openfluid::base::PreferencesManager::instance()->setBuilderDockArea(Area);
 }
 
 

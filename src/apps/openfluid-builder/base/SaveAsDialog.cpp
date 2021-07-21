@@ -40,7 +40,7 @@
 #include <QPushButton>
 #include <QFileDialog>
 
-#include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
@@ -56,8 +56,9 @@ SaveAsDialog::SaveAsDialog(QWidget* Parent) :
 
   setupMessageUi(tr("Save project as..."));
 
-  ui->DirectoryLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
-                                                          ->getBuilderProjectsPath()));
+  ui->DirectoryLabel->setText(
+    QDir::toNativeSeparators(
+      QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getProjectsPath())));
   ui->ProjectNameEdit->setText(
       QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectName()));
 

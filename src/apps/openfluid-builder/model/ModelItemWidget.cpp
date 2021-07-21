@@ -188,14 +188,15 @@ void ModelItemWidget::setEnabledWare(bool Enabled)
 QColor ModelItemWidget::getCustomColor()
 {
   QColor CustomColor;
-  QVariant CustomColorVariant =
-      openfluid::base::RunContextManager::instance()->getProjectConfigValue(PROJECT_WARECOLOR_CATEGORY,
-                                                                            QString::fromStdString(m_ID));
+  std::string CustomColorStr =
+    openfluid::base::RunContextManager::instance()
+      ->getProjectContextValue("/builder/model/colors",m_ID).get<std::string>("");
 
-  if (CustomColorVariant.type() == QVariant::String)
+  if (!CustomColorStr.empty())
   {
-    CustomColor = CustomColorVariant.value<QColor>();
+    CustomColor = QColor(QString::fromStdString(CustomColorStr));
   }
+
   return CustomColor;
 }
 
@@ -239,8 +240,9 @@ void ModelItemWidget::applyCustomColor()
 
 void ModelItemWidget::resetCustomColor()
 {
-  QString ID = QString::fromStdString(m_ID);
-  openfluid::base::RunContextManager::instance()->removeProjectConfigValue(PROJECT_WARECOLOR_CATEGORY, ID);
+  auto Path = "/builder/model/colors/"+m_ID;
+
+  openfluid::base::RunContextManager::instance()->removeProjectContextValue(Path);
   m_CustomColor = QColor();
   emit styleChanged();
 }
@@ -258,9 +260,8 @@ void ModelItemWidget::changeCustomColor()
   {
     m_CustomColor = TmpColor;
     
-    QString ID = QString::fromStdString(m_ID);
-    openfluid::base::RunContextManager::instance()->setProjectConfigValue(PROJECT_WARECOLOR_CATEGORY, ID,
-                                                                          m_CustomColor.name());
+    openfluid::base::RunContextManager::instance()->setProjectContextValue("/builder/model/colors",m_ID,
+                                                                          m_CustomColor.name().toStdString());
 
   }
   emit styleChanged();
