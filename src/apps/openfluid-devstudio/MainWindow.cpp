@@ -61,10 +61,11 @@
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
-#include "DevStudioPreferencesManager.hpp"
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
 
@@ -72,6 +73,14 @@
 MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
     QMainWindow(), ui(new Ui::MainWindow)
 {
+  openfluid::base::PreferencesManager* PrefsMgr = openfluid::base::PreferencesManager::instance();
+
+
+  Splash->setMessage(tr("Initializing workspace"));
+
+  openfluid::base::WorkspaceManager::instance()->openWorkspace(PrefsMgr->getCurrentWorkspacePath());
+
+
   Splash->setMessage(tr("Preparing user interface"));
 
   ui->setupUi(this);
@@ -145,19 +154,17 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   mp_WidgetsCollection = new openfluid::ui::waresdev::WareSrcWidgetCollection(ui->WareSrcCollection, false);
 
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-  QMap<QString, QString> ExternalTools = 
-    PrefMgr->getWaresdevExternalToolsCommandsInContext(
-      openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE);
-  m_ExternalToolsOrder = PrefMgr->getWaresdevExternalToolsOrder();
+  std::list<openfluid::base::PreferencesManager::ExternalTool_t> ExternalTools = 
+    PrefsMgr->getWaresdevExternalToolsInContext(openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE);
 
-  for (auto const& Command : ExternalTools.keys())
+  for (auto const& Tool : ExternalTools)
   {
-    if (m_ExternalToolsOrder.contains(Command))
-    {
-      m_ExternalToolsActions[Command] = new QAction(Command, this);
-      m_ExternalToolsActions[Command]->setData(ExternalTools.value(Command));
-    }
+    QString ToolName = QString::fromStdString(Tool.Name);
+    QAction* Action = new QAction(ToolName, this);
+    Action->setData(
+      QString::fromStdString(Tool.getCommand(openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE))
+    );
+    m_ExternalToolsActions.push_back(Action);
   }
 
   Splash->setMessage(tr("Configuring UI"));
@@ -223,9 +230,9 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(mp_Toolbar->action("OpenExplorer"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openExplorer()));
   connect(mp_Toolbar->action("OpenTerminal"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openTerminal()));
 
-  for (auto const& Command : m_ExternalToolsActions.keys())
+  for (auto Action : m_ExternalToolsActions)
   {
-    connect(m_ExternalToolsActions[Command], SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));
+    connect(Action, SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));
   }
 
   connect(this, SIGNAL(openExternalToolAsked(const QString&, const QString&)),
@@ -273,9 +280,11 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   updateSaveButtonsStatus(false, mp_WidgetsCollection->isFileOpen(), false);
 
 
-  QString TmpLabel = tr("Current workspace: %1")
-                     .arg(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
-                                                     ->getBuilderWorkspacePath()));
+  QString TmpLabel = 
+    tr("Current workspace: %1")
+      .arg(QDir::toNativeSeparators(
+        QString::fromStdString(openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath())));
+
   statusBar()->addPermanentWidget(new QLabel(TmpLabel),1);
 
   // Main windows size and placement at startup
@@ -295,6 +304,7 @@ MainWindow::~MainWindow()
   openfluid::waresdev::WareSrcManager::kill();
   openfluid::base::PreferencesManager::kill();
   openfluid::base::RunContextManager::kill();
+  openfluid::base::WorkspaceManager::kill();
   delete ui;
 }
 
@@ -414,10 +424,10 @@ void MainWindow::createMenus()
   ToolSubMenu = Menu->addMenu(tr("Open in external tool"));
   ToolSubMenu->setEnabled(false);
 
-  for (auto const& Command : m_ExternalToolsActions.keys())
+  for (auto Action : m_ExternalToolsActions)
   {
     ToolSubMenu->setEnabled(true);
-    ToolSubMenu->addAction(m_ExternalToolsActions[Command]);
+    ToolSubMenu->addAction(Action);
   }
 
   Menu->addSeparator();
@@ -443,24 +453,31 @@ void MainWindow::createMenus()
 
 void MainWindow::setWorkspaceDefaults()
 {
-  DevStudioPreferencesManager* Mgr = DevStudioPreferencesManager::instance();
+  auto* WMgr = openfluid::base::WorkspaceManager::instance();
 
-  QStringList Mode = Mgr->getConfigBuildMode().split("|");
+  WMgr->openWorkspace(openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath());
 
-  mp_Toolbar->optionsWidget()->setConfigureMode(Mode.contains("DEBUG", Qt::CaseInsensitive) ?
+
+  std::string ConfigMode = WMgr->getWaresConfigureMode();
+  std::string BuildMode = WMgr->getWaresBuildMode();
+
+  mp_Toolbar->optionsWidget()->setConfigureMode((ConfigMode == "DEBUG") ?
                                                 openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG :
                                                 openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
 
-  mp_Toolbar->optionsWidget()->setBuildMode(Mode.contains("BUILDONLY", Qt::CaseInsensitive) ?
-                                                openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL :
-                                                openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
+  mp_Toolbar->optionsWidget()->setBuildMode((BuildMode == "BUILDONLY") ?
+                                            openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL :
+                                            openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
 
-  QStringList LastOpenWares = Mgr->getLastOpenWares();
 
-  for (QString WarePath : LastOpenWares)
-    mp_WidgetsCollection->openPath(WarePath);
+  std::vector<std::string> LastOpenWares = WMgr->getOpenWaresPaths();
 
-  mp_WidgetsCollection->setCurrent(Mgr->getLastActiveWare());
+  for (const auto& WarePath : LastOpenWares)
+  {
+    mp_WidgetsCollection->openPath(QString::fromStdString(WarePath));
+  }
+
+  mp_WidgetsCollection->setCurrent(QString::fromStdString(WMgr->getActiveWarePath()));
 }
 
 
@@ -528,19 +545,21 @@ void MainWindow::onQuitRequested()
                             tr("Quit"),tr("Are you sure you want to quit OpenFLUID-DevStudio?"),
                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
-    DevStudioPreferencesManager* Mgr = DevStudioPreferencesManager::instance();
+    auto* WMgr = openfluid::base::WorkspaceManager::instance();
 
-    QStringList Mode;
-    Mode << (mp_WidgetsCollection->isDebugMode() ? "DEBUG" : "RELEASE");
-    Mode << (mp_WidgetsCollection->isBuildNoInstallMode() ? "BUILDONLY" : "BUILDINSTALL");
-    Mgr->setConfigBuildMode(Mode.join("|"));
+    std::string ConfigMode = (mp_WidgetsCollection->isDebugMode() ? "DEBUG" : "RELEASE");
+    std::string BuildMode = (mp_WidgetsCollection->isBuildNoInstallMode() ? "BUILDONLY" : "BUILDINSTALL");
+    WMgr->setWaresConfigureMode(ConfigMode);
+    WMgr->setWaresBuildMode(BuildMode);
 
-    Mgr->setLastOpenWares(mp_WidgetsCollection->getOpenWarePaths());
+    WMgr->setOpenWaresPaths(openfluid::tools::toStdStringVector(mp_WidgetsCollection->getOpenWarePaths()));
 
-    Mgr->setLastActiveWare(mp_WidgetsCollection->getCurrentWarePath());
+    WMgr->setActiveWarePath(mp_WidgetsCollection->getCurrentWarePath().toStdString());
 
     if (mp_WidgetsCollection->closeAllWidgets())
+    {
       qApp->quit();
+    }
   }
 }
 
@@ -581,7 +600,9 @@ void MainWindow::onImportWareSourcesAsked()
     Dialog.exec();
   }
   else
+  {
     QMessageBox::warning(this, tr("Import not available"), tr("Neither CMake program nor Git program can be found."));
+  }
 }
 
 

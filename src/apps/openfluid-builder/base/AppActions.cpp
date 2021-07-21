@@ -37,12 +37,15 @@
  */
 
 
+#include <algorithm>
+
 #include <QMenuBar>
 #include <QToolBar>
 #include <QDir>
 
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
@@ -63,7 +66,6 @@ AppActions::AppActions():
   mp_MainToolbar(nullptr)
 {
   createActions();
-
 }
 
 
@@ -83,27 +85,35 @@ AppActions::~AppActions()
 
 void AppActions::updateRecentProjectsActions()
 {
-  openfluid::base::PreferencesManager::RecentProjectsList_t RPList;
+  auto RecentProjects = openfluid::base::WorkspaceManager::instance()->getRecentProjects();
 
-  RPList = openfluid::base::PreferencesManager::instance()->getBuilderRecentProjects();
-
-  int RFCount = qMin(int(RPList.size()),openfluid::base::PreferencesManager::RecentProjectsLimit);
-
-  for (int i=0; i<RFCount;i++)
+  // Remove extra recent projet if any
+  while (RecentProjects.size() > openfluid::base::WorkspaceManager::RecentProjectsMax)
   {
-    m_RecentProjectsActions[i]->setText(RPList[i].Name+" - " +QDir::toNativeSeparators(RPList[i].Path));
-    m_RecentProjectsActions[i]->setData(QDir::fromNativeSeparators(RPList[i].Path));
-    m_RecentProjectsActions[i]->setVisible(true);
+    RecentProjects.pop_back();
   }
 
-  for (int i=RFCount;i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
+  unsigned int RecentIndex = 0;
+  for (const auto& Prj : RecentProjects)
+  {
+    QString PrjName = QString::fromStdString(Prj.Name);
+    QString PrjPath = QString::fromStdString(Prj.Path);
+
+    m_RecentProjectsActions[RecentIndex]->setText(PrjName+" - " +QDir::toNativeSeparators(PrjPath));
+    m_RecentProjectsActions[RecentIndex]->setData(QDir::fromNativeSeparators(PrjPath));
+    m_RecentProjectsActions[RecentIndex]->setVisible(true);
+
+    RecentIndex++;
+  }
+
+  for (auto i=RecentIndex;i<openfluid::base::WorkspaceManager::RecentProjectsMax;i++)
   {
     m_RecentProjectsActions[i]->setVisible(false);
   }
 
   if (mp_RecentProjectsMenu != nullptr)
   {
-    mp_RecentProjectsMenu->setEnabled(!RPList.empty());
+    mp_RecentProjectsMenu->setEnabled(!RecentProjects.empty());
   }
 }
 
@@ -219,12 +229,12 @@ void AppActions::createActions()
   m_Actions["MarketAccess"]->setIcon(openfluid::ui::common::getIcon("market","/ui/common"));
 
 
-  for (int i=0; i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
+  // Recent projects
+  for (unsigned int i=0; i<openfluid::base::WorkspaceManager::RecentProjectsMax;i++)
   {
     m_RecentProjectsActions.push_back(new QAction(this));
     m_RecentProjectsActions.back()->setVisible(false);
   }
-
   updateRecentProjectsActions();
 }
 
@@ -289,9 +299,16 @@ void AppActions::setProjectMode()
 
   if (RunCtxt->isProjectOpen())
   {
-    QString ModeStr = RunCtxt->getProjectConfigValue("builder.simulation.options","mode").toString();
+    std::string ModeStr;
 
-    if (ProjectCentral::getRunModeValue(ModeStr) == ProjectCentral::RunMode::CLI)
+    auto ModeValue = RunCtxt->getProjectContextValue("/builder/simulation/mode");
+    if (!ModeValue.isNull() && ModeValue.is<std::string>())
+    {
+      ModeStr = ModeValue.get<std::string>();
+    }
+    
+
+    if (ProjectCentral::getRunModeValue(QString::fromStdString(ModeStr)) == ProjectCentral::RunMode::CLI)
     {
       m_Actions["SimulationModeCLI"]->setChecked(true);
     }
@@ -441,7 +458,7 @@ void AppActions::createMenus(MainWindow& MainWin)
 
   // recents
   mp_RecentProjectsMenu = Menu->addMenu(tr("Open recent"));
-  for (int i=0;i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
+  for (unsigned int i=0;i<m_RecentProjectsActions.size();i++)
   {
     mp_RecentProjectsMenu->addAction(m_RecentProjectsActions[i]);
   }
@@ -562,7 +579,8 @@ QToolButton::hover {
                                   openfluid::ui::config::TOOLBARBUTTON_BORDERCOLOR));
   }
 
-  MainWin.addToolBar(openfluid::base::PreferencesManager::instance()->getBuilderToolBarPosition(),
-                     mp_MainToolbar);
+  MainWin.addToolBar(
+    static_cast<Qt::ToolBarArea>(openfluid::base::PreferencesManager::instance()->getBuilderToolBarArea()),
+    mp_MainToolbar);
 }
 

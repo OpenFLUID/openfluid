@@ -1,0 +1,44 @@
+{
+  "openfluid-project": {
+    "name": "Firespread",
+    "description": "Example of OpenFLUID usage for simulating fire spreading. It uses a simplified fire spreading model based on wind direction and wind speed, stock quantity and stock type.",
+    "authors": "Michael Rabotin, David Crevoisier, Jean-Christophe Fabre",
+    "creation_date": "20130916T170000",
+    "lastmod_date": "20130916T170000",
+    "inc_outdir": false,
+    "context": {
+      "builder": {
+        "model": {
+          "graphicalview": {
+            "positions": {
+              "fire.surf.prod-spread": "@Point(-56 -247)",
+              "gas.atm.V.windspeed.AU.genscalar": "@Point(-200 -494)",
+              "gas.atm.degree.mainwinddir.AU.genscalar": "@Point(-524 -495)",
+              "spatial.atm.grid.connection-dynamics": "@Point(-433 -250)"
+            }
+          }
+        },
+        "spatial": {
+          "unitsclasses": {
+            "order": [
+              "LU",
+              "AU"
+            ],
+            "styles": {
+              "AU": {
+                "linewidth": 1,
+                "linecolor": "#3ac599",
+                "fillcolor": "#5386b0"
+              },
+              "LU": {
+                "linewidth": 1,
+                "linecolor": "#005500",
+                "fillcolor": "#55aa00"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -76,9 +76,7 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
     QMap<QString, QAction*> m_Actions;
 
-    QMap<QString, QAction*> m_ExternalToolsActions;
-
-    QList<QString> m_ExternalToolsOrder;
+    std::list<QAction*> m_ExternalToolsActions;
 
     void createLocalActions();
 
@@ -88,6 +86,7 @@ class OPENFLUID_API MainWindow: public QMainWindow
 
 
   signals:
+
     void openExternalToolAsked(const QString& Command, const QString& FilePath);
 
 

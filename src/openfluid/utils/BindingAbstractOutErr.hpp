@@ -40,6 +40,9 @@
 #define __OPENFLUID_UTILS_BINDINGABSTRACTOUTERR_HPP__
 
 
+#include <cstdarg>
+
+
 namespace openfluid { namespace utils {
 
 

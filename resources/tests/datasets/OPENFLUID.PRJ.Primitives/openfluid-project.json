@@ -1,0 +1,10 @@
+{
+  "openfluid-project": {
+    "name": "Test project",
+    "description": "Test project with primitives simulators and input dataset",
+    "authors": "Jimmy Page",
+    "creation_date": "20110505T115420",
+    "lastmod_date": "20110505T190645",
+    "inc_outdir": false
+  }
+}

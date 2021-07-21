@@ -40,6 +40,7 @@
 #include <QDir>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/ui/market/MarketClientAssistant.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
@@ -124,7 +125,8 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
 
   std::vector<QAction*> RecentActions = mp_Actions->recentProjectActions();
 
-  for (int i=0; i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
+
+  for (unsigned int i=0; i<openfluid::base::WorkspaceManager::RecentProjectsMax;i++)
   {
     // the local layout will be given a correct parent below with the addLayout() command
     QHBoxLayout* LocalLayout = new QHBoxLayout();
@@ -459,7 +461,7 @@ void HomeModuleWidget::refreshRecentProjects()
 {
   std::vector<QAction*> RecentActions = mp_Actions->recentProjectActions();
 
-  for (int i=0; i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
+  for (unsigned int i=0; i<openfluid::base::WorkspaceManager::RecentProjectsMax;i++)
   {
     QLayoutItem* Item = mp_RecentsLayout->itemAt(i+1);
     QLayout* ItemLayout = Item->layout();

@@ -102,13 +102,13 @@ void EditMarketplaceDialog::checkGlobally()
   {
     setMessage(tr("Name of the marketplace cannot be empty"));
   }
-  else if (!m_IsEditMode && m_MPlaces.find(ui->NameEdit->text()) != m_MPlaces.end())
+  else if (!m_IsEditMode && m_MPlaces.find(ui->NameEdit->text().toStdString()) != m_MPlaces.end())
   {
     setMessage(tr("Name of the marketplace already exists"));
   }
   else if (m_IsEditMode &&
            m_OriginalName != ui->NameEdit->text() &&
-           m_MPlaces.find(ui->NameEdit->text()) != m_MPlaces.end())
+           m_MPlaces.find(ui->NameEdit->text().toStdString()) != m_MPlaces.end())
   {
     setMessage(tr("Name of the marketplace already exists"));
   }

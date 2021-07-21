@@ -1,0 +1,50 @@
+{
+  "openfluid-project": {
+    "name": "MHYDAS_Roujan",
+    "description": "",
+    "authors": "",
+    "creation_date": "20120926T160634",
+    "lastmod_date": "20130529T142732",
+    "inc_outdir": false,
+    "context": {
+      "builder": {
+        "model": {
+          "graphicalview": {
+            "positions": {
+              "water.atm-surf.rain-su.files": "@Point(183 -849)",
+              "water.surf-uz.runoff-infiltration.mseytoux": "@Point(135 -564)",
+              "water.surf.transfer-rs.hayami": "@Point(200 -174)",
+              "water.surf.transfer-su.hayami": "@Point(207 -412)"
+            }
+          }
+        },
+        "spatial": {
+          "unitsclasses": {
+            "order": [
+              "RS",
+              "SU",
+              "GU"
+            ],
+            "styles": {
+              "GU": {
+                "linewidth": 1,
+                "linecolor": "#00aaff",
+                "fillcolor": "#c9dfff"
+              },
+              "RS": {
+                "linewidth": 1,
+                "linecolor": "#0000ff",
+                "fillcolor": "#4078a6"
+              },
+              "SU": {
+                "linewidth": 1,
+                "linecolor": "#55aa00",
+                "fillcolor": "#e4ffcf"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -41,7 +41,7 @@
 #include <QMessageBox>
 #include <QFileSystemModel>
 
-#include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
@@ -58,8 +58,9 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
 
   setupMessageUi(tr("Creation of a new OpenFLUID project"));
 
-  ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::instance()
-                                                         ->getBuilderProjectsPath()));
+  ui->WorkdirLabel->setText(
+    QDir::toNativeSeparators(
+      QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getProjectsPath())));
 
   // "required" placeholder
   ui->NameEdit->setPlaceholderText(getPlaceholderRequired());

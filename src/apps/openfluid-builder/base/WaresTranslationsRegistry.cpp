@@ -57,7 +57,7 @@ WaresTranslationsRegistry::WaresTranslationsRegistry()
 {
   openfluid::base::Environment::init();
 
-  m_LangCode = openfluid::base::PreferencesManager::instance()->getLang();
+  m_LangCode = QString::fromStdString(openfluid::base::PreferencesManager::instance()->getUILanguage());
 }
 
 

@@ -94,6 +94,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // ---------------------------------------------------------------------
 
 
+  std::cout << openfluid::tools::getNowAsString("%Y%m%dT%H%M%S") << std::endl;
+  std::cout << openfluid::tools::getNowAsString("%Y-%m-%d %H:%M") << std::endl;
+
+
+  // ---------------------------------------------------------------------
+
+
   for (int i =0; i<10; i++)
   {
     std::cout << "10 chars: " << openfluid::tools::generatePseudoUniqueIdentifier(10) << std::endl;

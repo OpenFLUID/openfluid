@@ -82,7 +82,7 @@ class OPENFLUID_API Environment
 
     static std::string m_UserDataDir;
 
-    static std::string m_ConfigFile;
+    static std::string m_SettingsFile;
 
     static std::vector<std::string> m_DefaultSimulatorsDirs;
 
@@ -295,9 +295,9 @@ class OPENFLUID_API Environment
       Returns the configuration file path for the current user
       @return the full path to the file
     */
-    static std::string getConfigFile()
+    static std::string getSettingsFile()
     {
-      return m_ConfigFile;
+      return m_SettingsFile;
     }
 
     /**

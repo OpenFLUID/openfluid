@@ -86,7 +86,7 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   ui->HubConnectButton->setText(m_HubButtonConnectLabel);
   
   ui->HubUrlLineEdit->setText(
-      openfluid::base::PreferencesManager::instance()->getWaresdevImportWaresHubLastUrl());
+      QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevImportHubUrl()));
 
   connect(&m_SourceBtGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onSourceChanged(QAbstractButton*)));
 
@@ -392,9 +392,9 @@ void WaresSrcImportDialog::onHubConnectButtonClicked()
     updatePackageInfo();
     updateHubWaresList();
 
-    openfluid::base::PreferencesManager::instance()->setWaresdevImportWaresHubLastUrl(ui->HubUrlLineEdit->text());
-    openfluid::base::PreferencesManager::instance()->setWaresdevImportWaresHubLastUsername(
-      ui->UsernameLineEdit->text());
+    openfluid::base::PreferencesManager::instance()->setWaresdevImportHubUrl(ui->HubUrlLineEdit->text().toStdString());
+    openfluid::base::PreferencesManager::instance()->setWaresdevImportHubUsername(
+      ui->UsernameLineEdit->text().toStdString());
   }
 }
 

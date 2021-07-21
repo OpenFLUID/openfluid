@@ -47,6 +47,7 @@
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include "builderconfig.hpp"
 #include "ModelItemGraphics.hpp"
@@ -177,7 +178,8 @@ QVariant ModelItemGraphics::itemChange(GraphicsItemChange Change,
   if (m_Initialized && Change == QGraphicsItem::ItemPositionChange)
   {
     openfluid::base::RunContextManager::instance()
-      ->setProjectConfigValue("builder.model.graphicalview",m_ID,pos().toPoint());
+      ->setProjectContextValue("/builder/model/graphicalview/positions",m_ID.toStdString(),
+                                openfluid::tools::fromQPoint(pos().toPoint()));
 
     for (ConnectorGraphics* Conn : m_Connectors)
     {

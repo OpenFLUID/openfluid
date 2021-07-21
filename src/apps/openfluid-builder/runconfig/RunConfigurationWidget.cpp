@@ -131,14 +131,16 @@ void RunConfigurationWidget::refresh()
   ui->MemoryStepsSpinBox->setEnabled(ui->CustomRadioButton->isChecked());
 
 
-  ui->ClearOutputCheckBox->setChecked(openfluid::base::RunContextManager::instance()
-                                      ->getProjectConfigValue("builder.runconfig.options","clearoutdir").toBool());
+  ui->ClearOutputCheckBox->
+    setChecked(openfluid::base::RunContextManager::instance()
+      ->getProjectContextValue("/builder/runconfig/clear_outdir").get<bool>(false));
 
-  ui->ProfilingCheckBox->setChecked(openfluid::base::RunContextManager::instance()
-                                      ->getProjectConfigValue("builder.runconfig.options","profiling").toBool());
+  ui->ProfilingCheckBox->
+    setChecked(openfluid::base::RunContextManager::instance()
+      ->getProjectContextValue("/builder/runconfig/profiling").get<bool>(false));
 
   int MaxThreads = openfluid::base::RunContextManager::instance()
-                    ->getProjectConfigValue("builder.runconfig.options","maxthreads").toInt();
+                     ->getProjectContextValue("/builder/runconfig/maxthreads").get<int>(0);
 
   if (MaxThreads < 1)
   {
@@ -248,8 +250,7 @@ void RunConfigurationWidget::updateMemoryStepsFXDesc(int Value)
 
 void RunConfigurationWidget::updateClearOutput(bool On)
 {
-  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.runconfig.options","clearoutdir",
-                                                                         QVariant(On));
+  openfluid::base::RunContextManager::instance()->setProjectContextValue("/builder/runconfig","clearout_dir",On);
 }
 
 
@@ -259,8 +260,7 @@ void RunConfigurationWidget::updateClearOutput(bool On)
 
 void RunConfigurationWidget::updateProfiling(bool On)
 {
-  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.runconfig.options","profiling",
-                                                                         QVariant(On));
+  openfluid::base::RunContextManager::instance()->setProjectContextValue("/builder/runconfig","profiling",On);
 }
 
 
@@ -270,8 +270,7 @@ void RunConfigurationWidget::updateProfiling(bool On)
 
 void RunConfigurationWidget::updateMaxThreads(int Num)
 {
-  openfluid::base::RunContextManager::instance()->setProjectConfigValue("builder.runconfig.options","maxthreads",
-                                                                         QVariant(Num));
+  openfluid::base::RunContextManager::instance()->setProjectContextValue("/builder/runconfig","maxthreads",Num);
 }
 
 

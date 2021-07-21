@@ -43,15 +43,13 @@
 
 #include <string>
 
-#include <QString>
-#include <QVariant>
-#include <QSettings>
-
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/SettingsBackend.hpp>
 
 
 namespace openfluid { namespace base {
@@ -81,7 +79,7 @@ class OPENFLUID_API RunContextManager : public Environment
 
     openfluid::core::MapValue m_ExtraProperties;
 
-    QSettings* mp_ProjectFile;
+    openfluid::tools::SettingsBackend* mp_ProjectFile;
 
     std::string m_ProjectPath;
 
@@ -99,13 +97,11 @@ class OPENFLUID_API RunContextManager : public Environment
 
     bool m_ProjectIsOpen;
 
-    static QString m_ProjectFileGroupName;
+    static const std::string m_ProjectRole;
 
     RunContextManager();
 
     ~RunContextManager();
-
-    static std::string getNow();
 
     void updateWaresEnvironment();
 
@@ -114,6 +110,8 @@ class OPENFLUID_API RunContextManager : public Environment
     static std::string getInputDirFromProjectPath(const std::string& ProjectPath);
 
     static std::string getOuputDirFromProjectPath(const std::string& ProjectPath);
+
+    static void updateProjectFile(const std::string& ProjectPath);
 
     static bool checkProject(const std::string& ProjectPath);
 
@@ -319,7 +317,7 @@ class OPENFLUID_API RunContextManager : public Environment
 
     void setProjectCreationDateAsNow()
     {
-      m_ProjectCreationDate = getNow();
+      m_ProjectCreationDate = openfluid::tools::getNowAsString("%Y%m%dT%H%M%S");
     }
 
     std::string getProjectLastModDate() const
@@ -365,11 +363,15 @@ class OPENFLUID_API RunContextManager : public Environment
 
     void updateProjectOutputDir();
 
-    QVariant getProjectConfigValue(const QString& Group, const QString& Key) const;
+    openfluid::tools::SettingValue getProjectContextValue(const std::string& Pointer) const;
 
-    void removeProjectConfigValue(const QString& Group, const QString& Key);
+    openfluid::tools::SettingValue getProjectContextValue(const std::string& ParentPointer,
+                                                          const std::string& Key) const;
 
-    void setProjectConfigValue(const QString& Group, const QString& Key, const QVariant& Value);
+    void removeProjectContextValue(const std::string& Pointer);
+
+    void setProjectContextValue(const std::string& ParentPointer, const std::string& Key, 
+                                const openfluid::tools::SettingValue& Value);
     
 };
 

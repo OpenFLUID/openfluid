@@ -312,7 +312,7 @@ void WareWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::base::PreferencesManager::instance()->isBuilderItemRemovalConfirm())
+  if (openfluid::base::PreferencesManager::instance()->isBuilderWareRemovalConfirm())
   {
     QString IDStr = QString::fromStdString(getID());
 

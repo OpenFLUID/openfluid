@@ -44,8 +44,10 @@
 #include <QDateTime>
 #include <QToolButton>
 
-#include <openfluid/dllexport.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace Ui
@@ -75,13 +77,15 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
 
   private:
 
-    enum class PagesIndexes { ENVIRONMENT_PAGE = 0,
-                        BUILDER_PAGE = 1,
-                        SIMULATION_PAGE = 2,
-                        DEVENV_PAGE = 3,
-                        DEVEDITOR_PAGE = 4,
-                        MARKET_PAGE = 5
-                        };
+    enum class PagesIndexes { 
+      GENERAL_PAGE = 0,
+      WORKSPACES_PAGE = 1,
+      BUILDER_PAGE = 2,
+      SIMULATION_PAGE = 3,
+      DEVENV_PAGE = 4,
+      DEVEDITOR_PAGE = 5,
+      MARKET_PAGE = 6
+    };
 
   private slots:
 
@@ -90,8 +94,6 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
     void updateLanguage(int Index);
 
     void clearRecentsList();
-
-    void updateRecentsMax(int Val);
 
     void confirmItemRemoval(bool Confirm);
 
@@ -172,7 +174,10 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
 
   private:
 
-    Ui::PreferencesDialog *ui;
+    Ui::PreferencesDialog* ui;
+
+    openfluid::base::PreferencesManager* mp_PrefsMan;
+    openfluid::base::WorkspaceManager* mp_WorksMan;
 
     bool m_RecentsChanged;
 

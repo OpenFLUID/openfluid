@@ -195,9 +195,10 @@ void ProjectCentral::run(RunMode Mode)
 {
   openfluid::base::RunContextManager* CtxtMan = openfluid::base::RunContextManager::instance();
 
-  CtxtMan->setClearOutputDir(CtxtMan->getProjectConfigValue("builder.runconfig.options","clearoutdir").toBool());
-  CtxtMan->setProfiling(CtxtMan->getProjectConfigValue("builder.runconfig.options","profiling").toBool());
-  CtxtMan->setWaresMaxNumThreads(CtxtMan->getProjectConfigValue("builder.runconfig.options","maxthreads").toInt());
+  CtxtMan->setClearOutputDir(CtxtMan->getProjectContextValue("/builder/runconfig/clear_outdir").get<bool>(false));
+  CtxtMan->setProfiling(CtxtMan->getProjectContextValue("/builder/runconfig/profiling").get<bool>(false));
+  CtxtMan->setWaresMaxNumThreads(CtxtMan->getProjectContextValue("/builder/runconfig/maxthreads")
+                                   .get<int>(openfluid::base::Environment::getIdealThreadCount()));
 
   if (Mode == RunMode::DEFAULT)
   {

@@ -100,44 +100,42 @@ void WareSrcFiletypeManager::updateStyles()
 {
   m_Formats.clear();
 
-  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules = openfluid::base::PreferencesManager::instance()
-      ->getWaresdevSyntaxHighlightingRules();
+  auto Rules = openfluid::base::PreferencesManager::instance()->getWaresdevSyntaxHighlightingRules();
 
-  for (openfluid::base::PreferencesManager::SyntaxHighlightingRules_t::iterator it = Rules.begin(); it != Rules.end();
-      ++it)
+  for (const auto& R : Rules)
   {
-    QString StyleName = it.key();
+    QString StyleName = QString::fromStdString(R.first);
+    QColor Color = QString::fromStdString(R.second.Color);
 
-    QColor Color(it.value().m_Color);
     if (Color.isValid())
     {
       m_Formats[StyleName].setForeground(Color);
     }
 
-    for(const QString& Decoration : it.value().m_Decoration)
+    for (const auto& D : R.second.Decoration)
     {
-      if(Decoration == "bold")
+      if (D == "bold")
       {
         m_Formats[StyleName].setFontWeight(QFont::Bold);
       }
-      else if(Decoration == "italic")
+      else if (D == "italic")
       {
         m_Formats[StyleName].setFontItalic(true);
       }
-      else if(Decoration == "underline")
+      else if (D == "underline")
       {
         m_Formats[StyleName].setFontUnderline(true);
       }
-      else if(Decoration == "strike-through")
+      else if (D == "strike-through")
       {
         m_Formats[StyleName].setFontStrikeOut(true);
       }
     }
   }
 
-  for(QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin() ; it != m_WareSrcFiletypes.end() ; ++it)
+  for (QMap<QString, WareSrcFiletype>::iterator it = m_WareSrcFiletypes.begin() ; it != m_WareSrcFiletypes.end() ; ++it)
   {
-    for(WareSrcFiletypeManager::HighlightingRules_t::iterator itt = it->m_HlRules.begin() ;
+    for (WareSrcFiletypeManager::HighlightingRules_t::iterator itt = it->m_HlRules.begin() ;
         itt != it->m_HlRules.end(); ++ itt)
       itt->Format = m_Formats.value(itt->StyleName, QTextCharFormat());
   }

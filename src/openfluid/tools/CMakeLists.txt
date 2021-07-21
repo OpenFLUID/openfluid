@@ -7,6 +7,7 @@ SET(OPENFLUID_TOOLS_CPP ColumnTextParser.cpp
                         DistributionTables.cpp DistributionBindings.cpp
                         Filesystem.cpp
                         FileLogger.cpp
+                        SettingsBackend.cpp
                         DataHelpers.cpp IDHelpers.cpp QtHelpers.cpp MiscHelpers.cpp
                         )
 
@@ -18,6 +19,7 @@ SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp
                         Console.hpp
                         Filesystem.hpp
                         FileLogger.hpp
+                        SettingsBackend.hpp
                         DataHelpers.hpp IDHelpers.hpp QtHelpers.hpp MiscHelpers.hpp
                         Timer.hpp
                         FortranCPP.hpp

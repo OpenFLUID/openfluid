@@ -40,19 +40,16 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_PreferencesManager
+#define BOOST_TEST_MODULE unittest_preferencesmanager
 
 
 #include <boost/test/unit_test.hpp>
-
-#include <QString>
-#include <QStringList>
-#include <QFile>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include "tests-config.hpp"
 
@@ -61,25 +58,100 @@
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(test_SetFileName)
+const std::string PrefsPath =
+  openfluid::tools::Filesystem::joinPath({CONFIGTESTS_OUTPUT_DATA_DIR,"PreferencesManager"});
+const std::string ConversionPrefsPath =
+  openfluid::tools::Filesystem::joinPath({CONFIGTESTS_OUTPUT_DATA_DIR,"PreferencesManager","conversion"});  
+const std::string DefaultPrefsFile = openfluid::tools::Filesystem::joinPath({PrefsPath,"default.json"});
+const std::string CreatedPrefsFile = openfluid::tools::Filesystem::joinPath({PrefsPath,"created.json"});
+const std::string ConvertedPrefsFile =  openfluid::tools::Filesystem::joinPath({ConversionPrefsPath,"converted.json"});
+
+const std::vector<std::string> WorkspacesPaths = {"/path/to/workspace",
+                                                  "/path/to/workspace-test",
+                                                  "/path/to/workspace-test-2"};
+
+const std::vector<std::string> ExtraSimsPaths = {"/path/to/sims-lib1",
+                                                 "/path/to/sims-lib2",
+                                                 "/path/to/sims-lib3"};
+
+const std::vector<std::string> ExtraObssPaths = {"/path/to/obss-lib1"};
+
+const std::vector<std::string> ExtraBextsPaths = {};
+
+const std::list<openfluid::base::PreferencesManager::ExternalTool_t> ExternalTools = {
+  { "My Tool", 
+    { 
+      {openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE, "/usr/local/bin/mytool --workspace=%%W%%"},
+      {openfluid::base::PreferencesManager::ExternalToolContext::WARE, "/usr/local/bin/mytool --ware=%%S%%"},
+      {openfluid::base::PreferencesManager::ExternalToolContext::FILE, "/usr/local/bin/mytool --file=%%C%%"} 
+    } 
+  },
+  { "Another Tool", 
+    { 
+      {openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE, 
+       "C:\\\\Program Files\\\\AnotherTool-18.5\\\\anottool.exe %%W%%"}
+    }
+  },
+  { "The Amazing App", 
+    { 
+      {openfluid::base::PreferencesManager::ExternalToolContext::WARE, "/Applications/TheAmazingApp.app %%S%%"},
+      {openfluid::base::PreferencesManager::ExternalToolContext::FILE, "/Applications/TheAmazingApp.app %%C%%"} 
+    }  
+  }
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_construction)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+  openfluid::tools::Filesystem::removeFile(DefaultPrefsFile);
 
-  BOOST_CHECK_THROW(openfluid::base::PreferencesManager::setFileName(CFile),openfluid::base::FrameworkException);
 
-  BOOST_CHECK(PrefMgr->getFileName().toStdString() == openfluid::base::Environment::getConfigFile());
+  openfluid::base::PreferencesManager* PrefsMgr = openfluid::base::PreferencesManager::instance();
 
-  openfluid::base::PreferencesManager::kill();
+  BOOST_CHECK_THROW(openfluid::base::PreferencesManager::setSettingsFile(PrefsPath+"/wrong.json"),
+                    openfluid::base::FrameworkException);
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  PrefMgr = openfluid::base::PreferencesManager::instance();
-
-  BOOST_CHECK(PrefMgr->getFileName() == CFile);
+  BOOST_CHECK(PrefsMgr->getSettingsFile() == openfluid::base::Environment::getSettingsFile());
 
   openfluid::base::PreferencesManager::kill();
 
+
+  openfluid::base::PreferencesManager::setSettingsFile(DefaultPrefsFile);
+  PrefsMgr = openfluid::base::PreferencesManager::instance();
+
+  BOOST_CHECK(PrefsMgr->getSettingsFile() == DefaultPrefsFile);
+
+  BOOST_CHECK_EQUAL(PrefsMgr->getBuilderDeltaT(),3600);
+  BOOST_CHECK(!PrefsMgr->getBuilderBeginDate().empty());
+  BOOST_CHECK(!PrefsMgr->getBuilderEndDate().empty());
+  
+  BOOST_CHECK(PrefsMgr->isWaresdevSyntaxHighlightingEnabled());
+  BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevSyntaxHighlightingRules().size(),10);
+  BOOST_CHECK(PrefsMgr->isWaresdevCurrentlineHighlightingEnabled());
+  BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevCurrentlineColor(),"#eff6ff");
+  BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevIndentSpaceNb(),2);
+  BOOST_CHECK(!PrefsMgr->isWaresdevSpaceTabDisplayEnabled());
+  BOOST_CHECK(!PrefsMgr->isWaresdevCarriageReturnDisplayEnabled());
+  BOOST_CHECK(!PrefsMgr->isWaresdevLineWrappingEnabled());
+
+  BOOST_CHECK(PrefsMgr->getWaresdevConfigureOptions().empty());
+  BOOST_CHECK(PrefsMgr->getWaresdevConfigureEnv("PATH").empty());
+  BOOST_CHECK(PrefsMgr->getWaresdevConfigureEnv("FAKEC").empty());
+  BOOST_CHECK(PrefsMgr->getWaresdevBuildEnv("PATH").empty());
+  BOOST_CHECK(PrefsMgr->getWaresdevBuildEnv("FAKEB").empty());
+
+  BOOST_CHECK(!PrefsMgr->isWaresdevShowCommandEnv("PATH"));
+
+  BOOST_CHECK(PrefsMgr->getWaresdevImportHubUrl().empty());
+  BOOST_CHECK(PrefsMgr->getWaresdevImportHubUsername().empty());
+
+  BOOST_CHECK(!PrefsMgr->isWaresdevGitSslNoVerify());
+
+  openfluid::base::PreferencesManager::kill();
 }
 
 
@@ -87,514 +159,164 @@ BOOST_AUTO_TEST_CASE(test_SetFileName)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
+BOOST_AUTO_TEST_CASE(check_creation)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+  openfluid::tools::Filesystem::removeFile(CreatedPrefsFile);
+
+  openfluid::base::PreferencesManager::setSettingsFile(CreatedPrefsFile);
+  auto PrefsMgr = openfluid::base::PreferencesManager::instance();
+
+  PrefsMgr->setWorkspacesPaths(WorkspacesPaths);
+
+  PrefsMgr->setUILanguage("it_IT");
+
+  PrefsMgr->setBuilderExtraSimulatorsPaths(ExtraSimsPaths);
+  PrefsMgr->removeBuilderExtraSimulatorsPath("/path/to/sims-lib2");
+  PrefsMgr->setBuilderExtraObserversPaths(ExtraObssPaths);
+  PrefsMgr->addBuilderExtraObserversPath("/path/to/obss-lib2");
+  PrefsMgr->setBuilderExtraExtensionsPaths(ExtraBextsPaths);
+    
+  PrefsMgr->setBuilderDockArea(1);
+  PrefsMgr->setBuilderToolBarArea(2);
+  PrefsMgr->setBuilderWaresWatchersActive(false);
+  PrefsMgr->setBuilderWareRemovalConfirm(true);
+  PrefsMgr->setBuilderParamRemovalConfirm(false);
+  PrefsMgr->setBuilderSpatialAttrsRemovalConfirm(false);
+  PrefsMgr->setBuilderSpatialConnsRemovalConfirm(true);
+  PrefsMgr->setBuilderSpatialUnitsRemovalConfirm(true);
+
+  PrefsMgr->setBuilderDeltaT(300);
+  PrefsMgr->setBuilderBeginDate("2008-01-02 11:13:00");
+  PrefsMgr->setBuilderEndDate("2011-08-06 16:01:00");
+
+  PrefsMgr->setWaresdevAutomaticSaveBeforeBuild(true);
+
+  auto SHRules = PrefsMgr->getWaresdevSyntaxHighlightingRules();
+  SHRules["openfluid-deprecated"] = { "olive", {"italic","underline"} };
+  PrefsMgr->setWaresdevSyntaxHighlightingRules(SHRules);
+  PrefsMgr->setWaresdevCurrentlineHighlightingEnabled(false);
+  PrefsMgr->setWaresdevLineWrappingEnabled(true);
+  PrefsMgr->setWaresdevSpaceTabDisplayEnabled(true);
+  PrefsMgr->setWaresdevIndentSpaceNb(3);
+
+  PrefsMgr->setWaresdevConfigureOptions("-DOPTION=ON -DTEXT=\"a quoted text\"");
+  PrefsMgr->setWaresdevConfigureGenerator("Fake Generator");
+  PrefsMgr->setWaresdevConfigureEnv("PATH","$PATH:/path/to/conf/bin");
+  PrefsMgr->setWaresdevConfigureEnv("MYCONFENV","MyConfValue");
+  PrefsMgr->setWaresdevBuildEnv("PATH","$PATH:/path/to/build/bin");
+  PrefsMgr->setWaresdevBuildEnv("MYBUILDENV","MyBuildValue");
+  PrefsMgr->setWaresdevShowCommandEnv("PATH",true);
+
+  PrefsMgr->setWaresdevExternalTools(ExternalTools);
+
+  openfluid::base::PreferencesManager::kill();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_opening)
+{
+  openfluid::tools::Filesystem::removeFile(ConvertedPrefsFile);
+
+  openfluid::base::PreferencesManager::setSettingsFile(CreatedPrefsFile);
+  auto PrefsMgr = openfluid::base::PreferencesManager::instance();
+  
+  { // workspaces
+    auto Paths = PrefsMgr->getWorkspacesPaths();
+    BOOST_CHECK_EQUAL_COLLECTIONS(WorkspacesPaths.begin(),WorkspacesPaths.end(),Paths.begin(),Paths.end());
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+  { // ui lang
+    BOOST_CHECK_EQUAL(PrefsMgr->getUILanguage(),"it_IT");
+  }
+  
+  { // builder wares paths
+    auto BuilderSimPaths = PrefsMgr->getBuilderExtraSimulatorsPaths();
+    auto BuilderObsPaths = PrefsMgr->getBuilderExtraObserversPaths();
+    auto BuilderExtPaths = PrefsMgr->getBuilderExtraExtensionsPaths();
 
-
-  QStringList WksPaths;
-  WksPaths.append("aa/bb/cc");
-  WksPaths.append("ii/jj/kk");
-  WksPaths.append("xx/yy/zz");
-
-  PrefMgr->setLang("oc");
-  PrefMgr->setBuilderRecentMax(10);
-  PrefMgr->setBuilderWorkspacesPaths(WksPaths);
-  PrefMgr->setBuilderDeltaT(777);
-  PrefMgr->setBuilderBegin("2222-11-11T00:11:22");
-  PrefMgr->setBuilderEnd("2221-12-12=11;22;33");
-
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderRecentMax(),10);
-  BOOST_CHECK(PrefMgr->getLang() == "oc");
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderWorkspacesPaths().count(),3);
-  BOOST_CHECK(PrefMgr->getBuilderWorkspacePath() == "aa/bb/cc");
-  BOOST_CHECK(PrefMgr->getBuilderWorkspacesPaths()[0] == "aa/bb/cc");
-  BOOST_CHECK(PrefMgr->getBuilderWorkspacesPaths()[2] == "xx/yy/zz");
-  BOOST_CHECK(PrefMgr->getBuilderProjectsPath() == "aa/bb/cc/projects");
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderDeltaT(),777);
-  BOOST_CHECK(PrefMgr->getBuilderBegin() == "2222-11-11T00:11:22");
-  BOOST_CHECK(PrefMgr->getBuilderEnd() == "2221-12-12=11;22;33");
-
-  openfluid::base::PreferencesManager::kill();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
-{
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+    BOOST_CHECK_EQUAL(BuilderSimPaths.size(),2);
+    BOOST_CHECK_EQUAL(BuilderSimPaths[0],ExtraSimsPaths[0]);
+    BOOST_CHECK_EQUAL(BuilderSimPaths[1],ExtraSimsPaths[2]);  
+    BOOST_CHECK_EQUAL(BuilderObsPaths.size(),2);
+    BOOST_CHECK_EQUAL(BuilderObsPaths[0],ExtraObssPaths[0]);
+    BOOST_CHECK(!BuilderObsPaths[1].empty());
+    BOOST_CHECK(BuilderExtPaths.empty());
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderRecentMax(),5);
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderRecentProjects().size(),0);
-
-  BOOST_REQUIRE(PrefMgr->addBuilderRecentProject("pj1","aa/bb/file1.txt"));
-  BOOST_REQUIRE(PrefMgr->addBuilderRecentProject("","aa/bb/file2.txt"));
-  BOOST_REQUIRE(PrefMgr->addBuilderRecentProject("pj3","aa/bb/file3.txt"));
-
-  openfluid::base::PreferencesManager::RecentProjectsList_t Recents = PrefMgr->getBuilderRecentProjects();
-
-  BOOST_CHECK_EQUAL(Recents.size(),3);
-  BOOST_CHECK(Recents[0].Path == "aa/bb/file3.txt");
-  BOOST_CHECK(Recents[0].Name == "pj3");
-  BOOST_CHECK(Recents[1].Path == "aa/bb/file2.txt");
-  BOOST_CHECK(Recents[1].Name == "");
-  BOOST_CHECK(Recents[2].Path == "aa/bb/file1.txt");
-  BOOST_CHECK(Recents[2].Name == "pj1");
-
-  PrefMgr->addBuilderRecentProject("","aa/bb/file2.txt");
-
-  Recents = PrefMgr->getBuilderRecentProjects();
-
-  BOOST_CHECK_EQUAL(Recents.size(),3);
-  BOOST_CHECK(Recents[0].Path == "aa/bb/file2.txt");
-  BOOST_CHECK(Recents[0].Name == "");
-  BOOST_CHECK(Recents[1].Path == "aa/bb/file3.txt");
-  BOOST_CHECK(Recents[1].Name == "pj3");
-  BOOST_CHECK(Recents[2].Path == "aa/bb/file1.txt");
-  BOOST_CHECK(Recents[2].Name == "pj1");
-
-  PrefMgr->addBuilderRecentProject("","aa/bb/file20.txt");
-  PrefMgr->addBuilderRecentProject("","aa/bb/file21.txt");
-  PrefMgr->addBuilderRecentProject("","aa/bb/file22.txt");
-  PrefMgr->addBuilderRecentProject("","aa/bb/file23.txt");
-
-  Recents = PrefMgr->getBuilderRecentProjects();
-
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderRecentMax(),Recents.size());
-
-  PrefMgr->clearBuilderRecentProjects();
-
-  Recents = PrefMgr->getBuilderRecentProjects();
-
-  BOOST_CHECK_EQUAL(Recents.size(),0);
-
-  openfluid::base::PreferencesManager::kill();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_ExtraSimPathManagement)
-{
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+  { // builder ui
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderToolBarArea(),2);
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderDockArea(),1);
+    BOOST_CHECK(!PrefsMgr->isBuilderWaresWatchersActive());
+    BOOST_CHECK(PrefsMgr->isBuilderWareRemovalConfirm());
+    BOOST_CHECK(!PrefsMgr->isBuilderParamRemovalConfirm());
+    BOOST_CHECK(!PrefsMgr->isBuilderSpatialAttrsRemovalConfirm());
+    BOOST_CHECK(PrefsMgr->isBuilderSpatialConnsRemovalConfirm());
+    BOOST_CHECK(PrefsMgr->isBuilderSpatialUnitsRemovalConfirm());
+    BOOST_CHECK(!PrefsMgr->isBuilderAutomaticSaveBeforeRun());
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-
-
-  QStringList ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
-
-  PrefMgr->addBuilderExtraSimulatorsPath("aa/bb/dir1");
-  PrefMgr->addBuilderExtraSimulatorsPath("aa/bb/dir2");
-  PrefMgr->addBuilderExtraSimulatorsPath("aa/bb/dir3");
-
-  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
-  BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraSimulatorsPath("aa/bb/dir2");
-
-  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraSimulatorsPath("aa/bb/wrongdir");
-
-  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraSimulatorsPath("aa/bb/dir1");
-
-  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),1);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraSimulatorsPath("aa/bb/dir3");
-
-  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
-
-  QStringList Paths;
-  Paths.append("aa/bb/dir1");
-  Paths.append("aa/bb/dir2");
-  Paths.append("aa/bb/dir3");
-
-  PrefMgr->setBuilderExtraSimulatorsPaths(Paths);
-
-  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
-  BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
-
-  Paths.clear();
-  Paths.push_back("cc/dd/dir1");
-  Paths.push_back("cc/dd/dir2");
-
-  PrefMgr->setBuilderExtraSimulatorsPaths(Paths);
-
-  ExtraPaths = PrefMgr->getBuilderExtraSimulatorsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "cc/dd/dir2");
-
-  openfluid::base::PreferencesManager::kill();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
-{
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+  { // builder runconfig
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderDeltaT(),300);
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderBeginDate(),"2008-01-02 11:13:00");
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderEndDate(),"2011-08-06 16:01:00");
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-
-
-  QStringList ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
-
-  PrefMgr->addBuilderExtraExtensionsPath("aa/bb/dir1");
-  PrefMgr->addBuilderExtraExtensionsPath("aa/bb/dir2");
-  PrefMgr->addBuilderExtraExtensionsPath("aa/bb/dir3");
-
-  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
-  BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraExtensionsPath("aa/bb/dir2");
-
-  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraExtensionsPath("aa/bb/wrongdir");
-
-  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraExtensionsPath("aa/bb/dir1");
-
-  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),1);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraExtensionsPath("aa/bb/dir3");
-
-  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
-
-  QStringList Paths;
-  Paths.append("aa/bb/dir1");
-  Paths.append("aa/bb/dir2");
-  Paths.append("aa/bb/dir3");
-
-  PrefMgr->setBuilderExtraExtensionsPaths(Paths);
-
-  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
-  BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
-
-  Paths.clear();
-  Paths.push_back("cc/dd/dir1");
-  Paths.push_back("cc/dd/dir2");
-
-  PrefMgr->setBuilderExtraExtensionsPaths(Paths);
-
-  ExtraPaths = PrefMgr->getBuilderExtraExtensionsPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "cc/dd/dir2");
-
-  openfluid::base::PreferencesManager::kill();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
-{
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+  {  // waresdev text editor
+    BOOST_CHECK(PrefsMgr->isWaresdevSyntaxHighlightingEnabled());
+    auto SHRules = PrefsMgr->getWaresdevSyntaxHighlightingRules();
+    BOOST_CHECK_EQUAL(SHRules.size(),10);
+    BOOST_REQUIRE(SHRules.find("openfluid-deprecated") != SHRules.end());
+    BOOST_CHECK_EQUAL(SHRules["openfluid-deprecated"].Color,"olive");
+    BOOST_CHECK_EQUAL(SHRules["openfluid-deprecated"].Decoration.size(),2);
+    BOOST_CHECK_EQUAL(SHRules["openfluid-deprecated"].Decoration[0],"italic");
+    BOOST_CHECK_EQUAL(SHRules["openfluid-deprecated"].Decoration[1],"underline");
+    BOOST_CHECK(!PrefsMgr->isWaresdevCurrentlineHighlightingEnabled());
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevCurrentlineColor(),"#eff6ff");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevFontName(),"monospace");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevIndentSpaceNb(),3);
+    BOOST_CHECK(PrefsMgr->isWaresdevLineWrappingEnabled());
+    BOOST_CHECK(PrefsMgr->isWaresdevSpaceTabDisplayEnabled());
+    BOOST_CHECK(!PrefsMgr->isWaresdevCarriageReturnDisplayEnabled());
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-
-
-  QStringList ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
-
-  PrefMgr->addBuilderExtraObserversPath("aa/bb/dir1");
-  PrefMgr->addBuilderExtraObserversPath("aa/bb/dir2");
-  PrefMgr->addBuilderExtraObserversPath("aa/bb/dir3");
-
-  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
-  BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraObserversPath("aa/bb/dir2");
-
-  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraObserversPath("aa/bb/wrongdir");
-
-  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraObserversPath("aa/bb/dir1");
-
-  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),1);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir3");
-
-  PrefMgr->removeBuilderExtraObserversPath("aa/bb/dir3");
-
-  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),0);
-
-  QStringList Paths;
-  Paths.append("aa/bb/dir1");
-  Paths.append("aa/bb/dir2");
-  Paths.append("aa/bb/dir3");
-
-  PrefMgr->setBuilderExtraObserversPaths(Paths);
-
-  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),3);
-  BOOST_CHECK(ExtraPaths[0] == "aa/bb/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "aa/bb/dir2");
-  BOOST_CHECK(ExtraPaths[2] == "aa/bb/dir3");
-
-  Paths.clear();
-  Paths.push_back("cc/dd/dir1");
-  Paths.push_back("cc/dd/dir2");
-
-  PrefMgr->setBuilderExtraObserversPaths(Paths);
-
-  ExtraPaths = PrefMgr->getBuilderExtraObserversPaths();
-
-  BOOST_CHECK_EQUAL(ExtraPaths.size(),2);
-  BOOST_CHECK(ExtraPaths[0] == "cc/dd/dir1");
-  BOOST_CHECK(ExtraPaths[1] == "cc/dd/dir2");
-
-  openfluid::base::PreferencesManager::kill();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
-{
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+  { // waresdev ui 
+    BOOST_CHECK(PrefsMgr->isWaresdevAutomaticSaveBeforeBuild());
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-
-
-  openfluid::base::PreferencesManager::MarketPlaces_t Places = PrefMgr->getMarketplaces();
-
-  BOOST_CHECK_EQUAL(Places.size(),0);
-
-  PrefMgr->addMarketplace("PlaceA", "http://aa/aa/");
-  PrefMgr->addMarketplace("Place with spaces", "http://bb/bb/");
-  PrefMgr->addMarketplace("Place C", "http://cc/cc/");
-
-  Places = PrefMgr->getMarketplaces();
-
-  BOOST_CHECK_EQUAL(Places.size(),3);
-  BOOST_CHECK(Places["PlaceA"] == "http://aa/aa/");
-  BOOST_CHECK(Places["Place with spaces"] == "http://bb/bb/");
-  BOOST_CHECK(Places["Place C"] == "http://cc/cc/");
-
-  PrefMgr->removeMarketplace("Place with spaces");
-
-  Places = PrefMgr->getMarketplaces();
-
-  BOOST_CHECK_EQUAL(Places.size(),2);
-  BOOST_CHECK(Places["PlaceA"] == "http://aa/aa/");
-  BOOST_CHECK(Places["Place C"] == "http://cc/cc/");
-
-  PrefMgr->removeMarketplace("Wrong place");
-
-  Places = PrefMgr->getMarketplaces();
-
-  BOOST_CHECK_EQUAL(Places.size(),2);
-  BOOST_CHECK(Places["PlaceA"] == "http://aa/aa/");
-  BOOST_CHECK(Places["Place C"] == "http://cc/cc/");
-
-  PrefMgr->removeMarketplace("PlaceA");
-  PrefMgr->removeMarketplace("PlaceC");
-
-  BOOST_CHECK_EQUAL(Places.size(),2);
-
-  BOOST_CHECK_EQUAL(PrefMgr->addMarketplace("Place=A", "http://aa/aa/"), false);
-
-  PrefMgr->addMarketplace("Place;A", "http://aa/aa/");
-
-  Places = PrefMgr->getMarketplaces();
-  BOOST_CHECK(Places["Place;A"] == "http://aa/aa/");
-
-  openfluid::base::PreferencesManager::kill();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
-{
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+  { // waresdev commands
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevConfigureOptions(),"-DOPTION=ON -DTEXT=\"a quoted text\"");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevConfigureGenerator(),"Fake Generator");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevConfigureEnv("PATH"),"$PATH:/path/to/conf/bin");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevConfigureEnv("MYCONFENV"),"MyConfValue");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevBuildEnv("PATH"),"$PATH:/path/to/build/bin");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevBuildEnv("MYBUILDENV"),"MyBuildValue");
+    BOOST_CHECK_EQUAL(PrefsMgr->isWaresdevShowCommandEnv("PATH"),true);
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+  { // waresdev external tools
+    auto ExtTools = PrefsMgr->getWaresdevExternalTools();
+    BOOST_REQUIRE_EQUAL(ExtTools.size(),ExternalTools.size());
 
-  PrefMgr->setBuilderToolBarPosition(Qt::LeftToolBarArea);
-  PrefMgr->setBuilderDockPosition(Qt::BottomDockWidgetArea);
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderToolBarPosition(),Qt::LeftToolBarArea);
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderDockPosition(),Qt::BottomDockWidgetArea);
+    auto it1 = ExtTools.begin();
+    auto it2 = ExternalTools.begin();
+    for (unsigned int i=0; i<ExtTools.size(); i++)
+    {
+      BOOST_CHECK_EQUAL((*it1).Name,(*it2).Name);
+      BOOST_CHECK_EQUAL((*it1).Commands.size(),(*it2).Commands.size());
+      for (const auto& Cmd : (*it1).Commands)
+      {
+        BOOST_CHECK_EQUAL(Cmd.second,(*it2).Commands.at(Cmd.first));
+      }
 
-  PrefMgr->setBuilderToolBarPosition(Qt::BottomToolBarArea);
-  PrefMgr->setBuilderDockPosition(Qt::RightDockWidgetArea);
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderToolBarPosition(),Qt::BottomToolBarArea);
-  BOOST_CHECK_EQUAL(PrefMgr->getBuilderDockPosition(),Qt::RightDockWidgetArea);
-
-  openfluid::base::PreferencesManager::kill();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_textEditorProperties)
-{
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+      it1++;
+      it2++;
+    }
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
-
-  openfluid::base::PreferencesManager::SyntaxHighlightingRules_t Rules;
-  openfluid::base::PreferencesManager::SyntaxHighlightingRule_t Rule(QString("pink"),QStringList("none"));
-  Rules.insert("datatype",Rule);
-  openfluid::base::PreferencesManager::SyntaxHighlightingRule_t ControlRule(QString("controlColor"),
-                                                                            QStringList("none"));
-
-  BOOST_CHECK_EQUAL(PrefMgr->isWaresdevSyntaxHighlightingEnabled(),true);
-  BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
-
-  PrefMgr->setWaresdevSyntaxHighlightingEnabled(false);
-  PrefMgr->setWaresdevSyntaxHighlightingRules(Rules);
-  BOOST_CHECK_EQUAL(PrefMgr->isWaresdevSyntaxHighlightingEnabled(),false);
-  BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"pink");
-
-  PrefMgr->setWaresdevTextEditorDefaults(true);
-  BOOST_CHECK_EQUAL(PrefMgr->isWaresdevSyntaxHighlightingEnabled(),true);
-  BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevSyntaxHighlightingRules().value("datatype",ControlRule).m_Color.toStdString(),"system");
-
   openfluid::base::PreferencesManager::kill();
 }
 
@@ -603,48 +325,162 @@ BOOST_AUTO_TEST_CASE(test_textEditorProperties)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(test_externalToolsProperties)
+BOOST_AUTO_TEST_CASE(check_conversion)
 {
-  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" +
-                  QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
-  if (QFile::exists(CFile))
-  {
-    QFile::remove(CFile);
+  std::string RefConfFile = 
+    openfluid::tools::Filesystem::joinPath({CONFIGTESTS_INPUT_MISCDATA_DIR,"PreferencesManager","openfluid.conf"});
+  std::string WorkConfFile = 
+    openfluid::tools::Filesystem::joinPath({CONFIGTESTS_OUTPUT_DATA_DIR,"PreferencesManager",
+                                           "conversion","openfluid.conf"});
+
+  openfluid::tools::Filesystem::makeDirectory(ConversionPrefsPath);
+  openfluid::tools::Filesystem::removeFile(WorkConfFile);
+  openfluid::tools::Filesystem::removeFile(ConvertedPrefsFile);
+  openfluid::tools::Filesystem::copyFile(RefConfFile,WorkConfFile);
+
+  openfluid::base::PreferencesManager::setSettingsFile(ConvertedPrefsFile);
+  auto PrefsMgr = openfluid::base::PreferencesManager::instance();
+
+  { // workspaces path
+  auto WksPath = PrefsMgr->getWorkspacesPaths();
+  BOOST_REQUIRE_EQUAL(WksPath.size(),3);
+  BOOST_CHECK_EQUAL(WksPath[0],"/path/to/workspace1");
+  BOOST_CHECK_EQUAL(WksPath[1],"/path/to/workspace2");
+  BOOST_CHECK_EQUAL(WksPath[2],"/path/to/workspace3");  
   }
 
-  openfluid::base::PreferencesManager::setFileName(CFile);
-  openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
+  { // ui langs
+    BOOST_CHECK_EQUAL(PrefsMgr->getUILanguage(),"de_DE");
+  }
 
-  openfluid::base::PreferencesManager::ExternalToolsCommands_t Tools;
-  QStringList ToolA, ToolB, ToolC, ToolD;
-  ToolA << "A %%W%%" << "AB %%S%%" << "AC %%C%%";
-  Tools.insert("A", ToolA);
-  ToolB << "" << "B %%S%%" << "";
-  Tools.insert("B", ToolB);
-  ToolC << "C %%W%% -i" << "C -i %%S%% -j" << "";
-  Tools.insert("C", ToolC);
+  { // builder simulators paths
+    auto WaresPath = PrefsMgr->getBuilderExtraSimulatorsPaths();
+    BOOST_REQUIRE_EQUAL(WaresPath.size(),3);
+    BOOST_CHECK_EQUAL(WaresPath[0],"/path/to/simulators-lib3");
+    BOOST_CHECK_EQUAL(WaresPath[1],"/path/to/simulators-lib2");
+    BOOST_CHECK_EQUAL(WaresPath[2],"/path/to/simulators-lib1");
+  }
+  { // builder observers paths
+    auto WaresPath = PrefsMgr->getBuilderExtraObserversPaths();
+    BOOST_REQUIRE_EQUAL(WaresPath.size(),2);
+    BOOST_CHECK_EQUAL(WaresPath[0],"/path/to/observers-lib1");
+    BOOST_CHECK_EQUAL(WaresPath[1],"/path/to/observers-lib2");
+  }
+  { // builder extensions paths
+    auto WaresPath = PrefsMgr->getBuilderExtraExtensionsPaths();
+    BOOST_REQUIRE(WaresPath.empty());
+  }
 
-  PrefMgr->setWaresdevExternalToolsCommands(Tools);
+  { // builder ui
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderDockArea(),1);
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderToolBarArea(),4);
+    BOOST_CHECK(PrefsMgr->isBuilderWareRemovalConfirm());
+    BOOST_CHECK(PrefsMgr->isBuilderParamRemovalConfirm());
+    BOOST_CHECK(PrefsMgr->isBuilderSpatialAttrsRemovalConfirm());
+    BOOST_CHECK(!PrefsMgr->isBuilderSpatialConnsRemovalConfirm());
+    BOOST_CHECK(PrefsMgr->isBuilderSpatialUnitsRemovalConfirm());
+    BOOST_CHECK(!PrefsMgr->isBuilderAutomaticSaveBeforeRun());
+    BOOST_CHECK(PrefsMgr->isBuilderWaresWatchersActive());
+  }
 
-  BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevExternalToolsCommandsInContext(
-      openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE)["A"].toStdString(),"A %%P%%");
+  { // builder runconfig
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderBeginDate(),"2018-02-06 00:00:00");
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderEndDate(),"2018-02-07 00:00:00");
+    BOOST_CHECK_EQUAL(PrefsMgr->getBuilderDeltaT(),600);
+  }
 
-  BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevExternalToolsCommandsInContext(
-      openfluid::base::PreferencesManager::ExternalToolContext::WARE)["A"].toStdString(),"AB %%P%%");
+  { // waresdev ui
+    BOOST_CHECK(PrefsMgr->isWaresdevAutomaticSaveBeforeBuild());
+  }
 
-  BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevExternalToolsCommandsInContext(
-      openfluid::base::PreferencesManager::ExternalToolContext::FILE)["A"].toStdString(),"AC %%P%%");
+  { // waresdev texteditor
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevFontName(),"DejaVu Sans Mono");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevIndentSpaceNb(),4);
+    BOOST_CHECK(PrefsMgr->isWaresdevLineWrappingEnabled());
+    BOOST_CHECK(PrefsMgr->isWaresdevSpaceTabDisplayEnabled());
+    BOOST_CHECK(!PrefsMgr->isWaresdevCarriageReturnDisplayEnabled());
+    BOOST_CHECK(PrefsMgr->isWaresdevCurrentlineHighlightingEnabled());
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevCurrentlineColor(),"#d9e7ff");    
+    BOOST_CHECK(PrefsMgr->isWaresdevSyntaxHighlightingEnabled());
+    auto Rules = PrefsMgr->getWaresdevSyntaxHighlightingRules();
+    BOOST_CHECK_EQUAL(Rules.size(),10);
+    BOOST_REQUIRE(Rules.find("openfluid-keyword") != Rules.end());
+    BOOST_REQUIRE(Rules.find("invisible") != Rules.end());
+    BOOST_CHECK(Rules.find("does-not-exist") == Rules.end());
+    BOOST_CHECK_EQUAL(Rules.at("openfluid-keyword").Color,"#546f02");
+    BOOST_CHECK_EQUAL(Rules.at("openfluid-keyword").Decoration.size(),1);
+    BOOST_CHECK_EQUAL(Rules.at("openfluid-keyword").Decoration[0],"bold");
+    BOOST_CHECK_EQUAL(Rules.at("invisible").Color,"#aaaaaa");
+  }
+  
+  { // waresdev commands options
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevConfigureGenerator(),"");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevConfigureOptions(),"-DOPTION_FOR_CMAKE=ValueForCMake");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevConfigureEnv("PATH"),"$PATH:/path/to/config/bin");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevConfigureEnv("FAKE"),"");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevBuildEnv("PATH"),"$PATH:/path/to/build/bin");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevBuildEnv("FAKE"),"");
+    BOOST_CHECK(PrefsMgr->isWaresdevShowCommandEnv("PATH"));
+    BOOST_CHECK(!PrefsMgr->isWaresdevShowCommandEnv("FAKE"));
+    BOOST_CHECK(!PrefsMgr->isWaresdevGitSslNoVerify());
+  }
 
-  BOOST_CHECK(
-    !PrefMgr->getWaresdevExternalToolsCommandsInContext(
-      openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE).contains("B"));
+  { // waresdev external tools
+    auto ExtTools = PrefsMgr->getWaresdevExternalTools();
+    BOOST_REQUIRE_EQUAL(ExtTools.size(),3);
+    
+    for (const auto& T : ExtTools)
+    {
+      if (T.Name == "My Editor")
+      {
+        BOOST_CHECK_EQUAL(T.Commands.size(),1);
+        BOOST_CHECK_EQUAL(T.Commands.at(openfluid::base::PreferencesManager::ExternalToolContext::FILE),
+                          "/usr/local/bin/myeditor %%C%%");
+      }
+      else if (T.Name == "SecretTool")
+      {
+        BOOST_CHECK_EQUAL(T.Commands.size(),2);
+        BOOST_CHECK_EQUAL(T.Commands.at(openfluid::base::PreferencesManager::ExternalToolContext::WARE),
+                          "\\\"C:\\Programs\\tool.exe\\\"");
+        BOOST_CHECK_EQUAL(T.Commands.at(openfluid::base::PreferencesManager::ExternalToolContext::FILE),
+                          "\\\"C:\\Programs\\tool.exe\\\" %%C%%");
+      }
+      else if (T.Name == "IDE")
+      {
+        BOOST_CHECK_EQUAL(T.Commands.size(),1);
+        BOOST_CHECK_EQUAL(T.Commands.at(openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE),
+                          "\\\"/Applications/Integrated Editor.app\\\" %%W%%");
+      }
+      else
+      {
+        BOOST_FAIL("wrong external tool");
+      }
+    }
 
-  BOOST_CHECK_EQUAL(
-    PrefMgr->getWaresdevExternalToolsCommandsInContext(
-      openfluid::base::PreferencesManager::ExternalToolContext::WARE)["C"].toStdString(),"C -i %%P%% -j");
+  }
+
+  { // waresdev hub
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevImportHubUsername(),"johndoe");
+    BOOST_CHECK_EQUAL(PrefsMgr->getWaresdevImportHubUrl(),"https://hub.dummy.org/dummy-wareshub/api");
+  }
 
   openfluid::base::PreferencesManager::kill();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_other)
+{
+  { // available langs
+    auto Langs = openfluid::base::PreferencesManager::getAvailableUILanguages();
+    BOOST_REQUIRE_EQUAL(Langs.size(),1);
+    BOOST_CHECK_EQUAL(Langs[0],"fr_FR");
+
+    BOOST_CHECK(openfluid::base::PreferencesManager::isUILanguageAvailable("fr_FR"));
+    BOOST_CHECK(!openfluid::base::PreferencesManager::isUILanguageAvailable("es_ES"));
+  }
+}
+

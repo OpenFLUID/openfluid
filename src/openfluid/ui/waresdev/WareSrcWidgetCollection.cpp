@@ -91,6 +91,11 @@ WareSrcWidgetCollection::~WareSrcWidgetCollection()
 
 bool WareSrcWidgetCollection::openPath(const QString& Path)
 {
+  if (Path.isEmpty())
+  {
+    return false;
+  }
+
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
 
   // TODO manage other workspaces later
@@ -243,6 +248,11 @@ void WareSrcWidgetCollection::closeWareTab(WareSrcWidget* Ware)
 
 void WareSrcWidgetCollection::setCurrent(const QString& Path)
 {
+  if (Path.isEmpty())
+  {
+    return;
+  }
+
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
 
 // TODO manage other workspaces later
@@ -354,8 +364,11 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 
 void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QString& Path)
 {
-  QString PathToOpen;
+  QString AdjustedCommand = Command;
+  // replace specific path arg to generic path arg
+  AdjustedCommand = AdjustedCommand.replace("%%W%%","%%P%%").replace("%%S%%","%%P%%").replace("%%C%%","%%P%%");
 
+  QString PathToOpen;
   if (!Path.isEmpty())
   {
     PathToOpen = Path;
@@ -382,14 +395,13 @@ void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QSt
 
   QString Program;
   QStringList SplittedCommand;
-  //QStringList CommandTail;
 
   QStringList Args = QStringList();
 
-  if (Command.count("\"") >= 2)
+  if (AdjustedCommand.count("\"") >= 2)
   {
     QRegExp Rx("^\"(.*)\"(.*)");
-    if (Rx.indexIn(Command) != -1)
+    if (Rx.indexIn(AdjustedCommand) != -1)
     {
       QStringList CommandParts = Rx.capturedTexts();
       Program = CommandParts[1];
@@ -398,7 +410,7 @@ void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QSt
   }
   else
   {
-    SplittedCommand = Command.split(" ");
+    SplittedCommand = AdjustedCommand.split(" ");
   }
 
   for (int Pos=0 ; Pos<SplittedCommand.size() ; Pos++)
@@ -458,7 +470,7 @@ WareSrcWidget* WareSrcWidgetCollection::currentWareWidget()
     return Widget;
   }
 
-  return 0;
+  return nullptr;
 }
 
 
@@ -794,7 +806,9 @@ QStringList WareSrcWidgetCollection::getOpenWarePaths()
 
 bool WareSrcWidgetCollection::isFileOpen()
 {
-  return currentWareWidget()->currentEditor()!=0;
+  auto* Widget = currentWareWidget();
+
+  return (Widget != nullptr) && (Widget->currentEditor() != nullptr);
 }
 
 

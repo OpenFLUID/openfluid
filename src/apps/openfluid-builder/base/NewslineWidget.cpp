@@ -68,9 +68,10 @@ NewslineWidget::NewslineWidget(QWidget* Parent):
   ui->NewslineContents->setStyleSheet(QString("QWidget#NewslineContents { background-color : %1;}")
                                       .arg(BUILDER_NEWSLINE_BGCOLOR));
 
-  if (openfluid::base::PreferencesManager::instance()->getLang() != "default")
+  if (openfluid::base::PreferencesManager::instance()->getUILanguage() != "default")
   {
-    NewsItemWidget::setLocale(QLocale(openfluid::base::PreferencesManager::instance()->getLang()));
+    NewsItemWidget::setLocale(
+      QLocale(QString::fromStdString(openfluid::base::PreferencesManager::instance()->getUILanguage())));
   }
   else
   {

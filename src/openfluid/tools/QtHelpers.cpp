@@ -37,6 +37,8 @@
  */
 
 
+#include <regex>
+
 #include <openfluid/tools/QtHelpers.hpp>
 
 
@@ -236,6 +238,44 @@ QString decodeXMLEntities(const QString& Str)
   QString DecodedStr = Str;
   DecodedStr.replace("&amp;","&").replace("&gt;",">").replace("&lt;","<").replace("&quot;","\"");
   return DecodedStr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QPoint toQPoint(const std::string& Str)
+{
+  QPoint Point;
+  std::regex PointRegex("@Point\\(([\\-\\d]+) ([\\-\\d]+)\\)");
+  std::smatch Match;
+
+  if (std::regex_match(Str, Match, PointRegex))
+  {
+    if (Match.size() == 3)
+    {
+      Point.setX(std::stoi(Match.str(1)));
+      Point.setY(std::stoi(Match.str(2)));
+    }
+  }
+
+  return Point;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string fromQPoint(const QPoint& Point)
+{
+  if (!Point.isNull())
+  {
+    return "@Point("+std::to_string(Point.x())+" "+std::to_string(Point.y())+")";
+  }
+
+  return "";
 }
 
 

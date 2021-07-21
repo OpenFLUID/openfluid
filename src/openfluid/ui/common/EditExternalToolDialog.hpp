@@ -82,28 +82,21 @@ class OPENFLUID_API EditExternalToolDialog : public MessageDialog
 
     bool m_IsEditMode;
 
-    QString m_OriginalLabel;
+    std::string m_OriginalLabel;
 
-    const openfluid::base::PreferencesManager::ExternalToolsCommands_t& m_AllCommands;
+    const std::list<openfluid::base::PreferencesManager::ExternalTool_t>& m_AllTools;
 
     void modifyCommandEditText(QLineEdit* LineEdit, QString NewText, std::pair<size_t, size_t> Selection);
 
 
   public:
 
-    EditExternalToolDialog(QWidget* Parent, const QString& Label, const QStringList& ToolCommands, 
-                           const openfluid::base::PreferencesManager::ExternalToolsCommands_t& AllCommands);
+    EditExternalToolDialog(QWidget* Parent, const openfluid::base::PreferencesManager::ExternalTool_t& ExistingTool, 
+                           std::list<openfluid::base::PreferencesManager::ExternalTool_t>& AllTools);
 
     virtual ~EditExternalToolDialog();
 
-    QStringList getFullCommands() const;
-
-    QString getLabel() const;
-
-    QString getOriginalLabel() const 
-    {
-      return m_OriginalLabel; 
-    }
+    openfluid::base::PreferencesManager::ExternalTool_t getTool() const;
 
 };
 

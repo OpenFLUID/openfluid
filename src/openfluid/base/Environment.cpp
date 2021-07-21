@@ -40,6 +40,7 @@
 #include <thread>
 
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -68,7 +69,7 @@ std::string Environment::m_InstallPrefix;
 std::string Environment::m_TempDir;
 std::string Environment::m_UserHomeDir;
 std::string Environment::m_UserDataDir;
-std::string Environment::m_ConfigFile;
+std::string Environment::m_SettingsFile;
 std::vector<std::string> Environment::m_DefaultSimulatorsDirs;
 std::vector<std::string> Environment::m_ExtraSimulatorsDirs;
 std::vector<std::string> Environment::m_DefaultObserversDirs;
@@ -198,7 +199,7 @@ void Environment::init()
 
   // ====== Config file ======
 
-  m_ConfigFile = openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::DEFAULT_CONFIGFILE});
+  m_SettingsFile = openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::DEFAULT_CONFIGFILE});
 
 
   // ====== Examples directories ======
@@ -395,6 +396,8 @@ std::string Environment::getUserDataFullPath(const std::string& Path)
 
 void Environment::prepareUserDataDirectory()
 {
+  const std::string DefaultWorkspacePath = getUserDataFullPath(openfluid::config::WORKSPACE_PATH);
+
   std::vector<std::string> DirsToMake = 
   {
     // user data dir
@@ -405,23 +408,16 @@ void Environment::prepareUserDataDirectory()
     getUserDataFullPath(openfluid::config::OBSERVERS_WARESBIN_USR_PATH),
     getUserDataFullPath(openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH),
 
-    // user workspace dir
-    getUserDataFullPath(openfluid::config::WORKSPACE_PATH),
+    // user default workspace dir
+    DefaultWorkspacePath,
 
     // user projects dir
-    getUserDataFullPath(openfluid::tools::Filesystem::joinPath({openfluid::config::WORKSPACE_PATH,
-                                                                openfluid::config::PROJECTS_PATH})),
+    openfluid::base::WorkspaceManager::getProjectsPath(DefaultWorkspacePath),
 
     // user wares sources dirs
-    getUserDataFullPath(openfluid::tools::Filesystem::joinPath({openfluid::config::WORKSPACE_PATH,
-                                                                openfluid::config::WARESDEV_PATH,
-                                                                openfluid::config::SIMULATORS_PATH})),
-    getUserDataFullPath(openfluid::tools::Filesystem::joinPath({openfluid::config::WORKSPACE_PATH,
-                                                                openfluid::config::WARESDEV_PATH,
-                                                                openfluid::config::OBSERVERS_PATH})),
-    getUserDataFullPath(openfluid::tools::Filesystem::joinPath({openfluid::config::WORKSPACE_PATH,
-                                                                openfluid::config::WARESDEV_PATH,
-                                                                openfluid::config::BUILDEREXTS_PATH})),
+    openfluid::base::WorkspaceManager::getWaresPath(DefaultWorkspacePath,openfluid::ware::WareType::SIMULATOR),
+    openfluid::base::WorkspaceManager::getWaresPath(DefaultWorkspacePath,openfluid::ware::WareType::OBSERVER),
+    openfluid::base::WorkspaceManager::getWaresPath(DefaultWorkspacePath,openfluid::ware::WareType::BUILDEREXT)
   };
 
   for (const auto& Dir : DirsToMake)

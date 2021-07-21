@@ -37,9 +37,12 @@
 */
 
 
+#include <string>
+
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include "builderconfig.hpp"
 #include "ModelScene.hpp"
@@ -112,24 +115,24 @@ void ModelScene::refresh()
 
 
   // add model items
-  QString ColouringMode = openfluid::base::RunContextManager::instance()->getProjectConfigValue(
-                                             PROJECT_COLORMODE_CATEGORY.first, 
-                                             PROJECT_COLORMODE_CATEGORY.second).toString();
+  std::string ColouringMode = 
+    openfluid::base::RunContextManager::instance()
+      ->getProjectContextValue("/builder/model/graphicalview","color_mode").get<std::string>("");
 
   for (it = itb; it!= ite; ++it)
   {
     if ((*it)->isEnabled())
     {
-
-      QString ID = QString::fromStdString(m_Model.getID(*it));
-
-      QVariant ConfigPos =
-          openfluid::base::RunContextManager::instance()->getProjectConfigValue("builder.model.graphicalview",ID);
+      openfluid::ware::WareID_t ID = m_Model.getID(*it);
       QPoint Position(0,0);
 
-      if (ConfigPos.type() == QVariant::Point)
+      std::string PosStr =
+        openfluid::base::RunContextManager::instance()
+          ->getProjectContextValue("/builder/model/graphicalview/positions/"+ID).get<std::string>("");
+
+      if (!PosStr.empty())
       {
-        Position = ConfigPos.toPoint();
+        Position = openfluid::tools::toQPoint(PosStr);
       }
       else
       {
@@ -140,34 +143,36 @@ void ModelScene::refresh()
       
       // Fetch color
       QColor CustomColor;
-      QVariant CustomColorVariant =
-          openfluid::base::RunContextManager::instance()->getProjectConfigValue(PROJECT_WARECOLOR_CATEGORY,ID);
-      if (CustomColorVariant.type() == QVariant::String)
+      std::string CustomColorStr = 
+        openfluid::base::RunContextManager::instance()
+          ->getProjectContextValue("/builder/model/colors",ID).get<std::string>("");
+
+      if (!CustomColorStr.empty())
       {
-        CustomColor = CustomColorVariant.value<QColor>();
+        CustomColor = QColor(QString::fromStdString(CustomColorStr));
       }
 
       QColor BGColor, BorderColor;
       
-      if (ColouringMode.toStdString() == "BORDER")
+      if (ColouringMode == "BORDER")
       {
         BorderColor = CustomColor;
       }
-      else if (ColouringMode.toStdString() == "BACKGROUND")
+      else if (ColouringMode == "BACKGROUND")
       {
         BGColor = CustomColor;
       }
 
       if ((*it)->getType() == openfluid::ware::WareType::SIMULATOR &&
-          openfluid::machine::SimulatorSignatureRegistry::instance()->isSimulatorAvailable(ID.toStdString()))
+          openfluid::machine::SimulatorSignatureRegistry::instance()->isSimulatorAvailable(ID))
       {
         SimCount++;
 
         SimulatorGraphics* SimG =
             new SimulatorGraphics(QPoint(0,0),
-                                  ID, SimCount+GenCount,
+                                  QString::fromStdString(ID), SimCount+GenCount,
                                   openfluid::machine::SimulatorSignatureRegistry::instance()
-                                  ->signature(ID.toStdString()), BGColor, BorderColor);
+                                  ->signature(ID), BGColor, BorderColor);
 
         addItem(SimG);
         SimG->moveBy(Position.x(),Position.y());
@@ -183,7 +188,7 @@ void ModelScene::refresh()
         GenCount++;
 
         GeneratorGraphics* GenG = new GeneratorGraphics(QPoint(0,0),
-                                                        ID,SimCount+GenCount,
+                                                        QString::fromStdString(ID),SimCount+GenCount,
                                                         QString::fromStdString(GenDesc->getVariableName()),
                                                         QString::fromStdString(GenDesc->getUnitsClass()), 
                                                         BGColor, BorderColor);

@@ -3,7 +3,7 @@
 SET (OPENFLUID_BASE_CPP Environment.cpp RunContextManager.cpp 
                         SimulationStatus.cpp
                         SimulationLogger.cpp
-                        PreferencesManager.cpp  
+                        PreferencesManager.cpp WorkspaceManager.cpp  
                         )
 
 SET (OPENFLUID_BASE_HPP Init.hpp
@@ -12,8 +12,8 @@ SET (OPENFLUID_BASE_HPP Init.hpp
                         Listener.hpp IOListener.hpp
                         SchedulingRequest.hpp
                         SimulationStatus.hpp
-                        SimulationLogger.hpp                        
-                        PreferencesManager.hpp
+                        SimulationLogger.hpp
+                        PreferencesManager.hpp WorkspaceManager.hpp
                         )
 
 
