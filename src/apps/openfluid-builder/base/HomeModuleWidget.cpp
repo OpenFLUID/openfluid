@@ -42,7 +42,6 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
-#include <openfluid/ui/market/MarketClientAssistant.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
@@ -94,17 +93,11 @@ HomeModuleWidget::HomeModuleWidget(const AppActions* Actions, QWidget* Parent):
   ButtonsHLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
   ButtonsHLine->setLineWidth(1);
 
-#if defined(ENABLE_MARKET_INTEGRATION) || defined(ENABLE_WARESDEV_INTEGRATION)
+#if defined(ENABLE_WARESDEV_INTEGRATION)
   ButtonsLayout->addWidget(ButtonsHLine);
 #endif
 
-#ifdef ENABLE_MARKET_INTEGRATION
-  TheButton = createButton(Actions->action("MarketAccess"),tr("Access to OpenFLUID-Market..."),
-                           openfluid::ui::common::getIcon("market","/builder"));
-  ButtonsLayout->addWidget(TheButton);
-#endif
-
-#ifdef ENABLE_WARESDEV_INTEGRATION
+#if defined(ENABLE_WARESDEV_INTEGRATION)
   TheButton = createButton(Actions->action("DevLaunchDevStudio"),tr("Launch OpenFLUID-DevStudio..."),
                            openfluid::ui::common::getIcon("dev-wares","/builder"));
   ButtonsLayout->addWidget(TheButton);
@@ -321,19 +314,6 @@ void HomeModuleWidget::whenRunModeAsked(ProjectCentral::RunMode /*Mode*/)
 void HomeModuleWidget::whenExtensionAsked(const QString& /*ID*/)
 {
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModuleWidget::whenMarketAsked()
-{
-#if defined(ENABLE_MARKET_INTEGRATION)
-  openfluid::ui::market::MarketClientAssistant MarketAssistant(QApplication::activeWindow());
-  MarketAssistant.exec();
-#endif
 }
 
 

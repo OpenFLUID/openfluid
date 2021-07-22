@@ -20,7 +20,6 @@ PROJECT(OpenFLUID CXX)
 
 OPTION(OFBUILD_ENABLE_GUI "enable build of UI libs and apps" ON)
 OPTION(OFBUILD_ENABLE_LANDR "enable build of landr lib" OFF)
-OPTION(OFBUILD_ENABLE_MARKET "enable build of market" OFF)
 
 OPTION(OFBUILD_ENABLE_DOCS "enable build of documentation" ON)
 
@@ -30,7 +29,6 @@ OPTION(OFBUILD_ENABLE_APP_BUILDER "enable build of openfluid-builder application
 OPTION(OFBUILD_ENABLE_APP_DEVSTUDIO "enable build of openfluid-devstudio application" ON)
 OPTION(OFBUILD_ENABLE_APP_LOGEXPLORER "enable build of openfluid-logexplorer application" ON)
 OPTION(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION "enable integration of wares development in builder application" ON)
-OPTION(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION "enable integration market in builder application" OFF)
 
 IF(UNIX AND NOT APPLE)
   OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" ON)
@@ -96,10 +94,6 @@ IF(NOT OFBUILD_ENABLE_GUI)
   SET(OFBUILD_ENABLE_APP_DEVSTUDIO OFF)
   SET(OFBUILD_ENABLE_APP_LOGEXPLORER OFF)
   SET(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION OFF)
-ENDIF()
-
-IF(NOT OFBUILD_ENABLE_APP_BUILDER OR NOT OFBUILD_ENABLE_MARKET)
-  SET(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION OFF)
 ENDIF()
 
 
@@ -245,12 +239,6 @@ ELSE()
   MESSAGE(STATUS "  openfluid-ui-*: no")
 ENDIF()
 
-IF(OFBUILD_ENABLE_MARKET)
-  MESSAGE(STATUS "  openfluid-market: yes")
-ELSE()
-  MESSAGE(STATUS "  openfluid-market: no")
-ENDIF()
-
 MESSAGE(STATUS "Build applications")
 IF(OFBUILD_ENABLE_APP_CMD)
   MESSAGE(STATUS "  openfluid (cmd. line): yes")
@@ -283,12 +271,6 @@ ELSE()
 ENDIF()
 
 MESSAGE(STATUS "Build with integrations")
-IF(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION)
-  MESSAGE(STATUS "  market->openfluid-builder: yes")
-ELSE()
-  MESSAGE(STATUS "  market->openfluid-builder: no")
-ENDIF()
-
 IF(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION)
   MESSAGE(STATUS "  waresdev->openfluid-builder: yes")
 ELSE()

@@ -43,6 +43,7 @@
 
 #include <QDateTime>
 #include <QToolButton>
+#include <QLabel>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
@@ -83,8 +84,7 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
       BUILDER_PAGE = 2,
       SIMULATION_PAGE = 3,
       DEVENV_PAGE = 4,
-      DEVEDITOR_PAGE = 5,
-      MARKET_PAGE = 6
+      DEVEDITOR_PAGE = 5
     };
 
   private slots:
@@ -134,12 +134,6 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
     void enableCarriageReturnDisplay(bool Enable);
 
     void changeSyntaxElementColor(int ElementRow);
-
-    void addMarketPlace();
-
-    void editMarketPlace();
-
-    void removeMarketPlace();
 
     void processSimUserPathsUpdate();
 
@@ -200,8 +194,6 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
     QStringList m_Formats {"bold", "italic", "underline", "strike-through"};
 
     void initialize();
-
-    void updateMarketplacesList();
 
     void intializeTextEditorSettings();
 

@@ -1,8 +1,0 @@
-<!DOCTYPE RCC>
-<RCC version="1.0">
-  <qresource prefix="/ui/market">
-    <file>icons/shopping_cart_full.png</file>
-    <file>icons/shopping_cart.png</file>
-    <file>icons/preferences.png</file>
-  </qresource>
-</RCC>

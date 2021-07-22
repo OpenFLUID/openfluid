@@ -121,11 +121,8 @@ class OPENFLUID_API PreferencesManager
 
     typedef std::map<std::string, SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
 
-    typedef std::map<std::string, std::string> MarketPlaces_t; // TODO market is deprecated and will be removed
-
-
     /** 
-       Used only if we want to set another file name for the settings file
+       Used only if another file is used as the settings file
        instead of the default one (e.g. for testing). To be set before the first call of instance().
     */
     static void setSettingsFile(const std::string& FilePath);
@@ -188,13 +185,6 @@ class OPENFLUID_API PreferencesManager
     void setBuilderEndDate(const std::string& End);
 
     std::string getBuilderEndDate() const;
-
-
-    bool addMarketplace(const std::string& PlaceName, const std::string& PlaceUrl);
-
-    void removeMarketplace(const std::string& PlaceName);
-
-    MarketPlaces_t getMarketplaces() const;
 
 
     int getBuilderDockArea() const;

@@ -79,14 +79,6 @@ std::vector<std::string> Environment::m_ExtraBuilderextsDirs;
 std::string Environment::m_ProvidedExamplesDir;
 std::string Environment::m_UserExamplesDir;
 std::string Environment::m_UserExampleSimulatorsDir;
-std::string Environment::m_MarketBagDir;
-std::string Environment::m_MarketBagVersionDir;
-std::string Environment::m_MarketBagSimulatorsDir;
-std::string Environment::m_MarketBagObserversDir;
-std::string Environment::m_MarketBagBuilderextsDir;
-std::string Environment::m_MarketBagDataDir;
-std::string Environment::m_MarketBagBinSubDir;
-std::string Environment::m_MarketBagSrcSubDir;
 std::string Environment::m_TranslationsDir;
 std::string Environment::m_CommonResourcesDir;
 std::string Environment::m_AppsResourcesDir;
@@ -213,29 +205,12 @@ void Environment::init()
                                                                   openfluid::config::EXAMPLES_STD_PATH});
 
 
-  // ====== Market directories ======
-
-  m_MarketBagDir = openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::MARKETBAG_PATH});
-  m_MarketBagVersionDir = openfluid::tools::Filesystem::joinPath({m_MarketBagDir,m_Version});
-
-  m_MarketBagSimulatorsDir = openfluid::tools::Filesystem::joinPath({m_MarketBagVersionDir,
-                                                                     openfluid::config::SIMULATORS_PATH});
-  m_MarketBagObserversDir = openfluid::tools::Filesystem::joinPath({m_MarketBagVersionDir,
-                                                                    openfluid::config::OBSERVERS_PATH});
-  m_MarketBagBuilderextsDir = openfluid::tools::Filesystem::joinPath({m_MarketBagVersionDir,
-                                                                     openfluid::config::BUILDEREXTS_PATH});
-  m_MarketBagDataDir = openfluid::tools::Filesystem::joinPath({m_MarketBagVersionDir ,"datasets"});
-  m_MarketBagBinSubDir = m_SystemArch;
-  m_MarketBagSrcSubDir = "src";
-
-
   // ====== Simulators directories ======
   // search order:
   //  1) command line paths
   //  2) environment var OPENFLUID_SIMS_PATH
   //  3) user directory
-  //  4) market-bag directory
-  //  5) install directory
+  //  4) install directory
 
   // env var
   char *SIMSPATHEnvVar;
@@ -251,13 +226,6 @@ void Environment::init()
     openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::SIMULATORS_WARESBIN_USR_PATH})
   );
 
-#if OPENFLUID_MARKET_ENABLED
-  // market-bag dir (for current version)
-  m_DefaultSimulatorsDirs.push_back(
-    openfluid::tools::Filesystem::joinPath({m_MarketBagSimulatorsDir,m_MarketBagBinSubDir})
-  );
-#endif
-
   // install directory
   std::string SimulatorsInstallPath =  
     openfluid::tools::Filesystem::joinPath({m_InstallPrefix,openfluid::config::SIMULATORS_WARESBIN_STD_PATH});
@@ -269,8 +237,7 @@ void Environment::init()
   //  1) command line paths
   //  2) environment var OPENFLUID_OBSS_PATH
   //  3) user directory
-  //  4) market-bag directory
-  //  5) install directory
+  //  4) install directory
 
   // env var
   char *OBSSPATHEnvVar;
@@ -286,13 +253,6 @@ void Environment::init()
     openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::OBSERVERS_WARESBIN_USR_PATH})
   );
 
-#if OPENFLUID_MARKET_ENABLED
-  // market-bag dir (for current version)
-  m_DefaultObserversDirs.push_back(
-    openfluid::tools::Filesystem::joinPath({m_MarketBagObserversDir,m_MarketBagBinSubDir})
-  );
-#endif
-
   // install directory
   std::string ObserversInstallPath = 
     openfluid::tools::Filesystem::joinPath({m_InstallPrefix,openfluid::config::OBSERVERS_WARESBIN_STD_PATH});
@@ -304,8 +264,7 @@ void Environment::init()
   //  1) command line paths
   //  2) environment var OPENFLUID_BEXTS_PATH
   //  3) user directory
-  //  4) market-bag directory
-  //  5) install directory
+  //  4) install directory
 
   // env var
   char *BEXTSPATHEnvVar;
@@ -320,13 +279,6 @@ void Environment::init()
   m_DefaultBuilderextsDirs.push_back(
     openfluid::tools::Filesystem::joinPath({m_UserDataDir,openfluid::config::BUILDEREXTS_WARESBIN_USR_PATH})
   );
-
-#if OPENFLUID_MARKET_ENABLED
-  // market-bag dir (for current version)
-  m_DefaultBuilderextsDirs.push_back(
-    openfluid::tools::Filesystem::joinPath({m_MarketBagBuilderextsDir,m_MarketBagBinSubDir})
-  );
-#endif
 
   // install directory
   std::string BuilderextsInstallPath = 

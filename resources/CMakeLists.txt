@@ -3,6 +3,7 @@ IF(OFBUILD_ENABLE_TESTING)
   ADD_SUBDIRECTORY(tests)
 ENDIF()
 
+
 # desktop file on UNIX systems
 IF(UNIX AND NOT APPLE)
 
@@ -30,32 +31,12 @@ IF(UNIX AND NOT APPLE)
 ENDIF()
 
 
-
-
-
-IF(OFBUILD_ENABLE_MARKET)
-  # preparation of market datasets for tests
-  EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_CURRENT_SOURCE_DIR}/tools"
-                                             "${CMAKE_COMMAND}"
-                                             "-DREPOS_ROOT_DIR=${CMAKE_CURRENT_SOURCE_DIR}/tests/miscdata/market/packages-src"
-                                             "-DMARKETPLACE_ROOT_DIR=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/marketplace"
-                                             "-DREPOS_VERSION=${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}"
-                                             "-DREPOS_ARCH=${OFBUILD_SYSTEM_ARCH}"
-                                              "-P" "oftest_marketpackbuild.cmake")
-ENDIF()
-
-
-
-
 # update of translations strings
-
 IF(NOT LUPDATE_EXECUTABLE)
   MESSAGE(FATAL_ERROR "lupdate not found")
 ENDIF()
 
-
 FILE(MAKE_DIRECTORY ${OFBUILD_TRANSLATIONS_TSDIR})
-
 
 FOREACH(_LANG ${OPENFLUID_TRANSLATIONS_LANGS})
   ADD_CUSTOM_TARGET(update-translation-strings-${_LANG}
@@ -70,9 +51,7 @@ FOREACH(_LANG ${OPENFLUID_TRANSLATIONS_LANGS})
 ENDFOREACH()
 
 
-
 # build of translations
-
 IF(NOT LRELEASE_EXECUTABLE)
   MESSAGE(FATAL_ERROR "lrelease not found")
 ENDIF()

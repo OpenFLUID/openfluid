@@ -967,37 +967,6 @@ std::string PreferencesManager::getBuilderEndDate() const
 // =====================================================================
 
 
-bool PreferencesManager::addMarketplace(const std::string& /*PlaceName*/,
-                                        const std::string& /*PlaceUrl*/)
-{
-  return false; // TODO market is deprecated and will be removed
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesManager::removeMarketplace(const std::string& /*PlaceName*/)
-{
- // TODO market is deprecated and will be removed
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-PreferencesManager::MarketPlaces_t PreferencesManager::getMarketplaces() const
-{
-  return MarketPlaces_t(); // TODO market is deprecated and will be removed
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 int PreferencesManager::getBuilderDockArea() const
 {
   return m_Settings->getValue("/builder/ui/areas/dock").get<int>(1);  // default is 1 = left area

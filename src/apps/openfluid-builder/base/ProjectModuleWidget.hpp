@@ -235,8 +235,6 @@ class ProjectModuleWidget : public AbstractModuleWidget
 
     void whenExtensionAsked(const QString& ID);
 
-    void whenMarketAsked();
-
     void whenWaresRefreshAsked();
 
     bool whenOpenExampleAsked();

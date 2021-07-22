@@ -247,11 +247,6 @@ IF(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION)
 ENDIF()
 
 
-IF(OFBUILD_ENABLE_MARKET_BUILDER_INTEGRATION)
-  ADD_DEFINITIONS(-DENABLE_MARKET_INTEGRATION)
-ENDIF()
-
-
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP} ${BUILDER_BASE_UI}
                                           ${BUILDER_COMMON_CPP} ${BUILDER_COMMON_HPP} ${BUILDER_COMMON_UI}
                                           ${BUILDER_MODEL_CPP} ${BUILDER_MODEL_HPP} ${BUILDER_MODEL_UI}
@@ -282,12 +277,6 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       Qt5::Svg
                       ${GDAL_LIBRARIES}
                      )
-
-IF(OFBUILD_ENABLE_MARKET)
-  TARGET_LINK_LIBRARIES(openfluid-builder-main
-                        openfluid-ui-market
-                        openfluid-market)
-ENDIF()
 
 
 SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}"
@@ -341,11 +330,6 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-fluidx
                       openfluid-ui-waresdev
                       openfluid-waresdev)
-
-IF(OFBUILD_ENABLE_MARKET)
-  TARGET_LINK_LIBRARIES(openfluid-builder
-                        openfluid-ui-market)
-ENDIF()
 
 
 FILE(GENERATE OUTPUT "${CMAKE_BINARY_DIR}/openfluid-builder_path.txt" CONTENT $<TARGET_FILE:openfluid-builder>)

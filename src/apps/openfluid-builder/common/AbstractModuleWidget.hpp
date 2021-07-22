@@ -98,8 +98,6 @@ class AbstractModuleWidget : public QWidget
 
     virtual void whenExtensionAsked(const QString& ID) = 0;
 
-    virtual void whenMarketAsked() = 0;
-
     virtual void whenWaresRefreshAsked() = 0;
 
     virtual bool whenOpenExampleAsked() = 0;

@@ -102,22 +102,6 @@ class OPENFLUID_API Environment
     
     static std::string m_UserExampleSimulatorsDir;
 
-    static std::string m_MarketBagDir;
-
-    static std::string m_MarketBagVersionDir;
-
-    static std::string m_MarketBagSimulatorsDir;
-
-    static std::string m_MarketBagObserversDir;
-
-    static std::string m_MarketBagBuilderextsDir;
-
-    static std::string m_MarketBagDataDir;
-
-    static std::string m_MarketBagBinSubDir;
-
-    static std::string m_MarketBagSrcSubDir;
-
     static std::string m_TranslationsDir;
 
     static std::string m_CommonResourcesDir;
@@ -470,45 +454,6 @@ class OPENFLUID_API Environment
     */
     static std::string getBuilderextFullPath(const std::string& Filename);
 
-    static std::string getMarketBagBinSubDir()
-    {
-      return m_MarketBagBinSubDir;
-    }
-
-    static std::string getMarketBagBuilderextsDir()
-    {
-      return m_MarketBagBuilderextsDir;
-    }
-
-    static std::string getMarketBagDataDir()
-    {
-      return m_MarketBagDataDir;
-    }
-
-    static std::string getMarketBagDir()
-    {
-      return m_MarketBagDir;
-    }
-
-    static std::string getMarketBagObserversDir()
-    {
-      return m_MarketBagObserversDir;
-    }
-
-    static std::string getMarketBagSimulatorsDir()
-    {
-      return m_MarketBagSimulatorsDir;
-    }
-
-    static std::string getMarketBagSrcSubDir()
-    {
-      return m_MarketBagSrcSubDir;
-    }
-
-    static std::string getMarketBagVersionDir()
-    {
-      return m_MarketBagVersionDir;
-    }
 };
 
 

@@ -32,7 +32,6 @@ jobs:
       - name: Preparation
         run: |
           echo "$(brew --prefix qt5)/bin" >> $GITHUB_PATH
-          echo "SET(OPENFLUID_ENABLE_MARKET 0)" > CMake.in.local.cmake
           echo "SET(OFBUILD_ENABLE_LANDR 0)" >> CMake.in.local.cmake
           mkdir ./_build && ls
 

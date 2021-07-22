@@ -224,11 +224,6 @@ void AppActions::createActions()
   m_Actions["HelpAbout"]->setMenuRole(QAction::AboutRole);
 
 
-  //Other
-  m_Actions["MarketAccess"] = new QAction(tr("Access to OpenFLUID-Market"), this);
-  m_Actions["MarketAccess"]->setIcon(openfluid::ui::common::getIcon("market","/ui/common"));
-
-
   // Recent projects
   for (unsigned int i=0; i<openfluid::base::WorkspaceManager::RecentProjectsMax;i++)
   {

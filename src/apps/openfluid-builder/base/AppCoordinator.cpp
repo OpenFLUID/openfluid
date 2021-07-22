@@ -144,12 +144,7 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   connect(m_Actions.action("HelpAbout"), SIGNAL(triggered()),
           this, SLOT(whenAboutAsked()));
 
-  // Market
-  connect(m_Actions.action("MarketAccess"), SIGNAL(triggered()),
-          this, SLOT(whenMarketAsked()));
-
-
-  // connection of recent open projects
+  // Recent projects
 
   std::vector<QAction*> RecentActions = m_Actions.recentProjectActions();
 
@@ -833,16 +828,6 @@ void AppCoordinator::whenViewRestoreAsked()
   {
     m_Actions.mainToolbar()->setVisible(true);
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AppCoordinator::whenMarketAsked()
-{
-  mp_CurrentModule->whenMarketAsked();
 }
 
 

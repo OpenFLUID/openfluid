@@ -49,7 +49,6 @@
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 #include <openfluid/ui/common/WaresSearchPathsWidget.hpp>
-#include <openfluid/ui/common/EditMarketplaceDialog.hpp>
 #include <openfluid/ui/common/DetectQtDevToolsDialog.hpp>
 
 #include "ui_PreferencesDialog.h"
@@ -75,18 +74,6 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
 
   setupMessageUi(tr("Preferences"),QDialogButtonBox::NoButton);
 
-
-  ui->AddMarketPlaceButton->setText("");
-  ui->AddMarketPlaceButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
-  ui->AddMarketPlaceButton->setIconSize(QSize(20,20));
-
-  ui->EditMarketPlaceButton->setText("");
-  ui->EditMarketPlaceButton->setIcon(openfluid::ui::common::getIcon("modify","/ui/common"));
-  ui->EditMarketPlaceButton->setIconSize(QSize(20,20));
-
-  ui->RemoveMarketPlaceButton->setText("");
-  ui->RemoveMarketPlaceButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
-  ui->RemoveMarketPlaceButton->setIconSize(QSize(20,20));
 
   QTreeWidgetItem *PrefItem;
 
@@ -116,12 +103,6 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0,tr("Code editor"));
   PrefItem->setData(0,Qt::UserRole,static_cast<int>(PagesIndexes::DEVEDITOR_PAGE));
-
-#if OPENFLUID_MARKET_ENABLED
-  PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
-  PrefItem->setText(0,tr("Market"));
-  PrefItem->setData(0,Qt::UserRole,MARKET_PAGE);
-#endif
 
 
   ui->WorkspacesPathsWidget->setAllowEmpty(false);
@@ -169,10 +150,6 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   connect(ui->ShowCarriageReturnCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableCarriageReturnDisplay(bool)));
   connect(ui->TextEditorApplyButton, SIGNAL(clicked()), this, SLOT(applyTextEditorSettings()));
   connect(ui->TextEditorRestoreDefaultsButton, SIGNAL(clicked()), this, SLOT(restoreDefaultsTextEditorSettings()));
-
-  connect(ui->AddMarketPlaceButton,SIGNAL(clicked()),this,SLOT(addMarketPlace()));
-  connect(ui->EditMarketPlaceButton,SIGNAL(clicked()),this,SLOT(editMarketPlace()));
-  connect(ui->RemoveMarketPlaceButton,SIGNAL(clicked()),this,SLOT(removeMarketPlace()));
 
   connect(ui->BuildAutoSaveCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableAutosaveBeforeBuild(bool)));
   connect(ui->ConfigPathEnvEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateDevConfigPATH()));
@@ -320,12 +297,6 @@ void PreferencesDialog::initialize()
 
   // Code editor
   intializeTextEditorSettings();
-
-
-#if OPENFLUID_MARKET_ENABLED
-  // Market
-  updateMarketplacesList();
-#endif
 }
 
 
@@ -573,98 +544,6 @@ void PreferencesDialog::enableCarriageReturnDisplay(bool Enable)
 {
   mp_PrefsMan->setWaresdevCarriageReturnDisplayEnabled(Enable);
   m_TextEditorSettingsChanged = true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::addMarketPlace()
-{
-  EditMarketplaceDialog MarketDlg(this,"","",mp_PrefsMan->getMarketplaces());
-
-  if (MarketDlg.exec() == QDialog::Accepted)
-  {
-    mp_PrefsMan->addMarketplace(MarketDlg.getName().toStdString(),MarketDlg.getURL().toStdString());
-    updateMarketplacesList();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::editMarketPlace()
-{
-  if (ui->MarketPlacesListWidget->currentRow()>=0)
-  {
-    QListWidgetItem* Item = ui->MarketPlacesListWidget->currentItem();
-    QStringList AssociatedData = Item->data(Qt::UserRole).toStringList();
-
-    EditMarketplaceDialog MarketDlg(this,AssociatedData[0],AssociatedData[1],mp_PrefsMan->getMarketplaces());
-
-    if (MarketDlg.exec() == QDialog::Accepted)
-    {
-      mp_PrefsMan->removeMarketplace(MarketDlg.getOriginalName().toStdString());
-      mp_PrefsMan->addMarketplace(MarketDlg.getName().toStdString(),MarketDlg.getURL().toStdString());
-      updateMarketplacesList();
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::removeMarketPlace()
-{
-  if (ui->MarketPlacesListWidget->currentRow()>=0)
-  {
-    QListWidgetItem* Item = ui->MarketPlacesListWidget->currentItem();
-    QStringList AssociatedData = Item->data(Qt::UserRole).toStringList();
-
-    mp_PrefsMan->removeMarketplace(AssociatedData[0].toStdString());
-
-    updateMarketplacesList();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::updateMarketplacesList()
-{
-
-  openfluid::base::PreferencesManager::MarketPlaces_t MPlaces = mp_PrefsMan->getMarketplaces();
-
-  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPit;
-  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPitb = MPlaces.begin();
-  openfluid::base::PreferencesManager::MarketPlaces_t::iterator MPite = MPlaces.end();
-
-
-  // clear the list
-  while(ui->MarketPlacesListWidget->count()>0)
-  {
-    delete ui->MarketPlacesListWidget->takeItem(0);
-  }
-
-  // populate the list
-  for (MPit=MPitb;MPit!=MPite;++MPit)
-  {
-    QString Label = QString("%1 (%2)").arg((*MPit).first.c_str()).arg((*MPit).second.c_str());
-
-    QListWidgetItem* Item = new QListWidgetItem(Label,ui->MarketPlacesListWidget);
-    QStringList AssociatedData;
-    AssociatedData << QString::fromStdString((*MPit).first) << QString::fromStdString((*MPit).second);
-    Item->setData(Qt::UserRole,AssociatedData);
-  }
-
-  ui->MarketPlacesListWidget->sortItems();
 }
 
 

@@ -720,16 +720,6 @@ void ProjectModuleWidget::whenExtensionAsked(const QString& ID)
 // =====================================================================
 
 
-void ProjectModuleWidget::whenMarketAsked()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void ProjectModuleWidget::whenWaresRefreshAsked()
 {
   updateSimulatorsWares();

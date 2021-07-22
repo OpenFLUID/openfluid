@@ -121,8 +121,6 @@ class AppCoordinator : public QObject
 
     void whenViewRestoreAsked();
 
-    void whenMarketAsked();
-
     void whenOnlineWebAsked();
 
     void whenOnlineCommunityAsked();
