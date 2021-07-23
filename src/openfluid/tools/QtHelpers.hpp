@@ -45,6 +45,7 @@
 #include <list>
 #include <vector>
 #include <set>
+#include <regex>
 
 #include <QVariant>
 #include <QString>
@@ -64,7 +65,14 @@ namespace openfluid { namespace tools {
   @param[in] Str the string to transform
   @return The transformed string
 */
-QString OPENFLUID_API toIniCompatible(const std::string& Str);
+inline QString toIniCompatible(const std::string& Str)
+{
+  return (QString::fromStdString(Str));
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -72,7 +80,21 @@ QString OPENFLUID_API toIniCompatible(const std::string& Str);
   @param[in] Var the variable to transform
   @return The variable transformed into a string
 */
-std::string OPENFLUID_API fromIniCompatible(const QVariant& Var);
+inline std::string fromIniCompatible(const QVariant& Var)
+{
+  if (Var.type() == QVariant::StringList)
+  {
+    return Var.toStringList().join(", ").toStdString();
+  }
+  else
+  {
+    return Var.toString().toStdString();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -80,7 +102,21 @@ std::string OPENFLUID_API fromIniCompatible(const QVariant& Var);
   @param[in] StrList the QStringList to transform
   @return The QStringList transformed into a std::list of std::string
 */
-std::list<std::string> OPENFLUID_API toStdStringList(const QStringList& StrList);
+inline std::list<std::string> toStdStringList(const QStringList& StrList)
+{
+  std::list<std::string> TmpList;
+
+  for (int i=0; i<StrList.size(); i++)
+  {
+    TmpList.push_back(StrList[i].toStdString());
+  }
+
+  return TmpList;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -88,7 +124,21 @@ std::list<std::string> OPENFLUID_API toStdStringList(const QStringList& StrList)
   @param[in] StrList the QStringList to transform
   @return The QStringList transformed into a std::vector of std::string
 */
-std::vector<std::string> OPENFLUID_API toStdStringVector(const QStringList& StrList);
+inline std::vector<std::string> toStdStringVector(const QStringList& StrList)
+{
+  std::vector<std::string> TmpVector;
+
+  for (int i=0; i<StrList.size(); i++)
+  {
+    TmpVector.push_back(StrList[i].toStdString());
+  }
+
+  return TmpVector;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -96,7 +146,17 @@ std::vector<std::string> OPENFLUID_API toStdStringVector(const QStringList& StrL
   @param[in] DT The OpenFLUID DateTime to transform
   @return The DT transformed into QDateTime
 */
-QDateTime OPENFLUID_API toQDateTime(const openfluid::core::DateTime& DT);
+inline QDateTime toQDateTime(const openfluid::core::DateTime& DT)
+{
+  QDate D(DT.getYear(),DT.getMonth(),DT.getDay());
+  QTime T(DT.getHour(),DT.getMinute(),DT.getSecond());
+
+  return QDateTime(D,T,Qt::UTC);
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -104,7 +164,20 @@ QDateTime OPENFLUID_API toQDateTime(const openfluid::core::DateTime& DT);
   @param[in] StrVect the std::vector of std::string to transform
   @return The StrVect transformed into a QStringList
 */
-QStringList OPENFLUID_API toQStringList(const std::vector<std::string>& StrVect);
+inline QStringList toQStringList(const std::vector<std::string>& StrVect)
+{
+  QStringList QSL;
+  for (unsigned int i=0; i<StrVect.size();++i)
+  {
+    QSL.append(QString(StrVect[i].c_str()));
+  }
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -112,7 +185,25 @@ QStringList OPENFLUID_API toQStringList(const std::vector<std::string>& StrVect)
   @param[in] StrSet the std::set of std::string to transform
   @return The StrSet transformed into a QStringList
 */
-QStringList OPENFLUID_API toQStringList(const std::set<std::string>& StrSet);
+inline QStringList toQStringList(const std::set<std::string>& StrSet)
+{
+  QStringList QSL;
+
+  std::set<std::string>::const_iterator it;
+  std::set<std::string>::const_iterator itb = StrSet.begin();
+  std::set<std::string>::const_iterator ite = StrSet.end();
+
+  for (it=itb;it!= ite;++it)
+  {
+    QSL.append(QString((*it).c_str()));
+  }
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -120,7 +211,25 @@ QStringList OPENFLUID_API toQStringList(const std::set<std::string>& StrSet);
   @param[in] StrList the std::list of std::string to transform
   @return The StrList transformed into a QStringList
 */
-QStringList OPENFLUID_API toQStringList(const std::list<std::string>& StrList);
+inline QStringList toQStringList(const std::list<std::string>& StrList)
+{
+  QStringList QSL;
+
+  std::list<std::string>::const_iterator it;
+  std::list<std::string>::const_iterator itb = StrList.begin();
+  std::list<std::string>::const_iterator ite = StrList.end();
+
+  for (it=itb;it!= ite;++it)
+  {
+    QSL.append(QString((*it).c_str()));
+  }
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -128,7 +237,26 @@ QStringList OPENFLUID_API toQStringList(const std::list<std::string>& StrList);
   @param[in] IntSet the std::set of int to transform
   @return The intSet transformed into a QStringList
 */
-QStringList OPENFLUID_API toQStringList(const std::set<int>& IntSet);
+inline QStringList toQStringList(const std::set<int>& IntSet)
+{
+  QStringList QSL;
+
+  std::set<int>::const_iterator it;
+  std::set<int>::const_iterator itb = IntSet.begin();
+  std::set<int>::const_iterator ite = IntSet.end();
+
+  for (it=itb;it!= ite;++it)
+  {
+    QSL.append(QString("%1").arg(*it));
+  }
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 /**
   Converts arguments string to list. It first splits the string using spaces that are not inclosed in quotes,
@@ -136,7 +264,27 @@ QStringList OPENFLUID_API toQStringList(const std::set<int>& IntSet);
   @param[in] ArgsStr the argument string to convert
   @return The list of arguments
 */
-QStringList OPENFLUID_API convertArgsStringToList(const QString& ArgsStr);
+inline QStringList convertArgsStringToList(const QString& ArgsStr)
+{
+  // converting string args as a list, without splitting spaces in quotes
+  QStringList ArgsList = ArgsStr.split(QRegExp("\\s(?=(?:\"[^\"]*\"|[^\"])*$)"),QString::SkipEmptyParts);
+  
+  // removing of quotes
+  for (auto& Arg : ArgsList)
+  {
+    if (Arg.startsWith("\"") && Arg.endsWith("\""))
+    {
+      Arg.remove(0,1);
+      Arg.remove(Arg.size()-1,1);
+    }
+  }
+
+  return ArgsList;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -144,7 +292,16 @@ QStringList OPENFLUID_API convertArgsStringToList(const QString& ArgsStr);
   @param[in] Str the string to escape
   @return The escaped string
 */
-QString OPENFLUID_API escapeXMLEntities(const QString& Str);
+inline QString escapeXMLEntities(const QString& Str)
+{
+  QString EscapedStr = Str;
+  EscapedStr.replace("&","&amp;").replace(">","&gt;").replace("<","&lt;").replace("\"","&quot;");
+  return EscapedStr;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -152,7 +309,16 @@ QString OPENFLUID_API escapeXMLEntities(const QString& Str);
   @param[in] Str the string to decode
   @return The decoded string
 */
-QString OPENFLUID_API decodeXMLEntities(const QString& Str);
+inline QString decodeXMLEntities(const QString& Str)
+{
+  QString DecodedStr = Str;
+  DecodedStr.replace("&amp;","&").replace("&gt;",">").replace("&lt;","<").replace("&quot;","\"");
+  return DecodedStr;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -160,7 +326,27 @@ QString OPENFLUID_API decodeXMLEntities(const QString& Str);
   @param[in] Str the \@Point formatted string (e.g. "\@Point(-127 53)")
   @return the QPoint object
 */
-QPoint OPENFLUID_API toQPoint(const std::string& Str);
+inline QPoint toQPoint(const std::string& Str)
+{
+  QPoint Point;
+  std::regex PointRegex("@Point\\(([\\-\\d]+) ([\\-\\d]+)\\)");
+  std::smatch Match;
+
+  if (std::regex_match(Str, Match, PointRegex))
+  {
+    if (Match.size() == 3)
+    {
+      Point.setX(std::stoi(Match.str(1)));
+      Point.setY(std::stoi(Match.str(2)));
+    }
+  }
+
+  return Point;
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -168,7 +354,15 @@ QPoint OPENFLUID_API toQPoint(const std::string& Str);
   @param[in] Point the QPoint object to convert 
   @return the \@Point formatted string (e.g. "\@Point(-127 53)")
 */
-std::string OPENFLUID_API fromQPoint(const QPoint& Point);
+inline std::string fromQPoint(const QPoint& Point)
+{
+  if (!Point.isNull())
+  {
+    return "@Point("+std::to_string(Point.x())+" "+std::to_string(Point.y())+")";
+  }
+
+  return "";
+}
 
 
 } } // namespaces

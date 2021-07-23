@@ -8,7 +8,7 @@ SET(OPENFLUID_TOOLS_CPP ColumnTextParser.cpp
                         Filesystem.cpp
                         FileLogger.cpp
                         SettingsBackend.cpp
-                        DataHelpers.cpp IDHelpers.cpp QtHelpers.cpp MiscHelpers.cpp
+                        DataHelpers.cpp IDHelpers.cpp MiscHelpers.cpp
                         )
 
 SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp 
