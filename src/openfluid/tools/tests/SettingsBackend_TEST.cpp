@@ -94,10 +94,8 @@ BOOST_AUTO_TEST_CASE(check_setting_value)
     std::vector<std::string> RetVect = Val.get<std::vector<std::string>>(ExpVect);
     BOOST_CHECK_EQUAL_COLLECTIONS(ExpVect.begin(),ExpVect.end(),RetVect.begin(),RetVect.end());
 
-/*    BOOST_CHECK(!Val.is<rapidjson::Value*>());
-    auto ExpJSONVal = std::make_unique<rapidjson::Value>();
-    BOOST_CHECK_THROW(Val.get<rapidjson::Value*>(),openfluid::base::FrameworkException);
-    BOOST_CHECK_EQUAL(Val.get<rapidjson::Value*>(ExpJSONVal.get()),ExpJSONVal.get());*/
+    BOOST_CHECK(!Val.isJSONValue());
+    BOOST_CHECK_EQUAL(Val.JSONValue(),nullptr);
   }
 
 
