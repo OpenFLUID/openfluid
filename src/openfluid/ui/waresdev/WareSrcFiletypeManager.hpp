@@ -46,8 +46,6 @@
 #include <QTextCharFormat>
 #include <QMap>
 #include <QRegExp>
-#include <QDomElement>
-#include <QFile>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
@@ -119,11 +117,6 @@ class OPENFLUID_API WareSrcFiletypeManager
     WareSrcFiletypeManager();
 
     ~WareSrcFiletypeManager();
-
-    /**
-      @throw openfluid::base::FrameworkException
-    */
-    QDomElement openWaresdevFile(const QString& FilePath);
 
     void initializeFileTypes();
 

@@ -46,7 +46,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
-#include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
@@ -62,9 +62,9 @@
 BOOST_AUTO_TEST_CASE(check_construction)
 {
   std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
+  openfluid::fluidx::FluidXIO FXIO(Listener.get());
 
-  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
+  auto FXDesc = FXIO.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXIO/singlefile0");
 
   BOOST_CHECK_EQUAL(FXDesc.monitoring().items().size(), 2);
 }
@@ -77,9 +77,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_duplicates)
 {
   std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
+  openfluid::fluidx::FluidXIO FXIO(Listener.get());
 
-  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/duplicates");
+  auto FXDesc = FXIO.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXIO/duplicates");
 
   BOOST_CHECK_NO_THROW(FXDesc.monitoring());
 }
@@ -92,9 +92,9 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
 BOOST_AUTO_TEST_CASE(check_operations)
 {
   std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
+  openfluid::fluidx::FluidXIO FXIO(Listener.get());
 
-  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
+  auto FXDesc = FXIO.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXIO/singlefile0");
 
   openfluid::fluidx::MonitoringDescriptor Monit = FXDesc.monitoring();
 

@@ -37,13 +37,12 @@
  */
 
 
-#include <QDomDocument>
-#include <QDomElement>
-#include <QFile>
+#include <tinyxml2.h>
 
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/TinyXML2Helpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -58,49 +57,29 @@ void DistributionTables::build(const std::string& BasePath,
 
   // Sources file
 
-  QDomDocument Doc;
-  QDomElement Root;
-
+  tinyxml2::XMLDocument Doc;
   std::string SourcesFilePath = openfluid::tools::Filesystem::joinPath({BasePath,SourcesFileName});
 
-
-  QFile File(QString(SourcesFilePath.c_str()));
-  if (!File.open(QIODevice::ReadOnly))
+  if (Doc.LoadFile(SourcesFilePath.c_str()) == tinyxml2::XML_SUCCESS)
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error opening "+SourcesFilePath);
-  }
+    const auto Root = Doc.RootElement();
 
-  bool Parsed = Doc.setContent(&File);
-  File.close();
-
-
-  if (Parsed)
-  {
-    Root = Doc.documentElement();
-
-    if (!Root.isNull())
+    if (Root != nullptr)
     {
-      if (Root.tagName() == QString("openfluid"))
+      if (std::string(Root->Name()) == "openfluid")
       {
-        for(QDomElement CurrNode = Root.firstChildElement(); !CurrNode.isNull();
-            CurrNode = CurrNode.nextSiblingElement())
+        for (auto DataElt = Root->FirstChildElement("datasources"); DataElt != nullptr; 
+             DataElt = DataElt->NextSiblingElement("datasources"))
         {
-          if (CurrNode.tagName() == QString("datasources"))
+          for (auto FileElt = DataElt->FirstChildElement("filesource"); FileElt != nullptr; 
+               FileElt = FileElt->NextSiblingElement("filesource"))
           {
-            for(QDomElement CurrNode2 = CurrNode.firstChildElement(); !CurrNode2.isNull();
-                CurrNode2 = CurrNode2.nextSiblingElement())
-            {
-              if (CurrNode2.tagName() == QString("filesource"))
-              {
-                QString xmlID = CurrNode2.attributeNode(QString("ID")).value();
-                QString xmlFile = CurrNode2.attributeNode(QString("file")).value();
+            auto ID = openfluid::tools::attributeToString(FileElt,"ID");
+            auto File = openfluid::tools::attributeToString(FileElt,"file");
 
-                if (!xmlID.isNull() && !xmlFile.isNull())
-                {
-                  SourcesTable[xmlID.toStdString()] = 
-                    openfluid::tools::Filesystem::joinPath({BasePath,xmlFile.toStdString()});
-                }
-              }
+            if (!ID.empty() && !File.empty())
+            {
+              SourcesTable[ID] = openfluid::tools::Filesystem::joinPath({BasePath,File});
             }
           }
         }
@@ -108,22 +87,20 @@ void DistributionTables::build(const std::string& BasePath,
       else
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Cannot find <openfluid> tag in sources file " +
-                                                  SourcesFilePath);
+                                                  "Cannot find <openfluid> tag in sources file " + SourcesFilePath);
       }
     }
     else
     {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Wrong formatted sources file " +
-                                                SourcesFilePath);
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                "Wrong formatted sources file " + SourcesFilePath);
     }
   }
   else
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot open sources file " +
-                                              SourcesFilePath);
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Cannot open sources file " + SourcesFilePath);
   }
-
+ 
 
   // Units distribution file
 

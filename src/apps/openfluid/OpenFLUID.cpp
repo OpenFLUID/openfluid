@@ -44,6 +44,7 @@
 #include <boost/algorithm/string/join.hpp>
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/Timer.hpp>
@@ -343,8 +344,8 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Loading data... " << std::endl;
   std::cout.flush();
-  openfluid::fluidx::FluidXDescriptor FXDesc(IOListener.get());
-  FXDesc.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
+  openfluid::fluidx::FluidXIO FXIO(IOListener.get());
+  auto FXDesc = FXIO.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
 
 
   std::cout << "* Building spatial domain... ";

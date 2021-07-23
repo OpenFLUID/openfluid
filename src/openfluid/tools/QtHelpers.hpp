@@ -54,7 +54,6 @@
 #include <QPoint>
 
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -295,7 +294,7 @@ inline QStringList convertArgsStringToList(const QString& ArgsStr)
 inline QString escapeXMLEntities(const QString& Str)
 {
   QString EscapedStr = Str;
-  EscapedStr.replace("&","&amp;").replace(">","&gt;").replace("<","&lt;").replace("\"","&quot;");
+  EscapedStr.replace("&","&amp;").replace(">","&gt;").replace("<","&lt;").replace("\"","&quot;").replace("'","&apos;");
   return EscapedStr;
 }
 

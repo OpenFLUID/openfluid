@@ -120,5 +120,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("_ofware20111-sim.dll"),"_ofware20111\\-sim\\.dll");
   BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("_ofware20200-obs.so"),"_ofware20200\\-obs\\.so");
   BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("+.?{}[]\\\\-_"),"\\+\\.\\?\\{\\}\\[\\]\\\\\\-_");
+
 }
 

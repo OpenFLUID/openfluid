@@ -1,6 +1,7 @@
-OpenFLUID
-Copyright (c) 2007 INRA - Montpellier SupAgro
-Inter Deposit Digital Number : IDDN.FR.001.360006.000.R.P.2009.000.30100
+/*
+
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -25,19 +26,49 @@ Inter Deposit Digital Number : IDDN.FR.001.360006.000.R.P.2009.000.30100
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
+*/
 
-  
-===========================================================================
+
+/**
+  @file FluidXIO.hpp
+
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+*/
 
 
-OpenFLUID relies on third party libraries and content, under the following licensing terms:  
-  - Boost: http://www.boost.org/users/license.html (Boost license)
-  - TinyXML2: https://github.com/leethomason/tinyxml2 (zlib license)
-  - Qt: http://qt-project.org/doc/qt-5/opensourcelicense.html (LGPL)
-  - OGR/GDAL: http://trac.osgeo.org/gdal/wiki/FAQGeneral#WhatlicensedoesGDALOGRuse (X11/MIT)
-  - GEOS: http://trac.osgeo.org/geos/ (LGPL)
-  - RapidJSON: http://rapidjson.org (MIT)
-  - Material design icons: https://material.io/icons/ (Apache 2.0) and https://materialdesignicons.com/ (OFL-1.1)
-  
-  
-  
+#ifndef __OPENFLUID_FLUIDX_FLUIDXIO_HPP__
+#define __OPENFLUID_FLUIDX_FLUIDXIO_HPP__
+
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/base/IOListener.hpp>
+
+
+namespace openfluid { namespace fluidx {
+
+
+class OPENFLUID_API FluidXIO
+{
+  private:
+
+    openfluid::base::IOListener* mp_Listener;
+
+
+  public:
+
+    FluidXIO(openfluid::base::IOListener* Listener);
+
+    FluidXDescriptor loadFromDirectory(const std::string& DirPath) const;
+
+    void writeToManyFiles(const FluidXDescriptor& Desc, const std::string& DirPath) const;
+
+    void writeToSingleFile(const FluidXDescriptor& Desc, const std::string& FilePath) const;
+};
+
+
+} } // namespaces
+
+
+#endif /* __OPENFLUID_FLUIDX_FLUIDXIO_HPP__ */

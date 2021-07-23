@@ -6,7 +6,7 @@
     <infos>
     
       <name>Simulator A</name>
-      <description>This is simulator A</description>
+      <description>This is &quot;simulator A&quot;</description>
       <author name="John Doe" email="doe@foobar.org" />
       <author name="Tony Stark" email="iron@shield.org" />
       <status>beta</status>

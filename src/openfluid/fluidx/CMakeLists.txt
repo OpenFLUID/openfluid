@@ -8,7 +8,7 @@ SET(OPENFLUID_FLUIDX_CPP WareDescriptor.cpp SimulatorDescriptor.cpp GeneratorDes
                          EventDescriptor.cpp
                          DatastoreDescriptor.cpp DatastoreItemDescriptor.cpp
                          RunConfigurationDescriptor.cpp
-                         FluidXDescriptor.cpp
+                         FluidXIO.cpp
                          )
 
 SET(OPENFLUID_FLUIDX_HPP WareDescriptor.hpp ModelItemDescriptor.hpp 
@@ -20,6 +20,7 @@ SET(OPENFLUID_FLUIDX_HPP WareDescriptor.hpp ModelItemDescriptor.hpp
                          DatastoreDescriptor.hpp DatastoreItemDescriptor.hpp
                          RunConfigurationDescriptor.hpp
                          FluidXDescriptor.hpp
+                         FluidXIO.hpp
                          )
 
 
@@ -36,7 +37,7 @@ SET_TARGET_PROPERTIES(openfluid-fluidx PROPERTIES VERSION "${OPENFLUID_VERSION_M
 TARGET_LINK_LIBRARIES(openfluid-fluidx
                       openfluid-base
                       openfluid-core
-                      Qt5::Xml)
+                      thirdparty-tinyxml2)
 
 
 INSTALL(TARGETS openfluid-fluidx

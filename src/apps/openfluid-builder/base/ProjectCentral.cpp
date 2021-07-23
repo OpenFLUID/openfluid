@@ -48,6 +48,8 @@
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/base/IOListener.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
@@ -59,11 +61,9 @@ ProjectCentral* ProjectCentral::mp_Instance = nullptr;
 
 
 ProjectCentral::ProjectCentral(const QString& PrjPath):
-  mp_FXDesc(nullptr)
+  m_IsValid(false)
 {
-  mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(&m_IOListener);
-
-  if (PrjPath == "")
+  if (PrjPath.isEmpty())
   {
     setDefaultDescriptors();
   }
@@ -71,7 +71,10 @@ ProjectCentral::ProjectCentral(const QString& PrjPath):
   {
     try
     {
-      mp_FXDesc->loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
+      openfluid::base::IOListener Listener;
+      m_FXDesc = openfluid::fluidx::FluidXIO(&Listener)
+                   .loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
+      m_IsValid = true;
     }
     catch (openfluid::base::Exception& E)
     {
@@ -169,11 +172,8 @@ QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(
 
 void ProjectCentral::deleteData()
 {
-  if (mp_FXDesc)
-  {
-    delete mp_FXDesc;
-    mp_FXDesc = nullptr;
-  }
+  m_FXDesc.reset();
+  m_IsValid = false;
 }
 
 
@@ -202,7 +202,7 @@ void ProjectCentral::run(RunMode Mode)
 
   if (Mode == RunMode::DEFAULT)
   {
-    openfluid::ui::common::RunSimulationDialog RunDlg(QApplication::activeWindow(),mp_FXDesc);
+    openfluid::ui::common::RunSimulationDialog RunDlg(QApplication::activeWindow(),&m_FXDesc);
     RunDlg.execute();
   }
   else if (Mode == RunMode::CLI)
@@ -231,23 +231,24 @@ void ProjectCentral::run(RunMode Mode)
 
 bool ProjectCentral::save()
 {
-  QString InputDir = QString(openfluid::base::RunContextManager::instance()->getInputDir().c_str());
+  std::string InputDir = openfluid::base::RunContextManager::instance()->getInputDir();
 
   openfluid::base::RunContextManager::instance()->saveProject();
 
-  QDir InputPath(InputDir);
-
   // remove all fluidx files
   QStringList FluidXFileToRemove;
+  QDir InputPath(QString::fromStdString(InputDir));  
   FluidXFileToRemove = InputPath.entryList(QStringList("*.fluidx"),QDir::Files | QDir::NoDotAndDotDot);
 
   for (int i=0;i<FluidXFileToRemove.size();++i)
   {
-     InputPath.remove(FluidXFileToRemove[i]);
+    InputPath.remove(FluidXFileToRemove[i]);
   }
 
   // save all fluidx files
-  mp_FXDesc->writeToManyFiles(InputDir.toStdString());
+  openfluid::base::IOListener Listener;
+  openfluid::fluidx::FluidXIO FXIO(&Listener);
+  FXIO.writeToManyFiles(m_FXDesc,InputDir);
 
   return true;
 }
@@ -270,20 +271,23 @@ bool ProjectCentral::saveAs(const QString& NewPrjName, const QString& NewPrjPath
   QDir().mkpath(NewPrjPath);
 
   // copy files and subdirectories from current to renamed project
-  openfluid::tools::Filesystem::copyDirectory(OldPrjPath.toStdString(),NewPrjPath.toStdString(),true,true);
+  openfluid::tools::Filesystem::copyDirectory(OldPrjPath.toStdString(),NewPrjPath.toStdString(),false,true);
 
   // open renamed project
-  PrjCtxt->openProject(NewPrjPath.toStdString());
+  if (PrjCtxt->openProject(NewPrjPath.toStdString()))
+  {
+    // update project metadata
+    PrjCtxt->setProjectName(NewPrjName.toStdString());
+    PrjCtxt->setProjectCreationDateAsNow();
 
-  // update project metadata
-  PrjCtxt->setProjectName(NewPrjName.toStdString());
-  PrjCtxt->setProjectCreationDateAsNow();
+    // save project and project metadata
+    PrjCtxt->saveProject();
+    save();
 
-  // save project and project metadata
-  PrjCtxt->saveProject();
-  save();
+    return true;
+  }
 
-  return true;
+  return false;
 }
 
 
@@ -295,7 +299,7 @@ void ProjectCentral::check()
 {
   m_CheckInfos.clear();
 
-  if (!mp_FXDesc->model().items().empty())
+  if (!m_FXDesc.model().items().empty())
   {
     checkModel();
   }
@@ -309,7 +313,7 @@ void ProjectCentral::check()
 
   checkDatastore();
 
-  if (!mp_FXDesc->monitoring().items().empty())
+  if (!m_FXDesc.monitoring().items().empty())
   {
     checkMonitoring();
   }
@@ -386,7 +390,7 @@ bool ProjectCentral::isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
                                 const std::string& ParamName)
 {
   return (!Item->getParameters()[ParamName].get().empty() ||
-          !mp_FXDesc->model().getGlobalParameters()[ParamName].get().empty());
+          !m_FXDesc.model().getGlobalParameters()[ParamName].get().empty());
 }
 
 
@@ -405,7 +409,7 @@ bool ProjectCentral::isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Ite
   double d;
 
   return (Item->getParameters()[ParamName].toDouble(d) ||
-    mp_FXDesc->model().getGlobalParameters()[ParamName].toDouble(d));
+    m_FXDesc.model().getGlobalParameters()[ParamName].toDouble(d));
 }
 
 
@@ -433,7 +437,7 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
     return d;
   }
 
-  mp_FXDesc->model().getGlobalParameters()[ParamName].toDouble(d);
+  m_FXDesc.model().getGlobalParameters()[ParamName].toDouble(d);
 
   return d;
 }
@@ -445,8 +449,8 @@ double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* 
 
 void ProjectCentral::checkModel()
 {
-  openfluid::fluidx::CoupledModelDescriptor& Model = mp_FXDesc->model();
-  openfluid::fluidx::SpatialDomainDescriptor& Domain = mp_FXDesc->spatialDomain();
+  openfluid::fluidx::CoupledModelDescriptor& Model = m_FXDesc.model();
+  openfluid::fluidx::SpatialDomainDescriptor& Domain = m_FXDesc.spatialDomain();
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = Model.items();
 
@@ -938,7 +942,7 @@ void ProjectCentral::checkModel()
 void ProjectCentral::checkSpatialDomain()
 {
   // Build list of units classes
-  m_UnitsClassesList = openfluid::tools::toQStringList(mp_FXDesc->spatialDomain().getClassNames());
+  m_UnitsClassesList = openfluid::tools::toQStringList(m_FXDesc.spatialDomain().getClassNames());
 
 
   // Build list of attributes by units class
@@ -946,7 +950,7 @@ void ProjectCentral::checkSpatialDomain()
   for (const auto& UClass : m_UnitsClassesList)
   {
     m_AttributesLists[UClass] =
-      openfluid::tools::toQStringList(mp_FXDesc->spatialDomain().getAttributesNames(UClass.toStdString()));
+      openfluid::tools::toQStringList(m_FXDesc.spatialDomain().getAttributesNames(UClass.toStdString()));
     m_AttributesLists[UClass].sort();
   }
 }
@@ -958,9 +962,9 @@ void ProjectCentral::checkSpatialDomain()
 
 void ProjectCentral::checkDatastore()
 {
-  std::set<std::string> Classes = mp_FXDesc->spatialDomain().getClassNames();
+  std::set<std::string> Classes = m_FXDesc.spatialDomain().getClassNames();
 
-  const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items = mp_FXDesc->datastore().items();
+  const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items = m_FXDesc.datastore().items();
 
   for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator itDatastore = Items.begin();
        itDatastore != Items.end(); ++itDatastore)
@@ -986,7 +990,7 @@ void ProjectCentral::checkDatastore()
 
 void ProjectCentral::checkMonitoring()
 {
-  openfluid::fluidx::MonitoringDescriptor& Monitoring = mp_FXDesc->monitoring();
+  openfluid::fluidx::MonitoringDescriptor& Monitoring = m_FXDesc.monitoring();
   const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = Monitoring.items();
 
   openfluid::machine::ObserverSignatureRegistry* Reg = openfluid::machine::ObserverSignatureRegistry::instance();
@@ -1029,7 +1033,7 @@ void ProjectCentral::checkMonitoring()
 
 void ProjectCentral::checkRunConfig()
 {
-
+  // TODO check why this method is empty
 }
 
 

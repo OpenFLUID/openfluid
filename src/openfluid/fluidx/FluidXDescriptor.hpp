@@ -53,38 +53,15 @@
 #include <openfluid/fluidx/AttributesTableDescriptor.hpp>
 
 
-class QDomElement;
-
-
-namespace openfluid {
-
-
-namespace base {
-class IOListener;
-}
-
-
-namespace fluidx {
+namespace openfluid { namespace fluidx {
 
 
 class OPENFLUID_API FluidXDescriptor
 {
   private:
 
-    typedef std::list<SpatialUnitDescriptor> SpatialUnitsList_t;
-
-    typedef std::list<AttributesTableDescriptor> AttributesTableList_t;
-
-    typedef std::list<EventDescriptor> EventsList_t;
-
-    struct LoadingTempData
-    {
-      SpatialUnitsList_t SpatiaUnits;
-
-      AttributesTableList_t Attributes;
-
-      EventsList_t Events;
-    };
+    friend class FluidXReaderImplementation;
+    friend class FluidXWriterImplementation;
 
     openfluid::fluidx::CoupledModelDescriptor m_ModelDescriptor;
 
@@ -96,80 +73,10 @@ class OPENFLUID_API FluidXDescriptor
 
     openfluid::fluidx::MonitoringDescriptor m_MonitoringDescriptor;
 
-    std::string m_CurrentFile;
-
-    std::string m_CurrentDir;
-
-    bool m_RunConfigDefined;
-
-    bool m_ModelDefined;
-
-    std::string m_IndentStr;
-
-    openfluid::base::IOListener* mp_Listener;
-
-    template<class T> std::string getSeparatedStrFromList(const T& Data,const std::string& Sep);
-
-    bool extractWareEnabledFromNode(QDomElement& Node);
-
-    void extractMonitoringFromNode(QDomElement& Node);
-
-    openfluid::ware::WareParams_t extractParamsFromNode(QDomElement& Node);
-
-    openfluid::ware::WareParams_t mergeParams(const openfluid::ware::WareParams_t& Params,
-                                              const openfluid::ware::WareParams_t& OverloadParams);
-
-    void extractModelFromNode(QDomElement& Node);
-
-    void extractRunFromNode(QDomElement& Node);
-
-    void extractDomainFomNode(QDomElement& Node, LoadingTempData& TempData);
-
-    openfluid::core::UnitClassID_t extractUnitClassIDFromNode(QDomElement& Node);
-
-    SpatialUnitsList_t extractDomainDefinitionFromNode(QDomElement& Node);
-
-    AttributesTableDescriptor extractDomainAttributesFromNode(QDomElement& Node);
-
-    EventsList_t extractDomainCalendarFromNode(QDomElement& Node);
-
-    void extractDatastoreFromNode(QDomElement& Node);
-
-    void parseFile(const std::string& Filename, LoadingTempData& TempData);
-
-    void rebuildSpatialDomainFromTemp(LoadingTempData& TempData);
-
-    void prepareFluidXDir(const std::string& DirPath);
-
-    std::string getGeneratorMethodAsStr(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const;
-
-    std::string getParamsAsStr(const openfluid::ware::WareParams_t& Params) const;
-
-    void writeModelToStream(std::ostream& Contents);
-
-    void writeDomainToStream(std::ostream& Contents);
-
-    void writeDomainDefinitionToStream(std::ostream& Contents);
-
-    void writeDomainAttributesToStream(std::ostream& Contents);
-
-    void writeDomainCalendarToStream(std::ostream& Contents);
-
-    void writeRunConfigurationToStream(std::ostream& Contents);
-
-    void writeDatastoreToStream(std::ostream& Contents);
-
-    void writeMonitoringToStream(std::ostream& Contents);
-
 
   public:
 
-    FluidXDescriptor(openfluid::base::IOListener* Listener);
-
-    ~FluidXDescriptor()
-    { }
-
-    void loadFromDirectory(const std::string& DirPath);
+    // NOTE : apply the rule of zero to ensure corect usage of copy/move/assign
 
     inline openfluid::fluidx::CoupledModelDescriptor& model()
     {
@@ -221,9 +128,14 @@ class OPENFLUID_API FluidXDescriptor
       return m_MonitoringDescriptor;
     }
 
-    void writeToManyFiles(const std::string& DirPath);
-
-    void writeToSingleFile(const std::string& FilePath);
+    void reset()
+    {
+      m_ModelDescriptor = openfluid::fluidx::CoupledModelDescriptor();
+      m_DomainDescriptor = openfluid::fluidx::SpatialDomainDescriptor();
+      m_RunDescriptor = openfluid::fluidx::RunConfigurationDescriptor();
+      m_DatastoreDescriptor = openfluid::fluidx::DatastoreDescriptor();
+      m_MonitoringDescriptor = openfluid::fluidx::MonitoringDescriptor();
+    }
 };
 
 

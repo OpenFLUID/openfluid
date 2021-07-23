@@ -40,9 +40,10 @@
 
 
 #include <QDir>
-#include <QFile>
-#include <QDomDocument>
+#include <QFileInfo>
 
+
+#include <openfluid/tools/TinyXML2Helpers.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
@@ -230,115 +231,113 @@ void WareSrcFiletypeManager::initializeFileTypes()
 // =====================================================================
 
 
-QDomElement WareSrcFiletypeManager::openWaresdevFile(const QString& FilePath)
-{
-  QDomDocument Doc;
-  QFile File(FilePath);
-
-  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              QString("file not found: %1").arg(FilePath).toStdString());
-  }
-
-  QString Msg;
-  int Line, Col;
-  if (!Doc.setContent(&File, &Msg, &Line, &Col))
-  {
-    File.close();
-    throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,
-        QString("error in file: %1 (line %2, column %3").arg(Msg).arg(Line).arg(Col).toStdString());
-  }
-  File.close();
-
-  QDomElement Elem = Doc.documentElement();
-
-  if (Elem.tagName() != "openfluid")
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "file not well formed (missing 'openfluid' tag)");
-  }
-
-  Elem = Elem.firstChildElement();
-  if (Elem.tagName() != "waresdev")
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "file not well formed (missing 'waresdev' tag)");
-  }
-
-  return Elem;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxFile(const QString& FilePath)
 {
-  QDomElement Elem = openWaresdevFile(FilePath);
+  tinyxml2::XMLDocument Doc;
 
-  // TODO remove useless 'language' tag
-  Elem = Elem.firstChildElement();
-//  if (Elem.tagName() != "language" || Elem.attribute("name") != FileTypeName)
-//    throw openfluid::base::FrameworkException(
-//        OPENFLUID_CODE_LOCATION,
-//        QString(
-//            "syntax file not well formed (missing 'language' tag or language name is not '%1')")
-//            .arg(FileTypeName).toStdString());
-
-  Elem = Elem.firstChildElement();
-  if (Elem.tagName() != "highlighting")
+  if (Doc.LoadFile(FilePath.toStdString().c_str()) != tinyxml2::XML_SUCCESS)
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "no 'highlighting' tag in syntax file");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "file cannot be found: " + FilePath.toStdString());
   }
+
 
   HighlightingRules_t Rules;
 
-  for (QDomElement HlElem = Elem.firstChildElement(); !HlElem.isNull(); HlElem = HlElem.nextSiblingElement())
+  const auto Root = Doc.RootElement();
+  if (Root != nullptr && std::string(Root->Name()) == "openfluid")
   {
-    if (HlElem.tagName() == "list")
-    {
-      QString StyleName = HlElem.attribute("style");
-      if (m_Formats.contains(StyleName))
-      {
-        QTextCharFormat Format = m_Formats.value(StyleName);
+    const auto WaresDevElt = Root->FirstChildElement("waresdev");
 
-        QDomNodeList Items = HlElem.elementsByTagName("item");
-        for (int i = 0; i < Items.size(); i++)
+    if (WaresDevElt != nullptr)
+    {
+      const auto LangElt = WaresDevElt->FirstChildElement("language");
+
+      if (LangElt != nullptr)
+      {
+        const auto HlhtElt = LangElt->FirstChildElement("highlighting");
+
+        if (HlhtElt != nullptr)
         {
-          Rules.append(HighlightingRule(StyleName, QRegExp(QString("\\b%1\\b").arg(Items.at(i).toElement().text())),
-                                        Format));
+          for (auto Elt = HlhtElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
+          {
+            std::string TagName(Elt->Name());
+
+            if (TagName == "list")
+            {
+              QString StyleName = QString::fromStdString(openfluid::tools::attributeToString(Elt,"style"));
+
+              if (m_Formats.contains(StyleName))
+              {
+                QTextCharFormat Format = m_Formats.value(StyleName);
+
+                for (auto ItemElt = Elt->FirstChildElement("item"); ItemElt != nullptr; 
+                    ItemElt = ItemElt->NextSiblingElement("item"))
+                {
+                  QString ItemText = QString::fromStdString(openfluid::tools::textToString(ItemElt));
+                  Rules.append(HighlightingRule(StyleName, QRegExp(QString("\\b%1\\b").arg(ItemText)),Format));
+                }
+              }
+            }
+            else if (TagName == "rule")
+            {
+              QString StyleName = QString::fromStdString(openfluid::tools::attributeToString(Elt,"style"));
+
+              if (m_Formats.contains(StyleName))
+              {
+                QTextCharFormat Format = m_Formats.value(StyleName);
+
+                for (auto PttrnElt = Elt->FirstChildElement("pattern"); PttrnElt != nullptr; 
+                     PttrnElt = PttrnElt->NextSiblingElement("pattern"))
+                {
+                  QString SimplePatternValue = 
+                    QString::fromStdString(openfluid::tools::attributeToString(PttrnElt,"value"));
+                  QString BeginPatternValue = 
+                    QString::fromStdString(openfluid::tools::attributeToString(PttrnElt,"start"));
+                  QString EndPatternValue = 
+                    QString::fromStdString(openfluid::tools::attributeToString(PttrnElt,"end"));
+                  
+                  if (!SimplePatternValue.isEmpty())
+                  {
+                    Rules.append(HighlightingRule(StyleName, QRegExp(SimplePatternValue), Format));
+                  }
+                  else if (!BeginPatternValue.isEmpty() && !EndPatternValue.isEmpty())
+                  {
+                    Rules.append(HighlightingRule(StyleName,
+                                                  QRegExp(BeginPatternValue),QRegExp(EndPatternValue),
+                                                  Format));
+                  }
+                }
+              }
+            }
+          }
+        }
+        else
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                    "file is not well formed ('highlighting' tag is missing): "+
+                                                    FilePath.toStdString());
         }
       }
-    }
-    else if (HlElem.tagName() == "rule")
-    {
-      QString StyleName = HlElem.attribute("style");
-      if (m_Formats.contains(StyleName))
+      else
       {
-        QTextCharFormat Format = m_Formats.value(StyleName);
-
-        QDomNodeList Items = HlElem.elementsByTagName("pattern");
-        for (int i = 0; i < Items.size(); i++)
-        {
-          QDomElement Pattern = Items.at(i).toElement();
-
-          // 'value' must be set and different of ''
-          QString SimplePatternValue = Pattern.attribute("value", "");
-          QString BeginPatternValue = Pattern.attribute("start", "");
-          QString EndPatternValue = Pattern.attribute("end", "");
-          if (!SimplePatternValue.isEmpty())
-          {
-            Rules.append(HighlightingRule(StyleName, QRegExp(SimplePatternValue), Format));
-          }
-          else if (!BeginPatternValue.isEmpty() && !EndPatternValue.isEmpty())
-          {
-            Rules.append(HighlightingRule(StyleName, QRegExp(BeginPatternValue), QRegExp(EndPatternValue), Format));
-          }
-        }
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                  "file is not well formed ('language' tag is missing): "+
+                                                  FilePath.toStdString());
       }
     }
+    else
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                "file is not well formed ('waresdev' tag is missing): "+
+                                                FilePath.toStdString());
+    }
+  }
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "file is not well formed ('openfluid' tag is missing): "+
+                                              FilePath.toStdString());
   }
 
   return Rules;

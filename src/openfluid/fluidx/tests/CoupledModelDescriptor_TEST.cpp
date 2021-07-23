@@ -48,7 +48,7 @@
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
-#include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/base/IOListener.hpp>
 
 #include "tests-config.hpp"
@@ -168,9 +168,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
 BOOST_AUTO_TEST_CASE(check_construction_from_dataset)
 {
   std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
-  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  openfluid::fluidx::FluidXIO FXIO(Listener.get());
 
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
+  auto FXDesc = FXIO.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXIO/singlefile0");
 
   openfluid::fluidx::CoupledModelDescriptor Model(FXDesc.model());
 
@@ -229,9 +229,9 @@ BOOST_AUTO_TEST_CASE(check_construction_from_dataset)
 BOOST_AUTO_TEST_CASE(check_advanced_operations)
 {
   std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
-  openfluid::fluidx::FluidXDescriptor FXDesc(Listener.get());
+  openfluid::fluidx::FluidXIO FXIO(Listener.get());
 
-  FXDesc.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXDescriptors/singlefile0");
+  auto FXDesc = FXIO.loadFromDirectory(CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXIO/singlefile0");
 
   openfluid::fluidx::CoupledModelDescriptor Model = FXDesc.model();
 

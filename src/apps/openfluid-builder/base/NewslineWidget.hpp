@@ -47,6 +47,8 @@ namespace Ui
 }
 
 
+#include <string>
+
 #include <QWidget>
 
 #include "NewsItemWidget.hpp"
@@ -69,7 +71,7 @@ class NewslineWidget : public QWidget
 
     Ui::NewslineWidget* ui;
 
-    static QList<NewsItemData> loadRSSFile(const QString& FilePath);
+    static QList<NewsItemData> loadRSSFile(const std::string& FilePath);
 
 
   public:

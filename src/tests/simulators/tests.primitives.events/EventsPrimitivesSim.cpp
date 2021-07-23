@@ -171,13 +171,21 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
           OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.eventsList(),Event)
           {
-            if (!(Event->isInfoEqual("when","before") &&
-                  Event->isInfoEqual("where",1.0) &&
-                  Event->isInfoEqual("numeric",1.13) &&
-                  Event->getInfoAsString("string",Info) &&
-                  Info.substr(0,4) == "EADG"))
+            if (!Event->isInfoEqual("when","before"))
             {
-              OPENFLUID_RaiseError("wrong event info on TestUnit 1");
+              OPENFLUID_RaiseError("wrong event 'when' info on TestUnit 1");
+            }
+            else if (!Event->isInfoEqual("where",long(1)))
+            {
+              OPENFLUID_RaiseError("wrong event 'where' info on TestUnit 1");
+            }
+            else if (!Event->isInfoEqual("numeric",1.13))
+            {
+              OPENFLUID_RaiseError("wrong event 'numeric' info on TestUnit 1");
+            }
+            else if (!(Event->getInfoAsString("string",Info) && Info.substr(0,4) == "EADG"))
+            {
+              OPENFLUID_RaiseError("wrong event 'string' info on TestUnit 1");
             }
           }
 

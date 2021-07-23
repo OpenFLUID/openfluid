@@ -123,7 +123,7 @@ class SourceTreeChecker:
         for Dirname, Dirnames, Filenames in os.walk(self.SrcRootPath):
             for Filename in Filenames:
                 RelFilename = os.path.relpath(os.path.join(Dirname, Filename),self.SrcRootPath)
-                if not RelFilename.startswith('.') and not RelFilename.startswith('_'):
+                if not RelFilename.startswith('.') and not RelFilename.startswith('_') and not RelFilename.startswith('thirdparty'):
                     if self.isCppFile(RelFilename) or self.isCMakeFile(RelFilename):
                         self.FileList.append(RelFilename)
 

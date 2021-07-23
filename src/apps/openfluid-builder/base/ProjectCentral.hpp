@@ -45,7 +45,6 @@
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
-#include <openfluid/base/IOListener.hpp>
 
 #include "ProjectCheckInfos.hpp"
 
@@ -58,11 +57,11 @@ class ProjectCentral : QObject
 
     static ProjectCentral* mp_Instance;
 
-    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
+    openfluid::fluidx::FluidXDescriptor m_FXDesc;
 
-    ProjectCheckInfos m_CheckInfos;
+    bool m_IsValid;
 
-    openfluid::base::IOListener m_IOListener;
+    ProjectCheckInfos m_CheckInfos;    
 
     /**
       List of simulators IDs involved in the model
@@ -163,12 +162,12 @@ class ProjectCentral : QObject
 
     openfluid::fluidx::FluidXDescriptor& descriptors()
     {
-      return *mp_FXDesc;
+      return m_FXDesc;
     }
 
     const openfluid::fluidx::FluidXDescriptor& descriptors() const
     {
-      return *mp_FXDesc;
+      return m_FXDesc;
     }
 
     const QStringList& simulatorsIDsList() const

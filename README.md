@@ -29,7 +29,7 @@ OpenFLUID is written in C++14. It relies on open-source libraries required to bu
 For the OpenFLUID framework libraries:
   - C++ STL
   - Boost (headers only, testing libs are required in debug mode)
-  - Qt5 : Core, GUI (optional), Network, XML
+  - Qt5 : Core, GUI (optional), Network
   - RapidJSON (automatically downloaded if locally missing)
   - GDAL/OGR
   - GEOS (optional)

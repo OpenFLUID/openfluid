@@ -39,6 +39,7 @@
 
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
@@ -85,8 +86,6 @@ int main(int argc, char **argv)
 
     openfluid::machine::ModelInstance Model(SBlob,MachineListen.get());
     openfluid::machine::MonitoringInstance Monitoring(SBlob);
-    openfluid::fluidx::FluidXDescriptor FXDesc(IOListen.get());
-
 
     openfluid::base::Environment::addExtraSimulatorsDirs(PlugsDir);
     openfluid::base::Environment::addExtraObserversDirs(PlugsDir);
@@ -94,7 +93,7 @@ int main(int argc, char **argv)
     openfluid::base::RunContextManager::instance()->setOutputDir(OutputDir);
 
 
-    FXDesc.loadFromDirectory(InputDir);
+    auto FXDesc = openfluid::fluidx::FluidXIO(IOListen.get()).loadFromDirectory(InputDir);
 
 
     openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,SBlob);

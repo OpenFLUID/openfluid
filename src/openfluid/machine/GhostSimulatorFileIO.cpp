@@ -38,14 +38,13 @@
 
 
 #include <fstream>
+#include <algorithm>
 
-#include <QDomDocument>
-#include <QFile>
-#include <QFileInfo>
-#include <QStringList>
+#include <boost/algorithm/string.hpp>
 
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/tools/TinyXML2Helpers.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
@@ -69,12 +68,19 @@ class DataNodeFields
 
     std::string Type;
 
-    DataNodeFields(const QDomElement& Node, const QStringList& ExpectedIOModes = QStringList()):
-      Name(Node.attribute("name").toStdString()),UnitsClass(Node.attribute("unitsclass").toStdString()),
-      IOMode(Node.attribute("iomode").toStdString()),SIUnit(Node.attribute("siunit").toStdString()),
-      Description(Node.text().toStdString()),Type(Node.attribute("type").toStdString())
-    {
-      if (!ExpectedIOModes.contains(QString::fromStdString(IOMode)))
+    DataNodeFields(const tinyxml2::XMLElement* const Elt, const std::vector<std::string>& ExpectedIOModes = {})
+    {     
+      if (Elt != nullptr)
+      {      
+        Name = openfluid::tools::attributeToString(Elt,"name");
+        UnitsClass = openfluid::tools::attributeToString(Elt,"unitsclass");
+        IOMode = openfluid::tools::attributeToString(Elt,"iomode");
+        SIUnit = openfluid::tools::attributeToString(Elt,"siunit");
+        Type = openfluid::tools::attributeToString(Elt,"type");
+        Description = openfluid::tools::textToString(Elt);
+      }
+
+      if (std::find(ExpectedIOModes.begin(),ExpectedIOModes.end(),IOMode) == ExpectedIOModes.end())
       {
         IOMode.clear();
       }
@@ -86,9 +92,14 @@ class DataNodeFields
 // =====================================================================
 
 
-std::string escapeXMLEntities(const std::string& Str)
+void insertParameter(const openfluid::ware::SignatureDataItem& Data,
+                     const std::string& IoModeStr, tinyxml2::XMLElement* BaseElt)
 {
-  return openfluid::tools::escapeXMLEntities(QString::fromStdString(Str)).toStdString();
+  auto ParamElt = BaseElt->InsertNewChildElement("parameter");
+  ParamElt->SetAttribute("name",Data.DataName.c_str());
+  ParamElt->SetAttribute("iomode",IoModeStr.c_str());
+  ParamElt->SetAttribute("siunit",Data.DataUnit.c_str());
+  ParamElt->SetText(Data.Description.c_str());
 }
 
 
@@ -96,16 +107,12 @@ std::string escapeXMLEntities(const std::string& Str)
 // =====================================================================
 
 
-std::string getXMLParameterString(const openfluid::ware::SignatureDataItem& Data,
-                                  const std::string& IoModeStr)
+void insertExtraFile(const std::string& Name,
+                     const std::string& IoModeStr, tinyxml2::XMLElement* BaseElt)
 {
-  std::string XMLStr;
-
-  XMLStr = "<parameter name=\"" + Data.DataName + "\" iomode=\""+IoModeStr+"\" siunit=\""
-                                + escapeXMLEntities(Data.DataUnit) + "\">"
-                                + escapeXMLEntities(Data.Description) + "</parameter>\n";
-
-  return XMLStr;
+  auto ParamElt = BaseElt->InsertNewChildElement("extrafile");
+  ParamElt->SetAttribute("name",Name.c_str());
+  ParamElt->SetAttribute("iomode",IoModeStr.c_str());
 }
 
 
@@ -113,20 +120,19 @@ std::string getXMLParameterString(const openfluid::ware::SignatureDataItem& Data
 // =====================================================================
 
 
-std::string getXMLVariableString(const openfluid::ware::SignatureTypedSpatialDataItem& Data,
-                                 const std::string& IoModeStr)
+void insertVariable(const openfluid::ware::SignatureTypedSpatialDataItem& Data,
+                    const std::string& IoModeStr, tinyxml2::XMLElement* BaseElt)
 {
-  std::string XMLStr;
-
-  XMLStr = "<variable name=\"" + Data.DataName + "\" iomode=\""+IoModeStr+"\" " + "unitsclass=\"" + Data.UnitsClass;
+  auto VarElt = BaseElt->InsertNewChildElement("variable");
+  VarElt->SetAttribute("name",Data.DataName.c_str());
+  VarElt->SetAttribute("iomode",IoModeStr.c_str());
+  VarElt->SetAttribute("unitsclass",Data.UnitsClass.c_str());
   if (Data.DataType != openfluid::core::Value::NONE)
   {
-    XMLStr += "\" type=\"" + openfluid::core::Value::getStringFromValueType(Data.DataType);
+    VarElt->SetAttribute("type",openfluid::core::Value::getStringFromValueType(Data.DataType).c_str());
   }
-  XMLStr += "\" siunit=\"" + escapeXMLEntities(Data.DataUnit) + "\">"
-                           + escapeXMLEntities(Data.Description) + "</variable>\n";
-
-  return XMLStr;
+  VarElt->SetAttribute("siunit",Data.DataUnit.c_str());
+  VarElt->SetText(Data.Description.c_str());
 }
 
 
@@ -134,16 +140,26 @@ std::string getXMLVariableString(const openfluid::ware::SignatureTypedSpatialDat
 // =====================================================================
 
 
-std::string getXMLAttributeString(const openfluid::ware::SignatureSpatialDataItem& Data,
-                                  const std::string& IoModeStr)
+void insertAttribute(const openfluid::ware::SignatureSpatialDataItem& Data,
+                     const std::string& IoModeStr, tinyxml2::XMLElement* BaseElt)
 {
-  std::string XMLStr;
+  auto AttrElt = BaseElt->InsertNewChildElement("attribute");
+  AttrElt->SetAttribute("name",Data.DataName.c_str());
+  AttrElt->SetAttribute("iomode",IoModeStr.c_str());
+  AttrElt->SetAttribute("unitsclass",Data.UnitsClass.c_str());
+  AttrElt->SetAttribute("siunit",Data.DataUnit.c_str());
+  AttrElt->SetText(Data.Description.c_str());
+}
 
-  XMLStr = "<attribute name=\"" + Data.DataName + "\" iomode=\""+IoModeStr+"\" " + "unitsclass=\"" + Data.UnitsClass
-                                + "\" siunit=\"" + escapeXMLEntities(Data.DataUnit) + "\">"
-                                + escapeXMLEntities(Data.Description) + "</attribute>\n";
 
-  return XMLStr;
+// =====================================================================
+// =====================================================================
+
+
+void insertEvents(const std::string& EventsClass, tinyxml2::XMLElement* BaseElt)
+{
+  auto EvElt = BaseElt->InsertNewChildElement("events");
+  EvElt->SetAttribute("unitsclass",EventsClass.c_str());
 }
 
 
@@ -153,174 +169,161 @@ std::string getXMLAttributeString(const openfluid::ware::SignatureSpatialDataIte
 
 bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature& Signature, const std::string& DirPath)
 {
-  const std::string Indent = "  ";
-
-  std::ofstream OutFile;
-
-  std::string OutFilename = openfluid::tools::Filesystem::joinPath({DirPath,Signature.ID+
+  std::string FilePath = openfluid::tools::Filesystem::joinPath({DirPath,Signature.ID+
                                                                             openfluid::config::SIMULATORS_GHOSTS_SUFFIX+
                                                                             openfluid::config::GHOSTS_EXT});
 
-  OutFile.open(OutFilename.c_str(), std::ios::out);
+  tinyxml2::XMLDocument Doc;
+  Doc.InsertFirstChild(Doc.NewDeclaration());
+  auto OFElt = Doc.NewElement("openfluid");
+  Doc.InsertEndChild(OFElt);
 
-  OutFile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-  OutFile << "<openfluid>\n";
-
-  OutFile << Indent << "<ghost-simulator ID=\"" << Signature.ID << "\">\n";
-
-
+  // ghost-simulator
+  auto GhostElt = OFElt->InsertNewChildElement("ghost-simulator");
+  GhostElt->SetAttribute("ID",Signature.ID.c_str());
+  
+  
   // infos
-
-  OutFile << Indent << Indent << "<infos>\n";
-  OutFile << Indent << Indent << Indent << "<name>" << escapeXMLEntities(Signature.Name) << "</name>\n";
-  OutFile << Indent << Indent << Indent << "<description>" << escapeXMLEntities(Signature.Description)
-                                        << "</description>\n";
+  auto InfElt = GhostElt->InsertNewChildElement("infos");
+  InfElt->InsertNewChildElement("name")->SetText(Signature.Name.c_str());
+  InfElt->InsertNewChildElement("description")->SetText(Signature.Description.c_str());
+  
   for (auto& Author: Signature.Authors)
   {
-    OutFile << Indent << Indent << Indent << "<author name=\"" << escapeXMLEntities(Author.first)
-                                          << "\" email=\"" << Author.second << "\" />\n";
+    auto AuthElt = InfElt->InsertNewChildElement("author");
+    AuthElt->SetAttribute("name",Author.first.c_str());
+    AuthElt->SetAttribute("email",Author.second.c_str());
   }
-  OutFile << Indent << Indent << Indent << "<status>";
-  if (Signature.Status == openfluid::ware::EXPERIMENTAL)
+
+  std::string StatusStr = "experimental";
+  if (Signature.Status == openfluid::ware::BETA)
   {
-    OutFile << "experimental";
-  }
-  else if (Signature.Status == openfluid::ware::BETA)
-  {
-    OutFile << "beta";
+    StatusStr = "beta";
   }
   else if (Signature.Status == openfluid::ware::STABLE)
   {
-    OutFile << "stable";
+    StatusStr = "stable";
   }
-  OutFile << "</status>\n";
-
-  OutFile << Indent << Indent << Indent << "<domain>" << escapeXMLEntities(Signature.Domain) << "</domain>\n";
-  OutFile << Indent << Indent << Indent << "<process>" << escapeXMLEntities(Signature.Process) << "</process>\n";
-  OutFile << Indent << Indent << Indent << "<method>" << escapeXMLEntities(Signature.Method) << "</method>\n";
-  OutFile << Indent << Indent << Indent << "<version>" << escapeXMLEntities(Signature.Version) << "</version>\n";
-  OutFile << Indent << Indent << "</infos>\n";
+  InfElt->InsertNewChildElement("status")->SetText(StatusStr.c_str());
+  
+  InfElt->InsertNewChildElement("version")->SetText(Signature.Version.c_str());
+  InfElt->InsertNewChildElement("domain")->SetText(Signature.Domain.c_str());
+  InfElt->InsertNewChildElement("process")->SetText(Signature.Process.c_str());
+  InfElt->InsertNewChildElement("method")->SetText(Signature.Method.c_str());
 
 
   // data
+  auto DataElt = GhostElt->InsertNewChildElement("data");
 
-  OutFile << Indent << Indent << "<data>\n";
 
+  // parameters
   for (auto& Param: Signature.HandledData.RequiredParams)
   {
-    OutFile << Indent << Indent << Indent << getXMLParameterString(Param,"required");
+    insertParameter(Param,"required",DataElt);
   }
 
   for (auto& Param: Signature.HandledData.UsedParams)
   {
-    OutFile << Indent << Indent << Indent << getXMLParameterString(Param,"used");
+    insertParameter(Param,"used",DataElt);
   }
 
+
+  // extrafiles
   for (auto& ExtraFile: Signature.HandledData.RequiredExtraFiles)
   {
-    OutFile << Indent << Indent << Indent << "<extrafile name=\"" << ExtraFile << "\" iomode=\"required\" />\n";
+    insertExtraFile(ExtraFile,"required",DataElt);
   }
 
   for (auto& ExtraFile: Signature.HandledData.UsedExtraFiles)
   {
-    OutFile << Indent << Indent << Indent << "<extrafile name=\"" << ExtraFile << "\" iomode=\"used\" />\n";
+    insertExtraFile(ExtraFile,"used",DataElt);
   }
 
-  for (auto& EventClass: Signature.HandledData.UsedEventsOnUnits)
-  {
-    OutFile << Indent << Indent << Indent << "<events unitsclass=\"" << EventClass << "\" />\n";
-  }
 
+  // variables
   for (auto& Var: Signature.HandledData.RequiredVars)
   {
-    OutFile << Indent << Indent << Indent << getXMLVariableString(Var,"required");
+    insertVariable(Var,"required",DataElt);
   }
 
   for (auto& Var: Signature.HandledData.UsedVars)
   {
-    OutFile << Indent << Indent << Indent << getXMLVariableString(Var,"used");
+    insertVariable(Var,"used",DataElt);
   }
 
   for (auto& Var: Signature.HandledData.ProducedVars)
   {
-    OutFile << Indent << Indent << Indent << getXMLVariableString(Var,"produced");
+    insertVariable(Var,"produced",DataElt);
   }
 
   for (auto& Var: Signature.HandledData.UpdatedVars)
   {
-    OutFile << Indent << Indent << Indent << getXMLVariableString(Var,"updated");
+    insertVariable(Var,"updated",DataElt);
   }
 
+
+  // attributes
   for (auto& Var: Signature.HandledData.RequiredAttribute)
   {
-    OutFile << Indent << Indent << Indent << getXMLAttributeString(Var,"required");
+    insertAttribute(Var,"required",DataElt);
   }
 
   for (auto& Var: Signature.HandledData.UsedAttribute)
   {
-    OutFile << Indent << Indent << Indent << getXMLAttributeString(Var,"used");
+    insertAttribute(Var,"used",DataElt);
   }
 
   for (auto& Var: Signature.HandledData.ProducedAttribute)
   {
-    OutFile << Indent << Indent << Indent << getXMLAttributeString(Var,"produced");
+    insertAttribute(Var,"produced",DataElt);
   }
 
-  OutFile << Indent << Indent << "</data>\n";
+
+  // events
+  for (auto& EventsClass: Signature.HandledData.UsedEventsOnUnits)
+  {
+    insertEvents(EventsClass,DataElt);
+  }
 
 
   // spatial graph
+  auto GraphElt = GhostElt->InsertNewChildElement("spatialgraph");
 
-  OutFile << Indent << Indent << "<spatialgraph>\n";
-
-  OutFile << Indent << Indent << Indent << "<description>"
-                                        << escapeXMLEntities(Signature.HandledUnitsGraph.UpdatedUnitsGraph)
-                                        << "</description>\n";
+  GraphElt->InsertNewChildElement("description")->SetText(Signature.HandledUnitsGraph.UpdatedUnitsGraph.c_str());
 
   for (auto& UClass: Signature.HandledUnitsGraph.UpdatedUnitsClass)
   {
-    OutFile << Indent << Indent << Indent << "<unitsclass name=\"" << UClass.UnitsClass << "\">"
-                                            << escapeXMLEntities(UClass.Description) << "</unitsclass>\n";
+    auto GraphClassElt = GraphElt->InsertNewChildElement("unitsclass");
+    GraphClassElt->SetAttribute("name",UClass.UnitsClass.c_str());
+    GraphClassElt->SetText(UClass.Description.c_str());
   }
-
-  OutFile << Indent << Indent << "</spatialgraph>\n";
 
 
   // scheduling
-
-  std::string SchedStr;
+  auto SchedElt = GhostElt->InsertNewChildElement("scheduling");
 
   if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED)
   {
-    SchedStr = "mode=\"undefined\"";
+    SchedElt->SetAttribute("mode","undefined");
   }
   else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT)
   {
-    SchedStr = "mode=\"default\"";
+    SchedElt->SetAttribute("mode","default");
   }
   else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED)
   {
-    SchedStr = "mode=\"fixed\"";
-    QString ExtraAttr(" value=\"%1\"");
-    ExtraAttr = ExtraAttr.arg(Signature.TimeScheduling.Min);
-    SchedStr += ExtraAttr.toStdString();
+    SchedElt->SetAttribute("mode","fixed");
+    SchedElt->SetAttribute("value",Signature.TimeScheduling.Min);
   }
   else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE)
   {
-    SchedStr = "mode=\"range\"";
-    QString ExtraAttr(" min=\"%1\" max=\"%2\"");
-    ExtraAttr = ExtraAttr.arg(Signature.TimeScheduling.Min).arg(Signature.TimeScheduling.Max);
-    SchedStr += ExtraAttr.toStdString();
+    SchedElt->SetAttribute("mode","range");
+    SchedElt->SetAttribute("min",Signature.TimeScheduling.Min);
+    SchedElt->SetAttribute("max",Signature.TimeScheduling.Max);
   }
 
-  OutFile << Indent << Indent << "<scheduling "<< SchedStr << " />\n";
 
-
-  OutFile << Indent << "</ghost-simulator>\n";
-
-  OutFile << "</openfluid>\n";
-
-  OutFile.close();
+  Doc.SaveFile(FilePath.c_str());
 
   return true;
 }
@@ -330,340 +333,311 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
 // =====================================================================
 
 
-bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath,openfluid::ware::SimulatorSignature& Signature)
+bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::ware::SimulatorSignature& Signature)
 {
-  QDomDocument Doc;
-  QDomElement Root;
-  QString FilePathQStr = QString::fromStdString(FilePath);
-
   Signature.clear();
 
+  tinyxml2::XMLDocument Doc;
 
-  QFile File(FilePathQStr);
-
-  if (!File.open(QIODevice::ReadOnly))
+  if (Doc.LoadFile(FilePath.c_str()) == tinyxml2::XML_SUCCESS)
   {
-    return false;
-  }
+    const auto Root = Doc.RootElement();
 
-  bool Parsed = Doc.setContent(&File);
-  File.close();
-
-  if (Parsed)
-  {
-    Root = Doc.documentElement();
-
-    if (!Root.isNull())
+    if (Root != nullptr && std::string(Root->Name()) == "openfluid")
     {
-      if (Root.tagName() == "openfluid")
+      const auto GhostElt = Root->FirstChildElement("ghost-simulator");
+      if (GhostElt != nullptr && GhostElt->Attribute("ID") != nullptr)
       {
-        QDomElement GhostNode = Root.firstChildElement();
+        std::string GhostID = openfluid::tools::attributeToString(GhostElt,"ID");
 
-        if (GhostNode.tagName() == "ghost-simulator" &&
-            GhostNode.hasAttribute("ID"))
+        if (!boost::starts_with(openfluid::tools::Filesystem::filename(FilePath),GhostID))
         {
-          QString GhostID = GhostNode.attributeNode("ID").value();
+          return false;
+        }
+        
+        Signature.ID = GhostID;
 
-          if (!QFileInfo(FilePathQStr).fileName().startsWith(GhostID))
+        // infos
+        const auto InfosElt = GhostElt->FirstChildElement("infos");
+        if (InfosElt != nullptr)
+        {
+          for (auto Elt = InfosElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
-            return false;
-          }
+            std::string TagName(Elt->Name());
+            std::string TagText = openfluid::tools::textToString(Elt);
 
-          Signature.ID = GhostID.toStdString();
-
-          QDomElement CurrNode;
-
-          for(CurrNode = GhostNode.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
-          {
-            // general infos
-            if (CurrNode.tagName() == "infos")
+            if (TagName == "name")
             {
-              QDomElement InfoNode;
-
-              for (InfoNode = CurrNode.firstChildElement(); !InfoNode.isNull();
-                   InfoNode = InfoNode.nextSiblingElement())
-              {
-                if (InfoNode.tagName() == "name")
-                {
-                  Signature.Name = InfoNode.text().toStdString();
-                }
-                else if (InfoNode.tagName() == "description")
-                {
-                  Signature.Description = InfoNode.text().toStdString();
-                }
-                else if (InfoNode.tagName() == "author")
-                {
-                  Signature.Authors.push_back(
-                        std::pair<std::string,std::string>(InfoNode.attribute("name").toStdString(),
-                                                           InfoNode.attribute("email").toStdString())
-                    );
-                }
-                else if (InfoNode.tagName() == "status")
-                {
-                  std::string StatusStr = InfoNode.text().toLower().toStdString();
-
-                  if (StatusStr == "experimental")
-                  {
-                    Signature.Status = openfluid::ware::EXPERIMENTAL;
-                  }
-                  else if (StatusStr == "beta")
-                  {
-                    Signature.Status = openfluid::ware::BETA;
-                  }
-                  else if (StatusStr == "stable")
-                  {
-                    Signature.Status = openfluid::ware::STABLE;
-                  }
-                  else
-                  {
-                    return false;
-                  }
-                }
-                else if (InfoNode.tagName() == "domain")
-                {
-                  Signature.Domain = InfoNode.text().toStdString();
-                }
-                else if (InfoNode.tagName() == "process")
-                {
-                  Signature.Process = InfoNode.text().toStdString();
-                }
-                else if (InfoNode.tagName() == "method")
-                {
-                  Signature.Method = InfoNode.text().toStdString();
-                }
-                else if (InfoNode.tagName() == "version")
-                {
-                  Signature.Version = InfoNode.text().toStdString();
-                }
-              }
+              Signature.Name = TagText;
             }
-
-            // io data
-            else if (CurrNode.tagName() == "data")
+            else if (TagName == "description")
             {
-              QDomElement DataNode;
-
-              for (DataNode = CurrNode.firstChildElement(); !DataNode.isNull();
-                  DataNode = DataNode.nextSiblingElement())
-              {
-
-                if (DataNode.tagName() == "parameter")
-                {
-                  DataNodeFields Data(DataNode,QStringList() << "required" << "used");
-
-                  if (Data.IOMode.empty() || Data.Name.empty())
-                  {
-                    return false;
-                  }
-
-                  openfluid::ware::SignatureDataItem Param;
-                  Param.DataName = Data.Name;
-                  Param.DataUnit = Data.SIUnit;
-                  Param.Description = Data.Description;
-
-                  if (Data.IOMode == "required")
-                  {
-                    Signature.HandledData.RequiredParams.push_back(Param);
-                  }
-                  else if (Data.IOMode == "used")
-                  {
-                    Signature.HandledData.UsedParams.push_back(Param);
-                  }
-                }
-                else if (DataNode.tagName() == "extrafile")
-                {
-                  DataNodeFields Data(DataNode,QStringList() << "required" << "used");
-
-                  if (Data.IOMode.empty() || Data.Name.empty())
-                  {
-                    return false;
-                  }
-
-                  if (Data.IOMode == "required")
-                  {
-                    Signature.HandledData.RequiredExtraFiles.push_back(Data.Name);
-                  }
-                  else if (Data.IOMode == "used")
-                  {
-                    Signature.HandledData.UsedExtraFiles.push_back(Data.Name);
-                  }
-                }
-                else if (DataNode.tagName() == "events")
-                {
-                  DataNodeFields Data(DataNode);
-
-                  if (Data.UnitsClass.empty())
-                  {
-                    return false;
-                  }
-
-                  Signature.HandledData.UsedEventsOnUnits.push_back(Data.UnitsClass);
-                }
-                else if (DataNode.tagName() == "variable")
-                {
-                  DataNodeFields Data(DataNode,QStringList() << "required" << "used" << "produced" << "updated");
-
-                  if (Data.IOMode.empty() || Data.Name.empty() || Data.UnitsClass.empty())
-                  {
-                    return false;
-                  }
-
-                  openfluid::ware::SignatureTypedSpatialDataItem Variable;
-                  Variable.DataName = Data.Name;
-                  Variable.UnitsClass = Data.UnitsClass;
-                  Variable.Description = Data.Description;
-                  Variable.DataUnit = Data.SIUnit;
-                  if (!Data.Type.empty())
-                  {
-                    if (!openfluid::core::Value::getValueTypeFromString(Data.Type,Variable.DataType))
-                    {
-                      return false;
-                    }
-                  }
-
-
-                  if (Data.IOMode == "required")
-                  {
-                    Signature.HandledData.RequiredVars.push_back(Variable);
-                  }
-                  else if (Data.IOMode == "used")
-                  {
-                    Signature.HandledData.UsedVars.push_back(Variable);
-                  }
-                  else if (Data.IOMode == "produced")
-                  {
-                    Signature.HandledData.ProducedVars.push_back(Variable);
-                  }
-                  else if (Data.IOMode == "updated")
-                  {
-                    Signature.HandledData.UpdatedVars.push_back(Variable);
-                  }
-                }
-                else if (DataNode.tagName() == "attribute")
-                {
-                  DataNodeFields Data(DataNode,QStringList() << "required" << "used" << "produced");
-
-                  if (Data.IOMode.empty() || Data.Name.empty() || Data.UnitsClass.empty())
-                  {
-                    return false;
-                  }
-
-                  openfluid::ware::SignatureSpatialDataItem Attribute;
-                  Attribute.DataName = Data.Name;
-                  Attribute.UnitsClass = Data.UnitsClass;
-                  Attribute.Description = Data.Description;
-                  Attribute.DataUnit = Data.SIUnit;
-
-                  if (Data.IOMode == "required")
-                  {
-                    Signature.HandledData.RequiredAttribute.push_back(Attribute);
-                  }
-                  else if (Data.IOMode == "used")
-                  {
-                    Signature.HandledData.UsedAttribute.push_back(Attribute);
-                  }
-                  else if (Data.IOMode == "produced")
-                  {
-                    Signature.HandledData.ProducedAttribute.push_back(Attribute);
-                  }
-                }
-              }
-
+              Signature.Description = TagText;
             }
-
-            // spatial graph
-            else if (CurrNode.tagName() == "spatialgraph")
+            else if (TagName == "author")
             {
-              QDomElement SpatialNode;
-
-              for (SpatialNode = CurrNode.firstChildElement(); !SpatialNode.isNull();
-                   SpatialNode = SpatialNode.nextSiblingElement())
-              {
-                if (SpatialNode.tagName() == "description")
-                {
-                  Signature.HandledUnitsGraph.UpdatedUnitsGraph = SpatialNode.text().toStdString();
-                }
-                else if (SpatialNode.tagName() == "unitsclass")
-                {
-                  std::string NameStr = SpatialNode.attribute("name").toStdString();
-                  if (NameStr.empty())
-                  {
-                    return false;
-                  }
-
-                  openfluid::ware::SignatureUnitsClassItem UnitsClassItem;
-                  UnitsClassItem.UnitsClass = NameStr;
-                  UnitsClassItem.Description = SpatialNode.text().toStdString();
-                  Signature.HandledUnitsGraph.UpdatedUnitsClass.push_back(UnitsClassItem);
-                }
-              }
+              Signature.Authors.push_back(
+                std::pair<std::string,std::string>(openfluid::tools::attributeToString(Elt,"name"),
+                                                   openfluid::tools::attributeToString(Elt,"email"))
+              );
             }
-
-            // scheduling
-            else if (CurrNode.tagName() == "scheduling")
+            else if (TagName == "status")
             {
-              QDomElement ScheduleNode;
+              std::string StatusStr = openfluid::tools::toLowerCase(TagText);
 
-              QString ModeStr = CurrNode.attribute("mode");
-
-              if (ModeStr == "undefined")
+              if (StatusStr == "experimental")
               {
-                Signature.TimeScheduling.setAsUndefined();
+                Signature.Status = openfluid::ware::EXPERIMENTAL;
               }
-              else if (ModeStr == "default")
+              else if (StatusStr == "beta")
               {
-                Signature.TimeScheduling.setAsDefaultDeltaT();
+                Signature.Status = openfluid::ware::BETA;
               }
-              else if (ModeStr == "fixed")
+              else if (StatusStr == "stable")
               {
-                QString ValStr = CurrNode.attribute("value");
-                bool Converted = false;
-
-                long Val = ValStr.toLong(&Converted);
-                if (!Converted)
-                {
-                  return false;
-                }
-
-                Signature.TimeScheduling.setAsFixed(Val);
-              }
-              else if (ModeStr == "range")
-              {
-                QString MinStr = CurrNode.attribute("min");
-                QString MaxStr = CurrNode.attribute("max");
-
-                bool Converted = false;
-
-                long Min = MinStr.toLong(&Converted);
-                if (!Converted)
-                {
-                  return false;
-                }
-
-                long Max = MaxStr.toLong(&Converted);
-                if (!Converted)
-                {
-                  return false;
-                }
-
-                Signature.TimeScheduling.setAsRange(Min,Max);
+                Signature.Status = openfluid::ware::STABLE;
               }
               else
               {
                 return false;
               }
             }
+            else if (TagName == "domain")
+            {
+              Signature.Domain = TagText;
+            }
+            else if (TagName == "process")
+            {
+              Signature.Process = TagText;
+            }
+            else if (TagName == "method")
+            {
+              Signature.Method = TagText;
+            }
+            else if (TagName == "version")
+            {
+              Signature.Version = TagText;
+            }
           }
         }
-        else
+
+        // data
+        const auto DataElt = GhostElt->FirstChildElement("data");
+        if (DataElt != nullptr)
         {
-          return false;
+          for (auto Elt = DataElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
+          {
+            std::string TagName(Elt->Name());
+
+            if (TagName == "parameter")
+            {
+              DataNodeFields Data(Elt,{"required","used"});
+
+              if (Data.IOMode.empty() || Data.Name.empty())
+              {
+                return false;
+              }
+
+              openfluid::ware::SignatureDataItem Param;
+              Param.DataName = Data.Name;
+              Param.DataUnit = Data.SIUnit;
+              Param.Description = Data.Description;
+
+              if (Data.IOMode == "required")
+              {
+                Signature.HandledData.RequiredParams.push_back(Param);
+              }
+              else if (Data.IOMode == "used")
+              {
+                Signature.HandledData.UsedParams.push_back(Param);
+              }
+            }
+            else if (TagName == "extrafile")
+            {
+              DataNodeFields Data(Elt,{"required","used"});
+
+              if (Data.IOMode.empty() || Data.Name.empty())
+              {
+                return false;
+              }
+
+              if (Data.IOMode == "required")
+              {
+                Signature.HandledData.RequiredExtraFiles.push_back(Data.Name);
+              }
+              else if (Data.IOMode == "used")
+              {
+                Signature.HandledData.UsedExtraFiles.push_back(Data.Name);
+              }
+            }
+            else if (TagName == "events")
+            {
+              DataNodeFields Data(Elt);
+
+              if (Data.UnitsClass.empty())
+              {
+                return false;
+              }
+
+              Signature.HandledData.UsedEventsOnUnits.push_back(Data.UnitsClass);
+            }
+            else if (TagName == "variable")
+            {
+              DataNodeFields Data(Elt,{"required","used","produced","updated"});
+
+              if (Data.IOMode.empty() || Data.Name.empty() || Data.UnitsClass.empty())
+              {
+                return false;
+              }
+
+              openfluid::ware::SignatureTypedSpatialDataItem Variable;
+              Variable.DataName = Data.Name;
+              Variable.UnitsClass = Data.UnitsClass;
+              Variable.Description = Data.Description;
+              Variable.DataUnit = Data.SIUnit;
+              if (!Data.Type.empty())
+              {
+                if (!openfluid::core::Value::getValueTypeFromString(Data.Type,Variable.DataType))
+                {
+                  return false;
+                }
+              }
+
+              if (Data.IOMode == "required")
+              {
+                Signature.HandledData.RequiredVars.push_back(Variable);
+              }
+              else if (Data.IOMode == "used")
+              {
+                Signature.HandledData.UsedVars.push_back(Variable);
+              }
+              else if (Data.IOMode == "produced")
+              {
+                Signature.HandledData.ProducedVars.push_back(Variable);
+              }
+              else if (Data.IOMode == "updated")
+              {
+                Signature.HandledData.UpdatedVars.push_back(Variable);
+              }
+            }
+            else if (TagName == "attribute")
+            {
+              DataNodeFields Data(Elt,{"required","used","produced"});
+
+              if (Data.IOMode.empty() || Data.Name.empty() || Data.UnitsClass.empty())
+              {
+                return false;
+              }
+
+              openfluid::ware::SignatureSpatialDataItem Attribute;
+              Attribute.DataName = Data.Name;
+              Attribute.UnitsClass = Data.UnitsClass;
+              Attribute.Description = Data.Description;
+              Attribute.DataUnit = Data.SIUnit;
+
+              if (Data.IOMode == "required")
+              {
+                Signature.HandledData.RequiredAttribute.push_back(Attribute);
+              }
+              else if (Data.IOMode == "used")
+              {
+                Signature.HandledData.UsedAttribute.push_back(Attribute);
+              }
+              else if (Data.IOMode == "produced")
+              {
+                Signature.HandledData.ProducedAttribute.push_back(Attribute);
+              }
+            }
+          }
+        }
+
+        // spatial graph
+        const auto SpatialElt = GhostElt->FirstChildElement("spatialgraph");
+        if (SpatialElt != nullptr)
+        {
+          for (auto Elt = SpatialElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
+          {
+            std::string TagName(Elt->Name());
+            std::string TagText = openfluid::tools::textToString(Elt);
+
+            if (TagName == "description")
+            {
+              Signature.HandledUnitsGraph.UpdatedUnitsGraph = TagText;
+            }
+            else if (TagName == "unitsclass")
+            {
+              std::string NameStr = openfluid::tools::attributeToString(Elt,"name");
+              if (NameStr.empty())
+              {
+                return false;
+              }
+
+              openfluid::ware::SignatureUnitsClassItem UnitsClassItem;
+              UnitsClassItem.UnitsClass = NameStr;
+              UnitsClassItem.Description = TagText;
+              Signature.HandledUnitsGraph.UpdatedUnitsClass.push_back(UnitsClassItem);
+            }
+          }
+        }
+
+        // scheduling
+        const auto SchedElt = GhostElt->FirstChildElement("scheduling");
+        if (SchedElt != nullptr)
+        {
+          std::string ModeStr = openfluid::tools::attributeToString(SchedElt,"mode");
+
+          if (ModeStr == "undefined")
+          {
+            Signature.TimeScheduling.setAsUndefined();
+          }
+          else if (ModeStr == "default")
+          {
+            Signature.TimeScheduling.setAsDefaultDeltaT();
+          }
+          else if (ModeStr == "fixed")
+          {
+            int Val = 0;
+
+            if (SchedElt->QueryIntAttribute("value",&Val) == tinyxml2::XML_SUCCESS)
+            {
+              Signature.TimeScheduling.setAsFixed(Val);
+            }
+            else
+            {
+              return false;
+            }
+
+            Signature.TimeScheduling.setAsFixed(Val);
+          }
+          else if (ModeStr == "range")
+          {
+            int Min = 0;
+            int Max = 0;
+
+            if (SchedElt->QueryIntAttribute("min",&Min) == tinyxml2::XML_SUCCESS &&
+                SchedElt->QueryIntAttribute("max",&Max) == tinyxml2::XML_SUCCESS)
+            {
+              Signature.TimeScheduling.setAsRange(Min,Max);
+            }
+            else
+            {
+              return false;
+            }
+          }
+          else
+          {
+            return false;
+          }
         }
       }
       else
       {
         return false;
       }
+    }
+    else
+    {
+      return false;
     }
   }
   else

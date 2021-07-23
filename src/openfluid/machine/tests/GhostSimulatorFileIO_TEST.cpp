@@ -59,7 +59,7 @@ void CheckOriginalSignature(const openfluid::ware::SimulatorSignature& Signature
 {
   BOOST_REQUIRE_EQUAL(Signature.ID,"simA");
   BOOST_REQUIRE_EQUAL(Signature.Name,"Simulator A");
-  BOOST_REQUIRE_EQUAL(Signature.Description,"This is simulator A");
+  BOOST_REQUIRE_EQUAL(Signature.Description,"This is \"simulator A\"");
 
   BOOST_REQUIRE_EQUAL(Signature.Authors.size(),2);
   BOOST_REQUIRE_EQUAL(Signature.Authors[0].first,"John Doe");
@@ -174,8 +174,8 @@ void CheckOriginalSignature(const openfluid::ware::SimulatorSignature& Signature
 void CheckModifiedSignature(const openfluid::ware::SimulatorSignature& Signature)
 {
   BOOST_REQUIRE_EQUAL(Signature.ID,"simB");
-  BOOST_REQUIRE_EQUAL(Signature.Name,"Simulator A");
-  BOOST_REQUIRE_EQUAL(Signature.Description,"This is simulator A");
+  BOOST_REQUIRE_EQUAL(Signature.Name,"Simulator B");
+  BOOST_REQUIRE_EQUAL(Signature.Description,"This is \"simulator B\"");
 
   BOOST_REQUIRE_EQUAL(Signature.Authors.size(),2);
   BOOST_REQUIRE_EQUAL(Signature.Authors[0].first,"John Doe");
@@ -287,6 +287,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   Signature.ID = "simB";
+  Signature.Name = "Simulator B";
+  Signature.Description = "This is \"simulator B\"";
   Signature.HandledData.RequiredParams.clear();
   Signature.HandledData.UsedEventsOnUnits.clear();
   Signature.HandledData.UsedExtraFiles.clear();

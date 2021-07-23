@@ -57,6 +57,7 @@
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
@@ -126,8 +127,6 @@ class Binding
 
     static const BindingAbstractOutErr* mp_OutErr;
 
-    openfluid::base::IOListener m_FluidXListener;
-
     openfluid::fluidx::FluidXDescriptor m_FluidXDesc;
 
     bool m_IsProject = false;
@@ -143,11 +142,8 @@ class Binding
     // =====================================================================
 
 
-    Binding() :
-      m_FluidXDesc(&m_FluidXListener)
-    {
-
-    }
+    Binding() 
+    { }
 
 
     // =====================================================================
@@ -155,9 +151,7 @@ class Binding
 
 
     ~Binding()
-    {
-
-    }
+    { }
 
 
     // =====================================================================
@@ -520,8 +514,11 @@ class Binding
       {
         init();
 
+        openfluid::base::IOListener FluidXListener;
+
         openfluid::base::RunContextManager::instance()->setInputDir(std::string(Path));
-        Data->m_FluidXDesc.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
+        Data->m_FluidXDesc = openfluid::fluidx::FluidXIO(&FluidXListener)
+                               .loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
 
         Data->m_IsSimulationRun = false;
         Data->m_IsDataset = true;
@@ -574,6 +571,8 @@ class Binding
       try
       {
         init();
+
+        openfluid::base::IOListener FluidXListener;
         
         if (!openfluid::base::RunContextManager::instance()->openProject(std::string(Path)))
         {
@@ -582,7 +581,8 @@ class Binding
               std::string(Path) + " is not a correct project path");
         }
 
-        Data->m_FluidXDesc.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
+        Data->m_FluidXDesc = openfluid::fluidx::FluidXIO(&FluidXListener)
+                               .loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
 
         Data->m_IsSimulationRun = false;
         Data->m_IsProject = true;
@@ -642,7 +642,9 @@ class Binding
           }
         }
 
-        m_FluidXDesc.writeToManyFiles(std::string(Path));
+        openfluid::base::IOListener FluidXListener;
+
+        openfluid::fluidx::FluidXIO(&FluidXListener).writeToManyFiles(m_FluidXDesc,std::string(Path));
 
         return 1;
       }
@@ -728,6 +730,7 @@ class Binding
         openfluid::machine::ModelInstance Model(SimBlob,Listener.get());
 
         openfluid::machine::Factory::buildModelInstanceFromDescriptor(m_FluidXDesc.model(),Model);
+
 
         if (IsVerbose)
         {

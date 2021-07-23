@@ -37,11 +37,9 @@
  */
 
 
-#include <QFile>
-#include <QDomDocument>
-#include <QDomElement>
 #include <QThread>
 
+#include <openfluid/tools/TinyXML2Helpers.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/Environment.hpp>
 
@@ -146,65 +144,61 @@ void NewslineWidget::setItems(const QList<NewsItemData>& Items)
 // =====================================================================
 
 
-QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
+QList<NewsItemData> NewslineWidget::loadRSSFile(const std::string& FilePath)
 {
   QList<NewsItemData> News;
 
-  QFile File(FilePath);
+  tinyxml2::XMLDocument Doc;
 
-  if (File.open(QIODevice::ReadOnly))
+  if (Doc.LoadFile(FilePath.c_str()) == tinyxml2::XML_SUCCESS)
   {
-    QDomDocument Doc;
-    QDomElement Root;
+    const auto Root = Doc.RootElement();
 
-    bool Parsed = Doc.setContent(&File);
-    File.close();
-
-    if (Parsed)
+    if (Root != nullptr && std::string(Root->Name()) == "rss")
     {
-      Root = Doc.documentElement();
+      const auto ChanElt = Root->FirstChildElement("channel");
 
-      if (!Root.isNull())
+      if (ChanElt != nullptr)
       {
-
-        if (Root.tagName() == QString("rss"))
+        for (auto ItemElt = ChanElt->FirstChildElement("item"); ItemElt != nullptr; 
+             ItemElt = ItemElt->NextSiblingElement("item"))
         {
-          QDomElement ChannelNode = Root.firstChildElement("channel");
-
-          if (!ChannelNode.isNull())
+          NewsItemData Item;
+          
+          for (auto Elt = ItemElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
-            for(QDomElement CurrNode = ChannelNode.firstChildElement();
-                !CurrNode.isNull();
-                CurrNode = CurrNode.nextSiblingElement())
-            {
-              QDomElement CurrElement = CurrNode.toElement();
-              if (!CurrElement.isNull() && CurrElement.tagName() == "item")
-              {
-                NewsItemData Item;
-                Item.Title = CurrNode.firstChildElement("title").toElement().text();
-                Item.Text = CurrNode.firstChildElement("description").toElement().text();
-                Item.ISODate = CurrNode.firstChildElement("pubDate").toElement().text();
+            std::string TagName(Elt->Name());
+            QString TagText = QString::fromStdString(openfluid::tools::textToString(Elt));
 
-                for(QDomElement CurrTagNode = CurrNode.firstChildElement("category");
-                    !CurrTagNode.isNull();
-                    CurrTagNode = CurrTagNode.nextSiblingElement())
-                {
-                  Item.Tags.push_back(CurrTagNode.toElement().text());
-                }
-
-                if (Item.Tags.isEmpty())
-                {
-                  Item.Tags.push_back(tr("misc"));
-                }
-
-                News.push_back(Item);
-              }
+            if (TagName == "title")
+            {  
+              Item.Title = TagText;
+            }
+            else if (TagName == "description")
+            {  
+              Item.Text = TagText;
+            }
+            else if (TagName == "pubDate")
+            {  
+              Item.ISODate = TagText;
+            }
+            else if (TagName == "category")
+            {  
+              Item.Tags.push_back(TagText);
             }
           }
+
+          if (Item.Tags.isEmpty())
+          {
+            Item.Tags.push_back(tr("misc"));
+          }
+
+          News.push_back(Item);
         }
       }
     }
   }
+
   return News;
 }
 
@@ -215,13 +209,12 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const QString& FilePath)
 
 void NewslineWidget::refreshFromCache()
 {
-  QString RSSDefaultFile =
-      QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/en.rss"))
-      .arg(BUILDER_NEWSLINE_CACHERELDIR);
+  std::string RSSDefaultFile = 
+    openfluid::base::Environment::getUserDataFullPath(BUILDER_NEWSLINE_CACHERELDIR+"/en.rss");
 
-  QString RSSFile =
-      QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/%2.rss"))
-      .arg(BUILDER_NEWSLINE_CACHERELDIR,NewsItemWidget::getLocale().name().left(2));
+  std::string RSSFile =
+    openfluid::base::Environment::getUserDataFullPath(
+      BUILDER_NEWSLINE_CACHERELDIR+"/"+NewsItemWidget::getLocale().name().left(2).toStdString()+".rss");
 
   QList<NewsItemData> News = loadRSSFile(RSSFile);
 

@@ -31,26 +31,32 @@
 
 
 /**
-  @file RunConfigurationDescriptor.cpp
+  @file TinyXML2Helpers.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#include <openfluid/fluidx/RunConfigurationDescriptor.hpp>
-
-#include <openfluid/config.hpp>
-
-
-namespace openfluid { namespace fluidx {
+#ifndef __OPENFLUID_TOOLS_TINYXML2HELPERS_HPP__
+#define __OPENFLUID_TOOLS_TINYXML2HELPERS_HPP__
 
 
-RunConfigurationDescriptor::RunConfigurationDescriptor():
-  m_DeltaT(-1), m_SchedConstraint(openfluid::base::SimulationStatus::SCHED_NONE),
-  m_BeginDate(openfluid::core::DateTime()), m_EndDate(openfluid::core::DateTime()),
-  m_IsUserValuesBufferSize(false), m_ValuesBufferSize(0), m_Filled(false)
+#include <string>
+
+#include <tinyxml2.h>
+
+
+namespace openfluid { namespace tools {
+
+
+std::string attributeToString(const tinyxml2::XMLElement* const Elt, const std::string& AttrName,
+                              const std::string& DefaultValue = "")
 {
-
+  if (Elt->Attribute(AttrName.c_str()) != nullptr) 
+  {
+    return std::string(Elt->Attribute(AttrName.c_str()));
+  }
+  return DefaultValue;
 }
 
 
@@ -58,25 +64,17 @@ RunConfigurationDescriptor::RunConfigurationDescriptor():
 // =====================================================================
 
 
-RunConfigurationDescriptor::RunConfigurationDescriptor(int DeltaT,
-                                                       openfluid::core::DateTime BeginDate,
-                                                       openfluid::core::DateTime EndDate):
-  m_DeltaT(DeltaT), m_SchedConstraint(openfluid::base::SimulationStatus::SCHED_NONE),
-  m_BeginDate(BeginDate), m_EndDate(EndDate),
-  m_IsUserValuesBufferSize(false), m_ValuesBufferSize(0), m_Filled(false)
+std::string textToString(const tinyxml2::XMLElement* const Elt, const std::string& DefaultValue = "")
 {
-
+  if (Elt->GetText() != nullptr) 
+  {
+    return std::string(Elt->GetText());
+  }
+  return DefaultValue;
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-RunConfigurationDescriptor::~RunConfigurationDescriptor()
-{
-
-}
 
 } } // namespaces
 
+
+#endif /* __OPENFLUID_TOOLS_TINYXML2HELPERS_HPP__ */

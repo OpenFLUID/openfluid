@@ -48,8 +48,10 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/Exception.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
@@ -348,27 +350,27 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path,
   if (IType == NewProjectDialog::ImportType::IMPORT_NONE)
   {
     openfluid::base::IOListener Listener;
-    openfluid::fluidx::FluidXDescriptor FXD(&Listener);
+    openfluid::fluidx::FluidXDescriptor FXDesc;
     openfluid::core::DateTime DT;
     DT.setFromISOString(PrefsMan->getBuilderBeginDate());
-    FXD.runConfiguration().setBeginDate(DT);
+    FXDesc.runConfiguration().setBeginDate(DT);
     DT.setFromISOString(PrefsMan->getBuilderEndDate());
-    FXD.runConfiguration().setEndDate(DT);
-    FXD.runConfiguration().setDeltaT(PrefsMan->getBuilderDeltaT());
-    FXD.runConfiguration().setFilled(true);
+    FXDesc.runConfiguration().setEndDate(DT);
+    FXDesc.runConfiguration().setDeltaT(PrefsMan->getBuilderDeltaT());
+    FXDesc.runConfiguration().setFilled(true);
 
-    FXD.writeToManyFiles(PrjMan->getInputDir());
+    openfluid::fluidx::FluidXIO(&Listener).writeToManyFiles(FXDesc,PrjMan->getInputDir());
 
     return true;
   }
   else if (IType == NewProjectDialog::ImportType::IMPORT_PROJECT)
   {
-    openfluid::tools::Filesystem::copyDirectory(ISource.toStdString()+"/IN",PrjMan->getInputDir(),true,true);
+    openfluid::tools::Filesystem::copyDirectory(ISource.toStdString()+"/IN",PrjMan->getInputDir(),false,true);
     return true;
   }
   else
   {
-    openfluid::tools::Filesystem::copyDirectory(ISource.toStdString(),PrjMan->getInputDir(),true,true);
+    openfluid::tools::Filesystem::copyDirectory(ISource.toStdString(),PrjMan->getInputDir(),false,true);
     return true;
   }
 }
