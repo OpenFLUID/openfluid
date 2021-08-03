@@ -126,8 +126,8 @@ openfluid::base::SchedulingRequest runStep()
   openfluid::core::Event* Ev;
   openfluid::core::DateTime BTime, ETime;
 
-  BTime = OPENFLUID_GetCurrentDate();
-  ETime = OPENFLUID_GetCurrentDate() - 86400;
+  BTime = OPENFLUID_GetCurrentDate() - 86400;
+  ETime = OPENFLUID_GetCurrentDate();
 
   OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
   {
