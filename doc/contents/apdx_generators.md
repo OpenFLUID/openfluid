@@ -33,6 +33,10 @@ structured following these rules:
 </openfluid>
 ```
 
+@note As a sources file is not part of the standard input dataset, it must not have a `.fluidx` extension.
+Using the `.fluidx` extension may lead to an unexpected behaviour (such as deletion of the sources file).  
+The recommended extension for this file is `.xml` (e.g. _sources.xml_)
+
 
 An associated source data file is a two columns text file, containing a serie
 of values in time. The first column is the date using the ISO format
