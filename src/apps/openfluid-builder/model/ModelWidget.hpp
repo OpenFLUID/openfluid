@@ -105,6 +105,8 @@ class ModelWidget : public WorkspaceWidget
     
     void changeColouringMode(int Index);
 
+    void refreshScene();
+
 
   signals:
 

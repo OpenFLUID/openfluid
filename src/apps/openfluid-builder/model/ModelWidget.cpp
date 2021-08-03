@@ -148,7 +148,8 @@ void ModelWidget::changeColouringMode(int /*index*/)
   openfluid::base::RunContextManager::instance()
     ->setProjectContextValue("/builder/model/graphicalview","color_mode",
                              ui->ColoringComboBox->currentData().toString().toStdString());
-  mp_ModelScene->refresh();
+  
+  refreshScene();
 }
 
 
@@ -344,7 +345,8 @@ void ModelWidget::addSimulator()
 
     mp_WaresManWidget->updateIndexesAndButtons();
 
-    mp_ModelScene->refresh();
+    refreshScene();
+
     emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
   }
 }
@@ -389,9 +391,9 @@ void ModelWidget::addGenerator()
 
     mp_WaresManWidget->updateIndexesAndButtons();
 
-    mp_ModelScene->refresh();
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
+    refreshScene();
 
+    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
   }
 }
 
@@ -417,7 +419,7 @@ void ModelWidget::moveModelItemUp(const QString& /*ID*/, int CurrentIndex)
 
   mp_WaresManWidget->updateIndexesAndButtons();
 
-  mp_ModelScene->refresh();
+  refreshScene();
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
 }
@@ -445,10 +447,9 @@ void ModelWidget::moveModelItemDown(const QString& /*ID*/, int CurrentIndex)
 
   mp_WaresManWidget->updateIndexesAndButtons();
 
-  mp_ModelScene->refresh();
+  refreshScene();
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
-
 }
 
 
@@ -471,9 +472,20 @@ void ModelWidget::removeModelItem(const QString& /*ID*/, int CurrentIndex)
 
   mp_WaresManWidget->updateIndexesAndButtons();
 
-  mp_ModelScene->refresh();
+  refreshScene();
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::refreshScene()
+{
+  mp_ModelScene->refresh();
+  mp_ModelScene->showVariables(ui->ShowVarsCheckBox->isChecked());
 }
 
 
@@ -487,7 +499,7 @@ void ModelWidget::refresh()
 
   updateGlobalParams();
 
-  mp_ModelScene->refresh();
+  refreshScene();
 }
 
 
@@ -525,7 +537,7 @@ void ModelWidget::updateCoupledModel()
       connect(SimWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
       connect(SimWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
       connect(SimWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
-      connect(SimWidget,SIGNAL(styleChanged()),mp_ModelScene,SLOT(refresh()));
+      connect(SimWidget,SIGNAL(styleChanged()),this,SLOT(refreshScene()));
     }
     else if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
     {
@@ -552,7 +564,7 @@ void ModelWidget::updateCoupledModel()
       connect(GenWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
       connect(GenWidget,SIGNAL(downClicked(const QString&,int)),this,SLOT(moveModelItemDown(const QString&,int)));
       connect(GenWidget,SIGNAL(removeClicked(const QString&,int)),this,SLOT(removeModelItem(const QString&,int)));
-      connect(GenWidget,SIGNAL(styleChanged()),mp_ModelScene,SLOT(refresh()));
+      connect(GenWidget,SIGNAL(styleChanged()),this,SLOT(refreshScene()));
     }
   }
   ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->addStretch();
@@ -567,7 +579,8 @@ void ModelWidget::updateCoupledModel()
 
 void ModelWidget::dispatchChangesFromChildren()
 {
-  mp_ModelScene->refresh();
+  refreshScene();
+
   emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF |
                openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
 }
@@ -629,5 +642,5 @@ void ModelWidget::updateWares()
     }
   }
 
-  mp_ModelScene->refresh();
+  refreshScene();
 }
