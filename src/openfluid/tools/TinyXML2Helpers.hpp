@@ -52,7 +52,7 @@ namespace openfluid { namespace tools {
 std::string attributeToString(const tinyxml2::XMLElement* const Elt, const std::string& AttrName,
                               const std::string& DefaultValue = "")
 {
-  if (Elt->Attribute(AttrName.c_str()) != nullptr) 
+  if (Elt != nullptr && Elt->Attribute(AttrName.c_str()) != nullptr) 
   {
     return std::string(Elt->Attribute(AttrName.c_str()));
   }
@@ -66,11 +66,37 @@ std::string attributeToString(const tinyxml2::XMLElement* const Elt, const std::
 
 std::string textToString(const tinyxml2::XMLElement* const Elt, const std::string& DefaultValue = "")
 {
-  if (Elt->GetText() != nullptr) 
+  if (Elt != nullptr && Elt->GetText() != nullptr) 
   {
     return std::string(Elt->GetText());
   }
   return DefaultValue;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string getOpenFLUIDXMLFormat(const tinyxml2::XMLElement* const Elt)
+{  
+  return attributeToString(Elt,"format");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+tinyxml2::XMLElement* prepareOpenFLUIDXMLDoc(tinyxml2::XMLDocument& Doc, const std::string& FormatVersion)
+{
+  auto Decl = Doc.NewDeclaration();
+  Doc.InsertFirstChild(Decl);
+  auto OFElt = Doc.NewElement("openfluid");
+  OFElt->SetAttribute("format",FormatVersion.c_str());
+  Doc.InsertEndChild(OFElt);
+  
+  return OFElt;
 }
 
 

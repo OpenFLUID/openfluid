@@ -55,6 +55,8 @@ class OPENFLUID_API GhostSimulatorFileIO
 {
   public:
 
+    static inline std::string const FormatVersion = "ghostsim 1";
+
     GhostSimulatorFileIO() = delete;
 
     /**

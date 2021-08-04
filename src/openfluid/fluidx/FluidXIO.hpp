@@ -41,6 +41,8 @@
 #define __OPENFLUID_FLUIDX_FLUIDXIO_HPP__
 
 
+#include <string>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
@@ -57,6 +59,8 @@ class OPENFLUID_API FluidXIO
 
 
   public:
+
+    static inline std::string const FormatVersion = "fluidx 4";
 
     FluidXIO(openfluid::base::IOListener* Listener);
 

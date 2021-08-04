@@ -686,7 +686,9 @@ class FluidXReaderImplementation
         const auto Root = Doc.RootElement();
 
         if (Root != nullptr && std::string(Root->Name()) == "openfluid")
-        {        
+        {
+          auto FileFormatVersion = openfluid::tools::getOpenFLUIDXMLFormat(Root);
+
           for (auto Elt = Root->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
             std::string TagName(Elt->Name());
@@ -696,32 +698,28 @@ class FluidXReaderImplementation
               if (m_RunConfigDefined)
               {
                 throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                "Duplicate run configuration (" + FilePath + ")");
+                                                          "Duplicate run configuration (" + FilePath + ")");
               }
               extractRun(Elt);
             }
-
-            if (TagName == "model")
+            else if (TagName == "model")
             {
               if (m_ModelDefined)
               {
                   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                            "Duplicate model definition (" + FilePath + ")");
+                                                            "Duplicate model definition (" + FilePath + ")");
               }
               extractModel(Elt);
             }
-
-            if (TagName == "monitoring")
+            else if (TagName == "monitoring")
             {
               extractMonitoring(Elt);
             }
-
-            if (TagName == "domain")
+            else if (TagName == "domain")
             {
               extractDomain(Elt,TempData);
             }
-
-            if (TagName == "datastore")
+            else if (TagName == "datastore")
             {
               extractDatastore(Elt);
             }
@@ -1203,21 +1201,6 @@ class FluidXWriterImplementation
     // =====================================================================
     // =====================================================================
 
-    
-    tinyxml2::XMLElement* prepareFluidXDoc(tinyxml2::XMLDocument& Doc) const
-    {
-      auto Decl = Doc.NewDeclaration();
-      Doc.InsertFirstChild(Decl);
-      auto OFElt = Doc.NewElement("openfluid");
-      Doc.InsertEndChild(OFElt);
-
-      return OFElt;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
 
     void prepareFluidXDir(const std::string& DirPath) const
     {
@@ -1273,7 +1256,7 @@ class FluidXWriterImplementation
         mp_Listener->onFileWrite(FilePath);
 
         tinyxml2::XMLDocument Doc;
-        auto OFElt = prepareFluidXDoc(Doc);
+        auto OFElt = openfluid::tools::prepareOpenFLUIDXMLDoc(Doc,FluidXIO::FormatVersion);
         
         // calls the associated method
         (this->*FileFunc.second)(OFElt);
@@ -1300,7 +1283,7 @@ class FluidXWriterImplementation
       mp_Listener->onFileWrite(FilePath);
 
       tinyxml2::XMLDocument Doc;
-      auto OFElt = prepareFluidXDoc(Doc);
+      auto OFElt = openfluid::tools::prepareOpenFLUIDXMLDoc(Doc,FluidXIO::FormatVersion);
 
       insertModel(OFElt);
       insertDomain(OFElt);

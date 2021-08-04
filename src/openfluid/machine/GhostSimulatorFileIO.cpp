@@ -174,9 +174,7 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
                                                                             openfluid::config::GHOSTS_EXT});
 
   tinyxml2::XMLDocument Doc;
-  Doc.InsertFirstChild(Doc.NewDeclaration());
-  auto OFElt = Doc.NewElement("openfluid");
-  Doc.InsertEndChild(OFElt);
+  auto OFElt = openfluid::tools::prepareOpenFLUIDXMLDoc(Doc,FormatVersion);
 
   // ghost-simulator
   auto GhostElt = OFElt->InsertNewChildElement("ghost-simulator");
