@@ -168,7 +168,7 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const std::string& FilePath)
           for (auto Elt = ItemElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
             std::string TagName(Elt->Name());
-            QString TagText = QString::fromStdString(openfluid::tools::textToString(Elt));
+            QString TagText = QString::fromStdString(openfluid::tools::getXMLText(Elt));
 
             if (TagName == "title")
             {  

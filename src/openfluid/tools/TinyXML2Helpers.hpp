@@ -49,7 +49,7 @@
 namespace openfluid { namespace tools {
 
 
-std::string attributeToString(const tinyxml2::XMLElement* const Elt, const std::string& AttrName,
+std::string getXMLAttribute(const tinyxml2::XMLElement* const Elt, const std::string& AttrName,
                               const std::string& DefaultValue = "")
 {
   if (Elt != nullptr && Elt->Attribute(AttrName.c_str()) != nullptr) 
@@ -64,7 +64,7 @@ std::string attributeToString(const tinyxml2::XMLElement* const Elt, const std::
 // =====================================================================
 
 
-std::string textToString(const tinyxml2::XMLElement* const Elt, const std::string& DefaultValue = "")
+std::string getXMLText(const tinyxml2::XMLElement* const Elt, const std::string& DefaultValue = "")
 {
   if (Elt != nullptr && Elt->GetText() != nullptr) 
   {
@@ -80,7 +80,7 @@ std::string textToString(const tinyxml2::XMLElement* const Elt, const std::strin
 
 std::string getOpenFLUIDXMLFormat(const tinyxml2::XMLElement* const Elt)
 {  
-  return attributeToString(Elt,"format");
+  return getXMLAttribute(Elt,"format");
 }
 
 

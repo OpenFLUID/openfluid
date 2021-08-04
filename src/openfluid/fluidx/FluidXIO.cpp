@@ -94,7 +94,7 @@ class FluidXReaderImplementation
 
     bool extractWareEnabled(const tinyxml2::XMLElement* Elt)
     {
-      std::string Enabled = openfluid::tools::attributeToString(Elt,"enabled");
+      std::string Enabled = openfluid::tools::getXMLAttribute(Elt,"enabled");
 
       if (Enabled == "1" || Enabled == "true" || Enabled.empty())
       {
@@ -115,7 +115,7 @@ class FluidXReaderImplementation
       for (auto Elt = MonElt->FirstChildElement("observer"); Elt != nullptr; 
            Elt = Elt->NextSiblingElement("observer"))
       {
-        std::string ID = openfluid::tools::attributeToString(Elt,"ID");
+        std::string ID = openfluid::tools::getXMLAttribute(Elt,"ID");
 
         if (!ID.empty())
         {
@@ -141,8 +141,8 @@ class FluidXReaderImplementation
         for (auto Elt = WareElt->FirstChildElement("param"); Elt != nullptr; 
              Elt = Elt->NextSiblingElement("param"))
         {
-          std::string Name = openfluid::tools::attributeToString(Elt,"name");
-          std::string Value = openfluid::tools::attributeToString(Elt,"value");
+          std::string Name = openfluid::tools::getXMLAttribute(Elt,"name");
+          std::string Value = openfluid::tools::getXMLAttribute(Elt,"value");
 
           if (!Name.empty())
           {
@@ -196,7 +196,7 @@ class FluidXReaderImplementation
         }
         else if (TagName == "simulator")
         {
-          std::string ID = openfluid::tools::attributeToString(Elt,"ID");
+          std::string ID = openfluid::tools::getXMLAttribute(Elt,"ID");
 
           if (!ID.empty())
           {
@@ -208,10 +208,10 @@ class FluidXReaderImplementation
         }
         else if (TagName == "generator")
         {
-          std::string VarName = openfluid::tools::attributeToString(Elt,"varname");
-          std::string UnitsClass = openfluid::tools::attributeToString(Elt,"unitsclass");
-          std::string Method = openfluid::tools::attributeToString(Elt,"method");
-          std::string VarSize = openfluid::tools::attributeToString(Elt,"varsize");
+          std::string VarName = openfluid::tools::getXMLAttribute(Elt,"varname");
+          std::string UnitsClass = openfluid::tools::getXMLAttribute(Elt,"unitsclass");
+          std::string Method = openfluid::tools::getXMLAttribute(Elt,"method");
+          std::string VarSize = openfluid::tools::getXMLAttribute(Elt,"varsize");
           unsigned int VarSizeNum = 1;
 
           if (!VarName.empty() && !UnitsClass.empty() && !Method.empty())
@@ -285,8 +285,8 @@ class FluidXReaderImplementation
 
         if (TagName == "period")
         {
-          std::string Begin = openfluid::tools::attributeToString(Elt,"begin");
-          std::string End = openfluid::tools::attributeToString(Elt,"end");
+          std::string Begin = openfluid::tools::getXMLAttribute(Elt,"begin");
+          std::string End = openfluid::tools::getXMLAttribute(Elt,"end");
 
           if (!Begin.empty() && !End.empty())
           {  
@@ -318,8 +318,8 @@ class FluidXReaderImplementation
         }
         else if (TagName == "scheduling")
         {
-          std::string DeltaT = openfluid::tools::attributeToString(Elt,"deltat");
-          std::string Constraint = openfluid::tools::attributeToString(Elt,"constraint");
+          std::string DeltaT = openfluid::tools::getXMLAttribute(Elt,"deltat");
+          std::string Constraint = openfluid::tools::getXMLAttribute(Elt,"constraint");
 
           if (!DeltaT.empty())
           {
@@ -363,7 +363,7 @@ class FluidXReaderImplementation
         }
         else if (TagName == "valuesbuffer")
         {
-          std::string Size = openfluid::tools::attributeToString(Elt,"size");
+          std::string Size = openfluid::tools::getXMLAttribute(Elt,"size");
 
           if (!Size.empty())
           {
@@ -406,8 +406,8 @@ class FluidXReaderImplementation
 
     openfluid::core::UnitClassID_t extractUnitClassID(const tinyxml2::XMLElement* Elt)
     {
-      std::string UnitID = openfluid::tools::attributeToString(Elt,"ID");
-      std::string UnitClass = openfluid::tools::attributeToString(Elt,"class");
+      std::string UnitID = openfluid::tools::getXMLAttribute(Elt,"ID");
+      std::string UnitClass = openfluid::tools::getXMLAttribute(Elt,"class");
 
       if (!UnitID.empty() && !UnitClass.empty())
       {
@@ -438,9 +438,9 @@ class FluidXReaderImplementation
       for (auto UnitElt = DefElt->FirstChildElement("unit"); UnitElt != nullptr; 
            UnitElt = UnitElt->NextSiblingElement("unit"))
       {
-        std::string ID = openfluid::tools::attributeToString(UnitElt,"ID");
-        std::string UnitsClass = openfluid::tools::attributeToString(UnitElt,"class");
-        std::string PcsOrd = openfluid::tools::attributeToString(UnitElt,"pcsorder");
+        std::string ID = openfluid::tools::getXMLAttribute(UnitElt,"ID");
+        std::string UnitsClass = openfluid::tools::getXMLAttribute(UnitElt,"class");
+        std::string PcsOrd = openfluid::tools::getXMLAttribute(UnitElt,"pcsorder");
 
         if (!ID.empty() && !UnitsClass.empty() && !PcsOrd.empty())
         {
@@ -501,8 +501,8 @@ class FluidXReaderImplementation
 
     AttributesTableDescriptor extractDomainAttributes(const tinyxml2::XMLElement* AttrsElt)
     {
-      std::string UnitsClass = openfluid::tools::attributeToString(AttrsElt,"unitsclass");
-      std::string ColOrder = openfluid::tools::attributeToString(AttrsElt,"colorder");
+      std::string UnitsClass = openfluid::tools::getXMLAttribute(AttrsElt,"unitsclass");
+      std::string ColOrder = openfluid::tools::getXMLAttribute(AttrsElt,"colorder");
 
       if (UnitsClass.empty() || ColOrder.empty())
       {
@@ -517,7 +517,7 @@ class FluidXReaderImplementation
             "wrong or empty colorder attribute in domain attributes (" + m_CurrentFile + ")");
       }
 
-      std::string DataBlob = openfluid::tools::textToString(AttrsElt);
+      std::string DataBlob = openfluid::tools::getXMLText(AttrsElt);
       if (DataBlob.empty())
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -545,9 +545,9 @@ class FluidXReaderImplementation
       for (auto EvElt = CalElt->FirstChildElement("event"); EvElt != nullptr;
            EvElt = EvElt->NextSiblingElement("event"))
       {
-        std::string ID = openfluid::tools::attributeToString(EvElt,"unitID");
-        std::string UnitsClass = openfluid::tools::attributeToString(EvElt,"unitsclass");
-        std::string Date = openfluid::tools::attributeToString(EvElt,"date");
+        std::string ID = openfluid::tools::getXMLAttribute(EvElt,"unitID");
+        std::string UnitsClass = openfluid::tools::getXMLAttribute(EvElt,"unitsclass");
+        std::string Date = openfluid::tools::getXMLAttribute(EvElt,"date");
 
         if (ID.empty() || UnitsClass.empty() || Date.empty())
         {
@@ -577,8 +577,8 @@ class FluidXReaderImplementation
         for (auto InfElt = EvElt->FirstChildElement("info"); InfElt != nullptr;
              InfElt = InfElt->NextSiblingElement("info"))
         {
-          std::string Key = openfluid::tools::attributeToString(InfElt,"key");
-          std::string Value = openfluid::tools::attributeToString(InfElt,"value");
+          std::string Key = openfluid::tools::getXMLAttribute(InfElt,"key");
+          std::string Value = openfluid::tools::getXMLAttribute(InfElt,"value");
 
           if (Key.empty())
           {
@@ -633,10 +633,10 @@ class FluidXReaderImplementation
       for (auto Elt = StoreElt->FirstChildElement("dataitem"); Elt != nullptr; 
            Elt = Elt->NextSiblingElement("dataitem"))
       {
-        std::string DataID = openfluid::tools::attributeToString(Elt,"id");
-        std::string DataTypeStr = openfluid::tools::attributeToString(Elt,"type");
-        std::string DataSrc = openfluid::tools::attributeToString(Elt,"source");
-        std::string DataClass = openfluid::tools::attributeToString(Elt,"unitsclass");
+        std::string DataID = openfluid::tools::getXMLAttribute(Elt,"id");
+        std::string DataTypeStr = openfluid::tools::getXMLAttribute(Elt,"type");
+        std::string DataSrc = openfluid::tools::getXMLAttribute(Elt,"source");
+        std::string DataClass = openfluid::tools::getXMLAttribute(Elt,"unitsclass");
 
         if (!DataID.empty() && !DataTypeStr.empty() && !DataSrc.empty())
         {

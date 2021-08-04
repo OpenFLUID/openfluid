@@ -265,7 +265,7 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
 
             if (TagName == "list")
             {
-              QString StyleName = QString::fromStdString(openfluid::tools::attributeToString(Elt,"style"));
+              QString StyleName = QString::fromStdString(openfluid::tools::getXMLAttribute(Elt,"style"));
 
               if (m_Formats.contains(StyleName))
               {
@@ -274,14 +274,14 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
                 for (auto ItemElt = Elt->FirstChildElement("item"); ItemElt != nullptr; 
                     ItemElt = ItemElt->NextSiblingElement("item"))
                 {
-                  QString ItemText = QString::fromStdString(openfluid::tools::textToString(ItemElt));
+                  QString ItemText = QString::fromStdString(openfluid::tools::getXMLText(ItemElt));
                   Rules.append(HighlightingRule(StyleName, QRegExp(QString("\\b%1\\b").arg(ItemText)),Format));
                 }
               }
             }
             else if (TagName == "rule")
             {
-              QString StyleName = QString::fromStdString(openfluid::tools::attributeToString(Elt,"style"));
+              QString StyleName = QString::fromStdString(openfluid::tools::getXMLAttribute(Elt,"style"));
 
               if (m_Formats.contains(StyleName))
               {
@@ -291,11 +291,11 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
                      PttrnElt = PttrnElt->NextSiblingElement("pattern"))
                 {
                   QString SimplePatternValue = 
-                    QString::fromStdString(openfluid::tools::attributeToString(PttrnElt,"value"));
+                    QString::fromStdString(openfluid::tools::getXMLAttribute(PttrnElt,"value"));
                   QString BeginPatternValue = 
-                    QString::fromStdString(openfluid::tools::attributeToString(PttrnElt,"start"));
+                    QString::fromStdString(openfluid::tools::getXMLAttribute(PttrnElt,"start"));
                   QString EndPatternValue = 
-                    QString::fromStdString(openfluid::tools::attributeToString(PttrnElt,"end"));
+                    QString::fromStdString(openfluid::tools::getXMLAttribute(PttrnElt,"end"));
                   
                   if (!SimplePatternValue.isEmpty())
                   {

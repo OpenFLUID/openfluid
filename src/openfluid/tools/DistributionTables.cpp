@@ -74,8 +74,8 @@ void DistributionTables::build(const std::string& BasePath,
           for (auto FileElt = DataElt->FirstChildElement("filesource"); FileElt != nullptr; 
                FileElt = FileElt->NextSiblingElement("filesource"))
           {
-            auto ID = openfluid::tools::attributeToString(FileElt,"ID");
-            auto File = openfluid::tools::attributeToString(FileElt,"file");
+            auto ID = openfluid::tools::getXMLAttribute(FileElt,"ID");
+            auto File = openfluid::tools::getXMLAttribute(FileElt,"file");
 
             if (!ID.empty() && !File.empty())
             {

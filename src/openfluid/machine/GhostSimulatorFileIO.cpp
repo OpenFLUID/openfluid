@@ -72,12 +72,12 @@ class DataNodeFields
     {     
       if (Elt != nullptr)
       {      
-        Name = openfluid::tools::attributeToString(Elt,"name");
-        UnitsClass = openfluid::tools::attributeToString(Elt,"unitsclass");
-        IOMode = openfluid::tools::attributeToString(Elt,"iomode");
-        SIUnit = openfluid::tools::attributeToString(Elt,"siunit");
-        Type = openfluid::tools::attributeToString(Elt,"type");
-        Description = openfluid::tools::textToString(Elt);
+        Name = openfluid::tools::getXMLAttribute(Elt,"name");
+        UnitsClass = openfluid::tools::getXMLAttribute(Elt,"unitsclass");
+        IOMode = openfluid::tools::getXMLAttribute(Elt,"iomode");
+        SIUnit = openfluid::tools::getXMLAttribute(Elt,"siunit");
+        Type = openfluid::tools::getXMLAttribute(Elt,"type");
+        Description = openfluid::tools::getXMLText(Elt);
       }
 
       if (std::find(ExpectedIOModes.begin(),ExpectedIOModes.end(),IOMode) == ExpectedIOModes.end())
@@ -346,7 +346,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
       const auto GhostElt = Root->FirstChildElement("ghost-simulator");
       if (GhostElt != nullptr && GhostElt->Attribute("ID") != nullptr)
       {
-        std::string GhostID = openfluid::tools::attributeToString(GhostElt,"ID");
+        std::string GhostID = openfluid::tools::getXMLAttribute(GhostElt,"ID");
 
         if (!boost::starts_with(openfluid::tools::Filesystem::filename(FilePath),GhostID))
         {
@@ -362,7 +362,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
           for (auto Elt = InfosElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
             std::string TagName(Elt->Name());
-            std::string TagText = openfluid::tools::textToString(Elt);
+            std::string TagText = openfluid::tools::getXMLText(Elt);
 
             if (TagName == "name")
             {
@@ -375,8 +375,8 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
             else if (TagName == "author")
             {
               Signature.Authors.push_back(
-                std::pair<std::string,std::string>(openfluid::tools::attributeToString(Elt,"name"),
-                                                   openfluid::tools::attributeToString(Elt,"email"))
+                std::pair<std::string,std::string>(openfluid::tools::getXMLAttribute(Elt,"name"),
+                                                   openfluid::tools::getXMLAttribute(Elt,"email"))
               );
             }
             else if (TagName == "status")
@@ -556,7 +556,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
           for (auto Elt = SpatialElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
             std::string TagName(Elt->Name());
-            std::string TagText = openfluid::tools::textToString(Elt);
+            std::string TagText = openfluid::tools::getXMLText(Elt);
 
             if (TagName == "description")
             {
@@ -564,7 +564,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
             }
             else if (TagName == "unitsclass")
             {
-              std::string NameStr = openfluid::tools::attributeToString(Elt,"name");
+              std::string NameStr = openfluid::tools::getXMLAttribute(Elt,"name");
               if (NameStr.empty())
               {
                 return false;
@@ -582,7 +582,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
         const auto SchedElt = GhostElt->FirstChildElement("scheduling");
         if (SchedElt != nullptr)
         {
-          std::string ModeStr = openfluid::tools::attributeToString(SchedElt,"mode");
+          std::string ModeStr = openfluid::tools::getXMLAttribute(SchedElt,"mode");
 
           if (ModeStr == "undefined")
           {
