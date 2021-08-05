@@ -7,7 +7,7 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp MessageDialog.cpp MessageFrame.c
                             SignatureDataEditorWidget.cpp
                             SignatureEditorWidget.cpp EditSignatureDialog.cpp
                             ClickableLabel.cpp ActionLabel.cpp ElidedLabel.cpp 
-                            TagLabel.cpp ExecutionStatusLabel.cpp
+                            TagLabel.cpp StatusIconLabel.cpp ExecutionStatusLabel.cpp
                             FocusableLineEdit.cpp
                             ShortcutCompleter.cpp
                             PathsManagementWidget.cpp WaresSearchPathsWidget.cpp
@@ -25,7 +25,7 @@ SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp MessageDialog.hpp MessageFrame.h
                             SignatureDataEditorWidget.hpp
                             SignatureEditorWidget.hpp EditSignatureDialog.hpp
                             ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp 
-                            TagLabel.hpp ExecutionStatusLabel.hpp
+                            TagLabel.hpp StatusIconLabel.hpp ExecutionStatusLabel.hpp
                             FocusableLineEdit.hpp
                             ShortcutCompleter.hpp
                             PathsManagementWidget.hpp WaresSearchPathsWidget.hpp

@@ -44,6 +44,7 @@
 #include <QStringListModel>
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 
 #include "ProjectCheckInfos.hpp"
@@ -59,9 +60,9 @@ class ProjectCentral : QObject
 
     openfluid::fluidx::FluidXDescriptor m_FXDesc;
 
-    bool m_IsValid;
+    openfluid::fluidx::FluidXIO::LoadingReport m_LoadingReport;
 
-    ProjectCheckInfos m_CheckInfos;    
+    ProjectCheckInfos m_CheckInfos;
 
     /**
       List of simulators IDs involved in the model
@@ -168,6 +169,11 @@ class ProjectCentral : QObject
     const openfluid::fluidx::FluidXDescriptor& descriptors() const
     {
       return m_FXDesc;
+    }
+
+    const openfluid::fluidx::FluidXIO::LoadingReport& loadingReport() const
+    {
+      return m_LoadingReport;
     }
 
     const QStringList& simulatorsIDsList() const

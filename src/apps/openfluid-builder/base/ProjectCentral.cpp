@@ -49,7 +49,6 @@
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/IOListener.hpp>
-#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
@@ -60,8 +59,7 @@
 ProjectCentral* ProjectCentral::mp_Instance = nullptr;
 
 
-ProjectCentral::ProjectCentral(const QString& PrjPath):
-  m_IsValid(false)
+ProjectCentral::ProjectCentral(const QString& PrjPath)
 {
   if (PrjPath.isEmpty())
   {
@@ -72,9 +70,10 @@ ProjectCentral::ProjectCentral(const QString& PrjPath):
     try
     {
       openfluid::base::IOListener Listener;
-      m_FXDesc = openfluid::fluidx::FluidXIO(&Listener)
-                   .loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
-      m_IsValid = true;
+
+      openfluid::fluidx::FluidXIO FXIO(&Listener);
+      m_FXDesc = FXIO.loadFromDirectory(openfluid::base::RunContextManager::instance()->getInputDir());
+      m_LoadingReport = FXIO.getLoadingReport();
     }
     catch (openfluid::base::Exception& E)
     {
@@ -173,7 +172,7 @@ QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(
 void ProjectCentral::deleteData()
 {
   m_FXDesc.reset();
-  m_IsValid = false;
+  m_LoadingReport.clear();
 }
 
 
@@ -244,6 +243,8 @@ bool ProjectCentral::save()
   {
     InputPath.remove(FluidXFileToRemove[i]);
   }
+
+  m_LoadingReport.clear();
 
   // save all fluidx files
   openfluid::base::IOListener Listener;

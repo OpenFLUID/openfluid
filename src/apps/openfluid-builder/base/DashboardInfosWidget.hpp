@@ -42,6 +42,7 @@
 
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 
 #include "DashboardWidget.hpp"
 
@@ -61,11 +62,24 @@ class DashboardInfosWidget : public DashboardWidget
     Ui::DashboardInfosWidget* ui;
 
     const openfluid::fluidx::FluidXDescriptor& m_FluidxDesc;
+    const openfluid::fluidx::FluidXIO::LoadingReport& m_LoadingReport;
+
+
+  private slots:
+
+    void askForProperties();
+
+
+  signals:
+
+    void propertiesAsked();
 
 
   public:
 
-    DashboardInfosWidget(const openfluid::fluidx::FluidXDescriptor& Desc, QWidget* Parent = nullptr);
+    DashboardInfosWidget(const openfluid::fluidx::FluidXDescriptor& Desc, 
+                         const openfluid::fluidx::FluidXIO::LoadingReport& LoadingReport,
+                         QWidget* Parent = nullptr);
 
     ~DashboardInfosWidget();
 

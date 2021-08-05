@@ -59,6 +59,8 @@ class OPENFLUID_API ActionLabel : public ClickableLabel
     virtual ~ActionLabel()
     { }
 
+    void setColor(const QString& Color);
+
 };
 
 } } } // namespaces

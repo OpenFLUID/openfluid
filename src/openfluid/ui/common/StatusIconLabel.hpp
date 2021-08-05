@@ -31,53 +31,47 @@
 
 
 /**
-  @file EditProjectPropertiesDialog.hpp
+  @file StatusIconLabel.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#ifndef __OPENFLUID_BUILDERAPP_EDITPROJECTPROPERTIESDIALOG_HPP__
-#define __OPENFLUID_BUILDERAPP_EDITPROJECTPROPERTIESDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_STATUSICONLABEL_HPP__
+#define __OPENFLUID_UICOMMON_STATUSICONLABEL_HPP__
 
 
-namespace Ui
-{
-  class EditProjectPropertiesDialog;
-}
+#include <QLabel>
+
+#include <openfluid/dllexport.hpp>
 
 
-#include <openfluid/fluidx/FluidXIO.hpp>
-#include <openfluid/ui/common/MessageDialog.hpp>
+namespace openfluid { namespace ui { namespace common {
 
 
-class EditProjectPropertiesDialog : public openfluid::ui::common::MessageDialog
+class OPENFLUID_API StatusIconLabel : public QLabel
 {
   Q_OBJECT;
 
-  private:
-
-    Ui::EditProjectPropertiesDialog* ui;
-
-    QString generateReport(const QString& ProjectPath, bool DeprecatedFiles, 
-                           const openfluid::fluidx::FluidXIO::LoadingReport& Report) const;
-
-  private slots:
-
-    void toggleDetails();
-
-
   public:
 
-    EditProjectPropertiesDialog(QWidget* Parent = nullptr);
+    StatusIconLabel(QWidget* Parent = nullptr);
 
-    ~EditProjectPropertiesDialog();
+    virtual ~StatusIconLabel()
+    { }
 
-    QString getDescription() const;
+    void setOKStatus();
 
-    QString getAuthors() const;
+    void setWarningStatus();
+
+    void setErrorStatus();
+
+    void setDisabledStatus();
 
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_EDITPROJECTPROPERTIESDIALOG_HPP__ */
+} } } // namespaces
+
+
+#endif /* __OPENFLUID_UICOMMON_STATUSICONLABEL_HPP__ */

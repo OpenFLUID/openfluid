@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
  <domain>
   <definition>
    <unit class="GU" ID="1" pcsorder="2">

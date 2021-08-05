@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>233</height>
+    <height>256</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,16 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -48,37 +57,72 @@
        <number>12</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="spacing">
-         <number>5</number>
-        </property>
+       <layout class="QGridLayout" name="gridLayout">
         <property name="bottomMargin">
          <number>12</number>
         </property>
-        <item>
-         <widget class="openfluid::ui::common::ElidedLabel" name="TitleLabel">
-          <property name="font">
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-            <underline>false</underline>
-           </font>
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="toolTip">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string notr="true">TitleLabel</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
+          <item>
+           <widget class="openfluid::ui::common::StatusIconLabel" name="StatusIconLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>16</width>
+              <height>16</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="openfluid::ui::common::ElidedLabel" name="TitleLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+              <underline>false</underline>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string notr="true">TitleLabel</string>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="openExternalLinks">
+             <bool>false</bool>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::LinksAccessibleByMouse</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
-        <item>
+        <item row="1" column="0">
          <widget class="openfluid::ui::common::ElidedLabel" name="PathLabel">
           <property name="font">
            <font>
@@ -151,6 +195,29 @@
         </property>
        </widget>
       </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="openfluid::ui::common::ActionLabel" name="PropertiesLabel">
+        <property name="text">
+         <string>properties</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -158,9 +225,19 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>openfluid::ui::common::StatusIconLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">openfluid/ui/common/StatusIconLabel.hpp</header>
+  </customwidget>
+  <customwidget>
    <class>openfluid::ui::common::ElidedLabel</class>
    <extends>QLabel</extends>
    <header location="global">openfluid/ui/common/ElidedLabel.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>openfluid::ui::common::ActionLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">openfluid/ui/common/ActionLabel.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

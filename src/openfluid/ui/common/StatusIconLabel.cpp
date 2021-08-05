@@ -31,23 +31,23 @@
 
 
 /**
-  @file ActionLabel.cpp
+  @file StatusIconLabel.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
-#include <openfluid/ui/common/ActionLabel.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/common/StatusIconLabel.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
 
 
-ActionLabel::ActionLabel(QWidget* Parent):
-  ClickableLabel(Parent)
+StatusIconLabel::StatusIconLabel(QWidget* Parent):
+  QLabel(Parent)
 {
-  setCursor(Qt::PointingHandCursor);
-  setColor("rgb(0,51,153)");
+ 
 }
 
 
@@ -55,11 +55,9 @@ ActionLabel::ActionLabel(QWidget* Parent):
 // =====================================================================
 
 
-ActionLabel::ActionLabel(const QString& Text, QWidget* Parent):
-  ClickableLabel(Text,Parent)
+void StatusIconLabel::StatusIconLabel::setOKStatus()
 {
-  setCursor(Qt::PointingHandCursor);
-  setColor("rgb(0,51,153)");
+  setPixmap(openfluid::ui::common::getImage("check-ok","ui/common"));
 }
 
 
@@ -67,11 +65,30 @@ ActionLabel::ActionLabel(const QString& Text, QWidget* Parent):
 // =====================================================================
 
 
-void ActionLabel::setColor(const QString& Color)
+void StatusIconLabel::StatusIconLabel::setWarningStatus()
 {
-  setStyleSheet(QString("color:%1; font:italic; text-decoration:underline;").arg(Color));
+  setPixmap(openfluid::ui::common::getImage("check-warn","ui/common"));
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void StatusIconLabel::StatusIconLabel::setErrorStatus()
+{
+  setPixmap(openfluid::ui::common::getImage("check-error","ui/common"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void StatusIconLabel::setDisabledStatus()
+{
+  setPixmap(openfluid::ui::common::getImage("check-disabled","ui/common"));
+}
 
 } } } // namespaces
 

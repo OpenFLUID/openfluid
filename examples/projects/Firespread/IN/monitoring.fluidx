@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <monitoring>
 
     <observer ID="export.vars.plot.gnuplot">

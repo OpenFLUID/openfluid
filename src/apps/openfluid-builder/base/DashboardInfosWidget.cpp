@@ -46,15 +46,17 @@
 #include "builderconfig.hpp"
 
 
-DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::FluidXDescriptor& Desc, QWidget* Parent):
-  DashboardWidget(Parent), ui(new Ui::DashboardInfosWidget), m_FluidxDesc(Desc)
+DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::FluidXDescriptor& Desc, 
+                                           const openfluid::fluidx::FluidXIO::LoadingReport& LoadingReport,
+                                           QWidget* Parent):
+  DashboardWidget(Parent), ui(new Ui::DashboardInfosWidget), m_FluidxDesc(Desc), m_LoadingReport(LoadingReport)
 {
   ui->setupUi(this);
 
   refreshProjectInfos();
 
   ui->ContentsFrame->setStyleSheet(QString("#ContentsFrame "
-                                       "{background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
+                                           "{background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
                                            "stop:0 %1, "
                                            "stop:1 %2); "
                                            "border-radius: 6px;"
@@ -76,8 +78,11 @@ DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::FluidXDescri
   ui->MonitoringLabel->setStyleSheet("color: white;");
   ui->SimConfigLabel->setStyleSheet("color: white;");
 
+  ui->PropertiesLabel->setColor("rgb(120,239,255)");
 
   refresh();
+
+  connect(ui->PropertiesLabel,SIGNAL(clicked()),this,SLOT(askForProperties()));
 }
 
 
@@ -143,11 +148,33 @@ void DashboardInfosWidget::refresh()
 
 void DashboardInfosWidget::refreshProjectInfos()
 {
-  QString NativePath =
-      QDir::toNativeSeparators(QString::fromStdString(openfluid::base::RunContextManager::instance()
-                                                        ->getProjectPath()));
+  const auto ProjectPath = openfluid::base::RunContextManager::instance()->getProjectPath();
 
   ui->TitleLabel->setText(QString::fromStdString(openfluid::base::RunContextManager::instance()->getProjectName()));
+
+  if (m_LoadingReport.isOK() && 
+      !openfluid::base::RunContextManager::instance()->projectContainsDeprecatedFile(ProjectPath))
+  {
+    ui->StatusIconLabel->setOKStatus();
+  }
+  else
+  {
+    ui->StatusIconLabel->setWarningStatus();
+  }
+
+  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(ProjectPath));
+
   ui->PathLabel->setText(NativePath);
   ui->PathLabel->setToolTip(NativePath);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DashboardInfosWidget::askForProperties()
+{
+  emit propertiesAsked();
+}
+

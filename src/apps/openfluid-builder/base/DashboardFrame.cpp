@@ -52,7 +52,7 @@ DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent
   setStyleSheet(QString("QFrame#DashboardWidget {background-color: %1;}").arg(openfluid::ui::config::TOOLBAR_BGCOLOR));
   setFrameShape(QFrame::NoFrame);
 
-  mp_InfosWidget = new DashboardInfosWidget(PrjCentral->descriptors(),this);
+  mp_InfosWidget = new DashboardInfosWidget(PrjCentral->descriptors(),PrjCentral->loadingReport(),this);
   mp_StatusWidget = new DashboardStatusWidget(PrjCentral,this);
 
   mp_Layout = new QBoxLayout(QBoxLayout::TopToBottom,this);
@@ -66,6 +66,8 @@ DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent
   mp_Layout->setStretch(1,2);
 
   setLayout(mp_Layout);
+
+  connect(mp_InfosWidget,SIGNAL(propertiesAsked()),this,SLOT(askForProperties()));
 }
 
 
@@ -115,3 +117,14 @@ void DashboardFrame::refreshProjectInfos()
 {
   mp_InfosWidget->refreshProjectInfos();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DashboardFrame::askForProperties()
+{
+  emit propertiesAsked();
+}
+

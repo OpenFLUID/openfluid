@@ -63,16 +63,23 @@ class DashboardFrame : public QFrame
     QBoxLayout* mp_Layout;
 
 
+  private slots:
+
+    void askForProperties();
+
+
   public slots:
 
     void updateOrientation(Qt::DockWidgetArea Area);
 
-
-  public slots:
-
     void refresh();
 
     void refreshProjectInfos();
+
+  
+  signals:
+
+    void propertiesAsked();
 
 
   public:

@@ -311,6 +311,8 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
     connect(static_cast<ProjectModuleWidget*>(mp_CurrentModule),SIGNAL(refreshWaresEnabled(bool)),
             m_Actions.action("WaresRefresh"),SLOT(setEnabled(bool)));
 
+    connect(DockedWidget,SIGNAL(propertiesAsked()),this,SLOT(whenPropertiesAsked()));
+
     enableRun(static_cast<ProjectModuleWidget*>(Module)->isOkForSimulation());
 
     m_Actions.action("WaresRefresh")
