@@ -66,8 +66,7 @@ class FluidXReaderImplementation
 
     typedef std::list<AttributesTableDescriptor> AttributesTableList_t;
 
-    typedef std::list<EventDescriptor> EventsList_t;
-
+    typedef std::list<EventDescriptor> EventsList_t;  
 
     struct LoadingTempData
     {
@@ -86,6 +85,8 @@ class FluidXReaderImplementation
     bool m_ModelDefined = false;
 
     bool m_RunConfigDefined = false;
+
+    FluidXIO::LoadingReport m_Report;
 
 
     // =====================================================================
@@ -263,6 +264,10 @@ class FluidXReaderImplementation
                                                       m_CurrentFile+")");
           }
         }
+        else
+        {
+          m_Report[m_CurrentFile].UnknownTags.push_back(TagName);
+        }
       }
 
       m_Descriptor.m_ModelDescriptor.setGlobalParameters(GParams);
@@ -383,6 +388,10 @@ class FluidXReaderImplementation
                 "missing size attribute for valuesbuffer tag (" + m_CurrentFile + ")");
           }
         }
+        else
+        {
+          m_Report[m_CurrentFile].UnknownTags.push_back(TagName);
+        }
       }
 
       if (!FoundPeriod)
@@ -474,10 +483,13 @@ class FluidXReaderImplementation
             {
               UnitDesc.toSpatialUnits().push_back(extractUnitClassID(LinkElt));
             }
-
-            if (TagName == "childof")
+            else if (TagName == "childof")
             {
               UnitDesc.parentSpatialUnits().push_back(extractUnitClassID(LinkElt));
+            }
+            else
+            {
+              m_Report[m_CurrentFile].UnknownTags.push_back(TagName);
             }
           }
 
@@ -620,6 +632,10 @@ class FluidXReaderImplementation
           EventsList_t List = extractDomainCalendar(Elt);
           TempData.Events.insert(TempData.Events.end(),List.begin(),List.end());
         }
+        else
+        {
+          m_Report[m_CurrentFile].UnknownTags.push_back(TagName);
+        }
       }
     }
 
@@ -675,11 +691,12 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    void parseFile(const std::string& FilePath, LoadingTempData& TempData)
+    bool parseFile(const std::string& FilePath, LoadingTempData& TempData)
     {
-      tinyxml2::XMLDocument Doc;
-
+      m_Report[FilePath] = FluidXIO::FileLoadingReport();
       m_CurrentFile = FilePath;
+      
+      tinyxml2::XMLDocument Doc;
 
       if (Doc.LoadFile(FilePath.c_str()) == tinyxml2::XML_SUCCESS)
       {
@@ -687,7 +704,7 @@ class FluidXReaderImplementation
 
         if (Root != nullptr && std::string(Root->Name()) == "openfluid")
         {
-          auto FileFormatVersion = openfluid::tools::getOpenFLUIDXMLFormat(Root);
+          m_Report[m_CurrentFile].FormatVersion = openfluid::tools::getOpenFLUIDXMLFormat(Root);
 
           for (auto Elt = Root->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
@@ -723,6 +740,10 @@ class FluidXReaderImplementation
             {
               extractDatastore(Elt);
             }
+            else
+            {
+              m_Report[m_CurrentFile].UnknownTags.push_back(TagName);
+            }
           }
         }
         else
@@ -736,6 +757,8 @@ class FluidXReaderImplementation
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "file cannot be loaded: "+ FilePath);
       }
+
+      return m_Report[FilePath].isOK();
     }
 
 
@@ -801,6 +824,16 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
+    const FluidXIO::LoadingReport& getReport() const
+    { 
+      return m_Report; 
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
     void run(const std::string& DirPath)
     {
       if (!openfluid::tools::Filesystem::isDirectory(DirPath))
@@ -830,8 +863,15 @@ class FluidXReaderImplementation
         try
         {
           mp_Listener->onFileLoad(openfluid::tools::Filesystem::filename(CurrentFile));
-          parseFile(CurrentFile,TempData);
-          mp_Listener->onFileLoaded(openfluid::base::Listener::Status::OK_STATUS);
+          bool OK = parseFile(CurrentFile,TempData);
+          if (OK)
+          {
+            mp_Listener->onFileLoaded(openfluid::base::Listener::Status::OK_STATUS);
+          }
+          else
+          {
+            mp_Listener->onFileLoaded(openfluid::base::Listener::Status::WARNING_STATUS);
+          }
         }
         catch (...)
         {
@@ -1318,12 +1358,15 @@ FluidXIO::FluidXIO(openfluid::base::IOListener* Listener) : mp_Listener(Listener
 // =====================================================================
 
 
-FluidXDescriptor FluidXIO::loadFromDirectory(const std::string& DirPath) const
+FluidXDescriptor FluidXIO::loadFromDirectory(const std::string& DirPath)
 {
   FluidXDescriptor FXDesc;
 
+  m_LoadingReport.clear();
   FluidXReaderImplementation FXReader(FXDesc,mp_Listener);
   FXReader.run(DirPath);
+
+  m_LoadingReport = FXReader.getReport();
 
   return FXDesc;
 }

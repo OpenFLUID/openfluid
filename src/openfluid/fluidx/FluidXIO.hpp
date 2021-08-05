@@ -53,9 +53,89 @@ namespace openfluid { namespace fluidx {
 
 class OPENFLUID_API FluidXIO
 {
+  public:
+
+    class FileLoadingReport
+    {
+      public:
+        
+        std::string FormatVersion;
+      
+        std::vector<std::string> UnknownTags;
+
+        void clear()
+        {
+          FormatVersion.clear();
+          UnknownTags.clear();
+        }
+
+        bool hasFormat() const
+        {
+          return !FormatVersion.empty();
+        }
+
+        bool isCorrectFormat() const
+        {
+          return FormatVersion == FluidXIO::FormatVersion;
+        }
+
+        bool isOK() const
+        {
+          return isCorrectFormat() && UnknownTags.empty();
+        }
+    };
+
+    class LoadingReport : public std::map<std::string,FileLoadingReport>
+    {
+      public:
+
+        bool hasFormat() const
+        {
+          bool OK = true;
+          for (const auto& File : *this)
+          {
+            OK = OK && File.second.hasFormat();
+          }
+          return OK;
+        }
+
+        bool isCorrectFormat() const
+        {
+          bool OK = true;
+          for (const auto& File : *this)
+          {
+            OK = OK && File.second.isCorrectFormat();
+          }
+          return OK;
+        }
+
+        bool hasUnknownTags() const
+        {
+          bool Found = false;
+          for (const auto& File : *this)
+          {
+            Found = Found || !File.second.UnknownTags.empty();
+          }
+          return Found;
+        }
+
+        bool isOK() const
+        {
+          bool OK = true;
+          for (const auto& File : *this)
+          {
+            OK = OK && File.second.isOK();
+          }
+          return OK;
+        }
+    };
+
+
   private:
 
     openfluid::base::IOListener* mp_Listener;
+
+    LoadingReport m_LoadingReport;
 
 
   public:
@@ -64,7 +144,12 @@ class OPENFLUID_API FluidXIO
 
     FluidXIO(openfluid::base::IOListener* Listener);
 
-    FluidXDescriptor loadFromDirectory(const std::string& DirPath) const;
+    FluidXDescriptor loadFromDirectory(const std::string& DirPath);
+
+    const LoadingReport& getLoadingReport() const
+    {
+      return m_LoadingReport;
+    }
 
     void writeToManyFiles(const FluidXDescriptor& Desc, const std::string& DirPath) const;
 

@@ -99,6 +99,8 @@ class OPENFLUID_API RunContextManager : public Environment
 
     static const std::string m_ProjectRole;
 
+    static const std::vector<std::string> m_DeprecatedProjectFiles;
+
     RunContextManager();
 
     ~RunContextManager();
@@ -360,6 +362,8 @@ class OPENFLUID_API RunContextManager : public Environment
     static bool getProjectInfos(const std::string& Path,
                                 std::string& Name, std::string& Description, std::string& Authors,
                                 std::string& CreationDate, std::string& LastModDate);
+
+    static bool projectContainsDeprecatedFile(const std::string& Path);
 
     void updateProjectOutputDir();
 

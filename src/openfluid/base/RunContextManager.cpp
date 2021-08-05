@@ -53,6 +53,8 @@ OPENFLUID_SINGLETON_INITIALIZATION(RunContextManager)
 
 
 const std::string RunContextManager::m_ProjectRole = "openfluid-project";
+const std::vector<std::string> RunContextManager::m_DeprecatedProjectFiles =
+  {"openfluid-project.conf",".openfluid-project.conf"};
 
 
 // =====================================================================
@@ -137,7 +139,7 @@ void RunContextManager::updateProjectFile(const std::string& ProjectFilePath)
     std::string FormerPrjFilePath = 
       openfluid::tools::Filesystem::joinPath({
         openfluid::tools::Filesystem::dirname(ProjectFilePath),
-        "openfluid-project.conf"
+        m_DeprecatedProjectFiles.front()
       });
 
     if (openfluid::tools::Filesystem::isFile(FormerPrjFilePath))
@@ -609,6 +611,24 @@ bool RunContextManager::getProjectInfos(const std::string& Path,
 
     return true;
   }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool RunContextManager::projectContainsDeprecatedFile(const std::string& Path)
+{
+  for (const auto& File : m_DeprecatedProjectFiles)
+  {
+    if (openfluid::tools::Filesystem::exists(openfluid::tools::Filesystem::joinPath({Path,File})))
+    {
+      return true;
+    }
+  }
+  
   return false;
 }
 

@@ -153,6 +153,8 @@ BOOST_AUTO_TEST_CASE(check_project_operations)
   openfluid::base::RunContextManager::instance()->saveProject();
   openfluid::base::RunContextManager::instance()->closeProject();
 
+  BOOST_CHECK(!openfluid::base::RunContextManager::instance()->projectContainsDeprecatedFile(Prj1Dir));
+
   BOOST_CHECK_EQUAL(openfluid::base::RunContextManager::isProject(Prj1Dir),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RunContextManager::instance()->isProjectOpen(), false);
   BOOST_REQUIRE(openfluid::base::RunContextManager::instance()->getProjectPath().empty());
@@ -220,6 +222,7 @@ BOOST_AUTO_TEST_CASE(check_project_fileformat_conversion_simple)
   openfluid::base::RunContextManager::instance()->closeProject();
 
   BOOST_CHECK(openfluid::base::RunContextManager::isProject(ConfPrjDir));
+  BOOST_CHECK(openfluid::base::RunContextManager::instance()->projectContainsDeprecatedFile(ConfPrjDir));
 }
 
 
@@ -298,4 +301,5 @@ BOOST_AUTO_TEST_CASE(check_project_fileformat_conversion_complex)
 
   openfluid::base::RunContextManager::instance()->closeProject();
   BOOST_CHECK(openfluid::base::RunContextManager::isProject(ConfPrjDir));
+  BOOST_CHECK(openfluid::base::RunContextManager::instance()->projectContainsDeprecatedFile(ConfPrjDir));
 }
