@@ -41,6 +41,8 @@
 #define __OPENFLUID_MACHINE_ENGINE_HPP__
 
 
+#include <memory>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/core/TypeDefs.hpp>
@@ -88,7 +90,7 @@ class OPENFLUID_API Engine
 
      MonitoringInstance& m_MonitoringInstance;
 
-     openfluid::base::SimulationLogger* mp_SimLogger;
+     std::unique_ptr<openfluid::base::SimulationLogger> mp_SimLogger;
 
 
      void checkSimulationVarsProduction(int ExpectedVarsCount);
@@ -126,13 +128,7 @@ class OPENFLUID_API Engine
   public:
     
     Engine() = delete;
-    
-    static std::size_t computeValuesBuffersDefaultSize(const openfluid::core::Duration_t Duration, 
-                                                       const openfluid::core::Duration_t DeltaT)
-    {
-        return (Duration/DeltaT)+2;
-    }
-    
+      
     /**
       Constructor
     */
@@ -143,7 +139,14 @@ class OPENFLUID_API Engine
     /**
       Destructor
     */
-    ~Engine();
+    ~Engine()
+    { }
+
+    static std::size_t computeValuesBuffersDefaultSize(const openfluid::core::Duration_t Duration, 
+                                                       const openfluid::core::Duration_t DeltaT)
+    {
+      return (Duration/DeltaT)+2;
+    }
 
     /**
       Initializes the simulation engine

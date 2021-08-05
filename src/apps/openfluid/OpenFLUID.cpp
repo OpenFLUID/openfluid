@@ -359,8 +359,7 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Building model...";
   std::cout.flush();
-  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.model(),
-                                                                Model);
+  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.model(),Model);
   openfluid::tools::Console::setOKColor();
   std::cout << " [OK]";
   openfluid::tools::Console::resetAttributes();
@@ -368,22 +367,19 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << "* Building monitoring...";
   std::cout.flush();
-  openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoring(),
-                                                                     Monitoring);
+  openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.monitoring(),Monitoring);
   openfluid::tools::Console::setOKColor();
   std::cout << " [OK]";
   openfluid::tools::Console::resetAttributes();
   std::cout << std::endl;
 
+
   mp_Engine = std::make_unique<openfluid::machine::Engine>(m_SimBlob, Model, Monitoring, MListener.get());
 
   mp_Engine->initialize();
 
-
   mp_Engine->initParams();
-
   mp_Engine->prepareData();
-
   mp_Engine->checkConsistency();
 
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;

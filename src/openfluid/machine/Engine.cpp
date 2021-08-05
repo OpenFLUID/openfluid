@@ -49,6 +49,7 @@
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/Engine.hpp>
 
@@ -73,14 +74,12 @@ Engine::Engine(SimulationBlob& SimBlob,
 
   prepareOutputDir();
 
-  mp_SimLogger = new openfluid::base::SimulationLogger(
+  mp_SimLogger = std::make_unique<openfluid::base::SimulationLogger>(
     openfluid::base::RunContextManager::instance()->getOutputFullPath(openfluid::config::MESSAGES_LOG_FILE));
 
-  std::chrono::system_clock::time_point TimePoint = std::chrono::system_clock::now();
-  std::time_t Time = std::chrono::system_clock::to_time_t(TimePoint);
 
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
-                        "Date: " + std::string(std::ctime(&Time)));
+                        "Date: " + openfluid::tools::getNowAsString("%Y-%m-%d %H:%M:%S"));
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
                         "Computer: " + openfluid::base::Environment::getHostName());
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
@@ -89,19 +88,6 @@ Engine::Engine(SimulationBlob& SimBlob,
                         "Input directory: " + openfluid::base::RunContextManager::instance()->getInputDir());
   mp_SimLogger->addInfo(openfluid::base::FrameworkException::computeContext().toString(),
                         "Output directory: " + openfluid::base::RunContextManager::instance()->getOutputDir());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-Engine::~Engine()
-{
-  if (mp_SimLogger != nullptr)
-  {
-    delete mp_SimLogger;
-  }
 }
 
 
@@ -126,7 +112,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Unit class " + ClassName + " does not exist for " +
-                                             VarName + " variable required by " + SimulatorID);
+                                              VarName + " variable required by " + SimulatorID);
   }
 
   bool Status = true;
@@ -531,8 +517,8 @@ void Engine::prepareOutputDir()
 
 void Engine::initialize()
 {
-  m_ModelInstance.initialize(mp_SimLogger);
-  m_MonitoringInstance.initialize(mp_SimLogger);
+  m_ModelInstance.initialize(mp_SimLogger.get());
+  m_MonitoringInstance.initialize(mp_SimLogger.get());
 
   if (openfluid::base::RunContextManager::instance()->isValuesBufferUserSize())
   {
