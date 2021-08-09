@@ -14,10 +14,10 @@
     <file>images/openfluid_icon_about@2x.png</file>
     <file>images/corner_upleft.png</file>
     <file>images/corner_downleft.png</file>
-    <file>images/check-ok.png</file>
-    <file>images/check-warn.png</file>
-    <file>images/check-error.png</file>
-    <file>images/check-disabled.png</file>
+    <file>images/status-ok.png</file>
+    <file>images/status-warning.png</file>
+    <file>images/status-error.png</file>
+    <file>images/status-disabled.png</file>
 
     <!-- icons for toolbars -->
     <file>icons/project-new_light.png</file>

@@ -53,6 +53,7 @@ class OPENFLUID_API StatusIconLabel : public QLabel
 {
   Q_OBJECT;
 
+
   public:
 
     StatusIconLabel(QWidget* Parent = nullptr);

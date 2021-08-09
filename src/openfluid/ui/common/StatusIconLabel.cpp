@@ -47,7 +47,7 @@ namespace openfluid { namespace ui { namespace common {
 StatusIconLabel::StatusIconLabel(QWidget* Parent):
   QLabel(Parent)
 {
- 
+
 }
 
 
@@ -57,7 +57,7 @@ StatusIconLabel::StatusIconLabel(QWidget* Parent):
 
 void StatusIconLabel::StatusIconLabel::setOKStatus()
 {
-  setPixmap(openfluid::ui::common::getImage("check-ok","ui/common"));
+  setPixmap(openfluid::ui::common::getImage("status-ok","ui/common"));
 }
 
 
@@ -67,7 +67,7 @@ void StatusIconLabel::StatusIconLabel::setOKStatus()
 
 void StatusIconLabel::StatusIconLabel::setWarningStatus()
 {
-  setPixmap(openfluid::ui::common::getImage("check-warn","ui/common"));
+  setPixmap(openfluid::ui::common::getImage("status-warning","ui/common"));
 }
 
 
@@ -77,7 +77,7 @@ void StatusIconLabel::StatusIconLabel::setWarningStatus()
 
 void StatusIconLabel::StatusIconLabel::setErrorStatus()
 {
-  setPixmap(openfluid::ui::common::getImage("check-error","ui/common"));
+  setPixmap(openfluid::ui::common::getImage("status-error","ui/common"));
 }
 
 
@@ -87,7 +87,7 @@ void StatusIconLabel::StatusIconLabel::setErrorStatus()
 
 void StatusIconLabel::setDisabledStatus()
 {
-  setPixmap(openfluid::ui::common::getImage("check-disabled","ui/common"));
+  setPixmap(openfluid::ui::common::getImage("status-disabled","ui/common"));
 }
 
 } } } // namespaces
