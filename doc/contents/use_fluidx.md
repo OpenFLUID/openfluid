@@ -2,8 +2,8 @@
 
 [TOC]
 
-The FluidX file format is used to define a simulation dataset. An OpenFLUID input dataset includes different informations, defined in one or
-many files:
+The FluidX file format is used to define a simulation dataset. An OpenFLUID input dataset includes different informations, 
+defined in one or many files:
 * the **coupled model** definition
 * the **spatial domain** definition, including spatial connectivity, attributes and events
 * the **datastore** content
@@ -11,14 +11,14 @@ many files:
 * the **run** configuration
 
 All files must be placed into a directory that can be reached by the OpenFLUID program used.
-As OpenFLUID-Builder uses the FluidX format natively, the entire input dataset can be created through the OpenFLUID-Builder software.
-Out of OpenFLUID-Builder, these FluidX files can be created by hand or using external tools : 
-R, Geographic Information Systems (GIS), Text editors, ...
+As all OpenFLUID apps use the FluidX format natively, the entire input dataset can be created using OpenFLUID-Builder.
+Alternatively, these FluidX files can be created by hand or using external tools such as text editors, 
+scientific environments (e.g. R, Matlab), geographic information systems (GIS), ...
 
 
 # Overview {#user_fluidx_overview}
 
-The FluidX file format is an XML based format defined for OpenFLUID input datasets.
+The FluidX file format is an [XML](https://en.wikipedia.org/wiki/XML) based format defined for OpenFLUID input datasets.
 An OpenFLUID dataset can be provided by a one or many files using
 this FluidX format. The file (s) name(s) must use the `.fluidx` file extension.
 
@@ -33,14 +33,16 @@ sections must be defined in the input file(s) set:
 
 The order of these sections is not significant. All of these sections must be
 inclosed into an _openfluid_ section defined by the `<openfluid>`
-tag.
+tag.  
+The `<openfluid>` tag should contain a `format` attribute giving information
+about the format and version of the file (currently, the format value is `fluidx 4`).
 
 
 
 Summary view of the XML structure of FluidX files:
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
 
   <model>
     // here is the model definition
@@ -121,7 +123,7 @@ The coupled model must be defined in a section delimited by the
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <model>
 
     <gparams>
@@ -188,7 +190,7 @@ tag, and must be structured following these rules:
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <domain>
     <definition>
 
@@ -232,7 +234,7 @@ tag, and must be structured following these rules:
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <domain>
   
     <attributes unitsclass="EU1" colorder="indataA">
@@ -271,7 +273,7 @@ tag, and must be structured following these rules:
   
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <domain>
     <calendar>
 
@@ -313,7 +315,7 @@ The datastore content must be defined in a section delimited by the
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <datastore>
   
     <dataitem id="TUlayer" type="geovector" source="TestUnits_wgs84.shp" 
@@ -358,7 +360,7 @@ The monitoring must be defined in a section delimited by the
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <monitoring>
     
     <observer ID="export.vars.files.csv" enabled="1">
@@ -432,7 +434,7 @@ The run configuration must be defined in a section delimited by the
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <run>
   
     <scheduling deltat="3600" constraint="none" />
@@ -457,7 +459,7 @@ These variables are :
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
   <model>
 
     <gparams>
@@ -477,7 +479,7 @@ These variables are :
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>
-<openfluid>
+<openfluid format="fluidx 4">
 
   <model>
     <gparams>
