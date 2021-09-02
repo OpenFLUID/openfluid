@@ -550,7 +550,8 @@ void WareSrcContainer::configure()
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
   {
-    return;
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "CMake program not available");
   }
 
 
@@ -585,7 +586,8 @@ void WareSrcContainer::build()
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
   {
-    return;
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "CMake program not available");
   }
 
 
