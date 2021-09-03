@@ -53,6 +53,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/global.hpp>
 #include <openfluid/config.hpp>
@@ -716,6 +717,55 @@ std::string PreferencesManager::getCurrentWorkspacePath() const
   {
     return "";
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setAppWindowGeometry(const std::string& AppSettings, 
+                                              const PreferencesManager::WindowGeometry_t& Geometry)
+{
+  m_Settings->enableAutoSave(false);
+
+  m_Settings->setValue("/"+AppSettings+"/ui/geometry","position",
+                       openfluid::tools::toGeometryString("Point",Geometry.X,Geometry.Y));
+  m_Settings->setValue("/"+AppSettings+"/ui/geometry","size",
+                       openfluid::tools::toGeometryString("Size",Geometry.Width,Geometry.Height));
+  
+  m_Settings->save();
+  m_Settings->enableAutoSave(true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+PreferencesManager::WindowGeometry_t PreferencesManager::getAppWindowGeometry(const std::string& AppSettings) const
+{
+  PreferencesManager::WindowGeometry_t Geometry;
+
+  if (m_Settings->exists("/"+AppSettings+"/ui/geometry/position"))
+  {
+    auto Pos = openfluid::tools::fromGeometryString(m_Settings->getValue("/"+AppSettings+"/ui/geometry/position")
+                                                    .get<std::string>(""),"Point");
+    Geometry.X = Pos.first;
+    Geometry.Y = Pos.second; 
+    Geometry.ValidPosition = true;
+  }
+
+  if (m_Settings->exists("/"+AppSettings+"/ui/geometry/position"))
+  {
+    auto Size = openfluid::tools::fromGeometryString(m_Settings->getValue("/"+AppSettings+"/ui/geometry/size")
+                                                     .get<std::string>(""),"Size");
+    Geometry.Width = Size.first;
+    Geometry.Height = Size.second; 
+    Geometry.ValidSize = true;
+  }
+
+  return Geometry;
 }
 
 

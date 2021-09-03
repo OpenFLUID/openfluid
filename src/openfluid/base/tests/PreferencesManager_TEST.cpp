@@ -125,6 +125,13 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   BOOST_CHECK(PrefsMgr->getSettingsFile() == DefaultPrefsFile);
 
+  auto BuilderGeometry = PrefsMgr->getAppWindowGeometry("builder");
+  auto DevStudioGeometry = PrefsMgr->getAppWindowGeometry("devstudio");
+  BOOST_CHECK(!BuilderGeometry.ValidPosition);
+  BOOST_CHECK(!BuilderGeometry.ValidSize);
+  BOOST_CHECK(!DevStudioGeometry.ValidPosition);
+  BOOST_CHECK(!DevStudioGeometry.ValidSize);
+
   BOOST_CHECK_EQUAL(PrefsMgr->getBuilderDeltaT(),3600);
   BOOST_CHECK(!PrefsMgr->getBuilderBeginDate().empty());
   BOOST_CHECK(!PrefsMgr->getBuilderEndDate().empty());
@@ -169,6 +176,9 @@ BOOST_AUTO_TEST_CASE(check_creation)
   PrefsMgr->setWorkspacesPaths(WorkspacesPaths);
 
   PrefsMgr->setUILanguage("it_IT");
+
+  PrefsMgr->setAppWindowGeometry("builder",{100,150,1200,1024,true,true});
+  PrefsMgr->setAppWindowGeometry("devstudio",{200,250,800,600,true,true});
 
   PrefsMgr->setBuilderExtraSimulatorsPaths(ExtraSimsPaths);
   PrefsMgr->removeBuilderExtraSimulatorsPath("/path/to/sims-lib2");
@@ -231,6 +241,20 @@ BOOST_AUTO_TEST_CASE(check_opening)
 
   { // ui lang
     BOOST_CHECK_EQUAL(PrefsMgr->getUILanguage(),"it_IT");
+  }
+
+  { // apps windows geometry 
+    auto BuilderGeometry = PrefsMgr->getAppWindowGeometry("builder");
+    auto DevStudioGeometry = PrefsMgr->getAppWindowGeometry("devstudio");
+
+    BOOST_CHECK_EQUAL(BuilderGeometry.X,100);
+    BOOST_CHECK_EQUAL(BuilderGeometry.Y,150);
+    BOOST_CHECK_EQUAL(BuilderGeometry.Width,1200);
+    BOOST_CHECK_EQUAL(BuilderGeometry.Height,1024);
+    BOOST_CHECK_EQUAL(DevStudioGeometry.X,200);
+    BOOST_CHECK_EQUAL(DevStudioGeometry.Y,250);
+    BOOST_CHECK_EQUAL(DevStudioGeometry.Width,800);
+    BOOST_CHECK_EQUAL(DevStudioGeometry.Height,600);
   }
   
   { // builder wares paths

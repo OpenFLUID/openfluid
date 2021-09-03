@@ -41,9 +41,9 @@
 #define __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__
 
 
-#include <QMainWindow>
 #include <QMap>
 
+#include <openfluid/ui/common/AppMainWindow.hpp>
 #include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
@@ -62,7 +62,7 @@ class WareSrcWidget;
 } } }
 
 
-class OPENFLUID_API MainWindow: public QMainWindow
+class OPENFLUID_API MainWindow: public openfluid::ui::common::AppMainWindow
 {
   Q_OBJECT
 

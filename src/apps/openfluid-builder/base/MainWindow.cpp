@@ -46,13 +46,8 @@
 
 
 MainWindow::MainWindow():
-  mp_QuitAction(nullptr), mp_CentralWidget(nullptr)
+  openfluid::ui::common::AppMainWindow("builder"),mp_QuitAction(nullptr), mp_CentralWidget(nullptr)
 {
-  QRect ScreenRect = QApplication::desktop()->screenGeometry();
-
-  resize(ScreenRect.width()*0.9,ScreenRect.height()*0.9);
-  move((ScreenRect.width()-width())/2,
-       (ScreenRect.height()-height())/2);
   layout()->setContentsMargins(0,0,0,0);
   layout()->setSpacing(0);
 

@@ -62,6 +62,7 @@ class OPENFLUID_API PreferencesManager
 
   OPENFLUID_SINGLETON_DEFINITION(PreferencesManager)
 
+
   private:
 
     static std::string m_SettingsFile;
@@ -121,6 +122,19 @@ class OPENFLUID_API PreferencesManager
 
     typedef std::map<std::string, SyntaxHighlightingRule_t> SyntaxHighlightingRules_t;
 
+    struct WindowGeometry_t
+    {
+      int X = 0;
+      int Y = 0;
+
+      int Width = 0;
+      int Height = 0;
+
+      bool ValidPosition = false;
+      bool ValidSize = false;
+    };
+
+
     /** 
        Used only if another file is used as the settings file
        instead of the default one (e.g. for testing). To be set before the first call of instance().
@@ -145,7 +159,12 @@ class OPENFLUID_API PreferencesManager
 
     std::string getCurrentWorkspacePath() const;
 
-     
+
+    void setAppWindowGeometry(const std::string& AppSettings, const WindowGeometry_t& Geometry);
+
+    WindowGeometry_t getAppWindowGeometry(const std::string& AppSettings) const;
+
+
     void setBuilderExtraSimulatorsPaths(const std::vector<std::string>& Paths);
 
     void addBuilderExtraSimulatorsPath(const std::string& Path);

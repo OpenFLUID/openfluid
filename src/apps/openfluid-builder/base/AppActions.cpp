@@ -508,6 +508,9 @@ void AppActions::createMenus(MainWindow& MainWin)
   mp_ViewMenu->addAction(action("ViewRestore"));
 
 
+  Menu = MainWin.menuBar()->addMenu(tr("Window"));
+  Menu->addAction(MainWin.getResetGeometryAction());
+
   Menu = MainWin.menuBar()->addMenu(tr("&Help"));
   SubMenu = Menu->addMenu(tr("OpenFLUID online"));
   SubMenu->addAction(action("HelpOnlineWeb"));

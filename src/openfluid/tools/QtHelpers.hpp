@@ -52,7 +52,9 @@
 #include <QStringList>
 #include <QDateTime>
 #include <QPoint>
+#include <QSize>
 
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/core/DateTime.hpp>
 
 
@@ -327,20 +329,8 @@ inline QString decodeXMLEntities(const QString& Str)
 */
 inline QPoint toQPoint(const std::string& Str)
 {
-  QPoint Point;
-  std::regex PointRegex("@Point\\(([\\-\\d]+) ([\\-\\d]+)\\)");
-  std::smatch Match;
-
-  if (std::regex_match(Str, Match, PointRegex))
-  {
-    if (Match.size() == 3)
-    {
-      Point.setX(std::stoi(Match.str(1)));
-      Point.setY(std::stoi(Match.str(2)));
-    }
-  }
-
-  return Point;
+  auto Coords = openfluid::tools::fromGeometryString(Str,"Point");
+  return QPoint(Coords.first,Coords.second);
 }
 
 
@@ -357,12 +347,47 @@ inline std::string fromQPoint(const QPoint& Point)
 {
   if (!Point.isNull())
   {
-    return "@Point("+std::to_string(Point.x())+" "+std::to_string(Point.y())+")";
+    return openfluid::tools::toGeometryString("Point",Point.x(),Point.y());
   }
 
   return "";
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Converts a \@Size formatted string to a QSize
+  @param[in] Str the \@Size formatted string (e.g. "\@Size(1920 1080)")
+  @return the QSize object
+*/
+inline QSize toQSize(const std::string& Str)
+{
+  auto Size = openfluid::tools::fromGeometryString(Str,"Size");
+  return QSize(Size.first,Size.second);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Converts a QSize to a \@Size formatted string
+  @param[in] Size the Size object to convert 
+  @return the \@Size formatted string (e.g. "\@Size(1920 1080)")
+*/
+inline std::string fromQSize(const QSize& Size)
+{
+  if (!Size.isNull())
+  {
+    return openfluid::tools::toGeometryString("Size",Size.width(),Size.height());
+  }
+
+  return "";
+}
 
 } } // namespaces
 

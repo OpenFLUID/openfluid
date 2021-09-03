@@ -126,6 +126,25 @@ std::string OPENFLUID_API generatePseudoUniqueIdentifier(const unsigned int Leng
 std::string OPENFLUID_API escapePattern(const std::string& Str);
 
 
+/**
+  Returns a pair of integer values extracted from a geometry string
+  @param[in] Str the geometry string (e.g. "@Point(127 82)", "@Size(1024 768)")
+  @param[in] Geominfo the expected geometry information type (e.g. "Point", "Size")
+  @return the pair of values extracted from the geometry string
+*/
+std::pair<int,int> OPENFLUID_API fromGeometryString(const std::string& Str, const std::string& GeomInfo);
+
+
+/**
+  Returns a geometry string from a geometry info type and a pair of integer values
+  @param[in] Geominfo the geometry information type (e.g. "Point", "Size")
+  @param[in] Value1 the first value
+  @param[in] Value2 the second value
+  @return the geometry string
+*/
+std::string OPENFLUID_API toGeometryString(const std::string& GeomInfo, int Value1, int Value2);
+
+
 } } //namespaces
 
 

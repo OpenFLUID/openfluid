@@ -71,7 +71,7 @@
 
 
 MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
-    QMainWindow(), ui(new Ui::MainWindow)
+    openfluid::ui::common::AppMainWindow("devstudio"), ui(new Ui::MainWindow)
 {
   openfluid::base::PreferencesManager* PrefsMgr = openfluid::base::PreferencesManager::instance();
 
@@ -287,11 +287,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   statusBar()->addPermanentWidget(new QLabel(TmpLabel),1);
 
-  // Main windows size and placement at startup
-  QRect ScreenRect = QApplication::desktop()->screenGeometry();
-  resize(ScreenRect.width()*0.9,ScreenRect.height()*0.9);
-  move((ScreenRect.width()-width())/2,
-       (ScreenRect.height()-height())/2);
+  applyWindowGeometry();
 }
 
 
@@ -351,7 +347,7 @@ void MainWindow::createLocalActions()
   m_Actions["DevDashboard"] = new QAction(tr("Development dashboard..."), this);
   m_Actions["DevDashboard"]->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_D));
 
-  //Help menu
+  // Help menu
   m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
   m_Actions["HelpOnlineCommunity"] = new QAction(tr("Community site"), this);
   m_Actions["HelpEmail"] = new QAction(tr("Email"), this);
@@ -371,6 +367,7 @@ void MainWindow::createMenus()
   QMenu* SubMenu;
   QMenu* ToolSubMenu;
 
+  // --- File
   Menu = menuBar()->addMenu(tr("File"));
   SubMenu = Menu->addMenu(tr("New ware"));
   SubMenu->addAction(m_Actions["NewSimulator"]);
@@ -393,6 +390,7 @@ void MainWindow::createMenus()
   Menu->addSeparator();
   Menu->addAction(m_Actions.value("Quit"));
 
+  // --- Edit
   Menu = menuBar()->addMenu(tr("Edit"));
   Menu->addAction(mp_Toolbar->action("Copy"));
   Menu->addAction(mp_Toolbar->action("Cut"));
@@ -402,6 +400,7 @@ void MainWindow::createMenus()
   Menu->addSeparator();
   Menu->addAction(m_Actions["Preferences"]);
 
+  // --- Build
   Menu = menuBar()->addMenu(tr("Build"));
   Menu->addAction(mp_Toolbar->action("ConfigureWare"));
   Menu->addAction(mp_Toolbar->action("BuildWare"));
@@ -418,6 +417,7 @@ void MainWindow::createMenus()
   SubMenu->addSeparator();
   SubMenu->addAction(mp_Toolbar->action("WareOptionsInstall"));
 
+  // --- Workspace
   Menu = menuBar()->addMenu(tr("Workspace"));
   Menu->addAction(mp_Toolbar->action("OpenTerminal"));
   Menu->addAction(mp_Toolbar->action("OpenExplorer"));
@@ -436,6 +436,11 @@ void MainWindow::createMenus()
   Menu->addSeparator();
   Menu->addAction(m_Actions["DevDashboard"]);
 
+  // --- Window
+  Menu = menuBar()->addMenu(tr("Window"));
+  Menu->addAction(getResetGeometryAction());
+
+  // --- Help
   Menu = menuBar()->addMenu(tr("&Help"));
   SubMenu = Menu->addMenu(tr("OpenFLUID online"));
   SubMenu->addAction(m_Actions["HelpOnlineWeb"]);

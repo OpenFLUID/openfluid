@@ -37,13 +37,14 @@
 */
 
 
+#include <utility>
 #include <thread>
 #include <chrono>
 #include <ctime>
 #include <random>
 #include <sstream>
 #include <regex>
-#include <iomanip> 
+#include <iomanip>
 
 #include <boost/algorithm/string.hpp>
 
@@ -313,6 +314,39 @@ std::string escapePattern(const std::string& Str)
   std::regex SpecialChars { R"([-[\]{}()*+?.,\^$|#\s])" };
 
   return std::regex_replace(Str,SpecialChars,R"(\$&)");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::pair<int,int> fromGeometryString(const std::string& Str, const std::string& GeomInfo)
+{
+  std::pair<int,int> Values{0,0};
+  std::regex SizeRegex("@"+GeomInfo+"\\(([\\-\\d]+) ([\\-\\d]+)\\)");
+  std::smatch Match;
+
+  if (std::regex_match(Str, Match, SizeRegex))
+  {
+    if (Match.size() == 3)
+    {
+      Values.first = std::stoi(Match.str(1));
+      Values.second = std::stoi(Match.str(2));
+    }
+  }
+
+  return Values;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string toGeometryString(const std::string& GeomInfo, int Value1, int Value2)
+{
+  return "@"+GeomInfo+"("+std::to_string(Value1)+" "+std::to_string(Value2)+")";
 }
 
 

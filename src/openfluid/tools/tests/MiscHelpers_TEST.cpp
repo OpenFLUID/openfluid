@@ -121,5 +121,18 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("_ofware20200-obs.so"),"_ofware20200\\-obs\\.so");
   BOOST_REQUIRE_EQUAL(openfluid::tools::escapePattern("+.?{}[]\\\\-_"),"\\+\\.\\?\\{\\}\\[\\]\\\\\\-_");
 
+
+  // ---------------------------------------------------------------------
+
+
+  BOOST_REQUIRE_EQUAL(openfluid::tools::toGeometryString("Point",125,337),"@Point(125 337)");
+
+  auto Pair = openfluid::tools::fromGeometryString("@Point(1976 1983)","Point");
+  BOOST_REQUIRE_EQUAL(Pair.first,1976);
+  BOOST_REQUIRE_EQUAL(Pair.second,1983);
+  
+  Pair = openfluid::tools::fromGeometryString("@Point(1976 1983)","Size");
+  BOOST_REQUIRE_EQUAL(Pair.first,0);
+  BOOST_REQUIRE_EQUAL(Pair.second,0);
 }
 

@@ -31,62 +31,64 @@
 
 
 /**
-  @file MainWindow.hpp
+  @file AppMainWindow.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#ifndef __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
-#define __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
+#ifndef __OPENFLUID_UICOMMON_APPMAINWINDOW_HPP__
+#define __OPENFLUID_UICOMMON_APPMAINWINDOW_HPP__
 
 
+#include <QMainWindow>
 #include <QAction>
 
-#include <openfluid/ui/common/AppMainWindow.hpp>
-
-#include "AbstractModuleWidget.hpp"
+#include <openfluid/dllexport.hpp>
 
 
-class MainWindow : public openfluid::ui::common::AppMainWindow
+namespace openfluid { namespace ui { namespace common {
+
+
+class OPENFLUID_API AppMainWindow : public QMainWindow
 {
   Q_OBJECT;
 
   private:
 
-    QAction* mp_QuitAction;
+    QAction* mp_ResetGeometryAction;
 
-    AbstractModuleWidget* mp_CentralWidget;
+    void saveWindowGeometry() const;
+
+    QSize computeDefaultSize() const;
+
+    QPoint computeDefaultPosition() const;
 
 
   protected:
 
-    void closeEvent(QCloseEvent* Event);
+    std::string m_AppSettings;
+
+    void applyWindowGeometry();
+
+
+  public slots:
+
+    void restoreToDefaultGeometry();
 
 
   public:
 
-    MainWindow();
+    QAction* getResetGeometryAction(const QString& Text = tr("Reset to default"));
 
-    ~MainWindow();
+    AppMainWindow(const std::string& AppSettings, QWidget *Parent = nullptr);
 
-    void setWidget(AbstractModuleWidget* Widget);
-
-    void unsetWidget()
-    { 
-      setWidget(nullptr); 
-    }
-
-    void unsetToolbar();
-
-    void setQuitAction(QAction* Action)
-    { 
-      mp_QuitAction = Action; 
-    }
-
-    void setProjectName(const QString& PrjName = "");
+    virtual ~AppMainWindow();
 
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__ */
+} } } // namespaces
+
+
+#endif /* __OPENFLUID_UICOMMON_APPMAINWINDOW_HPP__ */

@@ -1,6 +1,7 @@
 
 
-SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp MessageDialog.cpp MessageFrame.cpp
+SET(OPENFLUID_UI_COMMON_CPP AppMainWindow.cpp OpenFLUIDDialog.cpp 
+                            MessageDialog.cpp MessageFrame.cpp
                             AboutDialog.cpp OpenFLUIDSplashScreen.cpp
                             RunSimulationDialog.cpp RunSimulationWorker.cpp
                             RunCLISimulationDialog.cpp
@@ -18,7 +19,8 @@ SET(OPENFLUID_UI_COMMON_CPP OpenFLUIDDialog.cpp MessageDialog.cpp MessageFrame.c
                             TimePeriodWidget.cpp
                             )
 
-SET(OPENFLUID_UI_COMMON_HPP OpenFLUIDDialog.hpp MessageDialog.hpp MessageFrame.hpp
+SET(OPENFLUID_UI_COMMON_HPP AppMainWindow.hpp OpenFLUIDDialog.hpp 
+                            MessageDialog.hpp MessageFrame.hpp
                             AboutDialog.hpp OpenFLUIDSplashScreen.hpp
                             RunSimulationDialog.hpp RunSimulationWorker.hpp
                             RunCLISimulationDialog.hpp
