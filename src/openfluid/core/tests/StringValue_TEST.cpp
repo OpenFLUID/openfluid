@@ -276,31 +276,6 @@ BOOST_AUTO_TEST_CASE(check_string)
   BOOST_REQUIRE_EQUAL(MapV.getBoolean("bool"),false);
   std::cout << MapV << std::endl;
 
-  // to map, from deprecated style
-  Val3.set("str=toto;dbl=12.56;int=17;bool=false");
-  BOOST_REQUIRE_EQUAL(Val3.guessTypeConversion(),openfluid::core::Value::STRING);
-  std::cout << Val3 << " -> ";
-  BOOST_REQUIRE(!Val3.toNullValue(NullV));
-  BOOST_REQUIRE(!Val3.toDoubleValue(DoubleV));
-  BOOST_REQUIRE(!Val3.toIntegerValue(IntV));
-  BOOST_REQUIRE(!Val3.toBooleanValue(BoolV));
-  BOOST_REQUIRE(!Val3.toVectorValue(VectV));
-  BOOST_REQUIRE(!Val3.toMatrixValue(MatV));
-  BOOST_REQUIRE(Val3.toMapValue(MapV));
-  BOOST_REQUIRE_EQUAL(MapV.getSize(),4);
-  BOOST_REQUIRE_EQUAL(MapV.getString("str"),"toto");
-  BOOST_REQUIRE(MapV.at("dbl").asStringValue().toDoubleValue(DoubleV));
-  BOOST_REQUIRE_CLOSE(DoubleV.get(),12.560,0.000001);
-  BOOST_REQUIRE_EQUAL(MapV.getString("dbl"),"12.56");
-  BOOST_REQUIRE(MapV.at("int").asStringValue().toIntegerValue(IntV));
-  BOOST_REQUIRE_EQUAL(IntV.get(),17);
-  BOOST_REQUIRE_EQUAL(MapV.getString("int"),"17");
-  BOOST_REQUIRE(MapV.at("bool").asStringValue().toBooleanValue(BoolV));
-  BOOST_REQUIRE_EQUAL(BoolV.get(),false);
-  BOOST_REQUIRE_EQUAL(MapV.getString("bool"),"false");
-  std::cout << MapV << std::endl;
-
-
   // to map, with complex nested values
   Val3.set(
     R"({"key1":2.25,"key2":"string","key3":true,"key4":[1,2,3.3],"key5":[[1.1,1.2,1.3],[2.1,2.2,2.3]],"key6":)"
@@ -418,6 +393,7 @@ BOOST_AUTO_TEST_CASE(check_guessconversion)
 
 BOOST_AUTO_TEST_CASE(check_convert)
 {
+  std::cout << "======== check_convert ========" << std::endl;
   {
     openfluid::core::DoubleValue Val;
     BOOST_REQUIRE(openfluid::core::StringValue("2.199e-3").convert(Val));
@@ -444,17 +420,20 @@ BOOST_AUTO_TEST_CASE(check_convert)
     openfluid::core::VectorValue Val;
     BOOST_REQUIRE(openfluid::core::StringValue("[1.25,-2.199e+1]").convert(Val));
     BOOST_REQUIRE_EQUAL(Val.size(),2);
+    std::cout << Val << std::endl;
   }
 
   {
     openfluid::core::MatrixValue Val;
     BOOST_REQUIRE(openfluid::core::StringValue("[[1.25,-2.199e+1],[-1.25,2.199e-4]]").convert(Val));
     BOOST_REQUIRE_EQUAL(Val.size(),4);
+    std::cout << Val << std::endl;
   }
 
   {
     openfluid::core::MapValue Val;
     BOOST_REQUIRE(openfluid::core::StringValue("{\"k1\":1.2,\"k2\":\"str\"}").convert(Val));
     BOOST_REQUIRE_EQUAL(Val.size(),2);
+    std::cout << Val << std::endl;
   }
 }

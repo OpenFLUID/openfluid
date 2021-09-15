@@ -57,7 +57,6 @@ const std::string BUILD_COMPILATION_FLAGS = "@OFBUILD_ALL_COMPILE_FLAGS@";
 
 const std::string BUILD_LIB_BOOST_VERSION = "@Boost_MAJOR_VERSION@.@Boost_MINOR_VERSION@.@Boost_SUBMINOR_VERSION@";
 const std::string BUILD_LIB_GDAL_VERSION = "@GDAL_VERSION@";
-const std::string BUILD_LIB_RAPIDJSON_VERSION = "@RapidJSON_VERSION@";
 const std::string BUILD_LIB_QT_VERSION = "@Qt5Core_VERSION@";
 const std::string BUILD_LIB_GEOS_VERSION = "@GEOS_VERSION@";
 

@@ -33,6 +33,7 @@
   @file WareshubJsonEditor.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
@@ -43,11 +44,11 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-#include <rapidjson/document.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
 #include <openfluid/ui/waresdev/WareshubIssueDialog.hpp>
+#include <openfluid/tools/JSONHelpers.hpp>
 
 
 namespace Ui {
@@ -62,12 +63,11 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
 {
   Q_OBJECT
 
-
   private:
 
     Ui::WareshubJsonEditor* ui;
 
-    rapidjson::Document Doc;
+    openfluid::tools::json m_Doc;
 
     bool m_IsModified = false;
 

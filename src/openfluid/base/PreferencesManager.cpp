@@ -1230,37 +1230,37 @@ std::list<PreferencesManager::ExternalTool_t> PreferencesManager::getWaresdevExt
 
   auto JSONArray = Value.JSONValue();
 
-  if (JSONArray != nullptr && JSONArray->IsArray())
+  if (JSONArray.is_array())
   {
-    for (const auto& V : JSONArray->GetArray())
+    for (const auto& V : JSONArray)
     {
-      if (V.IsObject() && V.HasMember("name"))
+      if (V.is_object() && V.contains("name"))
       {
         PreferencesManager::ExternalTool_t Tool;
 
-        Tool.Name = V["name"].GetString();
+        Tool.Name = V["name"];
 
-        if (V.HasMember("workspace_command"))
+        if (V.contains("workspace_command"))
         {
-          std::string Cmd = openfluid::tools::trim(std::string(V["workspace_command"].GetString()));
+          std::string Cmd = openfluid::tools::trim(std::string(V["workspace_command"]));
           if (!Cmd.empty())
           {
             Tool.Commands[PreferencesManager::ExternalToolContext::WORKSPACE] = Cmd;
           }
         }
 
-        if (V.HasMember("ware_command"))
+        if (V.contains("ware_command"))
         {
-          std::string Cmd = openfluid::tools::trim(std::string(V["ware_command"].GetString()));
+          std::string Cmd = openfluid::tools::trim(std::string(V["ware_command"]));
           if (!Cmd.empty())
           {
             Tool.Commands[PreferencesManager::ExternalToolContext::WARE] = Cmd;
           }
         }
 
-        if (V.HasMember("file_command"))
+        if (V.contains("file_command"))
         {
-          std::string Cmd = openfluid::tools::trim(std::string(V["file_command"].GetString()));
+          std::string Cmd = openfluid::tools::trim(std::string(V["file_command"]));
           if (!Cmd.empty())
           {
             Tool.Commands[PreferencesManager::ExternalToolContext::FILE] = Cmd;
@@ -1506,33 +1506,33 @@ PreferencesManager::SyntaxHighlightingRules_t PreferencesManager::getWaresdevSyn
 
   auto JSONArray = Value.JSONValue();
 
-  if (JSONArray != nullptr && JSONArray->IsArray())
+  if (JSONArray.is_array())
   {
-    for (const auto& V : JSONArray->GetArray())
+    for (const auto& V : JSONArray)
     {
-      if (V.IsObject() && V.HasMember("name"))
+      if (V.is_object() && V.contains("name"))
       {
         PreferencesManager::SyntaxHighlightingRule_t Rule;
         
-        std::string RuleName = V["name"].GetString();
+        std::string RuleName = V["name"];
 
-        if (V.HasMember("color"))
+        if (V.contains("color"))
         {
-          std::string Color = openfluid::tools::trim(std::string(V["color"].GetString()));
+          std::string Color = openfluid::tools::trim(std::string(V["color"]));
           if (!Color.empty())
           {
             Rule.Color = Color;
           }
         }
 
-        if (V.HasMember("decoration") && V["decoration"].IsArray())
+        if (V.contains("decoration") && V["decoration"].is_array())
         {
           std::vector<std::string> DecoVect;
-          for (auto& v : V["decoration"].GetArray())
+          for (auto& Deco : V["decoration"])
           {
-            if (v.IsString())
+            if (Deco.is_string())
             {
-              DecoVect.push_back(v.GetString()); 
+              DecoVect.push_back(Deco); 
             }
           }
           Rule.Decoration = DecoVect;

@@ -150,11 +150,10 @@ BOOST_AUTO_TEST_CASE(check_setting_value)
   }
 
   {
-    auto JV = rapidjson::Value(-123);
-    openfluid::tools::SettingValue Val(&JV);
+    auto Val = openfluid::tools::SettingValue::fromJSON(openfluid::tools::json(-123));
     BOOST_CHECK(Val.isJSONValue());
-    BOOST_CHECK(Val.JSONValue()->IsInt());
-    BOOST_CHECK_EQUAL(Val.JSONValue()->GetInt(),-123);
+    BOOST_CHECK(Val.JSONValue().is_number_integer());
+    BOOST_CHECK_EQUAL(Val.JSONValue().get<int>(),-123);
   }
 }
 
@@ -241,7 +240,7 @@ BOOST_AUTO_TEST_CASE(check_read_value)
   Value = SB.getValue("/object");
   BOOST_CHECK(!Value.isNull());
   BOOST_CHECK(Value.isJSONValue());
-  BOOST_CHECK(Value.JSONValue()->IsObject());
+  BOOST_CHECK(Value.JSONValue().is_object());
 
   Value = SB.getValue("/object/string");
   BOOST_CHECK(!Value.isNull());
@@ -390,18 +389,15 @@ BOOST_AUTO_TEST_CASE(check_persistence)
        {"Project_X","/path/to/prjX"},
        {"Project_Y","/path/to/prjY"}
      };
-    rapidjson::Value ListValue(rapidjson::kArrayType);
+    openfluid::tools::json ListValue(openfluid::tools::json::value_t::array);
     for (const auto& Prj : Projects)
     {
-      rapidjson::Value Item;
-      Item.SetObject();
-      Item.AddMember("name",rapidjson::Value(Prj.first.c_str(),SBTo.data().GetAllocator()),
-                     SBTo.data().GetAllocator());
-      Item.AddMember("path",rapidjson::Value(Prj.second.c_str(),SBTo.data().GetAllocator()),
-                     SBTo.data().GetAllocator());
-      ListValue.PushBack(Item,SBTo.data().GetAllocator());
+      openfluid::tools::json Item(openfluid::tools::json::value_t::object);
+      Item["name"] = Prj.first;
+      Item["path"] = Prj.second;
+      ListValue.push_back(Item);
     }
-    SBTo.setValue(Path,"list",openfluid::tools::SettingValue(&ListValue));
+    SBTo.setValue(Path,"list",openfluid::tools::SettingValue::fromJSON(ListValue));
   }
 
   {
@@ -436,24 +432,21 @@ BOOST_AUTO_TEST_CASE(check_persistence)
       {"openfluid-keyword","#546F02",{"bold"}},
       {"quoted","#2A00FF",{}}
     };
-    rapidjson::Value ListValue(rapidjson::kArrayType);
+    openfluid::tools::json ListValue(openfluid::tools::json::value_t::array);
     for (const auto& Cat : Categs)
     {
-      rapidjson::Value Item;
-      Item.SetObject();
-      Item.AddMember("name",rapidjson::Value(std::get<0>(Cat).c_str(),SBTo.data().GetAllocator()),
-                     SBTo.data().GetAllocator());
-      Item.AddMember("color",rapidjson::Value(std::get<1>(Cat).c_str(),SBTo.data().GetAllocator()),
-                     SBTo.data().GetAllocator());
-      rapidjson::Value ItemDeco(rapidjson::kArrayType);
+      openfluid::tools::json Item(openfluid::tools::json::value_t::object);
+      Item["name"] = std::get<0>(Cat);
+      Item["color"] = std::get<1>(Cat);
+      openfluid::tools::json ItemDeco(openfluid::tools::json::value_t::array);
       for (const auto& Deco: std::get<2>(Cat))
       {
-        ItemDeco.PushBack(rapidjson::Value(Deco.c_str(),SBTo.data().GetAllocator()),SBTo.data().GetAllocator());
+        ItemDeco.push_back(Deco.c_str());
       }
-      Item.AddMember("decoration",ItemDeco,SBTo.data().GetAllocator());      
-      ListValue.PushBack(Item,SBTo.data().GetAllocator());
+      Item["decoration"] = ItemDeco;   
+      ListValue.push_back(Item);
     }
-    SBTo.setValue(Path,"categories",openfluid::tools::SettingValue(&ListValue));
+    SBTo.setValue(Path,"categories",openfluid::tools::SettingValue::fromJSON(ListValue));
   }
 
   {
@@ -481,13 +474,13 @@ BOOST_AUTO_TEST_CASE(check_persistence)
 
     const auto ListValue = SBFrom.getValue("/builder/recentprojects/list").JSONValue();
 
-    BOOST_CHECK(ListValue->IsArray());
-    BOOST_CHECK_EQUAL(ListValue->Size(),5);
+    BOOST_CHECK(ListValue.is_array());
+    BOOST_CHECK_EQUAL(ListValue.size(),5);
 
-    for (auto& Val : ListValue->GetArray())
+    for (auto& Val : ListValue)
     {
-      BOOST_CHECK(Val.HasMember("name"));
-      BOOST_CHECK(Val.HasMember("path"));
+      BOOST_CHECK(Val.contains("name"));
+      BOOST_CHECK(Val.contains("path"));
     }
   }
 }

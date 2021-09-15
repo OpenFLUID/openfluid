@@ -43,14 +43,11 @@
 
 #include <sstream>
 
-#include <rapidjson/document.h>
-#include <rapidjson/stringbuffer.h>
-#include <rapidjson/prettywriter.h>
-
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
+#include <openfluid/tools/JSONHelpers.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -166,32 +163,27 @@ class OPENFLUID_API WarePluginsSearchResultsSerializer
 
     void writeToStreamAsText(std::ostream& OutStm,bool WithErrors) const;
 
-    void addErrorsToJSONDoc(rapidjson::Document& Doc, rapidjson::Document::AllocatorType& Alloc) const;
+    void addErrorsToJSONDoc(openfluid::tools::json& Doc) const;
 
-    static std::string getJSONAsString(rapidjson::Document& Doc);
+    static std::string getJSONAsString(openfluid::tools::json& Doc);
 
     void writeListToStreamAsJSON(std::ostream& OutStm,bool WithErrors) const;
 
-    void addDataForJSON(const openfluid::ware::SignatureDataItem& Item,
-                        rapidjson::Value& Arr,rapidjson::Document::AllocatorType& Alloc) const;
+    void addDataForJSON(const openfluid::ware::SignatureDataItem& Item, openfluid::tools::json& Arr) const;
 
     void addSpatialDataForJSON(const openfluid::ware::SignatureSpatialDataItem& Item,
-                               rapidjson::Value& Arr,rapidjson::Document::AllocatorType& Alloc) const;
+                               openfluid::tools::json& Arr) const;
 
     void addTypedSpatialDataForJSON(const openfluid::ware::SignatureTypedSpatialDataItem& Item,
-                                    rapidjson::Value& Arr,rapidjson::Document::AllocatorType& Alloc) const;
+                                    openfluid::tools::json& Arr) const;
 
-    void addDataDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign,
-                               rapidjson::Value& Obj,rapidjson::Document::AllocatorType& Alloc) const;
+    void addDataDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const;
 
-    void addGraphDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign,
-                                rapidjson::Value& Obj,rapidjson::Document::AllocatorType& Alloc) const;
+    void addGraphDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const;
 
-    void addWareDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign,
-                               rapidjson::Value& Obj,rapidjson::Document::AllocatorType& Alloc) const;
+    void addWareDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const;
 
-    void addWareDetailsForJSON(const openfluid::ware::ObserverSignature* Sign,
-                               rapidjson::Value& Obj,rapidjson::Document::AllocatorType& Alloc) const;
+    void addWareDetailsForJSON(const openfluid::ware::ObserverSignature* Sign, openfluid::tools::json& Obj) const;
 
     void writeToStreamAsJSON(std::ostream& OutStm,bool WithErrors) const;
 
@@ -596,20 +588,19 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsT
 
 
 template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addErrorsToJSONDoc(
-  rapidjson::Document& Doc, rapidjson::Document::AllocatorType& Alloc) const
+void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addErrorsToJSONDoc(openfluid::tools::json& Doc) const
 {
-  rapidjson::Value Errors(rapidjson::kArrayType);
+  openfluid::tools::json Errors(openfluid::tools::json::value_t::array);
 
   for (auto& EFile : m_SearchResults.erroredFiles())
   {
-    rapidjson::Value EObj(rapidjson::kObjectType);
-    EObj.AddMember("file_path",rapidjson::Value(EFile.first.c_str(),Alloc),Alloc);
-    EObj.AddMember("message",rapidjson::Value(EFile.second.c_str(),Alloc),Alloc);
-    Errors.PushBack(EObj,Alloc);
+    openfluid::tools::json EObj(openfluid::tools::json::value_t::object);
+    EObj["file_path"] = EFile.first;
+    EObj["message"] = EFile.second;
+    Errors.push_back(EObj);
   }
   
-  Doc.AddMember("errors",Errors,Alloc);
+  Doc["errors"] = Errors;
 }
 
 
@@ -618,14 +609,9 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addErrorsToJSOND
 
 
 template<class SignatureInstanceType>
-std::string WarePluginsSearchResultsSerializer<SignatureInstanceType>::getJSONAsString(rapidjson::Document& Doc)
+std::string WarePluginsSearchResultsSerializer<SignatureInstanceType>::getJSONAsString(openfluid::tools::json& Doc)
 {
-  rapidjson::StringBuffer JSONbuffer;
-  rapidjson::PrettyWriter<rapidjson::StringBuffer> JSONwriter(JSONbuffer);
-  JSONwriter.SetIndent(' ',2);
-  Doc.Accept(JSONwriter);      
-
-  return JSONbuffer.GetString();
+  return Doc.dump(2);
 }
 
 
@@ -637,25 +623,23 @@ template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeListToStreamAsJSON(std::ostream& OutStm,
                                                                                         bool WithErrors) const
 {
-  rapidjson::Document JSON;
-  JSON.SetObject();
-  rapidjson::Document::AllocatorType& JSONalloc = JSON.GetAllocator();
+  openfluid::tools::json JSON(openfluid::tools::json::value_t::object);
 
-  rapidjson::Value Available(rapidjson::kArrayType);
+  openfluid::tools::json Available(openfluid::tools::json::value_t::array);
 
   for (auto& Plug : m_SearchResults.availablePlugins())
   {
     if (Plug->Verified && Plug->Signature)
     {
-      Available.PushBack(rapidjson::Value(Plug->Signature->ID.c_str(),JSONalloc),JSONalloc);
+      Available.push_back(Plug->Signature->ID);
     }
   }
 
-  JSON.AddMember("available",Available,JSONalloc);
+  JSON["available"] = Available;
 
   if (WithErrors)
   {
-    addErrorsToJSONDoc(JSON,JSONalloc);
+    addErrorsToJSONDoc(JSON);
   }
 
 
@@ -669,13 +653,13 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeListToStrea
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataForJSON(
-  const openfluid::ware::SignatureDataItem& Item, rapidjson::Value& Arr,rapidjson::Document::AllocatorType& Alloc) const
+  const openfluid::ware::SignatureDataItem& Item, openfluid::tools::json& Arr) const
 {
-   rapidjson::Value Obj(rapidjson::kObjectType);
-   Obj.AddMember("name",rapidjson::Value(Item.DataName.c_str(),Alloc),Alloc);
-   Obj.AddMember("description",rapidjson::Value(Item.Description.c_str(),Alloc),Alloc);
-   Obj.AddMember("si_unit",rapidjson::Value(Item.DataUnit.c_str(),Alloc),Alloc);
-   Arr.PushBack(Obj,Alloc);
+   openfluid::tools::json Obj(openfluid::tools::json::value_t::object);
+   Obj["name"] = Item.DataName;
+   Obj["description"] = Item.Description;
+   Obj["si_unit"] = Item.DataUnit;
+   Arr.push_back(Obj);
 }
 
 
@@ -685,15 +669,14 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataForJSON(
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSpatialDataForJSON(
-  const openfluid::ware::SignatureSpatialDataItem& Item, 
-  rapidjson::Value& Arr,rapidjson::Document::AllocatorType& Alloc) const
+  const openfluid::ware::SignatureSpatialDataItem& Item, openfluid::tools::json& Arr) const
 {
-  rapidjson::Value Obj(rapidjson::kObjectType);
-   Obj.AddMember("name",rapidjson::Value(Item.DataName.c_str(),Alloc),Alloc);
-   Obj.AddMember("units_class",rapidjson::Value(Item.UnitsClass.c_str(),Alloc),Alloc);
-   Obj.AddMember("description",rapidjson::Value(Item.Description.c_str(),Alloc),Alloc);
-   Obj.AddMember("si_unit",rapidjson::Value(Item.DataUnit.c_str(),Alloc),Alloc);
-   Arr.PushBack(Obj,Alloc);
+  openfluid::tools::json Obj(openfluid::tools::json::value_t::object);
+  Obj["name"] = Item.DataName;
+  Obj["units_class"] = Item.UnitsClass;
+  Obj["description"] = Item.Description;
+  Obj["si_unit"] = Item.DataUnit;
+  Arr.push_back(Obj);
 }
 
 
@@ -703,18 +686,17 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSpatialDataFo
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addTypedSpatialDataForJSON(
-  const openfluid::ware::SignatureTypedSpatialDataItem& Item,
-  rapidjson::Value& Arr,rapidjson::Document::AllocatorType& Alloc) const
+  const openfluid::ware::SignatureTypedSpatialDataItem& Item, openfluid::tools::json& Arr) const
 {
   std::string TypeStr = openfluid::core::Value::getStringFromValueType(Item.DataType);
 
-  rapidjson::Value Obj(rapidjson::kObjectType);
-   Obj.AddMember("name",rapidjson::Value(Item.DataName.c_str(),Alloc),Alloc);
-   Obj.AddMember("type",rapidjson::Value(TypeStr.c_str(),Alloc),Alloc);
-   Obj.AddMember("units_class",rapidjson::Value(Item.UnitsClass.c_str(),Alloc),Alloc);
-   Obj.AddMember("description",rapidjson::Value(Item.Description.c_str(),Alloc),Alloc);
-   Obj.AddMember("si_unit",rapidjson::Value(Item.DataUnit.c_str(),Alloc),Alloc);
-   Arr.PushBack(Obj,Alloc);
+  openfluid::tools::json Obj(openfluid::tools::json::value_t::object);
+  Obj["name"] = Item.DataName;
+  Obj["type"] = TypeStr;
+  Obj["units_class"] = Item.UnitsClass;
+  Obj["description"] = Item.Description;
+  Obj["si_unit"] = Item.DataUnit;
+  Arr.push_back(Obj);
 }
 
 
@@ -724,123 +706,121 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addTypedSpatialD
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsForJSON(
-  const openfluid::ware::SimulatorSignature* Sign,
-  rapidjson::Value& Obj,
-  rapidjson::Document::AllocatorType& Alloc) const
+  const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const
 {
   // ------ Parameters
 
-  rapidjson::Value ParamsObj(rapidjson::kObjectType);
+  openfluid::tools::json ParamsObj(openfluid::tools::json::value_t::object);
 
-  rapidjson::Value ReqParamsArray(rapidjson::kArrayType);
+  openfluid::tools::json  ReqParamsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.RequiredParams)
   {
-    addDataForJSON(Item,ReqParamsArray,Alloc);
+    addDataForJSON(Item,ReqParamsArray);
   }
 
-  rapidjson::Value UsedParamsArray(rapidjson::kArrayType);
+  openfluid::tools::json  UsedParamsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedParams)
   {
-    addDataForJSON(Item,UsedParamsArray,Alloc);
+    addDataForJSON(Item,UsedParamsArray);
   }
 
-  ParamsObj.AddMember("required",ReqParamsArray,Alloc);
-  ParamsObj.AddMember("used",UsedParamsArray,Alloc);
-  Obj.AddMember("parameters",ParamsObj,Alloc);
+  ParamsObj["required"] = ReqParamsArray;
+  ParamsObj["used"] = UsedParamsArray;
+  Obj["parameters"] = ParamsObj;
 
 
   // ------ Attributes
 
-  rapidjson::Value AttrsObj(rapidjson::kObjectType);
+  openfluid::tools::json AttrsObj(openfluid::tools::json::value_t::object);
 
-  rapidjson::Value ReqAttrsArray(rapidjson::kArrayType);
+  openfluid::tools::json  ReqAttrsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.RequiredAttribute)
   {
-    addSpatialDataForJSON(Item,ReqAttrsArray,Alloc);
+    addSpatialDataForJSON(Item,ReqAttrsArray);
   } 
 
-  rapidjson::Value UsedAttrsArray(rapidjson::kArrayType);
+  openfluid::tools::json  UsedAttrsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedAttribute)
   {
-    addSpatialDataForJSON(Item,UsedAttrsArray,Alloc);
+    addSpatialDataForJSON(Item,UsedAttrsArray);
   } 
 
-  rapidjson::Value ProdAttrsArray(rapidjson::kArrayType);
+  openfluid::tools::json  ProdAttrsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.ProducedAttribute)
   {
-    addSpatialDataForJSON(Item,ProdAttrsArray,Alloc);
+    addSpatialDataForJSON(Item,ProdAttrsArray);
   } 
 
-  AttrsObj.AddMember("required",ReqAttrsArray,Alloc);
-  AttrsObj.AddMember("used",UsedAttrsArray,Alloc);
-  AttrsObj.AddMember("produced",ProdAttrsArray,Alloc);
-  Obj.AddMember("attributes",AttrsObj,Alloc);
+  AttrsObj["required"] = ReqAttrsArray;
+  AttrsObj["used"] = UsedAttrsArray;
+  AttrsObj["produced"] = ProdAttrsArray;
+  Obj["attributes"] = AttrsObj;
 
 
   // ------ Variables
 
-  rapidjson::Value VarsObj(rapidjson::kObjectType);
+  openfluid::tools::json VarsObj(openfluid::tools::json::value_t::object);
 
-  rapidjson::Value ReqVarsArray(rapidjson::kArrayType);
+  openfluid::tools::json  ReqVarsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.RequiredVars)
   {
-    addTypedSpatialDataForJSON(Item,ReqVarsArray,Alloc);
+    addTypedSpatialDataForJSON(Item,ReqVarsArray);
   } 
 
-  rapidjson::Value UsedVarsArray(rapidjson::kArrayType);
+  openfluid::tools::json  UsedVarsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedVars)
   {
-    addTypedSpatialDataForJSON(Item,UsedVarsArray,Alloc);
+    addTypedSpatialDataForJSON(Item,UsedVarsArray);
   } 
 
-  rapidjson::Value UpVarsArray(rapidjson::kArrayType);
+  openfluid::tools::json  UpVarsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UpdatedVars)
   {
-    addTypedSpatialDataForJSON(Item,UpVarsArray,Alloc);
+    addTypedSpatialDataForJSON(Item,UpVarsArray);
   } 
 
-  rapidjson::Value ProdVarsArray(rapidjson::kArrayType);
+  openfluid::tools::json  ProdVarsArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.ProducedVars)
   {
-    addTypedSpatialDataForJSON(Item,ProdVarsArray,Alloc);
+    addTypedSpatialDataForJSON(Item,ProdVarsArray);
   } 
 
-  VarsObj.AddMember("required",ReqVarsArray,Alloc);
-  VarsObj.AddMember("used",UsedVarsArray,Alloc);
-  VarsObj.AddMember("updated",UpVarsArray,Alloc);
-  VarsObj.AddMember("produced",ProdVarsArray,Alloc);  
-  Obj.AddMember("variables",VarsObj,Alloc);
+  VarsObj["required"] = ReqVarsArray;
+  VarsObj["used"] = UsedVarsArray;
+  VarsObj["updated"] = UpVarsArray;
+  VarsObj["produced"] = ProdVarsArray;
+  Obj["variables"] = VarsObj;
 
 
   // ------ Events
 
-  rapidjson::Value EvArray(rapidjson::kArrayType);
+  openfluid::tools::json  EvArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedEventsOnUnits)
   {
-    EvArray.PushBack(rapidjson::Value(Item.c_str(),Alloc),Alloc);
+    EvArray.push_back(Item);
   }
-  Obj.AddMember("events",EvArray,Alloc);
+  Obj["events"] = EvArray;
 
 
   // ------ Extrafiles
 
-  rapidjson::Value ExtraObj(rapidjson::kObjectType);
+  openfluid::tools::json ExtraObj(openfluid::tools::json::value_t::object);
 
-  rapidjson::Value ReqExtraArray(rapidjson::kArrayType);
+  openfluid::tools::json  ReqExtraArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.RequiredExtraFiles)
   {
-    ReqExtraArray.PushBack(rapidjson::Value(Item.c_str(),Alloc),Alloc);
+    ReqExtraArray.push_back(Item);
   }
 
-  rapidjson::Value UsedExtraArray(rapidjson::kArrayType);
+  openfluid::tools::json  UsedExtraArray(openfluid::tools::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedExtraFiles)
   {
-    UsedExtraArray.PushBack(rapidjson::Value(Item.c_str(),Alloc),Alloc);
+    UsedExtraArray.push_back(Item);
   }
 
-  ExtraObj.AddMember("required",ReqExtraArray,Alloc);
-  ExtraObj.AddMember("used",UsedExtraArray,Alloc);
-  Obj.AddMember("extra_files",ExtraObj,Alloc);
+  ExtraObj["required"] = ReqExtraArray;
+  ExtraObj["used"] = UsedExtraArray;
+  Obj["extra_files"] = ExtraObj;
 }
 
 
@@ -850,20 +830,19 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsFo
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addGraphDetailsForJSON(
-  const openfluid::ware::SimulatorSignature* Sign,
-  rapidjson::Value& Obj,rapidjson::Document::AllocatorType& Alloc) const
+  const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const
 {
-  Obj.AddMember("description",rapidjson::Value(Sign->HandledUnitsGraph.UpdatedUnitsGraph.c_str(),Alloc),Alloc);
+  Obj["description"] = Sign->HandledUnitsGraph.UpdatedUnitsGraph;
 
-  rapidjson::Value ClassesArray(rapidjson::kArrayType);
+  openfluid::tools::json ClassesArray(openfluid::tools::json::value_t::array);
   for (const auto& Class : Sign->HandledUnitsGraph.UpdatedUnitsClass)
   {
-    rapidjson::Value ClassObj(rapidjson::kObjectType);
-    ClassObj.AddMember("class_name",rapidjson::Value(Class.UnitsClass.c_str(),Alloc),Alloc);
-    ClassObj.AddMember("description",rapidjson::Value(Class.Description.c_str(),Alloc),Alloc);
-    ClassesArray.PushBack(ClassObj,Alloc);
+    openfluid::tools::json ClassObj(openfluid::tools::json::value_t::object);
+    ClassObj["class_name"] = Class.UnitsClass;
+    ClassObj["description"] = Class.Description;
+    ClassesArray.push_back(ClassObj);
   }
-  Obj.AddMember("units_classses",ClassesArray,Alloc);
+  Obj["units_classses"] = ClassesArray;
 }
 
 
@@ -873,30 +852,28 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addGraphDetailsF
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsForJSON(
-  const openfluid::ware::SimulatorSignature* Sign, 
-  rapidjson::Value& Obj, rapidjson::Document::AllocatorType& Alloc) const
+  const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const
 {
-  Obj.AddMember("domain",rapidjson::Value(Sign->Domain.c_str(),Alloc),Alloc);
-  Obj.AddMember("process",rapidjson::Value(Sign->Process.c_str(),Alloc),Alloc);
-  Obj.AddMember("method",rapidjson::Value(Sign->Method.c_str(),Alloc),Alloc);
+  Obj["domain"] = Sign->Domain;
+  Obj["process"] = Sign->Process;
+  Obj["method"] = Sign->Method;
 
 
-  rapidjson::Value DataObj(rapidjson::kObjectType);
-  addDataDetailsForJSON(Sign,DataObj,Alloc);
-  Obj.AddMember("data",DataObj,Alloc);
+  openfluid::tools::json DataObj(openfluid::tools::json::value_t::object);
+  addDataDetailsForJSON(Sign,DataObj);
+  Obj["data"] = DataObj;
 
 
-  rapidjson::Value SchedObj(rapidjson::kObjectType);
-  SchedObj.AddMember("type",rapidjson::Value(getSchedulingTypeAsString(Sign->TimeScheduling.Type).c_str(),Alloc),
-                     Alloc);
-  SchedObj.AddMember("min",Sign->TimeScheduling.Min,Alloc);
-  SchedObj.AddMember("min",Sign->TimeScheduling.Max,Alloc);
-  Obj.AddMember("scheduling",SchedObj,Alloc);
+  openfluid::tools::json SchedObj(openfluid::tools::json::value_t::object);
+  SchedObj["type"] = getSchedulingTypeAsString(Sign->TimeScheduling.Type);
+  SchedObj["min"] = Sign->TimeScheduling.Min;
+  SchedObj["max"] = Sign->TimeScheduling.Max;
+  Obj["scheduling"] = SchedObj;
 
 
-  rapidjson::Value GraphObj(rapidjson::kObjectType);
-  addGraphDetailsForJSON(Sign,GraphObj,Alloc);
-  Obj.AddMember("spatial_graph",GraphObj,Alloc);
+  openfluid::tools::json GraphObj(openfluid::tools::json::value_t::object);
+  addGraphDetailsForJSON(Sign,GraphObj);
+  Obj["spatial_graph"] = GraphObj;
 }
 
 
@@ -906,9 +883,7 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsFo
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsForJSON(
-  const openfluid::ware::ObserverSignature* /*Sign*/, 
-  rapidjson::Value& /*Obj*/, 
-  rapidjson::Document::AllocatorType& /*Alloc*/) const
+  const openfluid::ware::ObserverSignature* /*Sign*/, openfluid::tools::json& /*Obj*/) const
 {
   // nothing to be done
 }
@@ -922,11 +897,9 @@ template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJSON(std::ostream& OutStm,
                                                                                     bool WithErrors) const
 {
-  rapidjson::Document JSON;
-  JSON.SetObject();
-  rapidjson::Document::AllocatorType& JSONalloc = JSON.GetAllocator();
+  openfluid::tools::json JSON(openfluid::tools::json::value_t::object);
 
-  rapidjson::Value Available(rapidjson::kArrayType);
+  openfluid::tools::json Available(openfluid::tools::json::value_t::array);
 
   for (auto& Plug : m_SearchResults.availablePlugins())
   {
@@ -934,49 +907,45 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJ
     {
       const auto Sign = Plug->Signature;
 
-      rapidjson::Value WareObj(rapidjson::kObjectType);
-      WareObj.AddMember("id",rapidjson::Value(Sign->ID.c_str(),JSONalloc),JSONalloc);
-      WareObj.AddMember("file_path",rapidjson::Value(Plug->FileFullPath.c_str(),JSONalloc),JSONalloc);
-      WareObj.AddMember("abi_version",rapidjson::Value(Sign->BuildInfo.SDKVersion.c_str(),JSONalloc),JSONalloc);
+      openfluid::tools::json WareObj(openfluid::tools::json::value_t::object);
+      WareObj["id"] = Sign->ID;
+      WareObj["file_path"] = Plug->FileFullPath;
+      WareObj["abi_version"] = Sign->BuildInfo.SDKVersion;
 
-      rapidjson::Value BuildObj(rapidjson::kObjectType);
-      BuildObj.AddMember("type",rapidjson::Value(Sign->BuildInfo.BuildType.c_str(),JSONalloc),JSONalloc);
-      BuildObj.AddMember("compiler_id",rapidjson::Value(Sign->BuildInfo.CompilerID.c_str(),JSONalloc),JSONalloc);
-      BuildObj.AddMember("compiler_version",
-                         rapidjson::Value(Sign->BuildInfo.CompilerVersion.c_str(),JSONalloc),JSONalloc);
-      BuildObj.AddMember("compilation_flags",
-                         rapidjson::Value(Sign->BuildInfo.CompilationFlags.c_str(),JSONalloc),JSONalloc);
-      WareObj.AddMember("build_info",BuildObj,JSONalloc);
+      openfluid::tools::json BuildObj(openfluid::tools::json::value_t::object);
+      BuildObj["type"] = Sign->BuildInfo.BuildType;
+      BuildObj["compiler_id"] = Sign->BuildInfo.CompilerID;
+      BuildObj["compiler_version"] = Sign->BuildInfo.CompilerVersion;
+      BuildObj["compilation_flags"] = Sign->BuildInfo.CompilationFlags;
+      WareObj["build_info"] = BuildObj;
 
-      WareObj.AddMember("name",rapidjson::Value(Sign->Name.c_str(),JSONalloc),JSONalloc);
-      WareObj.AddMember("description",rapidjson::Value(Sign->Description.c_str(),JSONalloc),JSONalloc); 
-      WareObj.AddMember("version",rapidjson::Value(Sign->Version.c_str(),JSONalloc),JSONalloc);
-      WareObj.AddMember("status",
-                        rapidjson::Value(openfluid::ware::WareSignature::getStatusAsString(Sign->Status).c_str(),
-                        JSONalloc),JSONalloc);
+      WareObj["name"] = Sign->Name;
+      WareObj["description"] = Sign->Description; 
+      WareObj["version"] = Sign->Version;
+      WareObj["status"] = openfluid::ware::WareSignature::getStatusAsString(Sign->Status);
 
-      rapidjson::Value AuthsArray(rapidjson::kArrayType);
+      openfluid::tools::json AuthsArray(openfluid::tools::json::value_t::array);
       for (auto& Author : Sign->Authors)
       {
-        rapidjson::Value AuthObj(rapidjson::kObjectType);
-        AuthObj.AddMember("name",rapidjson::Value(Author.first.c_str(),JSONalloc),JSONalloc);
-        AuthObj.AddMember("email",rapidjson::Value(Author.second.c_str(),JSONalloc),JSONalloc);
-        AuthsArray.PushBack(AuthObj,JSONalloc);
+        openfluid::tools::json AuthObj(openfluid::tools::json::value_t::object);
+        AuthObj["name"] = Author.first;
+        AuthObj["email"] = Author.second;
+        AuthsArray.push_back(AuthObj);
       }
-      WareObj.AddMember("authors",AuthsArray,JSONalloc);
+      WareObj["authors"] = AuthsArray;
 
-      addWareDetailsForJSON(Sign,WareObj,JSONalloc);
+      addWareDetailsForJSON(Sign,WareObj);
 
-      Available.PushBack(WareObj,JSONalloc);
+      Available.push_back(WareObj);
     }
   }
 
-  JSON.AddMember("available",Available,JSONalloc);
+  JSON["available"] = Available;
 
 
   if (WithErrors)
   {
-    addErrorsToJSONDoc(JSON,JSONalloc);
+    addErrorsToJSONDoc(JSON);
   }
 
 

@@ -30,7 +30,6 @@ For the OpenFLUID framework libraries:
   - C++ STL
   - Boost (headers only, testing libs are required in debug mode)
   - Qt5 : Core, GUI (optional), Network
-  - RapidJSON (automatically downloaded if locally missing)
   - GDAL/OGR
   - GEOS (optional)
 
@@ -59,7 +58,7 @@ For building Latex documents (optional), required tools and packages are:
   - packages: babel, geometry, ltxtable, pgf/tikz, tabularx, verbatim
   - fonts: cmbright
 
-OpenFLUID uses CMake version 3.1 or higher for build configuration and GCC 5.3 or higher for compilation.
+OpenFLUID uses CMake version 3.1 or higher for build configuration and GCC 8.0 or higher for compilation.
 
 
 ### Building from source

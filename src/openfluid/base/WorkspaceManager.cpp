@@ -399,15 +399,15 @@ std::list<WorkspaceManager::RecentProject_t> WorkspaceManager::getRecentProjects
 
     auto JSONArray = Value.JSONValue();
 
-    if (JSONArray != nullptr && JSONArray->IsArray())
+    if (JSONArray.is_array())
     {
-      for (const auto& V : JSONArray->GetArray())
+      for (const auto& V : JSONArray)
       {
-        if (V.IsObject() && V.HasMember("name") && V.HasMember("path"))
+        if (V.is_object() && V.contains("name") && V.contains("path"))
         { 
           RecentProject_t RP;
-          RP.Name = V["name"].GetString();
-          RP.Path = V["path"].GetString();
+          RP.Name = V["name"];
+          RP.Path = V["path"];
           RecentList.push_back(RP);
         }
       }

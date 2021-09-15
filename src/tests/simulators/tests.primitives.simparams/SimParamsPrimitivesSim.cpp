@@ -71,7 +71,7 @@ BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
   DECLARE_REQUIRED_PARAMETER("doublearrayparam","=1.1;1.3;1.3;1.4","-");
   DECLARE_REQUIRED_PARAMETER("longarrayparam","=11;12;13;14;15","-");
   DECLARE_REQUIRED_PARAMETER("matrixparam","=1.1;1.2|2.1;2.2|3.1;3.2","-");
-  DECLARE_SIMULATOR_PARAM("mapparam","=key1=1.1;key2=a string;key3=true","-");
+  DECLARE_SIMULATOR_PARAM("mapparam","={key1=1.1,key2=\"a string\",key3=true}","-");
   DECLARE_REQUIRED_PARAMETER("inpath","","-");
   DECLARE_REQUIRED_PARAMETER("outpath","","-");
   DECLARE_REQUIRED_PARAMETER("temppath","","-");
@@ -525,11 +525,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       {
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, size)");
       }
-      double aDouble = 0.0;
-      if(!ParamMapVal["key1"].asStringValue().toDouble(aDouble))
-      {
-        OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, type for key key1)");
-      }
+      double aDouble = ParamMapVal.getDouble("key1");
       if(!openfluid::scientific::isCloseEnough(aDouble,1.1))
       {
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, value for key key1)");
@@ -538,11 +534,7 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       {
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, value for key key2)");
       }
-      aBool = false;
-      if(!ParamMapVal["key3"].asStringValue().toBoolean(aBool))
-      {
-        OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, type for key key3)");
-      }
+      aBool = ParamMapVal.getBoolean("key3");
       if(aBool != true)
       {
         OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (mapparam, value for key key3)");

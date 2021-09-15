@@ -23,7 +23,7 @@ SET(OFBUILD_CUSTOM_CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.
 SET(OPENFLUID_VERSION_MAJOR 2)
 SET(OPENFLUID_VERSION_MINOR 2)
 SET(OPENFLUID_VERSION_PATCH 0)
-SET(OPENFLUID_VERSION_STATUS "alpha19") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
+SET(OPENFLUID_VERSION_STATUS "alpha20") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
 
 SET(OPENFLUID_VERSION_FULL "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}")
 
@@ -140,7 +140,7 @@ SET(OPENFLUID_TESTS_USERDATA_PATH ${OFBUILD_TESTS_USERDATA_DIR}) # for usage in 
 ################### Third party in sources ###################
 
 SET(OFBUILD_3RDPARTY_ROOT_DIR "thirdparty")
-SET(OFBUILD_3RDPARTY_SUBDIRS_LIST "tinyxml2-9.0.0")
+SET(OFBUILD_3RDPARTY_SUBDIRS_LIST "tinyxml2-9.0.0" "nlohmannjson-3.10.2")
 
 
 ################### URLs and mail ###################
@@ -204,11 +204,6 @@ SET(OPENFLUID_GHOSTSIMULATORS_SUFFIX "_ofghost-sim")
 SET(OPENFLUID_DEBUG_PREFIX "[OpenFLUID debug]")
 
 SET(OFBUILD_GITASKPASS_ENVVAR_PREFIX "OFLD_GITASKPASS_")
-
-
-################### 3rd party headers and libraries ###################
-
-SET(RapidJSON_GIT_URL "https://github.com/miloyip/rapidjson.git")
 
 
 ################### logfiles ###################

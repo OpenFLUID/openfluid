@@ -15,7 +15,6 @@ cask 'openfluid@TOKEN_VERSION@' do
 
   # external dependencies
   depends_on formula: 'boost'
-  depends_on formula: 'rapidjson'
   depends_on formula: 'gdal'
   depends_on formula: 'geos'
   depends_on formula: 'qt5'

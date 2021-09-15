@@ -31,17 +31,17 @@
 
 
 /**
- @file WareshubJsonEditor.cpp
+  @file WareshubJsonEditor.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
+#include <fstream>
+
 #include <QTextStream>
 #include <QMessageBox>
-
-#include <rapidjson/prettywriter.h>
-#include <rapidjson/stringbuffer.h>
 
 #include <openfluid/ui/waresdev/WareshubJsonEditor.hpp>
 #include <openfluid/base/FrameworkException.hpp>
@@ -146,9 +146,8 @@ void WareshubJsonEditor::saveContentToPath(const QString& Path)
                                               QString("Unable to create the path \"%1\"").arg(Path).toStdString());
   }
 
-  QFile File(Path);
-
-  if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
+  std::ofstream File(Path.toStdString(),std::ofstream::out);
+  if (!File.is_open())
   {
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION, QString("Unable to open the file \"%1\" in write mode").arg(Path).toStdString());
@@ -163,12 +162,7 @@ void WareshubJsonEditor::saveContentToPath(const QString& Path)
 
   issuesMapToJsonIssues();
 
-  rapidjson::StringBuffer Buffer;
-  rapidjson::PrettyWriter<rapidjson::StringBuffer> Writer(Buffer);
-  Doc.Accept(Writer);
-
-  QTextStream Str(&File);
-  Str << QString::fromUtf8(Buffer.GetString());
+  File << m_Doc.dump(2);
 }
 
 
@@ -180,30 +174,15 @@ void WareshubJsonEditor::lineEditToJsonStringArray(const QString& Key, QLineEdit
 {
   QStringList Values = LineEdit->text().split(",");
 
-  rapidjson::Value JsonValue(rapidjson::kArrayType);
-  rapidjson::Document::AllocatorType& Alloc = Doc.GetAllocator();
+  openfluid::tools::json JSONValue(openfluid::tools::json::value_t::array);
 
   for (const auto& Val : Values)
   {
-    rapidjson::Value v(Val.toStdString().c_str(), Alloc);
-    JsonValue.PushBack(v, Alloc);
+    openfluid::tools::json v(Val.toStdString());
+    JSONValue.push_back(v);
   }
 
-  rapidjson::Value::MemberIterator it = Doc.FindMember(Key.toStdString().c_str());
-
-  if (it == Doc.MemberEnd())
-  {
-    Doc.AddMember(rapidjson::Value(Key.toStdString().c_str(), Alloc), JsonValue, Alloc);
-  }
-  else
-  {
-    rapidjson::Value& v = it->value;
-    if (v.IsArray())
-    {
-      v.Clear();
-      v = JsonValue;
-    }
-  }
+  m_Doc[Key.toStdString()] = JSONValue;
 }
 
 
@@ -215,20 +194,7 @@ void WareshubJsonEditor::comboBoxToJsonString(const QString& Key, QComboBox* Com
 {
   QString Value = Combo->currentText();
 
-  rapidjson::Document::AllocatorType& Alloc = Doc.GetAllocator();
-
-  rapidjson::Value JsonValue(Value.toStdString().c_str(), Alloc);
-
-  rapidjson::Value::MemberIterator it = Doc.FindMember(Key.toStdString().c_str());
-
-  if (it == Doc.MemberEnd())
-  {
-    Doc.AddMember(rapidjson::Value(Key.toStdString().c_str(), Alloc), JsonValue, Alloc);
-  }
-  else
-  {
-    it->value = JsonValue;
-  }
+  m_Doc[Key.toStdString()] = Value.toStdString();
 }
 
 
@@ -238,50 +204,24 @@ void WareshubJsonEditor::comboBoxToJsonString(const QString& Key, QComboBox* Com
 
 void WareshubJsonEditor::issuesMapToJsonIssues()
 {
-  rapidjson::Value JsonIssuesObject(rapidjson::kObjectType);
-  rapidjson::Document::AllocatorType& Alloc = Doc.GetAllocator();
+  openfluid::tools::json JSONIssuesObject(openfluid::tools::json::value_t::object);
 
   for (const auto& Issue : m_IssuesByID.values())
   {
-    rapidjson::Value JsonIssueObject(rapidjson::kObjectType);
+    openfluid::tools::json JSONIssueObject(openfluid::tools::json::value_t::object);
 
-
-    rapidjson::Value TitleValue(Issue.m_Title.toStdString().c_str(), Alloc);
-    JsonIssueObject.AddMember(rapidjson::Value("title", Alloc), TitleValue, Alloc);
-
-    rapidjson::Value CreatorValue(Issue.m_Creator.toStdString().c_str(), Alloc);
-    JsonIssueObject.AddMember(rapidjson::Value("creator", Alloc), CreatorValue, Alloc);
-
-    rapidjson::Value DateValue(Issue.m_Date.toString("yyyy-MM-dd").toStdString().c_str(), Alloc);
-    JsonIssueObject.AddMember(rapidjson::Value("date", Alloc), DateValue, Alloc);
-
-    rapidjson::Value TypeValue(Issue.m_Type.toStdString().c_str(), Alloc);
-    JsonIssueObject.AddMember(rapidjson::Value("type", Alloc), TypeValue, Alloc);
-
-    rapidjson::Value StateValue(Issue.m_State.toStdString().c_str(), Alloc);
-    JsonIssueObject.AddMember(rapidjson::Value("state", Alloc), StateValue, Alloc);
-
-    rapidjson::Value DescValue(Issue.m_Description.toStdString().c_str(), Alloc);
-    JsonIssueObject.AddMember(rapidjson::Value("description", Alloc), DescValue, Alloc);
-
-    rapidjson::Value UrgValue(Issue.m_Urgency.toStdString().c_str(), Alloc);
-    JsonIssueObject.AddMember(rapidjson::Value("urgency", Alloc), UrgValue, Alloc);
-
-
-    JsonIssuesObject.AddMember(rapidjson::Value(Issue.m_ID.toStdString().c_str(), Alloc), JsonIssueObject, Alloc);
+    JSONIssueObject["title"] = Issue.m_Title.toStdString();
+    JSONIssueObject["creator"] = Issue.m_Creator.toStdString();
+    JSONIssueObject["date"] = Issue.m_Date.toString("yyyy-MM-dd").toStdString();
+    JSONIssueObject["type"] = Issue.m_Type.toStdString();
+    JSONIssueObject["state"] = Issue.m_State.toStdString();
+    JSONIssueObject["description"] = Issue.m_Description.toStdString();
+    JSONIssueObject["urgency"] = Issue.m_Urgency.toStdString();
+    
+    JSONIssuesObject[Issue.m_ID.toStdString()] = JSONIssueObject;
   }
 
-
-  rapidjson::Value::MemberIterator it = Doc.FindMember("issues");
-
-  if (it == Doc.MemberEnd())
-  {
-    Doc.AddMember(rapidjson::Value("issues", Alloc), JsonIssuesObject, Alloc);
-  }
-  else
-  {
-    it->value = JsonIssuesObject;
-  }
+  m_Doc["issues"] = JSONIssuesObject;
 }
 
 
@@ -291,24 +231,27 @@ void WareshubJsonEditor::issuesMapToJsonIssues()
 
 void WareshubJsonEditor::updateContent()
 {
-  QFile File(m_FilePath);
+  std::ifstream FileStream;
 
-  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+  FileStream.open(m_FilePath.toStdString().c_str(),std::ifstream::in);
+  if (!FileStream.is_open())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Cannot open file %1").arg(m_FilePath).toStdString());
   }
 
-  Doc.Parse(QTextStream(&File).readAll().toStdString().c_str());
-
-  if (Doc.HasParseError())
+  try
+  {
+    m_Doc = openfluid::tools::json::parse(FileStream);
+  }
+  catch (openfluid::tools::json::parse_error&)
   {
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION,
         QString("Error while parsing json file %1").arg(m_FilePath).toStdString());
   }
 
-  if (!Doc.IsObject())
+  if (!m_Doc.is_object())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               QString("Error in json file %1").arg(m_FilePath).toStdString());
@@ -337,18 +280,16 @@ void WareshubJsonEditor::jsonStringArrayToLineEdit(const QString& Key, QLineEdit
 {
   QStringList Values;
 
-  rapidjson::Value::MemberIterator it = Doc.FindMember(Key.toStdString().c_str());
-
-  if (it != Doc.MemberEnd())
+  if (m_Doc.contains(Key.toStdString()))
   {
-    rapidjson::Value& JsonValue = it->value;
-    if (JsonValue.IsArray())
+    const openfluid::tools::json& JSONValue = m_Doc[Key.toStdString()];
+    if (JSONValue.is_array())
     {
-      for (unsigned int i = 0; i < JsonValue.Size(); i++)
+      for (const auto& v : JSONValue)
       {
-        if (JsonValue[i].IsString())
+        if (v.is_string())
         {
-          Values << JsonValue[i].GetString();
+          Values << QString::fromStdString(v.get<std::string>());
         }
       }
     }
@@ -364,14 +305,12 @@ void WareshubJsonEditor::jsonStringArrayToLineEdit(const QString& Key, QLineEdit
 
 void WareshubJsonEditor::jsonStringToComboBox(const QString& Key, QComboBox* Combo)
 {
-  rapidjson::Value::MemberIterator it = Doc.FindMember(Key.toStdString().c_str());
-
-  if (it != Doc.MemberEnd())
+  if (m_Doc.contains(Key.toStdString()))
   {
-    rapidjson::Value& JsonValue = it->value;
-    if (JsonValue.IsString())
+    const openfluid::tools::json& JSONValue = m_Doc[Key.toStdString()];
+    if (JSONValue.is_string())
     {
-      QString Str = QString::fromUtf8(JsonValue.GetString());
+      QString Str = QString::fromStdString(JSONValue.get<std::string>());
       int Index = Combo->findText(Str, Qt::MatchFixedString);
       if (Index > -1)
       {
@@ -394,73 +333,58 @@ void WareshubJsonEditor::jsonIssuesToIssuesMap()
 {
   QStringList Values;
 
-  rapidjson::Value::MemberIterator it = Doc.FindMember("issues");
-
-  if (it != Doc.MemberEnd())
+  if (m_Doc.contains("issues"))
   {
-    rapidjson::Value& IssuesValue = it->value;
+    const openfluid::tools::json& IssuesValue = m_Doc["issues"];
 
-    if (IssuesValue.IsObject())
+    if (IssuesValue.is_object())
     {
-      for (rapidjson::Value::MemberIterator itr = IssuesValue.MemberBegin();
-          itr != IssuesValue.MemberEnd(); ++itr)
+      for (const auto& [ID,Info] : IssuesValue.items())
       {
-        QString ID = QString::fromUtf8(itr->name.GetString());
 
-        rapidjson::Value& IssueContentValue = itr->value;
-
-        if (IssueContentValue.IsObject())
+        if (Info.is_object())
         {
           WareshubIssueDialog::Issue I;
 
-          rapidjson::Value::MemberIterator itI;
-
-          itI = IssueContentValue.FindMember("title");
-          if (itI != IssueContentValue.MemberEnd())
+          if (Info.contains("title"))
           {
-            I.m_Title = itI->value.GetString();
+            I.m_Title = QString::fromStdString(Info["title"].get<std::string>());
           }
 
-          itI = IssueContentValue.FindMember("creator");
-          if (itI != IssueContentValue.MemberEnd())
+          if (Info.contains("creator"))
           {
-            I.m_Creator = itI->value.GetString();
+            I.m_Creator = QString::fromStdString(Info["creator"].get<std::string>());
           }
 
-          itI = IssueContentValue.FindMember("date");
-          if (itI != IssueContentValue.MemberEnd())
+          if (Info.contains("date"))
           {
-            I.m_Date = QDate::fromString(itI->value.GetString(), "yyyy-MM-dd");
+            I.m_Date = QDate::fromString(QString::fromStdString(Info["date"].get<std::string>()), "yyyy-MM-dd");
           }
 
-          itI = IssueContentValue.FindMember("type");
-          if (itI != IssueContentValue.MemberEnd())
+          if (Info.contains("type"))
           {
-            I.m_Type = itI->value.GetString();
+            I.m_Type = QString::fromStdString(Info["type"].get<std::string>());
           }
 
-          itI = IssueContentValue.FindMember("state");
-          if (itI != IssueContentValue.MemberEnd())
+          if (Info.contains("state"))
           {
-            I.m_State = itI->value.GetString();
+            I.m_State = QString::fromStdString(Info["state"].get<std::string>());
           }
 
-          itI = IssueContentValue.FindMember("description");
-          if (itI != IssueContentValue.MemberEnd())
+          if (Info.contains("description"))
           {
-            I.m_Description = itI->value.GetString();
+            I.m_Description = QString::fromStdString(Info["description"].get<std::string>());
           }
 
-          itI = IssueContentValue.FindMember("urgency");
-          if (itI != IssueContentValue.MemberEnd())
+          if (Info.contains("urgency"))
           {
-            I.m_Urgency = itI->value.GetString();
+            I.m_Urgency = QString::fromStdString(Info["urgency"].get<std::string>());
             I.m_Urgency.replace("normal", "medium");
           }
 
-          I.m_ID = ID;
+          I.m_ID = QString::fromStdString(ID);
 
-          m_IssuesByID[ID] = I;
+          m_IssuesByID[I.m_ID] = I;
         }
 
       }

@@ -1,4 +1,3 @@
-INCLUDE_DIRECTORIES(${RapidJSON_INCLUDE_DIR})
 
 SET(MISC_CPP main.cpp singleton.cpp bindings.cpp timer.cpp spatial.cpp filesystem.cpp values.cpp datetime.cpp)
 

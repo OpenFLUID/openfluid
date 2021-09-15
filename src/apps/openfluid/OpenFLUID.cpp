@@ -194,8 +194,8 @@ void OpenFLUIDApp::printBuildInfo()
   printItem({"build","compiler","flags"},TmpFlags);
   printItem({"dependencies","boost","version"},openfluid::config::BUILD_LIB_BOOST_VERSION);
   printItem({"dependencies","gdal","version"},openfluid::config::BUILD_LIB_GDAL_VERSION);
-  printItem({"dependencies","rapidjson","version"},openfluid::config::BUILD_LIB_RAPIDJSON_VERSION);
   printItem({"dependencies","qt","version"},openfluid::config::BUILD_LIB_QT_VERSION);
+
   if (!openfluid::config::BUILD_LIB_GEOS_VERSION.empty())
   {
     printItem({"dependencies","geos","version"},openfluid::config::BUILD_LIB_GEOS_VERSION);

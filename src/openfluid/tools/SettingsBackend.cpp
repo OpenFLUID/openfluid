@@ -39,11 +39,6 @@
 
 #include <fstream>
 
-#include <rapidjson/pointer.h>
-#include <rapidjson/istreamwrapper.h>
-#include <rapidjson/ostreamwrapper.h>
-#include <rapidjson/prettywriter.h>
-
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
@@ -103,22 +98,22 @@ std::string SettingsBackend::getPointerWithRole(const std::string& Pointer) cons
 void SettingsBackend::prepareForData()
 {
   // set up doc as object
-  if (!m_Config.IsObject())
+  if (!m_Config.is_object())
   {
-    m_Config.SetObject();
+    m_Config = openfluid::tools::json::object();
   }
 
   // check that role key type is object
-  if (m_Config.HasMember(m_Role.c_str()) && !m_Config[m_Role.c_str()].IsObject())
+  auto itRole = m_Config.find(m_Role);
+  if (itRole!=m_Config.end() && !(*itRole).is_object())
   {
-    m_Config.RemoveMember(rapidjson::StringRef(m_Role.c_str()));
+    m_Config.erase(itRole);
   }
   
   // set up role key in doc if not exists
-  if (!m_Config.HasMember(m_Role.c_str()))
+  if (m_Config.find(m_Role) == m_Config.end())
   {
-    m_Config.AddMember(rapidjson::StringRef(m_Role.c_str()),rapidjson::Value(rapidjson::kObjectType),
-                                             m_Config.GetAllocator()); 
+    m_Config[m_Role] = openfluid::tools::json::object(); 
   }
 }
 
@@ -137,10 +132,16 @@ bool SettingsBackend::load()
     return false;
   }
 
-  rapidjson::IStreamWrapper InputStream(FileStream);
-  m_Config.ParseStream(InputStream);
-
-  if (m_Config.HasParseError() || !m_Config.IsObject())
+  try
+  {
+    m_Config = openfluid::tools::json::parse(FileStream);
+  }
+  catch (openfluid::tools::json::parse_error&)
+  {
+    return false;
+  }
+  
+  if (!m_Config.is_object())
   {
     return false;
   }
@@ -189,10 +190,7 @@ bool SettingsBackend::save() const
 
 void SettingsBackend::writeToStream(std::ostream& OutS) const
 {
-  rapidjson::OStreamWrapper OutSW { OutS };
-  rapidjson::PrettyWriter<rapidjson::OStreamWrapper> Writer(OutSW);
-  Writer.SetIndent(' ',2);
-  m_Config.Accept(Writer);
+  OutS << m_Config.dump(2);
 }
 
 
@@ -204,47 +202,49 @@ const SettingValue SettingsBackend::getValue(const std::string& Pointer) const
 {
   std::string Ptr = getPointerWithRole(Pointer);
 
-  const rapidjson::Value* Val = rapidjson::Pointer(Ptr.c_str()).Get(m_Config);
-
-  if (Val != nullptr)
+  try 
   {
-    if (Val->IsString())
+    const openfluid::tools::json Val = m_Config.at(openfluid::tools::json::json_pointer(Ptr));
+
+    if (Val.is_string())
     {
-      return SettingValue(std::string(Val->GetString()));
+      return SettingValue(Val.get<std::string>());
     }
-    else if (Val->IsBool())
+    else if (Val.is_boolean())
     {
-      return SettingValue(Val->GetBool());
+      return SettingValue(Val.get<bool>());
     }
-    else if (Val->IsInt())
+    else if (Val.is_number_integer())
     {
-      return SettingValue(Val->GetInt());
+      return SettingValue(Val.get<int>());
     }
-    else if (Val->IsDouble())
+    else if (Val.is_number_float())
     {
-      return SettingValue(Val->GetDouble());
+      return SettingValue(Val.get<double>());
     }
-    else if (Val != nullptr && Val->IsArray())
+    else if (Val.is_array())
     {
       std::vector<std::string> StrVect;
-      for (auto& v : Val->GetArray())
+      for (auto& v : Val)
       {
-        if (v.IsString())
+        if (v.is_string())
         {
-          StrVect.push_back(v.GetString()); 
+          StrVect.push_back(v.get<std::string>()); 
         }
         else
         {
-          return SettingValue(Val); // not an array of strings
+          return SettingValue::fromJSON(Val); // not an array of strings
         }
       }
-      return StrVect;
+      return SettingValue(StrVect);
     }
     else
     {
-      return SettingValue(Val);
+      return SettingValue::fromJSON(Val);
     }
   }
+  catch (...)
+  { }
 
   return SettingValue();
 }
@@ -259,58 +259,50 @@ void SettingsBackend::setValue(const std::string& ParentPointer, const std::stri
 {
   std::string ParentPtr = getPointerWithRole(ParentPointer);
 
-  if (rapidjson::Pointer(ParentPtr.c_str()).Get(m_Config) != nullptr || AutoCreate)
+  if (!AutoCreate)
   {
-    rapidjson::Value JSONValue;
-    rapidjson::Value::AllocatorType& Allocator = m_Config.GetAllocator();
-
-    if (Val.is<std::string>())
+    try 
     {
-      JSONValue.SetString(Val.get<std::string>().c_str(),Allocator);
-    }    
-    else if (Val.is<bool>())
-    {
-      JSONValue.SetBool(Val.get<bool>());
+      m_Config.at(openfluid::tools::json::json_pointer(ParentPtr));
     }
-    else if (Val.is<int>())
+    catch (...)
     {
-      JSONValue.SetInt(Val.get<int>());
+      throw openfluid::base::FrameworkException(
+        OPENFLUID_CODE_LOCATION,"Path '" + ParentPtr + "' does not exist to create the '" + Key + "' key "
+      );
     }
-    else if (Val.is<double>())
-    {
-      JSONValue.SetDouble(Val.get<double>());
-    }
-    else if (Val.is<std::vector<std::string>>())
-    {
-      JSONValue = rapidjson::Value(rapidjson::kArrayType);
-
-      for (auto Str: Val.get<std::vector<std::string>>())
-      {
-        rapidjson::Value StrVal;
-        StrVal.SetString(Str.c_str(),Allocator);
-        JSONValue.PushBack(StrVal,Allocator);
-      }
-    }
-    else if (Val.isJSONValue())
-    {
-      JSONValue.CopyFrom(*(Val.JSONValue()),Allocator);
-    }
-    else
-    {
-      JSONValue.SetObject();
-    }
-
-    std::string Ptr = ParentPtr + "/" + Key;
-    rapidjson::Pointer(Ptr.c_str()).Set(m_Config,JSONValue);
-    autoSave();
-  }
-  else
-  { 
-    throw openfluid::base::FrameworkException(
-      OPENFLUID_CODE_LOCATION,"Path '" + ParentPtr + "' does not exist to create the '" + Key + "' key "
-    );
   }
 
+  openfluid::tools::json JSONValue = openfluid::tools::json::object();
+
+  if (Val.is<std::string>())
+  {
+    JSONValue = Val.get<std::string>();
+  }
+  else if (Val.is<bool>())
+  {
+    JSONValue = Val.get<bool>();
+  }
+  else if (Val.is<int>())
+  {
+    JSONValue = Val.get<int>();
+  }
+  else if (Val.is<double>())
+  {
+    JSONValue = Val.get<double>();
+  }
+  else if (Val.is<std::vector<std::string>>())
+  {
+    JSONValue = Val.get<std::vector<std::string>>();
+  }
+  else if (Val.isJSONValue())
+  {
+    JSONValue = Val.JSONValue();
+  }
+
+  m_Config[openfluid::tools::json::json_pointer(ParentPtr + "/" + Key)] = JSONValue;
+
+  autoSave();
 }
 
 
@@ -322,8 +314,19 @@ void SettingsBackend::remove(const std::string& Pointer)
 {
   std::string Ptr = getPointerWithRole(Pointer);
 
-  rapidjson::Pointer(Ptr.c_str()).Erase(m_Config);
-  autoSave();
+  try
+  {
+    const auto JSONptr = openfluid::tools::json::json_pointer(Ptr);
+    const std::string Key = JSONptr.back();
+    const auto ParentJSONptr = JSONptr.parent_pointer();
+
+    m_Config.at(ParentJSONptr).erase(Key);
+    autoSave();
+  }
+  catch (...)
+  {
+
+  }
 }
 
 
@@ -335,7 +338,16 @@ bool SettingsBackend::exists(const std::string& Pointer) const
 {
   std::string Ptr = getPointerWithRole(Pointer);
 
-  return (rapidjson::Pointer(Ptr.c_str()).Get(m_Config) != nullptr);
+  try 
+  {
+    auto Val = m_Config.at(openfluid::tools::json::json_pointer(Ptr));
+  }
+  catch (...)
+  {
+    return false;
+  }
+  
+  return true;
 }
 
 

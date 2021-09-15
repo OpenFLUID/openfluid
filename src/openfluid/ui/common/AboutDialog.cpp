@@ -155,7 +155,6 @@ QString AboutDialog::generateBuildInfoText()
   {
      { "Boost", openfluid::config::BUILD_LIB_BOOST_VERSION },
      { "GDAL", openfluid::config::BUILD_LIB_GDAL_VERSION },
-     { "RapidJSON", openfluid::config::BUILD_LIB_RAPIDJSON_VERSION },
      { "Qt", openfluid::config::BUILD_LIB_QT_VERSION }
   };
   if (!openfluid::config::BUILD_LIB_GEOS_VERSION.empty())

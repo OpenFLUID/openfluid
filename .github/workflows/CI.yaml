@@ -16,7 +16,7 @@ jobs:
       - name: Installation of dependencies
         run: | 
           sudo apt update && sudo apt install -y \
-            libboost-all-dev libgdal-dev rapidjson-dev \
+            libboost-all-dev libgdal-dev \
             qt5-default qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev \
             gnuplot p7zip-full graphviz
       - name: Checkout of source code
@@ -40,7 +40,7 @@ jobs:
       - name: Installation of dependencies
         run: | 
           sudo apt install -y \
-            libboost-dev libgdal-dev rapidjson-dev \
+            libboost-dev libgdal-dev \
             qt5-default qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev \
             gnuplot p7zip-full graphviz
       - name: Checkout of source code
@@ -71,7 +71,7 @@ jobs:
       - name: Installation of dependencies
         run: | 
           brew install \
-            boost rapidjson gdal geos qt5 \
+            boost gdal geos qt5 \
             doxygen gnuplot doxygen
       - name: Checkout of source code
         uses: actions/checkout@v2
@@ -107,7 +107,7 @@ jobs:
           install: >-
             mingw-w64-x86_64-toolchain mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-fortran
             mingw-w64-x86_64-cmake mingw-w64-x86_64-doxygen
-            mingw-w64-x86_64-boost mingw-w64-x86_64-gdal mingw-w64-x86_64-rapidjson
+            mingw-w64-x86_64-boost mingw-w64-x86_64-gdal
             mingw-w64-x86_64-qt5 mingw-w64-x86_64-openssl
             git p7zip mingw-w64-x86_64-gnuplot mingw-w64-x86_64-graphviz
       - name: Checkout of source code

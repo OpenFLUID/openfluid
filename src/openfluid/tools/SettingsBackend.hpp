@@ -47,9 +47,8 @@
 #include <optional>
 #include <variant>
 
-#include <rapidjson/document.h> // TODO transform into forward declaration?
-
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/tools/JSONHelpers.hpp> // TODO transform into forward declaration?
 #include <openfluid/dllexport.hpp>
 
 
@@ -64,10 +63,10 @@ class OPENFLUID_API SettingValue
 
     std::variant<std::monostate,bool,int,double,std::string,std::vector<std::string>> m_Value;
 
-    const rapidjson::Value* mp_JSONValue = nullptr;
+    openfluid::tools::json m_JSONValue = openfluid::tools::json::value_t::null;
+
 
   public:
-
     
     /**
       Constructor of an empty value
@@ -115,8 +114,13 @@ class OPENFLUID_API SettingValue
     /**
       Constructor from a native JSON value
     */
-    SettingValue(const rapidjson::Value* Val) : mp_JSONValue(Val)
-    { }
+    static SettingValue fromJSON(const openfluid::tools::json& Val)
+    {
+      SettingValue StngVal;
+      StngVal.m_JSONValue = Val;
+      return StngVal;
+    }
+
 
     /**
       Returns the stored value if it matches the given type.
@@ -147,9 +151,9 @@ class OPENFLUID_API SettingValue
       Returns if the stored value is a JSON tree, otherwise returns nullptr
       @return the stored JSON tree
     */
-    const rapidjson::Value* JSONValue() const
+    const openfluid::tools::json JSONValue() const
     {
-      return mp_JSONValue;
+      return m_JSONValue;
     }
 
     /**
@@ -169,7 +173,7 @@ class OPENFLUID_API SettingValue
     */
     bool isJSONValue() const
     {
-      return mp_JSONValue != nullptr;
+      return !m_JSONValue.is_null();
     }
 
     /**
@@ -178,7 +182,7 @@ class OPENFLUID_API SettingValue
     */
     bool isNull() const
     {
-      return (m_Value.index() == 0) && (mp_JSONValue == nullptr);
+      return (m_Value.index() == 0) && (m_JSONValue.is_null());
     }
 };
 
@@ -211,7 +215,7 @@ class OPENFLUID_API SettingsBackend
 {
   private:
 
-    rapidjson::Document m_Config;
+    openfluid::tools::json m_Config;
 
     const unsigned int m_VersionFormat = 2;
 
@@ -295,7 +299,7 @@ class OPENFLUID_API SettingsBackend
       Returns a reference to the raw JSON data structure
       @return a reference to the JSON document
     */ 
-    rapidjson::Document& data()
+    json& data()
     {
       return m_Config;
     }

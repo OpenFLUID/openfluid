@@ -39,7 +39,6 @@
 
 #include <sstream>
 
-#include <rapidjson/document.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/xpressive/xpressive.hpp>
@@ -53,6 +52,7 @@
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/tools/JSONHelpers.hpp>
 
 
 namespace openfluid { namespace core {
@@ -669,98 +669,96 @@ bool StringValue::toMatrixValue(const unsigned int& RowLength, MatrixValue& Val)
 // =====================================================================
 
 
-bool JSONObjectToMapValue(const rapidjson::Value& Obj, MapValue& Val)
+bool JSONObjectToMapValue(const openfluid::tools::json& Obj, MapValue& Val)
 {
-  if (!Obj.IsObject())
+  if (!Obj.is_object())
   {
     return false;
   }
 
   MapValue TmpMap;
 
-  for (rapidjson::Value::ConstMemberIterator it = Obj.MemberBegin();it != Obj.MemberEnd(); ++it)
+  for (const auto& [k,v] : Obj.items())
   {
-    std::string Key = std::string(it->name.GetString());
-
-    if (it->value.IsDouble())
+    if (v.is_number_float())
     {
-      TmpMap.setDouble(Key,it->value.GetDouble());
+      TmpMap.setDouble(k,v.get<double>());
     }
-    else if (it->value.IsInt())
+    else if (v.is_number_integer())
     {
-      TmpMap.setInteger(Key,it->value.GetInt());
+      TmpMap.setInteger(k,v.get<int>());
     }
-    else if (it->value.IsString())
+    else if (v.is_string())
     {
-      TmpMap.setString(Key,it->value.GetString());
+      TmpMap.setString(k,v.get<std::string>());
     }
-    else if (it->value.IsBool())
+    else if (v.is_boolean())
     {
-      TmpMap.setBoolean(Key,it->value.GetBool());
+      TmpMap.setBoolean(k,v.get<bool>());
     }
-    else if (it->value.IsArray())
+    else if (v.is_array())
     {
-      const rapidjson::Value& TmpJSONArray = it->value;
-
-      if (TmpJSONArray.Empty())
+      if (v.empty())
       {
-        TmpMap.setVectorValue(Key,VectorValue(0));
+        TmpMap.setVectorValue(k,VectorValue(0));
       }
-      else if (TmpJSONArray[0].IsNumber())
+      else if (v[0].is_number())
       {
-        VectorValue TmpVectVal(TmpJSONArray.Capacity());
+        // case: simple vector
+        VectorValue TmpVectVal(v.size());
 
-        for (unsigned int iVV=0;iVV<TmpJSONArray.Capacity();iVV++)
+        for (unsigned int i=0;i<v.size();i++)
         {
-          if (!TmpJSONArray[iVV].IsNumber())
+          if (!v[i].is_number())
           {
             return false;
           }
-          TmpVectVal.set(iVV,TmpJSONArray[iVV].GetDouble());
+          TmpVectVal.set(i,v[i].get<double>());
         }
-        TmpMap.setVectorValue(Key,TmpVectVal);
+        TmpMap.setVectorValue(k,TmpVectVal);
       }
-      else if (TmpJSONArray[0].IsArray())
+      else if (v[0].is_array())
       {
-        unsigned int ExpectedColCount = TmpJSONArray[0].Capacity();
+        // case: matrix (vector of vectors)
+        unsigned int ExpectedColCount = v[0].size();
 
         if (!ExpectedColCount)
         {
           return false;
         }
 
-        MatrixValue TmpMatVal(ExpectedColCount,TmpJSONArray.Capacity());
+        MatrixValue TmpMatVal(ExpectedColCount,v.size());
 
-        for (unsigned int iMVR=0;iMVR<TmpJSONArray.Capacity();iMVR++)
+        for (unsigned int iMVR=0;iMVR<v.size();iMVR++)
         {
-          if (ExpectedColCount != TmpJSONArray[iMVR].Capacity())
+          if (ExpectedColCount != v[iMVR].size())
           {
             return false;
           }
 
           for (unsigned int iMVC=0;iMVC<ExpectedColCount;iMVC++)
           {
-            TmpMatVal.set(iMVC,iMVR,TmpJSONArray[iMVR][iMVC].GetDouble());
+            TmpMatVal.set(iMVC,iMVR,v[iMVR][iMVC].get<double>());
           }
         }
-        TmpMap.setMatrixValue(Key,TmpMatVal);
+        TmpMap.setMatrixValue(k,TmpMatVal);
       }
       else
       {
         return false;
       }
     }
-    else if (it->value.IsObject())
+    else if (v.is_object())
     {
       MapValue TmpMapVal;
 
-      if (!JSONObjectToMapValue(it->value,TmpMapVal))
+      if (!JSONObjectToMapValue(v,TmpMapVal))
       {
         return false;
       }
       else
       {
-        TmpMap.setMapValue(Key,TmpMapVal);
+        TmpMap.setMapValue(k,TmpMapVal);
       }
     }
     else
@@ -782,37 +780,17 @@ bool StringValue::toMapValue(MapValue& Val) const
 {
   if (m_Value.front() == '{' && m_Value.back() == '}')
   {
-    rapidjson::Document JSONValue;
-    if (JSONValue.Parse<0>(m_Value.c_str()).HasParseError() /*|| !JSONValue.IsObject()*/)
+    try
+    {
+      return JSONObjectToMapValue(openfluid::tools::json::parse(m_Value),Val);
+    }
+    catch (openfluid::tools::json::parse_error&)
     {
       return false;
     }
-
-    return JSONObjectToMapValue(JSONValue,Val);
   }
-  else
-  {
-    // old deprecated format, e.g. "key1=1.2;key2=2.5;key3=19.6"
 
-    std::vector<std::string> Splitted = split(";");
-
-    MapValue TmpMap;
-
-    for (std::vector<std::string>::const_iterator it=Splitted.begin(); it!= Splitted.end(); ++it)
-    {
-      std::vector<std::string> KeyValue = splitString(*it,"=");
-
-      if (KeyValue.size() != 2)
-      {
-        return false;
-      }
-
-      TmpMap.setString(KeyValue.front(),KeyValue.back());
-    }
-
-    Val = TmpMap;
-    return true;
-  }
+  return false;
 }
 
 

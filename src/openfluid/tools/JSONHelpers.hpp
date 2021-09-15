@@ -1,6 +1,7 @@
-OpenFLUID
-Copyright (c) 2007 INRA - Montpellier SupAgro
-Inter Deposit Digital Number : IDDN.FR.001.360006.000.R.P.2009.000.30100
+/*
+
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -25,19 +26,31 @@ Inter Deposit Digital Number : IDDN.FR.001.360006.000.R.P.2009.000.30100
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
+*/
 
-  
-===========================================================================
+
+/**
+  @file JSONHelpers.hpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+ */
 
 
-OpenFLUID relies on third party libraries and content, under the following licensing terms:  
-  - Boost: http://www.boost.org/users/license.html (Boost license)
-  - JSON for Modern C++ : https://github.com/nlohmann/json (MIT license)
-  - TinyXML2: https://github.com/leethomason/tinyxml2 (zlib license)
-  - Qt: http://qt-project.org/doc/qt-5/opensourcelicense.html (LGPL)
-  - OGR/GDAL: http://trac.osgeo.org/gdal/wiki/FAQGeneral#WhatlicensedoesGDALOGRuse (X11/MIT)
-  - GEOS: http://trac.osgeo.org/geos/ (LGPL)
-  - Material design icons: https://material.io/icons/ (Apache 2.0) and https://materialdesignicons.com/ (OFL-1.1)
-  
-  
-  
+#ifndef __OPENFLUID_TOOLS_JSONHELPERS_HPP__
+#define __OPENFLUID_TOOLS_JSONHELPERS_HPP__
+
+
+#include <nlohmann/json.hpp>
+
+
+namespace openfluid { namespace tools {
+
+
+using json = nlohmann::json;
+
+
+} } // namespaces
+
+
+#endif /* __OPENFLUID_TOOLS_JSONHELPERS_HPP__ */
