@@ -47,7 +47,7 @@
 namespace openfluid { namespace tools {
 
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 
 } } // namespaces
