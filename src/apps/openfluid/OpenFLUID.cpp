@@ -192,7 +192,9 @@ void OpenFLUIDApp::printBuildInfo()
   printItem({"build","compiler","id"},openfluid::config::BUILD_COMPILER_ID);
   printItem({"build","compiler","version"},openfluid::config::BUILD_COMPILER_VERSION);
   printItem({"build","compiler","flags"},TmpFlags);
-  printItem({"dependencies","boost","version"},openfluid::config::BUILD_LIB_BOOST_VERSION);
+  printItem({"dependencies","nlohmannjson","version"},openfluid::config::BUILD_LIB_nlohmannjson_VERSION);
+  printItem({"dependencies","tinyxml2","version"},openfluid::config::BUILD_LIB_tinyxml2_VERSION);
+  printItem({"dependencies","boost","version"},openfluid::config::BUILD_LIB_Boost_VERSION);
   printItem({"dependencies","gdal","version"},openfluid::config::BUILD_LIB_GDAL_VERSION);
   printItem({"dependencies","qt","version"},openfluid::config::BUILD_LIB_QT_VERSION);
 
