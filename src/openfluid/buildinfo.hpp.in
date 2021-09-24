@@ -60,8 +60,6 @@ const std::string BUILD_LIB_tinyxml2_VERSION = "@OFBUILD_3RDPARTY_LIB_tinyxml2_V
 const std::string BUILD_LIB_Boost_VERSION = "@Boost_MAJOR_VERSION@.@Boost_MINOR_VERSION@.@Boost_SUBMINOR_VERSION@";
 const std::string BUILD_LIB_GDAL_VERSION = "@GDAL_VERSION@";
 const std::string BUILD_LIB_QT_VERSION = "@Qt5Core_VERSION@";
-const std::string BUILD_LIB_GEOS_VERSION = "@GEOS_VERSION@";
-
 
 } }  // namespaces
 

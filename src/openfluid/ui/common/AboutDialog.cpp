@@ -159,10 +159,6 @@ QString AboutDialog::generateBuildInfoText()
      { "GDAL", openfluid::config::BUILD_LIB_GDAL_VERSION },
      { "Qt", openfluid::config::BUILD_LIB_QT_VERSION }
   };
-  if (!openfluid::config::BUILD_LIB_GEOS_VERSION.empty())
-  {
-    DepsInfoList.push_back({ "GEOS", openfluid::config::BUILD_LIB_GEOS_VERSION });
-  }
 
   std::list<std::pair<QString,InfoList>> InfoSections =
   { 

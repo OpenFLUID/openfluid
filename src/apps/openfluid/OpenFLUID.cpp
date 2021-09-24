@@ -197,11 +197,6 @@ void OpenFLUIDApp::printBuildInfo()
   printItem({"dependencies","boost","version"},openfluid::config::BUILD_LIB_Boost_VERSION);
   printItem({"dependencies","gdal","version"},openfluid::config::BUILD_LIB_GDAL_VERSION);
   printItem({"dependencies","qt","version"},openfluid::config::BUILD_LIB_QT_VERSION);
-
-  if (!openfluid::config::BUILD_LIB_GEOS_VERSION.empty())
-  {
-    printItem({"dependencies","geos","version"},openfluid::config::BUILD_LIB_GEOS_VERSION);
-  }
 }
 
 

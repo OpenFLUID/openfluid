@@ -26,13 +26,12 @@ jobs:
         run: |
           brew update
           brew install \
-            boost gdal geos qt5 \
+            boost gdal qt5 \
             doxygen gnuplot doxygen
 
       - name: Preparation
         run: |
           echo "$(brew --prefix qt5)/bin" >> $GITHUB_PATH
-          echo "SET(OFBUILD_ENABLE_LANDR 0)" >> CMake.in.local.cmake
           mkdir ./_build && ls
 
       - name: Configuration

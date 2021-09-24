@@ -71,7 +71,7 @@ jobs:
       - name: Installation of dependencies
         run: | 
           brew install \
-            boost gdal geos qt5 \
+            boost gdal qt5 \
             doxygen gnuplot doxygen
       - name: Checkout of source code
         uses: actions/checkout@v2

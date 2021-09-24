@@ -51,10 +51,9 @@
     <li>boost</li>
     <li>qt4</li>
     <li>gdal</li>
-    <li>geos</li>
   </ul>
   <i>command line:</i><br/>
-  <p><code>brew install cmake doxygen boost qt4 gdal geos</code></p><br/>
+  <p><code>brew install cmake doxygen boost qt4 gdal</code></p><br/>
   <br/>
   For full usage of OpenFLUID features, the packages below have to be installed (recommended):
   <ul>

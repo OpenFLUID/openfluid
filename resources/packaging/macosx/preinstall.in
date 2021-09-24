@@ -41,7 +41,6 @@ findBrewPackage "$BREW_PACK_LIST" doxygen
 findBrewPackage "$BREW_PACK_LIST" qt
 findBrewPackage "$BREW_PACK_LIST" gdal
 findBrewPackage "$BREW_PACK_LIST" boost
-findBrewPackage "$BREW_PACK_LIST" geos
 
 
 exit 0

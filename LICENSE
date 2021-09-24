@@ -36,7 +36,6 @@ OpenFLUID relies on third party libraries and content, under the following licen
   - TinyXML2: https://github.com/leethomason/tinyxml2 (zlib license)
   - Qt: http://qt-project.org/doc/qt-5/opensourcelicense.html (LGPL)
   - OGR/GDAL: http://trac.osgeo.org/gdal/wiki/FAQGeneral#WhatlicensedoesGDALOGRuse (X11/MIT)
-  - GEOS: http://trac.osgeo.org/geos/ (LGPL)
   - Material design icons: https://material.io/icons/ (Apache 2.0) and https://materialdesignicons.com/ (OFL-1.1)
   
   

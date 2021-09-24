@@ -19,7 +19,6 @@ PROJECT(OpenFLUID CXX)
 ################## build options ##################
 
 OPTION(OFBUILD_ENABLE_GUI "enable build of UI libs and apps" ON)
-OPTION(OFBUILD_ENABLE_LANDR "enable build of landr lib" OFF)
 
 OPTION(OFBUILD_ENABLE_DOCS "enable build of documentation" ON)
 
@@ -228,12 +227,6 @@ MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "****************************************")
 
 MESSAGE(STATUS "Build optional libraries")
-IF(OFBUILD_ENABLE_LANDR)
-  MESSAGE(STATUS "  openfluid-landr: yes")
-ELSE()
-  MESSAGE(STATUS "  openfluid-landr: no")
-ENDIF()
-
 IF(OFBUILD_ENABLE_GUI)
   MESSAGE(STATUS "  openfluid-ui-*: yes")
 ELSE()

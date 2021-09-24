@@ -31,7 +31,6 @@ For the OpenFLUID framework libraries:
   - Boost (headers only, testing libs are required in debug mode)
   - Qt5 : Core, GUI (optional), Network
   - GDAL/OGR
-  - GEOS (optional)
 
 For openfluid command line application:
   - OpenFLUID framework libraries
