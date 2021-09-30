@@ -206,6 +206,7 @@ class OPENFLUID_API WareSrcFactory
 
     /**
       Creates a CMakeLists file in the ware directory, from the CMakeLists file template of the ware type.
+      @param R The data for replacements to perform
       @param NewFilePath A QString that will be filled with the absolute path of the created file
       @param ErrMsg A QString that will be filled with error messages if the file creation fails
       @return bool False if the file creation fails, true otherwise
@@ -223,7 +224,7 @@ class OPENFLUID_API WareSrcFactory
     /**
       Creates a main cpp file in the ware directory, from the source file template of the ware type,
       depending on the builder extension type (set to UNKNOWN means it is not a Builder extension).
-      @param R Replacements struct containing the replacements to perform
+      @param R The data for replacements to perform
       @param NewFilePath A QString that will be filled with the absolute path of the created file
       @param ErrMsg A QString that will be filled with error messages if the file creation fails
       @return bool False if the file creation fails, true otherwise
@@ -233,7 +234,7 @@ class OPENFLUID_API WareSrcFactory
     /**
       Creates a main hpp file in the ware directory, from the header file template of the ware type
       depending on the builder extension type (set to UNKNOWN means it is not a Builder extension).
-      @param R Replacements struct containing the replacements to perform
+      @param R The data for replacements to perform
       @param NewFilePath A QString that will be filled with the absolute path of the created file
       @param ErrMsg A QString that will be filled with error messages if the file creation fails
       @return bool False if the file creation fails, true otherwise
@@ -243,7 +244,7 @@ class OPENFLUID_API WareSrcFactory
     /**
       Creates a ui-parameterization cpp file in the ware directory,
       from the ui-parameterization source file template of the ware type.
-      @param R Replacements struct containing the replacements to perform
+      @param R The data for replacements to perform
       @param NewFilePath A QString that will be filled with the absolute path of the created file
       @param ErrMsg A QString that will be filled with error messages if the file creation fails
       @return bool False if the file creation fails, true otherwise
@@ -253,7 +254,7 @@ class OPENFLUID_API WareSrcFactory
     /**
       Creates a ui-parameterization hpp file in the ware directory,
       from the ui-parameterization header file template of the ware type.
-      @param R Replacements struct containing the replacements to perform
+      @param R The data for replacements to perform
       @param NewFilePath A QString that will be filled with the absolute path of the created file
       @param ErrMsg A QString that will be filled with error messages if the file creation fails
       @return bool False if the file creation fails, true otherwise
@@ -262,7 +263,7 @@ class OPENFLUID_API WareSrcFactory
 
     /**
       Creates a Cmake.in.config file in the ware directory, from the Cmake.in.config file template of the ware type.
-      @param R Replacements struct containing the replacements to perform
+      @param R The data for replacements to perform
       @param NewFilePath A QString that will be filled with the absolute path of the created file
       @param ErrMsg A QString that will be filled with error messages if the file creation fails
       @return bool False if the file creation fails, true otherwise
