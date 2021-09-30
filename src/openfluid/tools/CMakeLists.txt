@@ -20,7 +20,7 @@ SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp
                         Filesystem.hpp
                         FileLogger.hpp
                         SettingsBackend.hpp
-                        DataHelpers.hpp IDHelpers.hpp TinyXML2Helpers.hpp QtHelpers.hpp MiscHelpers.hpp
+                        DataHelpers.hpp IDHelpers.hpp QtHelpers.hpp MiscHelpers.hpp
                         Timer.hpp
                         FortranCPP.hpp
                         )
@@ -39,7 +39,7 @@ SET_TARGET_PROPERTIES(openfluid-tools PROPERTIES VERSION "${OPENFLUID_VERSION_MA
 
 TARGET_LINK_LIBRARIES(openfluid-tools 
                       openfluid-core
-                      thirdparty-tinyxml2
+                      openfluid-thirdparty-tinyxml2
                      )
 
 IF(WIN32)

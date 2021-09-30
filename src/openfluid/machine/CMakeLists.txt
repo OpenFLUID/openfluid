@@ -49,7 +49,7 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-base
                       openfluid-ware
                       openfluid-fluidx
-                      thirdparty-tinyxml2
+                      openfluid-thirdparty-tinyxml2
                      )
 
 IF(UNIX)

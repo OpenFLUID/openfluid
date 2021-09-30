@@ -174,11 +174,11 @@ void WareshubJsonEditor::lineEditToJsonStringArray(const QString& Key, QLineEdit
 {
   QStringList Values = LineEdit->text().split(",");
 
-  openfluid::tools::json JSONValue(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json JSONValue(openfluid::thirdparty::json::value_t::array);
 
   for (const auto& Val : Values)
   {
-    openfluid::tools::json v(Val.toStdString());
+    openfluid::thirdparty::json v(Val.toStdString());
     JSONValue.push_back(v);
   }
 
@@ -204,11 +204,11 @@ void WareshubJsonEditor::comboBoxToJsonString(const QString& Key, QComboBox* Com
 
 void WareshubJsonEditor::issuesMapToJsonIssues()
 {
-  openfluid::tools::json JSONIssuesObject(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json JSONIssuesObject(openfluid::thirdparty::json::value_t::object);
 
   for (const auto& Issue : m_IssuesByID.values())
   {
-    openfluid::tools::json JSONIssueObject(openfluid::tools::json::value_t::object);
+    openfluid::thirdparty::json JSONIssueObject(openfluid::thirdparty::json::value_t::object);
 
     JSONIssueObject["title"] = Issue.m_Title.toStdString();
     JSONIssueObject["creator"] = Issue.m_Creator.toStdString();
@@ -242,9 +242,9 @@ void WareshubJsonEditor::updateContent()
 
   try
   {
-    m_Doc = openfluid::tools::json::parse(FileStream);
+    m_Doc = openfluid::thirdparty::json::parse(FileStream);
   }
-  catch (openfluid::tools::json::parse_error&)
+  catch (openfluid::thirdparty::json::parse_error&)
   {
     throw openfluid::base::FrameworkException(
         OPENFLUID_CODE_LOCATION,
@@ -282,7 +282,7 @@ void WareshubJsonEditor::jsonStringArrayToLineEdit(const QString& Key, QLineEdit
 
   if (m_Doc.contains(Key.toStdString()))
   {
-    const openfluid::tools::json& JSONValue = m_Doc[Key.toStdString()];
+    const openfluid::thirdparty::json& JSONValue = m_Doc[Key.toStdString()];
     if (JSONValue.is_array())
     {
       for (const auto& v : JSONValue)
@@ -307,7 +307,7 @@ void WareshubJsonEditor::jsonStringToComboBox(const QString& Key, QComboBox* Com
 {
   if (m_Doc.contains(Key.toStdString()))
   {
-    const openfluid::tools::json& JSONValue = m_Doc[Key.toStdString()];
+    const openfluid::thirdparty::json& JSONValue = m_Doc[Key.toStdString()];
     if (JSONValue.is_string())
     {
       QString Str = QString::fromStdString(JSONValue.get<std::string>());
@@ -335,7 +335,7 @@ void WareshubJsonEditor::jsonIssuesToIssuesMap()
 
   if (m_Doc.contains("issues"))
   {
-    const openfluid::tools::json& IssuesValue = m_Doc["issues"];
+    const openfluid::thirdparty::json& IssuesValue = m_Doc["issues"];
 
     if (IssuesValue.is_object())
     {

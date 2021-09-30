@@ -47,8 +47,8 @@
 #include <optional>
 #include <variant>
 
+#include <openfluid/thirdparty/JSON.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/tools/JSONHelpers.hpp> // TODO transform into forward declaration?
 #include <openfluid/dllexport.hpp>
 
 
@@ -63,7 +63,7 @@ class OPENFLUID_API SettingValue
 
     std::variant<std::monostate,bool,int,double,std::string,std::vector<std::string>> m_Value;
 
-    openfluid::tools::json m_JSONValue = openfluid::tools::json::value_t::null;
+    openfluid::thirdparty::json m_JSONValue = openfluid::thirdparty::json::value_t::null;
 
 
   public:
@@ -114,7 +114,7 @@ class OPENFLUID_API SettingValue
     /**
       Constructor from a native JSON value
     */
-    static SettingValue fromJSON(const openfluid::tools::json& Val)
+    static SettingValue fromJSON(const openfluid::thirdparty::json& Val)
     {
       SettingValue StngVal;
       StngVal.m_JSONValue = Val;
@@ -151,7 +151,7 @@ class OPENFLUID_API SettingValue
       Returns if the stored value is a JSON tree, otherwise returns nullptr
       @return the stored JSON tree
     */
-    const openfluid::tools::json JSONValue() const
+    const openfluid::thirdparty::json JSONValue() const
     {
       return m_JSONValue;
     }
@@ -215,7 +215,7 @@ class OPENFLUID_API SettingsBackend
 {
   private:
 
-    openfluid::tools::json m_Config;
+    openfluid::thirdparty::json m_Config;
 
     const unsigned int m_VersionFormat = 2;
 
@@ -299,7 +299,7 @@ class OPENFLUID_API SettingsBackend
       Returns a reference to the raw JSON data structure
       @return a reference to the JSON document
     */ 
-    json& data()
+    openfluid::thirdparty::json& data()
     {
       return m_Config;
     }

@@ -39,7 +39,7 @@
 
 #include <QThread>
 
-#include <openfluid/tools/TinyXML2Helpers.hpp>
+#include <openfluid/thirdparty/XML.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/Environment.hpp>
 
@@ -148,9 +148,9 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const std::string& FilePath)
 {
   QList<NewsItemData> News;
 
-  tinyxml2::XMLDocument Doc;
+  openfluid::thirdparty::xml::XMLDocument Doc;
 
-  if (Doc.LoadFile(FilePath.c_str()) == tinyxml2::XML_SUCCESS)
+  if (Doc.LoadFile(FilePath.c_str()) == openfluid::thirdparty::xml::XML_SUCCESS)
   {
     const auto Root = Doc.RootElement();
 
@@ -168,7 +168,7 @@ QList<NewsItemData> NewslineWidget::loadRSSFile(const std::string& FilePath)
           for (auto Elt = ItemElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
             std::string TagName(Elt->Name());
-            QString TagText = QString::fromStdString(openfluid::tools::getXMLText(Elt));
+            QString TagText = QString::fromStdString(openfluid::thirdparty::getXMLText(Elt));
 
             if (TagName == "title")
             {  

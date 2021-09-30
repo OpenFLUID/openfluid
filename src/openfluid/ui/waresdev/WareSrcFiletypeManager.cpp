@@ -43,7 +43,7 @@
 #include <QFileInfo>
 
 
-#include <openfluid/tools/TinyXML2Helpers.hpp>
+#include <openfluid/thirdparty/XML.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
@@ -233,9 +233,9 @@ void WareSrcFiletypeManager::initializeFileTypes()
 
 WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxFile(const QString& FilePath)
 {
-  tinyxml2::XMLDocument Doc;
+  openfluid::thirdparty::xml::XMLDocument Doc;
 
-  if (Doc.LoadFile(FilePath.toStdString().c_str()) != tinyxml2::XML_SUCCESS)
+  if (Doc.LoadFile(FilePath.toStdString().c_str()) != openfluid::thirdparty::xml::XML_SUCCESS)
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "file cannot be found: " + FilePath.toStdString());
@@ -265,7 +265,7 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
 
             if (TagName == "list")
             {
-              QString StyleName = QString::fromStdString(openfluid::tools::getXMLAttribute(Elt,"style"));
+              QString StyleName = QString::fromStdString(openfluid::thirdparty::getXMLAttribute(Elt,"style"));
 
               if (m_Formats.contains(StyleName))
               {
@@ -274,14 +274,14 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
                 for (auto ItemElt = Elt->FirstChildElement("item"); ItemElt != nullptr; 
                     ItemElt = ItemElt->NextSiblingElement("item"))
                 {
-                  QString ItemText = QString::fromStdString(openfluid::tools::getXMLText(ItemElt));
+                  QString ItemText = QString::fromStdString(openfluid::thirdparty::getXMLText(ItemElt));
                   Rules.append(HighlightingRule(StyleName, QRegExp(QString("\\b%1\\b").arg(ItemText)),Format));
                 }
               }
             }
             else if (TagName == "rule")
             {
-              QString StyleName = QString::fromStdString(openfluid::tools::getXMLAttribute(Elt,"style"));
+              QString StyleName = QString::fromStdString(openfluid::thirdparty::getXMLAttribute(Elt,"style"));
 
               if (m_Formats.contains(StyleName))
               {
@@ -291,11 +291,11 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
                      PttrnElt = PttrnElt->NextSiblingElement("pattern"))
                 {
                   QString SimplePatternValue = 
-                    QString::fromStdString(openfluid::tools::getXMLAttribute(PttrnElt,"value"));
+                    QString::fromStdString(openfluid::thirdparty::getXMLAttribute(PttrnElt,"value"));
                   QString BeginPatternValue = 
-                    QString::fromStdString(openfluid::tools::getXMLAttribute(PttrnElt,"start"));
+                    QString::fromStdString(openfluid::thirdparty::getXMLAttribute(PttrnElt,"start"));
                   QString EndPatternValue = 
-                    QString::fromStdString(openfluid::tools::getXMLAttribute(PttrnElt,"end"));
+                    QString::fromStdString(openfluid::thirdparty::getXMLAttribute(PttrnElt,"end"));
                   
                   if (!SimplePatternValue.isEmpty())
                   {

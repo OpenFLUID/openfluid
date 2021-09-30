@@ -55,8 +55,8 @@ const std::string BUILD_COMPILER_ID = "@CMAKE_CXX_COMPILER_ID@";
 const std::string BUILD_COMPILER_VERSION = "@CMAKE_CXX_COMPILER_VERSION@";
 const std::string BUILD_COMPILATION_FLAGS = "@OFBUILD_ALL_COMPILE_FLAGS@";
 
-const std::string BUILD_LIB_nlohmannjson_VERSION = "@OFBUILD_3RDPARTY_LIB_nlohmannjson_VERSION@";
-const std::string BUILD_LIB_tinyxml2_VERSION = "@OFBUILD_3RDPARTY_LIB_tinyxml2_VERSION@";
+const std::string BUILD_LIB_nlohmannjson_VERSION = "@OFBUILD_3RDPARTY_nlohmannjson_VERSION@";
+const std::string BUILD_LIB_tinyxml2_VERSION = "@OFBUILD_3RDPARTY_tinyxml2_VERSION@";
 const std::string BUILD_LIB_Boost_VERSION = "@Boost_MAJOR_VERSION@.@Boost_MINOR_VERSION@.@Boost_SUBMINOR_VERSION@";
 const std::string BUILD_LIB_GDAL_VERSION = "@GDAL_VERSION@";
 const std::string BUILD_LIB_QT_VERSION = "@Qt5Core_VERSION@";

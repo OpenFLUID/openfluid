@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(check_setting_value)
   }
 
   {
-    auto Val = openfluid::tools::SettingValue::fromJSON(openfluid::tools::json(-123));
+    auto Val = openfluid::tools::SettingValue::fromJSON(openfluid::thirdparty::json(-123));
     BOOST_CHECK(Val.isJSONValue());
     BOOST_CHECK(Val.JSONValue().is_number_integer());
     BOOST_CHECK_EQUAL(Val.JSONValue().get<int>(),-123);
@@ -389,10 +389,10 @@ BOOST_AUTO_TEST_CASE(check_persistence)
        {"Project_X","/path/to/prjX"},
        {"Project_Y","/path/to/prjY"}
      };
-    openfluid::tools::json ListValue(openfluid::tools::json::value_t::array);
+    openfluid::thirdparty::json ListValue(openfluid::thirdparty::json::value_t::array);
     for (const auto& Prj : Projects)
     {
-      openfluid::tools::json Item(openfluid::tools::json::value_t::object);
+      openfluid::thirdparty::json Item(openfluid::thirdparty::json::value_t::object);
       Item["name"] = Prj.first;
       Item["path"] = Prj.second;
       ListValue.push_back(Item);
@@ -432,13 +432,13 @@ BOOST_AUTO_TEST_CASE(check_persistence)
       {"openfluid-keyword","#546F02",{"bold"}},
       {"quoted","#2A00FF",{}}
     };
-    openfluid::tools::json ListValue(openfluid::tools::json::value_t::array);
+    openfluid::thirdparty::json ListValue(openfluid::thirdparty::json::value_t::array);
     for (const auto& Cat : Categs)
     {
-      openfluid::tools::json Item(openfluid::tools::json::value_t::object);
+      openfluid::thirdparty::json Item(openfluid::thirdparty::json::value_t::object);
       Item["name"] = std::get<0>(Cat);
       Item["color"] = std::get<1>(Cat);
-      openfluid::tools::json ItemDeco(openfluid::tools::json::value_t::array);
+      openfluid::thirdparty::json ItemDeco(openfluid::thirdparty::json::value_t::array);
       for (const auto& Deco: std::get<2>(Cat))
       {
         ItemDeco.push_back(Deco.c_str());

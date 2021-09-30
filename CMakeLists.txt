@@ -178,8 +178,6 @@ ENDIF(APPLE)
 
 ################## contents ##################
 
-ADD_SUBDIRECTORY(thirdparty)
-
 ADD_SUBDIRECTORY(resources)
 
 ADD_SUBDIRECTORY(src)

@@ -122,10 +122,9 @@ class SourceTreeChecker:
 
         for Dirname, Dirnames, Filenames in os.walk(self.SrcRootPath):
             for Filename in Filenames:
-                RelFilename = os.path.relpath(os.path.join(Dirname, Filename),self.SrcRootPath)
-                if not RelFilename.startswith('.') and not RelFilename.startswith('_') and not RelFilename.startswith('thirdparty'):
-                    if self.isCppFile(RelFilename) or self.isCMakeFile(RelFilename):
-                        self.FileList.append(RelFilename)
+                RelFilename = os.path.relpath(os.path.join(Dirname, Filename),self.SrcRootPath)                
+                if self.isValidFile(RelFilename):
+                    self.FileList.append(RelFilename)
 
         self.FileList.sort()
 
@@ -153,6 +152,19 @@ class SourceTreeChecker:
     @staticmethod
     def isCMakeFile(Filename):
         return (Filename.endswith('CMakeLists.txt') or Filename.endswith('.cmake'))
+
+
+############################################################################
+
+
+    @staticmethod
+    def isValidFile(Filename):
+        return (
+                not Filename.startswith('.') and 
+                not Filename.startswith('_') and
+                not ('thirdparty' in Filename and not (os.path.dirname(Filename).endswith('thirdparty'))) and
+                (SourceTreeChecker.isCppFile(Filename) or SourceTreeChecker.isCMakeFile(Filename))
+               )
 
 
 ############################################################################

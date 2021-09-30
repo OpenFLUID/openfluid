@@ -31,26 +31,32 @@
 
 
 /**
-  @file TinyXML2Helpers.hpp
+  @file XML.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#ifndef __OPENFLUID_TOOLS_TINYXML2HELPERS_HPP__
-#define __OPENFLUID_TOOLS_TINYXML2HELPERS_HPP__
+#ifndef __OPENFLUID_THIRDPARTY_XML_HPP__
+#define __OPENFLUID_THIRDPARTY_XML_HPP__
 
 
 #include <string>
 
-#include <tinyxml2.h>
+#include <openfluid/thirdparty/tinyxml2-9.0.0/tinyxml2.h>
 
 
-namespace openfluid { namespace tools {
+namespace openfluid { namespace thirdparty {
 
 
-std::string getXMLAttribute(const tinyxml2::XMLElement* const Elt, const std::string& AttrName,
-                              const std::string& DefaultValue = "")
+/**
+  Alias to embed the tinyXML2 third-party library as openfluid::thirdparty::xml
+*/
+namespace xml = tinyxml2;
+
+
+std::string getXMLAttribute(const xml::XMLElement* const Elt, const std::string& AttrName,
+                            const std::string& DefaultValue = "")
 {
   if (Elt != nullptr && Elt->Attribute(AttrName.c_str()) != nullptr) 
   {
@@ -64,7 +70,7 @@ std::string getXMLAttribute(const tinyxml2::XMLElement* const Elt, const std::st
 // =====================================================================
 
 
-std::string getXMLText(const tinyxml2::XMLElement* const Elt, const std::string& DefaultValue = "")
+std::string getXMLText(const xml::XMLElement* const Elt, const std::string& DefaultValue = "")
 {
   if (Elt != nullptr && Elt->GetText() != nullptr) 
   {
@@ -78,7 +84,7 @@ std::string getXMLText(const tinyxml2::XMLElement* const Elt, const std::string&
 // =====================================================================
 
 
-std::string getOpenFLUIDXMLFormat(const tinyxml2::XMLElement* const Elt)
+std::string getOpenFLUIDXMLFormat(const xml::XMLElement* const Elt)
 {  
   return getXMLAttribute(Elt,"format");
 }
@@ -88,7 +94,7 @@ std::string getOpenFLUIDXMLFormat(const tinyxml2::XMLElement* const Elt)
 // =====================================================================
 
 
-tinyxml2::XMLElement* prepareOpenFLUIDXMLDoc(tinyxml2::XMLDocument& Doc, const std::string& FormatVersion)
+openfluid::thirdparty::xml::XMLElement* prepareOpenFLUIDXMLDoc(xml::XMLDocument& Doc, const std::string& FormatVersion)
 {
   auto Decl = Doc.NewDeclaration();
   Doc.InsertFirstChild(Decl);
@@ -103,4 +109,4 @@ tinyxml2::XMLElement* prepareOpenFLUIDXMLDoc(tinyxml2::XMLDocument& Doc, const s
 } } // namespaces
 
 
-#endif /* __OPENFLUID_TOOLS_TINYXML2HELPERS_HPP__ */
+#endif /* __OPENFLUID_THIRDPARTY_XML_HPP__ */

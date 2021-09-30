@@ -31,26 +31,28 @@
 
 
 /**
-  @file JSONHelpers.hpp
+  @file JSON.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#ifndef __OPENFLUID_TOOLS_JSONHELPERS_HPP__
-#define __OPENFLUID_TOOLS_JSONHELPERS_HPP__
+#ifndef __OPENFLUID_THIRDPARTY_JSON_HPP__
+#define __OPENFLUID_THIRDPARTY_JSON_HPP__
 
 
-#include <nlohmann/json.hpp>
+#include <openfluid/thirdparty/nlohmannjson-3.10.2/nlohmann/json.hpp>
 
 
-namespace openfluid { namespace tools {
+namespace openfluid { namespace thirdparty {
 
-
+/**
+  Alias to embed the nlohmann::json third party library as openfluid::thirdparty::json
+*/
 using json = nlohmann::ordered_json;
 
 
 } } // namespaces
 
 
-#endif /* __OPENFLUID_TOOLS_JSONHELPERS_HPP__ */
+#endif /* __OPENFLUID_THIRDPARTY_JSON_HPP__ */

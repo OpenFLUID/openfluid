@@ -100,7 +100,7 @@ void SettingsBackend::prepareForData()
   // set up doc as object
   if (!m_Config.is_object())
   {
-    m_Config = openfluid::tools::json::object();
+    m_Config = openfluid::thirdparty::json::object();
   }
 
   // check that role key type is object
@@ -113,7 +113,7 @@ void SettingsBackend::prepareForData()
   // set up role key in doc if not exists
   if (m_Config.find(m_Role) == m_Config.end())
   {
-    m_Config[m_Role] = openfluid::tools::json::object(); 
+    m_Config[m_Role] = openfluid::thirdparty::json::object(); 
   }
 }
 
@@ -134,9 +134,9 @@ bool SettingsBackend::load()
 
   try
   {
-    m_Config = openfluid::tools::json::parse(FileStream);
+    m_Config = openfluid::thirdparty::json::parse(FileStream);
   }
-  catch (openfluid::tools::json::parse_error&)
+  catch (openfluid::thirdparty::json::parse_error&)
   {
     return false;
   }
@@ -204,7 +204,7 @@ const SettingValue SettingsBackend::getValue(const std::string& Pointer) const
 
   try 
   {
-    const openfluid::tools::json Val = m_Config.at(openfluid::tools::json::json_pointer(Ptr));
+    const openfluid::thirdparty::json Val = m_Config.at(openfluid::thirdparty::json::json_pointer(Ptr));
 
     if (Val.is_string())
     {
@@ -263,7 +263,7 @@ void SettingsBackend::setValue(const std::string& ParentPointer, const std::stri
   {
     try 
     {
-      m_Config.at(openfluid::tools::json::json_pointer(ParentPtr));
+      m_Config.at(openfluid::thirdparty::json::json_pointer(ParentPtr));
     }
     catch (...)
     {
@@ -273,7 +273,7 @@ void SettingsBackend::setValue(const std::string& ParentPointer, const std::stri
     }
   }
 
-  openfluid::tools::json JSONValue = openfluid::tools::json::object();
+  openfluid::thirdparty::json JSONValue = openfluid::thirdparty::json::object();
 
   if (Val.is<std::string>())
   {
@@ -300,7 +300,7 @@ void SettingsBackend::setValue(const std::string& ParentPointer, const std::stri
     JSONValue = Val.JSONValue();
   }
 
-  m_Config[openfluid::tools::json::json_pointer(ParentPtr + "/" + Key)] = JSONValue;
+  m_Config[openfluid::thirdparty::json::json_pointer(ParentPtr + "/" + Key)] = JSONValue;
 
   autoSave();
 }
@@ -316,7 +316,7 @@ void SettingsBackend::remove(const std::string& Pointer)
 
   try
   {
-    const auto JSONptr = openfluid::tools::json::json_pointer(Ptr);
+    const auto JSONptr = openfluid::thirdparty::json::json_pointer(Ptr);
     const std::string Key = JSONptr.back();
     const auto ParentJSONptr = JSONptr.parent_pointer();
 
@@ -340,7 +340,7 @@ bool SettingsBackend::exists(const std::string& Pointer) const
 
   try 
   {
-    auto Val = m_Config.at(openfluid::tools::json::json_pointer(Ptr));
+    auto Val = m_Config.at(openfluid::thirdparty::json::json_pointer(Ptr));
   }
   catch (...)
   {

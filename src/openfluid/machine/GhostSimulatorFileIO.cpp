@@ -42,8 +42,8 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include <openfluid/thirdparty/XML.hpp>
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
-#include <openfluid/tools/TinyXML2Helpers.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
@@ -68,16 +68,17 @@ class DataNodeFields
 
     std::string Type;
 
-    DataNodeFields(const tinyxml2::XMLElement* const Elt, const std::vector<std::string>& ExpectedIOModes = {})
+    DataNodeFields(const openfluid::thirdparty::xml::XMLElement* const Elt, 
+                  const std::vector<std::string>& ExpectedIOModes = {})
     {     
       if (Elt != nullptr)
       {      
-        Name = openfluid::tools::getXMLAttribute(Elt,"name");
-        UnitsClass = openfluid::tools::getXMLAttribute(Elt,"unitsclass");
-        IOMode = openfluid::tools::getXMLAttribute(Elt,"iomode");
-        SIUnit = openfluid::tools::getXMLAttribute(Elt,"siunit");
-        Type = openfluid::tools::getXMLAttribute(Elt,"type");
-        Description = openfluid::tools::getXMLText(Elt);
+        Name = openfluid::thirdparty::getXMLAttribute(Elt,"name");
+        UnitsClass = openfluid::thirdparty::getXMLAttribute(Elt,"unitsclass");
+        IOMode = openfluid::thirdparty::getXMLAttribute(Elt,"iomode");
+        SIUnit = openfluid::thirdparty::getXMLAttribute(Elt,"siunit");
+        Type = openfluid::thirdparty::getXMLAttribute(Elt,"type");
+        Description = openfluid::thirdparty::getXMLText(Elt);
       }
 
       if (std::find(ExpectedIOModes.begin(),ExpectedIOModes.end(),IOMode) == ExpectedIOModes.end())
@@ -93,7 +94,7 @@ class DataNodeFields
 
 
 void insertParameter(const openfluid::ware::SignatureDataItem& Data,
-                     const std::string& IoModeStr, tinyxml2::XMLElement* BaseElt)
+                     const std::string& IoModeStr, openfluid::thirdparty::xml::XMLElement* BaseElt)
 {
   auto ParamElt = BaseElt->InsertNewChildElement("parameter");
   ParamElt->SetAttribute("name",Data.DataName.c_str());
@@ -108,7 +109,7 @@ void insertParameter(const openfluid::ware::SignatureDataItem& Data,
 
 
 void insertExtraFile(const std::string& Name,
-                     const std::string& IoModeStr, tinyxml2::XMLElement* BaseElt)
+                     const std::string& IoModeStr, openfluid::thirdparty::xml::XMLElement* BaseElt)
 {
   auto ParamElt = BaseElt->InsertNewChildElement("extrafile");
   ParamElt->SetAttribute("name",Name.c_str());
@@ -121,7 +122,7 @@ void insertExtraFile(const std::string& Name,
 
 
 void insertVariable(const openfluid::ware::SignatureTypedSpatialDataItem& Data,
-                    const std::string& IoModeStr, tinyxml2::XMLElement* BaseElt)
+                    const std::string& IoModeStr, openfluid::thirdparty::xml::XMLElement* BaseElt)
 {
   auto VarElt = BaseElt->InsertNewChildElement("variable");
   VarElt->SetAttribute("name",Data.DataName.c_str());
@@ -141,7 +142,7 @@ void insertVariable(const openfluid::ware::SignatureTypedSpatialDataItem& Data,
 
 
 void insertAttribute(const openfluid::ware::SignatureSpatialDataItem& Data,
-                     const std::string& IoModeStr, tinyxml2::XMLElement* BaseElt)
+                     const std::string& IoModeStr, openfluid::thirdparty::xml::XMLElement* BaseElt)
 {
   auto AttrElt = BaseElt->InsertNewChildElement("attribute");
   AttrElt->SetAttribute("name",Data.DataName.c_str());
@@ -156,7 +157,7 @@ void insertAttribute(const openfluid::ware::SignatureSpatialDataItem& Data,
 // =====================================================================
 
 
-void insertEvents(const std::string& EventsClass, tinyxml2::XMLElement* BaseElt)
+void insertEvents(const std::string& EventsClass, openfluid::thirdparty::xml::XMLElement* BaseElt)
 {
   auto EvElt = BaseElt->InsertNewChildElement("events");
   EvElt->SetAttribute("unitsclass",EventsClass.c_str());
@@ -173,8 +174,8 @@ bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature&
                                                                             openfluid::config::SIMULATORS_GHOSTS_SUFFIX+
                                                                             openfluid::config::GHOSTS_EXT});
 
-  tinyxml2::XMLDocument Doc;
-  auto OFElt = openfluid::tools::prepareOpenFLUIDXMLDoc(Doc,FormatVersion);
+  openfluid::thirdparty::xml::XMLDocument Doc;
+  auto OFElt = openfluid::thirdparty::prepareOpenFLUIDXMLDoc(Doc,FormatVersion);
 
   // ghost-simulator
   auto GhostElt = OFElt->InsertNewChildElement("ghost-simulator");
@@ -335,9 +336,9 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
 {
   Signature.clear();
 
-  tinyxml2::XMLDocument Doc;
+  openfluid::thirdparty::xml::XMLDocument Doc;
 
-  if (Doc.LoadFile(FilePath.c_str()) == tinyxml2::XML_SUCCESS)
+  if (Doc.LoadFile(FilePath.c_str()) == openfluid::thirdparty::xml::XML_SUCCESS)
   {
     const auto Root = Doc.RootElement();
 
@@ -346,7 +347,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
       const auto GhostElt = Root->FirstChildElement("ghost-simulator");
       if (GhostElt != nullptr && GhostElt->Attribute("ID") != nullptr)
       {
-        std::string GhostID = openfluid::tools::getXMLAttribute(GhostElt,"ID");
+        std::string GhostID = openfluid::thirdparty::getXMLAttribute(GhostElt,"ID");
 
         if (!boost::starts_with(openfluid::tools::Filesystem::filename(FilePath),GhostID))
         {
@@ -362,7 +363,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
           for (auto Elt = InfosElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
             std::string TagName(Elt->Name());
-            std::string TagText = openfluid::tools::getXMLText(Elt);
+            std::string TagText = openfluid::thirdparty::getXMLText(Elt);
 
             if (TagName == "name")
             {
@@ -375,8 +376,8 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
             else if (TagName == "author")
             {
               Signature.Authors.push_back(
-                std::pair<std::string,std::string>(openfluid::tools::getXMLAttribute(Elt,"name"),
-                                                   openfluid::tools::getXMLAttribute(Elt,"email"))
+                std::pair<std::string,std::string>(openfluid::thirdparty::getXMLAttribute(Elt,"name"),
+                                                   openfluid::thirdparty::getXMLAttribute(Elt,"email"))
               );
             }
             else if (TagName == "status")
@@ -556,7 +557,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
           for (auto Elt = SpatialElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
             std::string TagName(Elt->Name());
-            std::string TagText = openfluid::tools::getXMLText(Elt);
+            std::string TagText = openfluid::thirdparty::getXMLText(Elt);
 
             if (TagName == "description")
             {
@@ -564,7 +565,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
             }
             else if (TagName == "unitsclass")
             {
-              std::string NameStr = openfluid::tools::getXMLAttribute(Elt,"name");
+              std::string NameStr = openfluid::thirdparty::getXMLAttribute(Elt,"name");
               if (NameStr.empty())
               {
                 return false;
@@ -582,7 +583,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
         const auto SchedElt = GhostElt->FirstChildElement("scheduling");
         if (SchedElt != nullptr)
         {
-          std::string ModeStr = openfluid::tools::getXMLAttribute(SchedElt,"mode");
+          std::string ModeStr = openfluid::thirdparty::getXMLAttribute(SchedElt,"mode");
 
           if (ModeStr == "undefined")
           {
@@ -596,7 +597,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
           {
             int Val = 0;
 
-            if (SchedElt->QueryIntAttribute("value",&Val) == tinyxml2::XML_SUCCESS)
+            if (SchedElt->QueryIntAttribute("value",&Val) == openfluid::thirdparty::xml::XML_SUCCESS)
             {
               Signature.TimeScheduling.setAsFixed(Val);
             }
@@ -612,8 +613,8 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
             int Min = 0;
             int Max = 0;
 
-            if (SchedElt->QueryIntAttribute("min",&Min) == tinyxml2::XML_SUCCESS &&
-                SchedElt->QueryIntAttribute("max",&Max) == tinyxml2::XML_SUCCESS)
+            if (SchedElt->QueryIntAttribute("min",&Min) == openfluid::thirdparty::xml::XML_SUCCESS &&
+                SchedElt->QueryIntAttribute("max",&Max) == openfluid::thirdparty::xml::XML_SUCCESS)
             {
               Signature.TimeScheduling.setAsRange(Min,Max);
             }

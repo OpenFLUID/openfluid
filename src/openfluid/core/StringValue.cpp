@@ -52,7 +52,7 @@
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/tools/JSONHelpers.hpp>
+#include <openfluid/thirdparty/JSON.hpp>
 
 
 namespace openfluid { namespace core {
@@ -669,7 +669,7 @@ bool StringValue::toMatrixValue(const unsigned int& RowLength, MatrixValue& Val)
 // =====================================================================
 
 
-bool JSONObjectToMapValue(const openfluid::tools::json& Obj, MapValue& Val)
+bool JSONObjectToMapValue(const openfluid::thirdparty::json& Obj, MapValue& Val)
 {
   if (!Obj.is_object())
   {
@@ -782,9 +782,9 @@ bool StringValue::toMapValue(MapValue& Val) const
   {
     try
     {
-      return JSONObjectToMapValue(openfluid::tools::json::parse(m_Value),Val);
+      return JSONObjectToMapValue(openfluid::thirdparty::json::parse(m_Value),Val);
     }
-    catch (openfluid::tools::json::parse_error&)
+    catch (openfluid::thirdparty::json::parse_error&)
     {
       return false;
     }

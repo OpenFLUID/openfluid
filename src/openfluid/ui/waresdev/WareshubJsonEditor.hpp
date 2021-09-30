@@ -48,7 +48,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
 #include <openfluid/ui/waresdev/WareshubIssueDialog.hpp>
-#include <openfluid/tools/JSONHelpers.hpp>
+#include <openfluid/thirdparty/JSON.hpp>
 
 
 namespace Ui {
@@ -67,7 +67,7 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
 
     Ui::WareshubJsonEditor* ui;
 
-    openfluid::tools::json m_Doc;
+    openfluid::thirdparty::json m_Doc;
 
     bool m_IsModified = false;
 

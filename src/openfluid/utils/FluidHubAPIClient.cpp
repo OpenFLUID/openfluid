@@ -38,7 +38,7 @@
 */
 
 
-#include <openfluid/tools/JSONHelpers.hpp>
+#include <openfluid/thirdparty/JSON.hpp>
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 
 
@@ -46,7 +46,7 @@ namespace openfluid { namespace utils {
 
 
 template<class T>
-void JSONArrayToStringSet(const openfluid::tools::json& Obj, std::set<T>& Set)
+void JSONArrayToStringSet(const openfluid::thirdparty::json& Obj, std::set<T>& Set)
 {
   Set.clear();
 
@@ -67,7 +67,7 @@ void JSONArrayToStringSet(const openfluid::tools::json& Obj, std::set<T>& Set)
 // =====================================================================
 
 
-void JSONArrayToStringVector(const openfluid::tools::json& Obj, std::vector<std::string>& Vector)
+void JSONArrayToStringVector(const openfluid::thirdparty::json& Obj, std::vector<std::string>& Vector)
 {
   Vector.clear();
 
@@ -88,7 +88,7 @@ void JSONArrayToStringVector(const openfluid::tools::json& Obj, std::vector<std:
 // =====================================================================
 
 
-void JSONObjectToDetailedWares(const openfluid::tools::json& Obj,
+void JSONObjectToDetailedWares(const openfluid::thirdparty::json& Obj,
                                FluidHubAPIClient::WaresDetailsByID_t& WMap, bool IsV0ofAPI=true)
 {
   WMap.clear();
@@ -239,13 +239,13 @@ bool FluidHubAPIClient::connect(const QString& URL,const RESTClient::SSLConfigur
 
   if (Reply.isOK())
   {
-    openfluid::tools::json JSONDoc;
+    openfluid::thirdparty::json JSONDoc;
 
     try
     {
-      JSONDoc = openfluid::tools::json::parse(Reply.getContent().toStdString());
+      JSONDoc = openfluid::thirdparty::json::parse(Reply.getContent().toStdString());
     }
-    catch (openfluid::tools::json::parse_error&)
+    catch (openfluid::thirdparty::json::parse_error&)
     {
       return false;
     }
@@ -331,13 +331,13 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
 
     if (Reply.isOK())
     {
-      openfluid::tools::json JSONDoc;
+      openfluid::thirdparty::json JSONDoc;
 
       try
       {
-        JSONDoc = openfluid::tools::json::parse(Reply.getContent().toStdString());
+        JSONDoc = openfluid::thirdparty::json::parse(Reply.getContent().toStdString());
       }
-      catch (openfluid::tools::json::parse_error&)
+      catch (openfluid::thirdparty::json::parse_error&)
       {
          return WaresDesc;
       }
@@ -386,13 +386,13 @@ std::string fetchFieldFromEndpoint(const RESTClient& Client, const std::string M
 
   if (Reply.isOK())
   {
-    openfluid::tools::json JSONDoc;
+    openfluid::thirdparty::json JSONDoc;
 
     try
     {
-      JSONDoc = openfluid::tools::json::parse(Reply.getContent().toStdString());
+      JSONDoc = openfluid::thirdparty::json::parse(Reply.getContent().toStdString());
     }
-    catch (openfluid::tools::json::parse_error&)
+    catch (openfluid::thirdparty::json::parse_error&)
     {
       return "";
     }
@@ -466,13 +466,13 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDe
 
     if (Reply.isOK())
     {
-      openfluid::tools::json JSONDoc;
+      openfluid::thirdparty::json JSONDoc;
 
       try
       {
-        JSONDoc = openfluid::tools::json::parse(Reply.getContent().toStdString());
+        JSONDoc = openfluid::thirdparty::json::parse(Reply.getContent().toStdString());
       }
-      catch (openfluid::tools::json::parse_error&)
+      catch (openfluid::thirdparty::json::parse_error&)
       {
         return WaresDesc;
       }

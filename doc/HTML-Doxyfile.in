@@ -32,7 +32,7 @@ FILE_PATTERNS          = *.h \
                          *.h++ \
                          *.md
 RECURSIVE              = YES
-EXCLUDE                = .svn .git
+EXCLUDE_PATTERNS       = @OFBUILD_DOC_DIRSTOEXCLUDE@
 EXCLUDE_SYMLINKS       = NO
 LAYOUT_FILE            = @OFBUILD_DOC_LAYOUT_DIR@/layout.xml
 IMAGE_PATH             = @OFBUILD_DOC_CONTENTS_DIR@/images

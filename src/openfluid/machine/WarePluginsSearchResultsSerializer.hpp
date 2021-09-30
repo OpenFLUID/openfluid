@@ -47,7 +47,7 @@
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
-#include <openfluid/tools/JSONHelpers.hpp>
+#include <openfluid/thirdparty/JSON.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -163,27 +163,31 @@ class OPENFLUID_API WarePluginsSearchResultsSerializer
 
     void writeToStreamAsText(std::ostream& OutStm,bool WithErrors) const;
 
-    void addErrorsToJSONDoc(openfluid::tools::json& Doc) const;
+    void addErrorsToJSONDoc(openfluid::thirdparty::json& Doc) const;
 
-    static std::string getJSONAsString(openfluid::tools::json& Doc);
+    static std::string getJSONAsString(openfluid::thirdparty::json& Doc);
 
     void writeListToStreamAsJSON(std::ostream& OutStm,bool WithErrors) const;
 
-    void addDataForJSON(const openfluid::ware::SignatureDataItem& Item, openfluid::tools::json& Arr) const;
+    void addDataForJSON(const openfluid::ware::SignatureDataItem& Item, openfluid::thirdparty::json& Arr) const;
 
     void addSpatialDataForJSON(const openfluid::ware::SignatureSpatialDataItem& Item,
-                               openfluid::tools::json& Arr) const;
+                               openfluid::thirdparty::json& Arr) const;
 
     void addTypedSpatialDataForJSON(const openfluid::ware::SignatureTypedSpatialDataItem& Item,
-                                    openfluid::tools::json& Arr) const;
+                                    openfluid::thirdparty::json& Arr) const;
 
-    void addDataDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const;
+    void addDataDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign,
+                               openfluid::thirdparty::json& Obj) const;
 
-    void addGraphDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const;
+    void addGraphDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign,
+                                openfluid::thirdparty::json& Obj) const;
 
-    void addWareDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const;
+    void addWareDetailsForJSON(const openfluid::ware::SimulatorSignature* Sign,
+                               openfluid::thirdparty::json& Obj) const;
 
-    void addWareDetailsForJSON(const openfluid::ware::ObserverSignature* Sign, openfluid::tools::json& Obj) const;
+    void addWareDetailsForJSON(const openfluid::ware::ObserverSignature* Sign,
+                               openfluid::thirdparty::json& Obj) const;
 
     void writeToStreamAsJSON(std::ostream& OutStm,bool WithErrors) const;
 
@@ -588,13 +592,14 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsT
 
 
 template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addErrorsToJSONDoc(openfluid::tools::json& Doc) const
+void WarePluginsSearchResultsSerializer<SignatureInstanceType>::
+  addErrorsToJSONDoc(openfluid::thirdparty::json& Doc) const
 {
-  openfluid::tools::json Errors(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json Errors(openfluid::thirdparty::json::value_t::array);
 
   for (auto& EFile : m_SearchResults.erroredFiles())
   {
-    openfluid::tools::json EObj(openfluid::tools::json::value_t::object);
+    openfluid::thirdparty::json EObj(openfluid::thirdparty::json::value_t::object);
     EObj["file_path"] = EFile.first;
     EObj["message"] = EFile.second;
     Errors.push_back(EObj);
@@ -609,7 +614,7 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addErrorsToJSOND
 
 
 template<class SignatureInstanceType>
-std::string WarePluginsSearchResultsSerializer<SignatureInstanceType>::getJSONAsString(openfluid::tools::json& Doc)
+std::string WarePluginsSearchResultsSerializer<SignatureInstanceType>::getJSONAsString(openfluid::thirdparty::json& Doc)
 {
   return Doc.dump(2);
 }
@@ -623,9 +628,9 @@ template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeListToStreamAsJSON(std::ostream& OutStm,
                                                                                         bool WithErrors) const
 {
-  openfluid::tools::json JSON(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json JSON(openfluid::thirdparty::json::value_t::object);
 
-  openfluid::tools::json Available(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json Available(openfluid::thirdparty::json::value_t::array);
 
   for (auto& Plug : m_SearchResults.availablePlugins())
   {
@@ -653,9 +658,9 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeListToStrea
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataForJSON(
-  const openfluid::ware::SignatureDataItem& Item, openfluid::tools::json& Arr) const
+  const openfluid::ware::SignatureDataItem& Item, openfluid::thirdparty::json& Arr) const
 {
-   openfluid::tools::json Obj(openfluid::tools::json::value_t::object);
+   openfluid::thirdparty::json Obj(openfluid::thirdparty::json::value_t::object);
    Obj["name"] = Item.DataName;
    Obj["description"] = Item.Description;
    Obj["si_unit"] = Item.DataUnit;
@@ -669,9 +674,9 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataForJSON(
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSpatialDataForJSON(
-  const openfluid::ware::SignatureSpatialDataItem& Item, openfluid::tools::json& Arr) const
+  const openfluid::ware::SignatureSpatialDataItem& Item, openfluid::thirdparty::json& Arr) const
 {
-  openfluid::tools::json Obj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json Obj(openfluid::thirdparty::json::value_t::object);
   Obj["name"] = Item.DataName;
   Obj["units_class"] = Item.UnitsClass;
   Obj["description"] = Item.Description;
@@ -686,11 +691,11 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSpatialDataFo
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addTypedSpatialDataForJSON(
-  const openfluid::ware::SignatureTypedSpatialDataItem& Item, openfluid::tools::json& Arr) const
+  const openfluid::ware::SignatureTypedSpatialDataItem& Item, openfluid::thirdparty::json& Arr) const
 {
   std::string TypeStr = openfluid::core::Value::getStringFromValueType(Item.DataType);
 
-  openfluid::tools::json Obj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json Obj(openfluid::thirdparty::json::value_t::object);
   Obj["name"] = Item.DataName;
   Obj["type"] = TypeStr;
   Obj["units_class"] = Item.UnitsClass;
@@ -706,19 +711,19 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addTypedSpatialD
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsForJSON(
-  const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const
+  const openfluid::ware::SimulatorSignature* Sign, openfluid::thirdparty::json& Obj) const
 {
   // ------ Parameters
 
-  openfluid::tools::json ParamsObj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json ParamsObj(openfluid::thirdparty::json::value_t::object);
 
-  openfluid::tools::json  ReqParamsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  ReqParamsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.RequiredParams)
   {
     addDataForJSON(Item,ReqParamsArray);
   }
 
-  openfluid::tools::json  UsedParamsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  UsedParamsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedParams)
   {
     addDataForJSON(Item,UsedParamsArray);
@@ -731,21 +736,21 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsFo
 
   // ------ Attributes
 
-  openfluid::tools::json AttrsObj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json AttrsObj(openfluid::thirdparty::json::value_t::object);
 
-  openfluid::tools::json  ReqAttrsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  ReqAttrsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.RequiredAttribute)
   {
     addSpatialDataForJSON(Item,ReqAttrsArray);
   } 
 
-  openfluid::tools::json  UsedAttrsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  UsedAttrsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedAttribute)
   {
     addSpatialDataForJSON(Item,UsedAttrsArray);
   } 
 
-  openfluid::tools::json  ProdAttrsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  ProdAttrsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.ProducedAttribute)
   {
     addSpatialDataForJSON(Item,ProdAttrsArray);
@@ -759,27 +764,27 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsFo
 
   // ------ Variables
 
-  openfluid::tools::json VarsObj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json VarsObj(openfluid::thirdparty::json::value_t::object);
 
-  openfluid::tools::json  ReqVarsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  ReqVarsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.RequiredVars)
   {
     addTypedSpatialDataForJSON(Item,ReqVarsArray);
   } 
 
-  openfluid::tools::json  UsedVarsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  UsedVarsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedVars)
   {
     addTypedSpatialDataForJSON(Item,UsedVarsArray);
   } 
 
-  openfluid::tools::json  UpVarsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  UpVarsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UpdatedVars)
   {
     addTypedSpatialDataForJSON(Item,UpVarsArray);
   } 
 
-  openfluid::tools::json  ProdVarsArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  ProdVarsArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.ProducedVars)
   {
     addTypedSpatialDataForJSON(Item,ProdVarsArray);
@@ -794,7 +799,7 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsFo
 
   // ------ Events
 
-  openfluid::tools::json  EvArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  EvArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedEventsOnUnits)
   {
     EvArray.push_back(Item);
@@ -804,15 +809,15 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsFo
 
   // ------ Extrafiles
 
-  openfluid::tools::json ExtraObj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json ExtraObj(openfluid::thirdparty::json::value_t::object);
 
-  openfluid::tools::json  ReqExtraArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  ReqExtraArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.RequiredExtraFiles)
   {
     ReqExtraArray.push_back(Item);
   }
 
-  openfluid::tools::json  UsedExtraArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json  UsedExtraArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Item : Sign->HandledData.UsedExtraFiles)
   {
     UsedExtraArray.push_back(Item);
@@ -830,14 +835,14 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsFo
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addGraphDetailsForJSON(
-  const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const
+  const openfluid::ware::SimulatorSignature* Sign, openfluid::thirdparty::json& Obj) const
 {
   Obj["description"] = Sign->HandledUnitsGraph.UpdatedUnitsGraph;
 
-  openfluid::tools::json ClassesArray(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json ClassesArray(openfluid::thirdparty::json::value_t::array);
   for (const auto& Class : Sign->HandledUnitsGraph.UpdatedUnitsClass)
   {
-    openfluid::tools::json ClassObj(openfluid::tools::json::value_t::object);
+    openfluid::thirdparty::json ClassObj(openfluid::thirdparty::json::value_t::object);
     ClassObj["class_name"] = Class.UnitsClass;
     ClassObj["description"] = Class.Description;
     ClassesArray.push_back(ClassObj);
@@ -852,26 +857,26 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addGraphDetailsF
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsForJSON(
-  const openfluid::ware::SimulatorSignature* Sign, openfluid::tools::json& Obj) const
+  const openfluid::ware::SimulatorSignature* Sign, openfluid::thirdparty::json& Obj) const
 {
   Obj["domain"] = Sign->Domain;
   Obj["process"] = Sign->Process;
   Obj["method"] = Sign->Method;
 
 
-  openfluid::tools::json DataObj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json DataObj(openfluid::thirdparty::json::value_t::object);
   addDataDetailsForJSON(Sign,DataObj);
   Obj["data"] = DataObj;
 
 
-  openfluid::tools::json SchedObj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json SchedObj(openfluid::thirdparty::json::value_t::object);
   SchedObj["type"] = getSchedulingTypeAsString(Sign->TimeScheduling.Type);
   SchedObj["min"] = Sign->TimeScheduling.Min;
   SchedObj["max"] = Sign->TimeScheduling.Max;
   Obj["scheduling"] = SchedObj;
 
 
-  openfluid::tools::json GraphObj(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json GraphObj(openfluid::thirdparty::json::value_t::object);
   addGraphDetailsForJSON(Sign,GraphObj);
   Obj["spatial_graph"] = GraphObj;
 }
@@ -883,7 +888,7 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsFo
 
 template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsForJSON(
-  const openfluid::ware::ObserverSignature* /*Sign*/, openfluid::tools::json& /*Obj*/) const
+  const openfluid::ware::ObserverSignature* /*Sign*/, openfluid::thirdparty::json& /*Obj*/) const
 {
   // nothing to be done
 }
@@ -897,9 +902,9 @@ template<class SignatureInstanceType>
 void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJSON(std::ostream& OutStm,
                                                                                     bool WithErrors) const
 {
-  openfluid::tools::json JSON(openfluid::tools::json::value_t::object);
+  openfluid::thirdparty::json JSON(openfluid::thirdparty::json::value_t::object);
 
-  openfluid::tools::json Available(openfluid::tools::json::value_t::array);
+  openfluid::thirdparty::json Available(openfluid::thirdparty::json::value_t::array);
 
   for (auto& Plug : m_SearchResults.availablePlugins())
   {
@@ -907,12 +912,12 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJ
     {
       const auto Sign = Plug->Signature;
 
-      openfluid::tools::json WareObj(openfluid::tools::json::value_t::object);
+      openfluid::thirdparty::json WareObj(openfluid::thirdparty::json::value_t::object);
       WareObj["id"] = Sign->ID;
       WareObj["file_path"] = Plug->FileFullPath;
       WareObj["abi_version"] = Sign->BuildInfo.SDKVersion;
 
-      openfluid::tools::json BuildObj(openfluid::tools::json::value_t::object);
+      openfluid::thirdparty::json BuildObj(openfluid::thirdparty::json::value_t::object);
       BuildObj["type"] = Sign->BuildInfo.BuildType;
       BuildObj["compiler_id"] = Sign->BuildInfo.CompilerID;
       BuildObj["compiler_version"] = Sign->BuildInfo.CompilerVersion;
@@ -924,10 +929,10 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJ
       WareObj["version"] = Sign->Version;
       WareObj["status"] = openfluid::ware::WareSignature::getStatusAsString(Sign->Status);
 
-      openfluid::tools::json AuthsArray(openfluid::tools::json::value_t::array);
+      openfluid::thirdparty::json AuthsArray(openfluid::thirdparty::json::value_t::array);
       for (auto& Author : Sign->Authors)
       {
-        openfluid::tools::json AuthObj(openfluid::tools::json::value_t::object);
+        openfluid::thirdparty::json AuthObj(openfluid::thirdparty::json::value_t::object);
         AuthObj["name"] = Author.first;
         AuthObj["email"] = Author.second;
         AuthsArray.push_back(AuthObj);

@@ -41,14 +41,12 @@
 #include <fstream>
 #include <functional>
 
-#include <tinyxml2.h>
-
 #include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
-#include <openfluid/tools/TinyXML2Helpers.hpp>
+#include <openfluid/thirdparty/XML.hpp>
 
 
 namespace openfluid { namespace fluidx {
@@ -93,9 +91,9 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    bool extractWareEnabled(const tinyxml2::XMLElement* Elt)
+    bool extractWareEnabled(const openfluid::thirdparty::xml::XMLElement* Elt)
     {
-      std::string Enabled = openfluid::tools::getXMLAttribute(Elt,"enabled");
+      std::string Enabled = openfluid::thirdparty::getXMLAttribute(Elt,"enabled");
 
       if (Enabled == "1" || Enabled == "true" || Enabled.empty())
       {
@@ -110,13 +108,13 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    void extractMonitoring(const tinyxml2::XMLElement* MonElt)
+    void extractMonitoring(const openfluid::thirdparty::xml::XMLElement* MonElt)
     { 
 
       for (auto Elt = MonElt->FirstChildElement("observer"); Elt != nullptr; 
            Elt = Elt->NextSiblingElement("observer"))
       {
-        std::string ID = openfluid::tools::getXMLAttribute(Elt,"ID");
+        std::string ID = openfluid::thirdparty::getXMLAttribute(Elt,"ID");
 
         if (!ID.empty())
         {
@@ -133,7 +131,7 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    openfluid::ware::WareParams_t extractParams(const tinyxml2::XMLElement* WareElt)
+    openfluid::ware::WareParams_t extractParams(const openfluid::thirdparty::xml::XMLElement* WareElt)
     {
       openfluid::ware::WareParams_t Params;
 
@@ -142,8 +140,8 @@ class FluidXReaderImplementation
         for (auto Elt = WareElt->FirstChildElement("param"); Elt != nullptr; 
              Elt = Elt->NextSiblingElement("param"))
         {
-          std::string Name = openfluid::tools::getXMLAttribute(Elt,"name");
-          std::string Value = openfluid::tools::getXMLAttribute(Elt,"value");
+          std::string Name = openfluid::thirdparty::getXMLAttribute(Elt,"name");
+          std::string Value = openfluid::thirdparty::getXMLAttribute(Elt,"value");
 
           if (!Name.empty())
           {
@@ -183,7 +181,7 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    void extractModel(const tinyxml2::XMLElement* ModelElt)
+    void extractModel(const openfluid::thirdparty::xml::XMLElement* ModelElt)
     {
       openfluid::ware::WareParams_t GParams;
 
@@ -197,7 +195,7 @@ class FluidXReaderImplementation
         }
         else if (TagName == "simulator")
         {
-          std::string ID = openfluid::tools::getXMLAttribute(Elt,"ID");
+          std::string ID = openfluid::thirdparty::getXMLAttribute(Elt,"ID");
 
           if (!ID.empty())
           {
@@ -209,10 +207,10 @@ class FluidXReaderImplementation
         }
         else if (TagName == "generator")
         {
-          std::string VarName = openfluid::tools::getXMLAttribute(Elt,"varname");
-          std::string UnitsClass = openfluid::tools::getXMLAttribute(Elt,"unitsclass");
-          std::string Method = openfluid::tools::getXMLAttribute(Elt,"method");
-          std::string VarSize = openfluid::tools::getXMLAttribute(Elt,"varsize");
+          std::string VarName = openfluid::thirdparty::getXMLAttribute(Elt,"varname");
+          std::string UnitsClass = openfluid::thirdparty::getXMLAttribute(Elt,"unitsclass");
+          std::string Method = openfluid::thirdparty::getXMLAttribute(Elt,"method");
+          std::string VarSize = openfluid::thirdparty::getXMLAttribute(Elt,"varsize");
           unsigned int VarSizeNum = 1;
 
           if (!VarName.empty() && !UnitsClass.empty() && !Method.empty())
@@ -279,7 +277,7 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    void extractRun(const tinyxml2::XMLElement* RunElt)
+    void extractRun(const openfluid::thirdparty::xml::XMLElement* RunElt)
     {
       bool FoundDeltaT = false;
       bool FoundPeriod = false;
@@ -290,8 +288,8 @@ class FluidXReaderImplementation
 
         if (TagName == "period")
         {
-          std::string Begin = openfluid::tools::getXMLAttribute(Elt,"begin");
-          std::string End = openfluid::tools::getXMLAttribute(Elt,"end");
+          std::string Begin = openfluid::thirdparty::getXMLAttribute(Elt,"begin");
+          std::string End = openfluid::thirdparty::getXMLAttribute(Elt,"end");
 
           if (!Begin.empty() && !End.empty())
           {  
@@ -323,8 +321,8 @@ class FluidXReaderImplementation
         }
         else if (TagName == "scheduling")
         {
-          std::string DeltaT = openfluid::tools::getXMLAttribute(Elt,"deltat");
-          std::string Constraint = openfluid::tools::getXMLAttribute(Elt,"constraint");
+          std::string DeltaT = openfluid::thirdparty::getXMLAttribute(Elt,"deltat");
+          std::string Constraint = openfluid::thirdparty::getXMLAttribute(Elt,"constraint");
 
           if (!DeltaT.empty())
           {
@@ -368,7 +366,7 @@ class FluidXReaderImplementation
         }
         else if (TagName == "valuesbuffer")
         {
-          std::string Size = openfluid::tools::getXMLAttribute(Elt,"size");
+          std::string Size = openfluid::thirdparty::getXMLAttribute(Elt,"size");
 
           if (!Size.empty())
           {
@@ -413,10 +411,10 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    openfluid::core::UnitClassID_t extractUnitClassID(const tinyxml2::XMLElement* Elt)
+    openfluid::core::UnitClassID_t extractUnitClassID(const openfluid::thirdparty::xml::XMLElement* Elt)
     {
-      std::string UnitID = openfluid::tools::getXMLAttribute(Elt,"ID");
-      std::string UnitClass = openfluid::tools::getXMLAttribute(Elt,"class");
+      std::string UnitID = openfluid::thirdparty::getXMLAttribute(Elt,"ID");
+      std::string UnitClass = openfluid::thirdparty::getXMLAttribute(Elt,"class");
 
       if (!UnitID.empty() && !UnitClass.empty())
       {
@@ -440,16 +438,16 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    SpatialUnitsList_t extractDomainDefinition(const tinyxml2::XMLElement* DefElt)
+    SpatialUnitsList_t extractDomainDefinition(const openfluid::thirdparty::xml::XMLElement* DefElt)
     {
       SpatialUnitsList_t UnitsList;
 
       for (auto UnitElt = DefElt->FirstChildElement("unit"); UnitElt != nullptr; 
            UnitElt = UnitElt->NextSiblingElement("unit"))
       {
-        std::string ID = openfluid::tools::getXMLAttribute(UnitElt,"ID");
-        std::string UnitsClass = openfluid::tools::getXMLAttribute(UnitElt,"class");
-        std::string PcsOrd = openfluid::tools::getXMLAttribute(UnitElt,"pcsorder");
+        std::string ID = openfluid::thirdparty::getXMLAttribute(UnitElt,"ID");
+        std::string UnitsClass = openfluid::thirdparty::getXMLAttribute(UnitElt,"class");
+        std::string PcsOrd = openfluid::thirdparty::getXMLAttribute(UnitElt,"pcsorder");
 
         if (!ID.empty() && !UnitsClass.empty() && !PcsOrd.empty())
         {
@@ -511,10 +509,10 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    AttributesTableDescriptor extractDomainAttributes(const tinyxml2::XMLElement* AttrsElt)
+    AttributesTableDescriptor extractDomainAttributes(const openfluid::thirdparty::xml::XMLElement* AttrsElt)
     {
-      std::string UnitsClass = openfluid::tools::getXMLAttribute(AttrsElt,"unitsclass");
-      std::string ColOrder = openfluid::tools::getXMLAttribute(AttrsElt,"colorder");
+      std::string UnitsClass = openfluid::thirdparty::getXMLAttribute(AttrsElt,"unitsclass");
+      std::string ColOrder = openfluid::thirdparty::getXMLAttribute(AttrsElt,"colorder");
 
       if (UnitsClass.empty() || ColOrder.empty())
       {
@@ -529,7 +527,7 @@ class FluidXReaderImplementation
             "wrong or empty colorder attribute in domain attributes (" + m_CurrentFile + ")");
       }
 
-      std::string DataBlob = openfluid::tools::getXMLText(AttrsElt);
+      std::string DataBlob = openfluid::thirdparty::getXMLText(AttrsElt);
       if (DataBlob.empty())
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -550,16 +548,16 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    EventsList_t extractDomainCalendar(const tinyxml2::XMLElement* CalElt)
+    EventsList_t extractDomainCalendar(const openfluid::thirdparty::xml::XMLElement* CalElt)
     {
       EventsList_t EventsList;
 
       for (auto EvElt = CalElt->FirstChildElement("event"); EvElt != nullptr;
            EvElt = EvElt->NextSiblingElement("event"))
       {
-        std::string ID = openfluid::tools::getXMLAttribute(EvElt,"unitID");
-        std::string UnitsClass = openfluid::tools::getXMLAttribute(EvElt,"unitsclass");
-        std::string Date = openfluid::tools::getXMLAttribute(EvElt,"date");
+        std::string ID = openfluid::thirdparty::getXMLAttribute(EvElt,"unitID");
+        std::string UnitsClass = openfluid::thirdparty::getXMLAttribute(EvElt,"unitsclass");
+        std::string Date = openfluid::thirdparty::getXMLAttribute(EvElt,"date");
 
         if (ID.empty() || UnitsClass.empty() || Date.empty())
         {
@@ -589,8 +587,8 @@ class FluidXReaderImplementation
         for (auto InfElt = EvElt->FirstChildElement("info"); InfElt != nullptr;
              InfElt = InfElt->NextSiblingElement("info"))
         {
-          std::string Key = openfluid::tools::getXMLAttribute(InfElt,"key");
-          std::string Value = openfluid::tools::getXMLAttribute(InfElt,"value");
+          std::string Key = openfluid::thirdparty::getXMLAttribute(InfElt,"key");
+          std::string Value = openfluid::thirdparty::getXMLAttribute(InfElt,"value");
 
           if (Key.empty())
           {
@@ -612,7 +610,7 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    void extractDomain(const tinyxml2::XMLElement* DomainElt, LoadingTempData& TempData)
+    void extractDomain(const openfluid::thirdparty::xml::XMLElement* DomainElt, LoadingTempData& TempData)
     {
       for (auto Elt = DomainElt->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
       {
@@ -644,15 +642,15 @@ class FluidXReaderImplementation
     // =====================================================================
 
 
-    void extractDatastore(const tinyxml2::XMLElement* StoreElt)
+    void extractDatastore(const openfluid::thirdparty::xml::XMLElement* StoreElt)
     {
       for (auto Elt = StoreElt->FirstChildElement("dataitem"); Elt != nullptr; 
            Elt = Elt->NextSiblingElement("dataitem"))
       {
-        std::string DataID = openfluid::tools::getXMLAttribute(Elt,"id");
-        std::string DataTypeStr = openfluid::tools::getXMLAttribute(Elt,"type");
-        std::string DataSrc = openfluid::tools::getXMLAttribute(Elt,"source");
-        std::string DataClass = openfluid::tools::getXMLAttribute(Elt,"unitsclass");
+        std::string DataID = openfluid::thirdparty::getXMLAttribute(Elt,"id");
+        std::string DataTypeStr = openfluid::thirdparty::getXMLAttribute(Elt,"type");
+        std::string DataSrc = openfluid::thirdparty::getXMLAttribute(Elt,"source");
+        std::string DataClass = openfluid::thirdparty::getXMLAttribute(Elt,"unitsclass");
 
         if (!DataID.empty() && !DataTypeStr.empty() && !DataSrc.empty())
         {
@@ -696,15 +694,15 @@ class FluidXReaderImplementation
       m_Report[FilePath] = FluidXIO::FileLoadingReport();
       m_CurrentFile = FilePath;
       
-      tinyxml2::XMLDocument Doc;
+      openfluid::thirdparty::xml::XMLDocument Doc;
 
-      if (Doc.LoadFile(FilePath.c_str()) == tinyxml2::XML_SUCCESS)
+      if (Doc.LoadFile(FilePath.c_str()) == openfluid::thirdparty::xml::XML_SUCCESS)
       {
         const auto Root = Doc.RootElement();
 
         if (Root != nullptr && std::string(Root->Name()) == "openfluid")
         {
-          m_Report[m_CurrentFile].FormatVersion = openfluid::tools::getOpenFLUIDXMLFormat(Root);
+          m_Report[m_CurrentFile].FormatVersion = openfluid::thirdparty::getOpenFLUIDXMLFormat(Root);
 
           for (auto Elt = Root->FirstChildElement(); Elt != nullptr; Elt = Elt->NextSiblingElement())
           {
@@ -928,7 +926,8 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertWareParams(const openfluid::ware::WareParams_t& Params, tinyxml2::XMLElement* BaseElt) const
+    void insertWareParams(const openfluid::ware::WareParams_t& Params, 
+                          openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       for (const auto& P : Params)
       {
@@ -943,7 +942,7 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertModel(tinyxml2::XMLElement* BaseElt) const
+    void insertModel(openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       auto ModelElt = BaseElt->InsertNewChildElement("model");
 
@@ -1022,7 +1021,7 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertDomain(tinyxml2::XMLElement* BaseElt) const
+    void insertDomain(openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       auto DomainElt = BaseElt->InsertNewChildElement("domain");
 
@@ -1036,7 +1035,7 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertDomainDefinition(tinyxml2::XMLElement* BaseElt) const
+    void insertDomainDefinition(openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       const auto& Units = m_Descriptor.m_DomainDescriptor.spatialUnits();
 
@@ -1074,7 +1073,7 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertDomainAttributes(tinyxml2::XMLElement* BaseElt) const
+    void insertDomainAttributes(openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       const auto& DomainDesc = m_Descriptor.m_DomainDescriptor;
       
@@ -1113,7 +1112,7 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertDomainCalendar(tinyxml2::XMLElement* BaseElt) const
+    void insertDomainCalendar(openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       auto CalElt = BaseElt->InsertNewChildElement("calendar");
 
@@ -1149,7 +1148,7 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertRunConfiguration(tinyxml2::XMLElement* BaseElt) const
+    void insertRunConfiguration(openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       const auto& RunConfig = m_Descriptor.m_RunDescriptor;
 
@@ -1193,7 +1192,7 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertDatastore(tinyxml2::XMLElement* BaseElt) const
+    void insertDatastore(openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       const auto& StoreItems = m_Descriptor.m_DatastoreDescriptor.items();
 
@@ -1222,7 +1221,7 @@ class FluidXWriterImplementation
     // =====================================================================
 
 
-    void insertMonitoring(tinyxml2::XMLElement* BaseElt) const
+    void insertMonitoring(openfluid::thirdparty::xml::XMLElement* BaseElt) const
     {
       const auto& MonItems = m_Descriptor.m_MonitoringDescriptor.items();
 
@@ -1277,7 +1276,7 @@ class FluidXWriterImplementation
       prepareFluidXDir(DirPath);
 
       // TODO use std::function instead
-      using insertMethod = void (FluidXWriterImplementation::*)(tinyxml2::XMLElement*) const;
+      using insertMethod = void (FluidXWriterImplementation::*)(openfluid::thirdparty::xml::XMLElement*) const;
 
       // list of fluidx files to write with associated method to call (using pointer to function)
       std::vector<std::pair<std::string,insertMethod>> FilesFunctions =
@@ -1295,8 +1294,8 @@ class FluidXWriterImplementation
         
         mp_Listener->onFileWrite(FilePath);
 
-        tinyxml2::XMLDocument Doc;
-        auto OFElt = openfluid::tools::prepareOpenFLUIDXMLDoc(Doc,FluidXIO::FormatVersion);
+        openfluid::thirdparty::xml::XMLDocument Doc;
+        auto OFElt = openfluid::thirdparty::prepareOpenFLUIDXMLDoc(Doc,FluidXIO::FormatVersion);
         
         // calls the associated method
         (this->*FileFunc.second)(OFElt);
@@ -1322,8 +1321,8 @@ class FluidXWriterImplementation
 
       mp_Listener->onFileWrite(FilePath);
 
-      tinyxml2::XMLDocument Doc;
-      auto OFElt = openfluid::tools::prepareOpenFLUIDXMLDoc(Doc,FluidXIO::FormatVersion);
+      openfluid::thirdparty::xml::XMLDocument Doc;
+      auto OFElt = openfluid::thirdparty::prepareOpenFLUIDXMLDoc(Doc,FluidXIO::FormatVersion);
 
       insertModel(OFElt);
       insertDomain(OFElt);

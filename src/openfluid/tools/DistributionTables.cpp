@@ -37,12 +37,10 @@
  */
 
 
-#include <tinyxml2.h>
-
+#include <openfluid/thirdparty/XML.hpp>
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/tools/TinyXML2Helpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -57,10 +55,10 @@ void DistributionTables::build(const std::string& BasePath,
 
   // Sources file
 
-  tinyxml2::XMLDocument Doc;
+  openfluid::thirdparty::xml::XMLDocument Doc;
   std::string SourcesFilePath = openfluid::tools::Filesystem::joinPath({BasePath,SourcesFileName});
 
-  if (Doc.LoadFile(SourcesFilePath.c_str()) == tinyxml2::XML_SUCCESS)
+  if (Doc.LoadFile(SourcesFilePath.c_str()) == openfluid::thirdparty::xml::XML_SUCCESS)
   {
     const auto Root = Doc.RootElement();
 
@@ -74,8 +72,8 @@ void DistributionTables::build(const std::string& BasePath,
           for (auto FileElt = DataElt->FirstChildElement("filesource"); FileElt != nullptr; 
                FileElt = FileElt->NextSiblingElement("filesource"))
           {
-            auto ID = openfluid::tools::getXMLAttribute(FileElt,"ID");
-            auto File = openfluid::tools::getXMLAttribute(FileElt,"file");
+            auto ID = openfluid::thirdparty::getXMLAttribute(FileElt,"ID");
+            auto File = openfluid::thirdparty::getXMLAttribute(FileElt,"file");
 
             if (!ID.empty() && !File.empty())
             {

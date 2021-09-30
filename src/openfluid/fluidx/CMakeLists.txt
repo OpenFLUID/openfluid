@@ -37,7 +37,7 @@ SET_TARGET_PROPERTIES(openfluid-fluidx PROPERTIES VERSION "${OPENFLUID_VERSION_M
 TARGET_LINK_LIBRARIES(openfluid-fluidx
                       openfluid-base
                       openfluid-core
-                      thirdparty-tinyxml2)
+                      openfluid-thirdparty-tinyxml2)
 
 
 INSTALL(TARGETS openfluid-fluidx
