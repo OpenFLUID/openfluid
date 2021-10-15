@@ -14,7 +14,12 @@ INSTALL(DIRECTORY nlohmannjson-${OFBUILD_3RDPARTY_nlohmannjson_VERSION}/
 ADD_LIBRARY(openfluid-thirdparty-tinyxml2 SHARED tinyxml2-${OFBUILD_3RDPARTY_tinyxml2_VERSION}/tinyxml2.cpp)
 
 SET_TARGET_PROPERTIES(openfluid-thirdparty-tinyxml2 
-                      PROPERTIES POSITION_INDEPENDENT_CODE True)
+                      PROPERTIES POSITION_INDEPENDENT_CODE True
+                                 VERSION "${OFBUILD_3RDPARTY_tinyxml2_VERSION}" 
+                                 SOVERSION "${OFBUILD_3RDPARTY_tinyxml2_VERSION}"
+                                 LIBRARY_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
+                                 RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
+                                 ARCHIVE_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}")
 
 INSTALL(TARGETS openfluid-thirdparty-tinyxml2
         RUNTIME DESTINATION ${OFBUILD_BIN_INSTALL_PATH}
