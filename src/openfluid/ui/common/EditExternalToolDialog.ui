@@ -362,6 +362,30 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color : #909090;</string>
+          </property>
+          <property name="text">
+           <string>Notice: commands are always run from the context directory</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+          <property name="margin">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>

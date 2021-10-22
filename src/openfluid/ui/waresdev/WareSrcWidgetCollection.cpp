@@ -365,12 +365,15 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QString& Path)
 {
   QString AdjustedCommand = Command;
-  // replace specific path arg to generic path arg
-  AdjustedCommand = AdjustedCommand.replace("%%W%%","%%P%%").replace("%%S%%","%%P%%").replace("%%C%%","%%P%%");
+  std::map<QString, QString> ContextPaths;
+
+  ContextPaths.insert({"%%S%%", getCurrentWarePath()});
+  ContextPaths.insert({"%%W%%", mp_Manager->getWaresdevPath()});
 
   QString PathToOpen;
   if (!Path.isEmpty())
   {
+    ContextPaths.insert({"%%C%%", Path});
     PathToOpen = Path;
   }
   else
@@ -422,9 +425,9 @@ void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QSt
     }
     else if (Word.size() > 0)
     {
-      if (Word == "%%P%%")
+      if (ContextPaths.find(Word) != ContextPaths.end())
       {
-        Args << PathToOpen;
+        Args << ContextPaths[Word];
       }
       else
       {
