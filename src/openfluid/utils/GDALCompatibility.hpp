@@ -52,34 +52,27 @@
 #endif
 
 
+#if (GDAL_VERSION_MAJOR < 2)
+  #error "GDAL version 2 or higher is required"
+#endif
+
+
 /**
   Macro for compatibility of vector drivers registering
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALAllRegister_COMPAT() GDALAllRegister()
-#else
-  #define GDALAllRegister_COMPAT() OGRRegisterAll()
-#endif
+#define GDALAllRegister_COMPAT() GDALAllRegister()
 
 
 /**
   Macro for compatibility of vector data source type
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALDataset_COMPAT GDALDataset
-#else
-  #define GDALDataset_COMPAT OGRDataSource
-#endif
+#define GDALDataset_COMPAT GDALDataset
 
 
 /**
   Macro for compatibility of vector driver type
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALDriver_COMPAT GDALDriver
-#else
-  #define GDALDriver_COMPAT OGRSFDriver
-#endif
+#define GDALDriver_COMPAT GDALDriver
 
 
 /**
@@ -87,12 +80,8 @@
   @param _M_path Path to the file(s) to open
   @return a pointer to a GDALDataset_COMPAT data source
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALOpenRW_COMPAT(_M_path) \
+#define GDALOpenRW_COMPAT(_M_path) \
     static_cast<GDALDataset_COMPAT*>(GDALOpenEx(_M_path,GDAL_OF_VECTOR | GDAL_OF_UPDATE,nullptr,nullptr,nullptr));
-#else
-  #define GDALOpenRW_COMPAT(_M_path) OGRSFDriverRegistrar::Open(_M_path,true);
-#endif
 
 
 /**
@@ -100,23 +89,15 @@
   @param _M_path Path to the file(s) to open
   @return a pointer to a GDALDataset_COMPAT data source
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALOpenRO_COMPAT(_M_path) \
+#define GDALOpenRO_COMPAT(_M_path) \
     static_cast<GDALDataset_COMPAT*>(GDALOpenEx(_M_path,GDAL_OF_VECTOR | GDAL_OF_READONLY,nullptr,nullptr,nullptr));
-#else
-  #define GDALOpenRO_COMPAT(_M_path) OGRSFDriverRegistrar::Open(_M_path,false);
-#endif
 
 
 /**
   Macro for compatibility of syncing/flushing a dataset to disk
   @param _M_dataset The dataset
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALFlush_COMPAT(_M_dataset) _M_dataset->FlushCache()
-#else
-  #define GDALFlush_COMPAT(_M_dataset) _M_dataset->SyncToDisk()
-#endif
+#define GDALFlush_COMPAT(_M_dataset) _M_dataset->FlushCache()
 
 
 /**
@@ -126,13 +107,8 @@
   @param _M_destpath Path to the copied file(s)
   @return a pointer to a GDALDataset_COMPAT data source for the newly copied files
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALCopy_COMPAT(_M_driver,_M_srcptr,_M_destpath) \
+#define GDALCopy_COMPAT(_M_driver,_M_srcptr,_M_destpath) \
     _M_driver->CreateCopy(_M_destpath,_M_srcptr,false,nullptr,nullptr,nullptr)
-#else
-  #define GDALCopy_COMPAT(_M_driver,_M_srcptr,_M_destpath) \
-    _M_driver->CopyDataSource(_M_srcptr,_M_destpath, nullptr);
-#endif
 
 
 /**
@@ -141,24 +117,15 @@
   @param _M_path Path to the file(s) to create
   @return a pointer to a GDALDataset_COMPAT data source for the newly created files
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALCreate_COMPAT(_M_driver,_M_path) \
+#define GDALCreate_COMPAT(_M_driver,_M_path) \
     _M_driver->Create(_M_path,0,0,0,GDT_Unknown,nullptr)
-#else
-  #define GDALCreate_COMPAT(_M_driver,_M_path) \
-    _M_driver->CreateDataSource(_M_path, nullptr);
-#endif
 
 
 /**
   Macro for compatibility of data source closing
   @param _M_ptr Pointer to the data source to close
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALClose_COMPAT(_M_ptr) GDALClose(_M_ptr);
-#else
-  #define GDALClose_COMPAT(_M_ptr) OGRDataSource::DestroyDataSource(_M_ptr);
-#endif
+#define GDALClose_COMPAT(_M_ptr) GDALClose(_M_ptr);
 
 
 /**
@@ -166,11 +133,7 @@
   @param _M_driver Driver to use for the deletion
   @param _M_path Path to the file(s) to delete
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALDelete_COMPAT(_M_driver,_M_path) _M_driver->Delete(_M_path)
-#else
-  #define GDALDelete_COMPAT(_M_driver,_M_path) _M_driver->DeleteDataSource(_M_path)
-#endif
+#define GDALDelete_COMPAT(_M_driver,_M_path) _M_driver->Delete(_M_path)
 
 
 /**
@@ -178,11 +141,7 @@
   @param _M_name Name of the driver
   @return a pointer to a GDALDriver_COMPAT driver, NULL if not found
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALGetDriverByName_COMPAT(_M_name) GetGDALDriverManager()->GetDriverByName(_M_name)
-#else
-  #define GDALGetDriverByName_COMPAT(_M_name) OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(_M_name)
-#endif
+#define GDALGetDriverByName_COMPAT(_M_name) GetGDALDriverManager()->GetDriverByName(_M_name)
 
 
 /**
@@ -190,23 +149,14 @@
   @param _M_driver The driver object
   @return the name of the driver
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALGetDriverName_COMPAT(_M_driver) _M_driver->GetDescription()
-#else
-  #define GDALGetDriverName_COMPAT(_M_driver) _M_driver->GetName()
-#endif
+#define GDALGetDriverName_COMPAT(_M_driver) _M_driver->GetDescription()
 
 
 /**
   Macro for compatibility of Integer64 and Integer64List type
 */
-#if (GDAL_VERSION_MAJOR >= 2)
-  #define GDALOFTInteger64_COMPAT OFTInteger64
-  #define GDALOFTIntegerList64_COMPAT OFTIntegerList64
-#else
-  #define GDALOFTInteger64_COMPAT OFTInteger
-  #define GDALOFTIntegerList64_COMPAT OFTIntegerList
-#endif
+#define GDALOFTInteger64_COMPAT OFTInteger64
+#define GDALOFTIntegerList64_COMPAT OFTIntegerList64
 
 
 #endif /* __OPENFLUID_UTILS_GDALCOMPATIBILITY_HPP__ */
