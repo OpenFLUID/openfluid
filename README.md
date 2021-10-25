@@ -1,9 +1,9 @@
 ![](resources/graphics/openfluid_official_400.png)  
   
 
-**OpenFLUID is a software environnement for modelling and simulation of complex landscape systems**
+**OpenFLUID is a software environment for modelling and simulation of complex landscape systems**
 
-Further informations are available on the [OpenFLUID](https://www.openfluid-project.org/) site at [www.openfluid-project.org](https://www.openfluid-project.org/).
+Further information is available on the [OpenFLUID](https://www.openfluid-project.org/) site at [www.openfluid-project.org](https://www.openfluid-project.org/).
 
 See also the LICENSE and AUTHORS files included in the sources.  
 
@@ -13,7 +13,7 @@ See also the LICENSE and AUTHORS files included in the sources.
 [![CI](https://github.com/OpenFLUID/openfluid/actions/workflows/CI.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI.yaml)
 
 
-The OpenFLUID source tree is organized as follow
+The OpenFLUID source tree is organized as follows
 - cmake : CMake files included in main build system 
 - doc: Doxygen and LaTeX sources for users and developers manuals
 - examples : examples of projects and simulators

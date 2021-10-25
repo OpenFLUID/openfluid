@@ -583,7 +583,9 @@ void MainWindow::onPreferencesAsked()
   PrefsDlg.exec();
 
   if (PrefsDlg.isTextEditorSettingsChanged())
+  {
     mp_WidgetsCollection->updateEditorsSettings();
+  }
 
   if (PrefsDlg.isRestartRequired() &&
       openfluid::ui::common::OpenFLUIDDialog::confirmRestartAfterPreferences(this))
@@ -623,7 +625,9 @@ void MainWindow::onExportWareSourcesAsked()
     Dialog.exec();
   }
   else
+  {
     QMessageBox::warning(this, tr("Export not available"), tr("CMake program can not be found."));
+  }
 
 }
 
@@ -691,11 +695,17 @@ void MainWindow::closeEvent(QCloseEvent* Event)
 void MainWindow::setCurrentPath(const QString& Path)
 {
   if (ui->SimExplorer->setCurrentPath(Path))
+  {
     ui->WaresTabWidget->setCurrentWidget(ui->SimPage);
+  }
   else if (ui->ObsExplorer->setCurrentPath(Path))
+  {
     ui->WaresTabWidget->setCurrentWidget(ui->ObsPage);
+  }
   else if (ui->ExtExplorer->setCurrentPath(Path))
+  {
     ui->WaresTabWidget->setCurrentWidget(ui->ExtPage);
+  }
 }
 
 
@@ -722,17 +732,25 @@ void MainWindow::onDeleteWareRequested()
   QString SelectedPath = "";
 
   if (CurrentWidget == ui->SimPage)
+  {
     SelectedPath = ui->SimExplorer->getCurrentPath();
+  }
   else if (CurrentWidget == ui->ObsPage)
+  {
     SelectedPath = ui->ObsExplorer->getCurrentPath();
+  }
   else if (CurrentWidget == ui->ExtPage)
+  {
     SelectedPath = ui->ExtExplorer->getCurrentPath();
+  }
 
   if (SelectedPath != "")
   {
     QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(SelectedPath).m_AbsolutePathOfWare;
     if (WarePath != "")
+    {
       mp_WidgetsCollection->deleteWare(WarePath);
+    }
   }
 }
 
@@ -757,10 +775,16 @@ void MainWindow::updateExplorer()
   QWidget* CurrentWidget = ui->WaresTabWidget->currentWidget();
 
   if (CurrentWidget == ui->SimPage)
+  {
     ui->SimExplorer->updateExplorerModel(CurrentWarePath);
+  }
   else if (CurrentWidget == ui->ObsPage)
+  {
     ui->ObsExplorer->updateExplorerModel(CurrentWarePath);
+  }
   else if (CurrentWidget == ui->ExtPage)
+  {
     ui->ExtExplorer->updateExplorerModel(CurrentWarePath);
+  }
 }
 
