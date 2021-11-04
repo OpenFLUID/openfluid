@@ -34,6 +34,7 @@
   @file WareBuildOptionsWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -64,12 +65,7 @@ WareBuildOptionsWidget::WareBuildOptionsWidget(QWidget* Parent):
   ui->ResetJobsButton->setIconSize(QSize(16,16));
 
   ui->JobsCheckBox->setChecked(true);
-  resetJobsToIdeal();
 
-  connect(ui->InstallCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleInstallChanged()));
-  connect(ui->ConfigureModeComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(handleConfigureModeChanged()));
-  connect(ui->JobsSpinBox,SIGNAL(valueChanged(int)),this,SLOT(handleBuildJobsChanged()));
-  connect(ui->JobsCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildJobsChanged()));
   connect(ui->ResetJobsButton,SIGNAL(clicked()),this,SLOT(resetJobsToIdeal()));
 }
 
@@ -88,16 +84,15 @@ WareBuildOptionsWidget::~WareBuildOptionsWidget()
 // =====================================================================
 
 
-void WareBuildOptionsWidget::handleInstallChanged()
+void WareBuildOptionsWidget::setBuildOptions(openfluid::waresdev::WareBuildOptions& BuildOptions)
 {
-  if (ui->InstallCheckBox->isChecked())
-  {
-    emit buildModeChanged(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
-  }
-  else
-  {
-    emit buildModeChanged(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL);
-  }
+
+  setConfigureMode(BuildOptions.getConfigMode());
+
+  setBuildMode(BuildOptions.getBuildMode());
+
+  setJobsNumber(BuildOptions.JobsNumber);
+  ui->JobsCheckBox->setChecked(BuildOptions.IsParallelJobs);
 }
 
 
@@ -105,35 +100,15 @@ void WareBuildOptionsWidget::handleInstallChanged()
 // =====================================================================
 
 
-void WareBuildOptionsWidget::handleConfigureModeChanged()
+openfluid::waresdev::WareBuildOptions WareBuildOptionsWidget::getOptions()
 {
-  if (ui->ConfigureModeComboBox->currentIndex() == 0)
-  {
-    emit configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
-  }
-  else
-  {
-    emit configureModeChanged(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
-  }
-}
 
-
-// =====================================================================
-// =====================================================================
-
-
-void WareBuildOptionsWidget::handleBuildJobsChanged()
-{
-  if (ui->JobsCheckBox->isChecked())
-  {
-    ui->JobsSpinBox->setEnabled(true);
-    emit buildJobsChanged(ui->JobsSpinBox->value());
-  }
-  else
-  {
-    ui->JobsSpinBox->setEnabled(false);
-    emit buildJobsChanged(0);
-  }
+  openfluid::waresdev::WareBuildOptions BuildOptions;
+  BuildOptions.IsWithInstall = ui->InstallCheckBox->isChecked();
+  BuildOptions.IsReleaseMode = ui->ConfigureModeComboBox->currentIndex() == 0;
+  BuildOptions.IsParallelJobs = ui->JobsCheckBox->isChecked();
+  BuildOptions.JobsNumber = ui->JobsSpinBox->value();
+  return BuildOptions;
 }
 
 
@@ -168,46 +143,9 @@ void WareBuildOptionsWidget::setConfigureMode(openfluid::waresdev::WareSrcContai
 // =====================================================================
 
 
-openfluid::waresdev::WareSrcContainer::BuildMode WareBuildOptionsWidget::getBuildMode() const
+void WareBuildOptionsWidget::setJobsNumber(int JobsNumber)
 {
-  if (ui->InstallCheckBox->isChecked())
-  {
-    return openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL;
-  }
-
-  return openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::waresdev::WareSrcContainer::ConfigMode WareBuildOptionsWidget::getConfigureMode() const
-{
-  if (ui->ConfigureModeComboBox->currentIndex() == 0)
-  {
-    return openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE;
-  }
-
-  return openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-unsigned int WareBuildOptionsWidget::getBuildJobs() const
-{
-  if (ui->JobsCheckBox->isChecked())
-  {
-    return ui->JobsSpinBox->value();
-  }
-  else
-  {
-    return 0;
-  }
+  ui->JobsSpinBox->setValue(JobsNumber);
 }
 
 

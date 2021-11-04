@@ -50,8 +50,10 @@
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/TextEditMsgStream.hpp>
 #include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
+#include <openfluid/ui/waresdev/WareBuildOptionsDialog.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/WareshubJsonEditor.hpp>
+#include <openfluid/waresdev/WareBuildOptions.hpp>
 
 #include "ui_WareSrcWidget.h"
 
@@ -60,9 +62,6 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
-                             openfluid::waresdev::WareSrcContainer::ConfigMode Config,
-                             openfluid::waresdev::WareSrcContainer::BuildMode Build,
-                             unsigned int Jobs,
                              QWidget* Parent) :
     QWidget(Parent), ui(new Ui::WareSrcWidget),
     m_Container(Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName), m_IsStandalone(IsStandalone)
@@ -73,46 +72,111 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
   Sizes << 1000 << 180;
   ui->splitter->setSizes(Sizes);
 
+  bool IsSimulator = Info.m_WareType==openfluid::ware::WareType::SIMULATOR;
+
+  mp_ActionsCollection = new openfluid::ui::waresdev::WareSrcActionsCollection(m_IsStandalone, m_IsStandalone, this);
+  mp_WareSrcToolBar = new WareSrcToolbar(m_IsStandalone, mp_ActionsCollection, IsSimulator, this);
+
+
+  mp_WareSrcToolBar->setObjectName("WareToolbar");
+  
   if (m_IsStandalone)
   {
-    mp_StandaloneToolBar = new WareSrcToolbar(true, this);
+    connect(mp_ActionsCollection->action("OpenTerminal"), SIGNAL(triggered()), this, SIGNAL(openTerminalRequested()));
+    connect(mp_ActionsCollection->action("OpenExplorer"), SIGNAL(triggered()), this, SIGNAL(openExplorerRequested()));
 
-    ui->Toolbar_Layout->addWidget(mp_StandaloneToolBar);
-
-    connect(mp_StandaloneToolBar->action("NewFile"), SIGNAL(triggered()), this, SLOT(newFile()));
-    connect(mp_StandaloneToolBar->action("OpenFile"), SIGNAL(triggered()), this, SLOT(openFile()));
-    connect(mp_StandaloneToolBar->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
-    connect(mp_StandaloneToolBar->action("SaveAsFile"), SIGNAL(triggered()), this, SLOT(saveAs()));
-    connect(mp_StandaloneToolBar->action("SaveAllFiles"), SIGNAL(triggered()), this, SLOT(saveAllFileTabs()));
-    connect(mp_StandaloneToolBar->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
-    connect(mp_StandaloneToolBar->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
-
-    connect(mp_StandaloneToolBar->action("Copy"), SIGNAL(triggered()), this, SLOT(copyText()));
-    connect(mp_StandaloneToolBar->action("Cut"), SIGNAL(triggered()), this, SLOT(cutText()));
-    connect(mp_StandaloneToolBar->action("Paste"), SIGNAL(triggered()), this, SLOT(pasteText()));
-    connect(mp_StandaloneToolBar->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
-    connect(mp_StandaloneToolBar->action("GoToLine"), SIGNAL(triggered()), this, SLOT(goToLine()));
-
-    connect(mp_StandaloneToolBar->action("WareOptionsRelease"), SIGNAL(triggered()), this, SLOT(updateWareOptions()));
-    connect(mp_StandaloneToolBar->action("WareOptionsDebug"), SIGNAL(triggered()), this, SLOT(updateWareOptions()));
-    connect(mp_StandaloneToolBar->action("WareOptionsInstall"), SIGNAL(triggered()), this, SLOT(updateWareOptions()));
-    connect(mp_StandaloneToolBar->action("ConfigureWare"), SIGNAL(triggered()), this, SLOT(configure()));
-    connect(mp_StandaloneToolBar->action("BuildWare"), SIGNAL(triggered()), this, SLOT(build()));
-#if OPENFLUID_SIM2DOC_ENABLED
-    connect(mp_StandaloneToolBar->action("GenerateDoc"), SIGNAL(triggered()), this, SLOT(generateDoc()));
-#endif
-
-    connect(mp_StandaloneToolBar->action("OpenTerminal"), SIGNAL(triggered()), this, SIGNAL(openTerminalRequested()));
-    connect(mp_StandaloneToolBar->action("OpenExplorer"), SIGNAL(triggered()), this, SIGNAL(openExplorerRequested()));
-
-    connect(mp_StandaloneToolBar->action("APIDoc"), SIGNAL(triggered()), this, SIGNAL(openAPIDocRequested()));
+    connect(mp_ActionsCollection->action("APIDoc"), SIGNAL(triggered()), this, SIGNAL(openAPIDocRequested()));
     
-    QMap<QString, QAction*> ExternalToolsActions = mp_StandaloneToolBar->externalToolsActions();
+    QMap<QString, QAction*> ExternalToolsActions = mp_WareSrcToolBar->externalToolsActions();
     for (auto const& Alias : ExternalToolsActions.keys())
     {
       connect(ExternalToolsActions[Alias], SIGNAL(triggered()), this, SLOT(onOpenExternalToolRequested()));
     }
+
+    connect(mp_ActionsCollection->action("WareOptionsDialog"), SIGNAL(triggered()),
+            this, SLOT(displayBuildOptionsDialog()));
+    mp_WareSrcToolBar->setStyleSheet(
+      QString(R"(
+#WareToolbar {
+  background-color: %1;
+})"
+    ).arg(openfluid::ui::config::WARETOOLBAR_BGCOLOR));
   }
+  else
+  {
+    mp_WareSrcToolBar->setIconSize(QSize(24,24));
+
+    mp_WareSrcToolBar->setStyleSheet(
+      QString(R"(
+QToolButton {
+  color: #555555;
+  padding-left : 10px;
+  padding-right : 10px;
+}
+
+#WareToolbar {
+  background-color: %1;
+}
+
+#WareToolbar QToolButton, QLabel {
+  background-color: %1;
+  color: black;
+}
+
+#WareToolbar QToolButton[popupMode=1] {
+  background-color: %1;
+  border: 1px solid %1;
+  padding-left : 10px;
+  padding-right : 20px;
+}
+
+#WareToolbar QToolButton::hover {
+  background-color: %2;
+  border : 1px solid %3;
+  border-radius: 4px;
+}
+
+#WareToolbar QToolButton::menu-button {
+  background-color: %1;
+  border: 1px solid %1;
+  border-radius: 4px;
+}
+
+#WareToolbar QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
+  background-color: %2;
+  border : 1px solid %3;
+  border-radius: 4px;
+}
+             )").arg(
+          openfluid::ui::config::WARETOOLBAR_BGCOLOR, "black",
+          "dark gray"));
+  }
+  
+  ui->Toolbar_Layout->addWidget(mp_WareSrcToolBar);
+
+  connect(mp_ActionsCollection->action("NewFile"), SIGNAL(triggered()), this, SLOT(newFile()));
+  connect(mp_ActionsCollection->action("OpenFile"), SIGNAL(triggered()), this, SLOT(openFile()));
+  connect(mp_ActionsCollection->action("SaveFile"), SIGNAL(triggered()), this, SLOT(saveCurrentEditor()));
+  connect(mp_ActionsCollection->action("SaveAsFile"), SIGNAL(triggered()), this, SLOT(saveAs()));
+  connect(mp_ActionsCollection->action("SaveAllFiles"), SIGNAL(triggered()), this, SLOT(saveAllFileTabs()));
+  connect(mp_ActionsCollection->action("CloseFile"), SIGNAL(triggered()), this, SLOT(closeCurrentEditor()));
+  connect(mp_ActionsCollection->action("DeleteFile"), SIGNAL(triggered()), this, SLOT(deleteCurrentFile()));
+
+  connect(mp_ActionsCollection->action("Copy"), SIGNAL(triggered()), this, SLOT(copyText()));
+  connect(mp_ActionsCollection->action("Cut"), SIGNAL(triggered()), this, SLOT(cutText()));
+  connect(mp_ActionsCollection->action("Paste"), SIGNAL(triggered()), this, SLOT(pasteText()));
+  connect(mp_ActionsCollection->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
+  connect(mp_ActionsCollection->action("GoToLine"), SIGNAL(triggered()), this, SLOT(goToLine()));
+
+  connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), this, SLOT(configure()));
+  connect(mp_ActionsCollection->action("BuildWare"), SIGNAL(triggered()), this, SLOT(build()));
+  
+#if OPENFLUID_SIM2DOC_ENABLED
+  if (IsSimulator)
+  {
+    connect(mp_ActionsCollection->action("GenerateDoc"), SIGNAL(triggered()), this, SLOT(generateDoc()));
+  }
+#endif
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
   connect(ui->WareSrcFileCollection, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
@@ -132,10 +196,6 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
           this, SLOT(notifyBuildFinished(openfluid::ware::WareType, const QString&)));
 
 
-  m_Container.setConfigMode(Config);
-  m_Container.setBuildMode(Build);
-  m_Container.setBuildJobs(Jobs);
-
   mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(ui->WareSrcMessageWidget);
   m_Container.setMsgStream(*mp_TextEditMsgStream);
 
@@ -152,6 +212,24 @@ WareSrcWidget::~WareSrcWidget()
 {
   delete mp_TextEditMsgStream;
   delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::displayBuildOptionsDialog()
+{
+  openfluid::waresdev::WareBuildOptions WareBuildOptions;
+  WareBuildOptions.setDefaultsFromWorkspaceManager();
+  openfluid::ui::waresdev::WareBuildOptionsDialog SettingsDialog(WareBuildOptions, QApplication::activeWindow());
+
+  if (SettingsDialog.exec() == QDialog::Accepted)
+  {
+    WareBuildOptions = SettingsDialog.getOptions();
+    WareBuildOptions.writeOptionsInWorkspace();
+  }
 }
 
 
@@ -455,27 +533,22 @@ openfluid::waresdev::WareSrcContainer& WareSrcWidget::wareSrcContainer()
 // =====================================================================
 
 
-void WareSrcWidget::updateWareOptions()
+void WareSrcWidget::loadWareOptions()
 {
   if (m_IsStandalone)
   {
-    if (mp_StandaloneToolBar->action("WareOptionsInstall")->isChecked())
+    openfluid::waresdev::WareBuildOptions WareBuildOptions;
+    WareBuildOptions.setDefaultsFromWorkspaceManager();
+    m_Container.setConfigMode(WareBuildOptions.getConfigMode());
+    m_Container.setBuildMode(WareBuildOptions.getBuildMode());
+    if (WareBuildOptions.IsParallelJobs)
     {
-      setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL);
+      m_Container.setBuildJobs(WareBuildOptions.JobsNumber);
     }
     else
     {
-      setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_NOINSTALL);
+      m_Container.setBuildJobs(0);
     }
-
-    if (mp_StandaloneToolBar->action("WareOptionsRelease")->isChecked())
-    {
-      setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE);
-    }
-    else if (mp_StandaloneToolBar->action("WareOptionsDebug")->isChecked())
-    {
-      setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_DEBUG);
-    }  
   }
 }
 
@@ -517,6 +590,7 @@ void WareSrcWidget::setBuildJobs(unsigned int Jobs)
 void WareSrcWidget::configure()
 
 {
+  loadWareOptions();
   clearEditorsMessages();
 
   try
@@ -537,6 +611,7 @@ void WareSrcWidget::configure()
 void WareSrcWidget::build()
 
 {
+  loadWareOptions();
   clearEditorsMessages();
 
   try
@@ -900,11 +975,11 @@ void WareSrcWidget::checkModifiedStatus()
 
   bool IsFileOpen = currentEditor()!=0;
 
-  if (mp_StandaloneToolBar)
+  if (mp_WareSrcToolBar)
   {
-    mp_StandaloneToolBar->action("SaveFile")->setEnabled(IsCurrentEditorModified);
-    mp_StandaloneToolBar->action("SaveAsFile")->setEnabled(IsFileOpen);
-    mp_StandaloneToolBar->action("SaveAllFiles")->setEnabled(IsWareModified);
+    mp_ActionsCollection->action("SaveFile")->setEnabled(IsCurrentEditorModified);
+    mp_ActionsCollection->action("SaveAsFile")->setEnabled(IsFileOpen);
+    mp_ActionsCollection->action("SaveAllFiles")->setEnabled(IsWareModified);
   }
 
   emit modifiedStatusChanged(IsCurrentEditorModified, IsFileOpen, IsWareModified);

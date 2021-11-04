@@ -141,6 +141,13 @@ class OPENFLUID_API WorkspaceManager
 
     void setWaresBuildMode(const std::string& Mode);
 
+    bool isWaresParallelJobsEnabled() const;
+
+    void setWaresParallelJobsEnabled(bool Enabled);
+
+    int getWaresParallelJobsCount() const;
+
+    void setWaresParallelJobsCount(int Jobs);
 };
 
 

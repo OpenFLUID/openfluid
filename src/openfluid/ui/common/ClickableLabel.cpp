@@ -34,6 +34,7 @@
   @file ClickableLabel.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -84,6 +85,26 @@ void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
   emit clicked();
 
   //QLabel::mouseDoubleClickEvent(Event);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ClickableLabel::wheelEvent(QWheelEvent* Event)
+{
+  QPoint NumPixels = Event->pixelDelta();
+  QPoint NumDegrees = Event->angleDelta() / 8;
+
+  if (NumPixels.y() != 0)
+  {
+    emit scrolled(NumPixels.y() > 0);
+  }
+  else if (NumDegrees.y() !=0)
+  {
+    emit scrolled(NumDegrees.y() > 0);
+  }
 }
 
 

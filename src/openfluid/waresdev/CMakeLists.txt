@@ -19,6 +19,7 @@ SET(OPENFLUID_WARESDEV_HPP WareSrcManager.hpp
                            WaresDevPackage.hpp 
                            FluidHubWaresImportWorker.hpp
                            CompletionProvider.hpp
+                           WareBuildOptions.hpp
                            )
 
 

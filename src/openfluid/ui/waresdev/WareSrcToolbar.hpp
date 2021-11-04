@@ -34,6 +34,7 @@
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -47,6 +48,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WareBuildOptionsWidget.hpp>
+#include <openfluid/ui/waresdev/WareSrcActionsCollection.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -58,29 +60,26 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
 
   private:
 
-    std::list<openfluid::base::PreferencesManager::ExternalTool_t> m_ExternalTools;
-
-    QMap<QString, QAction*> m_Actions;
-    QMap<QString, QAction*> m_ExternalToolsActions;
-
-    WareBuildOptionsWidget* mp_OptionsWidget;
-
-    void createActions();
-
     bool m_IsIncluded;
+    openfluid::ui::waresdev::WareSrcActionsCollection* mp_ActionsCollection;
+    bool m_DisplayDocBuild;
+
+    std::list<openfluid::base::PreferencesManager::ExternalTool_t> m_ExternalTools;
+    
+    QMap<QString, QAction*> m_ExternalToolsActions;
 
 
   public:
 
-    WareSrcToolbar(bool IsIncluded, QWidget* Parent = nullptr);
+    WareSrcToolbar(bool IsIncluded, 
+                   openfluid::ui::waresdev::WareSrcActionsCollection* ActionsCollection, 
+                   bool DisplayDocBuild = false, QWidget* Parent = nullptr);
 
     virtual ~WareSrcToolbar();
 
-    QAction* action(const QString& ActionName);
-    const QMap<QString, QAction*> externalToolsActions();
+    void createActions();
 
-    WareBuildOptionsWidget* optionsWidget()
-    { return mp_OptionsWidget; }
+    const QMap<QString, QAction*> externalToolsActions();
 
 };
 

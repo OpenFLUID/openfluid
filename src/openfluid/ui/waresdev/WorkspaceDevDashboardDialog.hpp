@@ -44,11 +44,12 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevDashboardTypes.hpp>
+#include <openfluid/waresdev/WareBuildOptions.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 
 
 namespace Ui {
-class WorkspaceDevDashboardDialog;
+  class WorkspaceDevDashboardDialog;
 }
 
 
@@ -89,17 +90,21 @@ class OPENFLUID_API WorkspaceDevDashboardDialog: public QDialog
 
 
   private:
+    
+    openfluid::waresdev::WareBuildOptions m_WareBuildOptions;
 
     Ui::WorkspaceDevDashboardDialog* ui;
-
+    
     WorkspaceDevDashboardTypes::WaresSelectionByType getSelectionByType() const;
 
 
   public:
 
-    WorkspaceDevDashboardDialog(QWidget* Parent = nullptr);
+    WorkspaceDevDashboardDialog(QWidget* Parent, openfluid::waresdev::WareBuildOptions& BuildOptions);
 
     virtual ~WorkspaceDevDashboardDialog();
+    
+    openfluid::waresdev::WareBuildOptions getBuildOptions();
 
 };
 

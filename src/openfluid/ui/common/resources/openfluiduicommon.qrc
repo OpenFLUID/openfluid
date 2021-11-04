@@ -46,6 +46,9 @@
     <file>icons/close_grayed.png</file>
     <file>icons/reload_light.png</file>
     <file>icons/reload_grayed.png</file>
+    <file>icons/settings_light.png</file>
+    <file>icons/settings_grayed.png</file>
+    <file>icons/settings_dark.png</file>
     <file>icons/run_light.png</file>
     <file>icons/run_grayed.png</file>
     <file>icons/configure_light.png</file>
@@ -57,6 +60,30 @@
     <file>icons/generate-doc_light.png</file>
     <file>icons/generate-doc_grayed.png</file>
     <file>icons/generate-doc_dark.png</file>
+    <file>icons/open_dark.png</file>
+    <file>icons/open_grayed.png</file>
+    <file>icons/open_light.png</file>
+    <file>icons/open_dark@2x.png</file>
+    <file>icons/open_grayed@2x.png</file>
+    <file>icons/open_light@2x.png</file>
+    <file>icons/dashboard_dark.png</file>
+    <file>icons/dashboard_light.png</file>
+    <file>icons/dashboard_dark@2x.png</file>
+    <file>icons/dashboard_light@2x.png</file>
+    <file>icons/doc_dark.png</file>
+    <file>icons/doc_light.png</file>
+    <file>icons/doc_dark@2x.png</file>
+    <file>icons/doc_light@2x.png</file>
+    <file>icons/import_dark.png</file>
+    <file>icons/import_light.png</file>
+    <file>icons/import_dark@2x.png</file>
+    <file>icons/import_light@2x.png</file>
+    <file>icons/search_dark.png</file>
+    <file>icons/search_grayed.png</file>
+    <file>icons/search_light.png</file>
+    <file>icons/search_dark@2x.png</file>
+    <file>icons/search_grayed@2x.png</file>
+    <file>icons/search_light@2x.png</file>
     
     <!-- icons for buttons -->
     <file>icons/add_dark.png</file>

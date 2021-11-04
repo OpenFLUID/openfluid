@@ -43,6 +43,7 @@
 #include <QWidget>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/waresdev/WareBuildOptions.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 
 
@@ -53,7 +54,7 @@ namespace Ui
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-
+ 
 
 class OPENFLUID_API WareBuildOptionsWidget : public QWidget
 {
@@ -61,12 +62,6 @@ class OPENFLUID_API WareBuildOptionsWidget : public QWidget
 
 
   private slots:
-
-    void handleInstallChanged();
-
-    void handleConfigureModeChanged();
-
-    void handleBuildJobsChanged();
 
     void resetJobsToIdeal();
 
@@ -81,6 +76,8 @@ class OPENFLUID_API WareBuildOptionsWidget : public QWidget
     void setBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode Mode);
 
     void setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
+
+    void setJobsNumber(int JobsNumber);
 
 
   signals:
@@ -102,7 +99,9 @@ class OPENFLUID_API WareBuildOptionsWidget : public QWidget
 
     openfluid::waresdev::WareSrcContainer::ConfigMode getConfigureMode() const;
 
-    unsigned int getBuildJobs() const;
+    void setBuildOptions(openfluid::waresdev::WareBuildOptions& BuildOptions);
+
+    openfluid::waresdev::WareBuildOptions getOptions();
 
 };
 

@@ -49,6 +49,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/waresdev/WareBuildOptions.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 
@@ -101,6 +102,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     QTabWidget* mp_TabWidget;
 
     bool m_IsStandalone;
+
+    openfluid::waresdev::WareBuildOptions m_DefaultWareBuildOptions;
 
     openfluid::waresdev::WareSrcManager* mp_Manager;
 

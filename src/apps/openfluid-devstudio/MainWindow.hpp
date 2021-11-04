@@ -43,11 +43,16 @@
 
 #include <QMap>
 
+#include <openfluid/ui/common/ActionLabel.hpp>
 #include <openfluid/ui/common/AppMainWindow.hpp>
 #include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
-#include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
+#include <openfluid/ui/waresdev/WareSrcActionsCollection.hpp>
+#include <openfluid/waresdev/WareBuildOptions.hpp>
 #include <openfluid/dllexport.hpp>
+
+#include "WareBuildStatusWidget.hpp"
+#include "WorkspaceToolbar.hpp"
 
 
 namespace Ui {
@@ -69,8 +74,14 @@ class OPENFLUID_API MainWindow: public openfluid::ui::common::AppMainWindow
   private:
 
     Ui::MainWindow* ui;
+    
+    WorkspaceToolbar* mp_Toolbar;
 
-    openfluid::ui::waresdev::WareSrcToolbar* mp_Toolbar;
+    openfluid::ui::waresdev::WareSrcActionsCollection* mp_ActionsCollection;
+
+    openfluid::waresdev::WareBuildOptions m_WareBuildOptions;
+    
+    WareBuildStatusWidget* mp_BuildStatusWidget;
 
     openfluid::ui::waresdev::WareSrcWidgetCollection* mp_WidgetsCollection;
 
@@ -89,14 +100,26 @@ class OPENFLUID_API MainWindow: public openfluid::ui::common::AppMainWindow
 
     void openExternalToolAsked(const QString& Command, const QString& FilePath);
 
+    void buildOptionsChanged();
+
 
   private slots:
 
+    void updateBuildJobsStatus();
+
+    void updateBuildModeStatus();
+
+    void updateConfigureModeStatus();
+
+    void displayBuildOptionsDialog();
+
     void onOpenExternalToolAsked();
 
-    void onBuildOptionsMenuChanged();
+    void toggleModeBuildOption();
 
-    void onBuildOptionsToolbarChanged();
+    void toggleInstalledBuildOption();
+
+    void onBuildInfosChange();
 
     void onQuitRequested();
 
@@ -113,6 +136,10 @@ class OPENFLUID_API MainWindow: public openfluid::ui::common::AppMainWindow
     void onOnlineWebAsked();
 
     void onOnlineCommunityAsked();
+
+    void onJobsClicked();
+
+    void onJobsScrolled(bool Up);
 
     void setCurrentPath(const QString& Path);
 

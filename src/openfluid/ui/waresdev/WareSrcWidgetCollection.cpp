@@ -65,9 +65,6 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone) :
     mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::waresdev::WareSrcManager::instance()),
-    m_DefaultConfigMode(openfluid::waresdev::WareSrcContainer::ConfigMode::CONFIG_RELEASE),
-    m_DefaultBuildMode(openfluid::waresdev::WareSrcContainer::BuildMode::BUILD_WITHINSTALL),
-    m_DefaultBuildJobs(openfluid::base::Environment::getIdealJobsCount()),
     mp_FindReplaceDialog(0)
 {
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
@@ -110,7 +107,7 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
 
     if (!Widget)
     {
-      Widget = new WareSrcWidget(Info, m_IsStandalone, m_DefaultConfigMode, m_DefaultBuildMode, m_DefaultBuildJobs,
+      Widget = new WareSrcWidget(Info, m_IsStandalone, 
                                  mp_TabWidget);
 
       mp_TabWidget->addTab(Widget, Info.m_WareName);

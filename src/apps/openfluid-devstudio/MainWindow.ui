@@ -19,6 +19,9 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -156,6 +159,9 @@
        </widget>
       </widget>
       <widget class="QTabWidget" name="WareSrcCollection">
+       <property name="tabPosition">
+        <enum>QTabWidget::North</enum>
+       </property>
        <property name="tabShape">
         <enum>QTabWidget::Rounded</enum>
        </property>
@@ -179,7 +185,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -187,14 +193,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>openfluid::ui::waresdev::WareSrcExplorer</class>
-   <extends>QTreeView</extends>
-   <header location="global">openfluid/ui/waresdev/WareSrcExplorer.hpp</header>
-  </customwidget>
-  <customwidget>
    <class>openfluid::ui::common::ActionLabel</class>
    <extends>QLabel</extends>
    <header location="global">openfluid/ui/common/ActionLabel.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>openfluid::ui::waresdev::WareSrcExplorer</class>
+   <extends>QTreeView</extends>
+   <header location="global">openfluid/ui/waresdev/WareSrcExplorer.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

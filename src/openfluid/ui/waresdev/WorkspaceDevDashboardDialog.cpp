@@ -56,10 +56,13 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-WorkspaceDevDashboardDialog::WorkspaceDevDashboardDialog(QWidget* Parent) :
-    QDialog(Parent), ui(new Ui::WorkspaceDevDashboardDialog)
+WorkspaceDevDashboardDialog::WorkspaceDevDashboardDialog(QWidget* Parent, 
+                                                         openfluid::waresdev::WareBuildOptions& BuildOptions) :
+    QDialog(Parent), m_WareBuildOptions(BuildOptions), ui(new Ui::WorkspaceDevDashboardDialog)
 {
   ui->setupUi(this);
+
+  ui->BuildOptionsWidget->setBuildOptions(m_WareBuildOptions);
 
   ui->WaresTabWidget->setCurrentIndex(0);
   ui->ActionsTabWidget->setCurrentIndex(0);
@@ -140,6 +143,16 @@ WorkspaceDevDashboardDialog::WorkspaceDevDashboardDialog(QWidget* Parent) :
 
   WThread->start();
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::waresdev::WareBuildOptions WorkspaceDevDashboardDialog::getBuildOptions()
+{
+  return ui->BuildOptionsWidget->getOptions();
 }
 
 
@@ -301,10 +314,10 @@ void WorkspaceDevDashboardDialog::handlePurgeChanged()
 
 void WorkspaceDevDashboardDialog::runBuildDoc()
 {
-  openfluid::waresdev::WareSrcContainer::ConfigMode ConfigM = ui->BuildOptionsWidget->getConfigureMode();
-  openfluid::waresdev::WareSrcContainer::BuildMode BuildM = ui->BuildOptionsWidget->getBuildMode();
-  unsigned int BuildJ = ui->BuildOptionsWidget->getBuildJobs();
+  openfluid::waresdev::WareSrcContainer::ConfigMode ConfigM = m_WareBuildOptions.getConfigMode();
+  openfluid::waresdev::WareSrcContainer::BuildMode BuildM = m_WareBuildOptions.getBuildMode();
 
+  unsigned int BuildJ = m_WareBuildOptions.JobsNumber;
 
   WorkspaceDevBuildWorker* Worker = new WorkspaceDevBuildWorker(getSelectionByType(),
                                                                 ui->BuildCheckBox->isChecked(),

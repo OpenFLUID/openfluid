@@ -45,6 +45,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
+#include <openfluid/ui/waresdev/WareSrcActionsCollection.hpp>
 
 
 namespace Ui {
@@ -83,7 +84,9 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID);
 
-    void updateWareOptions();
+    void loadWareOptions();
+
+    void displayBuildOptionsDialog();
 
 
   private:
@@ -91,6 +94,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     Ui::WareSrcWidget* ui;
 
     openfluid::waresdev::WareSrcContainer m_Container;
+
+    openfluid::ui::waresdev::WareSrcActionsCollection* mp_ActionsCollection;
 
     QMap<QString, QAction*> m_ExternalToolsActions;
 
@@ -103,7 +108,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     bool m_IsStandalone;
 
-    WareSrcToolbar* mp_StandaloneToolBar = 0;
+    WareSrcToolbar* mp_WareSrcToolBar = nullptr;
 
     void addNewFileTab(int Index, const QString& AbsolutePath, const QString& TabLabel, const QString& TabTooltip = "");
 
@@ -199,9 +204,6 @@ class OPENFLUID_API WareSrcWidget: public QWidget
   public:
 
     WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
-                  openfluid::waresdev::WareSrcContainer::ConfigMode Config,
-                  openfluid::waresdev::WareSrcContainer::BuildMode Build,
-                  unsigned int Jobs,
                   QWidget* Parent = nullptr);
 
     virtual ~WareSrcWidget();

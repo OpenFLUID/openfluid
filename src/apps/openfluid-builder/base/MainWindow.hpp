@@ -44,6 +44,7 @@
 #include <QAction>
 
 #include <openfluid/ui/common/AppMainWindow.hpp>
+#include <openfluid/waresdev/WareBuildOptions.hpp>
 
 #include "AbstractModuleWidget.hpp"
 

@@ -33,12 +33,14 @@
   @file WorkspaceManager.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
@@ -572,5 +574,62 @@ void WorkspaceManager::setWaresBuildMode(const std::string& Mode)
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool WorkspaceManager::isWaresParallelJobsEnabled() const
+{
+  if (m_IsOpen)
+  {
+    return m_Settings->getValue("/waresdev/mode/jobs/enabled").get<bool>(false);
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceManager::setWaresParallelJobsEnabled(bool Enabled)
+{
+  if (m_IsOpen)
+  {
+     m_Settings->setValue("/waresdev/mode/jobs","enabled",Enabled);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int WorkspaceManager::getWaresParallelJobsCount() const
+{
+  if (m_IsOpen)
+  {
+    return m_Settings->getValue("/waresdev/mode/jobs/count").get<int>(
+      openfluid::base::Environment::getIdealJobsCount()
+    );
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceManager::setWaresParallelJobsCount(int Jobs)
+{
+  if (m_IsOpen)
+  {
+     m_Settings->setValue("/waresdev/mode/jobs","count",Jobs);
+  }
+}
 
 } } //namespaces
