@@ -53,7 +53,7 @@ WareBuildOptionsDialog::WareBuildOptionsDialog(const openfluid::waresdev::WareBu
 {
   ui->setupUi(this);
 
-  setupMessageUi(tr("Configure build options"));
+  setupMessageUi(tr("Build options"));
   setMessage();
 
   // copy to handle save or cancel at last moment

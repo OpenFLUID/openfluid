@@ -127,10 +127,8 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
       SubMenu->addAction(mp_ActionsCollection->action("GenerateDoc"));
     }
 #endif
-
-    SubMenu->addAction(mp_ActionsCollection->action("WareOptionsDialog"));
-
-    // TODO add doc generation?
+    SubMenu->addSeparator();
+    SubMenu->addAction(mp_ActionsCollection->action("OpenWareOptions"));
 
     SubMenu = Menu->addMenu(tr("Ware"));
     SubMenu->addAction(mp_ActionsCollection->action("OpenTerminal"));

@@ -174,7 +174,7 @@ void WareSrcActionsCollection::createActions()
 
   // Options
 
-  m_Actions["WareOptionsDialog"] =  new QAction(tr("Build options..."),this);
+  m_Actions["OpenWareOptions"] =  new QAction(tr("Options..."),this);
 
 
   // ====== Tools ======

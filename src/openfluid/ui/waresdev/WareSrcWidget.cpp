@@ -93,7 +93,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
       connect(ExternalToolsActions[Alias], SIGNAL(triggered()), this, SLOT(onOpenExternalToolRequested()));
     }
 
-    connect(mp_ActionsCollection->action("WareOptionsDialog"), SIGNAL(triggered()),
+    connect(mp_ActionsCollection->action("OpenWareOptions"), SIGNAL(triggered()),
             this, SLOT(displayBuildOptionsDialog()));
     mp_WareSrcToolBar->setStyleSheet(
       QString(R"(

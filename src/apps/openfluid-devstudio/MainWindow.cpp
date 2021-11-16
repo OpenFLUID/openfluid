@@ -228,7 +228,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(configure()));
   connect(mp_ActionsCollection->action("BuildWare"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(build()));
 
-  connect(mp_ActionsCollection->action("WareOptionsDialog"), SIGNAL(triggered()),
+  connect(mp_ActionsCollection->action("OpenWareOptions"), SIGNAL(triggered()),
           this, SLOT(displayBuildOptionsDialog()));
 
 #if OPENFLUID_SIM2DOC_ENABLED
@@ -498,8 +498,8 @@ void MainWindow::createMenus()
 #if OPENFLUID_SIM2DOC_ENABLED
   Menu->addAction(mp_ActionsCollection->action("GenerateDoc"));
 #endif
-
-  Menu->addAction(mp_ActionsCollection->action("WareOptionsDialog"));
+  Menu->addSeparator();
+  Menu->addAction(mp_ActionsCollection->action("OpenWareOptions"));
 
   // --- Workspace
   Menu = menuBar()->addMenu(tr("Workspace"));
@@ -545,12 +545,12 @@ void MainWindow::updateBuildJobsStatus()
   QString JobStatusString;
   if (m_WareBuildOptions.IsParallelJobs)
   {
-    JobStatusString = tr("parallel build using %1 jobs").arg(m_WareBuildOptions.JobsNumber);
+    JobStatusString = tr("%1 jobs").arg(m_WareBuildOptions.JobsNumber);
     mp_WidgetsCollection->setBuildJobs(m_WareBuildOptions.JobsNumber);
   }
   else
   {
-    JobStatusString = tr("parallel build disabled");
+    JobStatusString = tr("single job");
     mp_WidgetsCollection->setBuildJobs(0);
   }
   mp_BuildStatusWidget->jobsLabel()->setText(JobStatusString);
@@ -565,11 +565,11 @@ void MainWindow::updateBuildModeStatus()
 {
   if (m_WareBuildOptions.IsWithInstall)
   {
-    mp_BuildStatusWidget->installLabel()->setText(tr("with install"));
+    mp_BuildStatusWidget->installLabel()->setText(tr("install"));
   }
   else
   {
-    mp_BuildStatusWidget->installLabel()->setText(tr("without install"));
+    mp_BuildStatusWidget->installLabel()->setText(tr("no install"));
   }
   mp_WidgetsCollection->setBuildMode(m_WareBuildOptions.getBuildMode());
 }
@@ -583,11 +583,11 @@ void MainWindow::updateConfigureModeStatus()
 {
   if (m_WareBuildOptions.IsReleaseMode)
   {
-    mp_BuildStatusWidget->configureModeLabel()->setText(tr("release mode"));
+    mp_BuildStatusWidget->configureModeLabel()->setText(tr("release"));
   }
   else
   {
-    mp_BuildStatusWidget->configureModeLabel()->setText(tr("debug mode"));
+    mp_BuildStatusWidget->configureModeLabel()->setText(tr("debug"));
   }
 
   mp_WidgetsCollection->setConfigureMode(m_WareBuildOptions.getConfigMode());
