@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid format="fluidx 4">
  <datastore>
-  <dataitem id="RS" type="geovector" source="shapefiles/roujan_rs_wgs84.shp" unitclass="RS" />
-  <dataitem id="SU" type="geovector" source="shapefiles/roujan_su_wgs84.shp" unitclass="SU" />
-  <dataitem id="GU" type="geovector" source="shapefiles/roujan_gu_wgs84.shp" unitclass="GU" />
+  <dataitem id="RS" type="geovector" source="shapefiles/roujan_rs_wgs84.shp" unitsclass="RS" />
+  <dataitem id="SU" type="geovector" source="shapefiles/roujan_su_wgs84.shp" unitsclass="SU" />
+  <dataitem id="GU" type="geovector" source="shapefiles/roujan_gu_wgs84.shp" unitsclass="GU" />
  </datastore>
 
 
