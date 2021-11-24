@@ -62,9 +62,24 @@ struct WareBuildOptions
 
   bool IsWithInstall = true;
 
-  bool IsParallelJobs = true;
+  bool IsMultipleJobs = true;
 
   int JobsNumber = openfluid::base::Environment::getIdealJobsCount();
+
+  WareBuildOptions()
+  {
+    auto* WMgr = openfluid::base::WorkspaceManager::instance();
+    WMgr->openWorkspace(openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath());
+
+    std::string ConfigMode = WMgr->getWaresConfigureMode();
+    std::string BuildMode = WMgr->getWaresBuildMode();
+    
+
+    IsReleaseMode = ConfigMode == RELEASE_CONFIG_MODE_STRING;
+    IsWithInstall = BuildMode == BUILD_INSTALL_MODE_STRING;
+    IsMultipleJobs = WMgr->isWaresParallelJobsEnabled();
+    JobsNumber = WMgr->getWaresParallelJobsCount();
+  }
 
   openfluid::waresdev::WareSrcContainer::ConfigMode getConfigMode()
   {
@@ -80,22 +95,6 @@ struct WareBuildOptions
   }
 
 
-  void setDefaultsFromWorkspaceManager()
-  {
-    auto* WMgr = openfluid::base::WorkspaceManager::instance();
-    WMgr->openWorkspace(openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath());
-
-    std::string ConfigMode = WMgr->getWaresConfigureMode();
-    std::string BuildMode = WMgr->getWaresBuildMode();
-    
-
-    IsReleaseMode = ConfigMode == RELEASE_CONFIG_MODE_STRING;
-    IsWithInstall = BuildMode == BUILD_INSTALL_MODE_STRING;
-    IsParallelJobs = WMgr->isWaresParallelJobsEnabled();
-    JobsNumber = WMgr->getWaresParallelJobsCount();
-  }
-
-
   void writeOptionsInWorkspace()
   {
     auto* WMgr = openfluid::base::WorkspaceManager::instance();
@@ -105,11 +104,14 @@ struct WareBuildOptions
     std::string BuildMode = (IsWithInstall ? BUILD_INSTALL_MODE_STRING : BUILD_ONLY_MODE_STRING);
     WMgr->setWaresConfigureMode(ConfigMode);
     WMgr->setWaresBuildMode(BuildMode);
-    WMgr->setWaresParallelJobsEnabled(IsParallelJobs);
+    WMgr->setWaresParallelJobsEnabled(IsMultipleJobs);
     WMgr->setWaresParallelJobsCount(JobsNumber);
   }
 };
 
 } }  // namespaces
+
+
+Q_DECLARE_METATYPE(openfluid::waresdev::WareBuildOptions);
 
 #endif /* __OPENFLUID_WARESDEV_WAREBUILDOPTIONS_HPP__ */

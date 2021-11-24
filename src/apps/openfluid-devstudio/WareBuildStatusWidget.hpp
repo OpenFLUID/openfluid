@@ -44,13 +44,13 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/common/ActionLabel.hpp>
+#include <openfluid/waresdev/WareBuildOptions.hpp>
 
 
 namespace Ui
 {
   class WareBuildStatusWidget;
 }
-
 
 class OPENFLUID_API WareBuildStatusWidget : public QWidget
 {
@@ -60,12 +60,33 @@ class OPENFLUID_API WareBuildStatusWidget : public QWidget
 
     Ui::WareBuildStatusWidget *ui;
 
+    openfluid::waresdev::WareBuildOptions m_BuildOptions;
+
+    void refreshBuildJobsStatus();
+
+    void refreshBuildModeStatus();
+
+    void refreshConfigureModeStatus();
+
+
+  private slots:
+
+    void onConfigureModeClicked();
+
+    void onBuildModeClicked();
+
+    void onJobsClicked();
+
+    void onJobsScrolled(bool Up);
+
+    void refreshAllLabels();
+
 
   signals:
 
     void settingsButtonClicked();
 
-    void jobsScrolled(bool Up);
+    void settingsChanged(openfluid::waresdev::WareBuildOptions BuildOptions);
 
 
   public:
@@ -74,12 +95,7 @@ class OPENFLUID_API WareBuildStatusWidget : public QWidget
 
     ~WareBuildStatusWidget();
 
-    openfluid::ui::common::ActionLabel* installLabel();
-
-    openfluid::ui::common::ActionLabel* configureModeLabel();
-
-    openfluid::ui::common::ActionLabel* jobsLabel();
-
+    void setBuildOptions(openfluid::waresdev::WareBuildOptions BuildOptions);
 };
 
 

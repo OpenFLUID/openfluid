@@ -222,7 +222,6 @@ WareSrcWidget::~WareSrcWidget()
 void WareSrcWidget::displayBuildOptionsDialog()
 {
   openfluid::waresdev::WareBuildOptions WareBuildOptions;
-  WareBuildOptions.setDefaultsFromWorkspaceManager();
   openfluid::ui::waresdev::WareBuildOptionsDialog SettingsDialog(WareBuildOptions, QApplication::activeWindow());
 
   if (SettingsDialog.exec() == QDialog::Accepted)
@@ -535,20 +534,16 @@ openfluid::waresdev::WareSrcContainer& WareSrcWidget::wareSrcContainer()
 
 void WareSrcWidget::loadWareOptions()
 {
-  if (m_IsStandalone)
+  openfluid::waresdev::WareBuildOptions WareBuildOptions;
+  m_Container.setConfigMode(WareBuildOptions.getConfigMode());
+  m_Container.setBuildMode(WareBuildOptions.getBuildMode());
+  if (WareBuildOptions.IsMultipleJobs)
   {
-    openfluid::waresdev::WareBuildOptions WareBuildOptions;
-    WareBuildOptions.setDefaultsFromWorkspaceManager();
-    m_Container.setConfigMode(WareBuildOptions.getConfigMode());
-    m_Container.setBuildMode(WareBuildOptions.getBuildMode());
-    if (WareBuildOptions.IsParallelJobs)
-    {
-      m_Container.setBuildJobs(WareBuildOptions.JobsNumber);
-    }
-    else
-    {
-      m_Container.setBuildJobs(0);
-    }
+    m_Container.setBuildJobs(WareBuildOptions.JobsNumber);
+  }
+  else
+  {
+    m_Container.setBuildJobs(0);
   }
 }
 

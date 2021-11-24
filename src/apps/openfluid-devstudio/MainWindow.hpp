@@ -78,8 +78,8 @@ class OPENFLUID_API MainWindow: public openfluid::ui::common::AppMainWindow
     WorkspaceToolbar* mp_Toolbar;
 
     openfluid::ui::waresdev::WareSrcActionsCollection* mp_ActionsCollection;
-
-    openfluid::waresdev::WareBuildOptions m_WareBuildOptions;
+    
+    openfluid::waresdev::WareBuildOptions m_BuildOptions;
     
     WareBuildStatusWidget* mp_BuildStatusWidget;
 
@@ -100,26 +100,12 @@ class OPENFLUID_API MainWindow: public openfluid::ui::common::AppMainWindow
 
     void openExternalToolAsked(const QString& Command, const QString& FilePath);
 
-    void buildOptionsChanged();
-
 
   private slots:
-
-    void updateBuildJobsStatus();
-
-    void updateBuildModeStatus();
-
-    void updateConfigureModeStatus();
 
     void displayBuildOptionsDialog();
 
     void onOpenExternalToolAsked();
-
-    void toggleModeBuildOption();
-
-    void toggleInstalledBuildOption();
-
-    void onBuildInfosChange();
 
     void onQuitRequested();
 
@@ -137,9 +123,7 @@ class OPENFLUID_API MainWindow: public openfluid::ui::common::AppMainWindow
 
     void onOnlineCommunityAsked();
 
-    void onJobsClicked();
-
-    void onJobsScrolled(bool Up);
+    void onBuildOptionsChanged(openfluid::waresdev::WareBuildOptions WareBuildOptions, bool RefreshVisual=false);
 
     void setCurrentPath(const QString& Path);
 

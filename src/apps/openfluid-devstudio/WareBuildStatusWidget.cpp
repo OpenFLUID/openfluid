@@ -53,7 +53,33 @@ WareBuildStatusWidget::WareBuildStatusWidget(QWidget* Parent):
   ui->buildOptionsButton->setIcon(openfluid::ui::common::getIcon("settings","/ui/common"));
 
   connect(ui->buildOptionsButton, SIGNAL(clicked()), this, SIGNAL(settingsButtonClicked()));
-  connect(ui->jobStatus, SIGNAL(scrolled(bool)), this, SIGNAL(jobsScrolled(bool)));
+  connect(ui->jobStatus, SIGNAL(scrolled(bool)), this, SLOT(onJobsScrolled(bool)));
+  connect(ui->configStatus,SIGNAL(clicked()),this,SLOT(onConfigureModeClicked()));
+  connect(ui->buildStatus,SIGNAL(clicked()),this,SLOT(onBuildModeClicked()));
+  connect(ui->jobStatus,SIGNAL(clicked()),this,SLOT(onJobsClicked()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareBuildStatusWidget::refreshAllLabels()
+{
+  refreshConfigureModeStatus();
+  refreshBuildModeStatus();
+  refreshBuildJobsStatus();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareBuildStatusWidget::setBuildOptions(openfluid::waresdev::WareBuildOptions BuildOptions)
+{
+  m_BuildOptions = BuildOptions;
+  refreshAllLabels();
 }
 
 
@@ -71,9 +97,18 @@ WareBuildStatusWidget::~WareBuildStatusWidget()
 // =====================================================================
 
 
-openfluid::ui::common::ActionLabel* WareBuildStatusWidget::installLabel()
+void WareBuildStatusWidget::refreshBuildJobsStatus()
 {
-  return ui->buildStatus;
+  QString JobStatusString;
+  if (m_BuildOptions.IsMultipleJobs)
+  {
+    JobStatusString = tr("%1 jobs").arg(m_BuildOptions.JobsNumber);
+  }
+  else
+  {
+    JobStatusString = tr("single job");
+  }
+  ui->jobStatus->setText(JobStatusString);
 }
 
 
@@ -81,9 +116,16 @@ openfluid::ui::common::ActionLabel* WareBuildStatusWidget::installLabel()
 // =====================================================================
 
 
-openfluid::ui::common::ActionLabel* WareBuildStatusWidget::configureModeLabel()
+void WareBuildStatusWidget::refreshBuildModeStatus()
 {
-  return ui->configStatus;
+  if (m_BuildOptions.IsWithInstall)
+  {
+    ui->buildStatus->setText(tr("install"));
+  }
+  else
+  {
+    ui->buildStatus->setText(tr("no install"));
+  }
 }
 
 
@@ -91,7 +133,73 @@ openfluid::ui::common::ActionLabel* WareBuildStatusWidget::configureModeLabel()
 // =====================================================================
 
 
-openfluid::ui::common::ActionLabel* WareBuildStatusWidget::jobsLabel()
+void WareBuildStatusWidget::refreshConfigureModeStatus()
 {
-  return ui->jobStatus;
+  if (m_BuildOptions.IsReleaseMode)
+  {
+    ui->configStatus->setText(tr("release"));
+  }
+  else
+  {
+    ui->configStatus->setText(tr("debug"));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareBuildStatusWidget::onJobsClicked()
+{
+  m_BuildOptions.IsMultipleJobs = !m_BuildOptions.IsMultipleJobs;
+  refreshBuildJobsStatus();
+  emit settingsChanged(m_BuildOptions);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareBuildStatusWidget::onJobsScrolled(bool Up)
+{
+  if (m_BuildOptions.IsMultipleJobs)
+  {
+    if (Up)
+    {
+      m_BuildOptions.JobsNumber++;
+    }
+    else if (m_BuildOptions.JobsNumber > 2)
+    {
+      m_BuildOptions.JobsNumber--;
+    }
+    refreshBuildJobsStatus();
+    emit settingsChanged(m_BuildOptions);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareBuildStatusWidget::onConfigureModeClicked()
+{
+
+  m_BuildOptions.IsReleaseMode = !m_BuildOptions.IsReleaseMode;
+  refreshConfigureModeStatus();
+  emit settingsChanged(m_BuildOptions);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareBuildStatusWidget::onBuildModeClicked()
+{
+  m_BuildOptions.IsWithInstall = !m_BuildOptions.IsWithInstall;
+  refreshBuildModeStatus();
+  emit settingsChanged(m_BuildOptions);
 }

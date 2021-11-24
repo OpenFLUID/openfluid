@@ -92,7 +92,7 @@ void WareBuildOptionsWidget::setBuildOptions(openfluid::waresdev::WareBuildOptio
   setBuildMode(BuildOptions.getBuildMode());
 
   setJobsNumber(BuildOptions.JobsNumber);
-  ui->JobsCheckBox->setChecked(BuildOptions.IsParallelJobs);
+  ui->JobsCheckBox->setChecked(BuildOptions.IsMultipleJobs);
 }
 
 
@@ -106,7 +106,7 @@ openfluid::waresdev::WareBuildOptions WareBuildOptionsWidget::getOptions()
   openfluid::waresdev::WareBuildOptions BuildOptions;
   BuildOptions.IsWithInstall = ui->InstallCheckBox->isChecked();
   BuildOptions.IsReleaseMode = ui->ConfigureModeComboBox->currentIndex() == 0;
-  BuildOptions.IsParallelJobs = ui->JobsCheckBox->isChecked();
+  BuildOptions.IsMultipleJobs = ui->JobsCheckBox->isChecked();
   BuildOptions.JobsNumber = ui->JobsSpinBox->value();
   return BuildOptions;
 }

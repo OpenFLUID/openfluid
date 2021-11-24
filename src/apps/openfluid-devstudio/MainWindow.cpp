@@ -96,7 +96,7 @@ MainWindow::MainWindow(openfluid::ui::common::OpenFLUIDSplashScreen* Splash) :
   mp_ActionsCollection = new openfluid::ui::waresdev::WareSrcActionsCollection(false, true, this);
   mp_Toolbar = new WorkspaceToolbar(this);
 
-  mp_Toolbar->setObjectName("SrcToolbar");
+  mp_Toolbar->setObjectName("WorkspaceToolbar");
   mp_Toolbar->setIconSize(QSize(32,32));
   mp_Toolbar->setStyleSheet(
       QString(R"(
@@ -110,7 +110,7 @@ QToolButton {
   margin-top : 5px;
 }
 
-#SrcToolbar {
+#WorkspaceToolbar {
   background-color: %1;
   border: 1px solid %1;
 }
@@ -224,7 +224,6 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
           mp_WidgetsCollection, SLOT(showFindReplaceDialog()));
   connect(mp_ActionsCollection->action("GoToLine"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(goToLine()));
 
-  connect(this, SIGNAL(buildOptionsChanged()), this, SLOT(onBuildInfosChange()));
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(configure()));
   connect(mp_ActionsCollection->action("BuildWare"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(build()));
 
@@ -245,11 +244,6 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(mp_Toolbar->action("Dashboard"), SIGNAL(triggered()), this, SLOT(onDevDashboardAsked()));
 
   for (auto Action : m_ExternalToolsActions)
-  {
-    connect(Action, SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));
-  }
-
-  for (auto Action : mp_Toolbar->externalToolsActions())
   {
     connect(Action, SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));
   }
@@ -307,11 +301,9 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   statusBar()->addPermanentWidget(mp_BuildStatusWidget);  
 
-  connect(mp_BuildStatusWidget->configureModeLabel(),SIGNAL(clicked()),this,SLOT(toggleModeBuildOption()));
-  connect(mp_BuildStatusWidget->installLabel(),SIGNAL(clicked()),this,SLOT(toggleInstalledBuildOption()));
-  connect(mp_BuildStatusWidget->jobsLabel(),SIGNAL(clicked()),this,SLOT(onJobsClicked()));
-  connect(mp_BuildStatusWidget, SIGNAL(settingsButtonClicked()), this, SLOT(displayBuildOptionsDialog())); 
-  connect(mp_BuildStatusWidget, SIGNAL(jobsScrolled(bool)), this, SLOT(onJobsScrolled(bool))); 
+  connect(mp_BuildStatusWidget, SIGNAL(settingsButtonClicked()), this, SLOT(displayBuildOptionsDialog()));
+  connect(mp_BuildStatusWidget, SIGNAL(settingsChanged(openfluid::waresdev::WareBuildOptions)), 
+          this, SLOT(onBuildOptionsChanged(openfluid::waresdev::WareBuildOptions)));
 
   applyWindowGeometry();
 }
@@ -337,72 +329,14 @@ MainWindow::~MainWindow()
 // =====================================================================
 
 
-void MainWindow::onJobsClicked()
-{
-  m_WareBuildOptions.IsParallelJobs = !m_WareBuildOptions.IsParallelJobs;
-  updateBuildJobsStatus();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::onJobsScrolled(bool Up)
-{
-  if (m_WareBuildOptions.IsParallelJobs)
-  {
-    if (Up)
-    {
-      m_WareBuildOptions.JobsNumber++;
-    }
-    else if (m_WareBuildOptions.JobsNumber >= 3)
-    {
-      m_WareBuildOptions.JobsNumber--;
-    }
-    m_WareBuildOptions.writeOptionsInWorkspace();
-    updateBuildJobsStatus();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::toggleModeBuildOption()
-{
-
-  m_WareBuildOptions.IsReleaseMode = !m_WareBuildOptions.IsReleaseMode;
-  m_WareBuildOptions.writeOptionsInWorkspace();
-  updateConfigureModeStatus();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::toggleInstalledBuildOption()
-{
-  m_WareBuildOptions.IsWithInstall = !m_WareBuildOptions.IsWithInstall;
-  m_WareBuildOptions.writeOptionsInWorkspace();
-  updateBuildModeStatus();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void MainWindow::displayBuildOptionsDialog()
 {
-  openfluid::ui::waresdev::WareBuildOptionsDialog SettingsDialog(m_WareBuildOptions, QApplication::activeWindow());
+  openfluid::ui::waresdev::WareBuildOptionsDialog SettingsDialog(m_BuildOptions, QApplication::activeWindow());
 
   if (SettingsDialog.exec() == QDialog::Accepted)
   {
-    m_WareBuildOptions = SettingsDialog.getOptions();
-    emit buildOptionsChanged();
+    openfluid::waresdev::WareBuildOptions ResultingOptions = SettingsDialog.getOptions();
+    onBuildOptionsChanged(ResultingOptions, true);
   }
 }
 
@@ -540,78 +474,6 @@ void MainWindow::createMenus()
 // =====================================================================
 
 
-void MainWindow::updateBuildJobsStatus()
-{
-  QString JobStatusString;
-  if (m_WareBuildOptions.IsParallelJobs)
-  {
-    JobStatusString = tr("%1 jobs").arg(m_WareBuildOptions.JobsNumber);
-    mp_WidgetsCollection->setBuildJobs(m_WareBuildOptions.JobsNumber);
-  }
-  else
-  {
-    JobStatusString = tr("single job");
-    mp_WidgetsCollection->setBuildJobs(0);
-  }
-  mp_BuildStatusWidget->jobsLabel()->setText(JobStatusString);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::updateBuildModeStatus()
-{
-  if (m_WareBuildOptions.IsWithInstall)
-  {
-    mp_BuildStatusWidget->installLabel()->setText(tr("install"));
-  }
-  else
-  {
-    mp_BuildStatusWidget->installLabel()->setText(tr("no install"));
-  }
-  mp_WidgetsCollection->setBuildMode(m_WareBuildOptions.getBuildMode());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::updateConfigureModeStatus()
-{
-  if (m_WareBuildOptions.IsReleaseMode)
-  {
-    mp_BuildStatusWidget->configureModeLabel()->setText(tr("release"));
-  }
-  else
-  {
-    mp_BuildStatusWidget->configureModeLabel()->setText(tr("debug"));
-  }
-
-  mp_WidgetsCollection->setConfigureMode(m_WareBuildOptions.getConfigMode());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::onBuildInfosChange()
-{
-  updateConfigureModeStatus();
-  updateBuildModeStatus();
-  updateBuildJobsStatus();
-
-  m_WareBuildOptions.writeOptionsInWorkspace();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void MainWindow::setWorkspaceDefaults()
 {
   auto* WMgr = openfluid::base::WorkspaceManager::instance();
@@ -627,12 +489,7 @@ void MainWindow::setWorkspaceDefaults()
 
   mp_WidgetsCollection->setCurrent(QString::fromStdString(WMgr->getActiveWarePath()));
 
-
-  // Apply ware build options
-
-  m_WareBuildOptions.setDefaultsFromWorkspaceManager();
-  
-  emit buildOptionsChanged();
+  mp_BuildStatusWidget->setBuildOptions(m_BuildOptions);
 }
 
 
@@ -662,8 +519,6 @@ void MainWindow::onQuitRequested()
                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
     auto* WMgr = openfluid::base::WorkspaceManager::instance();
-
-    m_WareBuildOptions.writeOptionsInWorkspace();
 
     WMgr->setOpenWaresPaths(openfluid::tools::toStdStringVector(mp_WidgetsCollection->getOpenWarePaths()));
 
@@ -744,14 +599,30 @@ void MainWindow::onExportWareSourcesAsked()
 // =====================================================================
 
 
+void MainWindow::onBuildOptionsChanged(openfluid::waresdev::WareBuildOptions BuildOptions, bool RefreshVisual)
+{
+  m_BuildOptions = BuildOptions;
+  m_BuildOptions.writeOptionsInWorkspace();
+
+  if (RefreshVisual)
+  {
+    mp_BuildStatusWidget->setBuildOptions(m_BuildOptions);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MainWindow::onDevDashboardAsked()
 {
-  openfluid::ui::waresdev::WorkspaceDevDashboardDialog Dialog(this, m_WareBuildOptions);
+  openfluid::ui::waresdev::WorkspaceDevDashboardDialog Dialog(this, m_BuildOptions);
   Dialog.setWindowTitle(tr("Development dashboard"));
 
   Dialog.exec();
-  m_WareBuildOptions = Dialog.getBuildOptions();
-  emit buildOptionsChanged();
+  
+  onBuildOptionsChanged(Dialog.getBuildOptions(), true);
 }
 
 
