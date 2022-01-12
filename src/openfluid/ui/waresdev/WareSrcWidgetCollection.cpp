@@ -796,7 +796,15 @@ bool WareSrcWidgetCollection::closeAllWidgets()
 
 QStringList WareSrcWidgetCollection::getOpenWarePaths()
 {
-  return m_WareSrcWidgetByPath.keys();
+  QStringList OpenPaths;
+  for (int Index=0; Index < mp_TabWidget->count(); Index++)
+  {
+    if (WareSrcWidget* Ware = qobject_cast<WareSrcWidget*>(mp_TabWidget->widget(Index)))
+    {
+      OpenPaths << Ware->wareSrcContainer().getAbsolutePath();
+    }
+  }
+  return OpenPaths;
 }
 
 
