@@ -58,10 +58,9 @@ class OPENFLUID_API Filesystem
     Filesystem() = delete;
 
     /**
-      Returns the separator used in paths lists according to current operating system
-      @return the list separator character
+      @deprecated Since version 2.2.0. Use openfluid::tools::FilesystemPath::listSeparator() instead
     */
-    constexpr static inline char pathsListSeparator() noexcept
+    [[deprecated]] constexpr static inline char pathsListSeparator() noexcept
     {
 #if defined(OPENFLUID_OS_UNIX)
       return ':';
@@ -71,10 +70,9 @@ class OPENFLUID_API Filesystem
     } 
 
     /**
-      Returns the path separator according to current operating system
-      @return the path separator character
+      @deprecated Since version 2.2.0. Use openfluid::tools::FilesystemPath::separator() instead
     */
-    constexpr static inline char pathSeparator() noexcept
+    [[deprecated]] constexpr static inline char pathSeparator() noexcept
     {
 #if defined(OPENFLUID_OS_UNIX)
       return '/';
@@ -83,12 +81,7 @@ class OPENFLUID_API Filesystem
 #endif
     }
 
-    /**
-      Removes trailing separators in the given path, if any.
-      @param[in] Path the path
-      @param[in] Sep the separator character (default is '/')
-      @return the path without any trailing separator
-    */
+    #warning "TO BE REMOVED"
     static std::string removeTrailingSeparators(const std::string& Path, char Sep = '/') noexcept;
 
     /**
@@ -99,20 +92,14 @@ class OPENFLUID_API Filesystem
     */
     static std::string joinPath(const std::vector<std::string>& PathParts);
 
-    /**
-      Returns the given path as a cleaned path with native paths separators 
-      (e.g. '/' on Unix systems, '\' on Windows systems)
-      @param[in] Path the path
-      @return the cleaned path with native separators
-    */
-    static std::string toNativePath(const std::string& Path);
+    #warning "TO BE REMOVED"
+    [[deprecated]] static std::vector<std::string> splitPath(const std::string& Path);
 
-    /**
-      Returns the given path as a cleaned path with generic paths separators (always '/')
-      @param[in] Path the path
-      @return the cleaned path with generic separators
-    */
-    static std::string toGenericPath(const std::string& Path);
+    #warning "TO BE REMOVED"
+    [[deprecated]] static std::string toNativePath(const std::string& Path);
+
+    #warning "TO BE REMOVED"
+    [[deprecated]] static std::string toGenericPath(const std::string& Path);
 
     /**
       Returns the user home path (e.g. '/home/username' on Linux, 'C:/Users/username' on Windows, ...)
@@ -127,55 +114,34 @@ class OPENFLUID_API Filesystem
     static std::string tempPath();
 
     /**
-      Returns the name of the file in the given path
-      @snippet misc/filesystem.cpp filename
-      @param[in] Path the given path
-      @return the filename
+      @deprecated Since version 2.2.0. Use openfluid::tools::FilesystemPath::filename() instead
     */
-    static std::string filename(const std::string& Path);
+    [[deprecated]] static std::string filename(const std::string& Path);
 
     /**
-      Returns the directory name (parent path) for the given path
-      @snippet misc/filesystem.cpp dirname
-      @param[in] Path the given path
-      @return the directory name
+      @deprecated Since version 2.2.0. Use openfluid::tools::FilesystemPath::dirname() instead
     */
-    static std::string dirname(const std::string& Path);
-
+    [[deprecated]] static std::string dirname(const std::string& Path);
 
     /**
-      Returns the complete base name of the file for the given path 
-      (without latest extension part, without trailing dot if any)
-      @snippet misc/filesystem.cpp basename
-      @param[in] Path the given path
-      @return the base name of the file
+      @deprecated Since version 2.2.0. Use openfluid::tools::FilesystemPath::basename() instead
     */
-    static std::string basename(const std::string& Path);
+    [[deprecated]] static std::string basename(const std::string& Path);
 
     /**
-      Returns the minimal base name of the file for the given path 
-      (e.g. without any extension part, without trailing dot if any)
-      @snippet misc/filesystem.cpp minimalbasename
-      @param[in] Path the given path
-      @return the minimal base name of the file
+      @deprecated Since version 2.2.0. Use openfluid::tools::FilesystemPath::minimalBasename() instead
     */
-    static std::string minimalBasename(const std::string& Path);
+    [[deprecated]] static std::string minimalBasename(const std::string& Path);
 
     /**
-      Returns the extension (without dot character) of the file for the given path
-      @snippet misc/filesystem.cpp extension
-      @param[in] Path the given path
-      @return the extension
+      @deprecated Since version 2.2.0. Use openfluid::tools::FilesystemPath::extension() instead
     */
-    static std::string extension(const std::string& Path);
+    [[deprecated]] static std::string extension(const std::string& Path);
 
-   /**
-      Returns the complete extension (without first dot character) of the file for the given path
-      @snippet misc/filesystem.cpp completeextension
-      @param[in] Path the given path
-      @return the complete extension
+    /**
+      @deprecated Since version 2.2.0. Use openfluid::tools::FilesystemPath::completeExtension() instead
     */
-    static std::string completeExtension(const std::string& Path);
+    [[deprecated]] static std::string completeExtension(const std::string& Path);
 
     /**
       Returns the current path
@@ -191,48 +157,29 @@ class OPENFLUID_API Filesystem
     */
     static std::string absolutePath(const std::string& Path);
 
-    /**
-      Cleans the given path : removes trailing and redundant slashes, resolves '.' and '..' as far as possible.
-      @param[in] Path the path to clean  
-      @return the cleaned path
-    */
+    #warning "TO BE REMOVED"
+    [[deprecated]] static std::string relativePath(const std::string& Path, const std::string& BasePath);
+
+    #warning "TO BE REMOVED"
     static std::string cleanPath(const std::string& Path);
 
-    /**
-      Returns true if the given path is a directory
-      @param[in] Path the given path
-      @return true or false
-    */
-    static bool isDirectory(const std::string& Path);
+    #warning "TO BE REMOVED"
+    [[deprecated]] static bool containsPath(const std::string& Path, const std::string& ChildPath);
 
-    /**
-      Returns true if the given path is a file or a valid symbolic link
-      @param[in] Path the given path
-      @return true or false
-    */
-    static bool isFile(const std::string& Path);
+    #warning "TO BE REMOVED"
+    [[deprecated]] static bool isDirectory(const std::string& Path);
 
-    /**
-      Returns true if the given path exists (a file, a directory or a valid symbolic link)
-      @param[in] Path the given path
-      @return true or false
-    */
-    static bool exists(const std::string& Path);
+    #warning "TO BE REMOVED"
+    [[deprecated]] static bool isFile(const std::string& Path);
 
-    /**
-      Creates the directory of the given path. It creates all parent directories necessary to create the directory.
-      If the directory already exists, it does nothing.
-      @param[in] Path the given path
-      @return true if the directory has been successfully created or if it already exists, false otherwise
-    */
-    static bool makeDirectory(const std::string& Path);
+    #warning "TO BE REMOVED"
+    [[deprecated]] static bool exists(const std::string& Path);
 
-    /**
-      Removes the directory of the given path. It recursively deletes all contents of the directory.
-      @param[in] Path the given path
-      @return true if the directory has been successfully deleted, false otherwise
-    */
-    static bool removeDirectory(const std::string& Path);
+    #warning "TO BE REMOVED"
+    [[deprecated]] static bool makeDirectory(const std::string& Path);
+
+    #warning "TO BE REMOVED"
+    [[deprecated]] static bool removeDirectory(const std::string& Path);
 
     /**
       Creates a unique subdirectory in the given path, using the given subdirectory name as a prefix.
@@ -254,13 +201,8 @@ class OPENFLUID_API Filesystem
     */
     static std::string makeUniqueFile(const std::string& Path, const std::string& FileName);
 
-
-    /**
-      Removes the file of the given path.
-      @param[in] Path the given path
-      @return true if the file was successfully deleted, false otherwise
-    */
-    static bool removeFile(const std::string& Path);
+    #warning "TO BE REMOVED"
+    [[deprecated]] static bool removeFile(const std::string& Path);
 
     /**
       Copies a file from source to destination.
@@ -325,9 +267,9 @@ class OPENFLUID_API Filesystem
       @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
     */
     static std::vector<std::string> findFilesByExtension(const std::string& Path,
-                                                                const std::string& Ext,
-                                                                bool WithPath = false,
-                                                                bool ExtIncludeDot = false);
+                                                         const std::string& Ext,
+                                                         bool WithPath = false,
+                                                         bool ExtIncludeDot = false);
 
     /**
       Get list of files with specified extension contained in the specified dir

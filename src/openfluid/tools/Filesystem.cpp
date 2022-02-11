@@ -45,8 +45,6 @@
 
 #include <filesystem>
 #include <thread>
-#include <ostream>
-#include <fstream>
 #include <regex>
 
 #if defined(OPENFLUID_OS_WINDOWS)
@@ -54,7 +52,9 @@
 #endif
 
 #include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string.hpp>
 
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 
@@ -62,93 +62,10 @@
 namespace openfluid { namespace tools {
 
 
-class PathImpl
-{
-  private:
-    
-    std::filesystem::path m_Path;
-
-
-  public:
-
-    PathImpl(const std::string& PathStr)
-    {
-      m_Path = std::filesystem::path(PathStr,std::filesystem::path::format::generic_format);
-    }
-
-    PathImpl(const std::filesystem::path& StdPath) :
-      m_Path(StdPath)
-    { }
-
-    const std::filesystem::path& stdPath() const
-    {
-      return m_Path;
-    }
-
-    bool isDirectory() const
-    {
-      return std::filesystem::is_directory(m_Path);
-    }
-
-    bool isFile() const
-    {
-      return (std::filesystem::is_regular_file(m_Path) || std::filesystem::is_symlink(m_Path));
-    }
-
-    bool exists() const
-    {
-      return std::filesystem::exists(m_Path);
-    }
-
-    bool makeDirectory() const
-    {
-      std::error_code TmpErr;
-      return (std::filesystem::is_directory(m_Path) || std::filesystem::create_directories(m_Path,TmpErr));
-    }
-
-    bool removeDirectory() const
-    {
-      if (isDirectory())
-      {
-        std::error_code TmpErr;
-        std::filesystem::remove_all(m_Path,TmpErr);  
-      }      
-      return true;
-    }
-
-    bool removeFile() const
-    {
-      if (isFile())
-      {
-        std::error_code TmpErr;
-        return std::filesystem::remove(m_Path,TmpErr);
-      }
-      return true;
-    }
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
+#warning "TO BE REMOVED"
 std::string Filesystem::removeTrailingSeparators(const std::string& Path, char Sep) noexcept
 {
-  std::string TmpStr = Path;
-  unsigned int MinSize = 1; // minimal size to avoid removing the unique separator if any (e.g. "/")
-
-  if (std::regex_match(Path,std::regex("[a-zA-Z]:.*")))
-  {
-    MinSize = 3; // minimal size to avoid removing the windows drive if any (e.g. "c:/")
-  }
-
-  while (TmpStr.size() > MinSize  
-         && TmpStr.back() == Sep) 
-  {
-    TmpStr.pop_back();
-  }
-
-  return TmpStr;
+  return FilesystemPath::removeTrailingSeparators(Path,Sep);
 }
 
 
@@ -166,9 +83,10 @@ std::string Filesystem::joinPath(const std::vector<std::string>& PathParts)
 // =====================================================================
 
 
-std::string Filesystem::toNativePath(const std::string& Path)
+#warning "TO BE REMOVED"
+std::vector<std::string> Filesystem::splitPath(const std::string& Path)
 {
-  return std::filesystem::path(openfluid::tools::Filesystem::cleanPath(Path)).make_preferred().string();
+  return FilesystemPath(Path).split();
 }
 
 
@@ -176,9 +94,21 @@ std::string Filesystem::toNativePath(const std::string& Path)
 // =====================================================================
 
 
+#warning "TO BE REMOVED"
+std::string Filesystem::toNativePath(const std::string& Path)
+{
+  return removeTrailingSeparators(FilesystemPath(Path).toNative());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+#warning "TO BE REMOVED"
 std::string Filesystem::toGenericPath(const std::string& Path)
 {
-  return std::filesystem::path(openfluid::tools::Filesystem::cleanPath(Path)).generic_string();
+  return removeTrailingSeparators(FilesystemPath(Path).toGeneric());
 }
 
 
@@ -226,7 +156,7 @@ std::string Filesystem::tempPath()
 
 std::string Filesystem::filename(const std::string& Path)
 {
-  return PathImpl(Path).stdPath().filename().generic_string();
+  return FilesystemPath(Path).filename();
 }
 
 
@@ -236,7 +166,7 @@ std::string Filesystem::filename(const std::string& Path)
 
 std::string Filesystem::dirname(const std::string& Path)
 {
-  return PathImpl(Path).stdPath().parent_path().generic_string();
+  return FilesystemPath(Path).dirname();
 }
 
 
@@ -246,7 +176,7 @@ std::string Filesystem::dirname(const std::string& Path)
 
 std::string Filesystem::basename(const std::string& Path)
 {
-  return PathImpl(Path).stdPath().stem().generic_string();
+  return FilesystemPath(Path).basename();
 }
 
 
@@ -256,15 +186,7 @@ std::string Filesystem::basename(const std::string& Path)
 
 std::string Filesystem::minimalBasename(const std::string& Path)
 {
-  std::string TmpFilename = PathImpl(Path).stdPath().filename().generic_string();
-  size_t FirstDot = TmpFilename.find_first_of(".");
-
-  if (FirstDot != std::string::npos)
-  {
-    return TmpFilename.substr(0,FirstDot);
-  }
-
-  return TmpFilename;
+  return FilesystemPath(Path).minimalBasename();
 }
 
 
@@ -274,14 +196,7 @@ std::string Filesystem::minimalBasename(const std::string& Path)
 
 std::string Filesystem::extension(const std::string& Path)
 {
-  std::string Ext = PathImpl(Path).stdPath().extension().generic_string();
-
-  if (!Ext.empty() && Ext[0] == '.')
-  {
-    Ext.erase(0,1);
-  }
-
-  return Ext;
+  return FilesystemPath(Path).extension();
 }
 
 
@@ -291,15 +206,7 @@ std::string Filesystem::extension(const std::string& Path)
 
 std::string Filesystem::completeExtension(const std::string& Path)
 {
-  std::string TmpFilename = PathImpl(Path).stdPath().filename().generic_string();
-  size_t FirstDot = TmpFilename.find_first_of(".");
-
-  if (FirstDot != std::string::npos)
-  {
-    return TmpFilename.substr(FirstDot+1);
-  }
-
-  return "";
+  return FilesystemPath(Path).completeExtension();
 }
 
 
@@ -331,7 +238,7 @@ std::string Filesystem::absolutePath(const std::string& Path)
   }
 
   return removeTrailingSeparators(
-           std::filesystem::absolute(PathImpl(TmpStr).stdPath()).lexically_normal().generic_string()
+           std::filesystem::absolute(FilesystemPath(TmpStr).stdPath()).lexically_normal().generic_string()
          );
 }
 
@@ -340,9 +247,24 @@ std::string Filesystem::absolutePath(const std::string& Path)
 // =====================================================================
 
 
+#warning "TO BE REMOVED"
+std::string Filesystem::relativePath(const std::string& Path, const std::string& BasePath)
+{
+  return removeTrailingSeparators(
+           std::filesystem::relative(FilesystemPath(Path).stdPath(),FilesystemPath(BasePath).stdPath())
+           .lexically_normal().generic_string()
+         );
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+#warning "TO BE REMOVED"
 std::string Filesystem::cleanPath(const std::string& Path)
 {
-  return removeTrailingSeparators(PathImpl(Path).stdPath().lexically_normal().generic_string());
+  return FilesystemPath(Path).toGenericClean();
 }
 
 
@@ -350,9 +272,21 @@ std::string Filesystem::cleanPath(const std::string& Path)
 // =====================================================================
 
 
+#warning "TO BE REMOVED"
+bool Filesystem::containsPath(const std::string& Path, const std::string& ChildPath)
+{
+  return FilesystemPath(Path).contains(ChildPath);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+#warning "TO BE REMOVED"
 bool Filesystem::isDirectory(const std::string& Path)
 {
-  return PathImpl(Path).isDirectory();
+  return FilesystemPath(Path).isDirectory();
 }
 
 
@@ -360,9 +294,10 @@ bool Filesystem::isDirectory(const std::string& Path)
 // =====================================================================
 
 
+#warning "TO BE REMOVED"
 bool Filesystem::isFile(const std::string& Path)
 {
-  return PathImpl(Path).isFile();
+  return FilesystemPath(Path).isFile();
 }
 
 
@@ -370,9 +305,10 @@ bool Filesystem::isFile(const std::string& Path)
 // =====================================================================
 
 
+#warning "TO BE REMOVED"
 bool Filesystem::exists(const std::string& Path)
 {
-  return PathImpl(Path).exists();
+  return FilesystemPath(Path).exists();
 }
 
 
@@ -383,7 +319,7 @@ bool Filesystem::exists(const std::string& Path)
 bool Filesystem::copyFile(const std::string& SrcPath, const std::string& DestPath)
 {
   std::error_code TmpErr;
-  return std::filesystem::copy_file(PathImpl(SrcPath).stdPath(),PathImpl(DestPath).stdPath(),TmpErr);
+  return std::filesystem::copy_file(FilesystemPath(SrcPath).stdPath(),FilesystemPath(DestPath).stdPath(),TmpErr);
 }
 
 
@@ -394,8 +330,8 @@ bool Filesystem::copyFile(const std::string& SrcPath, const std::string& DestPat
 bool Filesystem::renameFile(const std::string& OriginalPath, const std::string& NewPath)
 {
   std::error_code TmpErr;
-  const auto OrigStdPath = PathImpl(OriginalPath);
-  const auto NewStdPath = PathImpl(NewPath);
+  const auto OrigStdPath = FilesystemPath(OriginalPath);
+  const auto NewStdPath = FilesystemPath(NewPath);
 
   std::filesystem::rename(OrigStdPath.stdPath(),NewStdPath.stdPath(),TmpErr);
   return (NewStdPath.isFile() && !OrigStdPath.isFile());
@@ -408,7 +344,7 @@ bool Filesystem::renameFile(const std::string& OriginalPath, const std::string& 
 
 bool Filesystem::removeFile(const std::string& Path)
 {
-  return PathImpl(Path).removeFile();
+  return FilesystemPath(Path).removeFile();
 }
 
 
@@ -416,9 +352,10 @@ bool Filesystem::removeFile(const std::string& Path)
 // =====================================================================
 
 
+#warning "TO BE REMOVED"
 bool Filesystem::makeDirectory(const std::string& Path)
 {
-  return PathImpl(Path).makeDirectory();
+  return FilesystemPath(Path).makeDirectory();
 }
 
 
@@ -426,9 +363,10 @@ bool Filesystem::makeDirectory(const std::string& Path)
 // =====================================================================
 
 
+#warning "TO BE REMOVED"
 bool Filesystem::removeDirectory(const std::string& Path)
 {
-  return PathImpl(Path).removeDirectory();
+  return FilesystemPath(Path).removeDirectory();
 }
 
 
@@ -439,13 +377,13 @@ bool Filesystem::removeDirectory(const std::string& Path)
 bool Filesystem::copyDirectory(const std::string& SrcPath, const std::string& DestPath,
                                bool WithBaseDir, bool RemoveExisting)
 {
-  const auto SrcPathImpl = PathImpl(SrcPath);
-  auto DestPathImpl = PathImpl(DestPath);
+  const auto SrcPathImpl = FilesystemPath(SrcPath);
+  auto DestPathImpl = FilesystemPath(DestPath);
 
 
   if (WithBaseDir)
   {
-    DestPathImpl = PathImpl(DestPath+"/"+PathImpl(SrcPath).stdPath().filename().generic_string());
+    DestPathImpl = FilesystemPath(DestPath+"/"+FilesystemPath(SrcPath).stdPath().filename().generic_string());
   }
 
   if (RemoveExisting)
@@ -467,7 +405,7 @@ bool Filesystem::copyDirectory(const std::string& SrcPath, const std::string& De
 
 
   // Create parent path of destination directory before copy
-  if (PathImpl(DestPathImpl.stdPath().parent_path()).makeDirectory())
+  if (FilesystemPath::fromStdPath(DestPathImpl.stdPath().parent_path()).makeDirectory())
   {
     try 
     {
@@ -490,7 +428,12 @@ bool Filesystem::copyDirectory(const std::string& SrcPath, const std::string& De
 
 bool Filesystem::emptyDirectory(const std::string& Path)
 {
-  for (const auto & Entry : std::filesystem::directory_iterator(PathImpl(Path).stdPath()))
+  if (!isDirectory(Path))
+  {
+    return false;
+  }
+
+  for (const auto & Entry : std::filesystem::directory_iterator(FilesystemPath(Path).stdPath()))
   {
     if (Entry.is_directory())
     {
@@ -606,10 +549,8 @@ std::string Filesystem::makeUniqueFile(const std::string& Path, const std::strin
       CandidateFilePath = generateFullPath();
     }
 
-    std::ofstream EmptyFile(CandidateFilePath,std::ofstream::out);
-    if (EmptyFile.is_open())
+    if (FilesystemPath(CandidateFilePath).makeFile())
     {
-      EmptyFile.close();
       return CandidateFilePath;
     }
   }
@@ -625,7 +566,7 @@ std::string Filesystem::makeUniqueFile(const std::string& Path, const std::strin
 std::vector<std::string> Filesystem::findFiles(const std::string& Path, bool WithPath, const std::string& Pattern)
 {
   std::vector<std::string> FilesList;
-  const auto SearchPath = PathImpl(Path);
+  const auto SearchPath = FilesystemPath(Path);
 
   if (SearchPath.isDirectory())
   {
@@ -658,7 +599,7 @@ std::vector<std::string> Filesystem::findFiles(const std::string& Path, bool Wit
 std::vector<std::string> Filesystem::findDirectories(const std::string& Path, bool WithPath, const std::string& Pattern)
 {
   std::vector<std::string> DirsList;
-  const auto SearchPath = PathImpl(Path);
+  const auto SearchPath = FilesystemPath(Path);
 
   if (SearchPath.isDirectory())
   {

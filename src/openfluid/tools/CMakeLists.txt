@@ -5,7 +5,7 @@ SET(OPENFLUID_TOOLS_CPP ColumnTextParser.cpp
                         ProgressiveColumnFileReader.cpp ProgressiveChronFileReader.cpp
                         ChronFileInterpolator.cpp ChronFileLinearInterpolator.cpp 
                         DistributionTables.cpp DistributionBindings.cpp
-                        Filesystem.cpp
+                        FilesystemPath.cpp Filesystem.cpp
                         FileLogger.cpp
                         SettingsBackend.cpp
                         DataHelpers.cpp IDHelpers.cpp MiscHelpers.cpp
@@ -17,7 +17,7 @@ SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp
                         ChronFileInterpolator.hpp ChronFileLinearInterpolator.hpp
                         DistributionTables.hpp DistributionBindings.hpp
                         Console.hpp
-                        Filesystem.hpp
+                        FilesystemPath.hpp Filesystem.hpp
                         FileLogger.hpp
                         SettingsBackend.hpp
                         DataHelpers.hpp IDHelpers.hpp QtHelpers.hpp MiscHelpers.hpp

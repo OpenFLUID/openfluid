@@ -1,5 +1,5 @@
 
-SET(MISC_CPP main.cpp singleton.cpp bindings.cpp timer.cpp spatial.cpp filesystem.cpp values.cpp datetime.cpp)
+SET(MISC_CPP main.cpp singleton.cpp bindings.cpp timer.cpp spatial.cpp filesystem.cpp filesystempath.cpp values.cpp datetime.cpp)
 
 ADD_EXECUTABLE(snippets_misc ${MISC_CPP})
 
