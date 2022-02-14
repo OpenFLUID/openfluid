@@ -46,14 +46,15 @@
 
 int main(int argc, char **argv)
 {
-  std::string Arch = OPENFLUID_OS_STRLABEL;
+  std::string Proc = OPENFLUID_PROCESSOR_STRLABEL;
+  std::string OS = OPENFLUID_OS_STRLABEL;
 
-  if (Arch.empty())
+  if (Proc.empty() || OS.empty())
   {
     return 127;
   }
 
-  std::cout << Arch;
+  std::cout << OS << "-" << Proc;
 
   return 0;
 }

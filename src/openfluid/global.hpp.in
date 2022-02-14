@@ -66,11 +66,26 @@
   #define OPENFLUID_PROCESSOR_X86
   #define OPENFLUID_PROCESSOR_X86_64
   #define OPENFLUID_PROCESSOR_IS_SUPPORTED
+#elif  defined(__arm64)
+  #define OPENFLUID_PROCESSOR_ARM
+  #define OPENFLUID_PROCESSOR_ARM_64
+  #define OPENFLUID_PROCESSOR_IS_SUPPORTED
 #endif
 
 
 #if !defined(OPENFLUID_PROCESSOR_IS_SUPPORTED)
   #error "OpenFLUID requires a supported processor (X86 family)"
+#endif
+
+
+#if defined(OPENFLUID_PROCESSOR_X86_64)
+  #define OPENFLUID_PROCESSOR_STRLABEL "x86-64"
+#elif defined(OPENFLUID_PROCESSOR_X86_32)
+  #define OPENFLUID_PROCESSOR_STRLABEL "i386"
+#elif defined(OPENFLUID_PROCESSOR_ARM_64)
+  #define OPENFLUID_PROCESSOR_STRLABEL "arm64"
+#else
+  #define OPENFLUID_PROCESSOR_STRLABEL ""
 #endif
 
 
@@ -116,17 +131,17 @@
 
 
 #if defined(OPENFLUID_OS_LINUX64)
-  #define OPENFLUID_OS_STRLABEL "linux-x86-64"
+  #define OPENFLUID_OS_STRLABEL "linux64"
 #elif defined(OPENFLUID_OS_LINUX32)
-  #define OPENFLUID_OS_STRLABEL "linux-i386"
+  #define OPENFLUID_OS_STRLABEL "linux32"
 #elif defined(OPENFLUID_OS_WIN32) && !defined(OPENFLUID_OS_WIN64)
   #define OPENFLUID_OS_STRLABEL "win32"
 #elif defined(OPENFLUID_OS_WIN64)
   #define OPENFLUID_OS_STRLABEL "win64"
 #elif defined(OPENFLUID_OS_MAC64)
-  #define OPENFLUID_OS_STRLABEL "osx64"
+  #define OPENFLUID_OS_STRLABEL "macos64"
 #elif defined(OPENFLUID_OS_MAC32)
-  #define OPENFLUID_OS_STRLABEL "osx32"
+  #define OPENFLUID_OS_STRLABEL "macos32"
 #else
   #define OPENFLUID_OS_STRLABEL ""
 #endif
