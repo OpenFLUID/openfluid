@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Installation of dependencies
         run: | 
-          sudo apt install -y \
+          sudo apt update && sudo apt install -y \
             libboost-dev libgdal-dev \
             qt5-default qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev \
             gnuplot p7zip-full graphviz
