@@ -200,6 +200,25 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
 
 bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                          const openfluid::ware::WareParamKey_t& ParamName,
+                                                         bool& Val) const
+{
+  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
+
+  if (it != Params.end())
+  {
+    return it->second.toBoolean(Val);
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+                                                         const openfluid::ware::WareParamKey_t& ParamName,
                                                          double& Val) const
 {
   openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);

@@ -297,18 +297,14 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       // ====== Bool param ======
 
-      if (!OPENFLUID_GetSimulatorParameter(Params,"boolparam",ParamStrVal))
-      {
-        OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (boolparam) into StringValue");
-      }
       bool aBool = false;
-      if(!ParamStrVal.toBoolean(aBool))
+      if (!OPENFLUID_GetSimulatorParameter(Params,"boolparam",aBool))
       {
-        OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (boolparam, type)");
+        OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (boolparam) get by reference");
       }
       if(aBool != true)
       {
-        OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (boolparam, value)");
+        OPENFLUID_RaiseError("incorrect OPENFLUID_GetSimulatorParameter (boolparam, value) get by reference");
       }
 
 

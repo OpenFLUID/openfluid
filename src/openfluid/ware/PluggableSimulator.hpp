@@ -210,6 +210,17 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
                                          openfluid::core::MatrixValue& Val) const;
 
     /**
+      Gets a simulator parameter from the parameters set, as a boolean
+      @param[in] Params the parameters set for the simulator
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         bool& Val) const;
+
+    /**
       Gets a simulator parameter from the parameters set, as a double
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
