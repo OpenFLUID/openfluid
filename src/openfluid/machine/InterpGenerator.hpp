@@ -55,12 +55,14 @@ class OPENFLUID_API InterpGenerator : public Generator
 
     bool m_IsMin;
     bool m_IsMax;
+    bool m_IsKeepTmp;
 
     double m_Min;
     double m_Max;
 
     std::string m_SourcesFile;
     std::string m_DistriFile;
+    std::string m_TmpDir;
 
     openfluid::tools::DistributionBindings* m_DistriBindings;
 
@@ -81,8 +83,7 @@ class OPENFLUID_API InterpGenerator : public Generator
 
     openfluid::base::SchedulingRequest runStep();
 
-    void finalizeRun() 
-    { }
+    void finalizeRun();
 
 };
 

@@ -222,6 +222,7 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
   }
   else if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP)
   {
+    Params["keeptmpdir"] = "false";
     if (!ui->SourcesFileEdit->text().isEmpty())
     {
       Params["sources"] = ui->SourcesFileEdit->text().toStdString();

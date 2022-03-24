@@ -94,6 +94,10 @@ void InterpGenerator::initParams(const openfluid::ware::WareParams_t& Params)
   {
     m_IsMax = true;
   }
+  if (!OPENFLUID_GetSimulatorParameter(Params,"keeptmpdir",m_IsKeepTmp))
+  {
+    m_IsKeepTmp = false;
+  }
 }
 
 
@@ -109,9 +113,9 @@ void InterpGenerator::prepareData()
   OPENFLUID_GetRunEnvironment("dir.input",InputDir);
   OPENFLUID_GetRunEnvironment("dir.temp",BaseTmpDir);
 
-  TmpDir = openfluid::tools::Filesystem::makeUniqueSubdirectory(BaseTmpDir,"interp-generator");
+  m_TmpDir = openfluid::tools::Filesystem::makeUniqueSubdirectory(BaseTmpDir,"interp-generator");
 
-  if (TmpDir.empty())
+  if (m_TmpDir.empty())
   {
     OPENFLUID_RaiseError("Unable to create temporary directory");
   }
@@ -125,7 +129,7 @@ void InterpGenerator::prepareData()
   {
 
     std::string InFileName = openfluid::tools::Filesystem::filename((*it).second);
-    std::string OutFilePath = openfluid::tools::Filesystem::joinPath({TmpDir,"interp_"+InFileName});
+    std::string OutFilePath = openfluid::tools::Filesystem::joinPath({m_TmpDir,"interp_"+InFileName});
     openfluid::tools::ChronFileLinearInterpolator CFLI((*it).second,OutFilePath,
                                                        OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),
                                                        OPENFLUID_GetDefaultDeltaT());
@@ -262,6 +266,24 @@ openfluid::base::SchedulingRequest InterpGenerator::runStep()
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void InterpGenerator::finalizeRun()
+{
+  // tmp dir used in runStep, can not be delete before end
+  if (m_IsKeepTmp)
+  {
+    OPENFLUID_LogInfo("Temporary directory of interpolation generator was not automatically deleted: "+m_TmpDir);
+  }
+  else
+  {
+    openfluid::tools::Filesystem::removeDirectory(m_TmpDir);
+    OPENFLUID_LogInfo("Temporary directory of interpolation generator was automatically deleted.");
+  }
+}
 
 } } //namespaces
 

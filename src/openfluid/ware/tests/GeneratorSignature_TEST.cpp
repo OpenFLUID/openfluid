@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 
   BOOST_CHECK_EQUAL(Sign.ID,"Values from file interpolation");
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
-  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),2);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),3);
 }
 
 

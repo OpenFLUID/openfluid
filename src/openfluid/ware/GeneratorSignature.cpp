@@ -125,12 +125,14 @@ void GeneratorSignature::setInterpInfo()
   HandledData.UsedParams.push_back(
       openfluid::ware::SignatureDataItem("thresholdmax","Threshold max value", "-"));
 
+  HandledData.UsedParams.push_back(
+      openfluid::ware::SignatureDataItem("keeptmpdir","Keep temporary directory if true (default is false)","-"));
+
   HandledData.RequiredParams.push_back(
       openfluid::ware::SignatureDataItem("sources","Data sources filename for the value to produce","-"));
 
   HandledData.RequiredParams.push_back(
       openfluid::ware::SignatureDataItem("distribution","Distribution filename for the value to produce","-"));
-
 
   HandledData.RequiredExtraFiles.push_back("Data sources for the value to produce, from \"sources\" parameter");
 
