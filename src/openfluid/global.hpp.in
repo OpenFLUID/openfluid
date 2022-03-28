@@ -66,7 +66,7 @@
   #define OPENFLUID_PROCESSOR_X86
   #define OPENFLUID_PROCESSOR_X86_64
   #define OPENFLUID_PROCESSOR_IS_SUPPORTED
-#elif  defined(__arm64)
+#elif  defined(__arm64) || defined(__aarch64__)
   #define OPENFLUID_PROCESSOR_ARM
   #define OPENFLUID_PROCESSOR_ARM_64
   #define OPENFLUID_PROCESSOR_IS_SUPPORTED
@@ -74,18 +74,22 @@
 
 
 #if !defined(OPENFLUID_PROCESSOR_IS_SUPPORTED)
-  #error "OpenFLUID requires a supported processor (X86 family)"
+  #error "OpenFLUID requires a supported processor"
 #endif
 
 
 #if defined(OPENFLUID_PROCESSOR_X86_64)
   #define OPENFLUID_PROCESSOR_STRLABEL "x86-64"
+  #define OPENFLUID_PROCESSOR_STRDESC "x86 64bits"
 #elif defined(OPENFLUID_PROCESSOR_X86_32)
   #define OPENFLUID_PROCESSOR_STRLABEL "i386"
+  #define OPENFLUID_PROCESSOR_STRDESC "x86 32bits"
 #elif defined(OPENFLUID_PROCESSOR_ARM_64)
   #define OPENFLUID_PROCESSOR_STRLABEL "arm64"
+  #define OPENFLUID_PROCESSOR_STRDESC "ARM 64bits"
 #else
   #define OPENFLUID_PROCESSOR_STRLABEL ""
+  #define OPENFLUID_PROCESSOR_STRDESC "unknown"
 #endif
 
 
@@ -132,18 +136,25 @@
 
 #if defined(OPENFLUID_OS_LINUX64)
   #define OPENFLUID_OS_STRLABEL "linux64"
+  #define OPENFLUID_OS_STRDESC "Linux 64bits"
 #elif defined(OPENFLUID_OS_LINUX32)
   #define OPENFLUID_OS_STRLABEL "linux32"
+  #define OPENFLUID_OS_STRDESC "Linux 32bits"
 #elif defined(OPENFLUID_OS_WIN32) && !defined(OPENFLUID_OS_WIN64)
   #define OPENFLUID_OS_STRLABEL "win32"
+  #define OPENFLUID_OS_STRDESC "Windows 32bits"
 #elif defined(OPENFLUID_OS_WIN64)
   #define OPENFLUID_OS_STRLABEL "win64"
+  #define OPENFLUID_OS_STRDESC "Windows 64bits"
 #elif defined(OPENFLUID_OS_MAC64)
   #define OPENFLUID_OS_STRLABEL "macos64"
+  #define OPENFLUID_OS_STRDESC "macOS 64bits"
 #elif defined(OPENFLUID_OS_MAC32)
   #define OPENFLUID_OS_STRLABEL "macos32"
+  #define OPENFLUID_OS_STRDESC "macOS 32bits"
 #else
   #define OPENFLUID_OS_STRLABEL ""
+  #define OPENFLUID_OS_STRDESC "unknown"
 #endif
 
 
@@ -156,14 +167,14 @@
 #if defined(__GNUC__)
   #if defined(__clang__)
     #define OPENFLUID_CC_IS_SUPPORTED
-  #elif __GNUC__ > 5 || (__GNUC__ == 5 && (__GNUC_MINOR__ > 3 || (__GNUC_MINOR__ == 3 )))
+  #elif __GNUC__ > 7 || (__GNUC__ == 7 && (__GNUC_MINOR__ > 0 || (__GNUC_MINOR__ == 0 )))
     #define OPENFLUID_CC_IS_SUPPORTED
   #endif
 #endif
 
 
 #if !defined(OPENFLUID_CC_IS_SUPPORTED)
-  #error "OpenFLUID requires a supported C++ compiler (GNU C++ 5.3 or greater)"
+  #error "OpenFLUID requires a supported C++ compiler (GNU C++ 7 or greater)"
 #endif
 
 

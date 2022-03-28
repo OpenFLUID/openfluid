@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     return 127;
   }
 
-  std::cout << OS << "-" << Proc;
+  std::cout << Proc << ";" << OS;
 
   return 0;
 }

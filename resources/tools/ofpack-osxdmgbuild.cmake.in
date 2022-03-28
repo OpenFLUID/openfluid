@@ -104,4 +104,4 @@ EXECUTE_PROCESS(COMMAND "${_HDIUTIL_PROGRAM}"
                         "-srcfolder" "${DMG_BUILD_DIR}"
                         "-ov"
                         "-format" "UDZO"
-                        "openfluid_@OPENFLUID_VERSION_FULL@_@OFBUILD_SYSTEM_ARCH@.dmg")
+                        "openfluid_@OPENFLUID_VERSION_FULL@_@OFBUILD_SYSTEM_CLASS@.dmg")
