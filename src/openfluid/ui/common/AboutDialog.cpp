@@ -141,6 +141,12 @@ QString AboutDialog::generateBuildInfoText()
   std::string CFlags = openfluid::config::BUILD_COMPILATION_FLAGS;
   std::replace(CFlags.begin(),CFlags.end(),';',' ');
 
+  InfoList SystemInfoList = 
+  {
+    { tr("Processor family"), OPENFLUID_PROCESSOR_STRDESC },
+    { tr("Operating system family"), OPENFLUID_OS_STRDESC }
+  };
+
   InfoList BuildEnvInfoList = 
   {
     { tr("Build type"), openfluid::config::BUILD_TYPE },
@@ -162,6 +168,7 @@ QString AboutDialog::generateBuildInfoText()
 
   std::list<std::pair<QString,InfoList>> InfoSections =
   { 
+    { tr("System"), SystemInfoList },
     { tr("Build environment"), BuildEnvInfoList }, 
     { tr("Dependencies"), DepsInfoList } 
   };
