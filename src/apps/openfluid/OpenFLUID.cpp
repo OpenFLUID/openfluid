@@ -186,6 +186,8 @@ void OpenFLUIDApp::printBuildInfo()
   std::string TmpFlags = openfluid::config::BUILD_COMPILATION_FLAGS;
   std::replace(TmpFlags.begin(),TmpFlags.end(),';',' ');
 
+  printItem({"build","system","processor","family"},OPENFLUID_PROCESSOR_STRLABEL);
+  printItem({"build","system","os","family"},OPENFLUID_OS_STRLABEL);
   printItem({"build","type"},openfluid::config::BUILD_TYPE);
   printItem({"build","cmake","version"},openfluid::config::BUILD_CMAKE_VERSION);
   printItem({"build","c++","standard"},openfluid::config::BUILD_CXX_STANDARD);
