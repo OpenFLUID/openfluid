@@ -212,7 +212,7 @@ INSTALL(DIRECTORY "share"
 
 MESSAGE(STATUS "****************************************")
 MESSAGE(STATUS "OpenFLUID version: ${OPENFLUID_VERSION_FULL} (numeric: ${OPENFLUID_VERSION_NUMERIC})")
-MESSAGE(STATUS "System architecture: ${OFBUILD_SYSTEM_ARCH}")
+MESSAGE(STATUS "System architecture: ${OFBUILD_ARCH_CLASS}")
 MESSAGE(STATUS "Build type: ${OFBUILD_BUILD_TYPE}")
 IF(OFBUILD_ENABLE_SANITIZER)
 MESSAGE(STATUS "Sanitizer: enabled")

@@ -1,6 +1,6 @@
 SET(CPACK_GENERATOR "NSIS")
 SET(CPACK_SOURCE_GENERATOR "ZIP")
-SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/resources/packaging/windows;${CMAKE_MODULE_PATH}")        
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/resources/packaging/windows;${CMAKE_MODULE_PATH}")
 
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY "OpenFLUID-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}")
   
@@ -67,5 +67,5 @@ FOREACH(CURRENT_TARGET ${WINDEPLOYQT_TARGETS})
                                 OUTPUT_FILE windeployqt_exec_${CURRENT_TARGET}.log 
                                 ERROR_FILE windeployqt_exec_${CURRENT_TARGET}.err)
           ")
-ENDFOREACH()                     
+ENDFOREACH()
  
