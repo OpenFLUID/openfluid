@@ -79,8 +79,6 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirect
 
   ui->WareExplorer->setCurrentPath(CurrentPath.isEmpty() ? TopDirectoryPath : CurrentPath);
 
-  mp_Manager = openfluid::waresdev::WareSrcManager::instance();
-
   mp_AcceptButton = buttonOfButtonBox(QDialogButtonBox::Ok);
   if (mp_AcceptButton)
   {
@@ -307,7 +305,8 @@ void WareExplorerDialog::setCreateFolderMode()
 
 void WareExplorerDialog::onCurrentChangedOpenWareMode(const QString& Path)
 {
-  setMessage(mp_Manager->getPathInfo(Path).m_isAWare ? "" : tr("No ware directory selected"));
+  setMessage(openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(Path.toStdString()).IsWareDirectory ? 
+             "" : tr("No ware directory selected"));
 }
 
 

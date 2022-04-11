@@ -41,7 +41,7 @@
 #include <QFont>
 #include <QPainter>
 
-#include <openfluid/waresdev/WareSrcContainer.hpp>
+#include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
 #include <openfluid/utils/GitProxy.hpp>
@@ -59,8 +59,6 @@ WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
 {
   m_UserIcons = openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->getIconsByFileExtensionList();
 
-  mp_Manager = openfluid::waresdev::WareSrcManager::instance();
-
   connect(this, SIGNAL(directoryLoaded(const QString&)), this, SLOT(onDirectoryLoaded(const QString&)));
 
   connect(&m_Watcher, SIGNAL(fileChanged(const QString&)), this, SLOT(onGitIndexFileChanged(const QString&)));
@@ -77,7 +75,7 @@ WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
 void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
 {
   QModelIndex Parent = index(Path);
-  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
+  auto Info = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(Path.toStdString());
 
 
   // fetching path info of direct children
@@ -85,7 +83,7 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
   {
     QString ChildPath = filePath(index(Row, 0, Parent));
 
-    m_PathInfos[ChildPath] = mp_Manager->getPathInfo(ChildPath);
+    m_PathInfos[ChildPath] = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(ChildPath.toStdString());
   }
 
 
@@ -97,9 +95,9 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
     openfluid::utils::GitProxy Git;
     for (const auto& ChildPathInfo : m_PathInfos)
     {
-      if (ChildPathInfo.m_isAWare)
+      if (ChildPathInfo.IsWareDirectory)
       {
-        QString WarePath = ChildPathInfo.m_AbsolutePath;
+        QString WarePath = QString::fromStdString(ChildPathInfo.AbsolutePath);
 
         openfluid::utils::GitProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
 
@@ -118,7 +116,7 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
       }
     }
   }
-  else if (Info.m_isAWare)
+  else if (Info.IsWareDirectory)
   {
     updateGitStatusInfo(Path);
   }
@@ -129,7 +127,7 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
       // if Path is a sub dir of a tracked ware, we reload git status on this ware
       if (Path.startsWith(WarePathsTracked) && Path != WarePathsTracked)
       {
-        updateGitStatusInfo(Info.m_AbsolutePathOfWare);
+        updateGitStatusInfo(QString::fromStdString(Info.AbsoluteWarePath));
       }
     }
   }
@@ -289,17 +287,18 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
 
   if (Role == Qt::FontRole && !isDir(Index) && fileInfo(Index).suffix() == "cpp")
   {
-    openfluid::waresdev::WareSrcManager::PathInfo PInfo = m_PathInfos.value(filePath(Index));
+    auto PInfo = m_PathInfos.value(filePath(Index));
 
-    if (openfluid::waresdev::WareSrcContainer(PInfo.m_AbsolutePathOfWare, PInfo.m_WareType, PInfo.m_WareName)
-        .getMainCppPath()
-        == filePath(Index))
+    auto Container = WareSrcUIContainer(QString::fromStdString(PInfo.AbsoluteWarePath),
+                                        PInfo.WareType,
+                                        QString::fromStdString(PInfo.WareDirName));
+
+    if (Container.getMainCppPath() == filePath(Index).toStdString())
     {
       QFont Font;
       Font.setBold(true);
       return Font;
     }
-
   }
 
   if (Role == Qt::DisplayRole && m_GitDirties.contains(filePath(Index)))
@@ -315,7 +314,7 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
 
   if (Role == QFileSystemModel::FileIconRole)
   {
-    if (m_PathInfos.value(filePath(Index)).m_isAWare)
+    if (m_PathInfos.value(filePath(Index)).IsWareDirectory)
     {
       if (m_GitBranchByWarePath.contains(filePath(Index)))
       {

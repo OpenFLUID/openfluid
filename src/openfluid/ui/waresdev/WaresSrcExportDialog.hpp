@@ -45,9 +45,9 @@
 #include <QDialog>
 #include <QListWidget>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace Ui {

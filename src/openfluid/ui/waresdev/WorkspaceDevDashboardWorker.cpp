@@ -39,8 +39,8 @@
 
 #include <QDir>
 
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevDashboardWorker.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -69,14 +69,23 @@ WorkspaceDevDashboardWorker::~WorkspaceDevDashboardWorker()
 void WorkspaceDevDashboardWorker::run()
 {
 
-  openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
+  auto Manager = openfluid::base::WorkspaceManager::instance();
 
 
   std::vector<std::pair<openfluid::ware::WareType,QString>> RootPathsByType =
   {
-    {openfluid::ware::WareType::SIMULATOR,Manager->getWareTypePath(openfluid::ware::WareType::SIMULATOR)},
-    {openfluid::ware::WareType::OBSERVER,Manager->getWareTypePath(openfluid::ware::WareType::OBSERVER)},
-    {openfluid::ware::WareType::BUILDEREXT,Manager->getWareTypePath(openfluid::ware::WareType::BUILDEREXT)}
+    {
+      openfluid::ware::WareType::SIMULATOR,
+      QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::SIMULATOR))
+    },
+    {
+      openfluid::ware::WareType::OBSERVER,
+      QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::OBSERVER))
+    },
+    {
+      openfluid::ware::WareType::BUILDEREXT,
+      QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::BUILDEREXT))
+    }
   };
 
 

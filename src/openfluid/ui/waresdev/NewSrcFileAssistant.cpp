@@ -376,7 +376,7 @@ void CMakeConfigPage::onRootfilenameTextChanged()
 // =====================================================================
 
 
-NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcContainer& Container, QWidget* Parent) :
+NewSrcFileAssistant::NewSrcFileAssistant(const WareSrcUIContainer& Container, QWidget* Parent) :
     QWizard(Parent), ui(new Ui::NewSrcFileAssistant), mref_Container(Container)
 {
   ui->setupUi(this);
@@ -393,12 +393,12 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   ui->buttonGroup->setId(ui->CppUiRadioButton, static_cast<int>(PageType::CPP_UI_PAGE));
   ui->buttonGroup->setId(ui->HppUiRadioButton, static_cast<int>(PageType::HPP_UI_PAGE));
 
-  QString MainCpp = mref_Container.getMainCppPath();
-  QString UiParamCpp = mref_Container.getUiParamCppPath();
+  QString MainCpp = QString::fromStdString(mref_Container.getMainCppPath());
+  QString UiParamCpp = QString::fromStdString(mref_Container.getUiParamCppPath());
 
-  ui->HubRadioButton->setEnabled(mref_Container.getJsonPath().isEmpty());
-  ui->CMakeListsRadioButton->setEnabled(mref_Container.getCMakeListsPath().isEmpty());
-  ui->CMakeConfigRadioButton->setEnabled(mref_Container.getCMakeConfigPath().isEmpty());
+  ui->HubRadioButton->setEnabled(mref_Container.getJsonPath().empty());
+  ui->CMakeListsRadioButton->setEnabled(mref_Container.getCMakeListsPath().empty());
+  ui->CMakeConfigRadioButton->setEnabled(mref_Container.getCMakeConfigPath().empty());
   ui->CppRadioButton->setEnabled(MainCpp.isEmpty());
   ui->HppRadioButton->setEnabled(!QFile::exists(openfluid::waresdev::WareSrcFactory::getHppFilename(MainCpp)));
   ui->CppUiRadioButton->setEnabled(UiParamCpp.isEmpty());
@@ -431,7 +431,7 @@ NewSrcFileAssistant::NewSrcFileAssistant(const openfluid::waresdev::WareSrcConta
   addPage(new CppPage(QDir(mref_Container.getAbsolutePath()), this)); // index 3
 
   mp_Factory = new openfluid::waresdev::WareSrcFactory(Type);
-  mp_Factory->setWareId(Container.getID());
+  mp_Factory->setWareId(QString::fromStdString(Container.getID()));
 
   connect(ui->buttonGroup, SIGNAL(buttonClicked(int)), this, SLOT(onFileTypeButtonClicked(int)));
 }

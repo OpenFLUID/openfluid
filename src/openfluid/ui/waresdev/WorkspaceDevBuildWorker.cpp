@@ -42,7 +42,7 @@
 #include <QMetaType>
 
 #include <openfluid/ui/waresdev/WorkspaceDevBuildWorker.hpp>
-#include <openfluid/waresdev/WareSrcContainer.hpp>
+#include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
@@ -90,7 +90,7 @@ void WorkspaceDevBuildWorker::run()
   {
     for (auto& WItem : WType.second)
     {
-      openfluid::waresdev::WareSrcContainer Container(WItem.Path,WType.first,WItem.ID);
+      openfluid::ui::waresdev::WareSrcUIContainer Container(WItem.Path,WType.first,WItem.ID);
 
       Container.setConfigMode(m_ConfigMode);
       Container.setBuildMode(m_BuildMode);

@@ -31,10 +31,9 @@
 
 
 /**
- @file WareSrcFactory.cpp
- @brief Implements ...
+  @file WareSrcFactory.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
@@ -46,6 +45,7 @@
 
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -80,7 +80,7 @@ WareSrcFactory::WareSrcFactory(openfluid::ware::WareType Type) :
           QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
   m_TypedTemplatesDir = QDir(m_SharedTemplatesDir.absoluteFilePath(TypeSubDir));
 
-  m_WareTypeDir = QDir(WareSrcManager::instance()->getWareTypePath(Type));
+  m_WareTypeDir = QDir(QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)));
 }
 
 

@@ -65,6 +65,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
+#include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
@@ -153,13 +154,13 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   Splash->setMessage(tr("Initializing sources codes management"));
 
-  openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
+  auto Manager = openfluid::base::WorkspaceManager::instance();
 
   ui->WaresTabWidget->setCurrentIndex(0);
 
-  ui->SimExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::SIMULATOR), true);
-  ui->ObsExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::OBSERVER), true);
-  ui->ExtExplorer->configure(Manager->getWareTypePath(openfluid::ware::WareType::BUILDEREXT), true);
+  ui->SimExplorer->configure(QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::SIMULATOR)),true);
+  ui->ObsExplorer->configure(QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::OBSERVER)),true);
+  ui->ExtExplorer->configure(QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::BUILDEREXT)),true);
 
   mp_WidgetsCollection = new openfluid::ui::waresdev::WareSrcWidgetCollection(ui->WareSrcCollection, false);
 
@@ -315,7 +316,6 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
 MainWindow::~MainWindow()
 {
-  openfluid::waresdev::WareSrcManager::kill();
   openfluid::base::PreferencesManager::kill();
   openfluid::base::RunContextManager::kill();
   openfluid::base::WorkspaceManager::kill();
@@ -503,7 +503,7 @@ void MainWindow::onOpenExternalToolAsked()
   if (Sender != nullptr)
   {
     emit openExternalToolAsked(Sender->data().toString(), 
-                               openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath());
+                               QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getWaresPath()));
   }
 }
 
@@ -726,7 +726,9 @@ void MainWindow::onDeleteWareRequested()
 
   if (SelectedPath != "")
   {
-    QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(SelectedPath).m_AbsolutePathOfWare;
+    QString WarePath = 
+      QString::fromStdString(
+        openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(SelectedPath.toStdString()).AbsoluteWarePath);
     if (WarePath != "")
     {
       mp_WidgetsCollection->deleteWare(WarePath);

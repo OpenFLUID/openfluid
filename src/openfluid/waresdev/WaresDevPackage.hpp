@@ -49,7 +49,6 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 
 

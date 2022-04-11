@@ -43,7 +43,6 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
@@ -71,7 +70,6 @@ BuilderApp::BuilderApp(openfluid::ui::common::OpenFLUIDSplashScreen* Splash):
 BuilderApp::~BuilderApp()
 {
   ProjectCentral::kill();
-  openfluid::waresdev::WareSrcManager::kill();
   openfluid::ui::waresdev::WareSrcFiletypeManager::kill();
   openfluid::machine::ObserverSignatureRegistry::kill();
   openfluid::machine::SimulatorSignatureRegistry::kill();

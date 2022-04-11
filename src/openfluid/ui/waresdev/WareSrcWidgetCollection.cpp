@@ -48,6 +48,7 @@
 
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
@@ -57,14 +58,13 @@
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsStandalone) :
-    mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::waresdev::WareSrcManager::instance()),
+    mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::base::WorkspaceManager::instance()),
     mp_FindReplaceDialog(0)
 {
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
@@ -93,31 +93,37 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
     return false;
   }
 
-  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
+  auto Info = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(Path.toStdString());
 
-  // TODO manage other workspaces later
-  if (!Info.m_IsInCurrentWorkspace && !Info.m_IsInExamples)
+  if (!Info.isValid())
   {
     return false;
   }
 
-  if (Info.m_isAWare || Info.m_isAWareFile)
+  // TODO manage other workspaces later
+  if (!Info.IsInCurrentWorkspace && !Info.IsInExamples)
   {
-    openfluid::ui::waresdev::WareSrcWidget* Widget = m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
+    return false;
+  }
+
+  if (Info.IsWareDirectory || Info.IsWareFile)
+  {
+    openfluid::ui::waresdev::WareSrcWidget* Widget = 
+      m_WareSrcWidgetByPath.value(QString::fromStdString(Info.AbsoluteWarePath), 0);
 
     if (!Widget)
     {
       Widget = new WareSrcWidget(Info, m_IsStandalone, 
                                  mp_TabWidget);
 
-      mp_TabWidget->addTab(Widget, Info.m_WareName);
+      mp_TabWidget->addTab(Widget,QString::fromStdString(Info.WareDirName));
 
-      m_WareSrcWidgetByPath[Info.m_AbsolutePathOfWare] = Widget;
+      m_WareSrcWidgetByPath[QString::fromStdString(Info.AbsoluteWarePath)] = Widget;
 
       // leave before openDefaultFiles()
       connect(Widget, SIGNAL(currentTabChanged(const QString&)), this, SIGNAL(currentTabChanged(const QString&)));
 
-      if (Info.m_isAWare)
+      if (Info.IsWareDirectory)
       {
         Widget->openDefaultFiles();
       }
@@ -149,7 +155,7 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
               this, SLOT(notifyBuildFinished(openfluid::ware::WareType, const QString&)));
     }
 
-    if (Info.m_isAWareFile)
+    if (Info.IsWareFile)
     {
       Widget->openFileTab(Info);
     }
@@ -250,21 +256,21 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path)
     return;
   }
 
-  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(Path);
+  auto Info = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(Path.toStdString());
 
 // TODO manage other workspaces later
-  if (!Info.m_IsInCurrentWorkspace)
+  if (!Info.IsInCurrentWorkspace)
   {
     return;
   }
 
-  if (Info.m_isAWare || Info.m_isAWareFile)
+  if (Info.IsWareDirectory || Info.IsWareFile)
   {
-    openfluid::ui::waresdev::WareSrcWidget* Widget = m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
+    auto Widget = m_WareSrcWidgetByPath.value(QString::fromStdString(Info.AbsoluteWarePath), 0);
 
     if (Widget)
     {
-      if (Info.m_isAWare || Widget->setCurrent(Info))
+      if (Info.IsWareDirectory || Widget->setCurrent(Info))
       {
         mp_TabWidget->setCurrentWidget(Widget);
       }
@@ -288,7 +294,7 @@ QString WareSrcWidgetCollection::getContextualPath(const QString& Path)
   }
   else
   {
-    FileToOpen = mp_Manager->getWaresdevPath();
+    FileToOpen = QString::fromStdString(mp_Manager->getWaresPath());
   }
   return FileToOpen;
 }
@@ -365,7 +371,7 @@ void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QSt
   std::map<QString, QString> ContextPaths;
 
   ContextPaths.insert({"%%S%%", getCurrentWarePath()});
-  ContextPaths.insert({"%%W%%", mp_Manager->getWaresdevPath()});
+  ContextPaths.insert({"%%W%%", QString::fromStdString(mp_Manager->getWaresPath())});
 
   QString PathToOpen;
   if (!Path.isEmpty())
@@ -383,7 +389,7 @@ void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QSt
     }
     else
     {
-      PathToOpen = mp_Manager->getWaresdevPath();
+      PathToOpen = QString::fromStdString(mp_Manager->getWaresPath());
     }
   }
 
@@ -665,34 +671,6 @@ void WareSrcWidgetCollection::saveCurrentEditor()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::saveAsMayBeAboveWare()
-{
-  QString NewFilePath = saveAs(mp_Manager->getWorkspacePath());
-
-  // the new file is not above the current ware
-  if (NewFilePath.isEmpty())
-  {
-    return;
-  }
-
-  openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = openfluid::waresdev::WareSrcManager::instance()
-      ->getPathInfo(NewFilePath);
-
-  if (WareSrcWidget* Ware = m_WareSrcWidgetByPath.value(NewPathInfo.m_AbsolutePathOfWare, 0))
-  {
-    // in case the new path was already opened
-    int EditorIndex = Ware->closeFileTab(NewFilePath);
-    Ware->openFileTab(NewPathInfo, EditorIndex);
-  }
-
-  openPath(NewFilePath);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 QString WareSrcWidgetCollection::saveAs(const QString& TopDirectory)
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
@@ -910,9 +888,11 @@ void WareSrcWidgetCollection::deleteCurrentFile()
 
 void WareSrcWidgetCollection::openWare(openfluid::ware::WareType Type, const QString& Title)
 {
-  QString PathToOpen = openfluid::ui::waresdev::WareExplorerDialog::getOpenWarePath(QApplication::activeWindow(),
-                                                                                    mp_Manager->getWareTypePath(Type),
-                                                                                    Title);
+  QString PathToOpen = openfluid::ui::waresdev::WareExplorerDialog::getOpenWarePath(
+    QApplication::activeWindow(),
+    QString::fromStdString(mp_Manager->getWaresPath(Type)),
+    Title
+  );
 
   if (!PathToOpen.isEmpty())
   {
@@ -1174,7 +1154,9 @@ void WareSrcWidgetCollection::goToLine()
 
 void WareSrcWidgetCollection::closeEditor(const QString& FilePath)
 {
-  QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(FilePath).m_AbsolutePathOfWare;
+  QString WarePath(
+    openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(FilePath.toStdString()).AbsoluteWarePath.c_str()
+  );
 
   QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
   if (it != m_WareSrcWidgetByPath.end())

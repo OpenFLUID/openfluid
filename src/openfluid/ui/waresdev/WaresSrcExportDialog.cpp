@@ -40,6 +40,7 @@
 #include <QFileDialog>
 #include <QThread>
 
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
@@ -108,14 +109,14 @@ bool WaresSrcExportDialog::check()
 
 void WaresSrcExportDialog::initWaresLists()
 {
-  openfluid::waresdev::WareSrcManager* Manager = openfluid::waresdev::WareSrcManager::instance();
+  auto* Manager = openfluid::base::WorkspaceManager::instance();
 
   for (ListWidgetsByWareType_t::iterator it = m_ListWidgetsByWareType.begin(); it != m_ListWidgetsByWareType.end();
       ++it)
   {
-    for (const QFileInfo& WareFileInfo : QDir(Manager->getWareTypePath(it.key())).entryInfoList(
-        QDir::Dirs | QDir::NoDotAndDotDot,
-        QDir::Name))
+    for (const QFileInfo& WareFileInfo : 
+           QDir(QString::fromStdString(Manager->getWaresPath(it.key())))
+             .entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot,QDir::Name))
     {
       QListWidgetItem* Item = new QListWidgetItem(WareFileInfo.fileName());
       Item->setData(Qt::UserRole, WareFileInfo.absoluteFilePath());

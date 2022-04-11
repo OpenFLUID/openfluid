@@ -344,11 +344,14 @@ void WareSrcExplorer::onNewFileAsked()
     return;
   }
 
-  openfluid::waresdev::WareSrcManager::PathInfo PInfo = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(
-      mp_Model->filePath(currentIndex()));
+  auto PInfo = 
+  openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(mp_Model->filePath(currentIndex()).toStdString());
 
   NewSrcFileAssistant Assistant(
-      openfluid::waresdev::WareSrcContainer(PInfo.m_AbsolutePathOfWare, PInfo.m_WareType, PInfo.m_WareName), this);
+    openfluid::ui::waresdev::WareSrcUIContainer(QString::fromStdString(PInfo.AbsoluteWarePath),
+                                                PInfo.WareType,QString::fromStdString(PInfo.WareDirName)),
+     this
+  );
   Assistant.exec();
 
   QString NewFilePath = Assistant.getNewFilePath();
@@ -373,7 +376,10 @@ void WareSrcExplorer::onNewFolderAsked()
 
   QString CurrentPath = mp_Model->filePath(currentIndex());
 
-  QString WarePath = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(CurrentPath).m_AbsolutePathOfWare;
+  QString WarePath = 
+    QString::fromStdString(
+      openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
+    );
 
   QString NewPath = WareExplorerDialog::getCreateFolderPath(this, WarePath, CurrentPath);
 

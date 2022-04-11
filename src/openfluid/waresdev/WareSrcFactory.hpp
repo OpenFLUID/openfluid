@@ -46,7 +46,6 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 
 

@@ -46,9 +46,9 @@
 #include <QPushButton>
 #include <QDir>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
+#include <openfluid/waresdev/WareSrcEnquirer.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace Ui {
@@ -84,8 +84,6 @@ class OPENFLUID_API WareExplorerDialog : public openfluid::ui::common::MessageDi
   private:
 
     Ui::WareExplorerDialog* ui;
-
-    openfluid::waresdev::WareSrcManager* mp_Manager;
 
     QPushButton* mp_AcceptButton;
 

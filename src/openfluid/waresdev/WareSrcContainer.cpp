@@ -32,50 +32,44 @@
 
 /**
  @file WareSrcContainer.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
- @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
 */
 
 
-#include <QDir>
-#include <QCoreApplication>
+#include <regex>
+#include <fstream>
+#include <algorithm>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
-#include <openfluid/waresdev/WareSrcContainer.hpp>
-#include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/waresdev/OStreamMsgStream.hpp>
+#include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace waresdev {
 
 
-WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware::WareType Type,
-                                   const QString& WareID) : QObject(),
+WareSrcContainer::WareSrcContainer(const std::string& AbsolutePath, openfluid::ware::WareType Type,
+                                   const std::string& WareID) :
     m_AbsolutePath(AbsolutePath), m_Type(Type), m_ID(WareID),
-    m_AbsoluteCMakeConfigPath(""), m_AbsoluteMainCppPath(""), m_AbsoluteUiParamCppPath(""),
-    m_AbsoluteCMakeListsPath(""), m_AbsoluteJsonPath(""),
-    mp_Stream(new openfluid::waresdev::OStreamMsgStream()), mp_Process(new WareSrcProcess()),
-    mp_CurrentParser(new openfluid::waresdev::WareSrcMsgParserGcc())
+    m_AbsoluteCMakeConfigPath(), m_AbsoluteMainCppPath(), m_AbsoluteUiParamCppPath(),
+    m_AbsoluteCMakeListsPath(), m_AbsoluteJsonPath(),
+    mp_Stream(new openfluid::waresdev::OStreamMsgStream())
 {
   update();
 
-  m_OFVersion = QString::fromStdString(openfluid::base::Environment::getVersionMajorMinor());
+  m_OFVersion = openfluid::base::Environment::getVersionMajorMinor();
 
   setConfigMode(ConfigMode::CONFIG_RELEASE);
   setBuildMode(BuildMode::BUILD_WITHINSTALL);
   setBuildJobs(openfluid::base::Environment::getIdealJobsCount());
-
-  connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
-  connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
-
-  connect(mp_Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinishedOutput(int)));
 }
 
 
@@ -85,13 +79,7 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath, openfluid::ware:
 
 WareSrcContainer::~WareSrcContainer()
 {
-  if (mp_Process->state() != WareSrcProcess::NotRunning)
-  {
-    mp_Process->close();
-  }
 
-  delete mp_Process;
-  delete mp_CurrentParser;
 }
 
 
@@ -101,56 +89,63 @@ WareSrcContainer::~WareSrcContainer()
 
 void WareSrcContainer::update()
 {
-  m_AbsoluteCMakeListsPath = m_AbsoluteJsonPath = m_AbsoluteCMakeConfigPath = m_AbsoluteMainCppPath =
-      m_AbsoluteUiParamCppPath = "";
+  m_AbsoluteCMakeListsPath = 
+  m_AbsoluteJsonPath = 
+  m_AbsoluteCMakeConfigPath = 
+  m_AbsoluteMainCppPath =
+  m_AbsoluteUiParamCppPath = "";
 
-  QDir Dir(m_AbsolutePath);
-  QString CMakeListsFilePath = Dir.absoluteFilePath("CMakeLists.txt");
+  std::string CMakeListsFilePath = 
+    openfluid::tools::Filesystem::joinPath({m_AbsolutePath,openfluid::config::WARESDEV_CMAKE_STDFILE});
 
-  if (QFile::exists(CMakeListsFilePath))
+  if (openfluid::tools::Path(CMakeListsFilePath).isFile())
   {
     m_AbsoluteCMakeListsPath = CMakeListsFilePath;
   }
 
-  QString JsonFilePath = Dir.absoluteFilePath("wareshub.json");
-  if (QFile::exists(JsonFilePath))
+  std::string JsonFilePath =
+    openfluid::tools::Filesystem::joinPath({m_AbsolutePath,openfluid::config::WARESDEV_WARESHUB_FILE});
+  if (openfluid::tools::Path(JsonFilePath).isFile())
   {
     m_AbsoluteJsonPath = JsonFilePath;
   }
 
-  QString CMakeConfigFilePath = Dir.absoluteFilePath(
-      QString::fromStdString(openfluid::config::WARESDEV_CMAKE_USERFILE));
+  std::string CMakeConfigFilePath = 
+      openfluid::tools::Filesystem::joinPath({m_AbsolutePath,openfluid::config::WARESDEV_CMAKE_USERFILE}); 
 
-  if (QFile::exists(CMakeConfigFilePath))
+  if (openfluid::tools::Path(CMakeConfigFilePath).isFile())
   {
     m_AbsoluteCMakeConfigPath = CMakeConfigFilePath;
 
-    QFile File(m_AbsoluteCMakeConfigPath);
-    if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+    std::ifstream CMakeConfigFile(m_AbsoluteCMakeConfigPath);
+    if (!CMakeConfigFile.is_open())
     {
-      throw openfluid::base::FrameworkException(
-          OPENFLUID_CODE_LOCATION, QString("Cannot open file %1").arg(m_AbsoluteCMakeConfigPath).toStdString());
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                "Cannot open file "+m_AbsoluteCMakeConfigPath);
     }
 
-    QByteArray CMakeFileContent = File.readAll();
+    const std::string CMakeConfigContent((std::istreambuf_iterator<char>(CMakeConfigFile)),
+                                         (std::istreambuf_iterator<char>()));
 
-    QString MainCppFilename = searchMainCppFileName(CMakeFileContent);
-    if (!MainCppFilename.isEmpty())
+    CMakeConfigFile.close();
+
+    auto MainCppFilename = searchMainCppFileName(CMakeConfigContent);
+    if (!MainCppFilename.empty())
     {
-      QString MainCppFilePath = Dir.absoluteFilePath(MainCppFilename);
+      std::string MainCppFilePath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath,MainCppFilename}); 
 
-      if (QFile::exists(MainCppFilePath))
+      if (openfluid::tools::Path(MainCppFilePath).isFile())
       {
         m_AbsoluteMainCppPath = MainCppFilePath;
       }
     }
 
-    QString UiParamCppFilename = searchUiParamCppFileName(CMakeFileContent);
-    if (!UiParamCppFilename.isEmpty())
+    auto UiParamCppFilename = searchUiParamCppFileName(CMakeConfigContent);
+    if (!UiParamCppFilename.empty())
     {
-      QString UiParamCppFilePath = Dir.absoluteFilePath(UiParamCppFilename);
+      std::string UiParamCppFilePath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath,UiParamCppFilename});
 
-      if (QFile::exists(UiParamCppFilePath))
+      if (openfluid::tools::Path(UiParamCppFilePath).isFile())
       {
         m_AbsoluteUiParamCppPath = UiParamCppFilePath;
       }
@@ -164,21 +159,23 @@ void WareSrcContainer::update()
 // =====================================================================
 
 
-QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
+std::string WareSrcContainer::searchMainCppFileName(const std::string& CMakeFileContent)
 {
-  QStringList Lines = CMakeFileContent.split('\n');
+  const auto Lines = openfluid::tools::splitString(CMakeFileContent,"\n"); 
 
-  QRegExp RE(
-      QString("^\\s*SET\\s*\\((?:%1|%2|%3)\\s+([\\w_.-]+\\.cpp)").arg(
-          QString::fromStdString(openfluid::config::WARESDEV_CMAKE_SIMCPPVAR)).arg(
-          QString::fromStdString(openfluid::config::WARESDEV_CMAKE_OBSCPPVAR)).arg(
-          QString::fromStdString(openfluid::config::WARESDEV_CMAKE_BEXTCPPVAR)));
+  std::string Expr =  "^\\s*SET\\s*\\((?:"+openfluid::config::WARESDEV_CMAKE_SIMCPPVAR+
+                "|"+openfluid::config::WARESDEV_CMAKE_OBSCPPVAR+
+                "|"+openfluid::config::WARESDEV_CMAKE_BEXTCPPVAR+
+                ")\\s+([\\w_.-]+\\.cpp).*$";
 
-  for (const QString& L : Lines)
+  std::regex RE(Expr);
+  std::smatch M;
+
+  for (const auto& L : Lines)
   {
-    if (RE.indexIn(L) > -1)
+    if (std::regex_match(L,M,RE) && !M.empty() > 0)
     {
-      return RE.cap(1);
+      return M[1];
     }
   }
 
@@ -190,19 +187,23 @@ QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
 // =====================================================================
 
 
-QString WareSrcContainer::searchUiParamCppFileName(const QString& CMakeFileContent)
+std::string WareSrcContainer::searchUiParamCppFileName(const std::string& CMakeFileContent)
 {
-  QStringList Lines = CMakeFileContent.split('\n');
+  const auto Lines = openfluid::tools::splitString(CMakeFileContent,"\n"); 
 
-  QRegExp RE("^\\s*SET\\s*\\((?:SIM_PARAMSUI_CPP|OBS_PARAMSUI_CPP)\\s+([\\w_.-]+\\.cpp)");
+  std::string Expr =  "^\\s*SET\\s*\\((?:SIM_PARAMSUI_CPP|OBS_PARAMSUI_CPP)\\s+([\\w_.-]+\\.cpp).*$";
 
-  for (const QString& L : Lines)
+  std::regex RE(Expr);
+  std::smatch M;
+
+  for (const auto& L : Lines)
   {
-    if (RE.indexIn(L) > -1)
+    if (std::regex_match(L,M,RE) && !M.empty() > 0)
     {
-      return RE.cap(1);
+      return M[1];
     }
   }
+
 
   return "";
 }
@@ -212,31 +213,27 @@ QString WareSrcContainer::searchUiParamCppFileName(const QString& CMakeFileConte
 // =====================================================================
 
 
-QStringList WareSrcContainer::getDefaultFilesPaths()
+std::vector<std::string> WareSrcContainer::getDefaultFilesPaths()
 {
-  QStringList L;
+  std::vector<std::string> L;
 
-  if (!m_AbsoluteCMakeConfigPath.isEmpty())
+  if (!m_AbsoluteCMakeConfigPath.empty())
   {
-    L << m_AbsoluteCMakeConfigPath;
+    L.push_back(m_AbsoluteCMakeConfigPath);
   }
 
-  if (!m_AbsoluteMainCppPath.isEmpty())
+  if (!m_AbsoluteMainCppPath.empty())
   {
-    L << m_AbsoluteMainCppPath;
+    L.push_back(m_AbsoluteMainCppPath);
   }
   else
   {
-    QDir Dir(m_AbsolutePath);
+    auto FoundFiles = openfluid::tools::Filesystem::findFilesByExtension(m_AbsolutePath,"cpp",false);
 
-    QStringList NameFilters;
-    NameFilters << "*.cpp";
-
-    QString FirstCpp = Dir.entryList(NameFilters, QDir::Files, QDir::Name).value(0, "");
-
-    if (!FirstCpp.isEmpty())
+    if (!FoundFiles.empty())
     {
-      L << Dir.absoluteFilePath(FirstCpp);
+      std::sort(FoundFiles.begin(),FoundFiles.end());
+      L.push_back(FoundFiles[0]);
     }
   }
 
@@ -248,37 +245,7 @@ QStringList WareSrcContainer::getDefaultFilesPaths()
 // =====================================================================
 
 
-QString WareSrcContainer::getMainCppPath() const
-{
-  return m_AbsoluteMainCppPath;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString WareSrcContainer::getUiParamCppPath() const
-{
-  return m_AbsoluteUiParamCppPath;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString WareSrcContainer::getAbsolutePath() const
-{
-  return m_AbsolutePath;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString WareSrcContainer::getBuildDirPath() const
+std::string WareSrcContainer::getBuildDirPath() const
 {
   return m_BuildDirPath;
 }
@@ -288,9 +255,9 @@ QString WareSrcContainer::getBuildDirPath() const
 // =====================================================================
 
 
-openfluid::ware::WareType WareSrcContainer::getType() const
+std::string WareSrcContainer::getMainCppPath() const
 {
-  return m_Type;
+  return m_AbsoluteMainCppPath;
 }
 
 
@@ -298,9 +265,9 @@ openfluid::ware::WareType WareSrcContainer::getType() const
 // =====================================================================
 
 
-QString WareSrcContainer::getID() const
+std::string WareSrcContainer::getUiParamCppPath() const
 {
-  return m_ID;
+  return m_AbsoluteUiParamCppPath;
 }
 
 
@@ -308,7 +275,7 @@ QString WareSrcContainer::getID() const
 // =====================================================================
 
 
-QString WareSrcContainer::getCMakeConfigPath() const
+std::string WareSrcContainer::getCMakeConfigPath() const
 {
   return m_AbsoluteCMakeConfigPath;
 }
@@ -318,7 +285,7 @@ QString WareSrcContainer::getCMakeConfigPath() const
 // =====================================================================
 
 
-QString WareSrcContainer::getCMakeListsPath() const
+std::string WareSrcContainer::getCMakeListsPath() const
 {
   return m_AbsoluteCMakeListsPath;
 }
@@ -328,7 +295,7 @@ QString WareSrcContainer::getCMakeListsPath() const
 // =====================================================================
 
 
-QString WareSrcContainer::getJsonPath() const
+std::string WareSrcContainer::getJsonPath() const
 {
   return m_AbsoluteJsonPath;
 }
@@ -338,21 +305,19 @@ QString WareSrcContainer::getJsonPath() const
 // =====================================================================
 
 
-std::map<QString,QString> WareSrcContainer::getConfigureVariables() const
+std::map<std::string,std::string> WareSrcContainer::getConfigureVariables() const
 {
-  std::map<QString,QString> Vars;
+  std::map<std::string,std::string> Vars;
 
   // build type
   Vars["CMAKE_BUILD_TYPE"] = (m_ConfigMode == ConfigMode::CONFIG_RELEASE ? "Release" : "Debug");
 
-  // Use OPENFLUID_INSTALL_PREFIX env. var. if defined
-  QByteArray OpenFLUIDInstallPrefix = qgetenv("OPENFLUID_INSTALL_PREFIX");
-
-  if (!OpenFLUIDInstallPrefix.isNull())
+  char* ChOpenFLUIDInstallPrefix = nullptr;
+  ChOpenFLUIDInstallPrefix = std::getenv("OPENFLUID_INSTALL_PREFIX");
+  if (ChOpenFLUIDInstallPrefix != nullptr)
   {
     Vars["CMAKE_PREFIX_PATH"] = 
-      QString::fromStdString(openfluid::tools::Filesystem::joinPath({OpenFLUIDInstallPrefix.toStdString(),
-                                                                     "lib","cmake"}));
+      openfluid::tools::Filesystem::joinPath({std::string(ChOpenFLUIDInstallPrefix),"lib","cmake"});
   }
 
   return Vars;
@@ -363,9 +328,9 @@ std::map<QString,QString> WareSrcContainer::getConfigureVariables() const
 // =====================================================================
 
 
-QString WareSrcContainer::getConfigureGenerator() const
+std::string WareSrcContainer::getConfigureGenerator() const
 {
-  return QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevConfigureGenerator());
+  return openfluid::base::PreferencesManager::instance()->getWaresdevConfigureGenerator();
 }
 
 
@@ -373,60 +338,9 @@ QString WareSrcContainer::getConfigureGenerator() const
 // =====================================================================
 
 
-QString WareSrcContainer::getConfigureExtraOptions() const
+std::string WareSrcContainer::getConfigureExtraOptions() const
 {
-  return QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevConfigureOptions());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QProcessEnvironment WareSrcContainer::getConfigureEnvironment() const
-{
-  // === set process environment
-  QProcessEnvironment Env = QProcessEnvironment::systemEnvironment();
-
-  // Set PATH env. var. if configured
-  QString CustomPath = 
-    QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevConfigureEnv("PATH"));
-  if (!CustomPath.isEmpty())
-  {
-    QByteArray ExistingPath = qgetenv("PATH");
-    if (!ExistingPath.isNull())
-    {
-      CustomPath.replace("%%PATH%%", ExistingPath);
-      Env.insert("PATH", CustomPath);
-    }
-  }
-
-  return Env;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QProcessEnvironment WareSrcContainer::getBuildEnvironment() const
-{
-  QProcessEnvironment RunEnv = QProcessEnvironment::systemEnvironment();
-
-  // Set PATH env. var. if configured
-  QString CustomPath = 
-    QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevBuildEnv("PATH"));
-  if (!CustomPath.isEmpty())
-  {
-    QByteArray ExistingPath = qgetenv("PATH");
-    if (!ExistingPath.isNull())
-    {
-      CustomPath.replace("%%PATH%%", ExistingPath);
-      RunEnv.insert("PATH", CustomPath);
-    }
-  }
-
-  return RunEnv;
+  return openfluid::base::PreferencesManager::instance()->getWaresdevConfigureOptions();
 }
 
 
@@ -436,13 +350,13 @@ QProcessEnvironment WareSrcContainer::getBuildEnvironment() const
 
 void WareSrcContainer::prepareBuildDirectory() const
 {
-  QFile BuildDir(m_BuildDirPath);
+  openfluid::tools::Path BuildPathObj(m_BuildDirPath);
 
-  if (BuildDir.exists())
+  if (BuildPathObj.exists())
   {
-    openfluid::tools::Filesystem::emptyDirectory(m_BuildDirPath.toStdString());
+    openfluid::tools::Filesystem::emptyDirectory(BuildPathObj.toGeneric());
   }
-  else if (!QDir().mkpath(m_BuildDirPath))
+  else if (!BuildPathObj.makeDirectory())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to create build directory");
   }
@@ -471,7 +385,7 @@ void WareSrcContainer::setConfigMode(ConfigMode Mode)
 {
   m_ConfigMode = Mode;
 
-  QString ConfigTag;
+  std::string ConfigTag;
   switch (m_ConfigMode)
   {
     case ConfigMode::CONFIG_RELEASE:
@@ -485,7 +399,7 @@ void WareSrcContainer::setConfigMode(ConfigMode Mode)
       break;
   }
 
-  m_BuildDirPath = QDir(m_AbsolutePath).filePath(QString("_build%1-%2").arg(ConfigTag).arg(m_OFVersion));
+  m_BuildDirPath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath,"_build"+ConfigTag+"-"+m_OFVersion});
 }
 
 
@@ -513,7 +427,7 @@ void WareSrcContainer::setBuildJobs(unsigned int Jobs)
 // =====================================================================
 
 
-QString WareSrcContainer::getBuildTarget() const
+std::string WareSrcContainer::getBuildTarget() const
 {
   // build target is "install" if current build mode is BUILD_WITHINSTALL, "" in other cases
   return (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "install" : "");
@@ -534,288 +448,11 @@ unsigned int WareSrcContainer::getBuildJobs() const
 // =====================================================================
 
 
-QString WareSrcContainer::getGenerateDocTarget() const
+std::string WareSrcContainer::getGenerateDocTarget() const
 {
   // build target is "$ID-doc-pdf-install" if current build mode is BUILD_WITHINSTALL, "$ID-doc-pdf" in other cases
   // wher $ID is the ware ID
-  return QString("%1-%2").arg(m_ID).arg((m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "doc-pdf-install" : "doc-pdf"));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcContainer::configure()
-{
-  if (!openfluid::utils::CMakeProxy::isAvailable())
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "CMake program not available");
-  }
-
-
-  mp_Stream->clear();
-  m_Messages.clear();
-
-
-  prepareBuildDirectory();
-
-  delete mp_CurrentParser;
-  mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserCMake(m_AbsolutePath);
-
-
-  // === build and run command
-
-  QStringList ExtraOptionsList = openfluid::tools::convertArgsStringToList(getConfigureExtraOptions());
-
-  openfluid::utils::CMakeProxy::CommandInfos CmdInfos = 
-    openfluid::utils::CMakeProxy::getConfigureCommand(m_BuildDirPath,m_AbsolutePath,
-                                                      getConfigureVariables(), getConfigureGenerator(),
-                                                      ExtraOptionsList);
-
-  runCommand(CmdInfos, getConfigureEnvironment(), WareSrcProcess::Type::CONFIGURE);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcContainer::build()
-{
-  if (!openfluid::utils::CMakeProxy::isAvailable())
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "CMake program not available");
-  }
-
-
-  mp_Stream->clear();
-  m_Messages.clear();
-
-
-  // run configure if build dir does not exist
-  if (!QFile(m_BuildDirPath).exists())
-  {
-    configure();
-
-    while (!mp_Process->waitForFinished(200))  // TODO better to replace this by a threaded process
-    {
-      qApp->processEvents();
-    }
-
-    mp_Stream->write(WareSrcMsgParser::WareSrcMsg("\n========================================"
-                                                  "========================================\n\n\n",
-                                                  WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND));
-  }
-
-
-  QString Target = getBuildTarget();
-
-
-  delete mp_CurrentParser;
-  mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserGcc();
-
-
-  // === build and run command
-
-  openfluid::utils::CMakeProxy::CommandInfos CmdInfos =
-    openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target,m_BuildJobs);
-
-  runCommand(CmdInfos, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcContainer::generateDoc()
-{
-  // run configure if build dir does not exist
-  if (!QFile(m_BuildDirPath).exists())
-  {
-    configure();
-
-    while (!mp_Process->waitForFinished(200))  // TODO better to replace this by a threaded process
-    {
-      qApp->processEvents();
-    }
-
-    mp_Stream->write(WareSrcMsgParser::WareSrcMsg("\n========================================"
-                                                  "========================================\n\n\n",
-                                                  WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND));
-  }
-
-
-  QString Target = getGenerateDocTarget();
-
-
-  delete mp_CurrentParser;
-  mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserNone();
-
-
-  // === build and run command
-
-  openfluid::utils::CMakeProxy::CommandInfos CmdInfos = 
-    openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,Target);
-
-  runCommand(CmdInfos, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcContainer::processStandardOutput()
-{
-  mp_Process->setReadChannel(WareSrcProcess::StandardOutput);
-
-  while (mp_Process->canReadLine())
-  {
-    QString MsgLine = QString::fromUtf8(mp_Process->readLine());
-
-    WareSrcMsgParser::WareSrcMsg Message =
-        mp_CurrentParser->parse(MsgLine, WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD);
-
-    mp_Stream->write(Message);
-
-    if (Message.m_Type != WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD)
-    {
-      m_Messages.append(Message);
-    }
-  }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcContainer::processErrorOutput()
-{
-  mp_Process->setReadChannel(WareSrcProcess::StandardError);
-
-  while (mp_Process->canReadLine())
-  {
-    QString MsgLine = QString::fromUtf8(mp_Process->readLine());
-
-    WareSrcMsgParser::WareSrcMsg Message =
-        mp_CurrentParser->parse(MsgLine,WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING);
-
-    mp_Stream->write(Message);
-
-    m_Messages.append(Message);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcContainer::processFinishedOutput(int ExitCode)
-{
-  QString ElapsedString =
-      QString("execution time : %1").arg(QString::fromStdString(m_ProcessTimer.elapsedAsPrettyString()));
-
-  if (!ExitCode)
-  {
-    WareSrcMsgParser::WareSrcMsg Message =
-        WareSrcMsgParser::WareSrcMsg(QString("\nCommand ended (%1)\n\n").arg(ElapsedString),
-                                     WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
-    mp_Stream->write(Message);
-  }
-  else
-  {
-    WareSrcMsgParser::WareSrcMsg Message =
-        WareSrcMsgParser::WareSrcMsg(QString("\nCommand ended with error (%1)\n\n").arg(ElapsedString),
-                                     WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR);
-    mp_Stream->write(Message);
-  }
-
-
-  emit processFinished();
-
-  if (mp_Process->getType() == WareSrcProcess::Type::CONFIGURE)
-  {
-    emit configureProcessFinished(m_Type,m_ID);
-  }
-  else if (mp_Process->getType() == WareSrcProcess::Type::BUILD)
-  {
-    emit buildProcessFinished(m_Type,m_ID);
-  }
-
-  mp_Process->setType(WareSrcProcess::Type::NONE);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcContainer::runCommand(const openfluid::utils::CMakeProxy::CommandInfos& CmdInfos, 
-                                  const QProcessEnvironment& Env, WareSrcProcess::Type CmdType)
-{
-  if (mp_Process->state() != WareSrcProcess::NotRunning)
-  {
-    mp_Process->close();
-  }
-
-  m_ProcessTimer.restart();
-
-  mp_Process->setType(CmdType);
-
-  emit processLaunched();
-
-  if (CmdType == WareSrcProcess::Type::CONFIGURE)
-  {
-    emit configureProcessLaunched(m_Type,m_ID);
-  }
-  else if (CmdType == WareSrcProcess::Type::BUILD)
-  {
-    emit buildProcessLaunched(m_Type,m_ID);
-  }
-
-  if (openfluid::base::PreferencesManager::instance()->isWaresdevShowCommandEnv("PATH"))
-  {
-    WareSrcMsgParser::WareSrcMsg PATHMessage =
-        WareSrcMsgParser::WareSrcMsg(QString("PATH=%1\n").arg(Env.value("PATH", "")),
-                                     WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
-    mp_Stream->write(PATHMessage);
-  }
-
-  WareSrcMsgParser::WareSrcMsg CommandMessage =
-      WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(CmdInfos.joined()),
-                                   WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
-  mp_Stream->write(CommandMessage);
-
-  mp_Process->setProcessEnvironment(Env);
-  mp_Process->start(CmdInfos.Program,CmdInfos.Args);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QList<WareSrcMsgParser::WareSrcMsg> WareSrcContainer::getMessages()
-{
-  return m_Messages;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcContainer::isProcessRunning() const
-{
-  return (mp_Process->state() != WareSrcProcess::NotRunning);
+  return (m_ID+"-"+(m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "doc-pdf-install" : "doc-pdf"));
 }
 
 

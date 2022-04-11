@@ -45,6 +45,7 @@
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 
 #include "ui_NewWareDialog.h"
@@ -60,7 +61,9 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  m_WareTypeDir.setPath(openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(m_WareType));
+  m_WareTypeDir.setPath(QString::fromStdString(
+                          openfluid::base::WorkspaceManager::instance()->getWaresPath(m_WareType))
+                       );
 
   ui->BextTypeComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtTypeTexts());
   ui->BextCategoryComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtCategoryTexts());

@@ -49,7 +49,7 @@
 #include <QLabel>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcContainer.hpp>
+#include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 
 
@@ -195,7 +195,7 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
     openfluid::waresdev::WareSrcFactory* mp_Factory;
 
-    const openfluid::waresdev::WareSrcContainer& mref_Container;
+    const WareSrcUIContainer& mref_Container;
 
     QString m_NewFilePath;
 
@@ -209,7 +209,7 @@ class OPENFLUID_API NewSrcFileAssistant: public QWizard
 
   public:
 
-    NewSrcFileAssistant(const openfluid::waresdev::WareSrcContainer& Container, QWidget* Parent = nullptr);
+    NewSrcFileAssistant(const WareSrcUIContainer& Container, QWidget* Parent = nullptr);
 
     virtual ~NewSrcFileAssistant();
 

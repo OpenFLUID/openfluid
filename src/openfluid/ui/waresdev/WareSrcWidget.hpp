@@ -42,10 +42,11 @@
 
 #include <QWidget>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
-#include <openfluid/waresdev/WareSrcContainer.hpp>
+#include <openfluid/waresdev/WareSrcEnquirer.hpp>
+#include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcActionsCollection.hpp>
+
+#include <openfluid/dllexport.hpp>
 
 
 namespace Ui {
@@ -93,7 +94,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     Ui::WareSrcWidget* ui;
 
-    openfluid::waresdev::WareSrcContainer m_Container;
+    openfluid::ui::waresdev::WareSrcUIContainer m_Container;
 
     openfluid::ui::waresdev::WareSrcActionsCollection* mp_ActionsCollection;
 
@@ -203,12 +204,12 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
   public:
 
-    WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
+    WareSrcWidget(const openfluid::waresdev::WareSrcEnquirer::WarePathInfo& Info, bool IsStandalone,
                   QWidget* Parent = nullptr);
 
     virtual ~WareSrcWidget();
 
-    void openFileTab(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index = -1);
+    void openFileTab(const openfluid::waresdev::WareSrcEnquirer::WarePathInfo& Info, int Index = -1);
 
     void openDefaultFiles();
 
@@ -218,9 +219,9 @@ class OPENFLUID_API WareSrcWidget: public QWidget
       Otherwise does nothing.
       @return true if the file editor was already opened, false otherwise
     */
-    bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
+    bool setCurrent(const openfluid::waresdev::WareSrcEnquirer::WarePathInfo& Info);
 
-    openfluid::waresdev::WareSrcContainer& wareSrcContainer();
+    WareSrcUIContainer& wareSrcContainer();
 
     bool isWareModified();
 

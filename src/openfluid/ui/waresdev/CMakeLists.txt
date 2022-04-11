@@ -1,5 +1,6 @@
 
-SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcFileEditor.cpp WareSrcWidgetCollection.cpp
+SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
+                              WareSrcWidget.cpp WareSrcFileEditor.cpp WareSrcWidgetCollection.cpp
                               WareSrcToolbar.cpp WareBuildOptionsWidget.cpp WareBuildOptionsDialog.cpp
                               WareSrcSyntaxHighlighter.cpp WareSrcFiletypeManager.cpp TextEditMsgStream.cpp
                               WareSrcExplorer.cpp WareSrcExplorerModel.cpp WareExplorerDialog.cpp
@@ -13,7 +14,8 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcFileEditor.cpp WareSrcWid
                               WorkspaceDevDashboardDialog.cpp WorkspaceDevWaresWidget.cpp WorkspaceDevGitWidget.cpp WorkspaceDevActionsWidget.cpp
                               WorkspaceDevProcessDialog.cpp)
 
-SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcFileEditor.hpp WareSrcWidgetCollection.hpp
+SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
+                              WareSrcWidget.hpp WareSrcFileEditor.hpp WareSrcWidgetCollection.hpp
                               WareSrcToolbar.hpp WareBuildOptionsWidget.hpp WareBuildOptionsDialog.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
                               WareSrcExplorer.hpp WareSrcExplorerModel.hpp WareExplorerDialog.hpp

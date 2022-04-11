@@ -44,10 +44,9 @@
 
 #include <QDir>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace Ui {

@@ -35,6 +35,7 @@
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
  */
 
+
 #ifndef __OPENFLUID_BASE_WORKSPACEMANAGER_HPP__
 #define __OPENFLUID_BASE_WORKSPACEMANAGER_HPP__
 
@@ -79,7 +80,7 @@ class OPENFLUID_API WorkspaceManager
 
   public:
 
-    struct RecentProject_t
+    struct RecentProject
     {
       std::string Name;
 
@@ -107,6 +108,9 @@ class OPENFLUID_API WorkspaceManager
     static std::string getWaresPath(const std::string& WorkspacePath,
                                     openfluid::ware::WareType Type = openfluid::ware::WareType::UNDEFINED);
 
+    static std::string getWarePath(const std::string& WorkspacePath,
+                                   openfluid::ware::WareType Type, const openfluid::ware::WareID_t& ID);
+
     std::string getSettingsFile() const;
 
     std::string getProjectsPath() const;
@@ -115,7 +119,7 @@ class OPENFLUID_API WorkspaceManager
 
     void insertRecentProject(const std::string& Name, const std::string& Path);
 
-    std::list<RecentProject_t> getRecentProjects() const;
+    std::list<RecentProject> getRecentProjects() const;
 
     inline const static unsigned int RecentProjectsMax = 10;
 

@@ -52,7 +52,7 @@
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
 #include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
@@ -804,7 +804,7 @@ void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::Wa
   {
     QString ErrMsg;
 
-    QString Path = openfluid::waresdev::WareSrcManager::instance()->getWarePath(ID,WType,ErrMsg);
+    QString Path = QString::fromStdString(openfluid::waresdev::WareSrcEnquirer::findWarePath(WType,ID.toStdString()));
 
     if(!Path.isEmpty())
     {
@@ -814,7 +814,7 @@ void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::Wa
     {
       QMessageBox::critical(QApplication::activeWindow(),
                             tr("Source code edition error"),
-                            ErrMsg,
+                            tr("Cannot edit source code of %1").arg(ID),
                             QMessageBox::Close);
     }
   }

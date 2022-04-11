@@ -51,6 +51,7 @@
 
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
@@ -66,7 +67,7 @@ class F
 {
   private:
 
-    openfluid::waresdev::WareSrcManager* Mgr;
+    openfluid::base::WorkspaceManager* Mgr;
 
     QString WorkspaceForExportPath;
     QString WorkspaceForImportPath;
@@ -143,7 +144,7 @@ class F
 
     F()
     {
-      Mgr = openfluid::waresdev::WareSrcManager::instance();
+      Mgr = openfluid::base::WorkspaceManager::instance();
 
       QString TempOFPath = QString::fromStdString(openfluid::base::Environment::getTempDir());
       QDir TempOFDir(TempOFPath);
@@ -178,7 +179,7 @@ class F
         }
       }
 
-      openfluid::waresdev::WareSrcManager::kill();
+      openfluid::base::WorkspaceManager::kill();
     }
 
     void createExportConfiguration()
@@ -189,7 +190,7 @@ class F
 
       writeWaresdevContent(WaresdevForExportPath, WareFolders, ContentFolders, ContentFiles);
 
-      Mgr->switchWorkspace(WorkspaceForExportPath);
+      Mgr->openWorkspace(WorkspaceForExportPath.toStdString());
     }
 
     void createImportConfiguration()
@@ -200,7 +201,7 @@ class F
 
       writeWaresdevContent(WaresdevForImportPath, WareFolders, ContentFolders, ContentFiles);
 
-      Mgr->switchWorkspace(WorkspaceForImportPath);
+      Mgr->openWorkspace(WorkspaceForImportPath.toStdString());
     }
 
     void writeWaresdevContent(QDir WaresDevDir, const QStringList& WareFolders, const QStringList& ContentFolders,

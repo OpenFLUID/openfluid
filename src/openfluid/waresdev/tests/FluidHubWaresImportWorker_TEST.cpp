@@ -48,7 +48,7 @@
 #include <QDir>
 
 #include <openfluid/waresdev/FluidHubWaresImportWorker.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 
 #include "tests-config.hpp"
@@ -87,11 +87,13 @@ class HubTestFixture
 
       forceRemove(TestWorkspacePath);
 
-      openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
+      auto Mgr = openfluid::base::WorkspaceManager::instance();
 
-      Mgr->switchWorkspace(TestWorkspacePath);
+      Mgr->openWorkspace(TestWorkspacePath.toStdString());
 
-      TestWaresDevSimulatorsDir.setPath(Mgr->getWareTypePath(openfluid::ware::WareType::SIMULATOR));
+      TestWaresDevSimulatorsDir.setPath(
+        QString::fromStdString(Mgr->getWaresPath(openfluid::ware::WareType::SIMULATOR))
+      );
 
       CurrentOFBranchName = openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName().toStdString();
     }
@@ -99,7 +101,7 @@ class HubTestFixture
     ~HubTestFixture()
     {
       forceRemove(TestWorkspacePath);
-      openfluid::waresdev::WareSrcManager::kill();
+      openfluid::base::WorkspaceManager::kill();
     }
 
     void forceRemove(const QString& Path)

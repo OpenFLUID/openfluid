@@ -39,7 +39,7 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_WareSrcManager
+#define BOOST_TEST_MODULE unittest_WareSrcEnquirer
 
 
 #include <boost/test/unit_test.hpp>
@@ -48,9 +48,10 @@
 #include <QTextStream>
 
 #include <openfluid/waresdev/WareSrcFactory.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -62,14 +63,19 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
 {
   openfluid::base::Environment::init();
 
+  openfluid::base::WorkspaceManager::instance()->openWorkspace(
+    openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath()
+  );
+
   QDir CommonTemplatesDir = QDir(
       QString("%1/%2/templates").arg(
           QString::fromStdString(openfluid::base::Environment::getInstallPrefix())).arg(
           QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
   QDir TypedTemplatesDir = QDir(CommonTemplatesDir.absoluteFilePath("simulators"));
 
-  QString WareTypePath = openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(
-      openfluid::ware::WareType::SIMULATOR);
+  QString WareTypePath = QString::fromStdString(
+    openfluid::base::WorkspaceManager::instance()->getWaresPath(openfluid::ware::WareType::SIMULATOR)
+  );
   QDir WareTypeDir = QDir(WareTypePath);
 
   openfluid::tools::Filesystem::emptyDirectory(WareTypePath.toStdString());
@@ -195,8 +201,9 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
           QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
   QDir TypedTemplatesDir = QDir(CommonTemplatesDir.absoluteFilePath("builderexts"));
 
-  QString WareTypePath = openfluid::waresdev::WareSrcManager::instance()->getWareTypePath(
-      openfluid::ware::WareType::BUILDEREXT);
+  QString WareTypePath = QString::fromStdString(
+    openfluid::base::WorkspaceManager::instance()->getWaresPath(openfluid::ware::WareType::BUILDEREXT)
+  );
   QDir WareTypeDir = QDir(WareTypePath);
 
   openfluid::tools::Filesystem::emptyDirectory(WareTypePath.toStdString());

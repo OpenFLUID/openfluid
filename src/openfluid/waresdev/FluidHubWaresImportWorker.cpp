@@ -41,7 +41,7 @@
 #include <QFileInfo>
 
 #include <openfluid/waresdev/FluidHubWaresImportWorker.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 
 
@@ -223,7 +223,7 @@ bool FluidHubWaresImportWorker::clone()
     return false;
   }
 
-  openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
+  auto WksMgr = openfluid::base::WorkspaceManager::instance();
 
   double ProgressRatio = 100;
   int SelectedWarePathsNb = 0;
@@ -241,7 +241,7 @@ bool FluidHubWaresImportWorker::clone()
 
   for (const auto& Pair : m_SelectedWaresUrlByType)
   {
-    QString WareTypePath = Mgr->getWareTypePath(Pair.first);
+    QString WareTypePath = QString::fromStdString(WksMgr->getWaresPath(Pair.first));
 
     for (const auto& GitUrl : Pair.second)
     {

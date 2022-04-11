@@ -43,6 +43,8 @@
 #include <QMessageBox>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
@@ -520,7 +522,7 @@ void WaresSrcImportDialog::updatePackageWaresList()
     return;
   }
 
-  QDir WaresDevDir(openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath());
+  QDir WaresDevDir(QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getWaresPath()));
   QDir PackageTempDir = mp_ImportFilePkg->getPackageTempDir();
 
   for (const QString& WarePath : mp_ImportFilePkg->getWaresPaths())
@@ -576,7 +578,7 @@ void WaresSrcImportDialog::updateHubWaresList()
     return;
   }
 
-  openfluid::waresdev::WareSrcManager* Mgr = openfluid::waresdev::WareSrcManager::instance();
+  auto Mgr = openfluid::base::WorkspaceManager::instance();
 
   QString UserName = mp_FluidHubWaresImportWorker->getUsername();
   QString ErrStr;
@@ -590,7 +592,7 @@ void WaresSrcImportDialog::updateHubWaresList()
       QString WareId = QString::fromStdString(WarePair.first);
       std::set<std::string> Users = WarePair.second.ROUsers;
 
-      bool WareInWorkspace = !Mgr->getWarePath(WareId, Type, ErrStr).isEmpty();
+      bool WareInWorkspace = openfluid::tools::Filesystem::isDirectory(Mgr->getWarePath(Type,WareId.toStdString()));
       bool WareNotAuthorized = !Users.count("*") && !Users.count(UserName.toStdString());
 
       if (isWareDisplayed(Type, WareId, WareInWorkspace, WareNotAuthorized))

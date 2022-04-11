@@ -1,6 +1,6 @@
 
 
-SET(OPENFLUID_WARESDEV_CPP WareSrcManager.cpp 
+SET(OPENFLUID_WARESDEV_CPP WareSrcEnquirer.cpp 
                            WareSrcContainer.cpp 
                            OStreamMsgStream.cpp
                            WareSrcFactory.cpp 
@@ -10,8 +10,8 @@ SET(OPENFLUID_WARESDEV_CPP WareSrcManager.cpp
                            CompletionProvider.cpp
                            )
 
-SET(OPENFLUID_WARESDEV_HPP WareSrcManager.hpp 
-                           WareSrcContainer.hpp 
+SET(OPENFLUID_WARESDEV_HPP WareSrcEnquirer.hpp 
+                           WareSrcContainer.hpp WareSrcContainerOps.hpp 
                            WareSrcMsgStream.hpp 
                            OStreamMsgStream.cpp
                            WareSrcFactory.hpp 

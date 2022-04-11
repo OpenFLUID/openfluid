@@ -43,7 +43,6 @@
 #include <QWidget>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcContainer.hpp>
 
 
 namespace Ui

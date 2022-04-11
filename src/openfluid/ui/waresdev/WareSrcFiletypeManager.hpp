@@ -47,9 +47,8 @@
 #include <QMap>
 #include <QRegExp>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {

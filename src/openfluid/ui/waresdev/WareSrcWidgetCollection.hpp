@@ -60,7 +60,7 @@ class QTabWidget;
 namespace openfluid {
 
 namespace waresdev {
-class WareSrcManager;
+class WareSrcEnquirer;
 }
 
 
@@ -105,7 +105,7 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     openfluid::waresdev::WareBuildOptions m_DefaultWareBuildOptions;
 
-    openfluid::waresdev::WareSrcManager* mp_Manager;
+    const openfluid::base::WorkspaceManager* mp_Manager;
 
     /**
      * List of opened ware widgets by their absolute path
@@ -179,8 +179,6 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void generateDoc();
 
     void saveCurrentEditor();
-
-    void saveAsMayBeAboveWare();
 
     /**
       @param TopDirectory The path to the topmost directory where may be saved the file,

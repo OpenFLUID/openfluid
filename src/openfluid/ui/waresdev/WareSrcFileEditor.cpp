@@ -50,6 +50,8 @@
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
+#include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
 #include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
@@ -81,7 +83,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
   QString ProgLang = openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->getFileLanguage(FilePath);
   openfluid::ware::WareType WType =
-      openfluid::waresdev::WareSrcManager::instance()->getPathInfo(FilePath).m_WareType;
+      openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(FilePath.toStdString()).WareType;
 
   m_CompletionRules = openfluid::waresdev::CompletionProvider::instance()->getRules(ProgLang,WType);
 

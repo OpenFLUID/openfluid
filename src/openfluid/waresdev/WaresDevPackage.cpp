@@ -44,6 +44,7 @@
 
 #include <openfluid/waresdev/WaresDevPackage.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
 
@@ -256,7 +257,7 @@ void WaresDevExportPackage::writeConfFile()
 
 void WaresDevExportPackage::compress()
 {
-  QString WaresdevPath = openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath();
+  QString WaresdevPath = QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getWaresPath());
 
   QDir WaresdevDir(WaresdevPath);
 
@@ -397,7 +398,7 @@ void WaresDevImportPackage::setSelectedWares(const QStringList& SelectedWarePath
 
 void WaresDevImportPackage::copyWares()
 {
-  QDir WaresDevDir(openfluid::waresdev::WareSrcManager::instance()->getWaresdevPath());
+  QDir WaresDevDir(QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getWaresPath()));
 
   bool Ok = true;
 

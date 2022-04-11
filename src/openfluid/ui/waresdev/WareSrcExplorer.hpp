@@ -45,7 +45,6 @@
 #include <QContextMenuEvent>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {

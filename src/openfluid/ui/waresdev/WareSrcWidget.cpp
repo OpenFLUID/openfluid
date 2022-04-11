@@ -61,10 +61,11 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info, bool IsStandalone,
+WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcEnquirer::WarePathInfo& Info, bool IsStandalone,
                              QWidget* Parent) :
     QWidget(Parent), ui(new Ui::WareSrcWidget),
-    m_Container(Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName), m_IsStandalone(IsStandalone)
+    m_Container(QString::fromStdString(Info.AbsoluteWarePath),Info.WareType,QString::fromStdString(Info.WareDirName)), 
+    m_IsStandalone(IsStandalone)
 {
   ui->setupUi(this);
 
@@ -72,7 +73,7 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo
   Sizes << 1000 << 180;
   ui->splitter->setSizes(Sizes);
 
-  bool IsSimulator = Info.m_WareType==openfluid::ware::WareType::SIMULATOR;
+  bool IsSimulator = Info.WareType==openfluid::ware::WareType::SIMULATOR;
 
   mp_ActionsCollection = new openfluid::ui::waresdev::WareSrcActionsCollection(m_IsStandalone, m_IsStandalone, this);
   mp_WareSrcToolBar = new WareSrcToolbar(m_IsStandalone, mp_ActionsCollection, IsSimulator, this);
@@ -236,11 +237,13 @@ void WareSrcWidget::displayBuildOptionsDialog()
 // =====================================================================
 
 
-void WareSrcWidget::openFileTab(const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index)
+void WareSrcWidget::openFileTab(const openfluid::waresdev::WareSrcEnquirer::WarePathInfo& Info, int Index)
 {
   if (!setCurrent(Info))
   {
-    addNewFileTab(Index, Info.m_AbsolutePath, Info.m_FileName, QDir::toNativeSeparators(Info.m_RelativePathToWareDir));
+    addNewFileTab(Index, 
+                  QString::fromStdString(Info.AbsolutePath), QString::fromStdString(Info.FileName),
+                  QDir::toNativeSeparators(QString::fromStdString(Info.RelativePathToWare)));
   }
 }
 
@@ -493,10 +496,10 @@ bool WareSrcWidget::eventFilter(QObject* Obj, QEvent* Event)
 
 void WareSrcWidget::openDefaultFiles()
 {
-  for(const QString& F : m_Container.getDefaultFilesPaths())
+  for(const auto& F : m_Container.getDefaultFilesPaths())
   {
-    QString FileName = QFileInfo(F).fileName();
-    addNewFileTab(-1,F, FileName, QDir::toNativeSeparators(FileName));
+    QString FileName = QFileInfo(QString::fromStdString(F)).fileName();
+    addNewFileTab(-1,QString::fromStdString(F), FileName, QDir::toNativeSeparators(FileName));
   }
 }
 
@@ -505,9 +508,9 @@ void WareSrcWidget::openDefaultFiles()
 // =====================================================================
 
 
-bool WareSrcWidget::setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info)
+bool WareSrcWidget::setCurrent(const openfluid::waresdev::WareSrcEnquirer::WarePathInfo& Info)
 {
-  WareFileEditor* Widget = m_WareFilesByPath.value(Info.m_AbsolutePath, 0);
+  WareFileEditor* Widget = m_WareFilesByPath.value(QString::fromStdString(Info.AbsolutePath), 0);
 
   if (Widget)
   {
@@ -522,7 +525,7 @@ bool WareSrcWidget::setCurrent(const openfluid::waresdev::WareSrcManager::PathIn
 // =====================================================================
 
 
-openfluid::waresdev::WareSrcContainer& WareSrcWidget::wareSrcContainer()
+WareSrcUIContainer& WareSrcWidget::wareSrcContainer()
 {
   return m_Container;
 }
@@ -751,12 +754,11 @@ QString WareSrcWidget::saveAs(const QString& TopDirectory)
 
   CurrentEditor->saveContentToPath(NewFilePath);
 
-  openfluid::waresdev::WareSrcManager::PathInfo NewPathInfo = openfluid::waresdev::WareSrcManager::instance()
-      ->getPathInfo(NewFilePath);
+  auto NewPathInfo = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(NewFilePath.toStdString());
 
   int CurrentIndex = closeFileTab(CurrentEditor);
 
-  if (NewPathInfo.m_AbsolutePathOfWare == CurrentWarePath)
+  if (NewPathInfo.AbsoluteWarePath == CurrentWarePath.toStdString())
   {
     // in case the new path was already opened
     closeFileTab(NewFilePath);
@@ -783,7 +785,7 @@ void WareSrcWidget::newFile()
     if (!NewFilePath.isEmpty())
     {
       m_Container.update();
-      openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(NewFilePath));
+      openFileTab(openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(NewFilePath.toStdString()));
     }
   }
 }
@@ -839,7 +841,7 @@ void WareSrcWidget::openFile()
     return;
   }
 
-  openFileTab(openfluid::waresdev::WareSrcManager::instance()->getPathInfo(PathToOpen));
+  openFileTab(openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(PathToOpen.toStdString()));
 }
 
 
@@ -937,10 +939,9 @@ void WareSrcWidget::onProcessFinished()
 
 void WareSrcWidget::onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
 {
-  openfluid::waresdev::WareSrcManager::PathInfo Info = openfluid::waresdev::WareSrcManager::instance()->getPathInfo(
-      Msg.m_Path);
+  auto Info = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(Msg.m_Path.toStdString());
 
-  if (Info.m_AbsolutePathOfWare != m_Container.getAbsolutePath())
+  if (Info.AbsoluteWarePath != m_Container.getAbsolutePath().toStdString())
   {
     return;
   }

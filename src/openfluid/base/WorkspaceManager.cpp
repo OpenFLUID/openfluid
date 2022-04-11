@@ -290,6 +290,17 @@ std::string WorkspaceManager::getWaresPath(const std::string& WorkspacePath, ope
 // =====================================================================
 
 
+std::string WorkspaceManager::getWarePath(const std::string& WorkspacePath, 
+                                          openfluid::ware::WareType Type, const openfluid::ware::WareID_t& ID)
+{
+  return openfluid::tools::Filesystem::joinPath({WorkspaceManager::getWaresPath(WorkspacePath,Type),ID});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string WorkspaceManager::getSettingsFile() const
 {
   if (m_IsOpen)
@@ -362,7 +373,7 @@ void WorkspaceManager::insertRecentProject(const std::string& Name, const std::s
       RecentList.pop_back();
     }
 
-    RecentProject_t RP;
+    RecentProject RP;
     RP.Name = Name;
     RP.Path = Path;
     RecentList.push_front(RP);
@@ -386,9 +397,9 @@ void WorkspaceManager::insertRecentProject(const std::string& Name, const std::s
 // =====================================================================
 
 
-std::list<WorkspaceManager::RecentProject_t> WorkspaceManager::getRecentProjects() const
+std::list<WorkspaceManager::RecentProject> WorkspaceManager::getRecentProjects() const
 {  
-  std::list<WorkspaceManager::RecentProject_t> RecentList;
+  std::list<WorkspaceManager::RecentProject> RecentList;
 
   if (m_IsOpen)
   { 
@@ -407,7 +418,7 @@ std::list<WorkspaceManager::RecentProject_t> WorkspaceManager::getRecentProjects
       {
         if (V.is_object() && V.contains("name") && V.contains("path"))
         { 
-          RecentProject_t RP;
+          RecentProject RP;
           RP.Name = V["name"];
           RP.Path = V["path"];
           RecentList.push_back(RP);
@@ -456,7 +467,7 @@ std::string WorkspaceManager::getWarePath(openfluid::ware::WareType Type, const 
 {
   if (m_IsOpen)
   {
-    return openfluid::tools::Filesystem::joinPath({getWaresPath(Type),ID});
+    return getWarePath(m_WorkspacePath,Type,ID);
   }
 
   return "";

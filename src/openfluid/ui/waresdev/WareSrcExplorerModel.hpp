@@ -45,9 +45,9 @@
 #include <QFileSystemModel>
 #include <QFileSystemWatcher>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/waresdev/WareSrcEnquirer.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -70,14 +70,12 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
     // set here to speed up display
     QMap<QString, QString> m_UserIcons;
 
-    openfluid::waresdev::WareSrcManager* mp_Manager;
-
     /*
      * Map of PathInfo for each FilePath
      * Stored to avoid PathInfo object creation at each data() call.
      * Instead they are only created at each directoryLoaded() signal
      */
-    QMap<QString, openfluid::waresdev::WareSrcManager::PathInfo> m_PathInfos;
+    QMap<QString, openfluid::waresdev::WareSrcEnquirer::WarePathInfo> m_PathInfos;
 
     std::map<openfluid::utils::GitProxy::FileStatus, QString> m_IconByGitStatus =
         {

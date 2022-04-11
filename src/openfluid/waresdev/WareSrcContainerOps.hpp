@@ -26,21 +26,20 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+ 
+ */
+
 
 /**
-  @file WareSrcProcess.hpp
-
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
-*/
-
-
-#ifndef __OPENFLUID_WARESDEV_WARESRCPROCESS_HPP__
-#define __OPENFLUID_WARESDEV_WARESRCPROCESS_HPP__
+  @file WareSrcContainerOps.hpp
+ 
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+ */
 
 
-#include <QProcess>
+#ifndef __OPENFLUID_WARESDEV_WARESRCCONTAINEROPS_HPP__
+#define __OPENFLUID_WARESDEV_WARESRCCONTAINEROPS_HPP__
+
 
 #include <openfluid/dllexport.hpp>
 
@@ -48,32 +47,19 @@
 namespace openfluid { namespace waresdev {
 
 
-class OPENFLUID_API WareSrcProcess : public QProcess
+class OPENFLUID_API WareSrcContainerOps
 {
-
   public:
 
-    enum class Type { NONE, CONFIGURE, BUILD};
+    virtual void configure() = 0;
 
-    void setType(Type PT)
-    { 
-      m_Type = PT; 
-    }
+    virtual void build() = 0;
 
-    Type getType() const
-    { 
-      return m_Type; 
-    }
-
-
-  private:
-
-    Type m_Type = Type::NONE;
-
+    virtual void generateDoc() = 0;
 };
 
 
 } } // namespaces
 
 
-#endif /* __OPENFLUID_WARESDEV_WARESRCPROCESS_HPP__ */
+#endif /* __OPENFLUID_WARESDEV_WARESRCCONTAINEROPS_HPP__ */
