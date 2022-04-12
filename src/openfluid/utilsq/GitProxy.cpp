@@ -207,7 +207,7 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
   }
 
 
-  QStringList Args = {"clone","--progress"};
+  QStringList Args = {"clone", "--recurse-submodules", "--progress"};
   Args.append(Options);
   Args.append(Url);
   Args.append(ToPath);

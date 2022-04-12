@@ -85,6 +85,11 @@ enum class WareType
   BUILDEREXT,
 
   /**
+    Ware type is fragment (maybe stored somewhere else since Fragment not stricto sensu a ware?)
+  */
+  FRAGMENT,
+
+  /**
     Ware type is none of the other types
   */
   OTHER

@@ -45,6 +45,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -264,6 +265,11 @@ std::map<std::string,std::string> WareSrcContainer::getConfigureVariables() cons
     Vars["CMAKE_PREFIX_PATH"] = 
       openfluid::tools::Filesystem::joinPath({std::string(ChOpenFLUIDInstallPrefix),"lib","cmake"});
   }
+
+  // Adding contextual paths for fragment detection
+  Vars["OPENFLUID_CURRENT_USER_DATA_PATH"] = QString::fromStdString(openfluid::base::Environment::getUserDataDir());
+  Vars["OPENFLUID_CURRENT_WORKSPACE_PATH"] = QString::fromStdString(
+    openfluid::base::WorkspaceManager::instance()->getWorkspacePath());  // workspace root
 
   return Vars;
 }
