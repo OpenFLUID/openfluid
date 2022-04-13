@@ -50,7 +50,7 @@
 #include <QApplication>
 
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevPurgeWorker.hpp>
 
 #include "tests-config.hpp"
@@ -125,12 +125,11 @@ BOOST_AUTO_TEST_CASE(check_purge)
     {
       for (auto& WItem : WType.second)
       {
-        openfluid::tools::Filesystem::makeDirectory(WItem.Path.toStdString()+"/_build-release-0.0");
-        openfluid::tools::Filesystem::makeDirectory(WItem.Path.toStdString()+"/_build-debug-0.0");
-        openfluid::tools::Filesystem::makeDirectory(WItem.Path.toStdString()+"/_build-release-"+
-                                                    openfluid::base::Environment::getVersionMajorMinor());
-        openfluid::tools::Filesystem::makeDirectory(WItem.Path.toStdString()+"/_build-debug-"+
-                                                    openfluid::base::Environment::getVersionMajorMinor());
+        auto WItemPathFSP = openfluid::tools::FilesystemPath(WItem.Path.toStdString());
+        WItemPathFSP.makeDirectory("_build-release-0.0");
+        WItemPathFSP.makeDirectory("_build-debug-0.0");
+        WItemPathFSP.makeDirectory("_build-release-"+openfluid::base::Environment::getVersionMajorMinor());
+        WItemPathFSP.makeDirectory("_build-debug-"+openfluid::base::Environment::getVersionMajorMinor());
 
         openfluid::ui::waresdev::WorkspaceDevPurgeWorker Worker(Selection,Conf.CurrentVer,Conf.OtherVer,
                                                                           Conf.Release,Conf.Debug);
@@ -145,25 +144,15 @@ BOOST_AUTO_TEST_CASE(check_purge)
       {
         std::string PathToCheck;
 
-        PathToCheck = WItem.Path.toStdString()+"/_build-release-0.0";
-        std::cout << "Checking : " << PathToCheck << std::endl;
-        BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(PathToCheck) ==
-                      !(Conf.OtherVer && Conf.Release));
+        auto WItemPathFSP = openfluid::tools::FilesystemPath(WItem.Path.toStdString());
 
-        PathToCheck = WItem.Path.toStdString()+"/_build-debug-0.0";
-        std::cout << "Checking : " << PathToCheck << std::endl;
-        BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(PathToCheck) ==
-                      !(Conf.OtherVer && Conf.Debug));
+        BOOST_REQUIRE(WItemPathFSP.isDirectory("_build-release-0.0") == !(Conf.OtherVer && Conf.Release));
+        BOOST_REQUIRE(WItemPathFSP.isDirectory("_build-debug-0.0") == !(Conf.OtherVer && Conf.Debug));
 
-        PathToCheck = WItem.Path.toStdString()+"/_build-release-"+openfluid::base::Environment::getVersionMajorMinor();
-        std::cout << "Checking : " << PathToCheck << std::endl;
-        BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(PathToCheck) ==
-                      !(Conf.CurrentVer && Conf.Release));
-
-        PathToCheck = WItem.Path.toStdString()+"/_build-debug-"+openfluid::base::Environment::getVersionMajorMinor();
-        std::cout << "Checking : " << PathToCheck << std::endl;
-        BOOST_REQUIRE(openfluid::tools::Filesystem::isDirectory(PathToCheck) ==
-                      !(Conf.CurrentVer && Conf.Debug));
+        BOOST_REQUIRE(WItemPathFSP.isDirectory("_build-release-"+openfluid::base::Environment::getVersionMajorMinor()) 
+                      == !(Conf.CurrentVer && Conf.Release));
+        BOOST_REQUIRE(WItemPathFSP.isDirectory("_build-debug-"+openfluid::base::Environment::getVersionMajorMinor())
+                      == !(Conf.CurrentVer && Conf.Debug));
       }
     }
   }

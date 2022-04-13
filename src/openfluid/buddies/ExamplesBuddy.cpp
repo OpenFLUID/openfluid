@@ -42,6 +42,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -79,11 +80,11 @@ bool ExamplesBuddy::installExampleFolder(const std::string& SourcePath,
                                           const std::string& InstallPath,
                                           const std::string& FolderName, const bool Force)
 {
-  std::string ThisFolderInstallPath = openfluid::tools::Filesystem::joinPath({InstallPath,FolderName});
+  auto FolderInstallPathFSP = openfluid::tools::FilesystemPath({InstallPath,FolderName});
 
-  if (!openfluid::tools::Filesystem::isDirectory(ThisFolderInstallPath) || Force)
+  if (!FolderInstallPathFSP.isDirectory() || Force)
   {
-    openfluid::tools::Filesystem::makeDirectory(ThisFolderInstallPath);
+    FolderInstallPathFSP.makeDirectory();
 
     openfluid::tools::Filesystem::copyDirectory(openfluid::tools::Filesystem::joinPath({SourcePath,FolderName}),
                                                 InstallPath,true,true);
@@ -123,8 +124,7 @@ bool ExamplesBuddy::installExampleSimulator(const std::string& SimulatorsSourceP
                                           const std::string& SimulatorDir, const bool Force)
 {
   // check if simulator exists
-  if (openfluid::tools::Filesystem::isDirectory(openfluid::tools::Filesystem::joinPath({SimulatorsSourcePath,
-                                                                                        SimulatorDir})))
+  if (openfluid::tools::FilesystemPath({SimulatorsSourcePath,SimulatorDir}).isDirectory())
   {
     mp_Listener->onSubstageCompleted("Installing example simulator \"" + SimulatorDir + "\" ... ");
     return installExampleFolder(SimulatorsSourcePath, SimulatorsInstallPath, SimulatorDir, Force);
@@ -147,7 +147,7 @@ bool ExamplesBuddy::installAllExamplesFolders(const std::string& ExamplesSourceP
   // PROJECTS
   std::string ProjectsSourcePath = openfluid::tools::Filesystem::joinPath({ExamplesSourcePath,
                                                                            openfluid::config::PROJECTS_PATH});
-  if (openfluid::tools::Filesystem::isDirectory(ProjectsSourcePath))
+  if (openfluid::tools::FilesystemPath(ProjectsSourcePath).isDirectory())
   {
     std::vector<std::string> FoundProjects = openfluid::tools::Filesystem::findDirectories(ProjectsSourcePath);
 
@@ -170,7 +170,7 @@ bool ExamplesBuddy::installAllExamplesFolders(const std::string& ExamplesSourceP
                                                                         openfluid::config::SIMULATORS_PATH});
   std::string SimulatorsSourcePath = openfluid::tools::Filesystem::joinPath({ExamplesSourcePath,SimulatorSuffix});
   
-  if (openfluid::tools::Filesystem::isDirectory(SimulatorsSourcePath))
+  if (openfluid::tools::FilesystemPath(SimulatorsSourcePath).isDirectory())
   {
     std::vector<std::string> FoundSimulators = openfluid::tools::Filesystem::findDirectories(SimulatorsSourcePath);
 

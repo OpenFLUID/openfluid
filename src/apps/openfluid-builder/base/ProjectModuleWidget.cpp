@@ -54,7 +54,7 @@
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "ProjectModuleWidget.hpp"
 #include "AppTools.hpp"
@@ -786,9 +786,8 @@ void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::Wa
       if (Dlg.exec() == QDialog::Accepted)
       {
         Signature = Dlg.getSignature();
-        openfluid::machine::GhostSimulatorFileIO::saveToFile(
-                Signature,
-                openfluid::tools::Filesystem::dirname(FileFullPath));
+        openfluid::machine::GhostSimulatorFileIO::saveToFile(Signature,
+                                                             openfluid::tools::FilesystemPath(FileFullPath).dirname());
         updateSimulatorsWares();
       }
     }

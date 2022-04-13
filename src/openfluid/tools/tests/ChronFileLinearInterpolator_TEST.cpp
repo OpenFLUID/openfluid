@@ -51,7 +51,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
 #include "tests-config.hpp"
@@ -98,7 +98,7 @@ bool validateException(const openfluid::base::FrameworkException& /*E*/)
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators");
+  openfluid::tools::FilesystemPath(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators").makeDirectory();
 
   openfluid::tools::ChronFileLinearInterpolator
     CFLI(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/measured_ticks.dat",
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators");
+  openfluid::tools::FilesystemPath(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators").makeDirectory();
 
   {
     Timer t;

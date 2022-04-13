@@ -53,6 +53,7 @@
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>
 
@@ -178,7 +179,7 @@ void Sim2DocBuddy::copyDocDirectory()
   {
     std::string InputDocDirPath = openfluid::tools::Filesystem::joinPath({m_InputDirPath,"doc"});
 
-    if (openfluid::tools::Filesystem::isDirectory(InputDocDirPath))
+    if (openfluid::tools::FilesystemPath(InputDocDirPath).isDirectory())
     {
       mp_Listener->onSubstageCompleted("** Processing doc directory...");
       openfluid::tools::Filesystem::copyDirectory(InputDocDirPath,m_OutputDirPath,true);
@@ -233,10 +234,10 @@ void Sim2DocBuddy::cpreprocessCPP()
 
   m_CProcessedFilePath = 
     openfluid::tools::Filesystem::joinPath(
-      {m_OutputDirPath,openfluid::tools::Filesystem::filename(m_InputFilePath)+".sim2doc"}
+      {m_OutputDirPath,openfluid::tools::FilesystemPath(m_InputFilePath).filename()+".sim2doc"}
     );
 
-  openfluid::tools::Filesystem::removeFile(m_CProcessedFilePath);
+  openfluid::tools::FilesystemPath(m_CProcessedFilePath).removeFile();
 
   std::string CommandToRun = m_GCCProgram.getFullProgramPath().toStdString() +
                              " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " +
@@ -248,7 +249,7 @@ void Sim2DocBuddy::cpreprocessCPP()
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error running c preprocessor");
   }
 
-  if (!openfluid::tools::Filesystem::isFile(m_CProcessedFilePath))
+  if (!openfluid::tools::FilesystemPath(m_CProcessedFilePath).isFile())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"C preprocessed file not generated");
   }
@@ -800,7 +801,7 @@ bool Sim2DocBuddy::isErrorInPDFLatexLog()
 {
   std::string LogFilePath = 
     openfluid::tools::Filesystem::joinPath({m_OutputDirPath,
-                                            openfluid::tools::Filesystem::basename(m_OutputLatexFilePath)+".log"
+                                            openfluid::tools::FilesystemPath(m_OutputLatexFilePath).basename()+".log"
                                            });
 
   std::ifstream LogFile(LogFilePath.c_str());
@@ -1000,24 +1001,24 @@ bool Sim2DocBuddy::run()
   m_InputFilePath = m_Options["inputcpp"];
   m_OutputDirPath = m_Options["outputdir"];
 
-  if (!openfluid::tools::Filesystem::isFile(m_InputFilePath))
+  if (!openfluid::tools::FilesystemPath(m_InputFilePath).isFile())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Input file does not exist");
   }
 
   m_TplFilePath = m_Options["tplfile"];
-  if (!openfluid::tools::Filesystem::isFile(m_TplFilePath))
+  if (!openfluid::tools::FilesystemPath(m_TplFilePath).isFile())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Template file does not exist");
   }
 
-  if (!openfluid::tools::Filesystem::isDirectory(m_OutputDirPath))
+  if (!openfluid::tools::FilesystemPath(m_OutputDirPath).isDirectory())
   {
-    openfluid::tools::Filesystem::makeDirectory(m_OutputDirPath);
+    openfluid::tools::FilesystemPath(m_OutputDirPath).makeDirectory();
   }
 
 
-  m_InputDirPath = openfluid::tools::Filesystem::dirname(m_InputFilePath);
+  m_InputDirPath = openfluid::tools::FilesystemPath(m_InputFilePath).dirname();
 
   copyDocDirectory();
 

@@ -41,6 +41,7 @@
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -109,7 +110,7 @@ void DistributionTables::build(const std::string& BasePath,
 
   std::string DistributionFilePath = openfluid::tools::Filesystem::joinPath({BasePath,DistributionFileName});
 
-  if (openfluid::tools::Filesystem::isFile(DistributionFilePath))
+  if (openfluid::tools::FilesystemPath(DistributionFilePath).isFile())
   {
     if (DistriFileParser.loadFromFile(DistributionFilePath) &&
         DistriFileParser.getColsCount() == 2 &&

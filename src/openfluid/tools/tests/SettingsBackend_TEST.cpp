@@ -49,7 +49,7 @@
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/SettingsBackend.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "tests-config.hpp"
 
@@ -346,7 +346,7 @@ BOOST_AUTO_TEST_CASE(check_persistence)
 {
   std::string BackendFile = CONFIGTESTS_OUTPUT_DATA_DIR+"/SettingsBackend/openfluid-settings.json";
 
-  openfluid::tools::Filesystem::removeFile(BackendFile);
+  openfluid::tools::FilesystemPath(BackendFile).removeFile();
   openfluid::tools::SettingsBackend SBTo(BackendFile,"openfluid-settings");
 
   {

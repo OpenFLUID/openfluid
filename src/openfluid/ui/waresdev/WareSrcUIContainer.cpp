@@ -38,7 +38,7 @@
 
 #include <QCoreApplication>
 
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
@@ -221,7 +221,7 @@ void WareSrcUIContainer::build()
 
 
   // run configure if build dir does not exist
-  if (!openfluid::tools::Filesystem::exists(m_BuildDirPath))
+  if (!openfluid::tools::FilesystemPath(m_BuildDirPath).exists())
   {
     configure();
 
@@ -262,7 +262,7 @@ void WareSrcUIContainer::build()
 void WareSrcUIContainer::generateDoc()
 {
   // run configure if build dir does not exist
-  if (!openfluid::tools::Filesystem::exists(m_BuildDirPath))
+  if (!openfluid::tools::FilesystemPath(m_BuildDirPath).exists())
   {
     configure();
 

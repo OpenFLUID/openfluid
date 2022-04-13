@@ -42,6 +42,7 @@
 
 #include <openfluid/buddies/NewDataBuddy.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -315,9 +316,11 @@ bool NewDataBuddy::run()
 
   m_OutputDirPath = m_Options["outputdir"];
 
-  if (!openfluid::tools::Filesystem::isDirectory(m_OutputDirPath))
+  auto OuputDirFSP = openfluid::tools::FilesystemPath(m_OutputDirPath);
+
+  if (!OuputDirFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::makeDirectory(m_OutputDirPath);
+    OuputDirFSP.makeDirectory();
   }
 
   generateModelXML();

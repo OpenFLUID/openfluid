@@ -40,7 +40,7 @@
 #include <openfluid/scientific/FloatingPoint.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/ColumnTextParser.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 // =====================================================================
@@ -178,7 +178,7 @@ openfluid::base::SchedulingRequest ToolsSimulator::initializeRun()
   OPENFLUID_GetRunEnvironment("dir.input",InputDir);
   std::string FileName = InputDir + "/" + "columnfile.txt";
 
-  if (openfluid::tools::Filesystem::isFile(FileName))
+  if (openfluid::tools::FilesystemPath(FileName).isFile())
   {
     CTParser.loadFromFile(FileName);
 

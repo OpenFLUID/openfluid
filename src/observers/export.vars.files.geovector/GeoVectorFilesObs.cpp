@@ -44,7 +44,7 @@
 
 #include <openfluid/utils/GDALCompatibility.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
@@ -385,7 +385,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
         GDALDriver_COMPAT* Driver = GDALGetDriverByName_COMPAT(m_GDALFormat.c_str());
 
-        if (openfluid::tools::Filesystem::isFile(FullFilePath))
+        if (openfluid::tools::FilesystemPath(FullFilePath).isFile())
         {
           // deletion of an existing file or files set
           GDALDelete_COMPAT(Driver,FullFilePath.c_str());

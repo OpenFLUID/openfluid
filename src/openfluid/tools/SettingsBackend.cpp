@@ -40,7 +40,7 @@
 #include <fstream>
 
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/SettingsBackend.hpp>
 
@@ -171,7 +171,10 @@ bool SettingsBackend::autoSave() const
 
 bool SettingsBackend::save() const
 {
-  if (openfluid::tools::Filesystem::makeDirectory(openfluid::tools::Filesystem::dirname(m_BackendFile)))
+  auto BF = openfluid::tools::FilesystemPath(m_BackendFile);
+  auto BFDir = openfluid::tools::FilesystemPath(BF.dirname());
+
+  if (BFDir.makeDirectory())
   {
     std::ofstream OutFS(m_BackendFile,std::ofstream::out);
 

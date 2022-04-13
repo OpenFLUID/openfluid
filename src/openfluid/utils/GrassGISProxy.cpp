@@ -45,6 +45,7 @@
 #include <openfluid/utils/GrassGISProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/Environment.hpp>
 
 
@@ -317,7 +318,7 @@ bool GrassGISProxy::isLocationExist() const
 {
   QString Path = QString("%1/%2").arg(m_GISBase).arg(m_Location);
 
-  return openfluid::tools::Filesystem::isDirectory(Path.toStdString());
+  return openfluid::tools::FilesystemPath(Path.toStdString()).isDirectory();
 }
 
 

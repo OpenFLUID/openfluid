@@ -81,9 +81,6 @@ class OPENFLUID_API Filesystem
 #endif
     }
 
-    #warning "TO BE REMOVED"
-    static std::string removeTrailingSeparators(const std::string& Path, char Sep = '/') noexcept;
-
     /**
       Returns a joined path string from a vector of path parts, using the '/' separator
       @param[in] PathParts a vector of path parts
@@ -91,15 +88,6 @@ class OPENFLUID_API Filesystem
       @snippet misc/filesystem.cpp joinpath
     */
     static std::string joinPath(const std::vector<std::string>& PathParts);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static std::vector<std::string> splitPath(const std::string& Path);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static std::string toNativePath(const std::string& Path);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static std::string toGenericPath(const std::string& Path);
 
     /**
       Returns the user home path (e.g. '/home/username' on Linux, 'C:/Users/username' on Windows, ...)
@@ -157,30 +145,6 @@ class OPENFLUID_API Filesystem
     */
     static std::string absolutePath(const std::string& Path);
 
-    #warning "TO BE REMOVED"
-    [[deprecated]] static std::string relativePath(const std::string& Path, const std::string& BasePath);
-
-    #warning "TO BE REMOVED"
-    static std::string cleanPath(const std::string& Path);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static bool containsPath(const std::string& Path, const std::string& ChildPath);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static bool isDirectory(const std::string& Path);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static bool isFile(const std::string& Path);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static bool exists(const std::string& Path);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static bool makeDirectory(const std::string& Path);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static bool removeDirectory(const std::string& Path);
-
     /**
       Creates a unique subdirectory in the given path, using the given subdirectory name as a prefix.
       If the subdirectory already exists, it adds an incremental suffix to the subdirectory name.
@@ -200,9 +164,6 @@ class OPENFLUID_API Filesystem
       @return the full path of the created unique file
     */
     static std::string makeUniqueFile(const std::string& Path, const std::string& FileName);
-
-    #warning "TO BE REMOVED"
-    [[deprecated]] static bool removeFile(const std::string& Path);
 
     /**
       Copies a file from source to destination.

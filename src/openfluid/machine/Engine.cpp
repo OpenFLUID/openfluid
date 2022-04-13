@@ -49,6 +49,7 @@
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -473,8 +474,8 @@ void Engine::checkExtraFilesConsistency()
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
-      if (!openfluid::tools::Filesystem::isFile(openfluid::base::RunContextManager::instance()
-                                                  ->getInputFullPath(HData.RequiredExtraFiles[i])))
+      if (!openfluid::tools::FilesystemPath(openfluid::base::RunContextManager::instance()
+                                            ->getInputFullPath(HData.RequiredExtraFiles[i])).isFile())
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "File " + HData.RequiredExtraFiles[i] +
@@ -491,10 +492,12 @@ void Engine::checkExtraFilesConsistency()
 
 void Engine::prepareOutputDir()
 {
-  if (!openfluid::tools::Filesystem::isDirectory(openfluid::base::RunContextManager::instance()->getOutputDir()))
+  auto OutputDirFSP = openfluid::tools::FilesystemPath(openfluid::base::RunContextManager::instance()->getOutputDir());
+
+  if (!OutputDirFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::makeDirectory(openfluid::base::RunContextManager::instance()->getOutputDir());
-    if (!openfluid::tools::Filesystem::isDirectory(openfluid::base::RunContextManager::instance()->getOutputDir()))
+    OutputDirFSP.makeDirectory();
+    if (!OutputDirFSP.isDirectory())
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error creating output directory");
     }
@@ -504,7 +507,7 @@ void Engine::prepareOutputDir()
     if (openfluid::base::RunContextManager::instance()->isClearOutputDir())
     {
       openfluid::tools::Filesystem::emptyDirectory(
-        openfluid::base::RunContextManager::instance()->getOutputDir().c_str()
+        openfluid::base::RunContextManager::instance()->getOutputDir()
       );
     }
   }

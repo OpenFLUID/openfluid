@@ -44,6 +44,7 @@
 #include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/thirdparty/XML.hpp>
@@ -834,7 +835,7 @@ class FluidXReaderImplementation
 
     void run(const std::string& DirPath)
     {
-      if (!openfluid::tools::Filesystem::isDirectory(DirPath))
+      if (!openfluid::tools::FilesystemPath(DirPath).isDirectory())
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"directory " + DirPath + " does not exist");
       }
@@ -860,7 +861,7 @@ class FluidXReaderImplementation
       {
         try
         {
-          mp_Listener->onFileLoad(openfluid::tools::Filesystem::filename(CurrentFile));
+          mp_Listener->onFileLoad(openfluid::tools::FilesystemPath(CurrentFile).filename());
           bool OK = parseFile(CurrentFile,TempData);
           if (OK)
           {
@@ -1243,12 +1244,13 @@ class FluidXWriterImplementation
 
     void prepareFluidXDir(const std::string& DirPath) const
     {
+      auto DirPathFSP = openfluid::tools::FilesystemPath(DirPath);
 
-      if (!openfluid::tools::Filesystem::isDirectory(DirPath))
+      if (!DirPathFSP.isDirectory())
       {
-        openfluid::tools::Filesystem::makeDirectory(DirPath);
+        DirPathFSP.makeDirectory();
 
-        if (!openfluid::tools::Filesystem::isDirectory(DirPath))
+        if (!DirPathFSP.isDirectory())
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error creating output directory: "+
                                                                              DirPath);
@@ -1317,7 +1319,7 @@ class FluidXWriterImplementation
     {
       mp_Listener->onWrite();
 
-      prepareFluidXDir(openfluid::tools::Filesystem::dirname(FilePath));
+      prepareFluidXDir(openfluid::tools::FilesystemPath(FilePath).dirname());
 
       mp_Listener->onFileWrite(FilePath);
 

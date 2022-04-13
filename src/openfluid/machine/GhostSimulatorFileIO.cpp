@@ -45,6 +45,7 @@
 #include <openfluid/thirdparty/XML.hpp>
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
@@ -349,7 +350,7 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
       {
         std::string GhostID = openfluid::thirdparty::getXMLAttribute(GhostElt,"ID");
 
-        if (!boost::starts_with(openfluid::tools::Filesystem::filename(FilePath),GhostID))
+        if (!boost::starts_with(openfluid::tools::FilesystemPath(FilePath).filename(),GhostID))
         {
           return false;
         }

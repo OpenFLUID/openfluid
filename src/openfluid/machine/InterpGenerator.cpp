@@ -40,6 +40,7 @@
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -128,7 +129,7 @@ void InterpGenerator::prepareData()
   for (openfluid::tools::DistributionTables::SourceIDFile_t::iterator it = itb; it != ite; ++it)
   {
 
-    std::string InFileName = openfluid::tools::Filesystem::filename((*it).second);
+    std::string InFileName = openfluid::tools::FilesystemPath((*it).second).filename();
     std::string OutFilePath = openfluid::tools::Filesystem::joinPath({m_TmpDir,"interp_"+InFileName});
     openfluid::tools::ChronFileLinearInterpolator CFLI((*it).second,OutFilePath,
                                                        OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),
@@ -280,7 +281,7 @@ void InterpGenerator::finalizeRun()
   }
   else
   {
-    openfluid::tools::Filesystem::removeDirectory(m_TmpDir);
+    openfluid::tools::FilesystemPath(m_TmpDir).removeDirectory();
     OPENFLUID_LogInfo("Temporary directory of interpolation generator was automatically deleted.");
   }
 }

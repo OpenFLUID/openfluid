@@ -50,7 +50,7 @@
 
 #include <openfluid/utils/GrassGISProxy.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "tests-config.hpp"
 
@@ -324,8 +324,10 @@ int main(int argc, char *argv[])
   if (openfluid::utils::GrassGISProxy::isAvailable())
   {
     std::cout << openfluid::utils::GrassGISProxy::getVersion().toStdString() << std::endl;
-    openfluid::tools::Filesystem::removeDirectory(BaseWorkDir.toStdString());
-    openfluid::tools::Filesystem::makeDirectory(BaseWorkDir.toStdString());
+
+    auto BaseWorkDirFSP = openfluid::tools::FilesystemPath(BaseWorkDir.toStdString());
+    BaseWorkDirFSP.removeDirectory();
+    BaseWorkDirFSP.makeDirectory();
 
     return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
   }

@@ -52,6 +52,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -104,15 +105,15 @@ void PreferencesManager::updateSettingsFile(const std::string& FilePath) const
 #endif
 
 
-  if (!openfluid::tools::Filesystem::isFile(FilePath))
+  if (!openfluid::tools::FilesystemPath(FilePath).isFile())
   {
     std::string FormerFilePath = 
       openfluid::tools::Filesystem::joinPath({
-        openfluid::tools::Filesystem::dirname(FilePath),
-        "openfluid.conf"
-      });
+                                               openfluid::tools::FilesystemPath(FilePath).dirname(),
+                                               "openfluid.conf"
+                                             });
 
-    if (openfluid::tools::Filesystem::isFile(FormerFilePath))
+    if (openfluid::tools::FilesystemPath(FormerFilePath).isFile())
     {
       auto cleanKeyValue = [](const std::string& Key, const std::string& Value)
       {
@@ -519,17 +520,18 @@ void PreferencesManager::updateSettingsFile(const std::string& FilePath) const
 
 void PreferencesManager::loadSettings()
 {
-  std::string SettingsDir = openfluid::tools::Filesystem::dirname(m_SettingsFile);
+  auto SettingsF = openfluid::tools::FilesystemPath(m_SettingsFile);
+  auto SettingsD = openfluid::tools::FilesystemPath(SettingsF.dirname());
 
-  if (!openfluid::tools::Filesystem::exists(SettingsDir) && !openfluid::tools::Filesystem::makeDirectory(SettingsDir))
+  if (!SettingsD.exists() && !SettingsD.makeDirectory())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Cannot create directory for settings file");
   }
 
-  m_Settings = std::make_unique<openfluid::tools::SettingsBackend>(getSettingsFile(),m_SettingsRole);
+  m_Settings = std::make_unique<openfluid::tools::SettingsBackend>(m_SettingsFile,m_SettingsRole);
 
-  if (!openfluid::tools::Filesystem::isFile(getSettingsFile()))
+  if (!SettingsF.isFile())
   {
     m_Settings->save();
   }
@@ -608,7 +610,7 @@ std::vector<std::string> PreferencesManager::getAvailableUILanguages()
 
   for (const auto& F: QMLangFiles)
   {
-    auto LangFile = openfluid::tools::Filesystem::basename(F);
+    auto LangFile = openfluid::tools::FilesystemPath(F).basename();
     if (LangFile.size() > 5)
     {
       Langs.push_back(LangFile.substr(LangFile.size()-5));

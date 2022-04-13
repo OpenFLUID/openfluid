@@ -50,7 +50,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -921,7 +921,7 @@ void WareSrcWidgetCollection::deleteWare(const QString& WarePath)
     closeWareTab(it.value());
   }
 
-  if (!openfluid::tools::Filesystem::removeDirectory(WarePath.toStdString()))
+  if (!openfluid::tools::FilesystemPath(WarePath.toStdString()).removeDirectory())
   {
     QMessageBox::critical(0, tr("Delete ware"), tr("Unable to remove the directory \"%1\"").arg(WarePath));
   }

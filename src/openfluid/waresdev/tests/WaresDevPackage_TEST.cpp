@@ -53,6 +53,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
 
@@ -79,8 +80,7 @@ class F
       QDir MainDir(MainDirPath);
       QString AbsoluteSubPath = MainDir.absoluteFilePath(RelativeSubPath);
 
-      openfluid::tools::Filesystem::makeDirectory(AbsoluteSubPath.toStdString());
-
+      openfluid::tools::FilesystemPath(AbsoluteSubPath.toStdString()).makeDirectory();
       openfluid::tools::Filesystem::emptyDirectory(AbsoluteSubPath.toStdString());
 
       return AbsoluteSubPath;

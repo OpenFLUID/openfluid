@@ -47,6 +47,7 @@
 
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "tests-config.hpp"
 
@@ -54,8 +55,6 @@
 // =====================================================================
 // =====================================================================
 
-
-const std::string WksPath = CONFIGTESTS_OUTPUT_DATA_DIR+"/WorkspaceManager/created-workspace";
 
 const std::vector<std::string> ExpectedWaresPaths = {
   "/path/to/created-workspace/wares-dev/simulators/simA.test",
@@ -98,9 +97,12 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_creation)
 {
-  if (openfluid::tools::Filesystem::isDirectory(WksPath))
+  const std::string WksPath = CONFIGTESTS_OUTPUT_DATA_DIR+"/WorkspaceManager/created-workspace";
+  auto WksPathFSP = openfluid::tools::FilesystemPath(WksPath);
+
+  if (WksPathFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(WksPath);
+    WksPathFSP.removeDirectory();
   }
 
   auto* WM = openfluid::base::WorkspaceManager::instance();
@@ -109,13 +111,13 @@ BOOST_AUTO_TEST_CASE(check_creation)
 
   BOOST_REQUIRE(WM->isOpen());
 
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWorkspacePath()));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getProjectsPath()));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWaresPath()));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWaresPath(openfluid::ware::WareType::SIMULATOR)));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWaresPath(openfluid::ware::WareType::OBSERVER)));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWaresPath(openfluid::ware::WareType::BUILDEREXT)));
-  BOOST_CHECK(openfluid::tools::Filesystem::isFile(WM->getSettingsFile()));
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWorkspacePath()).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getProjectsPath()).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWaresPath()).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWaresPath(openfluid::ware::WareType::SIMULATOR)).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWaresPath(openfluid::ware::WareType::OBSERVER)).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWaresPath(openfluid::ware::WareType::BUILDEREXT)).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getSettingsFile()).isFile());
 
   for (int i = 1; i <= 5; i++)
   {
@@ -152,7 +154,10 @@ BOOST_AUTO_TEST_CASE(check_creation)
 
 BOOST_AUTO_TEST_CASE(check_opening)
 {
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WksPath));
+  const std::string WksPath = CONFIGTESTS_OUTPUT_DATA_DIR+"/WorkspaceManager/created-workspace";
+  auto WksPathFSP = openfluid::tools::FilesystemPath(WksPath);
+
+  BOOST_CHECK(WksPathFSP.isDirectory());
 
   auto* WM = openfluid::base::WorkspaceManager::instance();
 
@@ -189,9 +194,11 @@ BOOST_AUTO_TEST_CASE(check_fileformat_conversion)
   std::string OrigWksPath = CONFIGTESTS_INPUT_MISCDATA_DIR+"/WorkspaceManager";
   std::string WksPath = CONFIGTESTS_OUTPUT_DATA_DIR+"/WorkspaceManager/conversion";
 
-  if (openfluid::tools::Filesystem::isDirectory(WksPath))
+  auto WksPathFSP = openfluid::tools::FilesystemPath(WksPath);
+
+  if (WksPathFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(WksPath);
+    WksPathFSP.removeDirectory();
   }
 
   openfluid::tools::Filesystem::copyDirectory(OrigWksPath,WksPath);
@@ -200,12 +207,12 @@ BOOST_AUTO_TEST_CASE(check_fileformat_conversion)
   WM->openWorkspace(WksPath);
 
   BOOST_REQUIRE(WM->isOpen());
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWorkspacePath()));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getProjectsPath()));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWaresPath()));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWaresPath(openfluid::ware::WareType::SIMULATOR)));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWaresPath(openfluid::ware::WareType::OBSERVER)));
-  BOOST_CHECK(openfluid::tools::Filesystem::isDirectory(WM->getWaresPath(openfluid::ware::WareType::BUILDEREXT)));
-  BOOST_CHECK(openfluid::tools::Filesystem::isFile(WM->getSettingsFile()));
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWorkspacePath()).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getProjectsPath()).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWaresPath()).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWaresPath(openfluid::ware::WareType::SIMULATOR)).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWaresPath(openfluid::ware::WareType::OBSERVER)).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getWaresPath(openfluid::ware::WareType::BUILDEREXT)).isDirectory());
+  BOOST_CHECK(openfluid::tools::FilesystemPath(WM->getSettingsFile()).isFile());
   BOOST_CHECK(WM->getRecentProjects().empty());
 }

@@ -46,7 +46,7 @@
 
 #include <openfluid/tools/ColumnTextParser.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 // =====================================================================
@@ -199,7 +199,7 @@ bool ColumnTextParser::loadFromFile(const std::string& Filename)
   m_ColsCount = 0;
 
   // check if file exists
-  if (!openfluid::tools::Filesystem::isFile(Filename))
+  if (!openfluid::tools::FilesystemPath(Filename).isFile())
   {
     return false;
   }

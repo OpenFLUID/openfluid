@@ -48,6 +48,7 @@
 
 
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
@@ -141,7 +142,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         return false;
       }
 
-      std::string LayerName = openfluid::tools::Filesystem::basename(LayerInfo.SourceFilename);
+      std::string LayerName = openfluid::tools::FilesystemPath(LayerInfo.SourceFilename).basename();
 
       Layer = DataSource->GetLayerByName(LayerName.c_str());
 
@@ -275,7 +276,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       std::string InputDir = m_TmpDir + "/" + m_KmzSubDir + "/";
       std::string KmzFilePath = m_OutputDir + "/" + m_OutputFileName;
 
-      openfluid::tools::Filesystem::removeDirectory(KmzFilePath);
+      openfluid::tools::FilesystemPath(KmzFilePath).removeDirectory();
 
       QFileInfoList FoundFiles =
             QDir(QString::fromStdString(InputDir)).entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
@@ -328,26 +329,25 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
     void prepareTempDirectory()
     {
+      std::string OFTmpDir;
+      OPENFLUID_GetRunEnvironment("dir.temp",OFTmpDir);
 
-      std::string TmpDir;
+      m_TmpDir = openfluid::tools::Filesystem::makeUniqueSubdirectory(OFTmpDir,m_TmpSubDirRoot);
+      auto TmpDirFSP = openfluid::tools::FilesystemPath(m_TmpDir);
 
-      OPENFLUID_GetRunEnvironment("dir.temp",TmpDir);
+      TmpDirFSP.makeDirectory();
 
-      m_TmpDir = openfluid::tools::Filesystem::makeUniqueSubdirectory(TmpDir,m_TmpSubDirRoot);
-
-      openfluid::tools::Filesystem::makeDirectory(m_TmpDir);
-
-      if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir))
+      if (!TmpDirFSP.isDirectory())
       {
         OPENFLUID_LogWarning("Cannot initialize temporary directory");
         m_OKToGo = false;
         return;
       }
 
-      openfluid::tools::Filesystem::removeDirectory(m_TmpDir+"/"+m_KmzSubDir);
-      openfluid::tools::Filesystem::makeDirectory(m_TmpDir+"/"+m_KmzSubDir);
+      TmpDirFSP.removeDirectory(m_KmzSubDir);
+      TmpDirFSP.makeDirectory(m_KmzSubDir);
 
-      if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_KmzSubDir))
+      if (!TmpDirFSP.isDirectory(m_KmzSubDir))
       {
         OPENFLUID_LogWarning("Cannot initialize kmz temporary directory");
         m_OKToGo = false;
@@ -355,9 +355,9 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       }
 
 
-      openfluid::tools::Filesystem::makeDirectory(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir);
+      TmpDirFSP.makeDirectory(m_KmzSubDir+"/"+m_KmzDataSubDir);
 
-      if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir))
+      if (!TmpDirFSP.isDirectory(m_KmzSubDir+"/"+m_KmzDataSubDir))
       {
         OPENFLUID_LogWarning("Cannot initialize kmz data temporary directory");
         m_OKToGo = false;

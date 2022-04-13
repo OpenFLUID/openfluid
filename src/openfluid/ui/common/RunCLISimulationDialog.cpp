@@ -46,6 +46,7 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
@@ -138,7 +139,7 @@ void RunCLISimulationDialog::showEvent(QShowEvent* event)
 
 
   auto RunCtxt = openfluid::base::RunContextManager::instance();
-  char PathsSep = openfluid::tools::Filesystem::pathsListSeparator();
+  char PathsSep = openfluid::tools::FilesystemPath::listSeparator();
 
   auto ExtraSimPaths = openfluid::base::Environment::getExtraSimulatorsDirs();
   if (!ExtraSimPaths.empty())

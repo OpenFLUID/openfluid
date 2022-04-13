@@ -67,8 +67,8 @@ const std::string FSOutputPath = CONFIGTESTS_OUTPUT_DATA_DIR+"/Filesystem";
 
 BOOST_AUTO_TEST_CASE(init)
 {
-  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(FSOutputPath));
-  BOOST_REQUIRE(!openfluid::tools::Filesystem::exists(FSOutputPath));
+  BOOST_REQUIRE(openfluid::tools::FilesystemPath(FSOutputPath).removeDirectory());
+  BOOST_REQUIRE(!openfluid::tools::FilesystemPath(FSOutputPath).exists());
 }
 
 
@@ -95,79 +95,11 @@ BOOST_AUTO_TEST_CASE(check_system_paths)
 
 BOOST_AUTO_TEST_CASE(check_path_operations)
 {
-  std::cout << "System path separator is " << openfluid::tools::Filesystem::pathSeparator() << std::endl;
-  std::cout << "System paths list separator is " << openfluid::tools::Filesystem::pathsListSeparator() << std::endl;
-
-
-  // -------------------------------------------
-
 
   for (const auto& Test : JoinedPaths)
   {
     BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::joinPath(Test.Arguments),Test.Expected);
   }
-
-
-  // -------------------------------------------
-
-
-  for (const auto& Test : SplittedPaths)
-  {
-    const auto SplittedPath = openfluid::tools::Filesystem::splitPath(Test.Arguments);
-    BOOST_REQUIRE_EQUAL(SplittedPath.size(),Test.Expected.size());
-    BOOST_REQUIRE_EQUAL_COLLECTIONS(SplittedPath.begin(),SplittedPath.end(),Test.Expected.begin(),Test.Expected.end());
-  }
-
-
-  // -------------------------------------------
-
-
-  for (const auto& Test : ContainedPaths)
-  {
-    BOOST_REQUIRE(openfluid::tools::Filesystem::containsPath(Test.first,Test.second));
-  }
-
-
-  // -------------------------------------------
-
-
-  for (const auto& Test : UnixPathsWithTrailing)
-  {
-    BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::removeTrailingSeparators(Test.Arguments),Test.Expected);
-  }
-
-  for (const auto& Test : WinPathsWithTrailing)
-  {
-    BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::removeTrailingSeparators(Test.Arguments.first,
-                                                                               Test.Arguments.second),
-                        Test.Expected);
-  }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(check_names_operations)
-{
-
-  for (const auto& Test : PathsComponents)
-  {
-    std::cout << Test.Arguments << std::endl;
-    BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::filename(Test.Arguments),Test.Expected[0]);
-    BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::dirname(Test.Arguments),Test.Expected[1]);
-    BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::basename(Test.Arguments),Test.Expected[2]);
-    BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::extension(Test.Arguments),Test.Expected[3]);
-    BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::minimalBasename(Test.Arguments),Test.Expected[4]);
-    BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::completeExtension(Test.Arguments),Test.Expected[5]);
-  }
-
-  BOOST_REQUIRE_EQUAL(openfluid::tools::Filesystem::minimalBasename("/my/path/myarchive.tar.gz")+"."+
-                      openfluid::tools::Filesystem::completeExtension("/my/path/myarchive.tar.gz"),
-                      openfluid::tools::Filesystem::basename("/my/path/myarchive.tar.gz")+"."+
-                      openfluid::tools::Filesystem::extension("/my/path/myarchive.tar.gz"));
 
 }
 
@@ -255,11 +187,11 @@ BOOST_AUTO_TEST_CASE(check_dirfiles_operations)
   BOOST_REQUIRE(!openfluid::tools::FilesystemPath(WorkDir).isFile("DirCopyContent/subdir2/README.TXT"));
   BOOST_REQUIRE(!openfluid::tools::FilesystemPath(WorkDir).isDirectory("DirCopyContent/subdir/another_subdir"));
 
-  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(WorkDir+"/DirCopyContent"));
+  BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).removeDirectory("DirCopyContent"));
   BOOST_REQUIRE(!openfluid::tools::FilesystemPath(WorkDir).isDirectory("DirCopyContent"));
 
 
-  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(WorkDir+"/DirCopy"));
+  BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).removeDirectory("DirCopy"));
   BOOST_REQUIRE(!openfluid::tools::FilesystemPath(WorkDir).isDirectory("DirCopy"));
 
   BOOST_REQUIRE(openfluid::tools::Filesystem::copyDirectory(FSInputPath,WorkDir+"/DirCopy",true));
@@ -269,7 +201,7 @@ BOOST_AUTO_TEST_CASE(check_dirfiles_operations)
   BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isDirectory("DirCopy/Filesystem/subdir/another_subdir"));
 
 
-  BOOST_REQUIRE(openfluid::tools::Filesystem::removeDirectory(WorkDir+"/DirCopyContent"));
+  BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).removeDirectory("DirCopyContent"));
   BOOST_REQUIRE(!openfluid::tools::FilesystemPath(WorkDir).isDirectory("DirCopyContent"));
 
   BOOST_REQUIRE(openfluid::tools::Filesystem::copyDirectory(FSInputPath,WorkDir+"/DirCopyContent"));

@@ -52,6 +52,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/config.hpp>
 
@@ -88,7 +89,7 @@ class OPENFLUID_API WarePluginsManager
     */
     DynamicLib* loadPluginLibrary(const std::string& FullFilePath)
     {
-      std::string PluginFileName = openfluid::tools::Filesystem::filename(FullFilePath);
+      std::string PluginFileName = openfluid::tools::FilesystemPath(FullFilePath).filename();
 
       if (m_LoadedPluginsLibraries.find(PluginFileName) == m_LoadedPluginsLibraries.end())
       {

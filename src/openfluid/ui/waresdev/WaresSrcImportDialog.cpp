@@ -44,7 +44,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/waresdev/WaresDevPackage.hpp>
@@ -592,7 +592,8 @@ void WaresSrcImportDialog::updateHubWaresList()
       QString WareId = QString::fromStdString(WarePair.first);
       std::set<std::string> Users = WarePair.second.ROUsers;
 
-      bool WareInWorkspace = openfluid::tools::Filesystem::isDirectory(Mgr->getWarePath(Type,WareId.toStdString()));
+      bool WareInWorkspace = 
+          openfluid::tools::FilesystemPath(Mgr->getWarePath(Type,WareId.toStdString())).isDirectory();
       bool WareNotAuthorized = !Users.count("*") && !Users.count(UserName.toStdString());
 
       if (isWareDisplayed(Type, WareId, WareInWorkspace, WareNotAuthorized))

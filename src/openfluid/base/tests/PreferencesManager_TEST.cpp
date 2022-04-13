@@ -50,6 +50,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "tests-config.hpp"
 
@@ -107,7 +108,7 @@ const std::list<openfluid::base::PreferencesManager::ExternalTool_t> ExternalToo
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::tools::Filesystem::removeFile(DefaultPrefsFile);
+  openfluid::tools::FilesystemPath(DefaultPrefsFile).removeFile();
 
 
   openfluid::base::PreferencesManager* PrefsMgr = openfluid::base::PreferencesManager::instance();
@@ -168,7 +169,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_creation)
 {
-  openfluid::tools::Filesystem::removeFile(CreatedPrefsFile);
+  openfluid::tools::FilesystemPath(CreatedPrefsFile).removeFile();
 
   openfluid::base::PreferencesManager::setSettingsFile(CreatedPrefsFile);
   auto PrefsMgr = openfluid::base::PreferencesManager::instance();
@@ -229,7 +230,7 @@ BOOST_AUTO_TEST_CASE(check_creation)
 
 BOOST_AUTO_TEST_CASE(check_opening)
 {
-  openfluid::tools::Filesystem::removeFile(ConvertedPrefsFile);
+  openfluid::tools::FilesystemPath(ConvertedPrefsFile).removeFile();
 
   openfluid::base::PreferencesManager::setSettingsFile(CreatedPrefsFile);
   auto PrefsMgr = openfluid::base::PreferencesManager::instance();
@@ -357,9 +358,9 @@ BOOST_AUTO_TEST_CASE(check_conversion)
     openfluid::tools::Filesystem::joinPath({CONFIGTESTS_OUTPUT_DATA_DIR,"PreferencesManager",
                                            "conversion","openfluid.conf"});
 
-  openfluid::tools::Filesystem::makeDirectory(ConversionPrefsPath);
-  openfluid::tools::Filesystem::removeFile(WorkConfFile);
-  openfluid::tools::Filesystem::removeFile(ConvertedPrefsFile);
+  openfluid::tools::FilesystemPath(ConversionPrefsPath).makeDirectory();
+  openfluid::tools::FilesystemPath(WorkConfFile).removeFile();
+  openfluid::tools::FilesystemPath(ConvertedPrefsFile).removeFile();
   openfluid::tools::Filesystem::copyFile(RefConfFile,WorkConfFile);
 
   openfluid::base::PreferencesManager::setSettingsFile(ConvertedPrefsFile);

@@ -46,7 +46,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "tests-config.hpp"
 
@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string OriginalFilePath = CONFIGTESTS_INPUT_MISCDATA_DIR+"/"+"GhostSimulators/simA_ofghost-sim.xml";
   std::string ModifiedDirPath = CONFIGTESTS_OUTPUT_DATA_DIR+"/"+"GhostSimulators";
 
-  openfluid::tools::Filesystem::makeDirectory(ModifiedDirPath);
+  openfluid::tools::FilesystemPath(ModifiedDirPath).makeDirectory();
 
   std::cout << "Ghost file: " << OriginalFilePath << std::endl;
 

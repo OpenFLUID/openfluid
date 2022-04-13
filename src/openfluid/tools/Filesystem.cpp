@@ -62,53 +62,9 @@
 namespace openfluid { namespace tools {
 
 
-#warning "TO BE REMOVED"
-std::string Filesystem::removeTrailingSeparators(const std::string& Path, char Sep) noexcept
-{
-  return FilesystemPath::removeTrailingSeparators(Path,Sep);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 std::string Filesystem::joinPath(const std::vector<std::string>& PathParts)
 {
   return boost::algorithm::join(PathParts,"/");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-std::vector<std::string> Filesystem::splitPath(const std::string& Path)
-{
-  return FilesystemPath(Path).split();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-std::string Filesystem::toNativePath(const std::string& Path)
-{
-  return removeTrailingSeparators(FilesystemPath(Path).toNative());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-std::string Filesystem::toGenericPath(const std::string& Path)
-{
-  return removeTrailingSeparators(FilesystemPath(Path).toGeneric());
 }
 
 
@@ -237,78 +193,9 @@ std::string Filesystem::absolutePath(const std::string& Path)
     return "/";
   }
 
-  return removeTrailingSeparators(
+  return FilesystemPath::removeTrailingSeparators(
            std::filesystem::absolute(FilesystemPath(TmpStr).stdPath()).lexically_normal().generic_string()
          );
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-std::string Filesystem::relativePath(const std::string& Path, const std::string& BasePath)
-{
-  return removeTrailingSeparators(
-           std::filesystem::relative(FilesystemPath(Path).stdPath(),FilesystemPath(BasePath).stdPath())
-           .lexically_normal().generic_string()
-         );
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-std::string Filesystem::cleanPath(const std::string& Path)
-{
-  return FilesystemPath(Path).toGenericClean();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-bool Filesystem::containsPath(const std::string& Path, const std::string& ChildPath)
-{
-  return FilesystemPath(Path).contains(ChildPath);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-bool Filesystem::isDirectory(const std::string& Path)
-{
-  return FilesystemPath(Path).isDirectory();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-bool Filesystem::isFile(const std::string& Path)
-{
-  return FilesystemPath(Path).isFile();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-bool Filesystem::exists(const std::string& Path)
-{
-  return FilesystemPath(Path).exists();
 }
 
 
@@ -335,38 +222,6 @@ bool Filesystem::renameFile(const std::string& OriginalPath, const std::string& 
 
   std::filesystem::rename(OrigStdPath.stdPath(),NewStdPath.stdPath(),TmpErr);
   return (NewStdPath.isFile() && !OrigStdPath.isFile());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool Filesystem::removeFile(const std::string& Path)
-{
-  return FilesystemPath(Path).removeFile();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-bool Filesystem::makeDirectory(const std::string& Path)
-{
-  return FilesystemPath(Path).makeDirectory();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-#warning "TO BE REMOVED"
-bool Filesystem::removeDirectory(const std::string& Path)
-{
-  return FilesystemPath(Path).removeDirectory();
 }
 
 
@@ -428,23 +283,26 @@ bool Filesystem::copyDirectory(const std::string& SrcPath, const std::string& De
 
 bool Filesystem::emptyDirectory(const std::string& Path)
 {
-  if (!isDirectory(Path))
+  auto PathFSP = FilesystemPath(Path);
+
+  if (!PathFSP.isDirectory())
   {
     return false;
   }
 
-  for (const auto & Entry : std::filesystem::directory_iterator(FilesystemPath(Path).stdPath()))
+  for (const auto & Entry : std::filesystem::directory_iterator(PathFSP.stdPath()))
   {
+    auto EntryFSP = FilesystemPath(Entry.path().string());
     if (Entry.is_directory())
     {
-      if (!removeDirectory(Entry.path().string()))
+      if (!EntryFSP.removeDirectory())
       {
         return false;
       }
     }
     else
     {
-      if (!removeFile(Entry.path().string()))
+      if (!EntryFSP.removeFile())
       {
         return false;
       }
@@ -470,7 +328,9 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
   SS << std::this_thread::get_id();
   static std::string PID = SS.str(); // use thread id to improve entropy
 
-  if (makeDirectory(Path))
+  auto PathFSP = FilesystemPath(Path);
+
+  if (PathFSP.makeDirectory())
   {
     // Thread ID - Pseudo Unique Identifier of 16 chars length
     const std::string PIDPUI = PID + "-" + openfluid::tools::generatePseudoUniqueIdentifier(16);
@@ -483,20 +343,20 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
     // pattern for subdir : {SubdirName}-{PID}-{PUI}-{Inc}
     auto generateFullPath = [&]()
     { 
-      return joinPath({Path,SubdirName+"-"+PIDPUI+"-"+std::to_string(IncSuffix)}); 
+      return FilesystemPath({Path,SubdirName+"-"+PIDPUI+"-"+std::to_string(IncSuffix)}); 
     };
 
-    std::string CandidateFullPath =  generateFullPath();
+    auto CandidateFSP =  generateFullPath();
 
-    while (exists(CandidateFullPath))
+    while (CandidateFSP.exists())
     {
       IncSuffix++;
-      CandidateFullPath = generateFullPath();
+      CandidateFSP = generateFullPath();
     }
 
-    if (makeDirectory(CandidateFullPath))
+    if (CandidateFSP.makeDirectory())
     {
-      return CandidateFullPath;
+      return CandidateFSP.toGenericClean();
     }
     else
     {
@@ -514,14 +374,17 @@ std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const st
 
 std::string Filesystem::makeUniqueFile(const std::string& Path, const std::string& FileName)
 {
-  if (makeDirectory(Path))
+  auto PathFSP = FilesystemPath(Path);
+  auto FileNameFSP = FilesystemPath(FileName);
+
+  if (PathFSP.makeDirectory())
   {
     std::ostringstream SS;
     SS << std::this_thread::get_id();
     static std::string PID = SS.str(); // use thread id to improve entropy
 
-    std::string FileRoot = minimalBasename(FileName);
-    std::string FileExt = completeExtension(FileName);
+    std::string FileRoot = FileNameFSP.minimalBasename();
+    std::string FileExt = FileNameFSP.completeExtension();
     if (!FileExt.empty())
     {
       FileExt = "."+FileExt;
@@ -538,20 +401,20 @@ std::string Filesystem::makeUniqueFile(const std::string& Path, const std::strin
     // pattern for file : {Path}/{Filename root}-{PID}-{PUI}-{Inc}.{Filename ext}
     auto generateFullPath = [&]()
     { 
-      return joinPath({Path,FileRoot+"-"+PIDPUI+std::to_string(IncSuffix)+FileExt}); 
+      return FilesystemPath({Path,FileRoot+"-"+PIDPUI+std::to_string(IncSuffix)+FileExt}); 
     };
 
-    std::string CandidateFilePath = generateFullPath();
+    auto CandidateFSP = generateFullPath();
 
-    while (exists(CandidateFilePath))
+    while (CandidateFSP.exists())
     {
       IncSuffix++;
-      CandidateFilePath = generateFullPath();
+      CandidateFSP = generateFullPath();
     }
 
-    if (FilesystemPath(CandidateFilePath).makeFile())
+    if (CandidateFSP.makeFile())
     {
-      return CandidateFilePath;
+      return CandidateFSP.toGenericClean();
     }
   }
 
@@ -566,13 +429,13 @@ std::string Filesystem::makeUniqueFile(const std::string& Path, const std::strin
 std::vector<std::string> Filesystem::findFiles(const std::string& Path, bool WithPath, const std::string& Pattern)
 {
   std::vector<std::string> FilesList;
-  const auto SearchPath = FilesystemPath(Path);
+  const auto SearchPathFSP = FilesystemPath(Path);
 
-  if (SearchPath.isDirectory())
+  if (SearchPathFSP.isDirectory())
   {
     std::regex RegExp(Pattern);
 
-    for (const auto & Entry : std::filesystem::directory_iterator(SearchPath.stdPath()))
+    for (const auto & Entry : std::filesystem::directory_iterator(SearchPathFSP.stdPath()))
     {
       if ((Entry.is_regular_file() || Entry.is_symlink()) && 
           (Pattern.empty() || std::regex_match(Entry.path().filename().generic_string(),RegExp)))
@@ -599,13 +462,13 @@ std::vector<std::string> Filesystem::findFiles(const std::string& Path, bool Wit
 std::vector<std::string> Filesystem::findDirectories(const std::string& Path, bool WithPath, const std::string& Pattern)
 {
   std::vector<std::string> DirsList;
-  const auto SearchPath = FilesystemPath(Path);
+  const auto SearchPathFSP = FilesystemPath(Path);
 
-  if (SearchPath.isDirectory())
+  if (SearchPathFSP.isDirectory())
   {
     std::regex RegExp(Pattern);
 
-    for (const auto & Entry : std::filesystem::directory_iterator(SearchPath.stdPath()))
+    for (const auto & Entry : std::filesystem::directory_iterator(SearchPathFSP.stdPath()))
     {
       if (Entry.is_directory() && 
           (Pattern.empty() || std::regex_match(Entry.path().filename().generic_string(),RegExp)))

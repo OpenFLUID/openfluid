@@ -48,6 +48,7 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/utils/BindingVerboseMachineListener.hpp>
 #include <openfluid/utils/BindingAbstractOutErr.hpp>
 #include <openfluid/machine/Factory.hpp>
@@ -638,7 +639,7 @@ class Binding
 
           for (const auto& F : FluidXToRemove)
           {
-            openfluid::tools::Filesystem::removeFile(F);
+            openfluid::tools::FilesystemPath(F).removeFile();
           }
         }
 

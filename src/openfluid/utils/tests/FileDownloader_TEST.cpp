@@ -50,7 +50,7 @@
 
 #include <openfluid/utils/FileDownloader.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "tests-config.hpp"
 
@@ -86,14 +86,16 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_CHECK_EQUAL(LoremIpsum,LoremIpsumDLoaded);
 
-  openfluid::tools::Filesystem::removeFile(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader/lorem_ipsum_dload.txt");
-  openfluid::tools::Filesystem::makeDirectory(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader");
+  auto FileDloadDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader";
+  auto FileDloadDirFSP = openfluid::tools::FilesystemPath(FileDloadDir);
+
+  FileDloadDirFSP.removeFile("lorem_ipsum_dload.txt");
+  FileDloadDirFSP.makeDirectory();
 
 
   BOOST_CHECK(
       openfluid::utils::FileDownloader::downloadToFile(CONFIGTESTS_FILEDOWNLOAD_URL,
-                                                       CONFIGTESTS_OUTPUT_DATA_DIR+
-                                                       "/FileDownloader/lorem_ipsum_dload.txt"));
+                                                       FileDloadDir+"/lorem_ipsum_dload.txt"));
 
   std::string LI1, LI2;
 

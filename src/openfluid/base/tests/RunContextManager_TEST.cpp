@@ -51,6 +51,7 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/global.hpp>
 
 #include "tests-config.hpp"
@@ -119,9 +120,11 @@ BOOST_AUTO_TEST_CASE(check_project_operations)
 {
   std::string Prj1Dir = CONFIGTESTS_OUTPUT_DATA_DIR+"/RunContextManager/prj1";
 
-  if (openfluid::tools::Filesystem::isDirectory(Prj1Dir))
+  auto Prj1DirFSP = openfluid::tools::FilesystemPath(Prj1Dir);
+
+  if (Prj1DirFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(Prj1Dir);
+    Prj1DirFSP.removeDirectory();
   }
 
 
@@ -198,9 +201,11 @@ BOOST_AUTO_TEST_CASE(check_project_fileformat_conversion_simple)
   std::string OrigConfPrjDir = CONFIGTESTS_INPUT_MISCDATA_DIR+"/RunContextManager/SimpleConf";
   std::string ConfPrjDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/RunContextManager/SimpleConf";
 
-  if (openfluid::tools::Filesystem::isDirectory(ConfPrjDir))
+  auto ConfPrjDirFSP = openfluid::tools::FilesystemPath(ConfPrjDir);
+
+  if (ConfPrjDirFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(ConfPrjDir);
+    ConfPrjDirFSP.removeDirectory();
   }
   openfluid::tools::Filesystem::copyDirectory(OrigConfPrjDir,ConfPrjDir);
 
@@ -235,9 +240,11 @@ BOOST_AUTO_TEST_CASE(check_project_fileformat_conversion_complex)
   std::string OrigConfPrjDir = CONFIGTESTS_INPUT_MISCDATA_DIR+"/RunContextManager/ComplexConf";
   std::string ConfPrjDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/RunContextManager/ComplexConf";
 
-  if (openfluid::tools::Filesystem::isDirectory(ConfPrjDir))
+  auto ConfPrjDirFSP = openfluid::tools::FilesystemPath(ConfPrjDir);
+
+  if (ConfPrjDirFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(ConfPrjDir);
+    ConfPrjDirFSP.removeDirectory();
   }
 
   openfluid::tools::Filesystem::copyDirectory(OrigConfPrjDir,ConfPrjDir);

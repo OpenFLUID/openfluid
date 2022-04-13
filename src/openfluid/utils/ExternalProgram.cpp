@@ -40,7 +40,7 @@
 #include <QFileInfo>
 #include <QDir>
 
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 
 
@@ -221,7 +221,7 @@ QString ExternalProgram::findUsingPATHEnvVar(const QStringList& ProgramNames)
 
   if (!PATHStr.isEmpty())
   {
-    PathsList = PATHStr.split(openfluid::tools::Filesystem::pathsListSeparator(),QString::SkipEmptyParts);
+    PathsList = PATHStr.split(openfluid::tools::FilesystemPath::listSeparator(),QString::SkipEmptyParts);
   }
 
 #if defined(OPENFLUID_OS_UNIX)

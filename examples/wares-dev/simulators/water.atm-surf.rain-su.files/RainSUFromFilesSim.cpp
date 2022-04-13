@@ -46,7 +46,7 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/DistributionBindings.hpp>
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 // =====================================================================
@@ -126,7 +126,7 @@ class RainSUFromFilesSimulator : public openfluid::ware::PluggableSimulator
 
       if (!m_TempDir.empty())
       {
-        openfluid::tools::Filesystem::removeDirectory(m_TempDir);
+        openfluid::tools::FilesystemPath(m_TempDir).removeDirectory();
       }
 
     }
@@ -167,9 +167,9 @@ class RainSUFromFilesSimulator : public openfluid::ware::PluggableSimulator
         TmpDir = BaseTmpDir+"/"+TmpSubDir.str();
         DirNameIncr++;
       }
-      while (openfluid::tools::Filesystem::isDirectory(TmpDir));
+      while (openfluid::tools::FilesystemPath(TmpDir).isDirectory());
 
-      openfluid::tools::Filesystem::makeDirectory(TmpDir);
+      openfluid::tools::FilesystemPath(TmpDir).makeDirectory();
       m_TempDir = TmpDir;
 
       // Build distribution tables
@@ -182,7 +182,7 @@ class RainSUFromFilesSimulator : public openfluid::ware::PluggableSimulator
       for (openfluid::tools::DistributionTables::SourceIDFile_t::iterator it = itb; it != ite; ++it)
       {
 
-        std::string InFileName = openfluid::tools::Filesystem::filename((*it).second);
+        std::string InFileName = openfluid::tools::FilesystemPath((*it).second).filename();
         std::string OutFilePath = TmpDir+"/interp_"+InFileName;
 
         // Prepare and run interpolator with cumulate preprocessing

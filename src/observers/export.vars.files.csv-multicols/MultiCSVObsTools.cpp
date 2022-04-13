@@ -42,7 +42,7 @@
 #include <regex>
 
 #include <openfluid/base/OtherException.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
 #include "MultiCSVObsTools.hpp"
@@ -166,7 +166,7 @@ std::string buildMultiColsdHeader(const MultiCSVFormat& Format, const std::strin
     std::time_t t = std::chrono::system_clock::to_time_t(p);
 
     HeaderSStr << Format.CommentChar << "========================================================================\n";
-    HeaderSStr << Format.CommentChar << " file: " << openfluid::tools::Filesystem::filename(FilePath) << "\n";
+    HeaderSStr << Format.CommentChar << " file: " << openfluid::tools::FilesystemPath(FilePath).filename() << "\n";
     HeaderSStr << Format.CommentChar << " date: " << std::ctime(&t);
     HeaderSStr << Format.CommentChar << " columns: " << ColumnsHeaders << "\n";
     HeaderSStr << Format.CommentChar << "========================================================================\n";

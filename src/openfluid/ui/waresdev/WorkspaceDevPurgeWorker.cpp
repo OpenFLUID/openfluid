@@ -42,7 +42,7 @@
 
 #include <openfluid/ui/waresdev/WorkspaceDevPurgeWorker.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -116,9 +116,10 @@ void WorkspaceDevPurgeWorker::run()
       {
         if (FilterRegExp.exactMatch(SubDir.fileName()))
         {
-          openfluid::tools::Filesystem::removeDirectory(SubDir.absoluteFilePath().toStdString());
+          auto SubDirFSP = openfluid::tools::FilesystemPath(SubDir.absoluteFilePath().toStdString());
+          SubDirFSP.removeDirectory();
 
-          if (openfluid::tools::Filesystem::isDirectory(SubDir.absoluteFilePath().toStdString()))
+          if (SubDirFSP.isDirectory())
           {
             writeMessage(SubDir.fileName() + ": <font style='color: red;'>"+tr("Error")+"</font>");
             emit processed(WType.first,WItem.ID,"purge", false);

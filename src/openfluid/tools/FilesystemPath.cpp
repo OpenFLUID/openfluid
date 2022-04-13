@@ -38,7 +38,7 @@
 
 
 #include <fstream> 
-#include <regex> 
+#include <regex>
 
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -343,12 +343,12 @@ bool FilesystemPath::makeDirectory(const std::string& Path) const
 bool FilesystemPath::removeDirectory(const std::string& Path) const
 {
   if (isDirectory(Path))
-  {    
-    const auto compPath = composeWithSubPath(m_Path,Path);
+  {  
+    const auto CompPath = composeWithSubPath(m_Path,Path);
     std::error_code TmpErr;
-    std::filesystem::remove_all(compPath,TmpErr);  
-  }      
-  return !exists();
+    std::filesystem::remove_all(CompPath,TmpErr);  
+  }
+  return !exists(Path);
 }
 
 
@@ -386,7 +386,7 @@ bool FilesystemPath::removeFile(const std::string& Path) const
     std::error_code TmpErr;
     return std::filesystem::remove(compPath,TmpErr);
   }
-  return !exists();
+  return !exists(Path); 
 }
 
 

@@ -49,6 +49,7 @@
 
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
@@ -183,7 +184,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
                 .contains("class MyWidget: public openfluid::builderext::PluggableParameterizationExtension"));
   HppUiResult.close();
 
-  openfluid::tools::Filesystem::removeDirectory(WareTypePath.toStdString());
+  openfluid::tools::FilesystemPath(WareTypePath.toStdString()).removeDirectory();
 }
 
 
@@ -355,6 +356,6 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK(HppFileContent.contains("class MyBext : public openfluid::builderext::PluggableWorkspaceExtension"));
   HppResult.close();
 
-  openfluid::tools::Filesystem::removeDirectory(WareTypePath.toStdString());
+  openfluid::tools::FilesystemPath(WareTypePath.toStdString()).removeDirectory();
 }
 

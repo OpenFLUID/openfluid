@@ -44,7 +44,7 @@
 
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/config.hpp>
 
 #include "NewslineDownloadWorker.hpp"
@@ -116,8 +116,8 @@ bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const
 
 void NewslineDownloadWorker::run()
 {
-  openfluid::tools::Filesystem::makeDirectory(
-    openfluid::base::Environment::getUserDataFullPath(BUILDER_NEWSLINE_CACHERELDIR));
+  openfluid::tools::FilesystemPath(openfluid::base::Environment::getUserDataFullPath(BUILDER_NEWSLINE_CACHERELDIR))
+      .makeDirectory();
 
   QString LastUpdFile = QString::fromStdString(openfluid::base::Environment::getUserDataFullPath("%1/lastupdate.info"))
                         .arg(QString::fromStdString(BUILDER_NEWSLINE_CACHERELDIR));

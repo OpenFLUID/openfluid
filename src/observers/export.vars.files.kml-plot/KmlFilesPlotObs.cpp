@@ -484,11 +484,13 @@ class KmlFilesPlotObserver : public KmlObserverBase
         return;
       }
 
+      
+      auto TmpDirFSP = openfluid::tools::FilesystemPath(m_TmpDir);
 
-      openfluid::tools::Filesystem::removeDirectory(m_TmpDir+"/"+m_GNUPlotSubDir);
-      openfluid::tools::Filesystem::makeDirectory(m_TmpDir+"/"+m_GNUPlotSubDir);
+      TmpDirFSP.removeDirectory(m_GNUPlotSubDir);
+      TmpDirFSP.makeDirectory(m_GNUPlotSubDir);
 
-      if (!openfluid::tools::Filesystem::isDirectory(m_TmpDir+"/"+m_GNUPlotSubDir))
+      if (!TmpDirFSP.isDirectory(m_GNUPlotSubDir))
       {
         OPENFLUID_LogWarning("Cannot initialize gnuplot temporary directory");
         m_OKToGo = false;

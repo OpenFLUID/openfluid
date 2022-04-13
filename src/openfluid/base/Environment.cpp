@@ -44,6 +44,7 @@
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -322,7 +323,7 @@ std::string Environment::getWareFullPath(const std::vector<std::string>& Dirs, c
   {
     std::string TmpPath = openfluid::tools::Filesystem::joinPath({CurrentDir,Filename});
 
-    if (openfluid::tools::Filesystem::isFile(TmpPath))
+    if (openfluid::tools::FilesystemPath(TmpPath).isFile())
     {
       return TmpPath;
     }
@@ -374,7 +375,7 @@ void Environment::prepareUserDataDirectory()
 
   for (const auto& Dir : DirsToMake)
   {
-    openfluid::tools::Filesystem::makeDirectory(Dir);
+    openfluid::tools::FilesystemPath(Dir).makeDirectory();
   }
 }
 
@@ -431,14 +432,14 @@ void Environment::addExtraSimulatorsDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-  ExtraDirs = openfluid::tools::splitString(Dirs, openfluid::tools::Filesystem::pathsListSeparator());
+  ExtraDirs = openfluid::tools::splitString(Dirs, openfluid::tools::FilesystemPath::listSeparator());
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
     m_ExtraSimulatorsDirs.insert(
       m_ExtraSimulatorsDirs.begin(), 1,
-      openfluid::tools::Filesystem::removeTrailingSeparators(ExtraDirs[i],
-                                                             openfluid::tools::Filesystem::pathSeparator())
+      openfluid::tools::FilesystemPath::removeTrailingSeparators(ExtraDirs[i],
+                                                                 openfluid::tools::FilesystemPath::separator())
     );
   }
 }
@@ -484,14 +485,14 @@ void Environment::addExtraObserversDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-  ExtraDirs = openfluid::tools::splitString(Dirs,openfluid::tools::Filesystem::pathsListSeparator());
+  ExtraDirs = openfluid::tools::splitString(Dirs,openfluid::tools::FilesystemPath::listSeparator());
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
     m_ExtraObserversDirs.insert(
       m_ExtraObserversDirs.begin(), 1,
-      openfluid::tools::Filesystem::removeTrailingSeparators(ExtraDirs[i],
-                                                             openfluid::tools::Filesystem::pathSeparator())
+      openfluid::tools::FilesystemPath::removeTrailingSeparators(ExtraDirs[i],
+                                                                 openfluid::tools::FilesystemPath::separator())
     );
   }
 }
@@ -539,14 +540,14 @@ void Environment::addExtraBuilderextsDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-  ExtraDirs = openfluid::tools::splitString(Dirs,openfluid::tools::Filesystem::pathsListSeparator());
+  ExtraDirs = openfluid::tools::splitString(Dirs,openfluid::tools::FilesystemPath::listSeparator());
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
     m_ExtraBuilderextsDirs.insert(
       m_ExtraBuilderextsDirs.begin(), 1,
-      openfluid::tools::Filesystem::removeTrailingSeparators(ExtraDirs[i],
-                                                             openfluid::tools::Filesystem::pathSeparator())
+      openfluid::tools::FilesystemPath::removeTrailingSeparators(ExtraDirs[i],
+                                                                 openfluid::tools::FilesystemPath::separator())
     );
   }
 }

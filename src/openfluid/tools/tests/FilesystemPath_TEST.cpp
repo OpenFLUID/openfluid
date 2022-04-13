@@ -340,7 +340,8 @@ BOOST_AUTO_TEST_CASE(check_dirfiles_operations)
     BOOST_REQUIRE(!MadeSubDir.removeDirectory("MadeDir/ReMadeDir/SubFile.txt"));
     BOOST_REQUIRE(MadeSubDir.removeFile("MadeDir/ReMadeDir/SubFile.txt"));
     BOOST_REQUIRE(!MadeSubDir.exists("MadeDir/ReMadeDir/SubFile.txt"));
-    BOOST_REQUIRE(!MadeSubDir.remove("MadeDir"));
+    BOOST_REQUIRE(MadeSubDir.remove("MadeDir"));
+    BOOST_REQUIRE(MadeSubDir.remove("MadeDir"));
     BOOST_REQUIRE(!MadeSubDir.isFile("MadeDir"));
     BOOST_REQUIRE(!MadeSubDir.isDirectory("MadeDir"));
     BOOST_REQUIRE(!MadeSubDir.exists("MadeDir"));

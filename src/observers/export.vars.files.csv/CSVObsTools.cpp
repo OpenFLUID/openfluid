@@ -42,7 +42,7 @@
 #include <regex>
 
 #include <openfluid/base/OtherException.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include "CSVObsTools.hpp"
 
 
@@ -69,7 +69,7 @@ std::string buildHeader(const CSVFormat& Format, const std::string& FilePath,
     std::time_t t = std::chrono::system_clock::to_time_t(p);
 
     HeaderSStr << Format.CommentChar << "========================================================================\n";
-    HeaderSStr << Format.CommentChar << " file: " << openfluid::tools::Filesystem::filename(FilePath) << "\n";
+    HeaderSStr << Format.CommentChar << " file: " << openfluid::tools::FilesystemPath(FilePath).filename() << "\n";
     HeaderSStr << Format.CommentChar << " date: " << std::ctime(&t);
     HeaderSStr << Format.CommentChar << " unit: " << UClass << " #" << UID << "\n";
     HeaderSStr << Format.CommentChar << " variable: " << VarName << "\n";

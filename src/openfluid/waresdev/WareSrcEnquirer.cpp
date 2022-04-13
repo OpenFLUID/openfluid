@@ -138,8 +138,11 @@ WareSrcEnquirer::WarePathInfo WareSrcEnquirer::getWareInfoFromPath(const std::st
   WarePathInfo Info;
 
   auto CleanWorkspacePath = 
-    openfluid::tools::Filesystem::cleanPath(openfluid::base::WorkspaceManager::instance()->getWorkspacePath());
-  Info.AbsolutePath = openfluid::tools::Filesystem::cleanPath(openfluid::tools::Filesystem::absolutePath(Path));
+    openfluid::tools::FilesystemPath(
+      openfluid::base::WorkspaceManager::instance()->getWorkspacePath()
+    ).toGenericClean();
+  Info.AbsolutePath = 
+    openfluid::tools::FilesystemPath(openfluid::tools::Filesystem::absolutePath(Path)).toGenericClean();
 
   openfluid::tools::Path AbsolutePathObject(Info.AbsolutePath);
 

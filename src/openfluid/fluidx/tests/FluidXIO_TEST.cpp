@@ -60,7 +60,7 @@ typedef boost::onullstream onullstream_type;
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "tests-config.hpp"
 
@@ -411,15 +411,18 @@ BOOST_AUTO_TEST_CASE(check_write_operations)
   std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXIOSingle";
   std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXIOMany";
 
-  if (openfluid::tools::Filesystem::isDirectory(OutputDirSingle))
+  auto OutputDirSingleFSP = openfluid::tools::FilesystemPath(OutputDirSingle);
+  if (OutputDirSingleFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(OutputDirSingle);
+    OutputDirSingleFSP.removeDirectory();
   }
 
-  if (openfluid::tools::Filesystem::isDirectory(OutputDirMany))
+  auto OutputDirManyFSP = openfluid::tools::FilesystemPath(OutputDirMany);
+  if (OutputDirManyFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(OutputDirMany);
+    OutputDirManyFSP.removeDirectory();
   }
+
 
   openfluid::base::IOListener* L = new openfluid::base::IOListener();
   openfluid::fluidx::FluidXIO FXIO(L);
@@ -452,14 +455,16 @@ BOOST_AUTO_TEST_CASE(check_write_operations_for_integration_tests)
   std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterSingle";
   std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterMany";
 
-  if (openfluid::tools::Filesystem::isDirectory(OutputDirMany))
+  auto OutputDirSingleFSP = openfluid::tools::FilesystemPath(OutputDirSingle);
+  if (OutputDirSingleFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(OutputDirMany);
+    OutputDirSingleFSP.removeDirectory();
   }
 
-  if (openfluid::tools::Filesystem::isDirectory(OutputDirSingle))
+  auto OutputDirManyFSP = openfluid::tools::FilesystemPath(OutputDirMany);
+  if (OutputDirManyFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(OutputDirSingle);
+    OutputDirManyFSP.removeDirectory();
   }
 
 
@@ -484,9 +489,10 @@ BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
   std::string DatasetDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXIOXMLEntities";
   std::string RefParamStr = "< ' > && \"hula hoop\"";
 
-  if (openfluid::tools::Filesystem::isDirectory(DatasetDir))
+  auto DatasetDirFSP = openfluid::tools::FilesystemPath(DatasetDir);
+  if (DatasetDirFSP.isDirectory())
   {
-    openfluid::tools::Filesystem::removeDirectory(DatasetDir);
+    DatasetDirFSP.removeDirectory();
   }
 
   openfluid::base::IOListener* L = new openfluid::base::IOListener();

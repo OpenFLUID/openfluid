@@ -44,6 +44,7 @@
 #include <openfluid/buddies/NewSimBuddy.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -266,7 +267,7 @@ bool NewSimulatorBuddy::run()
   }
 
 
-  if (!openfluid::tools::Filesystem::isDirectory(OutputDirPath))
+  if (!openfluid::tools::FilesystemPath(OutputDirPath).isDirectory())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Output directory does not exist");
   }

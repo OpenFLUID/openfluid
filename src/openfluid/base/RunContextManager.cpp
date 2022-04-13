@@ -42,6 +42,7 @@
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/config.hpp>
 
@@ -134,15 +135,14 @@ void RunContextManager::updateProjectFile(const std::string& ProjectFilePath)
 #endif
 
 
-  if (!openfluid::tools::Filesystem::isFile(ProjectFilePath))
+  if (!openfluid::tools::FilesystemPath(ProjectFilePath).isFile())
   {
     std::string FormerPrjFilePath = 
-      openfluid::tools::Filesystem::joinPath({
-        openfluid::tools::Filesystem::dirname(ProjectFilePath),
-        m_DeprecatedProjectFiles.front()
-      });
+      openfluid::tools::FilesystemPath({openfluid::tools::FilesystemPath(ProjectFilePath).dirname(),
+                                        m_DeprecatedProjectFiles.front()
+                                       }).toGeneric();
 
-    if (openfluid::tools::Filesystem::isFile(FormerPrjFilePath))
+    if (openfluid::tools::FilesystemPath(FormerPrjFilePath).isFile())
     {
       boost::property_tree::ptree INI;
       boost::property_tree::ini_parser::read_ini(FormerPrjFilePath,INI);
@@ -334,12 +334,12 @@ bool RunContextManager::checkProject(const std::string& ProjectPath)
   // try to convert a former openfluid-project.conf file if necessary
   updateProjectFile(PrjFilePath);
 
-  if (!openfluid::tools::Filesystem::isFile(PrjFilePath))
+  if (!openfluid::tools::FilesystemPath(PrjFilePath).isFile())
   {
     return false;
   }
 
-  if (!openfluid::tools::Filesystem::isDirectory(getInputDirFromProjectPath(AbsPath)))
+  if (!openfluid::tools::FilesystemPath(getInputDirFromProjectPath(AbsPath)).isDirectory())
   {
     return false;
   }
@@ -444,7 +444,7 @@ bool RunContextManager::createProject(const std::string& Path,
 
   std::string AbsPath = openfluid::tools::Filesystem::absolutePath(Path);
 
-  if (openfluid::tools::Filesystem::makeDirectory(getInputDirFromProjectPath(AbsPath)))
+  if (openfluid::tools::FilesystemPath(getInputDirFromProjectPath(AbsPath)).makeDirectory())
   {
     m_ProjectPath = AbsPath;
     m_InputDir = getInputDirFromProjectPath(AbsPath);
@@ -623,7 +623,7 @@ bool RunContextManager::projectContainsDeprecatedFile(const std::string& Path)
 {
   for (const auto& File : m_DeprecatedProjectFiles)
   {
-    if (openfluid::tools::Filesystem::exists(openfluid::tools::Filesystem::joinPath({Path,File})))
+    if (openfluid::tools::FilesystemPath({Path,File}).exists())
     {
       return true;
     }

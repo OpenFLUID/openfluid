@@ -42,6 +42,7 @@
 
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
@@ -88,15 +89,15 @@ void WorkspaceManager::updateSettingsFile(const std::string& FilePath) const
 #endif
 
 
-  if (!openfluid::tools::Filesystem::isFile(FilePath))
+  if (!openfluid::tools::FilesystemPath(FilePath).isFile())
   {
     std::string FormerFilePath = 
       openfluid::tools::Filesystem::joinPath({
-        openfluid::tools::Filesystem::dirname(FilePath),
+        openfluid::tools::FilesystemPath(FilePath).dirname(),
         "openfluid-waresdev.conf"
       });
 
-    if (openfluid::tools::Filesystem::isFile(FormerFilePath))
+    if (openfluid::tools::FilesystemPath(FormerFilePath).isFile())
     {
       auto cleanKeyValue = [](const std::string& Key, const std::string& Value)
       {
@@ -186,8 +187,9 @@ void WorkspaceManager::prepareWorkspace()
 
     for (const auto& P: PathsToCheck)
     {
-      openfluid::tools::Filesystem::makeDirectory(P);
-      m_IsOpen = m_IsOpen && openfluid::tools::Filesystem::isDirectory(P);  
+      auto PPath = openfluid::tools::FilesystemPath(P);
+      PPath.makeDirectory();
+      m_IsOpen = m_IsOpen && PPath.isDirectory();  
     }
 
     // try to convert a former openfluid-waredev.conf file if necessary
@@ -205,7 +207,7 @@ void WorkspaceManager::loadSettings()
   m_Settings = 
     std::make_unique<openfluid::tools::SettingsBackend>(getSettingsFile(),m_SettingsRole);
 
-  if (!openfluid::tools::Filesystem::isFile(getSettingsFile()))
+  if (!openfluid::tools::FilesystemPath(getSettingsFile()).isFile())
   {
     m_Settings->save();
   }

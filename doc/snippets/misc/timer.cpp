@@ -37,6 +37,7 @@
 
 
 #include <string>
+#include <iostream>
 
 #include <openfluid/tools/Timer.hpp>
 
@@ -53,6 +54,8 @@ MyTimer.stop();
 auto Duration = MyTimer.elapsed();  // e.g. 13536
 std::string DurationStr = MyTimer.elapsedAsPrettyString();  // e.g. 13.536s
 //! [usage]
+
+std::cout << Duration << std::endl;
 }
 
 

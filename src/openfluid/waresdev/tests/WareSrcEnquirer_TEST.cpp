@@ -51,6 +51,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -79,12 +80,12 @@ struct F
 
       m_SimulatorsPath = openfluid::tools::Filesystem::joinPath({m_WaresdevPath,openfluid::config::SIMULATORS_PATH});
 
-      openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath);
+      openfluid::tools::FilesystemPath(m_WorkspacePath).removeDirectory();
     }
 
     ~F()
     {
-      openfluid::tools::Filesystem::removeDirectory(m_WorkspacePath);
+      openfluid::tools::FilesystemPath(m_WorkspacePath).removeDirectory();
     }
 
     void createTestFiles()
@@ -117,7 +118,7 @@ struct F
 
       for(const auto& D : m_RealDirs)
       {
-        openfluid::tools::Filesystem::makeDirectory(D);
+        openfluid::tools::FilesystemPath(D).makeDirectory();
       }
 
       for(const auto& F : m_RealFiles)
@@ -137,8 +138,8 @@ BOOST_FIXTURE_TEST_CASE(constructor,F)
 {
   openfluid::base::Environment::init();
 
-  BOOST_CHECK(!openfluid::tools::Filesystem::exists(m_WaresdevPath));
-  BOOST_CHECK(!openfluid::tools::Filesystem::exists(m_SimulatorsPath));
+  BOOST_CHECK(!openfluid::tools::FilesystemPath(m_WaresdevPath).exists());
+  BOOST_CHECK(!openfluid::tools::FilesystemPath(m_SimulatorsPath).exists());
 }
 
 

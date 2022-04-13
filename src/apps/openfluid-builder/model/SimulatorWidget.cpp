@@ -43,7 +43,7 @@
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
-#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 #include "ui_WareWidget.h"
 #include "SimulatorWidget.hpp"
@@ -131,10 +131,10 @@ void SimulatorWidget::findDocFile(const openfluid::machine::ModelItemSignatureIn
   m_DocFilePath.clear();
   if (Signature != nullptr)
   {
-    std::string BasePath = openfluid::tools::Filesystem::dirname(Signature->FileFullPath);
+    std::string BasePath = openfluid::tools::FilesystemPath(Signature->FileFullPath).dirname();
     std::string ExpectedFilePath = openfluid::tools::Filesystem::joinPath({BasePath,Signature->Signature->ID+".pdf"});
 
-    if (openfluid::tools::Filesystem::isFile(ExpectedFilePath))
+    if (openfluid::tools::FilesystemPath(ExpectedFilePath).isFile())
     {
       m_DocFilePath = ExpectedFilePath;
     }
