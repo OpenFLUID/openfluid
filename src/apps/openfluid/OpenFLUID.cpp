@@ -82,8 +82,7 @@
 // =====================================================================
 
 
-OpenFLUIDApp::OpenFLUIDApp() :
-  mp_RunEnv(nullptr)
+OpenFLUIDApp::OpenFLUIDApp()
 {
   m_RunType = RunType::None;
   mp_Engine = nullptr;

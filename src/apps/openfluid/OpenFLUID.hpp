@@ -69,8 +69,6 @@ class OpenFLUIDApp
 
     std::pair<std::string,std::string> m_BuddyToRun;
 
-    openfluid::base::RuntimeEnvironment* mp_RunEnv;
-
     openfluid::machine::SimulationBlob m_SimBlob;
 
     std::unique_ptr<openfluid::machine::Engine> mp_Engine;

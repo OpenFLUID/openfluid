@@ -816,14 +816,14 @@ class CommandLineParser
     */
     void printHelp(std::ostream& OutStm)
     {
-      std::string m_CmdName = m_ActiveCommand;
+      std::string CmdName = m_ActiveCommand;
       
-      if (m_CmdName.empty())
+      if (CmdName.empty())
       {
-        m_CmdName = "[<command>]";
+        CmdName = "[<command>]";
       }
 
-      OutStm << "Usage : " << m_ProgramName << " " << m_CmdName << " [<options>] [<args>]\n";
+      OutStm << "Usage : " << m_ProgramName << " " << CmdName << " [<options>] [<args>]\n";
 
       if (m_ActiveCommand.empty())
       {
