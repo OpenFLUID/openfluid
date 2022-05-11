@@ -56,18 +56,36 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 
     void setRandomInfo();
 
-    void setInterpInfo();
+    void setInterpolationInfo();
 
-    void setInjectInfo();
+    void setInjectionInfo(); 
+
 
   public:
 
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
+    const openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method;
 
-    GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+    const openfluid::core::UnitsClass_t UnitsClass;
+
+    const openfluid::core::VariableName_t VariableName;
+
+    const unsigned int VariableSize;
+
+    GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,
+                       const openfluid::core::UnitsClass_t& U, 
+                       const openfluid::core::VariableName_t& VN, const unsigned int VS = 1);
+
+    virtual ~GeneratorSignature() = default;
+
+    WareType getType() const
+    {
+      return WareType::GENERATOR;
+    }
 
 };
 
+
 } } //namespaces
+
 
 #endif /* __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__ */

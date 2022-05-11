@@ -117,17 +117,17 @@ class ProjectCentral : QObject
 
     void checkGeneratorParam(const std::string& MinParamName,
                              const std::string& MaxParamName,
-                             openfluid::fluidx::ModelItemDescriptor* Item,
+                             const openfluid::fluidx::ModelItemDescriptor* Item,
                              const std::string& ID);
 
-    bool isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
-                    const std::string& ParamName);
+    bool isParamSet(const openfluid::fluidx::ModelItemDescriptor* Item,
+                    const std::string& ParamName) const;
 
-    bool isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
-                         const std::string& ParamName);
+    bool isParamIsDouble(const openfluid::fluidx::ModelItemDescriptor* Item,
+                         const std::string& ParamName) const;
 
-    double getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
-                            const std::string& ParamName);
+    double getParamAsDouble(const openfluid::fluidx::ModelItemDescriptor* Item,
+                            const std::string& ParamName) const;
 
     static QStringList convertUpdatedUnitsClassesToQStringList(
         const std::vector<openfluid::ware::SignatureUnitsClassItem>& UnitsClassesVector);

@@ -136,7 +136,7 @@ DashboardStatusWidget::~DashboardStatusWidget()
 
 void DashboardStatusWidget::refresh()
 {
-   const ProjectCheckInfos* Check = mp_PrjCentral->checkInfos();
+  const ProjectCheckInfos* Check = mp_PrjCentral->checkInfos();
 
   setLevel(Check->getOverallStatus());
 

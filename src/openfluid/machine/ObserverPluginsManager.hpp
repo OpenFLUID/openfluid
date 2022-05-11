@@ -52,9 +52,10 @@
 namespace openfluid { namespace machine {
 
 
-class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverSignatureInstance,ObserverInstance,
-                                                         openfluid::ware::GetPluggableObserverSignatureProc,
-                                                         openfluid::ware::GetPluggableObserverBodyProc>
+class OPENFLUID_API ObserverPluginsManager : 
+  public WarePluginsManager<openfluid::ware::ObserverSignature,openfluid::ware::PluggableObserver,
+                            openfluid::ware::GetPluggableObserverSignatureProc,
+                            openfluid::ware::GetPluggableObserverBodyProc>
 {
 
   OPENFLUID_SINGLETON_DEFINITION(ObserverPluginsManager)
@@ -62,8 +63,7 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
 
   private:
 
-    ObserverPluginsManager() : WarePluginsManager<ObserverSignatureInstance,
-                                                  ObserverInstance,
+    ObserverPluginsManager() : WarePluginsManager<openfluid::ware::ObserverSignature,openfluid::ware::PluggableObserver,
                                                   openfluid::ware::GetPluggableObserverSignatureProc,
                                                   openfluid::ware::GetPluggableObserverBodyProc>()
     { }
@@ -73,8 +73,21 @@ class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverS
     { }
 
 
-  public:
+    // =====================================================================
+    // =====================================================================
 
+
+    WareContainer<openfluid::ware::ObserverSignature> createContainer() const
+    {
+      return WareContainer<openfluid::ware::ObserverSignature>(openfluid::ware::WareType::OBSERVER);
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+  public:
 
     std::string getPluginFullPath(const std::string& Filename) const
     {

@@ -48,7 +48,7 @@
 #include <memory>
 
 #include <openfluid/machine/DynamicLib.hpp>
-#include <openfluid/machine/WarePluginsSearchResults.hpp>
+#include <openfluid/machine/WareContainer.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -71,12 +71,12 @@ typedef std::string* (*GetWareLinkUIDProc)();
 
 /**
   Management class for pluggable wares
-  @tparam SignatureInstanceType class defining the container for ware signature only
-  @tparam ItemInstanceType class defining the container for ware signature and body
+  @tparam SignatureType class defining the signature type for the ware category
+  @tparam BodyType class defining the body type for the ware category
   @tparam SignatureProc procedure definition for instantiation of the signature
   @tparam BodyProc procedure definition for instantiation of the body
 */
-template<class SignatureInstanceType, class ItemInstanceType, typename SignatureProc, typename BodyProc>
+template<class SignatureType, class BodyType, typename SignatureProc, typename BodyProc>
 class OPENFLUID_API WarePluginsManager
 {
   private:
@@ -87,7 +87,7 @@ class OPENFLUID_API WarePluginsManager
       @param[in] FullFilePath The path to the plugin file to load
       @return a DynamicLib pointer to the loaded or cached ware
     */
-    DynamicLib* loadPluginLibrary(const std::string& FullFilePath)
+    std::unique_ptr<DynamicLib>& loadPluginLibrary(const std::string& FullFilePath)
     {
       std::string PluginFileName = openfluid::tools::FilesystemPath(FullFilePath).filename();
 
@@ -96,7 +96,7 @@ class OPENFLUID_API WarePluginsManager
         m_LoadedPluginsLibraries[PluginFileName] = std::make_unique<DynamicLib>(FullFilePath);
       }
 
-      return m_LoadedPluginsLibraries[PluginFileName].get();
+      return m_LoadedPluginsLibraries[PluginFileName];
     }
 
 
@@ -104,91 +104,116 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    ItemInstanceType* buildWareContainerWithSignatureOnly(const std::string& ID, bool StrictABICheck = true)
+    std::string buildPluginFilename(const openfluid::ware::WareID_t& ID) const
     {
-      std::string PluginFilename = ID+getPluginFilenameSuffix()+openfluid::config::PLUGINS_EXT;
-      std::string PluginFullPath = getPluginFullPath(PluginFilename);
-      ItemInstanceType* WareItem = nullptr;
+      return (ID+getPluginFilenameSuffix()+openfluid::config::PLUGINS_EXT);
+    }
 
-      // library loading
-      DynamicLib* PlugLib = loadPluginLibrary(PluginFullPath);
 
-      if (PlugLib  != nullptr)
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Returns a container for the first plugin found with the given filename 
+      according to current ware type and search paths
+      @param[in] Filename The plugin filename (only filename, no path)
+      @param[in] StrictABICheck If true, strict checking of ABI version of the plugins is enabled (default). 
+                                Performs loose checking if false.
+      @return A container corresponding to the found plugin. Container is marked as not valid if no plugin found
+    */
+    WareContainer<SignatureType> buildWareContainerFromFilename(const std::string& Filename,bool StrictABICheck = true)
+    {
+      WareContainer<SignatureType> Container = createContainer();
+      std::string PluginFullPath = getPluginFullPath(Filename);
+
+      if (!PluginFullPath.empty())
       {
-        if (PlugLib->load())  
+        auto& PlugLib = loadPluginLibrary(PluginFullPath);
+
+        if (PlugLib)
         {
-          WareItem = new ItemInstanceType();
-          WareItem->FileFullPath = PluginFullPath;
+          Container.setPath(PluginFullPath);
 
-          GetWareABIVersionProc ABIVersionProc = PlugLib->getSymbol<GetWareABIVersionProc>(WAREABIVERSION_PROC_NAME);
-
-          if (ABIVersionProc)
+          if (PlugLib->load())  
           {
-            std::unique_ptr<std::string> StrPtr(ABIVersionProc());
-            WareItem->Verified = 
-              (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*StrPtr,StrictABICheck) == 0);
-          }
-          else
-          {
-            WareItem->Verified = false;
-          }
+            GetWareABIVersionProc ABIVersionProc = 
+              PlugLib->template getSymbol<GetWareABIVersionProc>(WAREABIVERSION_PROC_NAME);
 
-
-          if (WareItem->Verified)
-          {
-            BodyProc BProc = PlugLib->getSymbol<BodyProc>(WAREBODY_PROC_NAME);
-            SignatureProc SProc = PlugLib->getSymbol<SignatureProc>(WARESIGNATURE_PROC_NAME);
-
-            // checks if the handle procs exist
-            if (SProc && BProc)
+            bool Verified = false;
+            if (ABIVersionProc)
             {
-              WareItem->Signature = SProc();
+              std::unique_ptr<std::string> ABIPtr(ABIVersionProc());
+              Verified = 
+                (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*ABIPtr,StrictABICheck) == 0);
+            }
 
-              if (WareItem->Signature == nullptr)
+            if (Verified)
+            {
+              BodyProc BProc = PlugLib->template getSymbol<BodyProc>(WAREBODY_PROC_NAME);
+              SignatureProc SProc = PlugLib->template  getSymbol<SignatureProc>(WARESIGNATURE_PROC_NAME);
+
+              // checks if the handle procs exist
+              if (SProc && BProc)
               {
-                throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                          "Signature from plugin file " + PluginFilename +
-                                                          " cannot be instanciated");
+                auto SignPtr = SProc();
+
+                if (SignPtr)
+                {
+                  Verified = (Filename == buildPluginFilename(SignPtr->ID));
+
+                  if (Verified)
+                  {
+                    Container.setSignature(SignPtr);
+
+                    GetWareLinkUIDProc LinkUIDProc = 
+                      PlugLib->template  getSymbol<GetWareLinkUIDProc>(WARELINKUID_PROC_NAME);
+
+                    if (LinkUIDProc)
+                    {
+                      std::unique_ptr<std::string> StrPtr(LinkUIDProc());
+                      Container.setLinkUID(*StrPtr);
+                    }
+                  }
+                  else
+                  {
+                    Container.setMessage("ID mismatch in signature");
+                  }
+                }
+                else
+                {
+                  Container.setMessage("Signature cannot be instanciated");
+                }
               }
-
-              WareItem->Verified = (WareItem->Signature->ID == ID);
-
-              WareItem->Body = 0;
-
-              GetWareLinkUIDProc LinkUIDProc = PlugLib->getSymbol<GetWareLinkUIDProc>(WARELINKUID_PROC_NAME);
-
-              if (LinkUIDProc)
+              else
               {
-                std::unique_ptr<std::string> StrPtr(LinkUIDProc());
-                WareItem->LinkUID = *StrPtr;
+                Container.setMessage("Plugin format error");
               }
             }
             else
             {
-              throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                        "Format error in plugin file " + PluginFilename);
+              Container.setMessage("Plugin ABI version mismatch");
             }
           }
           else
           {
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                      "Compatibility version mismatch for plugin file " +
-                                                      PluginFilename);
+            Container.setMessage(PlugLib->getLatestErrorMsg());
           }
         }
         else
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                    "Unable to load plugin from file " + PluginFilename);
+                                                    "Unable to find plugin file " + Filename);
         }
       }
       else
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Unable to find file " + PluginFilename);
+                                                  "Empty path for plugin file " + Filename);
       }
 
-      return WareItem;
+      Container.validate();
+      return Container;
     }
 
 
@@ -196,88 +221,28 @@ class OPENFLUID_API WarePluginsManager
     // =====================================================================
 
 
-    SignatureInstanceType* getWareSignature(const std::string& PluginFilename, bool StrictABICheck = true)
+    /**
+      Returns a container for the first plugin found with the given ID according to current ware type and search paths
+      @param[in] ID The plugin ID
+      @param[in] StrictABICheck If true, strict checking of ABI version of the plugins is enabled (default). 
+                                Performs loose checking if false.
+      @return A container corresponding to the found plugin. Container is marked as not valid if no plugin found
+    */
+    WareContainer<SignatureType> buildWareContainerFromID(const std::string& ID, bool StrictABICheck = true)
     {
-      std::string PluginFullPath = getPluginFullPath(PluginFilename);
-      SignatureInstanceType* Sign = nullptr;
-
-      openfluid::base::ExceptionContext ECtxt =
-          openfluid::base::FrameworkException::computeContext(OPENFLUID_CODE_LOCATION)
-          .addInfos({{"pluginfullpath",PluginFullPath},{"pluginfilename",PluginFilename}});
-
-      // library loading
-      DynamicLib* PlugLib = loadPluginLibrary(PluginFullPath);
-
-      if (PlugLib != nullptr)
-      {
-        if (PlugLib->load())
-        {
-          Sign = new SignatureInstanceType();
-          Sign->FileFullPath = PluginFullPath;
-
-          GetWareABIVersionProc ABIVersionProc = PlugLib->getSymbol<GetWareABIVersionProc>(WAREABIVERSION_PROC_NAME);
-
-          if (ABIVersionProc)
-          {
-            std::unique_ptr<std::string> StrPtr(ABIVersionProc());
-            Sign->Verified = 
-              (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*StrPtr,StrictABICheck) == 0); 
-          }
-          else
-          {
-            Sign->Verified = false;
-          }
-
-          if (Sign->Verified)
-          {
-            BodyProc BProc = PlugLib->getSymbol<BodyProc>(WAREBODY_PROC_NAME);
-            SignatureProc SProc = PlugLib->getSymbol<SignatureProc>(WARESIGNATURE_PROC_NAME);
-
-            // checks if the handle procs exist
-            if (SProc && BProc)
-            {
-              try
-              {
-                Sign->Signature = SProc();
-              }
-              catch (openfluid::base::FrameworkException& E)
-              {
-                throw openfluid::base::FrameworkException(ECtxt,E.getMessage());
-              }
-
-              if (Sign->Signature == nullptr)
-              {
-                throw openfluid::base::FrameworkException(ECtxt,"Signature cannot be instanciated from plugin file");
-              }
-
-              Sign->Verified = (PluginFilename.find(Sign->Signature->ID) == 0);
-
-              GetWareLinkUIDProc LinkUIDProc = PlugLib->getSymbol<GetWareLinkUIDProc>(WARELINKUID_PROC_NAME);
-
-              if (LinkUIDProc)
-              {
-                std::unique_ptr<std::string> StrPtr(LinkUIDProc());
-                Sign->LinkUID = *StrPtr;
-              }
-            }
-            else
-            {
-              throw openfluid::base::FrameworkException(ECtxt,"Format error in plugin file");
-            }
-          }
-        }
-        else
-        {
-          throw openfluid::base::FrameworkException(ECtxt,PlugLib->getLatestErrorMsg());
-        }
-      }
-      else
-      {
-        throw openfluid::base::FrameworkException(ECtxt,"Unable to find plugin file " + PluginFilename);
-      }
-
-      return Sign;
+      return buildWareContainerFromFilename(buildPluginFilename(ID),StrictABICheck);
     }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Returns an empty built container
+      @return The container
+    */
+    virtual WareContainer<SignatureType> createContainer() const = 0;
 
 
     // =====================================================================
@@ -302,8 +267,6 @@ class OPENFLUID_API WarePluginsManager
 
 
   public:
-
-    typedef WarePluginsSearchResults<SignatureInstanceType> PluginsSearchResults;
 
     virtual ~WarePluginsManager()
     {
@@ -350,14 +313,36 @@ class OPENFLUID_API WarePluginsManager
 
 
     /**
+      Loads only the signature of a ware given by its ID
+      @param[in] ID The ID of the ware to load
+      @return The ware container including the signature
+    */
+    WareContainer<SignatureType> loadPlugin(const std::string& ID)
+    {
+      try 
+      {
+        return buildWareContainerFromID(ID);
+      }
+      catch (openfluid::base::FrameworkException&)
+      {
+        return createContainer();
+      }
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
       Lists available wares
-      @param[in] Pattern if not empty, the list of available wares is filtered using the given pattern 
-                         based on wildcard matching
+      @param[in] IDPattern Pattern if not empty, the list of available wares is filtered using the given pattern 
+                           based on wildcard matching
       @return The list of found wares
     */
-    PluginsSearchResults getAvailableWaresSignatures(const std::string& Pattern = "")
+    std::vector<WareContainer<SignatureType>> loadPlugins(const std::string& IDPattern = "")
     {
-      PluginsSearchResults SearchResults;
+      std::vector<WareContainer<SignatureType>> Containers;
       std::vector<std::string> PluginsPaths = getPluginsSearchPaths();
       std::vector<std::string> PluginFiles;
       std::vector<std::string> TmpFiles;
@@ -376,55 +361,25 @@ class OPENFLUID_API WarePluginsManager
       }
 
 
-      SignatureInstanceType* CurrentPlug = nullptr;
-
       for (const auto& File: PluginFiles)
       {
         try
         {
-          CurrentPlug = getWareSignature(File);
+          auto Container = buildWareContainerFromFilename(File);
 
-          if (CurrentPlug && CurrentPlug->Verified)
+          if (Container.isValid() &&
+              (IDPattern.empty() || openfluid::tools::matchWithWildcard(IDPattern,Container.signature()->ID)))
           {
-            if (Pattern.empty())
-            {
-              SearchResults.appendAvailable(CurrentPlug);
-            }
-            else if (openfluid::tools::matchWithWildcard(Pattern,CurrentPlug->Signature->ID))
-            {
-              SearchResults.appendAvailable(CurrentPlug);
-            }
+            Containers.emplace_back(std::move(Container));
           }
         }
         catch (openfluid::base::FrameworkException& E)
-        {
-          SearchResults.appendErrored(E.getContext().at("pluginfullpath"),E.getMessage());
+        {          
+          throw E;
         }
       }
 
-      return SearchResults;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    /**
-      Loads only the signature of a ware given by its ID
-      @param[in] ID The ID of the ware to load
-      @return The ware container including the signature
-    */
-    ItemInstanceType* loadWareSignatureOnly(const std::string& ID)
-    {
-      ItemInstanceType* WareItem = buildWareContainerWithSignatureOnly(ID);
-
-      if (WareItem != nullptr && WareItem->Verified)
-      {
-        return WareItem;
-      }
-
-      return nullptr;
+      return Containers;
     }
 
 
@@ -436,30 +391,23 @@ class OPENFLUID_API WarePluginsManager
       Loads only the body of a ware if the signature is already loaded
       @param[inout] WareItem The ware container to complete which already includes the signature
     */
-    void completeSignatureWithWareBody(ItemInstanceType* WareItem)
+    BodyType* getWareBody(const WareContainer<SignatureType>& Container)
     {
-      std::string PluginFullPath = WareItem->FileFullPath;
+      std::string PluginFullPath = Container.getPath();
 
-      DynamicLib* PlugLib = loadPluginLibrary(PluginFullPath);
+      std::unique_ptr<DynamicLib>& PlugLib = loadPluginLibrary(PluginFullPath);
 
       if (PlugLib != nullptr) 
       {
         if (PlugLib->load())
         {
-          BodyProc BProc = PlugLib->getSymbol<BodyProc>(WAREBODY_PROC_NAME);
+          BodyProc BProc = PlugLib->template getSymbol<BodyProc>(WAREBODY_PROC_NAME);
 
           // checks if the handle proc exists
           if (BProc)
           {
-            WareItem->Body.reset(BProc());
-
-            if (WareItem->Body == nullptr)
-            {
-              throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                        "Ware from plugin file " + PluginFullPath +
-                                                        " cannot be instanciated");
-            }
-
+            BodyType* Body = BProc();
+            return Body;
           }
           else
           {
@@ -486,13 +434,13 @@ class OPENFLUID_API WarePluginsManager
 
 
     /**
-      Unloads all already loaded wares and clears the cache
+      Unloads all already loaded plugins and clears the cache
     */
-    void unloadAllWares()
+    void unloadAll()
     {
-      for (auto it=m_LoadedPluginsLibraries.begin();it != m_LoadedPluginsLibraries.end(); ++it)
+      for (const auto& PlugLib : m_LoadedPluginsLibraries)
       {
-        it->second.get()->unload();
+        PlugLib.second->unload();
       }
 
       m_LoadedPluginsLibraries.clear();

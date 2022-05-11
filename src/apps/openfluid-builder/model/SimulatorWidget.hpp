@@ -59,11 +59,14 @@ class SimulatorWidget : public ModelItemWidget
     
     void updateParametersList();
 
-    void updateParametersListWithSignature(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateParametersListWithSignature(const openfluid::ware::SimulatorSignature* Signature);
 
-    void findDocFile(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void findDocFile(const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& Container);
     
-    bool isClickable() {return true;}
+    bool isClickable() 
+    {
+      return true;
+    }
 
 
   private slots:
@@ -100,8 +103,10 @@ class SimulatorWidget : public ModelItemWidget
 
     void updateWare();
 
-    openfluid::ware::WareType getType()
-    { return openfluid::ware::WareType::SIMULATOR; }
+    openfluid::ware::WareType getType() const
+    { 
+      return openfluid::ware::WareType::SIMULATOR;
+    }
 };
 
 

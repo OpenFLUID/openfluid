@@ -31,14 +31,14 @@
 
 
 /**
-  @file WarePluginsSearchResultsSerializer.hpp
+  @file WareRegistrySerializer.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
  */
 
 
-#ifndef __OPENFLUID_MACHINE_WAREPLUGINSSEARCHRESULTSSERIALIZER_HPP__
-#define __OPENFLUID_MACHINE_WAREPLUGINSSEARCHRESULTSSERIALIZER_HPP__
+#ifndef __OPENFLUID_MACHINE_WAREREGISTRYSERIALIZER_HPP__
+#define __OPENFLUID_MACHINE_WAREREGISTRYSERIALIZER_HPP__
 
 
 #include <sstream>
@@ -57,12 +57,12 @@ namespace openfluid { namespace machine {
   Class for management of search results of pluggable wares
   @tparam SignatureType class defining the container for ware signature only
 */
-template<class SignatureInstanceType>
-class OPENFLUID_API WarePluginsSearchResultsSerializer
+template<class SignatureType>
+class OPENFLUID_API WareRegistrySerializer
 {
   private:
 
-    const WarePluginsSearchResults<SignatureInstanceType>& m_SearchResults;
+    const WareRegistry<SignatureType>* m_Registry;
 
 
     static std::string getAuthorsAsString(const openfluid::ware::WareSignature::AuthorsList_t& Authors)
@@ -194,8 +194,8 @@ class OPENFLUID_API WarePluginsSearchResultsSerializer
 
   public:
 
-    WarePluginsSearchResultsSerializer(const WarePluginsSearchResults<SignatureInstanceType>& SearchResults):
-      m_SearchResults(SearchResults)
+    WareRegistrySerializer(const WareRegistry<SignatureType>* Registry):
+      m_Registry(Registry)
     {
 
     }
@@ -209,23 +209,23 @@ class OPENFLUID_API WarePluginsSearchResultsSerializer
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeListToStreamAsText(std::ostream& OutStm,
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::writeListToStreamAsText(std::ostream& OutStm,
                                                                                         bool WithErrors) const
 {
-  for (auto& Plug : m_SearchResults.availablePlugins())
+  for (auto& C : m_Registry->availableWares())
   {
-    if (Plug->Verified && Plug->Signature)
+    if (C.second.isValid() && C.second.hasSignature())
     {
-      OutStm << Plug->Signature->ID << "\n";
+      OutStm << C.second.signature()->ID << "\n";
     }
   }
 
-  if (WithErrors && !m_SearchResults.erroredFiles().empty())
+  if (WithErrors && ! m_Registry->erroredWares().empty())
   {
-    for (auto& EFile : m_SearchResults.erroredFiles())
+    for (auto& C : m_Registry->erroredWares())
     {
-      OutStm << "Error on file " << EFile.first <<  ": " << EFile.second << "\n";
+      OutStm << "Error on file " << C.first <<  ": " << C.second.getMessage() << "\n";
     }
   }
 }
@@ -235,8 +235,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeListToStrea
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareMetaForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addWareMetaForText(
   const openfluid::ware::SimulatorSignature* Sign, std::ostream& OutStm) const
 {  
   OutStm << getIndentedText(2,"Domain",openfluid::tools::replaceEmptyString(Sign->Domain,"(unknown)")) << "\n";
@@ -249,8 +249,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareMetaForTe
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareMetaForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addWareMetaForText(
   const openfluid::ware::ObserverSignature* /*Sign*/, std::ostream& /*OutStm*/) const
 {
   // nothing to be done  
@@ -261,8 +261,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareMetaForTe
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSchedulingDetailsForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addSchedulingDetailsForText(
   const openfluid::ware::SimulatorSignature* Sign, std::ostream& OutStm) const
 {
   std::ostringstream oss;
@@ -292,8 +292,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSchedulingDet
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addDataForText(
   const openfluid::ware::SignatureDataItem& Item, const std::string& CatStr, std::ostream& OutStm) const
 {
   std::ostringstream oss;
@@ -313,8 +313,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataForText(
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSpatialDataForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addSpatialDataForText(
   const openfluid::ware::SignatureSpatialDataItem& Item, const std::string& CatStr, std::ostream& OutStm) const
 {
   std::ostringstream oss;
@@ -334,8 +334,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSpatialDataFo
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addTypedSpatialDataForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addTypedSpatialDataForText(
   const openfluid::ware::SignatureTypedSpatialDataItem& Item, const std::string& CatStr, std::ostream& OutStm) const
 {
   std::ostringstream oss;
@@ -361,8 +361,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addTypedSpatialD
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
   const openfluid::ware::SimulatorSignature* Sign, std::ostream& OutStm) const
 {
   const auto& Data = Sign->HandledData;
@@ -470,8 +470,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsFo
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addGraphDetailsForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addGraphDetailsForText(
   const openfluid::ware::SimulatorSignature* Sign, std::ostream& OutStm) const
 {
   if (!Sign->HandledUnitsGraph.UpdatedUnitsGraph.empty() || !Sign->HandledUnitsGraph.UpdatedUnitsClass.empty())
@@ -496,8 +496,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addGraphDetailsF
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDynaForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addWareDynaForText(
   const openfluid::ware::SimulatorSignature* Sign, std::ostream& OutStm) const
 {
   addSchedulingDetailsForText(Sign,OutStm);
@@ -510,8 +510,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDynaForTe
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDynaForText(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addWareDynaForText(
   const openfluid::ware::ObserverSignature* /*Sign*/, std::ostream& /*OutStm*/) const
 {
   // nothing to be done  
@@ -522,15 +522,14 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDynaForTe
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsText(std::ostream& OutStm,
-                                                                                    bool WithErrors) const
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::writeToStreamAsText(std::ostream& OutStm,bool WithErrors) const
 {
   bool First = true;
 
-  for (auto& Plug : m_SearchResults.availablePlugins())
+  for (auto& C : m_Registry->availableWares())
   {
-    if (Plug->Verified && Plug->Signature)
+    if (C.second.isValid() && C.second.hasSignature())
     {
       if (!First)
       {
@@ -538,11 +537,11 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsT
       }
       First = false;
 
-      const auto Sign = Plug->Signature;
+      const auto Sign = C.second.signature().get();
 
       OutStm << getIndentedText(1,Sign->ID) << "\n";
       OutStm << getIndentedText(2,"Name",openfluid::tools::replaceEmptyString(Sign->Name,"(none)")) << "\n";
-      OutStm << getIndentedText(2,"File",Plug->FileFullPath) << "\n";
+      OutStm << getIndentedText(2,"File",C.second.getPath()) << "\n";
       addWareMetaForText(Sign,OutStm);
       OutStm << 
         getIndentedText(2,"Description",openfluid::tools::replaceEmptyString(Sign->Description,"(none)")) << "\n";
@@ -570,7 +569,7 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsT
     }
   }
 
-  if (WithErrors && !m_SearchResults.erroredFiles().empty())
+  if (WithErrors && !m_Registry->erroredWares().empty())
   {
     if (!First)
     {
@@ -578,10 +577,10 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsT
     }
     First = false;
 
-    for (auto& EFile : m_SearchResults.erroredFiles())
+    for (auto& EFile : m_Registry->erroredWares())
     {
       
-      OutStm << "Error on file " << EFile.first <<  ": " << EFile.second << "\n";
+      OutStm << "Error on file " << EFile.first <<  ": " << EFile.second.getMessage() << "\n";
     }
   }
 }
@@ -591,17 +590,17 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsT
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::
   addErrorsToJSONDoc(openfluid::thirdparty::json& Doc) const
 {
   openfluid::thirdparty::json Errors(openfluid::thirdparty::json::value_t::array);
 
-  for (auto& EFile : m_SearchResults.erroredFiles())
+  for (auto& EFile : m_Registry->erroredWares())
   {
     openfluid::thirdparty::json EObj(openfluid::thirdparty::json::value_t::object);
     EObj["file_path"] = EFile.first;
-    EObj["message"] = EFile.second;
+    EObj["message"] = EFile.second.getMessage();
     Errors.push_back(EObj);
   }
   
@@ -613,8 +612,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-std::string WarePluginsSearchResultsSerializer<SignatureInstanceType>::getJSONAsString(openfluid::thirdparty::json& Doc)
+template<class SignatureType>
+std::string WareRegistrySerializer<SignatureType>::getJSONAsString(openfluid::thirdparty::json& Doc)
 {
   return Doc.dump(2);
 }
@@ -624,19 +623,18 @@ std::string WarePluginsSearchResultsSerializer<SignatureInstanceType>::getJSONAs
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeListToStreamAsJSON(std::ostream& OutStm,
-                                                                                        bool WithErrors) const
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::writeListToStreamAsJSON(std::ostream& OutStm, bool WithErrors) const
 {
   openfluid::thirdparty::json JSON(openfluid::thirdparty::json::value_t::object);
 
   openfluid::thirdparty::json Available(openfluid::thirdparty::json::value_t::array);
 
-  for (auto& Plug : m_SearchResults.availablePlugins())
+  for (auto& C : m_Registry->availableWares())
   {
-    if (Plug->Verified && Plug->Signature)
+    if (C.second.isValid() && C.second.hasSignature())
     {
-      Available.push_back(Plug->Signature->ID);
+      Available.push_back(C.second.signature()->ID);
     }
   }
 
@@ -656,8 +654,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeListToStrea
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataForJSON(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addDataForJSON(
   const openfluid::ware::SignatureDataItem& Item, openfluid::thirdparty::json& Arr) const
 {
    openfluid::thirdparty::json Obj(openfluid::thirdparty::json::value_t::object);
@@ -672,8 +670,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataForJSON(
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSpatialDataForJSON(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addSpatialDataForJSON(
   const openfluid::ware::SignatureSpatialDataItem& Item, openfluid::thirdparty::json& Arr) const
 {
   openfluid::thirdparty::json Obj(openfluid::thirdparty::json::value_t::object);
@@ -689,8 +687,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addSpatialDataFo
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addTypedSpatialDataForJSON(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addTypedSpatialDataForJSON(
   const openfluid::ware::SignatureTypedSpatialDataItem& Item, openfluid::thirdparty::json& Arr) const
 {
   std::string TypeStr = openfluid::core::Value::getStringFromValueType(Item.DataType);
@@ -709,8 +707,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addTypedSpatialD
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsForJSON(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addDataDetailsForJSON(
   const openfluid::ware::SimulatorSignature* Sign, openfluid::thirdparty::json& Obj) const
 {
   // ------ Parameters
@@ -833,8 +831,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addDataDetailsFo
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addGraphDetailsForJSON(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addGraphDetailsForJSON(
   const openfluid::ware::SimulatorSignature* Sign, openfluid::thirdparty::json& Obj) const
 {
   Obj["description"] = Sign->HandledUnitsGraph.UpdatedUnitsGraph;
@@ -855,8 +853,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addGraphDetailsF
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsForJSON(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addWareDetailsForJSON(
   const openfluid::ware::SimulatorSignature* Sign, openfluid::thirdparty::json& Obj) const
 {
   Obj["domain"] = Sign->Domain;
@@ -886,8 +884,8 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsFo
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsForJSON(
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::addWareDetailsForJSON(
   const openfluid::ware::ObserverSignature* /*Sign*/, openfluid::thirdparty::json& /*Obj*/) const
 {
   // nothing to be done
@@ -898,23 +896,23 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::addWareDetailsFo
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJSON(std::ostream& OutStm,
-                                                                                    bool WithErrors) const
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::writeToStreamAsJSON(std::ostream& OutStm,
+                                                                        bool WithErrors) const
 {
   openfluid::thirdparty::json JSON(openfluid::thirdparty::json::value_t::object);
 
   openfluid::thirdparty::json Available(openfluid::thirdparty::json::value_t::array);
 
-  for (auto& Plug : m_SearchResults.availablePlugins())
+  for (auto& C : m_Registry->availableWares())
   {
-    if (Plug->Verified && Plug->Signature)
+    if (C.second.isValid() && C.second.hasSignature())
     {
-      const auto Sign = Plug->Signature;
+      const auto Sign = C.second.signature().get();
 
       openfluid::thirdparty::json WareObj(openfluid::thirdparty::json::value_t::object);
       WareObj["id"] = Sign->ID;
-      WareObj["file_path"] = Plug->FileFullPath;
+      WareObj["file_path"] = C.second.getPath();
       WareObj["abi_version"] = Sign->BuildInfo.SDKVersion;
 
       openfluid::thirdparty::json BuildObj(openfluid::thirdparty::json::value_t::object);
@@ -962,10 +960,10 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStreamAsJ
 // =====================================================================
 
 
-template<class SignatureInstanceType>
-void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStream(std::ostream& OutStm,
-                                                            const std::string& Format,
-                                                            bool Detailed, bool WithErrors) const
+template<class SignatureType>
+void WareRegistrySerializer<SignatureType>::writeToStream(std::ostream& OutStm,
+                                                                  const std::string& Format,
+                                                                  bool Detailed, bool WithErrors) const
 {
   if (Format == "text")
   {
@@ -1000,4 +998,4 @@ void WarePluginsSearchResultsSerializer<SignatureInstanceType>::writeToStream(st
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_MACHINE_WAREPLUGINSSEARCHRESULTSSERIALIZER_HPP__ */
+#endif /* __OPENFLUID_MACHINE_WAREREGISTRYSERIALIZER_HPP__ */

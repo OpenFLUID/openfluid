@@ -33,7 +33,7 @@
 /**
   @file ModelInstance.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
  */
 
 
@@ -68,23 +68,23 @@ namespace openfluid { namespace machine {
       ModelItemInstance* _M_CurrentSimulator = *_M_SimIter; \
       if (_M_CurrentSimulator != nullptr) \
       { \
-        mp_Listener->onSimulator##listenermethod(_M_CurrentSimulator->Signature->ID); \
+        mp_Listener->onSimulator##listenermethod(_M_CurrentSimulator->Container.signature()->ID); \
         std::chrono::high_resolution_clock::time_point _M_TimeProfileStart = \
           std::chrono::high_resolution_clock::now(); \
         _M_CurrentSimulator->Body->calledmethod; \
         if (mp_SimProfiler != nullptr)\
         { \
-          mp_SimProfiler->addDuration(_M_CurrentSimulator->Signature->ID,\
+          mp_SimProfiler->addDuration(_M_CurrentSimulator->Container.signature()->ID,\
                                       timeprofilepart, \
                                       std::chrono::duration_cast<SimulationProfiler::TimeResolution_t>(\
                                         std::chrono::high_resolution_clock::now() - _M_TimeProfileStart)); \
         } \
         if (mp_SimLogger->isCurrentWarningFlag()) \
           mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::Status::WARNING_STATUS,\
-                                                         _M_CurrentSimulator->Signature->ID); \
+                                                         _M_CurrentSimulator->Container.signature()->ID); \
         else \
           mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::Status::OK_STATUS,\
-                                                         _M_CurrentSimulator->Signature->ID); \
+                                                         _M_CurrentSimulator->Container.signature()->ID); \
         mp_SimLogger->resetCurrentWarningFlag(); \
       } \
       ++_M_SimIter; \
@@ -342,67 +342,69 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
   mp_SimLogger = SimLogger;
 
   openfluid::machine::SimulationProfiler::WareIDSequence_t SimSequence;
+  openfluid::machine::SimulatorPluginsManager* Man = openfluid::machine::SimulatorPluginsManager::instance();
 
-  openfluid::machine::SimulatorPluginsManager* FPlugsMgr = openfluid::machine::SimulatorPluginsManager::instance();
 
-  std::list<ModelItemInstance*>::const_iterator SimIter;
-  ModelItemInstance* CurrentSimulator;
-
-  SimIter = m_ModelItems.begin();
-  while (SimIter != m_ModelItems.end())
+  auto ItemIt = m_ModelItems.begin();
+  while (ItemIt != m_ModelItems.end())
   {
-    CurrentSimulator = (*SimIter);
+    auto CurrentItem = (*ItemIt);
 
-    if(CurrentSimulator->ItemType == openfluid::ware::WareType::SIMULATOR)
+    if (CurrentItem->Container.getWareType() == openfluid::ware::WareType::SIMULATOR)
     {
-      FPlugsMgr->completeSignatureWithWareBody(CurrentSimulator);
+      // TODO throw exception if body is already set?
+      if (!CurrentItem->Body)
+      {
+        CurrentItem->Body.reset(Man->getWareBody(CurrentItem->Container));
+      }
     }
-
-    if (CurrentSimulator->ItemType == openfluid::ware::WareType::GENERATOR &&
-        CurrentSimulator->GeneratorInfo != nullptr)
+    else if (CurrentItem->Container.getWareType() == openfluid::ware::WareType::GENERATOR)
     {
-      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == 
-            openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED)
-      {
-        CurrentSimulator->Body.reset(new FixedGenerator());
-      }
+      const auto* GenSignature = 
+        dynamic_cast<openfluid::ware::GeneratorSignature*>(CurrentItem->Container.signature().get());
 
-      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == 
-            openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM)
+      if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED)
       {
-        CurrentSimulator->Body.reset(new RandomGenerator());
+        CurrentItem->Body.reset(new FixedGenerator());
       }
-
-      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == 
-            openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
+      else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM)
       {
-        CurrentSimulator->Body.reset(new InjectGenerator());
+        CurrentItem->Body.reset(new RandomGenerator());
       }
-
-      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == 
-            openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP)
+      else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT)
       {
-        CurrentSimulator->Body.reset(new InterpGenerator());
+        CurrentItem->Body.reset(new InjectGenerator());
+      }
+      else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP)
+      {
+        CurrentItem->Body.reset(new InterpGenerator());
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"invalid generator method in model instance");
       }
 
       ((openfluid::machine::Generator*)
-          (CurrentSimulator->Body.get()))->setInfos(CurrentSimulator->GeneratorInfo->VariableName,
-                                              CurrentSimulator->GeneratorInfo->UnitsClass,
-                                              CurrentSimulator->GeneratorInfo->GeneratorMethod,
-                                              CurrentSimulator->GeneratorInfo->VariableSize);
+          (CurrentItem->Body.get()))->setInfos(GenSignature->VariableName,
+                                               GenSignature->UnitsClass,
+                                               GenSignature->Method,
+                                               GenSignature->VariableSize);
+    }
+    else
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"invalid ware type in model instance");
     }
 
-    CurrentSimulator->Body->linkToSimulationLogger(mp_SimLogger);
-    CurrentSimulator->Body->linkToSimulation(&(m_SimulationBlob.simulationStatus()));
-    CurrentSimulator->Body->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()
-                                                   ->getWaresEnvironment());
-    CurrentSimulator->Body->linkToSpatialGraph(&(m_SimulationBlob.spatialGraph()));
-    CurrentSimulator->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
-    CurrentSimulator->Body->initializeWare(CurrentSimulator->Signature->ID,
-                                           openfluid::base::RunContextManager::instance()->getWaresMaxNumThreads());
-    SimSequence.push_back(CurrentSimulator->Signature->ID);
+    CurrentItem->Body->linkToSimulationLogger(mp_SimLogger);
+    CurrentItem->Body->linkToSimulation(&(m_SimulationBlob.simulationStatus()));
+    CurrentItem->Body->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()->getWaresEnvironment());
+    CurrentItem->Body->linkToSpatialGraph(&(m_SimulationBlob.spatialGraph()));
+    CurrentItem->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
+    CurrentItem->Body->initializeWare(CurrentItem->Container.signature()->ID,
+                                      openfluid::base::RunContextManager::instance()->getWaresMaxNumThreads());
+    SimSequence.push_back(CurrentItem->Container.signature()->ID);
 
-    ++SimIter;
+    ++ItemIt;
   }
 
   if (openfluid::base::RunContextManager::instance()->isProfiling())
@@ -550,7 +552,7 @@ void ModelInstance::call_initializeRun()
     ModelItemInstance* CurrentSimulator = *SimIter;
     if (CurrentSimulator != nullptr)
     {
-      mp_Listener->onSimulatorInitializeRun(CurrentSimulator->Signature->ID);
+      mp_Listener->onSimulatorInitializeRun(CurrentSimulator->Container.signature()->ID);
 
       std::chrono::high_resolution_clock::time_point TimeProfileStart = std::chrono::high_resolution_clock::now();
 
@@ -558,7 +560,7 @@ void ModelInstance::call_initializeRun()
 
       if (mp_SimProfiler != nullptr)
       {
-        mp_SimProfiler->addDuration(CurrentSimulator->Signature->ID,
+        mp_SimProfiler->addDuration(CurrentSimulator->Container.signature()->ID,
                                     openfluid::base::SimulationStatus::INITIALIZERUN,
                                     std::chrono::duration_cast<SimulationProfiler::TimeResolution_t>(
                                         std::chrono::high_resolution_clock::now()-TimeProfileStart)
@@ -568,16 +570,16 @@ void ModelInstance::call_initializeRun()
       if (mp_SimLogger->isCurrentWarningFlag())
       {
         mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::Status::WARNING_STATUS,
-                                                  CurrentSimulator->Signature->ID);
+                                                  CurrentSimulator->Container.signature()->ID);
       }
       else
       {
         mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::Status::OK_STATUS,
-                                                  CurrentSimulator->Signature->ID);
+                                                  CurrentSimulator->Container.signature()->ID);
       }
       mp_SimLogger->resetCurrentWarningFlag();
 
-      checkDeltaTMode(SchedReq,CurrentSimulator->Signature->ID);
+      checkDeltaTMode(SchedReq,CurrentSimulator->Container.signature()->ID);
 
       // TODO optimize by testing DURATION before ATTHEEND
       if (SchedReq.RequestType == openfluid::base::SchedulingRequest::ATTHEEND) // AtTheEnd();
@@ -629,14 +631,14 @@ void ModelInstance::processNextTimePoint()
 
     openfluid::machine::ModelItemInstance* NextItem = m_TimePointList.front().nextItem();
 
-    mp_Listener->onSimulatorRunStep(NextItem->Signature->ID);
+    mp_Listener->onSimulatorRunStep(NextItem->Container.signature()->ID);
     std::chrono::high_resolution_clock::time_point TimeProfileStart = std::chrono::high_resolution_clock::now();
 
     openfluid::base::SchedulingRequest SchedReq = m_TimePointList.front().processNextItem();
 
     if (mp_SimProfiler != nullptr)
     {
-      mp_SimProfiler->addDuration(NextItem->Signature->ID,
+      mp_SimProfiler->addDuration(NextItem->Container.signature()->ID,
                                   openfluid::base::SimulationStatus::RUNSTEP,
                                   std::chrono::duration_cast<SimulationProfiler::TimeResolution_t>(
                                       std::chrono::high_resolution_clock::now()-TimeProfileStart)
@@ -647,17 +649,17 @@ void ModelInstance::processNextTimePoint()
     {
       AtLeastOneWarningFlag = true;
       mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::Status::WARNING_STATUS,
-                                          NextItem->Signature->ID);
+                                          NextItem->Container.signature()->ID);
     }
     else
     {
       mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::Status::OK_STATUS,
-                                          NextItem->Signature->ID);
+                                          NextItem->Container.signature()->ID);
     }
 
     mp_SimLogger->resetCurrentWarningFlag();
 
-    checkDeltaTMode(SchedReq,NextItem->Signature->ID);
+    checkDeltaTMode(SchedReq,NextItem->Container.signature()->ID);
 
     if (SchedReq.RequestType == openfluid::base::SchedulingRequest::ATTHEEND) // AtTheEnd();
     {

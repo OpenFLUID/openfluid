@@ -168,7 +168,7 @@ class OPENFLUID_API WareSetDescriptor
       @param[in] Item the pointer to the descriptor
       @return the ID of the ware
     */
-    virtual openfluid::ware::WareID_t getID(T* Item) const = 0;
+    virtual openfluid::ware::WareID_t getID(const T* Item) const = 0;
 
 
     // =====================================================================

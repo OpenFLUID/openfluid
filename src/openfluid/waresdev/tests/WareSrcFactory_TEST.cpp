@@ -273,7 +273,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BOOST_CHECK(CMakeConfigFileContent.contains("SET(BEXT_CPP MyBext.cpp)"));
   CMakeConfigResult.close();
 
-  R.BuilderExtModeIndex = 0;  //openfluid::builderext::ExtensionType::MODAL
+  R.BuilderExtModeIndex = 0;  //openfluid::builderext::ExtensionMode::MODAL
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));
@@ -302,7 +302,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   HppResult.remove();
 
 
-  R.BuilderExtModeIndex = 1;  //openfluid::builderext::ExtensionType::MODELESS
+  R.BuilderExtModeIndex = 1;  //openfluid::builderext::ExtensionMode::MODELESS
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));
@@ -330,7 +330,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   HppResult.remove();
 
 
-  R.BuilderExtModeIndex = 2;  //openfluid::builderext::ExtensionType::WORKSPACE
+  R.BuilderExtModeIndex = 2;  //openfluid::builderext::ExtensionMode::WORKSPACE
 
   BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
   BOOST_CHECK(BextDir.exists("MyBext.cpp"));

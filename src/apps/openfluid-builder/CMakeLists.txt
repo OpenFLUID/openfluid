@@ -206,12 +206,11 @@ QT5_WRAP_UI(BUILDER_OUTPUTS_UI outputs/OutputsWidget.ui
 ### EXTENSION #
 
 SET(BUILDER_EXTENSIONS_CPP extensions/ExtensionPluginsManager.cpp
-                           extensions/ExtensionContainer.cpp
                            extensions/ExtensionsRegistry.cpp
                           )
 
 SET(BUILDER_EXTENSIONS_HPP extensions/ExtensionPluginsManager.hpp
-                           extensions/ExtensionContainer.hpp
+                           extensions/ExtensionInstance.hpp
                            extensions/ExtensionsRegistry.hpp
                            )
 

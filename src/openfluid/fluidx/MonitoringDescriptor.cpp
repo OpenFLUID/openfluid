@@ -43,7 +43,7 @@
 namespace openfluid { namespace fluidx {
 
 
-openfluid::ware::WareID_t MonitoringDescriptor::getID(ObserverDescriptor* Item) const
+openfluid::ware::WareID_t MonitoringDescriptor::getID(const ObserverDescriptor* Item) const
 {
   return Item->getID();
 }

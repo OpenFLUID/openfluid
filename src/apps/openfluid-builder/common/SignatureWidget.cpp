@@ -171,32 +171,32 @@ QString SignatureWidget::getGeneralInfoLine(const QString& Title, const QString&
 
 
 template<typename SignatureType>
-QString SignatureWidget::getCommonForGeneral(const SignatureType* Signature)
+QString SignatureWidget::getCommonForGeneral(const openfluid::machine::WareContainer<SignatureType>& Container)
 {
   QString Contents;
 
-  Contents += getGeneralInfoLine(tr("ID"),convertStdString(Signature->Signature->ID),false);
-  Contents += getGeneralInfoLine(tr("Name"),convertStdString(Signature->Signature->Name));
-  Contents += getGeneralInfoLine(tr("Description"),convertStdString(Signature->Signature->Description));
+  Contents += getGeneralInfoLine(tr("ID"),convertStdString(Container.signature()->ID),false);
+  Contents += getGeneralInfoLine(tr("Name"),convertStdString(Container.signature()->Name));
+  Contents += getGeneralInfoLine(tr("Description"),convertStdString(Container.signature()->Description));
 
 
-  if (Signature->ItemType == openfluid::ware::WareType::SIMULATOR ||
-      Signature->ItemType == openfluid::ware::WareType::OBSERVER)
+  if (Container.signature()->getType() == openfluid::ware::WareType::SIMULATOR ||
+      Container.signature()->getType() == openfluid::ware::WareType::OBSERVER)
   {
     Contents += "<hr>";
 
-    Contents += getGeneralInfoLine(tr("Version"),convertStdString(Signature->Signature->Version),false);
+    Contents += getGeneralInfoLine(tr("Version"),convertStdString(Container.signature()->Version),false);
     Contents += getGeneralInfoLine(tr("Author(s)"),
-                                   Signature->Signature->Authors.empty() ? 
-                                   convertStdString("") : formatAuthors(Signature->Signature->Authors));
+                                   Container.signature()->Authors.empty() ? 
+                                   convertStdString("") : formatAuthors(Container.signature()->Authors));
 
 
     QString StatusStr = tr("experimental");
-    if (Signature->Signature->Status == openfluid::ware::BETA)
+    if (Container.signature()->Status == openfluid::ware::BETA)
     {
       StatusStr = tr("beta");
     }
-    if (Signature->Signature->Status == openfluid::ware::STABLE)
+    if (Container.signature()->Status == openfluid::ware::STABLE)
     {
       StatusStr = tr("stable");
     }
@@ -205,9 +205,9 @@ QString SignatureWidget::getCommonForGeneral(const SignatureType* Signature)
     Contents += "<hr>";
 
     Contents += getGeneralInfoLine(tr("File path"),
-                                   QDir::toNativeSeparators(convertStdString(Signature->FileFullPath)),false);
+                                   QDir::toNativeSeparators(convertStdString(Container.getPath())),false);
 
-    auto BuildInfo = Signature->Signature->BuildInfo;
+    auto BuildInfo = Container.signature()->BuildInfo;
     if (!BuildInfo.BuildType.empty())
     {
       Contents += getGeneralInfoLine(tr("Build type"),QString::fromStdString(BuildInfo.BuildType));
@@ -234,17 +234,18 @@ QString SignatureWidget::getCommonForGeneral(const SignatureType* Signature)
 // =====================================================================
 
 
-void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::updateGeneral(const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& 
+                                      Container)
 {
-  QString Contents = getCommonForGeneral(Signature);
+  QString Contents = getCommonForGeneral(Container);
 
-  if (Signature->ItemType == openfluid::ware::WareType::SIMULATOR)
+  if (Container.signature()->getType() == openfluid::ware::WareType::SIMULATOR)
   {
     Contents += "<hr>";
 
-    Contents += getGeneralInfoLine(tr("Domain(s)"),convertStdString(Signature->Signature->Domain),false);
-    Contents += getGeneralInfoLine(tr("Process(es)"),convertStdString(Signature->Signature->Process));
-    Contents += getGeneralInfoLine(tr("Methods(s)"),convertStdString(Signature->Signature->Method));
+    Contents += getGeneralInfoLine(tr("Domain(s)"),convertStdString(Container.signature()->Domain),false);
+    Contents += getGeneralInfoLine(tr("Process(es)"),convertStdString(Container.signature()->Process));
+    Contents += getGeneralInfoLine(tr("Methods(s)"),convertStdString(Container.signature()->Method));
   }
 
   ui->GeneralLabel->setText(Contents);
@@ -255,9 +256,10 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
 // =====================================================================
 
 
-void SignatureWidget::updateGeneral(const openfluid::machine::ObserverSignatureInstance* Signature)
+void SignatureWidget::updateGeneral(const openfluid::machine::WareContainer<openfluid::ware::ObserverSignature>& 
+                                      Container)
 {
-  QString Contents = getCommonForGeneral(Signature);
+  QString Contents = getCommonForGeneral(Container);
 
   ui->GeneralLabel->setText(Contents);
 }
@@ -293,12 +295,10 @@ void SignatureWidget::updateParametersCategory(const std::vector<openfluid::ware
 // =====================================================================
 
 
-void SignatureWidget::updateParameters(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::updateParameters(const openfluid::ware::SimulatorSignature* Signature)
 {
-  const std::vector<openfluid::ware::SignatureDataItem>* ReqParams =
-      &(Signature->Signature->HandledData.RequiredParams);
-  const std::vector<openfluid::ware::SignatureDataItem>* UsParams =
-      &(Signature->Signature->HandledData.UsedParams);
+  const std::vector<openfluid::ware::SignatureDataItem>* ReqParams = &(Signature->HandledData.RequiredParams);
+  const std::vector<openfluid::ware::SignatureDataItem>* UsParams = &(Signature->HandledData.UsedParams);
 
   ui->ParametersTableWidget->setRowCount(ReqParams->size()+UsParams->size());
 
@@ -336,10 +336,10 @@ void SignatureWidget::updateExtrafilesCategory(const std::vector<std::string>* I
 // =====================================================================
 
 
-void SignatureWidget::updateExtrafiles(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::updateExtrafiles(const openfluid::ware::SimulatorSignature* Signature)
 {
-  const std::vector<std::string>* ReqFiles = &(Signature->Signature->HandledData.RequiredExtraFiles);
-  const std::vector<std::string>* UsFiles = &(Signature->Signature->HandledData.UsedExtraFiles);
+  const std::vector<std::string>* ReqFiles = &(Signature->HandledData.RequiredExtraFiles);
+  const std::vector<std::string>* UsFiles = &(Signature->HandledData.UsedExtraFiles);
 
   ui->ExtrafilesTableWidget->setRowCount(ReqFiles->size()+UsFiles->size());
 
@@ -392,16 +392,16 @@ void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware:
 // =====================================================================
 
 
-void SignatureWidget::updateVariables(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::updateVariables(const openfluid::ware::SimulatorSignature* Signature)
 {
   const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* ProdVars =
-      &(Signature->Signature->HandledData.ProducedVars);
+      &(Signature->HandledData.ProducedVars);
   const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* ReqVars =
-      &(Signature->Signature->HandledData.RequiredVars);
+      &(Signature->HandledData.RequiredVars);
   const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* UsVars =
-      &(Signature->Signature->HandledData.UsedVars);
+      &(Signature->HandledData.UsedVars);
   const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* UpdVars =
-      &(Signature->Signature->HandledData.UpdatedVars);
+      &(Signature->HandledData.UpdatedVars);
 
 
   ui->VariablesTableWidget->setRowCount(ProdVars->size()+ReqVars->size()+UsVars->size()+UpdVars->size());
@@ -453,14 +453,14 @@ void SignatureWidget::updateAttributesCategory(const std::vector<openfluid::ware
 // =====================================================================
 
 
-void SignatureWidget::updateAttributes(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::updateAttributes(const openfluid::ware::SimulatorSignature* Signature)
 {
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* ProdAttrs =
-      &(Signature->Signature->HandledData.ProducedAttribute);
+      &(Signature->HandledData.ProducedAttribute);
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* ReqAttrs =
-      &(Signature->Signature->HandledData.RequiredAttribute);
+      &(Signature->HandledData.RequiredAttribute);
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* UsAttrs =
-      &(Signature->Signature->HandledData.UsedAttribute);
+      &(Signature->HandledData.UsedAttribute);
 
 
   ui->AttributesTableWidget->setRowCount(ProdAttrs->size()+ReqAttrs->size()+UsAttrs->size());
@@ -480,9 +480,9 @@ void SignatureWidget::updateAttributes(const openfluid::machine::ModelItemSignat
 // =====================================================================
 
 
-void SignatureWidget::updateEvents(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::updateEvents(const openfluid::ware::SimulatorSignature* Signature)
 {
-  const std::vector<std::string>* Events = &(Signature->Signature->HandledData.UsedEventsOnUnits);
+  const std::vector<std::string>* Events = &(Signature->HandledData.UsedEventsOnUnits);
 
   ui->EventsTableWidget->setRowCount(Events->size());
 
@@ -505,11 +505,11 @@ void SignatureWidget::updateEvents(const openfluid::machine::ModelItemSignatureI
 // =====================================================================
 
 
-void SignatureWidget::updateSpatialGraph(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::updateSpatialGraph(const openfluid::ware::SimulatorSignature* Signature)
 {
-  const std::string Desc = Signature->Signature->HandledUnitsGraph.UpdatedUnitsGraph;
+  const std::string Desc = Signature->HandledUnitsGraph.UpdatedUnitsGraph;
   const std::vector<openfluid::ware::SignatureUnitsClassItem>* UnitsClasses =
-      &(Signature->Signature->HandledUnitsGraph.UpdatedUnitsClass);
+      &(Signature->HandledUnitsGraph.UpdatedUnitsClass);
 
   if (!Desc.empty())
   {
@@ -552,20 +552,20 @@ void SignatureWidget::mute()
 // =====================================================================
 
 
-void SignatureWidget::update(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SignatureWidget::update(const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& Container)
 {
   mute();
 
-  if (Signature != nullptr)
+  if (Container.isValid() && Container.hasSignature())
   {
     setEnabled(true);
-    updateGeneral(Signature);
-    updateParameters(Signature);
-    updateExtrafiles(Signature);
-    updateVariables(Signature);
-    updateAttributes(Signature);
-    updateEvents(Signature);
-    updateSpatialGraph(Signature);
+    updateGeneral(Container);
+    updateParameters(Container.signature().get());
+    updateExtrafiles(Container.signature().get());
+    updateVariables(Container.signature().get());
+    updateAttributes(Container.signature().get());
+    updateEvents(Container.signature().get());
+    updateSpatialGraph(Container.signature().get());
   }
 }
 
@@ -574,14 +574,14 @@ void SignatureWidget::update(const openfluid::machine::ModelItemSignatureInstanc
 // =====================================================================
 
 
-void SignatureWidget::update(const openfluid::machine::ObserverSignatureInstance* Signature)
+void SignatureWidget::update(const openfluid::machine::WareContainer<openfluid::ware::ObserverSignature>& Container)
 {
   mute();
 
-  if (Signature != nullptr)
+  if (Container.isValid() && Container.hasSignature())
   {
     setEnabled(true);
-    updateGeneral(Signature);
+    updateGeneral(Container);
   }
 }
 

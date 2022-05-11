@@ -195,24 +195,33 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::machine::ModelItemInstance* MII;
 
-  MII = new openfluid::machine::ModelItemInstance();
+  openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> ContA(openfluid::ware::WareType::SIMULATOR);
+  auto SignA = new openfluid::ware::SimulatorSignature();
+  SignA->ID = "sim.a";
+  ContA.setSignature(SignA);
+  ContA.validate();
+  MII = new openfluid::machine::ModelItemInstance(ContA);
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimA()));
-  MII->Signature = new openfluid::ware::SimulatorSignature();
-  MII->Signature->ID = "sim.a";
   MII->OriginalPosition = 1;
   MI.appendItem(MII);
 
-  MII = new openfluid::machine::ModelItemInstance();
+  openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> ContB(openfluid::ware::WareType::SIMULATOR);
+  auto SignB = new openfluid::ware::SimulatorSignature();
+  SignB->ID = "sim.b";
+  ContB.setSignature(SignB);
+  ContB.validate();
+  MII = new openfluid::machine::ModelItemInstance(ContB);
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimB()));
-  MII->Signature = new openfluid::ware::SimulatorSignature();
-  MII->Signature->ID = "sim.b";
   MII->OriginalPosition = 2;
   MI.appendItem(MII);
 
-  MII = new openfluid::machine::ModelItemInstance();
+  openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> ContC(openfluid::ware::WareType::SIMULATOR);
+  auto SignC = new openfluid::ware::SimulatorSignature();
+  SignC->ID = "sim.c";
+  ContC.setSignature(SignC);
+  ContC.validate();
+  MII = new openfluid::machine::ModelItemInstance(ContC);
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimC()));
-  MII->Signature = new openfluid::ware::SimulatorSignature();
-  MII->Signature->ID = "sim.c";
   MII->OriginalPosition = 3;
   MI.appendItem(MII);
 
@@ -290,13 +299,16 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
     std::make_unique<openfluid::machine::MachineListener>();
   ModelInstanceSub MI(SB,Listener.get());
 
-  openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();
-  MII->Body.reset((openfluid::ware::PluggableSimulator*) (new SimA()));
-  MII->Signature = new openfluid::ware::SimulatorSignature();
-  MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("A1","",""));
-  MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("B1.C1","",""));
-  MII->Signature->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("D1.E1.F1","",""));
-
+  openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> ContA(openfluid::ware::WareType::SIMULATOR);
+  auto SignA = new openfluid::ware::SimulatorSignature();
+  SignA->ID = "sim.a";
+  SignA->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("A1","",""));
+  SignA->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("B1.C1","",""));
+  SignA->HandledData.UsedParams.push_back(*new openfluid::ware::SignatureDataItem("D1.E1.F1","",""));
+  ContA.setSignature(SignA);
+  ContA.validate();
+  auto MII = new openfluid::machine::ModelItemInstance(ContA);
+  MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimA()));
   MI.appendItem(MII);
 
   openfluid::ware::WareParams_t InParams;

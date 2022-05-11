@@ -41,27 +41,23 @@
 #define __OPENFLUID_MACHINE_SIMULATORPLUGINSMANAGER_HPP__
 
 
+#include <string>
+
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/utils/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
-class ModelItemSignatureInstance;
-class ModelItemInstance;
-
-
-// =====================================================================
-// =====================================================================
-
-
-class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
-                                                         openfluid::ware::GetPluggableSimulatorSignatureProc,
-                                                         openfluid::ware::GetPluggableSimulatorBodyProc>
+class OPENFLUID_API SimulatorPluginsManager : 
+  public WarePluginsManager<openfluid::ware::SimulatorSignature,openfluid::ware::PluggableSimulator,
+                            openfluid::ware::GetPluggableSimulatorSignatureProc,
+                            openfluid::ware::GetPluggableSimulatorBodyProc>
 {
 
   OPENFLUID_SINGLETON_DEFINITION(SimulatorPluginsManager)
@@ -69,19 +65,32 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
 
   private:
 
-    SimulatorPluginsManager() : WarePluginsManager<ModelItemSignatureInstance,
-                                                   ModelItemInstance,
+    SimulatorPluginsManager() : WarePluginsManager<openfluid::ware::SimulatorSignature,
+                                                   openfluid::ware::PluggableSimulator,
                                                    openfluid::ware::GetPluggableSimulatorSignatureProc,
                                                    openfluid::ware::GetPluggableSimulatorBodyProc>()
     { }
 
 
     ~SimulatorPluginsManager()
-    { }
+    {  }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    WareContainer<openfluid::ware::SimulatorSignature> createContainer() const
+    {
+      return WareContainer<openfluid::ware::SimulatorSignature>(openfluid::ware::WareType::SIMULATOR);
+    }
+
+
+    // =====================================================================
+    // =====================================================================
 
 
   public:
-
 
     std::string getPluginFullPath(const std::string& Filename) const
     {
@@ -113,7 +122,8 @@ class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelIte
     // =====================================================================
 
 
-    std::vector<ModelItemSignatureInstance*> getAvailableGhostsSignatures(const std::string& Pattern = "") const;
+    std::vector<WareContainer<openfluid::ware::SimulatorSignature>> 
+    getAvailableGhosts(const std::string& Pattern = "") const;
 
 };
 

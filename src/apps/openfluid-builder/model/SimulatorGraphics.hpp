@@ -41,6 +41,8 @@
 #define __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__
 
 
+#include <openfluid/ware/SimulatorSignature.hpp>
+
 #include "ModelItemGraphics.hpp"
 
 
@@ -64,7 +66,7 @@ class SimulatorGraphics : public ModelItemGraphics
 
     SimulatorGraphics(const QPointF &Coords,
                       const QString& ID, unsigned int Order,
-                      const openfluid::machine::ModelItemSignatureInstance* Signature, 
+                      const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& Container,
                       const QColor& BGColor, const QColor& BorderColor,
                       QGraphicsItem* Parent = nullptr);
 

@@ -40,7 +40,7 @@
 #include <QPushButton>
 
 #include <openfluid/ui/config.hpp>
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
 #include "ui_AddWareDialog.h"
@@ -53,22 +53,17 @@ AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Pa
 {
   updateDefaultMessage(tr("Add simulator"));
 
-  openfluid::machine::SimulatorSignatureRegistry* Reg =
-    openfluid::machine::SimulatorSignatureRegistry::instance();
+  const auto& Containers = openfluid::machine::SimulatorRegistry::instance()->availableWares();
 
-  const openfluid::machine::SimulatorSignatureRegistry::SimSignaturesByName_t& SimSigns =
-    Reg->getSimulatorSignatures();
-
-  for (openfluid::machine::SimulatorSignatureRegistry::SimSignaturesByName_t::const_iterator it =
-      SimSigns.begin(); it != SimSigns.end(); ++it)
+  for (auto it = Containers.begin(); it != Containers.end(); ++it)
   {
-    QString ID = QString::fromStdString(it->second->Signature->ID);
+    QString ID = QString::fromStdString(it->second.signature()->ID);
 
     QListWidgetItem* Item = new QListWidgetItem();
 
     QStringList WareInfos = {
       ID,
-      QString::fromStdString(it->second->Signature->Name)
+      QString::fromStdString(it->second.signature()->Name)
     };
 
     Item->setData(Qt::UserRole,WareInfos);
@@ -78,7 +73,7 @@ AddSimulatorDialog::AddSimulatorDialog(const QStringList& SimIDList, QWidget* Pa
       Item->setFlags(Qt::ItemIsSelectable);
     }
 
-    if (it->second->Ghost)
+    if (it->second.isGhost())
     {
       Item->setIcon(QIcon(":/builder/images/ware-sim-ghost.png"));
     }
@@ -115,13 +110,14 @@ AddSimulatorDialog::~AddSimulatorDialog()
 
 void AddSimulatorDialog::updateSignature()
 {
-  openfluid::machine::SimulatorSignatureRegistry* Reg =
-    openfluid::machine::SimulatorSignatureRegistry::instance();
+  const auto& Container = openfluid::machine::SimulatorRegistry::instance()->wareContainer(
+    ui->WaresListWidget->currentItem()->data(Qt::UserRole).toStringList().at(0).toStdString()
+  );
 
-  const openfluid::machine::ModelItemSignatureInstance* Sign =
-      Reg->signature(ui->WaresListWidget->currentItem()->data(Qt::UserRole).toStringList().at(0).toStdString());
-
-  ui->WareSignatureWidget->update(Sign);
+  if (Container.isValid() && Container.hasSignature())
+  {
+    ui->WareSignatureWidget->update(Container);
+  }
 
   setMessage();
 }

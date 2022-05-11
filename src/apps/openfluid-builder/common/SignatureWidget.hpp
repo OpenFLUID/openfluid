@@ -64,37 +64,37 @@ class SignatureWidget : public QWidget
     static QString getGeneralInfoLine(const QString& Title, const QString& Text, bool WithPreBR = true);
 
     template<typename SignatureType>
-    QString getCommonForGeneral(const SignatureType* Signature);
+    QString getCommonForGeneral(const openfluid::machine::WareContainer<SignatureType>& Container);
 
-    void updateGeneral(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateGeneral(const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& Container);
 
-    void updateGeneral(const openfluid::machine::ObserverSignatureInstance* Signature);
+    void updateGeneral(const openfluid::machine::WareContainer<openfluid::ware::ObserverSignature>& Container);
 
     void updateParametersCategory(const std::vector<openfluid::ware::SignatureDataItem>* Infos,
                                   const QString& CatStr, unsigned int BaseIndex);
 
-    void updateParameters(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateParameters(const openfluid::ware::SimulatorSignature* Signature);
 
     void updateExtrafilesCategory(const std::vector<std::string>* Infos,
                                   const QString& CatStr, unsigned int BaseIndex);
 
-    void updateExtrafiles(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateExtrafiles(const openfluid::ware::SimulatorSignature* Signature);
 
     void updateVariablesCategory(const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* Infos,
                                  const QString& CatStr,
                                  unsigned int BaseIndex);
 
-    void updateVariables(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateVariables(const openfluid::ware::SimulatorSignature* Signature);
 
     void updateAttributesCategory(const std::vector<openfluid::ware::SignatureSpatialDataItem>* Infos,
                                   const QString& CatStr,
                                   unsigned int BaseIndex);
 
-    void updateAttributes(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateAttributes(const openfluid::ware::SimulatorSignature* Signature);
 
-    void updateEvents(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateEvents(const openfluid::ware::SimulatorSignature* Signature);
 
-    void updateSpatialGraph(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void updateSpatialGraph(const openfluid::ware::SimulatorSignature* Signature);
 
     QString formatAuthors(const openfluid::ware::WareSignature::AuthorsList_t& AuthList);
 
@@ -111,9 +111,9 @@ class SignatureWidget : public QWidget
 
     void mute();
 
-    void update(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    void update(const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& Container);
 
-    void update(const openfluid::machine::ObserverSignatureInstance* Signature);
+    void update(const openfluid::machine::WareContainer<openfluid::ware::ObserverSignature>& Container);
 };
 
 

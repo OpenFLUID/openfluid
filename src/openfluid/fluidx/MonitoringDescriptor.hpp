@@ -54,7 +54,7 @@ class OPENFLUID_API MonitoringDescriptor : public WareSetDescriptor<ObserverDesc
 
   public :
 
-    openfluid::ware::WareID_t getID(ObserverDescriptor* Item) const;
+    openfluid::ware::WareID_t getID(const ObserverDescriptor* Item) const;
 
 };
 

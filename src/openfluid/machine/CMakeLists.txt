@@ -2,13 +2,12 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
-SET(OPENFLUID_MACHINE_CPP ModelItemInstance.cpp GhostSimulatorFileIO.cpp
+SET(OPENFLUID_MACHINE_CPP GhostSimulatorFileIO.cpp
                           Generator.cpp FixedGenerator.cpp RandomGenerator.cpp InjectGenerator.cpp InterpGenerator.cpp
-                          ObserverInstance.cpp 
                           ModelInstance.cpp MonitoringInstance.cpp
                           DynamicLib.cpp
                           SimulatorPluginsManager.cpp ObserverPluginsManager.cpp
-                          SimulatorSignatureRegistry.cpp ObserverSignatureRegistry.cpp
+                          SimulatorRegistry.cpp ObserverRegistry.cpp
                           ExecutionTimePoint.cpp
                           SimulationProfiler.cpp
                           SimulationBlob.cpp
@@ -17,18 +16,16 @@ SET(OPENFLUID_MACHINE_CPP ModelItemInstance.cpp GhostSimulatorFileIO.cpp
 
 SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp GhostSimulatorFileIO.hpp
                           Generator.hpp FixedGenerator.hpp RandomGenerator.hpp InjectGenerator.hpp InterpGenerator.hpp
-                          ObserverInstance.hpp
+                          WareInstance.hpp ObserverInstance.hpp
                           ModelInstance.hpp MonitoringInstance.hpp
                           ExecutionTimePoint.hpp
                           SimulationProfiler.hpp
                           SimulationBlob.hpp
-                          WareSignatureInstance.hpp
                           WareContainer.hpp
                           DynamicLib.hpp
-                          WarePluginsManager.hpp WareSignatureRegistry.hpp 
-                          WarePluginsSearchResults.hpp WarePluginsSearchResultsSerializer.hpp
-                          SimulatorPluginsManager.hpp SimulatorSignatureRegistry.hpp
-                          ObserverPluginsManager.hpp ObserverSignatureRegistry.hpp
+                          WarePluginsManager.hpp WareRegistry.hpp WareRegistrySerializer.hpp 
+                          SimulatorPluginsManager.hpp SimulatorRegistry.hpp
+                          ObserverPluginsManager.hpp ObserverRegistry.hpp
                           Factory.hpp Engine.hpp MachineListener.hpp
                           )
 

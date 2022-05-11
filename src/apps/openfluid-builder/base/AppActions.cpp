@@ -357,11 +357,11 @@ void AppActions::updateExtensionsActionsAndMenus()
 {
   ExtensionsRegistry* ExtReg = ExtensionsRegistry::instance();
 
-  const ExtensionsRegistry::ExtensionsByName_t* Extensions = ExtReg->registeredFeatureExtensions();
+  const auto& Extensions = ExtReg->registeredFeatureExtensions();
 
-  ExtensionsRegistry::ExtensionsByName_t::const_iterator it;
-  ExtensionsRegistry::ExtensionsByName_t::const_iterator itb = Extensions->begin();
-  ExtensionsRegistry::ExtensionsByName_t::const_iterator ite = Extensions->end();
+  ExtensionsRegistry::ExtensionsByID_t::const_iterator it;
+  ExtensionsRegistry::ExtensionsByID_t::const_iterator itb = Extensions.begin();
+  ExtensionsRegistry::ExtensionsByID_t::const_iterator ite = Extensions.end();
 
   mp_SpatialExtensionsMenu->clear();
   mp_ModelExtensionsMenu->clear();
@@ -372,8 +372,8 @@ void AppActions::updateExtensionsActionsAndMenus()
   {
 
     QString MenuText = WaresTranslationsRegistry::instance()
-      ->tryTranslate(QString::fromStdString((*it).second->FileFullPath),
-                     "signature",(*it).second->Signature->MenuText);
+      ->tryTranslate(QString::fromStdString(it->second.Container.getPath()),
+                     "signature",it->second.Container.signature()->MenuText);
 
     // Replace empty menu text by extension ID
     MenuText = QString::fromStdString(openfluid::tools::replaceEmptyString(MenuText.toStdString(),(*it).first));
@@ -384,15 +384,15 @@ void AppActions::updateExtensionsActionsAndMenus()
     m_ExtensionsActions[(*it).first]->setData(QString((*it).first.c_str()));
 
     // set extension in the correct menu, taking into account the extension category
-    if ((*it).second->Signature->Category == openfluid::builderext::ExtensionCategory::SPATIAL)
+    if (it->second.Container.signature()->Category == openfluid::builderext::ExtensionCategory::SPATIAL)
     {
       mp_SpatialExtensionsMenu->addAction(m_ExtensionsActions[(*it).first]);
     }
-    else if ((*it).second->Signature->Category == openfluid::builderext::ExtensionCategory::MODEL)
+    else if (it->second.Container.signature()->Category == openfluid::builderext::ExtensionCategory::MODEL)
     {
       mp_ModelExtensionsMenu->addAction(m_ExtensionsActions[(*it).first]);
     }
-    else if ((*it).second->Signature->Category == openfluid::builderext::ExtensionCategory::RESULTS)
+    else if (it->second.Container.signature()->Category == openfluid::builderext::ExtensionCategory::RESULTS)
     {
       mp_ResultsExtensionsMenu->addAction(m_ExtensionsActions[(*it).first]);
     }

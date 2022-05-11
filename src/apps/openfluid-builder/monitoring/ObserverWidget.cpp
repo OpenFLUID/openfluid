@@ -38,7 +38,7 @@
 
 
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 
 #include "ui_WareWidget.h"
@@ -81,23 +81,22 @@ ObserverWidget::~ObserverWidget()
 
 void ObserverWidget::refresh()
 {
-  const openfluid::machine::ObserverSignatureInstance* Signature =
-    openfluid::machine::ObserverSignatureRegistry::instance()->signature(m_ID);
+  const auto& Container = openfluid::machine::ObserverRegistry::instance()->wareContainer(m_ID);
 
-  if (Signature != nullptr)
+  if (Container.isValid() && Container.hasSignature())
   {
     if (!m_IsTranslated)
     {
-      WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Signature->FileFullPath));
+      WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Container.getPath()));
       m_IsTranslated = true;
     }
 
-    QString BuildType = QString::fromStdString(Signature->Signature->BuildInfo.BuildType);
+    QString BuildType = QString::fromStdString(Container.signature()->BuildInfo.BuildType);
     updateBuildInfoIcons(BuildType.contains("DEB"),BuildType == "RELEASE" || BuildType == "RELWITHDEBINFO");
 
     setAvailableWare(true);
-    ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
-    ui->InfosSideWidget->update(Signature);
+    ui->NameLabel->setText(QString::fromStdString(Container.signature()->Name));
+    ui->InfosSideWidget->update(Container);
 
     updateParametersList();
 
@@ -105,14 +104,14 @@ void ObserverWidget::refresh()
 
     mp_ParamsWidget = nullptr;
 
-    if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Signature->LinkUID))
+    if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Container.getLinkUID()))
     {
       mp_ParamsWidget = static_cast<openfluid::builderext::PluggableParameterizationExtension*>(
-          ExtensionsRegistry::instance()->instanciateParameterizationExtension(Signature->LinkUID));
+          ExtensionsRegistry::instance()->instanciateParameterizationExtension(Container.getLinkUID()));
       mp_ParamsWidget->setParent(this);
       mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));
       mp_ParamsWidget->setFluidXDescriptor(&(ProjectCentral::instance()->descriptors()));
-
+ 
       connect(mp_ParamsWidget,SIGNAL(changed()),this,SLOT(notifyChangedFromParameterizationWidget()));
 
       int Position = ui->ParameterizationStackWidget->addWidget(mp_ParamsWidget);
@@ -158,7 +157,7 @@ void ObserverWidget::updateParametersList()
 
   openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
 
-  for (openfluid::ware::WareParams_t::iterator it = DescParams.begin();it != DescParams.end(); ++it)
+  for (auto it = DescParams.begin();it != DescParams.end(); ++it)
   {
     ParameterWidget* ParamWidget =
         new ParameterWidget(this,

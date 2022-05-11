@@ -52,8 +52,8 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
-#include <openfluid/machine/SimulatorPluginsManager.hpp>
-#include <openfluid/machine/ObserverPluginsManager.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
@@ -197,101 +197,61 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
                                                ModelInstance& MInstance)
 {
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::const_iterator it;
-  ModelItemInstance* IInstance = nullptr;
-
-
+  
   if (ModelDesc.items().empty())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator in model");
   }
 
-
   for (it=ModelDesc.items().begin();it!=ModelDesc.items().end();++it)
   {
     if ((*it)->isEnabled())
     {
+      ModelItemInstance* IInstance = nullptr;
 
       if ((*it)->isType(openfluid::ware::WareType::UNDEFINED))
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "unknown model item type");
       }
-
-      if ((*it)->isType(openfluid::ware::WareType::SIMULATOR))
+      else if ((*it)->isType(openfluid::ware::WareType::SIMULATOR))
       {
-        openfluid::ware::WareID_t ID = ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID();
+        openfluid::ware::WareID_t SimID = ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID();
 
-        if (!openfluid::tools::isValidWareID(ID))
+        if (!openfluid::tools::isValidWareID(SimID))
         {
-          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                    "invalid simulator ID \""+ID+"\"");
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"invalid simulator ID \""+SimID+"\"");
+        }
+        
+        if (!SimulatorRegistry::instance()->addWare(SimID))
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"simulator \""+SimID+"\" is not available");
         }
 
-        // instanciation of a plugged simulator using the plugin manager
-        IInstance = SimulatorPluginsManager::instance()->loadWareSignatureOnly(ID);
-
+        // TODO manage invalid container (should not occur)
+        IInstance = new ModelItemInstance(SimulatorRegistry::instance()->wareContainer(SimID));
         IInstance->Params = (*it)->getParameters();
-        IInstance->ItemType = openfluid::ware::WareType::SIMULATOR;
       }
-
-      if ((*it)->isType(openfluid::ware::WareType::GENERATOR))
+      else if ((*it)->isType(openfluid::ware::WareType::GENERATOR))
       {
         // instanciation of a data generator
         openfluid::fluidx::GeneratorDescriptor* GenDesc = (openfluid::fluidx::GeneratorDescriptor*)(*it);
+        
+        auto GenID = SimulatorRegistry::instance()->addGenerator({
+                       GenDesc->getGeneratorMethod(),
+                       GenDesc->getUnitsClass(),
+                       GenDesc->getVariableName(),
+                       GenDesc->getVariableSize()
+                     });
 
-        IInstance = new ModelItemInstance();
-        IInstance->Verified = true;
+        if (GenID.empty())
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"invalid generator definition");
+        }
+ 
+        // TODO manage invalid container (should not occur)
+        IInstance = new ModelItemInstance(SimulatorRegistry::instance()->generatorContainer(GenID));
         IInstance->Params = (*it)->getParameters();
-        IInstance->ItemType = openfluid::ware::WareType::GENERATOR;
-
-        openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature();
-
-        std::string TypedVarName = GenDesc->getVariableName();
-        GenDesc->isVectorVariable() ? TypedVarName += "[vector]" : TypedVarName += "[double]";
-
-        Signature->ID = buildGeneratorID(GenDesc->getVariableName(),
-                                         GenDesc->isVectorVariable(),GenDesc->getUnitsClass());
-        Signature->HandledData.ProducedVars
-        .push_back(openfluid::ware::SignatureTypedSpatialDataItem(TypedVarName,GenDesc->getUnitsClass(),"",""));
-
-        IInstance->GeneratorInfo.reset(new GeneratorExtraInfo());
-        IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();
-        IInstance->GeneratorInfo->UnitsClass = GenDesc->getUnitsClass();
-        IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
-
-        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED)
-        {
-          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED;
-        }
-
-        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM)
-        {
-          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM;
-        }
-
-        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP)
-        {
-          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP;
-          Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
-          Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
-        }
-
-        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
-        {
-          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT;
-          Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
-          Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
-        }
-
-        if (IInstance->GeneratorInfo->GeneratorMethod == 
-              openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE)
-        {
-          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                    "unknown generator type");
-        }
-
-        IInstance->Body = nullptr;
-        IInstance->Signature = Signature;
       }
 
       openfluid::base::RunContextManager::instance()->processWareParams(IInstance->Params);
@@ -327,8 +287,13 @@ void Factory::buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::Mon
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"invalid observer ID \""+ID+"\"");
       }
 
-      // instanciation of a plugged observer using the plugin manager
-      OInstance = ObserverPluginsManager::instance()->loadWareSignatureOnly(ID);
+      if (!ObserverRegistry::instance()->addWare(ID))
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"observer \""+ID+"\" is not available");
+      }
+
+      // TODO manage invalid container (should not occur)
+      OInstance = new ObserverInstance(ObserverRegistry::instance()->wareContainer(ID));
       OInstance->Params = (*it)->getParameters();
       openfluid::base::RunContextManager::instance()->processWareParams(OInstance->Params);
 

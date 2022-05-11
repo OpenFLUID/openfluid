@@ -44,8 +44,8 @@
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
-#include <openfluid/machine/ObserverSignatureRegistry.hpp>
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
@@ -71,8 +71,8 @@ BuilderApp::~BuilderApp()
 {
   ProjectCentral::kill();
   openfluid::ui::waresdev::WareSrcFiletypeManager::kill();
-  openfluid::machine::ObserverSignatureRegistry::kill();
-  openfluid::machine::SimulatorSignatureRegistry::kill();
+  openfluid::machine::ObserverRegistry::kill();
+  openfluid::machine::SimulatorRegistry::kill();
   openfluid::machine::ObserverPluginsManager::kill();
   openfluid::machine::SimulatorPluginsManager::kill();
   WaresTranslationsRegistry::kill();
@@ -90,8 +90,7 @@ BuilderApp::~BuilderApp()
 
 void BuilderApp::initialize()
 {
-  openfluid::base::PreferencesManager* PrefsMgr =
-    openfluid::base::PreferencesManager::instance();
+  openfluid::base::PreferencesManager* PrefsMgr = openfluid::base::PreferencesManager::instance();
 
 
   mp_Splash->setMessage(tr("Initializing workspace"));

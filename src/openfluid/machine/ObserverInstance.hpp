@@ -43,45 +43,15 @@
 
 #include <memory>
 
+#include <openfluid/machine/WareInstance.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
-#include <openfluid/machine/WareSignatureInstance.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
-class OPENFLUID_API ObserverSignatureInstance : public WareSignatureInstance
-{
-  public:
-
-    // Declared as a classic pointer because of DLL cross-boundaries hell on Windows systems
-    // TODO should be replaced by a factory for memory management across DLLs
-    openfluid::ware::ObserverSignature* Signature;
-
-    ObserverSignatureInstance();
-
-    ~ObserverSignatureInstance();
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-class OPENFLUID_API ObserverInstance : public ObserverSignatureInstance
-{
-  public:
-
-    openfluid::ware::WareParams_t Params;
-
-    std::unique_ptr<openfluid::ware::PluggableObserver> Body;
-
-
-    ObserverInstance();
-
-    ~ObserverInstance();
-};
+using ObserverInstance = WareInstance<openfluid::ware::ObserverSignature,openfluid::ware::PluggableObserver>;
 
 
 } }  // namespaces

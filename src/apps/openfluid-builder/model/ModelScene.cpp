@@ -40,7 +40,7 @@
 #include <string>
 
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 
@@ -164,15 +164,16 @@ void ModelScene::refresh()
       }
 
       if ((*it)->getType() == openfluid::ware::WareType::SIMULATOR &&
-          openfluid::machine::SimulatorSignatureRegistry::instance()->isSimulatorAvailable(ID))
+          openfluid::machine::SimulatorRegistry::instance()->hasAvailableWare(ID))
       {
+        const auto& Container = openfluid::machine::SimulatorRegistry::instance()->wareContainer(ID);
+
         SimCount++;
 
-        SimulatorGraphics* SimG =
-            new SimulatorGraphics(QPoint(0,0),
-                                  QString::fromStdString(ID), SimCount+GenCount,
-                                  openfluid::machine::SimulatorSignatureRegistry::instance()
-                                  ->signature(ID), BGColor, BorderColor);
+        SimulatorGraphics* SimG = new SimulatorGraphics(QPoint(0,0),
+                                                        QString::fromStdString(ID), SimCount+GenCount,
+                                                        Container,
+                                                        BGColor, BorderColor);
 
         addItem(SimG);
         SimG->moveBy(Position.x(),Position.y());
@@ -180,10 +181,10 @@ void ModelScene::refresh()
         m_GraphicsItems.append(SimG);
         connect(SimG,SIGNAL(srcEditAsked(const QString&,bool)),this,SLOT(notifySrcEditAsked(const QString&,bool)));
       }
-      else if ((*it)->getType() == openfluid::ware::WareType::GENERATOR)
+      else if ((*it)->getType() == openfluid::ware::WareType::GENERATOR &&
+               openfluid::machine::SimulatorRegistry::instance()->hasGenerator(ID))
       {
-        openfluid::fluidx::GeneratorDescriptor* GenDesc =
-                 dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
+        openfluid::fluidx::GeneratorDescriptor* GenDesc = dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
 
         GenCount++;
 

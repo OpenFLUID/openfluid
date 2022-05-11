@@ -43,7 +43,7 @@
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
@@ -192,24 +192,19 @@ void ModelWidget::addGlobalParam()
   // parameters list for completion, based on model items parameters
   QStringList CompPList;
 
-  openfluid::machine::SimulatorSignatureRegistry* Reg =
-      openfluid::machine::SimulatorSignatureRegistry::instance();
+  auto Reg = openfluid::machine::SimulatorRegistry::instance();
 
-  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      m_Model.items();
+  const auto& Items = m_Model.items();
 
-  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
-      Items.begin(); it != Items.end(); ++it)
+  for (auto it = Items.begin(); it != Items.end(); ++it)
   {
-    const openfluid::machine::ModelItemSignatureInstance* Sign = Reg->signature(*it);
+    const auto& Container = Reg->wareContainer((*it)->getID());
 
-    if (Sign)
+    if (Container.isValid() && Container.hasSignature())
     {
-      std::vector<openfluid::ware::SignatureDataItem> Items =
-          Sign->Signature->HandledData.UsedParams;
+      const auto Items = Container.signature()->HandledData.UsedParams;
 
-      for (std::vector<openfluid::ware::SignatureDataItem>::iterator it =
-          Items.begin(); it != Items.end(); ++it)
+      for (auto it = Items.begin(); it != Items.end(); ++it)
       {
         if (!CompPList.contains(QString::fromStdString((*it).DataName)))
         {
@@ -372,14 +367,16 @@ void ModelWidget::addGenerator()
 
     m_Model.insertItem(GenDesc,0);
 
-    std::string ID = m_Model.getID(GenDesc);
+    const auto GenID = m_Model.getID(GenDesc);
+    auto Reg = openfluid::machine::SimulatorRegistry::instance();
 
-    GeneratorWidget* GenWidget =
-        new GeneratorWidget(this,GenDesc,
-                            ID,
-                            0,
-                            openfluid::machine::SimulatorSignatureRegistry::instance()
-                            ->signature(AddGenDlg.getMethod()));
+    if (!Reg->hasGenerator(GenID))
+    {
+      Reg->addGenerator({GenDesc->getGeneratorMethod(),GenDesc->getUnitsClass(),
+                          GenDesc->getVariableName(),GenDesc->getVariableSize()});
+    }
+
+    GeneratorWidget* GenWidget = new GeneratorWidget(this,GenDesc,GenID,0);
 
     connect(GenWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
     connect(GenWidget,SIGNAL(upClicked(const QString&,int)),this,SLOT(moveModelItemUp(const QString&,int)));
@@ -543,12 +540,18 @@ void ModelWidget::updateCoupledModel()
     {
       // TODO see if a more elegant method is possible for generators signature
       // than passing signature instance to constructor
+      const auto GenID = m_Model.getID(*it);
+      const auto* GenDesc = dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
+      auto Reg = openfluid::machine::SimulatorRegistry::instance();
 
-      GeneratorWidget* GenWidget =
-          new GeneratorWidget(this,*it,
-                              m_Model.getID(*it),
-                              0,
-                              openfluid::machine::SimulatorSignatureRegistry::instance()->signature(*it));
+      if (!Reg->hasGenerator(GenID))
+      {
+        Reg->addGenerator({GenDesc->getGeneratorMethod(),GenDesc->getUnitsClass(),
+                           GenDesc->getVariableName(),GenDesc->getVariableSize()});
+      }
+
+
+      GeneratorWidget* GenWidget = new GeneratorWidget(this,*it,GenID,0);
 
       mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(GenWidget);
       if (it == itb)

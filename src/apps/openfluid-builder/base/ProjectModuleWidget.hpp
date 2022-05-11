@@ -164,10 +164,6 @@ class ProjectModuleWidget : public AbstractModuleWidget
 
     void resetInputDirWatcher();
 
-    bool findGhostSignature(const QString& ID,
-                            openfluid::ware::SimulatorSignature& Signature,
-                            std::string& FileFullPath);
-
     void addWorkspaceTab(QWidget* Tab, const QString& Label);
 
     void addWorkspaceExtensionTab(QWidget* Tab, const QString& Label);

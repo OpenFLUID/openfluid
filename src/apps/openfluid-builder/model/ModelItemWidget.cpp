@@ -141,18 +141,17 @@ std::string ModelItemWidget::getParamValue(const std::string& ParamName, openflu
 // =====================================================================
 
 
- QStringList ModelItemWidget::createParamWidgetsFromSignature(
-   const openfluid::machine::ModelItemSignatureInstance* Signature)
+ QStringList ModelItemWidget::createParamWidgetsFromSignature(const openfluid::ware::SimulatorSignature* Signature)
 {  
-  std::vector<openfluid::ware::SignatureDataItem>* UsedParams = &(Signature->Signature->HandledData.UsedParams);
-  std::vector<openfluid::ware::SignatureDataItem>* RequiredParams = &(Signature->Signature->HandledData.RequiredParams);
+  const auto& UsedParams = Signature->HandledData.UsedParams;
+  const auto&  RequiredParams = Signature->HandledData.RequiredParams;
     
   openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
   QStringList ParamsInSign;
   
   // Required params
 
-  for (const auto& Param : *RequiredParams)
+  for (const auto& Param : RequiredParams)
   {
     std::string ParamName = Param.DataName;
     addParam(ParamName, getParamValue(ParamName, DescParams), Param.DataUnit, ParamsInSign, true, false);
@@ -160,7 +159,7 @@ std::string ModelItemWidget::getParamValue(const std::string& ParamName, openflu
 
   // Used params
 
-  for (const auto& Param : *UsedParams)
+  for (const auto& Param : UsedParams)
   {
     std::string ParamName = Param.DataName;
     addParam(ParamName, getParamValue(ParamName, DescParams), Param.DataUnit, ParamsInSign, false, false);

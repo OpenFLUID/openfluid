@@ -37,19 +37,20 @@
 
 
 #include <openfluid/ware/GeneratorSignature.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 
 
 namespace openfluid { namespace ware {
 
 
-GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod):
-    SimulatorSignature()
+GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,
+                                       const openfluid::core::UnitsClass_t& U, 
+                                       const openfluid::core::VariableName_t& VN, const unsigned int VS):
+    SimulatorSignature(), Method(M), UnitsClass(U), VariableName(VN), VariableSize(VS)
 {
-  m_GeneratorMethod = GeneratorMethod;
-  ID = openfluid::fluidx::GeneratorDescriptor::getGeneratorName(
-      m_GeneratorMethod);
+  ID = openfluid::tools::buildGeneratorID(VariableName,(VariableSize > 1),UnitsClass);
 
-  switch (m_GeneratorMethod)
+  switch (Method)
   {
     case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED:
       setFixedInfo();
@@ -58,17 +59,20 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
       setRandomInfo();
       break;
     case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP:
-      setInterpInfo();
+      setInterpolationInfo();
       break;
     case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT:
-      setInjectInfo();
+      setInjectionInfo();
       break;
     default:
-      std::cerr
-          << "GeneratorSignature::GeneratorSignature : unknown Generator method"
-          << std::endl;
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Invalid generator type");
       break;
   }
+
+  std::string TypedVarName = VariableName;
+  VariableSize > 1 ? TypedVarName += "[vector]" : TypedVarName += "[double]";
+
+  HandledData.ProducedVars.push_back(openfluid::ware::SignatureTypedSpatialDataItem(TypedVarName,UnitsClass,"",""));
 }
 
 
@@ -113,7 +117,7 @@ void GeneratorSignature::setRandomInfo()
 // =====================================================================
 
 
-void GeneratorSignature::setInterpInfo()
+void GeneratorSignature::setInterpolationInfo()
 {
   Name = "Values from file interpolation";
   Description = "Generates a time-interpolated value from given data series";
@@ -133,10 +137,6 @@ void GeneratorSignature::setInterpInfo()
 
   HandledData.RequiredParams.push_back(
       openfluid::ware::SignatureDataItem("distribution","Distribution filename for the value to produce","-"));
-
-  HandledData.RequiredExtraFiles.push_back("Data sources for the value to produce, from \"sources\" parameter");
-
-  HandledData.RequiredExtraFiles.push_back("Distribution for the value to produce, from \"distribution\" parameter");
 }
 
 
@@ -144,7 +144,7 @@ void GeneratorSignature::setInterpInfo()
 // =====================================================================
 
 
-void GeneratorSignature::setInjectInfo()
+void GeneratorSignature::setInjectionInfo()
 {
   Name = "Values from file injection";
   Description = "Generates an injected value -no time interpolation- from given data series";
@@ -159,11 +159,6 @@ void GeneratorSignature::setInjectInfo()
 
   HandledData.RequiredParams.push_back(
       openfluid::ware::SignatureDataItem("distribution","Distribution filename for the value to produce","-"));
-
-
-  HandledData.RequiredExtraFiles.push_back("Data sources for the value to produce, from \"sources\" parameter");
-
-  HandledData.RequiredExtraFiles.push_back("Distribution for the value to produce, from \"distribution\" parameter");
 }
 
 

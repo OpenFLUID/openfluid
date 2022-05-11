@@ -37,7 +37,8 @@
 */
 
 
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
+
 #include "builderconfig.hpp"
 
 #include "ui_WareWidget.h"
@@ -48,10 +49,8 @@
 GeneratorWidget::GeneratorWidget(QWidget* Parent,
                                  openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID,
-                                 int Index,
-                                 const openfluid::machine::ModelItemSignatureInstance* SignInstance):
-  ModelItemWidget(Parent,Desc,ID,tr("Generator"),BUILDER_GENERATOR_BGCOLOR, Index),
-  mp_SignInstance(SignInstance)
+                                 int Index):
+  ModelItemWidget(Parent,Desc,ID,tr("Generator"),BUILDER_GENERATOR_BGCOLOR, Index)
 {  
   refresh();
   ui->DebugIconLabel->setVisible(false);
@@ -77,7 +76,12 @@ GeneratorWidget::~GeneratorWidget()
 
 void GeneratorWidget::updateParametersList()
 {
-  createParamWidgetsFromSignature(mp_SignInstance);
+  const auto& Container = openfluid::machine::SimulatorRegistry::instance()->generatorContainer(m_ID);
+
+  if (Container.isValid() && Container.hasSignature())
+  {
+    createParamWidgetsFromSignature(Container.signature().get());
+  }
 }
 
 
@@ -87,8 +91,9 @@ void GeneratorWidget::updateParametersList()
 
 void GeneratorWidget::refresh()
 {
+  const auto& Container = openfluid::machine::SimulatorRegistry::instance()->generatorContainer(m_ID);
 
-  if (mp_SignInstance != nullptr)
+  if (Container.isValid() && Container.hasSignature())  
   {
     setAvailableWare(true);
 
@@ -105,10 +110,9 @@ void GeneratorWidget::refresh()
                                     ->getVariableName()))
         .arg(QString::fromStdString(static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc)
                                     ->getUnitsClass()))
-        .arg(QString::fromStdString(mp_SignInstance->Signature->Name)));
+        .arg(QString::fromStdString(Container.signature()->Name)));        
 
-    // TODO add produced variable in signature
-    ui->InfosSideWidget->update(mp_SignInstance);
+    ui->InfosSideWidget->update(Container);
 
     updateParametersList();
   }

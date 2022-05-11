@@ -31,21 +31,22 @@
 
 
 /**
-  @file SimulatorSignatureRegistry_TEST.cpp
+  @file SimulatorRegistry_TEST.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_SimulatorSignatureRegistry
+#define BOOST_TEST_MODULE unittest_simulatorregistry
 
 
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
@@ -59,15 +60,20 @@
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  openfluid::machine::SimulatorSignatureRegistry* Signatures =
-      openfluid::machine::SimulatorSignatureRegistry::instance();
+  auto Reg = openfluid::machine::SimulatorRegistry::instance();
 
-  BOOST_CHECK_EQUAL(
-      Signatures->getSimSignatures().at(openfluid::ware::WareType::SIMULATOR).size(),
-      11);
-  BOOST_CHECK_EQUAL(
-      Signatures->getSimSignatures().at(openfluid::ware::WareType::GENERATOR).size(),
-      4);
+  Reg->discoverWares();
+
+  BOOST_CHECK_EQUAL(Reg->availableWares().size(),11);
+  
+  for (const auto& C : Reg->availableWares())
+  {
+    BOOST_CHECK_EQUAL(C.first, C.second.signature()->ID);
+  }
+
+  BOOST_CHECK(Reg->generators().empty());
+
+  Reg->clearWares();
 }
 
 
@@ -75,20 +81,14 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(test_getsignatureiteminstance)
+BOOST_AUTO_TEST_CASE(test_signature)
 {
-  openfluid::machine::SimulatorSignatureRegistry* Reg =
-      openfluid::machine::SimulatorSignatureRegistry::instance();
+  auto Reg = openfluid::machine::SimulatorRegistry::instance();
+  Reg->discoverWares();
 
-  const openfluid::machine::ModelItemSignatureInstance* Sign = Reg->signature("examples.primitives.unitsA.prod");
+  const auto& Cont = Reg->wareContainer("examples.primitives.unitsA.prod");
 
-  BOOST_CHECK_EQUAL(Sign->Signature->ID, "examples.primitives.unitsA.prod");
-
-  openfluid::fluidx::SimulatorDescriptor ItemDesc("examples.primitives.unitsB.prod");
-
-  const openfluid::machine::ModelItemSignatureInstance* Sign2 = Reg->signature(&ItemDesc);
-
-  BOOST_CHECK_EQUAL(Sign2->Signature->ID, "examples.primitives.unitsB.prod");
+  BOOST_CHECK_EQUAL(Cont.signature()->ID, "examples.primitives.unitsA.prod");
 }
 
 
@@ -100,15 +100,15 @@ BOOST_AUTO_TEST_CASE(test_ghostsimulators)
 {
   openfluid::base::Environment::addExtraSimulatorsDirs(CONFIGTESTS_INPUT_MISCDATA_DIR+"/"+"GhostSimulators");
 
-  openfluid::machine::SimulatorSignatureRegistry* Reg =
-      openfluid::machine::SimulatorSignatureRegistry::instance();
-  Reg->update();
+  auto Reg = openfluid::machine::SimulatorRegistry::instance();
+  Reg->discoverWares();
 
-  BOOST_CHECK_EQUAL(Reg->getSimSignatures().at(openfluid::ware::WareType::SIMULATOR).size(),16);
+  BOOST_CHECK_EQUAL(Reg->availableWares().size(),16);
 
-  BOOST_CHECK(Reg->signature("simA") != nullptr);
-  BOOST_CHECK(Reg->signature("simFake") == nullptr);
-
-  BOOST_CHECK_EQUAL(Reg->getSimSignatures().at(openfluid::ware::WareType::GENERATOR).size(),4);
-
+  BOOST_CHECK(Reg->wareContainer("simA").isValid());
+  BOOST_CHECK(Reg->wareContainer("simA").isGhost());
+  BOOST_CHECK(Reg->wareContainer("simA").hasSignature());
+  BOOST_CHECK(!Reg->wareContainer("simFake").isValid());
+  BOOST_CHECK(!Reg->wareContainer("simFake").isGhost());
+  BOOST_CHECK(!Reg->wareContainer("simFake").hasSignature());
 }

@@ -31,13 +31,14 @@
 
 
 /**
-  @file ObserverSignatureRegistry.cpp
+  @file ObserverRegistry.cpp
 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
   @author Aline LIBRES <aline.libres@gmail.com>
 */
 
 
-#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 
@@ -45,21 +46,10 @@
 namespace openfluid { namespace machine {
 
 
-OPENFLUID_SINGLETON_INITIALIZATION(ObserverSignatureRegistry)
+OPENFLUID_SINGLETON_INITIALIZATION(ObserverRegistry)
 
 
-ObserverSignatureRegistry::ObserverSignatureRegistry():
-    WareSignatureRegistry<ObserverSignatureInstance>()
-{
-  update();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ObserverSignatureRegistry::~ObserverSignatureRegistry()
+ObserverRegistry::ObserverRegistry() : WareRegistry<openfluid::ware::ObserverSignature>()
 {
 
 }
@@ -69,51 +59,31 @@ ObserverSignatureRegistry::~ObserverSignatureRegistry()
 // =====================================================================
 
 
-const ObserverSignatureInstance* ObserverSignatureRegistry::signature(const std::string& ObserverID) const
+bool ObserverRegistry::addWare(const openfluid::ware::WareID_t& ID)
 {
-  for (auto SignInst: m_AvailableSignatures)
+  auto Man = openfluid::machine::ObserverPluginsManager::instance();
+
+  return WareRegistry<openfluid::ware::ObserverSignature>::add(Man->loadPlugin(ID));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ObserverRegistry::discoverWares(const std::string IDPattern)
+{
+  auto Man = openfluid::machine::ObserverPluginsManager::instance();
+
+  clearWares();
+  Man->unloadAll();
+
+  std::vector<WareContainer<openfluid::ware::ObserverSignature>> Collected = Man->loadPlugins(IDPattern);
+
+  for (auto& Item : Collected)
   {
-    if (SignInst->Signature->ID == ObserverID)
-    {
-      return (SignInst);
-    }
+    WareRegistry<openfluid::ware::ObserverSignature>::add(std::move(Item));
   }
-  return nullptr;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ObserverSignatureRegistry::update()
-{
-  unloadAll();
-
-  m_AvailableSignatures =
-      openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures().availablePlugins();
-
-  openfluid::machine::ObserverPluginsManager::instance()->unloadAllWares();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-const std::vector<ObserverSignatureInstance*>& ObserverSignatureRegistry::getAvailableSignatures() const
-{
-  return m_AvailableSignatures;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ObserverSignatureRegistry::unloadAll()
-{
-  openfluid::machine::ObserverPluginsManager::instance()->unloadAllWares();
 }
 
 

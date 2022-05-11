@@ -42,7 +42,7 @@
 
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 
 #include "ModelItemWidget.hpp"
 
@@ -53,12 +53,13 @@ class GeneratorWidget : public ModelItemWidget
 
 
   private:
-
-    const openfluid::machine::ModelItemSignatureInstance* mp_SignInstance;
     
     void updateParametersList();
     
-    bool isClickable() {return false;}
+    bool isClickable() 
+    {
+      return false;
+    }
 
 
   public slots:
@@ -71,13 +72,14 @@ class GeneratorWidget : public ModelItemWidget
     GeneratorWidget(QWidget* Parent,
                     openfluid::fluidx::ModelItemDescriptor* Desc,
                     const openfluid::ware::WareID_t& ID,
-                    int Index,
-                    const openfluid::machine::ModelItemSignatureInstance* SignInstance);
+                    int Index);
 
     ~GeneratorWidget();
 
-    openfluid::ware::WareType getType()
-    { return openfluid::ware::WareType::GENERATOR; }
+    openfluid::ware::WareType getType() const
+    { 
+      return openfluid::ware::WareType::GENERATOR; 
+    }
 
 };
 

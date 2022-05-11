@@ -46,67 +46,28 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/machine/WareInstance.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/machine/WareSignatureInstance.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
-class OPENFLUID_API GeneratorExtraInfo
+class OPENFLUID_API ModelItemInstance : public WareInstance<openfluid::ware::SimulatorSignature,
+                                                            openfluid::ware::PluggableSimulator>
 {
   public:
 
-    openfluid::core::VariableName_t VariableName;
-    openfluid::core::UnitsClass_t UnitsClass;
-    unsigned int VariableSize;
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod;
+    unsigned int OriginalPosition = 0;
 
-    GeneratorExtraInfo();
-};
+    ModelItemInstance(const WareContainer<openfluid::ware::SimulatorSignature>& C): 
+      WareInstance<openfluid::ware::SimulatorSignature,openfluid::ware::PluggableSimulator>(C)
+    {  }
 
-
-// =====================================================================
-// =====================================================================
-
-
-class OPENFLUID_API ModelItemSignatureInstance : public WareSignatureInstance
-{
-  public:
-
-    // Declared as a classic pointer because of DLL cross-boundaries hell on Windows systems
-    // TODO should be replaced by a factory for memory management across DLLs
-    openfluid::ware::SimulatorSignature* Signature;
-
-    std::unique_ptr<GeneratorExtraInfo> GeneratorInfo;
-
-    bool Ghost;
-
-
-    ModelItemSignatureInstance();
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-class OPENFLUID_API ModelItemInstance : public ModelItemSignatureInstance
-{
-  public:
-
-    openfluid::ware::WareParams_t Params;
-
-    std::unique_ptr<openfluid::ware::PluggableSimulator> Body;
-
-    unsigned int OriginalPosition;
-
-
-    ModelItemInstance();
 };
 
 

@@ -53,7 +53,7 @@ namespace openfluid { namespace builderext {
 
 enum class ExtensionCategory { SPATIAL, MODEL, RESULTS, OTHER };
 
-enum class ExtensionType { UNKNOWN, FEATURE, PARAMETERIZATION};
+enum class ExtensionRole { UNKNOWN, FEATURE, PARAMETERIZATION};
 
 enum class ExtensionMode { UNKNOWN, MODAL, MODELESS, WORKSPACE};
 
@@ -66,7 +66,7 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
 
     ExtensionMode Mode;
 
-    ExtensionType Type;
+    ExtensionRole Role;
 
     QString MenuText;
 
@@ -74,8 +74,15 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
 
 
     BuilderExtensionSignature():
-      Category(ExtensionCategory::OTHER), Mode(ExtensionMode::UNKNOWN), Type(ExtensionType::UNKNOWN)
+      Category(ExtensionCategory::OTHER), Mode(ExtensionMode::UNKNOWN), Role(ExtensionRole::UNKNOWN)
     {  }
+
+    virtual ~BuilderExtensionSignature() = default;
+
+    openfluid::ware::WareType getType() const
+    {
+      return openfluid::ware::WareType::BUILDEREXT;
+    }
 
 };
 

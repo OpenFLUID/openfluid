@@ -54,6 +54,8 @@ class OPENFLUID_API WareDescriptor
 
     openfluid::ware::WareType m_WareType;
 
+    const openfluid::ware::WareID_t m_ID;
+
     openfluid::ware::WareParams_t m_Params;  // Simulator parameters set
 
     bool m_Enabled;
@@ -61,10 +63,15 @@ class OPENFLUID_API WareDescriptor
 
   public:
 
-    WareDescriptor();
+    WareDescriptor(const openfluid::ware::WareID_t& ID);
 
     virtual ~WareDescriptor()
     { }
+
+    const openfluid::ware::WareID_t getID() const
+    {
+      return m_ID;
+    }
 
     void setParameter(const openfluid::ware::WareParamKey_t& Key,
                       const openfluid::ware::WareParamValue_t& Value);

@@ -41,8 +41,8 @@
 
 #include <openfluid/ui/common/RunSimulationDialog.hpp>
 #include <openfluid/ui/common/RunCLISimulationDialog.hpp>
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
-#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
@@ -86,6 +86,11 @@ ProjectCentral::ProjectCentral(const QString& PrjPath)
   // initialization of models for completion
   mp_AllNamesListModel = new QStringListModel(this);
 
+  openfluid::machine::SimulatorRegistry::instance()->clear();
+  openfluid::machine::SimulatorRegistry::instance()->discoverWares();
+  openfluid::machine::ObserverRegistry::instance()->clear();
+  openfluid::machine::ObserverRegistry::instance()->discoverWares();
+
   check();
 }
 
@@ -96,6 +101,8 @@ ProjectCentral::ProjectCentral(const QString& PrjPath)
 
 ProjectCentral::~ProjectCentral()
 {
+  openfluid::machine::SimulatorRegistry::instance()->clear();
+  openfluid::machine::ObserverRegistry::instance()->clear();
   deleteData();
 }
 
@@ -124,8 +131,7 @@ void ProjectCentral::kill()
   if (mp_Instance)
   {
     delete mp_Instance;
-  }
-
+  }  
   mp_Instance = nullptr;
 }
 
@@ -306,7 +312,7 @@ void ProjectCentral::check()
   }
   else
   {
-    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_DISABLED);
     m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).addMessage(tr("Model is empty"));
   }
 
@@ -337,7 +343,7 @@ void ProjectCentral::check()
 
 void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
                                          const std::string& MaxParamName,
-                                         openfluid::fluidx::ModelItemDescriptor* Item,
+                                         const openfluid::fluidx::ModelItemDescriptor* Item,
                                          const std::string& ID)
 {
   bool TestCompare = true;
@@ -387,8 +393,8 @@ void ProjectCentral::checkGeneratorParam(const std::string& MinParamName,
 // =====================================================================
 
 
-bool ProjectCentral::isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
-                                const std::string& ParamName)
+bool ProjectCentral::isParamSet(const openfluid::fluidx::ModelItemDescriptor* Item,
+                                const std::string& ParamName) const
 {
   return (!Item->getParameters()[ParamName].get().empty() ||
           !m_FXDesc.model().getGlobalParameters()[ParamName].get().empty());
@@ -399,8 +405,8 @@ bool ProjectCentral::isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
 // =====================================================================
 
 
-bool ProjectCentral::isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
-                                     const std::string& ParamName)
+bool ProjectCentral::isParamIsDouble(const openfluid::fluidx::ModelItemDescriptor* Item,
+                                     const std::string& ParamName) const
 {
   if (!isParamSet(Item, ParamName))
   {
@@ -410,7 +416,7 @@ bool ProjectCentral::isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Ite
   double d;
 
   return (Item->getParameters()[ParamName].toDouble(d) ||
-    m_FXDesc.model().getGlobalParameters()[ParamName].toDouble(d));
+          m_FXDesc.model().getGlobalParameters()[ParamName].toDouble(d));
 }
 
 
@@ -418,8 +424,8 @@ bool ProjectCentral::isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Ite
 // =====================================================================
 
 
-double ProjectCentral::getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
-                                        const std::string& ParamName)
+double ProjectCentral::getParamAsDouble(const openfluid::fluidx::ModelItemDescriptor* Item,
+                                        const std::string& ParamName) const
 {
   if (!isParamIsDouble(Item, ParamName))
   {
@@ -455,42 +461,47 @@ void ProjectCentral::checkModel()
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = Model.items();
 
-  openfluid::machine::SimulatorSignatureRegistry* Reg = openfluid::machine::SimulatorSignatureRegistry::instance();
+  openfluid::machine::SimulatorRegistry* Reg = openfluid::machine::SimulatorRegistry::instance();
   openfluid::base::RunContextManager* RunCtxt = openfluid::base::RunContextManager::instance();
 
-  openfluid::ware::SimulatorSignature* Sign;
-
   QStringList UpdatedUnitsClass;
-
   std::set<std::pair<std::string, std::string> > AttrsUnits;
-
-
   bool AtLeastOneEnabled = false;
 
   m_SimulatorsIDsList.clear();
   m_SimulatorsParamsLists.clear();
 
-
-  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itModelItem = Items.begin();
-      itModelItem != Items.end(); ++itModelItem)
+  // Create non existing generators in registry
+  for (const auto* Item : Model.items())
   {
-    std::string ID = Model.getID(*itModelItem);
+    const auto ID = Model.getID(Item);
+
+    if (Item->isEnabled() && Item->isType(openfluid::ware::WareType::GENERATOR) && !Reg->hasGenerator(ID))
+    {
+      const auto* GenDesc = static_cast<const openfluid::fluidx::GeneratorDescriptor*>(Item);
+      Reg->addGenerator({GenDesc->getGeneratorMethod(),GenDesc->getUnitsClass(),
+                          GenDesc->getVariableName(),GenDesc->getVariableSize()});
+    }
+  }
+
+
+  for (const auto* Item : Model.items())
+  {
+    const auto ID = Model.getID(Item);
 
     m_SimulatorsIDsList << QString::fromStdString(ID);
 
 
-    if ((*itModelItem)->isEnabled())
+    if (Item->isEnabled())
     {
       AtLeastOneEnabled = true;
 
-      const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
+      const auto& Container = Reg->wareOrGeneratorContainer(ID);
 
-
-      if (SignII != nullptr)
+      if (Container.isValid() &&  Container.hasSignature())
       {
         // checking if simulator is a ghost
-
-        if (SignII->Ghost)
+        if (Container.isGhost())
         {
           m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_DISABLED);
           m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
@@ -499,25 +510,25 @@ void ProjectCentral::checkModel()
         }
 
 
-        Sign = SignII->Signature;
+        const auto* Sign = Container.signature().get();
 
 
         // ========== external constraints
 
         // check extrafiles
 
-        std::vector<std::string>& ReqFiles = Sign->HandledData.RequiredExtraFiles;
+        const auto& ReqFiles = Sign->HandledData.RequiredExtraFiles;
 
-        if ((*itModelItem)->isType(openfluid::ware::WareType::GENERATOR))
+        if (Item->isType(openfluid::ware::WareType::GENERATOR))
         {
           openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
-              (static_cast<openfluid::fluidx::GeneratorDescriptor*>(*itModelItem))->getGeneratorMethod();
+              (static_cast<const openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratorMethod();
 
           if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP ||
               Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
           {
             // sources file
-            std::string FileNameFromParam = (*itModelItem)->getParameters()["sources"];
+            std::string FileNameFromParam = Item->getParameters()["sources"];
 
             if (!FileNameFromParam.empty() &&
                 !QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(FileNameFromParam))).exists())
@@ -531,7 +542,7 @@ void ProjectCentral::checkModel()
             }
 
             // distribution file
-            FileNameFromParam = (*itModelItem)->getParameters()["distribution"];
+            FileNameFromParam = Item->getParameters()["distribution"];
 
             if (!FileNameFromParam.empty() &&
                 !QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(FileNameFromParam))).exists())
@@ -547,7 +558,7 @@ void ProjectCentral::checkModel()
         }
         else
         {
-          for (std::vector<std::string>::iterator itFile = ReqFiles.begin(); itFile != ReqFiles.end(); ++itFile)
+          for (auto itFile = ReqFiles.begin(); itFile != ReqFiles.end(); ++itFile)
           {
             if (!QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(*itFile))).exists())
             {
@@ -570,13 +581,13 @@ void ProjectCentral::checkModel()
 
 
         // required parameters
-        const std::vector<openfluid::ware::SignatureDataItem>& ReqParams = Sign->HandledData.RequiredParams;
+        const auto& ReqParams = Sign->HandledData.RequiredParams;
 
         for (auto itParam = ReqParams.begin();itParam != ReqParams.end(); ++itParam)
         {
           m_SimulatorsParamsLists[QString::fromStdString(ID)] << QString::fromStdString(itParam->DataName);
 
-          if (!isParamSet(*itModelItem, itParam->DataName))
+          if (!isParamSet(Item, itParam->DataName))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
@@ -595,7 +606,7 @@ void ProjectCentral::checkModel()
         {
           m_SimulatorsParamsLists[QString::fromStdString(ID)] << QString::fromStdString(itParam->DataName);
 
-          if (!isParamSet(*itModelItem, itParam->DataName))
+          if (!isParamSet(Item, itParam->DataName))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
               ProjectStatusLevel::PRJ_WARNING);
@@ -607,26 +618,26 @@ void ProjectCentral::checkModel()
         }
 
         // check Generators Params
-        if ((*itModelItem)->isType(openfluid::ware::WareType::GENERATOR))
+        if (Item->isType(openfluid::ware::WareType::GENERATOR))
         {
           openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
-              (static_cast<openfluid::ware::GeneratorSignature*>(Sign))->m_GeneratorMethod;
+              (static_cast<const openfluid::ware::GeneratorSignature*>(Sign))->Method;
 
           if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM && !RandomMinMaxChecked)
           {
-            checkGeneratorParam("min", "max", *itModelItem, ID);
+            checkGeneratorParam("min", "max", Item, ID);
             RandomMinMaxChecked = true;
           }
           else if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP &&
               !InterpMinMaxChecked)
           {
-            checkGeneratorParam("thresholdmin", "thresholdmax", *itModelItem, ID);
+            checkGeneratorParam("thresholdmin", "thresholdmax", Item, ID);
             InterpMinMaxChecked = true;
           }
           else if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT &&
               !InjectMinMaxChecked)
           {
-            checkGeneratorParam("thresholdmin", "thresholdmax", *itModelItem, ID);
+            checkGeneratorParam("thresholdmin", "thresholdmax", Item, ID);
             InjectMinMaxChecked = true;
           }
         }
@@ -638,10 +649,9 @@ void ProjectCentral::checkModel()
 
         // check required attributes
 
-        std::vector<openfluid::ware::SignatureSpatialDataItem>& ReqData = Sign->HandledData.RequiredAttribute;
+        const auto& ReqData = Sign->HandledData.RequiredAttribute;
 
-        for (std::vector<openfluid::ware::SignatureSpatialDataItem>::iterator itReqData = ReqData.begin();
-            itReqData != ReqData.end(); ++itReqData)
+        for (auto itReqData = ReqData.begin(); itReqData != ReqData.end(); ++itReqData)
         {
           if (!Domain.isClassNameExists(itReqData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itReqData->UnitsClass)))
@@ -669,9 +679,9 @@ void ProjectCentral::checkModel()
 
 
         // check produced attributes
-        std::vector<openfluid::ware::SignatureSpatialDataItem>& ProdData = Sign->HandledData.ProducedAttribute;
+        const auto& ProdData = Sign->HandledData.ProducedAttribute;
 
-        for (std::vector<openfluid::ware::SignatureSpatialDataItem>::iterator itProdData = ProdData.begin();
+        for (auto itProdData = ProdData.begin();
             itProdData != ProdData.end(); ++itProdData)
         {
           if (!Domain.isClassNameExists(itProdData->UnitsClass) &&
@@ -707,9 +717,14 @@ void ProjectCentral::checkModel()
       {
         m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(
           ProjectStatusLevel::PRJ_ERROR);
-        if ((*itModelItem)->getType() == openfluid::ware::WareType::SIMULATOR)
+        if (Item->getType() == openfluid::ware::WareType::SIMULATOR)
         {
           m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).addMessage(tr("Simulator %1 is not available")
+                                                                         .arg(QString::fromStdString(ID)));
+        }
+        else if (Item->getType() == openfluid::ware::WareType::GENERATOR)
+        {
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).addMessage(tr("Generator %1 is not available")
                                                                          .arg(QString::fromStdString(ID)));
         }
       }
@@ -718,8 +733,6 @@ void ProjectCentral::checkModel()
 
 
   // ========== internal constraints
-
-  std::vector<openfluid::ware::SignatureTypedSpatialDataItem>::iterator itData;
 
   std::set<std::pair<std::string, std::string> > VarsUnits;
   std::set<std::pair<std::string,std::pair<std::string, openfluid::core::Value::Type> > > TypedVarsUnits;
@@ -733,22 +746,21 @@ void ProjectCentral::checkModel()
    */
 
   // pass 1
-  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itModelItem = Items.begin();
-      itModelItem != Items.end(); ++itModelItem)
+  for (auto itModelItem = Items.begin(); itModelItem != Items.end(); ++itModelItem)
   {
     if ((*itModelItem)->isEnabled())
     {
-      const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
+      const auto& Container = Reg->wareOrGeneratorContainer((*itModelItem)->getID());
 
-      if (SignII != nullptr)
+      if (Container.isValid() && Container.hasSignature())
       {
-        Sign = SignII->Signature;
+        const auto* Sign = Container.signature().get();
         std::string ID = Model.getID(*itModelItem);
 
         // check produced Vars
-        std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& ProdVars = Sign->HandledData.ProducedVars;
+        const auto& ProdVars = Sign->HandledData.ProducedVars;
 
-        for (itData = ProdVars.begin(); itData != ProdVars.end(); ++itData)
+        for (auto itData = ProdVars.begin(); itData != ProdVars.end(); ++itData)
         {
           m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
 
@@ -774,54 +786,17 @@ void ProjectCentral::checkModel()
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
-                            .addMessage(tr("Variable %1 on %2 produced by %3 cannot be created "
-                                "because it is created by another simulator or generator")
+                            .addMessage(tr("Variable %1 on %2 produced by %3 is already produced "
+                                           "by another simulator or generator")
                                         .arg(QString::fromStdString(itData->DataName))
                                         .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(ID)));
           }
         }
 
-        if ((*itModelItem)->isType(openfluid::ware::WareType::GENERATOR))
-        {
-          openfluid::fluidx::GeneratorDescriptor* GenDesc =
-              dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*itModelItem);
-
-          if (!Domain.isClassNameExists(GenDesc->getUnitsClass()) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(GenDesc->getUnitsClass())))
-          {
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT).updateStatus(
-              ProjectStatusLevel::PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT)
-                            .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
-                                        .arg(QString::fromStdString(GenDesc->getUnitsClass()))
-                                        .arg(QString::fromStdString(GenDesc->getVariableName()))
-                                        .arg(QString::fromStdString(ID)));
-          }
-
-          if (!VarsUnits.count(std::make_pair(GenDesc->getUnitsClass(), GenDesc->getVariableName())))
-          {
-            VarsUnits.insert(std::make_pair(GenDesc->getUnitsClass(),GenDesc->getVariableName()));
-            TypedVarsUnits.insert(std::make_pair(GenDesc->getUnitsClass(),
-                                                 std::make_pair(GenDesc->getVariableName(),
-                                                                GenDesc->getVariableType())));
-          }
-          else
-          {
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(ProjectStatusLevel::PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
-                            .addMessage(tr("Variable %1 on %2 produced by %3 is already produced "
-                                "by another simulator or generator")
-                                        .arg(QString::fromStdString(GenDesc->getVariableName()))
-                                        .arg(QString::fromStdString(GenDesc->getUnitsClass()))
-                                        .arg(QString::fromStdString(ID)));
-          }
-        }
-
         // check updated vars
-        std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& UpVars =
-            Sign->HandledData.UpdatedVars;
-        for (itData = UpVars.begin(); itData != UpVars.end(); ++itData)
+        const auto& UpVars = Sign->HandledData.UpdatedVars;
+        for (auto itData = UpVars.begin(); itData != UpVars.end(); ++itData)
         {
           m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
 
@@ -850,23 +825,22 @@ void ProjectCentral::checkModel()
   }
 
   // pass 2
-  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itModelItem = Items.begin();
-      itModelItem != Items.end(); ++itModelItem)
+  for (auto itModelItem = Items.begin(); itModelItem != Items.end(); ++itModelItem)
   {
     if ((*itModelItem)->isEnabled())
     {
-      const openfluid::machine::ModelItemSignatureInstance* SignII = Reg->signature(*itModelItem);
       std::string ID = Model.getID(*itModelItem);
+      const auto& Container = Reg->wareOrGeneratorContainer((*itModelItem)->getID());
 
-      if (SignII != nullptr)
+      if (Container.isValid() && Container.hasSignature())
       {
 
-        Sign = SignII->Signature;
+        const auto* Sign = Container.signature().get();
 
         // check required Vars
-        std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& ReqVars = Sign->HandledData.RequiredVars;
+        const auto& ReqVars = Sign->HandledData.RequiredVars;
 
-        for (itData = ReqVars.begin(); itData != ReqVars.end(); ++itData)
+        for (auto itData = ReqVars.begin(); itData != ReqVars.end(); ++itData)
         {
           m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
 
@@ -900,9 +874,9 @@ void ProjectCentral::checkModel()
         }
 
         // check used Vars
-        std::vector<openfluid::ware::SignatureTypedSpatialDataItem>& UsedVars = Sign->HandledData.UsedVars;
+        const auto& UsedVars = Sign->HandledData.UsedVars;
 
-        for (itData = UsedVars.begin(); itData != UsedVars.end(); ++itData)
+        for (auto itData = UsedVars.begin(); itData != UsedVars.end(); ++itData)
         {
           m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
         }
@@ -994,21 +968,20 @@ void ProjectCentral::checkMonitoring()
   openfluid::fluidx::MonitoringDescriptor& Monitoring = m_FXDesc.monitoring();
   const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = Monitoring.items();
 
-  openfluid::machine::ObserverSignatureRegistry* Reg = openfluid::machine::ObserverSignatureRegistry::instance();
+  auto Reg = openfluid::machine::ObserverRegistry::instance();
 
   bool AtLeastOneEnabled = false;
 
 
-  for (std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itMonitoring = Items.begin();
-       itMonitoring != Items.end(); ++itMonitoring)
+  for (auto itMonitoring = Items.begin(); itMonitoring != Items.end(); ++itMonitoring)
   {
     if ((*itMonitoring)->isEnabled())
     {
       AtLeastOneEnabled = true;
 
-      const openfluid::machine::ObserverSignatureInstance* SignII = Reg->signature((*itMonitoring)->getID());
-
-      if (SignII == nullptr)
+      const auto& Container = Reg->wareContainer((*itMonitoring)->getID());
+      
+      if (!Container.hasSignature())
       {
         m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(ProjectStatusLevel::PRJ_ERROR);
         m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).addMessage(tr("Observer %1 is not available")

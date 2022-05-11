@@ -50,7 +50,6 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/machine/ObserverSignatureRegistry.hpp>
 
 #include "tests-config.hpp"
 

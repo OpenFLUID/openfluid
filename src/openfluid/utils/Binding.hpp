@@ -54,7 +54,9 @@
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
@@ -161,8 +163,10 @@ class Binding
 
     static void unloadAllWares()
     {
-      openfluid::machine::SimulatorPluginsManager::instance()->unloadAllWares();
-      openfluid::machine::ObserverPluginsManager::instance()->unloadAllWares();
+      openfluid::machine::SimulatorRegistry::instance()->clear();
+      openfluid::machine::ObserverRegistry::instance()->clear();
+      openfluid::machine::SimulatorPluginsManager::instance()->unloadAll();
+      openfluid::machine::ObserverPluginsManager::instance()->unloadAll();
     }
 
 
@@ -727,11 +731,9 @@ class Binding
           mp_OutErr->printfOut("%s","Building model instance...");
         }
 
-
         openfluid::machine::ModelInstance Model(SimBlob,Listener.get());
 
         openfluid::machine::Factory::buildModelInstanceFromDescriptor(m_FluidXDesc.model(),Model);
-
 
         if (IsVerbose)
         {
@@ -762,7 +764,6 @@ class Binding
         // ===== simulation
 
         m_OutputDir = openfluid::base::RunContextManager::instance()->getOutputDir();
-
 
         Engine = new openfluid::machine::Engine(SimBlob, Model, Monitoring, Listener.get());
 

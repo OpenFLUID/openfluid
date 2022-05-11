@@ -310,7 +310,7 @@ void Engine::checkParametersConsistency()
 {
   for (ModelItemInstance* IInstance : m_ModelInstance.items())
   {
-    for (openfluid::ware::SignatureDataItem Param : IInstance->Signature->HandledData.RequiredParams)
+    for (openfluid::ware::SignatureDataItem Param : IInstance->Container.signature()->HandledData.RequiredParams)
     {
       bool FoundParam = false;
       bool FilledParam = false;
@@ -338,13 +338,13 @@ void Engine::checkParametersConsistency()
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Cannot find parameter " + Param.DataName +
-                                                  " required by " + IInstance->Signature->ID);
+                                                  " required by " + IInstance->Container.signature()->ID);
       }
       else if (!FilledParam)
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "Parameter " + Param.DataName +
-                                                  " required by " + IInstance->Signature->ID + " is empty");
+                                                  " required by " + IInstance->Container.signature()->ID + " is empty");
       }
     }
   }
@@ -376,20 +376,20 @@ void Engine::checkModelConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Signature->HandledData;
+    HData = CurrentSimulator->Container.signature()->HandledData;
 
     // checking variables to create (produced)
     for (i=0;i< HData.ProducedVars.size();i++)
     {
       createVariable(HData.ProducedVars[i].DataName,HData.ProducedVars[i].DataType,HData.ProducedVars[i].UnitsClass,
-                     false,CurrentSimulator->Signature->ID);
+                     false,CurrentSimulator->Container.signature()->ID);
     }
 
     // checking variables to update
     for (i=0;i<HData.UpdatedVars.size();i++)
     {
       createVariable(HData.UpdatedVars[i].DataName,HData.UpdatedVars[i].DataType,HData.UpdatedVars[i].UnitsClass,
-                     true,CurrentSimulator->Signature->ID);
+                     true,CurrentSimulator->Container.signature()->ID);
     }
     ++SimIter;
   }
@@ -400,13 +400,13 @@ void Engine::checkModelConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Signature->HandledData;
+    HData = CurrentSimulator->Container.signature()->HandledData;
 
     // checking required variables
     for (i=0;i< HData.RequiredVars.size();i++)
     {
       checkExistingVariable(HData.RequiredVars[i].DataName,HData.RequiredVars[i].DataType,
-                            HData.RequiredVars[i].UnitsClass,CurrentSimulator->Signature->ID);
+                            HData.RequiredVars[i].UnitsClass,CurrentSimulator->Container.signature()->ID);
     }
 
     ++SimIter;
@@ -432,20 +432,20 @@ void Engine::checkAttributesConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Signature->HandledData;
+    HData = CurrentSimulator->Container.signature()->HandledData;
 
     // checking required attribute
     for(i=0; i < HData.RequiredAttribute.size();i++)
     {
       checkExistingAttribute(HData.RequiredAttribute[i].DataName,HData.RequiredAttribute[i].UnitsClass,
-                             CurrentSimulator->Signature->ID);
+                             CurrentSimulator->Container.signature()->ID);
     }
 
     // checking produced attribute
     for(i=0; i < HData.ProducedAttribute.size();i++)
     {
       createAttribute(HData.ProducedAttribute[i].DataName,HData.ProducedAttribute[i].UnitsClass,
-                      CurrentSimulator->Signature->ID);
+                      CurrentSimulator->Container.signature()->ID);
     }
 
     ++SimIter;
@@ -470,16 +470,18 @@ void Engine::checkExtraFilesConsistency()
   {
     CurrentSimulator = *SimIter;
 
-    HData = CurrentSimulator->Signature->HandledData;
+    HData = CurrentSimulator->Container.signature()->HandledData;
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
       if (!openfluid::tools::FilesystemPath(openfluid::base::RunContextManager::instance()
                                             ->getInputFullPath(HData.RequiredExtraFiles[i])).isFile())
       {
-        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "File " + HData.RequiredExtraFiles[i] +
-                                                  " required by " + CurrentSimulator->Signature->ID + " not found");
+        throw openfluid::base::FrameworkException(
+                OPENFLUID_CODE_LOCATION,
+                "File " + HData.RequiredExtraFiles[i] +
+                " required by " + CurrentSimulator->Container.signature()->ID + " not found"
+              );
       }
     }
   }

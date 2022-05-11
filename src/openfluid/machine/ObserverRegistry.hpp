@@ -31,67 +31,59 @@
 
 
 /**
-  @file ObserverSignatureRegistry.hpp
+  @file ObserverRegistry.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 */
 
 
-#ifndef __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__
-#define __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__
+#ifndef __OPENFLUID_MACHINE_OBSERVERREGISTRY_HPP__
+#define __OPENFLUID_MACHINE_OBSERVERREGISTRY_HPP__
 
 
 #include <vector>
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/machine/WareSignatureRegistry.hpp>
+#include <openfluid/machine/WareRegistry.hpp>
+#include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/utils/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
-class ObserverSignatureInstance;
-
-
-class OPENFLUID_API ObserverSignatureRegistry : public WareSignatureRegistry<ObserverSignatureInstance>
+class OPENFLUID_API ObserverRegistry : public WareRegistry<openfluid::ware::ObserverSignature>
 {
 
-  OPENFLUID_SINGLETON_DEFINITION(ObserverSignatureRegistry)
+  OPENFLUID_SINGLETON_DEFINITION(ObserverRegistry)
 
 
   private:
 
-    std::vector<ObserverSignatureInstance*> m_AvailableSignatures;
+    ObserverRegistry();
 
-    ObserverSignatureRegistry();
-
-    virtual ~ObserverSignatureRegistry();
+    WareContainer<openfluid::ware::ObserverSignature> createWareContainer() const
+    {
+      return WareContainer<openfluid::ware::ObserverSignature>(openfluid::ware::WareType::OBSERVER);
+    }
 
 
   public:
 
-    /**
-      @brief Returns the Signature of the Observer with ObserverID if available
-      @throw openfluid::base::FrameworkException if this Observer plugin is not available
-    */
-    const openfluid::machine::ObserverSignatureInstance* signature(const openfluid::ware::WareID_t& ID) const;
+    bool addWare(const openfluid::ware::WareID_t& ID);
 
-    /**
-      @brief Updates the list of available signatures, according to Runtime environment paths
-    */
-    void update();
+    void discoverWares(const std::string IDPattern = "");
 
-    const std::vector<openfluid::machine::ObserverSignatureInstance*>& getAvailableSignatures() const;
-
-    void unloadAll();
-
+    void clear()
+    {
+      clearWares();
+    }
 };
 
 
 } } // namespaces
 
 
-#endif /* __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__ */
+#endif /* __OPENFLUID_MACHINE_OBSERVERREGISTRY_HPP__ */

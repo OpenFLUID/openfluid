@@ -48,10 +48,14 @@ namespace openfluid { namespace machine {
 OPENFLUID_SINGLETON_INITIALIZATION(SimulatorPluginsManager)
 
 
-std::vector<ModelItemSignatureInstance*>
-SimulatorPluginsManager::getAvailableGhostsSignatures(const std::string& /*Pattern*/) const
+// =====================================================================
+// =====================================================================
+
+
+std::vector<WareContainer<openfluid::ware::SimulatorSignature>>
+SimulatorPluginsManager::getAvailableGhosts(const std::string& /*Pattern*/) const
 {
-  std::vector<ModelItemSignatureInstance*> PluginsContainers;
+  std::vector<WareContainer<openfluid::ware::SimulatorSignature>> Containers;
   std::vector<std::string> PluginsPaths = getPluginsSearchPaths();
   std::vector<std::string> GhostsFiles;
   std::vector<std::string> TmpFiles;
@@ -74,15 +78,16 @@ SimulatorPluginsManager::getAvailableGhostsSignatures(const std::string& /*Patte
     openfluid::ware::SimulatorSignature* TmpSignature = new openfluid::ware::SimulatorSignature();
     if (openfluid::machine::GhostSimulatorFileIO::loadFromFile(GhostsFiles[i],*TmpSignature))
     {
-      ModelItemSignatureInstance* CurrentGhost = new ModelItemSignatureInstance();
-      CurrentGhost->Ghost = true;
-      CurrentGhost->FileFullPath = GhostsFiles[i];
-      CurrentGhost->Signature = TmpSignature;
-      PluginsContainers.push_back(CurrentGhost);
+      auto CurrentGhost = createContainer();
+      CurrentGhost.setGhost();
+      CurrentGhost.setPath(GhostsFiles[i]);
+      CurrentGhost.setSignature(TmpSignature);
+      CurrentGhost.validate();
+      Containers.push_back(std::move(CurrentGhost));
     }
   }
 
-  return PluginsContainers;
+  return Containers;
 }
 
 

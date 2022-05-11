@@ -53,12 +53,10 @@
 #include <openfluid/tools/Console.hpp>
 #include <openfluid/utils/CommandLineParser.hpp>
 #include <openfluid/machine/Engine.hpp>
-#include <openfluid/machine/SimulatorPluginsManager.hpp>
-#include <openfluid/machine/ObserverPluginsManager.hpp>
-#include <openfluid/machine/WarePluginsSearchResultsSerializer.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
+#include <openfluid/machine/WareRegistrySerializer.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
@@ -100,8 +98,6 @@ OpenFLUIDApp::OpenFLUIDApp()
 
 OpenFLUIDApp::~OpenFLUIDApp()
 {
-  openfluid::machine::SimulatorPluginsManager::kill();
-  openfluid::machine::ObserverPluginsManager::kill();
   openfluid::base::RunContextManager::kill();
 }
 
@@ -706,14 +702,14 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.command(ActiveCommandStr).getOptionValue("simulators-paths"));
       }
 
-      const openfluid::machine::SimulatorPluginsManager::PluginsSearchResults SearchResults =
-        openfluid::machine::SimulatorPluginsManager::instance()->getAvailableWaresSignatures();
+      auto Reg = openfluid::machine::SimulatorRegistry::instance();
+      Reg->clear();
+      Reg->discoverWares();
 
-      const openfluid::machine::WarePluginsSearchResultsSerializer<openfluid::machine::ModelItemSignatureInstance> 
-        SearchSerializer(SearchResults);
-
-      SearchSerializer.writeToStream(std::cout,Format,Detailed,WithErrors);
+      const openfluid::machine::WareRegistrySerializer<openfluid::ware::SimulatorSignature> RegSzr(Reg);
+      RegSzr.writeToStream(std::cout,Format,Detailed,WithErrors);
       std::cout.flush();
+
     }
     else if (Waretype == "observers")
     {
@@ -723,13 +719,12 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
             Parser.command(ActiveCommandStr).getOptionValue("observers-paths"));
       }
 
-      const openfluid::machine::ObserverPluginsManager::PluginsSearchResults SearchResults =
-        openfluid::machine::ObserverPluginsManager::instance()->getAvailableWaresSignatures();      
+      auto Reg = openfluid::machine::ObserverRegistry::instance();
+      Reg->clearWares();
+      Reg->discoverWares();
 
-      const openfluid::machine::WarePluginsSearchResultsSerializer<openfluid::machine::ObserverSignatureInstance> 
-        SearchSerializer(SearchResults);
-
-      SearchSerializer.writeToStream(std::cout,Format,Detailed,WithErrors);
+      const openfluid::machine::WareRegistrySerializer<openfluid::ware::ObserverSignature> RegSzr(Reg);
+      RegSzr.writeToStream(std::cout,Format,Detailed,WithErrors);
       std::cout.flush();
     }
   }

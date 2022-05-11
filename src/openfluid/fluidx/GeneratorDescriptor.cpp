@@ -38,29 +38,18 @@
 
 
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/machine/Factory.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 
 
 namespace openfluid { namespace fluidx {
-
-
-GeneratorDescriptor::GeneratorDescriptor() :
-    ModelItemDescriptor(), m_VarName(""), m_UnitsClass(""), m_GenMethod(
-        GeneratorMethod::NONE), m_VarSize(1), m_GeneratedID("")
-{
-  m_WareType = openfluid::ware::WareType::GENERATOR;
-}
-
-
-// =====================================================================
-// =====================================================================
 
 
 GeneratorDescriptor::GeneratorDescriptor(
     openfluid::core::VariableName_t VarName,
     openfluid::core::UnitsClass_t UnitsClass, GeneratorMethod GenMethod,
     unsigned int VarSize) :
-    ModelItemDescriptor()
+    ModelItemDescriptor(openfluid::tools::buildGeneratorID(VarName,(VarSize > 1),UnitsClass))
 {
   m_WareType = openfluid::ware::WareType::GENERATOR;
   m_VarName = VarName;
@@ -72,10 +61,6 @@ GeneratorDescriptor::GeneratorDescriptor(
   {
     m_VarSize = 1;
   }
-
-  m_GeneratedID = openfluid::machine::Factory::buildGeneratorID(VarName,
-                                                                (m_VarSize > 1),
-                                                                UnitsClass);
 }
 
 
@@ -106,28 +91,6 @@ openfluid::core::UnitsClass_t GeneratorDescriptor::getUnitsClass() const
 GeneratorDescriptor::GeneratorMethod GeneratorDescriptor::getGeneratorMethod() const
 {
   return m_GenMethod;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string GeneratorDescriptor::getGeneratorName(GeneratorDescriptor::GeneratorMethod GenMethod)
-{
-  switch (GenMethod)
-  {
-    case  GeneratorMethod::FIXED:
-      return "Fixed values";
-    case  GeneratorMethod::RANDOM:
-      return "Random values";
-    case  GeneratorMethod::INTERP:
-      return "Values from file interpolation";
-    case  GeneratorMethod::INJECT:
-      return "Values from file injection";
-    default:
-      return "unknown";
-  }
 }
 
 

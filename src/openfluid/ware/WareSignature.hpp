@@ -53,6 +53,8 @@ class OPENFLUID_API WareSignature
 {
   public:
 
+    virtual openfluid::ware::WareType getType() const = 0;
+
     typedef std::vector<std::pair<std::string,std::string> > AuthorsList_t;
 
     /**
@@ -91,6 +93,20 @@ class OPENFLUID_API WareSignature
       clear();
     }
 
+    /*
+    // TODO make this class non-copyable
+    
+    WareSignature(const WareSignature&) = delete;
+    
+    WareSignature(WareSignature&&) = default;
+
+    WareSignature& operator=(const WareSignature&) = delete;
+
+    WareSignature& operator=(WareSignature&&) = default;
+    */ 
+
+    virtual ~WareSignature() = default;
+
 
     // =====================================================================
     // =====================================================================
@@ -105,16 +121,6 @@ class OPENFLUID_API WareSignature
       Version.clear();
       Status = WareStatus_t::EXPERIMENTAL;
       Authors.clear();
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    virtual ~WareSignature()
-    {  
-      
     }
 
 

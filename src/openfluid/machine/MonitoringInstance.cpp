@@ -98,14 +98,19 @@ void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger
   while (ObsIter != m_Observers.end())
   {
     CurrentObserver = (*ObsIter);
-    OPlugsMgr->completeSignatureWithWareBody(CurrentObserver);
+
+    // TODO throw execption if body is already set?
+    if (!CurrentObserver->Body)
+    {
+      CurrentObserver->Body.reset(OPlugsMgr->getWareBody(CurrentObserver->Container));
+    }
 
     CurrentObserver->Body->linkToSimulationLogger(SimLogger);
     CurrentObserver->Body->linkToSimulation(&(m_SimulationBlob.simulationStatus()));
     CurrentObserver->Body->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()->getWaresEnvironment());
     CurrentObserver->Body->linkToSpatialGraph(&(m_SimulationBlob.spatialGraph()));
     CurrentObserver->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
-    CurrentObserver->Body->initializeWare(CurrentObserver->Signature->ID);
+    CurrentObserver->Body->initializeWare(CurrentObserver->Container.signature()->ID);
 
     ++ObsIter;
   }

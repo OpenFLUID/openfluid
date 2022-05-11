@@ -43,8 +43,8 @@
 namespace openfluid { namespace fluidx {
 
 
-WareDescriptor::WareDescriptor() :
-    m_WareType(openfluid::ware::WareType::UNDEFINED), m_Enabled(true)
+WareDescriptor::WareDescriptor(const openfluid::ware::WareID_t& ID) :
+    m_WareType(openfluid::ware::WareType::UNDEFINED), m_ID(ID), m_Enabled(true)
 {
 
 }

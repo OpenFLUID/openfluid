@@ -1,7 +1,7 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
-SET(OPENFLUID_FLUIDX_CPP WareDescriptor.cpp SimulatorDescriptor.cpp GeneratorDescriptor.cpp
+SET(OPENFLUID_FLUIDX_CPP WareDescriptor.cpp GeneratorDescriptor.cpp
                          CoupledModelDescriptor.cpp MonitoringDescriptor.cpp
                          SpatialUnitDescriptor.cpp SpatialDomainDescriptor.cpp
                          AttributesTableDescriptor.cpp
@@ -37,6 +37,7 @@ SET_TARGET_PROPERTIES(openfluid-fluidx PROPERTIES VERSION "${OPENFLUID_VERSION_M
 TARGET_LINK_LIBRARIES(openfluid-fluidx
                       openfluid-base
                       openfluid-core
+                      openfluid-tools
                       openfluid-thirdparty-tinyxml2)
 
 

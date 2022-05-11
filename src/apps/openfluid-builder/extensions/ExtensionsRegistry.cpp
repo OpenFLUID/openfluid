@@ -57,32 +57,6 @@ ExtensionsRegistry::ExtensionsRegistry():
 // =====================================================================
 
 
-ExtensionsRegistry::~ExtensionsRegistry()
-{
-  for(auto ExtCont : m_FeatureExtensions)
-  {
-    if (ExtCont.second)
-    {
-      delete ExtCont.second;
-      ExtCont.second = nullptr;
-    }
-  }
-
-  for(auto ExtCont : m_ParameterizationExtensions)
-  {
-    if (ExtCont.second)
-    {
-      delete ExtCont.second;
-      ExtCont.second = nullptr;
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void ExtensionsRegistry::registerExtensions()
 {
   if (m_IsRegistered)
@@ -90,18 +64,20 @@ void ExtensionsRegistry::registerExtensions()
     return;
   }
 
-  const std::vector<ExtensionContainer*> ExtVector =
-      ExtensionPluginsManager::instance()->getAvailableWaresSignatures().availablePlugins();
+  m_RegisteredContainers = ExtensionPluginsManager::instance()->loadPlugins();
 
-  for (unsigned int i=0; i<ExtVector.size(); i++)
+  for (const auto& Item : m_RegisteredContainers)
   {
-    if (ExtVector[i]->Signature->Type == openfluid::builderext::ExtensionType::FEATURE)
+    if (Item.isValid() && Item.hasSignature())
     {
-      m_FeatureExtensions[ExtVector[i]->Signature->ID] = ExtVector[i];
-    }
-    else if (ExtVector[i]->Signature->Type == openfluid::builderext::ExtensionType::PARAMETERIZATION)
-    {
-      m_ParameterizationExtensions[ExtVector[i]->LinkUID] = ExtVector[i];
+      if (Item.signature()->Role == openfluid::builderext::ExtensionRole::FEATURE)
+      {
+        m_FeatureExtensions.emplace(Item.signature()->ID,Item);
+      }
+      else if (Item.signature()->Role == openfluid::builderext::ExtensionRole::PARAMETERIZATION)
+      {
+        m_ParameterizationExtensions.emplace(Item.getLinkUID(),Item);
+      }
     }
   }
 
@@ -116,14 +92,16 @@ void ExtensionsRegistry::registerExtensions()
 openfluid::builderext::PluggableBuilderExtension*
     ExtensionsRegistry::instanciateFeatureExtension(const openfluid::ware::WareID_t& ID)
 {
-  if (isFeatureExtensionRegistered(ID) && !m_FeatureExtensions[ID]->Active)
+  if (isFeatureExtensionRegistered(ID) && !m_FeatureExtensions.at(ID).Active)
   {
-    ExtensionPluginsManager::instance()->completeSignatureWithWareBody(m_FeatureExtensions[ID]);
-    m_FeatureExtensions[ID]->Body
+    m_FeatureExtensions.at(ID).Body.reset(
+      ExtensionPluginsManager::instance()->getWareBody(m_FeatureExtensions.at(ID).Container)
+    );
+    m_FeatureExtensions.at(ID).Body
       ->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()->getWaresEnvironment());
-    m_FeatureExtensions[ID]->Body->initializeWare(ID);
-    m_FeatureExtensions[ID]->Active = true;
-    return m_FeatureExtensions[ID]->Body.release(); // pointer is released to let Qt manage the lifecycle
+    m_FeatureExtensions.at(ID).Body->initializeWare(ID);
+    m_FeatureExtensions.at(ID).Active = true;
+    return m_FeatureExtensions.at(ID).Body.release(); // pointer is released to let Qt manage the lifecycle
   }
 
   return nullptr;
@@ -138,7 +116,7 @@ void ExtensionsRegistry::releaseFeatureExtension(const openfluid::ware::WareID_t
 {
   if (isFeatureExtensionRegistered(ID))
   {
-    m_FeatureExtensions[ID]->Active = false;
+    m_FeatureExtensions.at(ID).Active = false;
   }
 }
 
@@ -159,23 +137,23 @@ void ExtensionsRegistry::releaseFeatureExtension(openfluid::builderext::Pluggabl
 
 void ExtensionsRegistry::releaseAllFeatureExtensions()
 {
-  ExtensionsByName_t::iterator it;
-  ExtensionsByName_t::iterator itb = m_FeatureExtensions.begin();
-  ExtensionsByName_t::iterator ite = m_FeatureExtensions.end();
+  ExtensionsByID_t::iterator it;
+  ExtensionsByID_t::iterator itb = m_FeatureExtensions.begin();
+  ExtensionsByID_t::iterator ite = m_FeatureExtensions.end();
 
   for (it=itb;it!=ite;++it)
   {
-    if ((*it).second->Active)
+    if ((*it).second.Active)
     {
-      (*it).second->Active = false;
+      (*it).second.Active = false;
     }
 
-    if ((*it).second->Body != nullptr && 
-        (*it).second->Signature != nullptr &&
-        (*it).second->Signature->Mode == openfluid::builderext::ExtensionMode::MODELESS)
+    if ((*it).second.Body && 
+        (*it).second.Container.hasSignature() &&
+        (*it).second.Container.signature()->Mode == openfluid::builderext::ExtensionMode::MODELESS)
     {
-      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body.get())->close();
-      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body.get())->deleteLater();
+      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second.Body.get())->close();
+      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second.Body.get())->deleteLater();
     }
   }
 }
@@ -200,14 +178,16 @@ openfluid::builderext::PluggableBuilderExtension*
 {
   if (isParameterizationExtensionRegistered(UUID))
   {
-    ExtensionPluginsManager::instance()->completeSignatureWithWareBody(m_ParameterizationExtensions[UUID]);
-
-    m_ParameterizationExtensions[UUID]->Body
+    m_ParameterizationExtensions.at(UUID).Body.reset(
+      ExtensionPluginsManager::instance()->getWareBody(m_ParameterizationExtensions.at(UUID).Container)
+    );
+    m_ParameterizationExtensions.at(UUID).Body
       ->linkToRunEnvironment(&openfluid::base::RunContextManager::instance()->getWaresEnvironment());
-    m_ParameterizationExtensions[UUID]->Body->initializeWare(m_ParameterizationExtensions[UUID]->Signature->ID);
-    m_ParameterizationExtensions[UUID]->Active = true;
+    m_ParameterizationExtensions.at(UUID).Body
+      ->initializeWare(m_ParameterizationExtensions.at(UUID).Container.signature()->ID);
+    m_ParameterizationExtensions.at(UUID).Active = true;
 
-    return m_ParameterizationExtensions[UUID]->Body.release(); // pointer is released to let Qt manage the lifecycle
+    return m_ParameterizationExtensions.at(UUID).Body.release(); // pointer is released to let Qt manage the lifecycle
   }
 
   return nullptr;
@@ -232,7 +212,7 @@ openfluid::builderext::ExtensionMode ExtensionsRegistry::getExtensionMode(const 
 {
   if (isFeatureExtensionRegistered(ID))
   {
-    return m_FeatureExtensions.at(ID)->Signature->Mode;
+    return m_FeatureExtensions.at(ID).Container.signature()->Mode;
   }
 
   return openfluid::builderext::ExtensionMode::UNKNOWN;

@@ -40,6 +40,7 @@
 
 
 #include <string>
+#include <memory>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
@@ -51,18 +52,29 @@ namespace openfluid { namespace machine {
 typedef std::string UUID_t;
 
 
+template<class SignatureType> 
 class OPENFLUID_API WareContainer
-{
+{  
+  private:
+
+    const openfluid::ware::WareType m_WareType = openfluid::ware::WareType::UNDEFINED;
+
+    bool m_Valid = false;
+
+    std::string m_Path;
+
+    std::unique_ptr<SignatureType> m_Signature;
+
+    bool m_Ghost = false;
+
+    std::string m_Message;
+
+    UUID_t m_LinkUID;
+
+
   public:
 
-    std::string FileFullPath = "";
-
-    bool Verified = false;
-
-    UUID_t LinkUID = "";
-
-
-    WareContainer() = default;
+    WareContainer() = delete;
 
     WareContainer(const WareContainer&) = delete;
     
@@ -73,6 +85,101 @@ class OPENFLUID_API WareContainer
     WareContainer& operator=(WareContainer&&) = default;
 
     virtual ~WareContainer() = default;
+
+    WareContainer(openfluid::ware::WareType WType) : m_WareType(WType)
+    {  }
+
+    openfluid::ware::WareType getWareType() const
+    {
+      return m_WareType;
+    }
+
+    UUID_t getPath() const
+    {
+      return m_Path;
+    }
+
+    void setPath(const std::string& Path)
+    {
+      if (m_Path.empty())
+      {
+        m_Path = Path;
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Path already set");
+      }
+    }
+
+    UUID_t getLinkUID() const
+    {
+      return m_LinkUID;
+    }
+
+    void setLinkUID(const UUID_t& UID)
+    {
+      if (m_LinkUID.empty())
+      {
+        m_LinkUID = UID;
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Link UID already set");
+      }
+    }
+
+    bool isValid() const
+    {
+      return m_Valid;
+    }
+
+    void validate()
+    {
+      m_Valid = true;
+    }
+
+    std::string getMessage() const
+    {
+      return m_Message;
+    }
+
+    void setMessage(const std::string& Message)
+    {
+      m_Message = Message;
+    }
+
+    const std::unique_ptr<SignatureType>& signature() const
+    {
+      return m_Signature;
+    }
+
+    bool hasSignature() const
+    {
+      return (m_Signature.get() != nullptr);
+    }
+
+    void setSignature(SignatureType* Signature)
+    {
+      if (m_Signature)
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Signature is already set");
+      }
+      else
+      {
+        m_Signature.reset(Signature);
+      }
+    }
+
+    bool isGhost() const
+    {
+      return m_Ghost;
+    }
+
+    void setGhost()
+    {
+      m_Ghost = true;
+    }
+
 };
 
 

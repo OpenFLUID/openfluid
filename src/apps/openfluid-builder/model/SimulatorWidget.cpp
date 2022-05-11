@@ -40,8 +40,7 @@
 #include <QDesktopServices>
 
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
-#include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 
@@ -91,7 +90,7 @@ SimulatorWidget::~SimulatorWidget()
 // =====================================================================
 
 
-void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SimulatorWidget::updateParametersListWithSignature(const openfluid::ware::SimulatorSignature* Signature)
 {
   clearParameterWidgets();
 
@@ -115,10 +114,12 @@ void SimulatorWidget::updateParametersListWithSignature(const openfluid::machine
 
 void SimulatorWidget::updateParametersList()
 {
-  const openfluid::machine::ModelItemSignatureInstance* Signature =
-    openfluid::machine::SimulatorSignatureRegistry::instance()->signature(m_ID);
+  const auto& Container = openfluid::machine::SimulatorRegistry::instance()->wareContainer(m_ID);
 
-  updateParametersListWithSignature(Signature);
+  if (Container.isValid() && Container.hasSignature())
+  {
+    updateParametersListWithSignature(Container.signature().get());
+  }
 }
 
 
@@ -126,13 +127,14 @@ void SimulatorWidget::updateParametersList()
 // =====================================================================
 
 
-void SimulatorWidget::findDocFile(const openfluid::machine::ModelItemSignatureInstance* Signature)
+void SimulatorWidget::findDocFile(const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& 
+                                  Container)
 {
   m_DocFilePath.clear();
-  if (Signature != nullptr)
+  if (Container.isValid() && Container.hasSignature())
   {
-    std::string BasePath = openfluid::tools::FilesystemPath(Signature->FileFullPath).dirname();
-    std::string ExpectedFilePath = openfluid::tools::Filesystem::joinPath({BasePath,Signature->Signature->ID+".pdf"});
+    std::string BasePath = openfluid::tools::FilesystemPath(Container.getPath()).dirname();
+    std::string ExpectedFilePath = openfluid::tools::Filesystem::joinPath({BasePath,Container.signature()->ID+".pdf"});
 
     if (openfluid::tools::FilesystemPath(ExpectedFilePath).isFile())
     {
@@ -148,27 +150,26 @@ void SimulatorWidget::findDocFile(const openfluid::machine::ModelItemSignatureIn
 
 void SimulatorWidget::refresh()
 {
-  const openfluid::machine::ModelItemSignatureInstance* Signature =
-    openfluid::machine::SimulatorSignatureRegistry::instance()->signature(m_ID);
+  const auto& Container = openfluid::machine::SimulatorRegistry::instance()->wareContainer(m_ID);
 
   m_Ghost = false;
 
-  if (Signature != nullptr)
+  if (Container.isValid() && Container.hasSignature())
   {
-    findDocFile(Signature);
+    findDocFile(Container);
     ui->DocButton->setVisible(!m_DocFilePath.empty());
 
-    m_Ghost = Signature->Ghost;
+    m_Ghost = Container.isGhost();
 
     if (!m_IsTranslated)
     {
-      WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Signature->FileFullPath));
+      WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Container.getPath()));
       m_IsTranslated = true;
     }
 
     if (!m_Ghost)
     {
-      QString BuildType = QString::fromStdString(Signature->Signature->BuildInfo.BuildType);
+      QString BuildType = QString::fromStdString(Container.signature()->BuildInfo.BuildType);
       updateBuildInfoIcons(BuildType.contains("DEB"),BuildType == "RELEASE" || BuildType == "RELWITHDEBINFO");
     }
     else
@@ -179,19 +180,19 @@ void SimulatorWidget::refresh()
 
     setAvailableWare(true);
 
-    ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
-    ui->InfosSideWidget->update(Signature);
+    ui->NameLabel->setText(QString::fromStdString(Container.signature()->Name));
+    ui->InfosSideWidget->update(Container);
 
-    updateParametersListWithSignature(Signature);
+    updateParametersListWithSignature(Container.signature().get());
 
     // TODO begin to be refactored, see also ObserverWidget =========
 
     mp_ParamsWidget = nullptr;
 
-    if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Signature->LinkUID))
+    if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Container.getLinkUID()))
     {
       mp_ParamsWidget = static_cast<openfluid::builderext::PluggableParameterizationExtension*>(
-          ExtensionsRegistry::instance()->instanciateParameterizationExtension(Signature->LinkUID));
+          ExtensionsRegistry::instance()->instanciateParameterizationExtension(Container.getLinkUID()));
       mp_ParamsWidget->setParent(this);
       mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));
       mp_ParamsWidget->setFluidXDescriptor(&(ProjectCentral::instance()->descriptors()));

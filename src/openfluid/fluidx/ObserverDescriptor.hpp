@@ -49,20 +49,11 @@ namespace openfluid { namespace fluidx {
 
 class ObserverDescriptor : public WareDescriptor
 {
-  private:
-
-    std::string m_ID;
-
   public:
 
-    ObserverDescriptor(const std::string& ID) : WareDescriptor(), m_ID(ID)
+    ObserverDescriptor(const std::string& ID) : WareDescriptor(ID)
     {
       m_WareType = openfluid::ware::WareType::OBSERVER;
-    }
-
-    std::string getID() const
-    {
-      return m_ID;
     }
 
 };

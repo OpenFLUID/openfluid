@@ -120,7 +120,9 @@ class ModelItemGraphics : public QObject, public QGraphicsRectItem
     void initialize();
 
     QString getID() const
-    { return m_ID; }
+    { 
+      return m_ID;
+    }
 
     QPointF getRequiredIOPosition();
 

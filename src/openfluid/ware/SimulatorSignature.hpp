@@ -310,6 +310,11 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
 
   public:
 
+    virtual WareType getType() const
+    {
+      return WareType::SIMULATOR;
+    }
+
     /**
       Plugin domain (i.e. hydrology, pop, erosion, ...)
     */
@@ -346,6 +351,7 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
       clear();
     }
 
+    virtual ~SimulatorSignature() = default;
 
     void clear()
     {

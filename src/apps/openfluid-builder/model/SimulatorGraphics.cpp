@@ -43,21 +43,21 @@
 #include "SimulatorGraphics.hpp"
 
 
-SimulatorGraphics::SimulatorGraphics(const QPointF& Coords,
-                                     const QString& ID, unsigned int Order,
-                                     const openfluid::machine::ModelItemSignatureInstance* Signature, 
-                                     const QColor& BGColor, const QColor& BorderColor,
-                                     QGraphicsItem* Parent):
+SimulatorGraphics::SimulatorGraphics(
+  const QPointF& Coords,
+  const QString& ID, unsigned int Order,
+  const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& Container, 
+  const QColor& BGColor, const QColor& BorderColor,
+  QGraphicsItem* Parent):
   ModelItemGraphics(Coords,ID,ID,Order,BorderColor,Parent)
 {
-  openfluid::ware::SimulatorSignature* SimSign = Signature->Signature;
 
-  m_Ghost = Signature->Ghost;
+  m_Ghost = Container.isGhost();
 
-  m_RequiredVars = SimSign->HandledData.RequiredVars;
-  m_UsedVars = SimSign->HandledData.UsedVars;
-  m_ProducedVars = SimSign->HandledData.ProducedVars;
-  m_UpdatedVars = SimSign->HandledData.UpdatedVars;
+  m_RequiredVars = Container.signature()->HandledData.RequiredVars;
+  m_UsedVars = Container.signature()->HandledData.UsedVars;
+  m_ProducedVars = Container.signature()->HandledData.ProducedVars;
+  m_UpdatedVars = Container.signature()->HandledData.UpdatedVars;
 
   // In/Out slots
   drawIOSlot(getRequiredIOPosition(),SlotType::SLOT_REQ,m_RequiredVars);

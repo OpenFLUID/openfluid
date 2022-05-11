@@ -159,27 +159,36 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::machine::ModelItemInstance* MII;
 
-  MII = new openfluid::machine::ModelItemInstance();
+  openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> ContA(openfluid::ware::WareType::SIMULATOR);
+  auto SignA = new openfluid::ware::SimulatorSignature();
+  SignA->ID = "sim.a";
+  ContA.setSignature(SignA);
+  ContA.validate();
+  MII = new openfluid::machine::ModelItemInstance(ContA);
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimA()));
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature = new openfluid::ware::SimulatorSignature();
-  MII->Signature->ID = "sim.a";
   MII->OriginalPosition = 1;
   TP.appendItem(MII);
 
-  MII = new openfluid::machine::ModelItemInstance();
+  openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> ContC(openfluid::ware::WareType::SIMULATOR);
+  auto SignC = new openfluid::ware::SimulatorSignature();
+  SignC->ID = "sim.c";
+  ContC.setSignature(SignC);
+  ContC.validate();
+  MII = new openfluid::machine::ModelItemInstance(ContC);
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimC()));
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature = new openfluid::ware::SimulatorSignature();
-  MII->Signature->ID = "sim.c";
   MII->OriginalPosition = 3;
   TP.appendItem(MII);
 
-  MII = new openfluid::machine::ModelItemInstance();
+  openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> ContB(openfluid::ware::WareType::SIMULATOR);
+  auto SignB = new openfluid::ware::SimulatorSignature();
+  SignB->ID = "sim.b";
+  ContB.setSignature(SignB);
+  ContB.validate();
+  MII = new openfluid::machine::ModelItemInstance(ContB);
   MII->Body.reset((openfluid::ware::PluggableSimulator*)(new SimB()));
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature = new openfluid::ware::SimulatorSignature();
-  MII->Signature->ID = "sim.b";
   MII->OriginalPosition = 2;
   TP.appendItem(MII);
 

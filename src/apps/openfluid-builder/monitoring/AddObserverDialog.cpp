@@ -40,7 +40,7 @@
 #include <QPushButton>
 
 #include <openfluid/ui/config.hpp>
-#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 
 #include "ui_AddWareDialog.h"
@@ -53,21 +53,17 @@ AddObserverDialog::AddObserverDialog(QWidget* Parent) :
 {
   updateDefaultMessage(tr("Add observer"));
 
-  openfluid::machine::ObserverSignatureRegistry* Reg =
-    openfluid::machine::ObserverSignatureRegistry::instance();
+  const auto& Containers = openfluid::machine::ObserverRegistry::instance()->availableWares();
 
-  std::vector<openfluid::machine::ObserverSignatureInstance*> ObsSigns =
-    Reg->getAvailableSignatures();
-
-
-  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
-      ObsSigns.begin(); it != ObsSigns.end(); ++it)
+  for (auto it = Containers.begin(); it != Containers.end(); ++it)
   {
+    QString ID = QString::fromStdString(it->second.signature()->ID);
+
     QListWidgetItem* Item = new QListWidgetItem();
 
     QStringList WareInfos = {
-      QString::fromStdString((*it)->Signature->ID),
-      QString::fromStdString((*it)->Signature->Name)
+      ID,
+      QString::fromStdString(it->second.signature()->Name)
     };
 
     Item->setData(Qt::UserRole,WareInfos);
@@ -102,13 +98,15 @@ AddObserverDialog::~AddObserverDialog()
 
 void AddObserverDialog::updateSignature()
 {
-  openfluid::machine::ObserverSignatureRegistry* Reg =
-    openfluid::machine::ObserverSignatureRegistry::instance();
+  const auto& Container = openfluid::machine::ObserverRegistry::instance()->wareContainer(
+    ui->WaresListWidget->currentItem()->data(Qt::UserRole).toStringList().at(0).toStdString()
+  );
 
-  const openfluid::machine::ObserverSignatureInstance* Sign =
-      Reg->signature(ui->WaresListWidget->currentItem()->data(Qt::UserRole).toStringList().at(0).toStdString());
+  if (Container.isValid() && Container.hasSignature())
+  {
+    ui->WareSignatureWidget->update(Container);
+  }
 
-  ui->WareSignatureWidget->update(Sign);
 
   setMessage();
 }

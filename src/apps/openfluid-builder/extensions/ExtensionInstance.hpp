@@ -31,55 +31,33 @@
 
 
 /**
-  @file ObserverInstance.cpp
+  @file ExtensionInstance.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
  */
 
 
-#include <openfluid/machine/ObserverInstance.hpp>
+#ifndef __OPENFLUID_BUILDERAPP_EXTENSIONINSTANCE_HPP__
+#define __OPENFLUID_BUILDERAPP_EXTENSIONINSTANCE_HPP__
 
 
-namespace openfluid { namespace machine {
+#include <openfluid/machine/WareInstance.hpp>
+#include <openfluid/builderext/BuilderExtensionSignature.hpp>
+#include <openfluid/builderext/PluggableBuilderExtension.hpp>
 
 
-ObserverSignatureInstance::ObserverSignatureInstance()
-: WareSignatureInstance(), Signature(nullptr)
+class ExtensionInstance : public openfluid::machine::WareInstance<openfluid::builderext::BuilderExtensionSignature,
+                                                                   openfluid::builderext::PluggableBuilderExtension>
 {
-  ItemType = openfluid::ware::WareType::OBSERVER;
-}
+  public:
+
+    bool Active = false;
+
+    ExtensionInstance(const openfluid::machine::WareContainer<openfluid::builderext::BuilderExtensionSignature>& C) : 
+      openfluid::machine::WareInstance<openfluid::builderext::BuilderExtensionSignature,
+                                       openfluid::builderext::PluggableBuilderExtension>(C)
+    { }
+};
 
 
-// =====================================================================
-// =====================================================================
-
-
-ObserverSignatureInstance::~ObserverSignatureInstance()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ObserverInstance::ObserverInstance()
-: ObserverSignatureInstance(), Body(nullptr)
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ObserverInstance::~ObserverInstance()
-{
-
-}
-
-
-} }  // namespaces
-
+#endif /* __OPENFLUID_BUILDERAPP_EXTENSIONINSTANCE_HPP__ */

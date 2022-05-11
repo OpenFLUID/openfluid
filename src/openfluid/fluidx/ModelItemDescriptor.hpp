@@ -52,7 +52,7 @@ class OPENFLUID_API ModelItemDescriptor : public WareDescriptor
 {
   public:
 
-    ModelItemDescriptor() : WareDescriptor()
+    ModelItemDescriptor(const openfluid::ware::WareID_t& ID) : WareDescriptor(ID)
     { }
 
     virtual ~ModelItemDescriptor()

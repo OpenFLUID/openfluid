@@ -82,7 +82,9 @@ class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
     ~AddGeneratorDialog();
 
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod getMethod() const
-    { return m_Method; }
+    { 
+      return m_Method; 
+    }
 
     QString getVariableName() const;
 

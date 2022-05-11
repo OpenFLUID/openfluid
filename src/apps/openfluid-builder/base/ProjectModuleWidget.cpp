@@ -47,8 +47,8 @@
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 #include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
-#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorRegistry.hpp>
+#include <openfluid/machine/ObserverRegistry.hpp>
 #include <openfluid/machine/GhostSimulatorFileIO.hpp>
 #include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
@@ -102,9 +102,7 @@ ProjectModuleWidget::ProjectModuleWidget(const QString& ProjectPath, QWidget* Pa
   connect(mp_WareSrcCollection, SIGNAL(buildFinished(openfluid::ware::WareType, const QString&)),
           this, SLOT(onBuildFinished(openfluid::ware::WareType, const QString&)));
 
-
   mp_ProjectCentral = ProjectCentral::initInstance(ProjectPath);
-
 
   // watcher for simulators, with delay for ui update using timer
   mp_SimulatorsPlugsWatcher = new QFileSystemWatcher(this);
@@ -128,21 +126,17 @@ ProjectModuleWidget::ProjectModuleWidget(const QString& ProjectPath, QWidget* Pa
           mp_ObserversPlugsUpdateTimer,SLOT(start()));
   connect(mp_ObserversPlugsUpdateTimer,SIGNAL(timeout()),SLOT(updateObserversWares()));
 
-
   updateWaresWatchersPaths();
 
   // watcher for input directory
   mp_InputDirWatcher = new QFileSystemWatcher(this);
-
   mp_InputDirUpdateTimer = new QTimer(this);
   mp_InputDirUpdateTimer->setInterval(BUILDER_INPUTDIR_WATCHERS_DELAY);
   mp_InputDirUpdateTimer->setSingleShot(true);
-
   connect(mp_InputDirWatcher,SIGNAL(directoryChanged(const QString&)),mp_InputDirUpdateTimer,SLOT(start()));
   connect(mp_InputDirUpdateTimer,SIGNAL(timeout()),SLOT(checkInputDir()));
 
   resetInputDirWatcher();
-
 
   mp_ModelTab = new ModelWidget(this,mp_ProjectCentral->descriptors());
   connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
@@ -178,7 +172,6 @@ ProjectModuleWidget::ProjectModuleWidget(const QString& ProjectPath, QWidget* Pa
   addWorkspaceTab(mp_MonitoringTab,tr("Monitoring"));
   addWorkspaceTab(mp_RunConfigTab,tr("Simulation configuration"));
   addWorkspaceTab(mp_OutputsTab,tr("Outputs browser"));
-
 }
 
 
@@ -670,11 +663,11 @@ void ProjectModuleWidget::whenExtensionAsked(const QString& ID)
 
         if (ExtWork->initialize())
         {
-          ExtensionContainer* ExtCon = ExtReg->registeredFeatureExtensions()->at(WareID);
+          const auto& Ext = ExtReg->registeredFeatureExtensions().at(WareID);
 
           QString TabText = WaresTranslationsRegistry::instance()
-            ->tryTranslate(QString::fromStdString(ExtCon->FileFullPath),
-                           "signature",ExtCon->Signature->MenuText);
+            ->tryTranslate(QString::fromStdString(Ext.Container.getPath()),
+                           "signature",Ext.Container.signature()->MenuText);
 
           // Replace empty menu text by extension ID
           TabText = QString::fromStdString(openfluid::tools::replaceEmptyString(TabText.toStdString(),WareID));
@@ -741,53 +734,22 @@ bool ProjectModuleWidget::whenOpenExampleAsked()
 // =====================================================================
 
 
-bool ProjectModuleWidget::findGhostSignature(const QString& ID,
-                                       openfluid::ware::SimulatorSignature& Signature, std::string& FileFullPath)
-{
-  std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
-    openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures();
-
-  openfluid::machine::ModelItemSignatureInstance* GhostSignatureInstance = nullptr;
-
-  unsigned int i = 0;
-  while (!GhostSignatureInstance && i < Signatures.size())
-  {
-    if (Signatures[i]->Signature->ID == ID.toStdString())
-    {
-      GhostSignatureInstance = Signatures[i];
-      Signature = *(GhostSignatureInstance->Signature);
-      FileFullPath = GhostSignatureInstance->FileFullPath;
-    }
-    else
-    {
-      i++;
-    }
-  }
-
-  return (GhostSignatureInstance != nullptr);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::WareType WType,bool Ghost)
 {
   if (Ghost)
   {
-    openfluid::ware::SimulatorSignature Signature;
-    std::string FileFullPath;
+    const auto& Container = openfluid::machine::SimulatorRegistry::instance()->wareContainer(ID.toStdString());
 
-    if (findGhostSignature(ID,Signature,FileFullPath))
+    if (Container.isValid() && Container.isGhost())
     {
       openfluid::ui::common::EditSignatureDialog Dlg(this);
-      Dlg.initialize(Signature);
+      Dlg.initialize(*(Container.signature()));
       if (Dlg.exec() == QDialog::Accepted)
       {
-        Signature = Dlg.getSignature();
-        openfluid::machine::GhostSimulatorFileIO::saveToFile(Signature,
-                                                             openfluid::tools::FilesystemPath(FileFullPath).dirname());
+        auto Signature = Dlg.getSignature();
+        openfluid::machine::GhostSimulatorFileIO::saveToFile(
+          Signature,openfluid::tools::FilesystemPath(Container.getPath()).dirname()
+        );
         updateSimulatorsWares();
       }
     }
@@ -829,9 +791,11 @@ void ProjectModuleWidget::whenSrcGenerateAsked(const QString& ID)
   openfluid::ware::SimulatorSignature Signature;
   std::string FileFullPath;
 
-  if (findGhostSignature(ID,Signature,FileFullPath))
+  const auto& Container = openfluid::machine::SimulatorRegistry::instance()->wareContainer(ID.toStdString());
+
+  if (Container.isValid() && Container.isGhost())
   {
-    mp_WareSrcCollection->newSimulatorFromGhost(Signature);
+    mp_WareSrcCollection->newSimulatorFromGhost(*(Container.signature().get()));
   }
   else
   {
@@ -861,9 +825,12 @@ void ProjectModuleWidget::whenNewGhostSimulatorAsked()
 {
   QStringList ExistingIDs;
 
-  for (auto Sign : openfluid::machine::SimulatorPluginsManager::instance()->getAvailableGhostsSignatures())
+  for (const auto& C : openfluid::machine::SimulatorRegistry::instance()->availableWares())
   {
-    ExistingIDs.append(QString::fromStdString(Sign->Signature->ID));
+    if (C.second.isValid() && C.second.isGhost())
+    {
+      ExistingIDs.append(QString::fromStdString(C.second.signature()->ID));
+    }
   }
 
   openfluid::ui::common::EditSignatureDialog Dlg(this);
@@ -997,7 +964,7 @@ void ProjectModuleWidget::updateSimulatorsWares()
   emit runEnabled(false);
 
   mp_ModelTab->prepareWaresUpdate();
-  openfluid::machine::SimulatorSignatureRegistry::instance()->update();
+  openfluid::machine::SimulatorRegistry::instance()->discoverWares();
   mp_ModelTab->updateWares();
 
   doCheck();
@@ -1013,7 +980,7 @@ void ProjectModuleWidget::updateObserversWares()
   emit runEnabled(false);
 
   mp_MonitoringTab->prepareWaresUpdate();
-  openfluid::machine::ObserverSignatureRegistry::instance()->update();
+  openfluid::machine::ObserverRegistry::instance()->discoverWares();
   mp_MonitoringTab->updateWares();
 
   doCheck();
@@ -1048,6 +1015,7 @@ void ProjectModuleWidget::doCheck()
 {
   mp_ProjectCentral->check();
   mp_DashboardFrame->refresh();
+
   emit runEnabled(mp_ProjectCentral->checkInfos()->isOKForSimulation());
 }
 
@@ -1069,6 +1037,8 @@ void ProjectModuleWidget::onBuildLaunched(openfluid::ware::WareType /*Type*/, co
 
 void ProjectModuleWidget::onBuildFinished(openfluid::ware::WareType /*Type*/, const QString& /*ID*/)
 {
+  // TODO add guards? m_ActiveBuilds should be >= 1 before decreasing
+
   m_ActiveBuilds--;
 
   if (!m_ActiveBuilds)

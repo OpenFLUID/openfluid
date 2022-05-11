@@ -451,16 +451,6 @@ void WareWidget::clearParameterWidgets()
 // =====================================================================
 
 
-void WareWidget::updateParametersList()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void WareWidget::updateParameterizationSwitch()
 {
   ui->ParameterizationSwitchLabel->setVisible(mp_ParamsWidget);

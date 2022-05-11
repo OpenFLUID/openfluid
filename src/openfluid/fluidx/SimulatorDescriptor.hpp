@@ -51,18 +51,14 @@ namespace openfluid { namespace fluidx {
 class OPENFLUID_API SimulatorDescriptor : public ModelItemDescriptor
 {
 
-  private:
-
-    std::string m_ID;
-
-
   public:
 
     SimulatorDescriptor() = delete;
 
-    SimulatorDescriptor(const std::string& ID);
-
-    std::string getID() const;
+    SimulatorDescriptor(const openfluid::ware::WareID_t& ID): ModelItemDescriptor(ID)
+    {
+      m_WareType = openfluid::ware::WareType::SIMULATOR;
+    }
 
 };
 

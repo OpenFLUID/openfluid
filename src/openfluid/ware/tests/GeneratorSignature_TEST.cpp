@@ -53,9 +53,10 @@
 
 BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
-  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED);
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED,
+                                           "TU","var");
 
-  BOOST_CHECK_EQUAL(Sign.ID,"Fixed values");
+  BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),1);
   BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),1);
 }
@@ -67,9 +68,10 @@ BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
-  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM);
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM,
+                                           "TU","var",5);
 
-  BOOST_CHECK_EQUAL(Sign.ID,"Random values");
+  BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
   BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),1);
 }
@@ -81,9 +83,10 @@ BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
-  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP);
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP,
+                                           "TU","var");
 
-  BOOST_CHECK_EQUAL(Sign.ID,"Values from file interpolation");
+  BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
   BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),3);
 }
@@ -95,9 +98,10 @@ BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_InjectGeneratorConstructor)
 {
-  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT);
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT,
+                                           "TU","var");
 
-  BOOST_CHECK_EQUAL(Sign.ID,"Values from file injection");
+  BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
   BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),2);
 }

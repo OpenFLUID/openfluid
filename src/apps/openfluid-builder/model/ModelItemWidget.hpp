@@ -57,7 +57,7 @@ class ModelItemWidget : public WareWidget
     
     QColor m_CustomColor;
     
-    QStringList createParamWidgetsFromSignature(const openfluid::machine::ModelItemSignatureInstance* Signature);
+    QStringList createParamWidgetsFromSignature(const openfluid::ware::SimulatorSignature* Signature);
     
     std::string getParamValue(const std::string& ParamName, openfluid::ware::WareParams_t& DescParams);
     
@@ -65,8 +65,6 @@ class ModelItemWidget : public WareWidget
                   QStringList& ParamsInSign, const bool Required, const bool Removable);
 
     QColor getCustomColor();
-
-    virtual void updateParametersList() = 0;
 
 
   protected slots:

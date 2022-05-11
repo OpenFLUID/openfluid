@@ -90,8 +90,10 @@ class ObserverWidget : public WareWidget
 
     void updateWare();
 
-    openfluid::ware::WareType getType()
-    { return openfluid::ware::WareType::OBSERVER; }
+    openfluid::ware::WareType getType() const
+    { 
+      return openfluid::ware::WareType::OBSERVER; 
+    }
 
 };
 

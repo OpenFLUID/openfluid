@@ -121,6 +121,19 @@ bool OPENFLUID_API extractVariableNameAndType(const openfluid::core::VariableNam
                                               openfluid::core::VariableName_t& VarName,
                                               openfluid::core::Value::Type& VarType);
 
+
+/**
+  Builds a generator ID
+  @param[in] VarName The name of the variable produced by the generator
+  @param[in] IsVector true if the variable is a vector, false if it is a scalar
+  @param[in] ClassName The name of the spatial unit class associated where the variable is produced
+  @return the generated ID
+*/
+std::string OPENFLUID_API buildGeneratorID(const openfluid::core::VariableName_t& VarName,
+                                           bool IsVector,
+                                           const openfluid::core::UnitsClass_t& ClassName);
+
+
 } } // namespaces
 
 

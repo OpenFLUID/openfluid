@@ -161,4 +161,30 @@ bool extractVariableNameAndType(const openfluid::core::VariableName_t& Name,
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
+                             bool IsVector,
+                             const openfluid::core::UnitsClass_t& ClassName)
+{
+  // <varname>.<unitsclass>.gen<type> where <type> can be scalar or vector
+
+  std::string GenID(VarName);
+  GenID += ".";
+  GenID += ClassName;
+  GenID += ".gen";
+  if (IsVector)
+  {
+    GenID += "vector";
+  }
+  else
+  {
+    GenID += "scalar";
+  }
+
+  return GenID;
+}
+
 } } // namespaces

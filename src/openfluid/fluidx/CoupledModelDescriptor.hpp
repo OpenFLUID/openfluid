@@ -54,7 +54,7 @@ class OPENFLUID_API CoupledModelDescriptor : public WareSetDescriptor<ModelItemD
 
   public :
 
-    openfluid::ware::WareID_t getID(ModelItemDescriptor* Item) const;
+    openfluid::ware::WareID_t getID(const ModelItemDescriptor* Item) const;
 
     void getItemsCountByType(unsigned int& SimCount, unsigned int& GenCount) const;
 };

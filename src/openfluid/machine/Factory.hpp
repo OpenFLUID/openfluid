@@ -126,35 +126,6 @@ class OPENFLUID_API Factory
     static void buildSimulationBlobFromDescriptors(const openfluid::fluidx::FluidXDescriptor& FluidXDesc,
                                                    SimulationBlob& SimBlob);
 
-    /**
-      Builds a generator ID
-      @param[in] VarName The name of the variable produced by the generator
-      @param[in] IsVector true if the variable is a vector, false if it is a scalar
-      @param[in] ClassName The name of the spatial unit class associated where the variable is produced
-      @return the generated ID
-    */
-    static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
-                                        bool IsVector,
-                                        const openfluid::core::UnitsClass_t& ClassName)
-    {
-      // <varname>.<unitsclass>.gen<type> where <type> can be scalar or vector
-
-      std::string GenID(VarName);
-      GenID += ".";
-      GenID += ClassName;
-      GenID += ".gen";
-      if (IsVector)
-      {
-        GenID += "vector";
-      }
-      else
-      {
-        GenID += "scalar";
-      }
-
-      return GenID;
-    }
-
 };
 
 

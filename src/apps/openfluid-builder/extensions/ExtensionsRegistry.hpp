@@ -46,7 +46,7 @@
 #include <openfluid/utils/SingletonMacros.hpp>
 
 #include "ExtensionPluginsManager.hpp"
-#include "ExtensionContainer.hpp"
+#include "ExtensionInstance.hpp"
 
 
 class ExtensionsRegistry
@@ -56,30 +56,37 @@ class ExtensionsRegistry
 
   public:
 
-    typedef std::map<openfluid::ware::WareID_t, ExtensionContainer*> ExtensionsByName_t;
+    typedef std::map<openfluid::ware::WareID_t,ExtensionInstance> ExtensionsByID_t;
 
-    typedef std::map<openfluid::machine::UUID_t, ExtensionContainer*> ExtensionsByLinkUID_t;
+    typedef std::map<openfluid::machine::UUID_t,ExtensionInstance> ExtensionsByLinkUID_t;
 
 
   private:
 
+    std::vector<openfluid::machine::WareContainer<openfluid::builderext::BuilderExtensionSignature>> 
+    m_RegisteredContainers;
+
     bool m_IsRegistered;
 
-    ExtensionsByName_t m_FeatureExtensions;
+
+    ExtensionsByID_t m_FeatureExtensions;
 
     ExtensionsByLinkUID_t m_ParameterizationExtensions;
 
     ExtensionsRegistry();
 
-    ~ExtensionsRegistry();
+    ~ExtensionsRegistry()
+    { }
 
 
   public:
 
     void registerExtensions();
 
-    const ExtensionsByName_t* registeredFeatureExtensions() const
-    { return &m_FeatureExtensions; };
+    const ExtensionsByID_t& registeredFeatureExtensions() const
+    { 
+      return m_FeatureExtensions; 
+    };
 
     openfluid::builderext::PluggableBuilderExtension* instanciateFeatureExtension(const openfluid::ware::WareID_t& ID);
 
@@ -92,7 +99,9 @@ class ExtensionsRegistry
     bool isFeatureExtensionRegistered(const openfluid::ware::WareID_t& ID) const;
 
     bool isFeatureExtensionActive(const openfluid::ware::WareID_t& ID) const
-    { return (isFeatureExtensionRegistered(ID) && m_FeatureExtensions.at(ID)->Active); }
+    { 
+      return (isFeatureExtensionRegistered(ID) && m_FeatureExtensions.at(ID).Active); 
+    }
 
     openfluid::builderext::PluggableBuilderExtension*
       instanciateParameterizationExtension(const openfluid::machine::UUID_t& UUID);

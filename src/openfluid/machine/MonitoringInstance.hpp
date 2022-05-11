@@ -45,6 +45,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
 
 
@@ -52,7 +53,6 @@ namespace openfluid { namespace machine {
 
 
 class SimulationBlob;
-class ObserverInstance;
 
 
 class OPENFLUID_API MonitoringInstance

@@ -48,12 +48,12 @@
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
 #include <openfluid/utils/SingletonMacros.hpp>
 
-#include "ExtensionContainer.hpp"
 #include "builderconfig.hpp"
 
 
 class ExtensionPluginsManager :
-    public openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
+    public openfluid::machine::WarePluginsManager<openfluid::builderext::BuilderExtensionSignature,
+                                                  openfluid::builderext::PluggableBuilderExtension,
                                                   openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
                                                   openfluid::builderext::GetPluggableBuilderExtensionBodyProc>
 {
@@ -67,26 +67,40 @@ class ExtensionPluginsManager :
     std::vector<std::string> m_StandardSearchPaths;
 
 
-    ExtensionPluginsManager(): openfluid::machine::WarePluginsManager<ExtensionContainer,ExtensionContainer,
-                                   openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
-                                   openfluid::builderext::GetPluggableBuilderExtensionBodyProc>()
+    ExtensionPluginsManager(): 
+    openfluid::machine::WarePluginsManager<openfluid::builderext::BuilderExtensionSignature,
+                                           openfluid::builderext::PluggableBuilderExtension,
+                                           openfluid::builderext::GetPluggableBuilderExtensionSignatureProc,
+                                           openfluid::builderext::GetPluggableBuilderExtensionBodyProc>()
     { }
 
     ~ExtensionPluginsManager()
     { }
 
+    openfluid::machine::WareContainer<openfluid::builderext::BuilderExtensionSignature> createContainer() const
+    {
+      return openfluid::machine::WareContainer<openfluid::builderext::BuilderExtensionSignature>
+               (openfluid::ware::WareType::BUILDEREXT);
+    }
+
 
   public:
 
     std::string getPluginFullPath(const std::string& Filename) const
-    { return openfluid::base::Environment::getBuilderextFullPath(Filename); }
+    { 
+      return openfluid::base::Environment::getBuilderextFullPath(Filename); 
+    }
 
 
     std::vector<std::string> getPluginsSearchPaths() const
-    { return openfluid::base::Environment::getBuilderextsDirs(); }
+    { 
+      return openfluid::base::Environment::getBuilderextsDirs();
+    }
 
     std::string getPluginFilenameSuffix() const
-    { return openfluid::config::BUILDEREXTS_PLUGINS_SUFFIX; }
+    { 
+      return openfluid::config::BUILDEREXTS_PLUGINS_SUFFIX;
+    }
 
 };
 

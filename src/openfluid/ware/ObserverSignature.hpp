@@ -55,9 +55,16 @@ class OPENFLUID_API ObserverSignature : public WareSignature
 
   public:
 
+    WareType getType() const
+    {
+      return WareType::OBSERVER;
+    }
+
     ObserverSignature() : WareSignature()
     { }
 
+    virtual ~ObserverSignature() = default;
+    
 };
 
 

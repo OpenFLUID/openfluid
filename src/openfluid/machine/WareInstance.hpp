@@ -29,50 +29,50 @@
   
 */
 
+
 /**
-  @file WareSignatureRegistry.hpp
+  @file WareInstance.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
-*/
-
-
-#ifndef __OPENFLUID_MACHINE_WARESIGNATUREREGISTRY_HPP__
-#define __OPENFLUID_MACHINE_WARESIGNATUREREGISTRY_HPP__
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+ */
 
 
-#include <openfluid/ware/WareSignature.hpp>
+#ifndef __OPENFLUID_MACHINE_WAREINSTANCE_HPP__
+#define __OPENFLUID_MACHINE_WAREINSTANCE_HPP__
+
+
+#include <memory>
+
+#include <openfluid/machine/WareContainer.hpp>
+#include <openfluid/ware/ObserverSignature.hpp>
+#include <openfluid/ware/PluggableObserver.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
-template<class S>
-class WareSignatureRegistry
+template<class SignatureType, class BodyType>
+class OPENFLUID_API WareInstance
 {
-
   public:
 
-    /**
-      Updates the registry from available plugins
-    */
-    virtual void update() = 0;
+    const WareContainer<SignatureType>& Container;
 
-    /**
-      Unloads all signatures of the registry
-    */
-    virtual void unloadAll() = 0;
+    std::unique_ptr<BodyType> Body;
 
-    /**
-      Returns the signature of the ware given by its ID
-      @param[in] ID The ID of the ware
-      @return The signature of the ware, nullptr if not found
-    */
-    virtual  const S* signature(const openfluid::ware::WareID_t& ID) const = 0;
+    openfluid::ware::WareParams_t Params; // TODO rename to Parameters
 
+
+    WareInstance(const WareContainer<SignatureType>& C) : 
+      Container(C)
+    {  }
+
+    virtual ~WareInstance()
+    {  }
 };
 
 
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_MACHINE_WARESIGNATUREREGISTRY_HPP__ */
+#endif /* __OPENFLUID_MACHINE_WAREINSTANCE_HPP__ */

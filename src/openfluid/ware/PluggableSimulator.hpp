@@ -455,32 +455,32 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
     /**
       Initializes simulator parameters of the simulator, given as a hash map. Internally called by the framework.
     */
-    virtual void initParams(const openfluid::ware::WareParams_t& Params)=0;
+    virtual void initParams(const openfluid::ware::WareParams_t& Params) = 0;
 
     /**
       Prepares data. Internally called by the framework.
     */
-    virtual void prepareData()=0;
+    virtual void prepareData() = 0;
 
     /**
       Checks the simulator consistency. Internally called by the framework.
     */
-    virtual void checkConsistency()=0;
+    virtual void checkConsistency() = 0;
 
     /**
       Internally called by the framework.
     */
-    virtual openfluid::base::SchedulingRequest initializeRun()=0;
+    virtual openfluid::base::SchedulingRequest initializeRun() = 0;
 
     /**
       Internally called by the framework.
     */
-    virtual openfluid::base::SchedulingRequest runStep()=0;
+    virtual openfluid::base::SchedulingRequest runStep() = 0;
 
     /**
       Internally called by the framework.
     */
-    virtual void finalizeRun()=0;
+    virtual void finalizeRun() = 0;
 
 };
 

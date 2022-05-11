@@ -118,7 +118,7 @@ class WareWidget : public QWidget
 
     void updateParameterizationSwitch();
 
-    virtual void updateParametersList();
+    virtual void updateParametersList() = 0;
 
     virtual bool isClickable() = 0;
     
@@ -173,7 +173,7 @@ class WareWidget : public QWidget
       return m_ID; 
     }
 
-    virtual openfluid::ware::WareType getType() = 0;
+    virtual openfluid::ware::WareType getType() const = 0;
 
 };
 
