@@ -64,7 +64,7 @@ class OPENFLUID_API WareInstance
 
 
     WareInstance(const WareContainer<SignatureType>& C) : 
-      Container(C)
+      Container(C), Body(nullptr)
     {  }
 
     virtual ~WareInstance()

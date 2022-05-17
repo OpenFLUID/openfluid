@@ -104,6 +104,8 @@ class OPENFLUID_API SimulatorRegistry : public WareRegistry<openfluid::ware::Sim
 
     void discoverWares(const std::string IDPattern = "");
 
+    void discoverWares(bool WithGhosts, const std::string IDPattern = "");
+
     openfluid::ware::WareID_t addGenerator(const GeneratorSpecs& Specs);
 
     const WareContainer<openfluid::ware::SimulatorSignature>& 

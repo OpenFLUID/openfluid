@@ -78,21 +78,34 @@ bool SimulatorRegistry::addWare(const openfluid::ware::WareID_t& ID)
 // TODO enable/disable discovering ghosts using a dedicated argument
 void SimulatorRegistry::discoverWares(const std::string IDPattern)
 {
+  discoverWares(true,IDPattern);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorRegistry::discoverWares(bool WithGhosts, const std::string IDPattern)
+{
   auto Man = openfluid::machine::SimulatorPluginsManager::instance();
 
   clearWares();
   Man->unloadAll();
 
-  auto CollectedGhosts = Man->getAvailableGhosts(IDPattern);
-  for (auto& Item : CollectedGhosts)
-  {
-    WareRegistry<openfluid::ware::SimulatorSignature>::add(std::move(Item));
-  }
-
   auto CollectedPlugins = Man->loadPlugins(IDPattern);
   for (auto& Item : CollectedPlugins)
   {
     WareRegistry<openfluid::ware::SimulatorSignature>::add(std::move(Item));
+  }
+
+  if (WithGhosts)
+  {
+    auto CollectedGhosts = Man->getAvailableGhosts(IDPattern);
+    for (auto& Item : CollectedGhosts)
+    {
+      WareRegistry<openfluid::ware::SimulatorSignature>::add(std::move(Item));
+    }
   }
 }
 

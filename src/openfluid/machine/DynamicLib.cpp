@@ -59,9 +59,7 @@ namespace openfluid { namespace machine {
 
 DynamicLib::DynamicLib(const std::string& LibPath):
   m_LibPath(LibPath), m_LibHandle(nullptr)
-{
-
-}
+{ }
 
 
 // =====================================================================
@@ -141,15 +139,19 @@ std::string DynamicLib::getLatestErrorMsg() const
 
 bool DynamicLib::load()
 {
+  if (!isLoaded())
+  {
+
 #ifdef OPENFLUID_OS_UNIX
-  m_LibHandle = dlopen(m_LibPath.c_str(), RTLD_LAZY);
+    m_LibHandle = dlopen(m_LibPath.c_str(), RTLD_LAZY);
 #endif
 
 #ifdef OPENFLUID_OS_WINDOWS
-  m_LibHandle = (void*)LoadLibrary(m_LibPath.c_str());
+    m_LibHandle = (void*)LoadLibrary(m_LibPath.c_str());
 #endif
 
-  storeErrorMessage();
+    storeErrorMessage();
+  }
 
   return isLoaded();
 }

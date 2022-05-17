@@ -84,23 +84,11 @@ class WareRegistry
         if (Container.hasSignature())
         {
           const auto ID = Container.signature()->ID;
-
-          auto it = m_AvailableWares.find(ID);
-          if (it != m_AvailableWares.end())
-          {
-            m_AvailableWares.erase(it);
-          }
           m_AvailableWares.emplace(ID,std::move(Container));
         }
         else
         {
           const auto Path = Container.getPath();
-          
-          auto it = m_ErroredWares.find(Path);
-          if (it != m_ErroredWares.end()) // this should not occur
-          {
-            m_ErroredWares.erase(it);
-          }
           m_ErroredWares.emplace(Path,std::move(Container));
         }
         return true;

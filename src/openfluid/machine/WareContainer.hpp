@@ -94,7 +94,7 @@ class OPENFLUID_API WareContainer
       return m_WareType;
     }
 
-    UUID_t getPath() const
+    std::string getPath() const
     {
       return m_Path;
     }

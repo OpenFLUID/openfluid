@@ -135,7 +135,7 @@ class OPENFLUID_API WarePluginsManager
         {
           Container.setPath(PluginFullPath);
 
-          if (PlugLib->load())  
+          if (PlugLib->isLoaded() || PlugLib->load())  
           {
             GetWareABIVersionProc ABIVersionProc = 
               PlugLib->template getSymbol<GetWareABIVersionProc>(WAREABIVERSION_PROC_NAME);
@@ -150,11 +150,11 @@ class OPENFLUID_API WarePluginsManager
 
             if (Verified)
             {
-              BodyProc BProc = PlugLib->template getSymbol<BodyProc>(WAREBODY_PROC_NAME);
-              SignatureProc SProc = PlugLib->template  getSymbol<SignatureProc>(WARESIGNATURE_PROC_NAME);
+              bool hasBodyProc = PlugLib->hasSymbol(WAREBODY_PROC_NAME);
+              SignatureProc SProc = PlugLib->template getSymbol<SignatureProc>(WARESIGNATURE_PROC_NAME);
 
               // checks if the handle procs exist
-              if (SProc && BProc)
+              if (SProc && hasBodyProc)
               {
                 auto SignPtr = SProc();
 
@@ -182,37 +182,38 @@ class OPENFLUID_API WarePluginsManager
                 }
                 else
                 {
-                  Container.setMessage("Signature cannot be instanciated");
+                  Container.setMessage("signature cannot be instanciated");
                 }
               }
               else
               {
-                Container.setMessage("Plugin format error");
+                Container.setMessage("plugin format error");
               }
             }
             else
             {
-              Container.setMessage("Plugin ABI version mismatch");
+              Container.setMessage("plugin ABI version mismatch");
             }
           }
           else
           {
             Container.setMessage(PlugLib->getLatestErrorMsg());
           }
+
+          Container.validate();
         }
         else
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                    "Unable to find plugin file " + Filename);
+                                                    "unable to find plugin file " + Filename);
         }
       }
       else
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Empty path for plugin file " + Filename);
+                                                  "empty path for plugin file " + Filename);
       }
 
-      Container.validate();
       return Container;
     }
 
@@ -397,9 +398,9 @@ class OPENFLUID_API WarePluginsManager
 
       std::unique_ptr<DynamicLib>& PlugLib = loadPluginLibrary(PluginFullPath);
 
-      if (PlugLib != nullptr) 
+      if (PlugLib) 
       {
-        if (PlugLib->load())
+        if (PlugLib->isLoaded() || PlugLib->load())
         {
           BodyProc BProc = PlugLib->template getSymbol<BodyProc>(WAREBODY_PROC_NAME);
 
@@ -412,19 +413,19 @@ class OPENFLUID_API WarePluginsManager
           else
           {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                        "Format error in plugin file " + PluginFullPath);
+                                                      "format error in plugin file " + PluginFullPath);
           }
         }
         else
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                      "Unable to load plugin file " + PluginFullPath);
+                                                    "unable to load plugin file " + PluginFullPath);
         }
       }
       else
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Unable to find plugin file " + PluginFullPath);
+                                                  "unable to find plugin file " + PluginFullPath);
       }
     }
 

@@ -134,17 +134,17 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   const unsigned int HeaderWidth = 60;
 
 
-  auto displayHeaderSeparator = [&HeaderWidth]()
+  auto displayHeaderSeparator = []()
   {
     std::cout << std::string(HeaderWidth,'=') << std::endl;
   };
 
-  auto displayRightAlign = [&HeaderWidth](const std::string& Msg)
+  auto displayRightAlign = [](const std::string& Msg)
   {
     std::cout << std::right << std::setw(HeaderWidth-(HeaderWidth/8)) << Msg << std::endl;
   };
 
-  auto displayCenterAlign = [&HeaderWidth](const std::string& Msg)
+  auto displayCenterAlign = [](const std::string& Msg)
   {
     std::cout << std::right << std::setw((HeaderWidth/2)+(Msg.length()/2)) << Msg << std::endl;
   };
@@ -704,7 +704,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
       auto Reg = openfluid::machine::SimulatorRegistry::instance();
       Reg->clear();
-      Reg->discoverWares();
+      Reg->discoverWares(false);
 
       const openfluid::machine::WareRegistrySerializer<openfluid::ware::SimulatorSignature> RegSzr(Reg);
       RegSzr.writeToStream(std::cout,Format,Detailed,WithErrors);
