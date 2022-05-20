@@ -52,6 +52,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/waresdev/WareBuildOptions.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/common/DefaultAction.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareBuildOptionsWidget.hpp>
 
@@ -175,7 +176,7 @@ void WareSrcToolbar::createActions()
   for (auto const& Tool : m_ExternalTools)
   {
     QString ToolName = QString::fromStdString(Tool.Name);
-    m_ExternalToolsActions[ToolName] = new QAction(ToolName, this);
+    m_ExternalToolsActions[ToolName] = new openfluid::ui::common::DefaultAction(ToolName, this);
     m_ExternalToolsActions[ToolName]->setData(
       QString::fromStdString(Tool.getCommand(openfluid::base::PreferencesManager::ExternalToolContext::WARE)));
   }

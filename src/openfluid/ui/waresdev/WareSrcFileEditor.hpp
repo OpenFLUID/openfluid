@@ -49,6 +49,7 @@
 #include <openfluid/waresdev/CompletionProvider.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
+#include <openfluid/ui/common/DefaultAction.hpp>
 #include <openfluid/ui/config.hpp>
 
 
@@ -328,7 +329,7 @@ class LineNumberArea: public QWidget
 
       mp_Editor = Editor;
 
-      mp_ShowMarkersAction = new QAction("Show markers", this);
+      mp_ShowMarkersAction = new openfluid::ui::common::DefaultAction("Show markers", this);
       mp_ShowMarkersAction->setCheckable(true);
 
       connect(mp_ShowMarkersAction, SIGNAL(triggered(bool)), mp_Editor, SLOT(setShowLineMarkers(bool)));

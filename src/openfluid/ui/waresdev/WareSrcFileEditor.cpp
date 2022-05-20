@@ -132,7 +132,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
         Menu = SubMenu;
       }
 
-      QAction* MenuAction = new QAction(RuleItem.Title, this);
+      QAction* MenuAction = new openfluid::ui::common::DefaultAction(RuleItem.Title, this);
       mp_SignalMapper->setMapping(MenuAction, RuleItem.Content);
       connect(MenuAction, SIGNAL(triggered()), mp_SignalMapper, SLOT(map()));
       Menu->addAction(MenuAction);

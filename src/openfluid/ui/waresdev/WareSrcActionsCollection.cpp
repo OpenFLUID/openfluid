@@ -41,6 +41,7 @@
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/common/DefaultAction.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/ui/waresdev/WareSrcActionsCollection.hpp>
 
@@ -67,29 +68,32 @@ void WareSrcActionsCollection::createActions()
 
   // ====== File ======
 
-  m_Actions["NewFile"] = new QAction(openfluid::ui::common::getIcon("file-new","/ui/common",false),
-                                     tr("New file..."), this);
+  m_Actions["NewFile"] = new openfluid::ui::common::DefaultAction(
+                               openfluid::ui::common::getIcon("file-new","/ui/common",false),tr("New file..."),this);
   m_Actions["NewFile"]->setToolTip(tr("Create a new file"));
-  m_Actions["OpenFile"] = new QAction(openfluid::ui::common::getIcon("file-open","/ui/common",false),
-                                      tr("Open file..."), this);
+
+  m_Actions["OpenFile"] = new openfluid::ui::common::DefaultAction(
+                                openfluid::ui::common::getIcon("file-open","/ui/common",false),tr("Open file..."),this);
   m_Actions["OpenFile"]->setToolTip(tr("Open a file"));
 
-  m_Actions["SaveFile"] = new QAction(openfluid::ui::common::getIcon("file-save","/ui/common",false),
-                                      tr("Save file"), this);
+  m_Actions["SaveFile"] = new openfluid::ui::common::DefaultAction(
+                                openfluid::ui::common::getIcon("file-save","/ui/common",false),tr("Save file"),this);
   if (m_WithShortcuts)
   {
     m_Actions["SaveFile"]->setShortcut(QKeySequence::Save);
   }
+
   m_Actions["SaveFile"]->setToolTip(tr("Save the current file"));
   m_Actions["SaveFile"]->setEnabled(false);
 
-  m_Actions["SaveAsFile"] = new QAction(openfluid::ui::common::getIcon("file-save-as","/ui/common",false),
-                                        tr("Save as..."), this);
+  m_Actions["SaveAsFile"] = new openfluid::ui::common::DefaultAction(
+                                  openfluid::ui::common::getIcon("file-save-as","/ui/common",false),
+                                  tr("Save as..."),this);
   m_Actions["SaveAsFile"]->setToolTip(tr("Save the current file as..."));
   m_Actions["SaveAsFile"]->setEnabled(false);
 
-  m_Actions["SaveAllFiles"] = new QAction(openfluid::ui::common::getIcon("file-save","/ui/common",false),
-                                          tr("Save all"), this);
+  m_Actions["SaveAllFiles"] = new openfluid::ui::common::DefaultAction(
+                                    openfluid::ui::common::getIcon("file-save","/ui/common",false),tr("Save all"),this);
   if (m_WithShortcuts)
   {
     m_Actions["SaveAllFiles"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S));
@@ -97,41 +101,42 @@ void WareSrcActionsCollection::createActions()
   m_Actions["SaveAllFiles"]->setToolTip(tr("Save all files of the ware"));
   m_Actions["SaveAllFiles"]->setEnabled(false);
 
-  m_Actions["CloseFile"] = new QAction(openfluid::ui::common::getIcon("close","/ui/common",false),
-                                       tr("Close"), this);
+  m_Actions["CloseFile"] = new openfluid::ui::common::DefaultAction(
+                                 openfluid::ui::common::getIcon("close","/ui/common",false),tr("Close"), this);
   m_Actions["CloseFile"]->setToolTip(tr("Close the current file"));
-  m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
+
+  m_Actions["DeleteFile"] = new openfluid::ui::common::DefaultAction(tr("Delete"), this);
   m_Actions["DeleteFile"]->setToolTip(tr("Delete the current file"));
 
 
   // ====== Edit ======
 
-  m_Actions["Copy"] = new QAction(tr("Copy"), this);
+  m_Actions["Copy"] = new openfluid::ui::common::DefaultAction(tr("Copy"), this);
   if (m_WithShortcuts)
   {
     m_Actions["Copy"]->setShortcuts(QKeySequence::Copy);
   }
 
-  m_Actions["Cut"] = new QAction(tr("Cut"), this);
+  m_Actions["Cut"] = new openfluid::ui::common::DefaultAction(tr("Cut"), this);
   if (m_WithShortcuts)
   {
     m_Actions["Cut"]->setShortcuts(QKeySequence::Cut);
   }
 
-  m_Actions["Paste"] = new QAction(tr("Paste"), this);
+  m_Actions["Paste"] = new openfluid::ui::common::DefaultAction(tr("Paste"), this);
   if (m_WithShortcuts)
   {
     m_Actions["Paste"]->setShortcuts(QKeySequence::Paste);
   }
 
-  m_Actions["FindReplace"] = new QAction(openfluid::ui::common::getIcon("search","/ui/common",false), 
-                                         tr("Find/Replace"), this);
+  m_Actions["FindReplace"] = new openfluid::ui::common::DefaultAction(
+                                   openfluid::ui::common::getIcon("search","/ui/common",false),tr("Find/Replace"),this);
   if (m_WithShortcuts)
   {
     m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
   }
 
-  m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
+  m_Actions["GoToLine"] = new openfluid::ui::common::DefaultAction(tr("Go to line..."), this);
   if (m_WithShortcuts)
   {
     m_Actions["GoToLine"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
@@ -142,8 +147,9 @@ void WareSrcActionsCollection::createActions()
 
   // Configure ware
 
-  m_Actions["ConfigureWare"] = new QAction(openfluid::ui::common::getIcon("configure","/ui/common",false),
-                                           tr("Configure"), this);
+  m_Actions["ConfigureWare"] = new openfluid::ui::common::DefaultAction(
+                                     openfluid::ui::common::getIcon("configure","/ui/common",false),
+                                     tr("Configure"),this);
   if (m_WithShortcuts)
   {
     m_Actions["ConfigureWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));
@@ -152,8 +158,8 @@ void WareSrcActionsCollection::createActions()
 
   // Build ware
 
-  m_Actions["BuildWare"] = new QAction(openfluid::ui::common::getIcon("build","/ui/common",false),
-                                       tr("Build"), this);
+  m_Actions["BuildWare"] = new openfluid::ui::common::DefaultAction(
+                                 openfluid::ui::common::getIcon("build","/ui/common",false),tr("Build"),this);
   if (m_WithShortcuts)
   {
     m_Actions["BuildWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
@@ -163,8 +169,9 @@ void WareSrcActionsCollection::createActions()
   // Generate doc
 
 #if OPENFLUID_SIM2DOC_ENABLED
-    m_Actions["GenerateDoc"] = new QAction(openfluid::ui::common::getIcon("generate-doc","/ui/common",false),
-                                          tr("Generate doc"), this);
+    m_Actions["GenerateDoc"] = new openfluid::ui::common::DefaultAction(
+                                     openfluid::ui::common::getIcon("generate-doc","/ui/common",false),
+                                     tr("Generate doc"),this);
     if (m_WithShortcuts)
     {
       m_Actions["GenerateDoc"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
@@ -174,18 +181,18 @@ void WareSrcActionsCollection::createActions()
 
   // Options
 
-  m_Actions["OpenWareOptions"] =  new QAction(tr("Options..."),this);
+  m_Actions["OpenWareOptions"] =  new openfluid::ui::common::DefaultAction(tr("Options..."),this);
 
 
   // ====== Tools ======
 
-  m_Actions["OpenTerminal"] = new QAction(tr("Open in terminal"), this);
-  m_Actions["OpenExplorer"] = new QAction(tr("Open in file explorer"), this);
+  m_Actions["OpenTerminal"] = new openfluid::ui::common::DefaultAction(tr("Open in terminal"), this);
+  m_Actions["OpenExplorer"] = new openfluid::ui::common::DefaultAction(tr("Open in file explorer"), this);
 
 
   // ====== Help ======
 
-  m_Actions["APIDoc"] = new QAction(tr("API documentation"), this);
+  m_Actions["APIDoc"] = new openfluid::ui::common::DefaultAction(tr("API documentation"), this);
   m_Actions["APIDoc"]->setShortcuts(QKeySequence::HelpContents);
 
 }

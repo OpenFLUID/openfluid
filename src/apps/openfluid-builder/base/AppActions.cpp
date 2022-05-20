@@ -48,6 +48,7 @@
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/DefaultAction.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "AppActions.hpp"
@@ -125,109 +126,109 @@ void AppActions::updateRecentProjectsActions()
 void AppActions::createActions()
 {
   // Project menu
-  m_Actions["ProjectNew"] = new QAction(tr("&New..."), this);
+  m_Actions["ProjectNew"] = new openfluid::ui::common::DefaultAction(tr("&New..."), this);
   m_Actions["ProjectNew"]->setShortcuts(QKeySequence::New);
   m_Actions["ProjectNew"]->setIcon(openfluid::ui::common::getIcon("project-new","/ui/common",true));
 
-  m_Actions["ProjectOpen"] = new QAction(tr("&Open..."), this);
+  m_Actions["ProjectOpen"] = new openfluid::ui::common::DefaultAction(tr("&Open..."), this);
   m_Actions["ProjectOpen"]->setShortcuts(QKeySequence::Open);
   m_Actions["ProjectOpen"]->setIcon(openfluid::ui::common::getIcon("project-open","/ui/common",true));
 
-  m_Actions["ProjectReload"] = new QAction(tr("Reload"), this);
+  m_Actions["ProjectReload"] = new openfluid::ui::common::DefaultAction(tr("Reload"), this);
   m_Actions["ProjectReload"]->setIcon(openfluid::ui::common::getIcon("reload","/ui/common",true));
 
-  m_Actions["ProjectSave"] = new QAction(tr("&Save"), this);
+  m_Actions["ProjectSave"] = new openfluid::ui::common::DefaultAction(tr("&Save"), this);
   m_Actions["ProjectSave"]->setShortcuts(QKeySequence::Save);
   m_Actions["ProjectSave"]->setIcon(openfluid::ui::common::getIcon("project-save","/ui/common",true));
 
-  m_Actions["ProjectSaveAs"] = new QAction(tr("Save as..."), this);
+  m_Actions["ProjectSaveAs"] = new openfluid::ui::common::DefaultAction(tr("Save as..."), this);
   m_Actions["ProjectSaveAs"]->setIcon(openfluid::ui::common::getIcon("project-save-as","/ui/common",true));
 
-  m_Actions["ProjectClose"] = new QAction(tr("Close"), this);
+  m_Actions["ProjectClose"] = new openfluid::ui::common::DefaultAction(tr("Close"), this);
   m_Actions["ProjectClose"]->setShortcuts(QKeySequence::Close);
   m_Actions["ProjectClose"]->setIcon(openfluid::ui::common::getIcon("close","/ui/common",true));
 
-  m_Actions["ProjectProperties"] = new QAction(tr("Properties"), this);
+  m_Actions["ProjectProperties"] = new openfluid::ui::common::DefaultAction(tr("Properties"), this);
 
-  m_Actions["ProjectExplore"] = new QAction(tr("Open in file explorer"), this);
+  m_Actions["ProjectExplore"] = new openfluid::ui::common::DefaultAction( tr("Open in file explorer"), this);
   m_Actions["ProjectExplore"]->setShortcut(QKeySequence(Qt::ALT+Qt::Key_X));
 
-  m_Actions["ProjectQuit"] = new QAction(tr("Quit"), this);
+  m_Actions["ProjectQuit"] = new openfluid::ui::common::DefaultAction( tr("Quit"), this);
   m_Actions["ProjectQuit"]->setShortcuts(QKeySequence::Quit);
   m_Actions["ProjectQuit"]->setMenuRole(QAction::QuitRole);
 
 
   // Edit menu
-  m_Actions["EditCut"] = new QAction(tr("&Cut"), this);
+  m_Actions["EditCut"] = new openfluid::ui::common::DefaultAction( tr("&Cut"), this);
   m_Actions["EditCut"]->setShortcuts(QKeySequence::Cut);
 
-  m_Actions["EditCopy"] = new QAction(tr("&Copy"), this);
+  m_Actions["EditCopy"] = new openfluid::ui::common::DefaultAction( tr("&Copy"), this);
   m_Actions["EditCopy"]->setShortcuts(QKeySequence::Copy);
 
-  m_Actions["EditPaste"] = new QAction(tr("&Paste"), this);
+  m_Actions["EditPaste"] = new openfluid::ui::common::DefaultAction( tr("&Paste"), this);
   m_Actions["EditPaste"]->setShortcuts(QKeySequence::Paste);
 
-  m_Actions["EditPreferences"] = new QAction(tr("Preferences..."), this);
+  m_Actions["EditPreferences"] = new openfluid::ui::common::DefaultAction( tr("Preferences..."), this);
   m_Actions["EditPreferences"]->setMenuRole(QAction::PreferencesRole);
 
 
   //Development menu
-  m_Actions["DevNewSimulator"] = new QAction(tr("New simulator..."), this);
-  m_Actions["DevNewGhostSimulator"] = new QAction(tr("New ghost simulator..."), this);
-  m_Actions["DevNewObserver"] = new QAction(tr("New observer..."), this);
+  m_Actions["DevNewSimulator"] = new openfluid::ui::common::DefaultAction( tr("New simulator..."), this);
+  m_Actions["DevNewGhostSimulator"] = new openfluid::ui::common::DefaultAction( tr("New ghost simulator..."), this);
+  m_Actions["DevNewObserver"] = new openfluid::ui::common::DefaultAction( tr("New observer..."), this);
 
-  m_Actions["DevOpenSimulator"] = new QAction(tr("Open simulator..."), this);
-  m_Actions["DevOpenObserver"] = new QAction(tr("Open observer..."), this);
+  m_Actions["DevOpenSimulator"] = new openfluid::ui::common::DefaultAction( tr("Open simulator..."), this);
+  m_Actions["DevOpenObserver"] = new openfluid::ui::common::DefaultAction( tr("Open observer..."), this);
 
-  m_Actions["DevLaunchDevStudio"] = new QAction("OpenFLUID-DevStudio", this);
+  m_Actions["DevLaunchDevStudio"] = new openfluid::ui::common::DefaultAction( "OpenFLUID-DevStudio", this);
   m_Actions["DevLaunchDevStudio"]->setIcon(openfluid::ui::common::getIcon("dev-wares","/builder",false));
 
 
   //Simulation menu
-  m_Actions["WaresRefresh"] = new QAction(tr("Reload simulators and observers"), this);
+  m_Actions["WaresRefresh"] = new openfluid::ui::common::DefaultAction( tr("Reload simulators and observers"), this);
   m_Actions["WaresRefresh"]->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_R));
 
-  m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
+  m_Actions["SimulationRun"] = new openfluid::ui::common::DefaultAction( tr("Run simulation"), this);
   m_Actions["SimulationRun"]->setIcon(openfluid::ui::common::getIcon("run","/ui/common",true));
   m_Actions["SimulationRun"]->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
 
-  m_Actions["SimulationMode"] = new QAction(tr("Mode"), this);
+  m_Actions["SimulationMode"] = new openfluid::ui::common::DefaultAction( tr("Mode"), this);
   QActionGroup* ConfigureGroup = new QActionGroup(this);
   QMenu* SimModeMenu = new QMenu();
-  m_Actions["SimulationModeDefault"] = new QAction(tr("Integrated"), ConfigureGroup);
+  m_Actions["SimulationModeDefault"] = new openfluid::ui::common::DefaultAction( tr("Integrated"), ConfigureGroup);
   m_Actions["SimulationModeDefault"]->setCheckable(true);
   m_Actions["SimulationModeDefault"]->setChecked(true);
   SimModeMenu->addAction(m_Actions["SimulationModeDefault"]);
-  m_Actions["SimulationModeCLI"] = new QAction(tr("Command line"), ConfigureGroup);
+  m_Actions["SimulationModeCLI"] = new openfluid::ui::common::DefaultAction( tr("Command line"), ConfigureGroup);
   m_Actions["SimulationModeCLI"]->setCheckable(true);
   SimModeMenu->addAction(m_Actions["SimulationModeCLI"]);
   m_Actions["SimulationMode"]->setMenu(SimModeMenu);
 
 
   //View Menu
-  m_Actions["ViewDashboard"] = new QAction(tr("Show/Hide project dashboard"), this);
-  m_Actions["ViewToolbar"] = new QAction(tr("Show/Hide main toolbar"), this);
-  m_Actions["ViewRestore"] = new QAction(tr("Restore default view"), this);
+  m_Actions["ViewDashboard"] = new openfluid::ui::common::DefaultAction( tr("Show/Hide project dashboard"), this);
+  m_Actions["ViewToolbar"] = new openfluid::ui::common::DefaultAction( tr("Show/Hide main toolbar"), this);
+  m_Actions["ViewRestore"] = new openfluid::ui::common::DefaultAction( tr("Restore default view"), this);
 
 
   //Help menu
-  m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
-  m_Actions["HelpOnlineCommunity"] = new QAction(tr("Community site"), this);
-  m_Actions["HelpEmail"] = new QAction(tr("Email"), this);
+  m_Actions["HelpOnlineWeb"] = new openfluid::ui::common::DefaultAction( tr("Web site"), this);
+  m_Actions["HelpOnlineCommunity"] = new openfluid::ui::common::DefaultAction( tr("Community site"), this);
+  m_Actions["HelpEmail"] = new openfluid::ui::common::DefaultAction( tr("Email"), this);
 
-  m_Actions["HelpExamplesOpen"] = new QAction(tr("Open an example project..."), this);
+  m_Actions["HelpExamplesOpen"] = new openfluid::ui::common::DefaultAction( tr("Open an example project..."), this);
   m_Actions["HelpExamplesOpen"]->setIcon(openfluid::ui::common::getIcon("project-open-example","/builder"));
 
-  m_Actions["HelpExamplesRestore"] = new QAction(tr("Reinstall examples projects"), this);
+  m_Actions["HelpExamplesRestore"] = new openfluid::ui::common::DefaultAction( tr("Reinstall examples projects"), this);
 
-  m_Actions["HelpAbout"] = new QAction(tr("About"), this);
+  m_Actions["HelpAbout"] = new openfluid::ui::common::DefaultAction( tr("About"), this);
   m_Actions["HelpAbout"]->setMenuRole(QAction::AboutRole);
 
 
   // Recent projects
   for (unsigned int i=0; i<openfluid::base::WorkspaceManager::RecentProjectsMax;i++)
   {
-    m_RecentProjectsActions.push_back(new QAction(this));
+    m_RecentProjectsActions.push_back(new openfluid::ui::common::DefaultAction( this));
     m_RecentProjectsActions.back()->setVisible(false);
   }
   updateRecentProjectsActions();
@@ -378,7 +379,7 @@ void AppActions::updateExtensionsActionsAndMenus()
     // Replace empty menu text by extension ID
     MenuText = QString::fromStdString(openfluid::tools::replaceEmptyString(MenuText.toStdString(),(*it).first));
 
-    m_ExtensionsActions[(*it).first] = new QAction(MenuText,this);
+    m_ExtensionsActions[(*it).first] = new openfluid::ui::common::DefaultAction( MenuText,this);
 
     // associate extension ID with QAction for use when action is triggered and launch the correct extension
     m_ExtensionsActions[(*it).first]->setData(QString((*it).first.c_str()));
@@ -409,28 +410,28 @@ void AppActions::updateExtensionsActionsAndMenus()
 
   if (mp_SpatialExtensionsMenu->isEmpty())
   {
-    NoneAction = new QAction(tr("(none)"),this);
+    NoneAction = new openfluid::ui::common::DefaultAction( tr("(none)"),this);
     NoneAction->setEnabled(false);
     mp_SpatialExtensionsMenu->addAction(NoneAction);
   }
 
   if (mp_ModelExtensionsMenu->isEmpty())
   {
-    NoneAction = new QAction(tr("(none)"),this);
+    NoneAction = new openfluid::ui::common::DefaultAction( tr("(none)"),this);
     NoneAction->setEnabled(false);
     mp_ModelExtensionsMenu->addAction(NoneAction);
   }
 
   if (mp_ResultsExtensionsMenu->isEmpty())
   {
-    NoneAction = new QAction(tr("(none)"),this);
+    NoneAction = new openfluid::ui::common::DefaultAction( tr("(none)"),this);
     NoneAction->setEnabled(false);
     mp_ResultsExtensionsMenu->addAction(NoneAction);
   }
 
   if (mp_OtherExtensionsMenu->isEmpty())
   {
-    NoneAction = new QAction(tr("(none)"),this);
+    NoneAction = new openfluid::ui::common::DefaultAction( tr("(none)"),this);
     NoneAction->setEnabled(false);
     mp_OtherExtensionsMenu->addAction(NoneAction);
   }

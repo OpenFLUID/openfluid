@@ -52,6 +52,7 @@
 #include <openfluid/config.hpp>
 #include <openfluid/ui/waresdev/WareBuildOptionsWidget.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/ui/common/DefaultAction.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "WorkspaceToolbar.hpp"
@@ -106,7 +107,7 @@ WorkspaceToolbar::WorkspaceToolbar(QWidget* Parent) :
 
   addSeparator();
   addAction(m_Actions["Dashboard"]);
-  addAction(m_Actions["APIDocShort"]);
+  addAction(m_Actions["APIDoc"]);
 }
 
 
@@ -126,55 +127,26 @@ WorkspaceToolbar::~WorkspaceToolbar()
 
 void WorkspaceToolbar::createActions()
 {
+  m_Actions["NewSimulator"] = new openfluid::ui::common::DefaultAction(tr("Simulator..."), this);
+  m_Actions["NewObserver"] = new openfluid::ui::common::DefaultAction(tr("Observer..."), this);
+  m_Actions["NewExtension"] = new openfluid::ui::common::DefaultAction(tr("Builder extension..."), this);
 
-  m_Actions["NewSimulator"] = new QAction(tr("Simulator..."), this);
-  m_Actions["NewObserver"] = new QAction(tr("Observer..."), this);
-  m_Actions["NewExtension"] = new QAction(tr("Builder extension..."), this);
+  m_Actions["OpenSimulator"] = new openfluid::ui::common::DefaultAction(tr("Simulator..."), this);
+  m_Actions["OpenObserver"] = new openfluid::ui::common::DefaultAction(tr("Observer..."), this);
+  m_Actions["OpenExtension"] = new openfluid::ui::common::DefaultAction(tr("Builder extension..."), this);
 
-  m_Actions["OpenSimulator"] = new QAction(tr("Simulator..."), this);
-  m_Actions["OpenObserver"] = new QAction(tr("Observer..."), this);
-  m_Actions["OpenExtension"] = new QAction(tr("Builder extension..."), this);
-
-  m_Actions["ImportWare"] = new QAction(openfluid::ui::common::getIcon("import","/ui/common",true),
-                                      tr("Import..."), this);
+  m_Actions["ImportWare"] = new openfluid::ui::common::DefaultAction(
+                                  openfluid::ui::common::getIcon("import","/ui/common",true),tr("Import..."),this);
   m_Actions["ImportWare"]->setToolTip(tr("Import ware"));
 
 
   // ====== Generic operations ======
 
-  m_Actions["Dashboard"] = new QAction(openfluid::ui::common::getIcon("dashboard","/ui/common",true),
-                                           tr("Dashboard"), this);
+  m_Actions["Dashboard"] = new openfluid::ui::common::DefaultAction(
+                                 openfluid::ui::common::getIcon("dashboard","/ui/common",true),tr("Dashboard"), this);
 
-  m_Actions["APIDoc"] = new QAction(openfluid::ui::common::getIcon("generate-doc","/ui/common",true),
-                                         tr("API doc"), this);
-
-  // ====== Tools ======
-
-  m_Actions["OpenTerminal"] = new QAction(tr("Open in terminal"), this);
-  m_Actions["OpenExplorer"] = new QAction(tr("Open in file explorer"), this);
-
-  for (auto const& Tool : m_ExternalTools)
-  {
-    QString ToolName = QString::fromStdString(Tool.Name);
-    m_ExternalToolsActions[ToolName] = new QAction(ToolName, this);
-    m_ExternalToolsActions[ToolName]->setData(
-      QString::fromStdString(Tool.getCommand(openfluid::base::PreferencesManager::ExternalToolContext::WARE)));
-  }
-
-  // ====== Help ======
-
-  m_Actions["APIDocShort"] = new QAction(openfluid::ui::common::getIcon("doc","/ui/common", true), tr("API Doc"), this);
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-const QMap<QString, QAction*> WorkspaceToolbar::externalToolsActions()
-{
-  return m_ExternalToolsActions;
+  m_Actions["APIDoc"] = new openfluid::ui::common::DefaultAction(
+                              openfluid::ui::common::getIcon("generate-doc","/ui/common",true),tr("API doc"), this);
 }
 
 

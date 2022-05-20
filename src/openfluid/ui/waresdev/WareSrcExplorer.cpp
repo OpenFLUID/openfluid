@@ -49,6 +49,7 @@
 #include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/WareGitDialog.hpp>
+#include <openfluid/ui/common/DefaultAction.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -154,7 +155,7 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   {
     QString ToolName = QString::fromStdString(Tool.Name);
     ExtToolMenu.setEnabled(true);
-    ExternalToolsActions[ToolName] = new QAction(ToolName, this);
+    ExternalToolsActions[ToolName] = new openfluid::ui::common::DefaultAction(ToolName, this);
     ExternalToolsActions[ToolName]->setData(QString::fromStdString(Tool.getCommand(ExternalToolsCtxt)));
     ExtToolMenu.addAction(ExternalToolsActions[ToolName]);
     connect(ExternalToolsActions[ToolName], SIGNAL(triggered()), this, SLOT(onOpenExternalToolAsked()));

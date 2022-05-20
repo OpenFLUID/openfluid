@@ -56,6 +56,7 @@
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
+#include <openfluid/ui/common/DefaultAction.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
@@ -174,7 +175,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   for (auto const& Tool : ExternalTools)
   {
     QString ToolName = QString::fromStdString(Tool.Name);
-    QAction* Action = new QAction(ToolName, this);
+    QAction* Action = new openfluid::ui::common::DefaultAction(ToolName,this);
     Action->setData(
       QString::fromStdString(Tool.getCommand(openfluid::base::PreferencesManager::ExternalToolContext::WORKSPACE))
     );
@@ -204,6 +205,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(m_Actions["HelpAbout"], SIGNAL(triggered()), this, SLOT(onAboutAsked()));
   connect(m_Actions["HelpOnlineWeb"], SIGNAL(triggered()), this, SLOT(onOnlineWebAsked()));
   connect(m_Actions["HelpOnlineCommunity"], SIGNAL(triggered()), this, SLOT(onOnlineCommunityAsked()));
+  connect(mp_ActionsCollection->action("APIDoc"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openAPIDoc()));
 
   connect(mp_ActionsCollection->action("NewFile"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(newFile()));
   connect(mp_ActionsCollection->action("OpenFile"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openFile()));
@@ -240,7 +242,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(mp_ActionsCollection->action("OpenTerminal"), SIGNAL(triggered()), 
           mp_WidgetsCollection, SLOT(openTerminal()));
 
-  connect(mp_Toolbar->action("APIDocShort"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openAPIDoc()));
+  connect(mp_Toolbar->action("APIDoc"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openAPIDoc()));
   connect(mp_Toolbar->action("ImportWare"), SIGNAL(triggered()), this, SLOT(onImportWareSourcesAsked()));
   connect(mp_Toolbar->action("Dashboard"), SIGNAL(triggered()), this, SLOT(onDevDashboardAsked()));
 
@@ -348,11 +350,11 @@ void MainWindow::displayBuildOptionsDialog()
 void MainWindow::createLocalActions()
 {
 
-  m_Actions["CloseWares"] = new QAction(tr("Close all wares"), this);
+  m_Actions["CloseWares"] = new openfluid::ui::common::DefaultAction(tr("Close all wares"), this);
 
-  m_Actions["DeleteWare"] = new QAction(tr("Delete ware"), this);
+  m_Actions["DeleteWare"] = new openfluid::ui::common::DefaultAction(tr("Delete ware"), this);
 
-  m_Actions["Quit"] = new QAction(tr("Quit"), this);
+  m_Actions["Quit"] = new openfluid::ui::common::DefaultAction(tr("Quit"), this);
   m_Actions["Quit"]->setShortcuts(QKeySequence::Quit);
 
   /* TODO check it, because :
@@ -361,23 +363,23 @@ void MainWindow::createLocalActions()
    (http://qt-project.org/doc/qt-4.8/qaction.html#menuRole-prop)*/
   m_Actions["Quit"]->setMenuRole(QAction::QuitRole);
 
-  m_Actions["Preferences"] = new QAction(tr("Preferences..."), this);
+  m_Actions["Preferences"] = new openfluid::ui::common::DefaultAction( tr("Preferences..."), this);
   m_Actions["Preferences"]->setMenuRole(QAction::PreferencesRole);
 
 
   // Tools menu
-  m_Actions["ImportWareSources"] = new QAction(tr("Import wares sources..."), this);
-  m_Actions["ExportWareSources"] = new QAction(tr("Export wares sources..."), this);
-  m_Actions["GitDashboard"] = new QAction(tr("Dashboard..."), this);
-  m_Actions["DevDashboard"] = new QAction(tr("Development dashboard..."), this);
+  m_Actions["ImportWareSources"] = new openfluid::ui::common::DefaultAction(tr("Import wares sources..."), this);
+  m_Actions["ExportWareSources"] = new openfluid::ui::common::DefaultAction(tr("Export wares sources..."), this);
+  m_Actions["GitDashboard"] = new openfluid::ui::common::DefaultAction(tr("Dashboard..."), this);
+  m_Actions["DevDashboard"] = new openfluid::ui::common::DefaultAction(tr("Development dashboard..."), this);
   m_Actions["DevDashboard"]->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_D));
 
   // Help menu
-  m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
-  m_Actions["HelpOnlineCommunity"] = new QAction(tr("Community site"), this);
-  m_Actions["HelpEmail"] = new QAction(tr("Email"), this);
+  m_Actions["HelpOnlineWeb"] = new openfluid::ui::common::DefaultAction(tr("Web site"), this);
+  m_Actions["HelpOnlineCommunity"] = new openfluid::ui::common::DefaultAction(tr("Community site"), this);
+  m_Actions["HelpEmail"] = new openfluid::ui::common::DefaultAction(tr("Email"), this);
 
-  m_Actions["HelpAbout"] = new QAction(tr("About"), this);
+  m_Actions["HelpAbout"] = new openfluid::ui::common::DefaultAction(tr("About"), this);
   m_Actions["HelpAbout"]->setMenuRole(QAction::AboutRole);
 }
 

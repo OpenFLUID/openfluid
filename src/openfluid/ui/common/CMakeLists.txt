@@ -26,6 +26,7 @@ SET(OPENFLUID_UI_COMMON_HPP AppMainWindow.hpp OpenFLUIDDialog.hpp
                             RunCLISimulationDialog.hpp
                             SignatureDataEditorWidget.hpp
                             SignatureEditorWidget.hpp EditSignatureDialog.hpp
+                            DefaultAction.hpp
                             ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp 
                             TagLabel.hpp StatusIconLabel.hpp ExecutionStatusLabel.hpp
                             FocusableLineEdit.hpp

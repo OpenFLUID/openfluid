@@ -26,52 +26,54 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
-
-/**
- @file WorkspaceToolbar.hpp
-
- @author Aline LIBRES <aline.libres@gmail.com>
- @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+  
 */
 
 
-#ifndef __OPENFLUID_DEVSTUDIOAPP_WORKSPACETOOLBAR_HPP__
-#define __OPENFLUID_DEVSTUDIOAPP_WORKSPACETOOLBAR_HPP__
+/**
+  @file DefaultAction.hpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+*/
 
 
-#include <QToolBar>
+#ifndef __OPENFLUID_UICOMMON_DEFAULTACTION_HPP__
+#define __OPENFLUID_UICOMMON_DEFAULTACTION_HPP__
+
+
 #include <QAction>
 
-#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/waresdev/WareBuildOptionsWidget.hpp>
 
 
-class OPENFLUID_API WorkspaceToolbar: public QToolBar
+namespace openfluid { namespace ui { namespace common {
+
+
+class OPENFLUID_API DefaultAction : public QAction
 {
-  Q_OBJECT
-
-  private:
-
-    std::list<openfluid::base::PreferencesManager::ExternalTool_t> m_ExternalTools;
-
-    QList<QString> m_ExternalToolsOrder;
-
-    QMap<QString, QAction*> m_Actions;
-
-    void createActions();
-
-
   public:
 
-    WorkspaceToolbar(QWidget* Parent = nullptr);
+    DefaultAction(const QIcon& Icon, const QString& Text, QObject* Parent = nullptr) : QAction(Icon,Text,Parent)
+    {
+      setMenuRole(QAction::NoRole);
+    }
 
-    virtual ~WorkspaceToolbar();
+    DefaultAction(const QString& Text, QObject* Parent = nullptr) : QAction(Text,Parent)
+    {
+      setMenuRole(QAction::NoRole);
+    }
 
-    QAction* action(const QString& ActionName);
+    DefaultAction(QObject* Parent = nullptr) : QAction(Parent)
+    {
+      setMenuRole(QAction::NoRole);
+    }
+
+    virtual ~DefaultAction()
+    { }
 };
 
 
-#endif /* __OPENFLUID_DEVSTUDIOAPP_WORKSPACETOOLBAR_HPP__ */
+} } } // namespaces
+
+
+#endif /* __OPENFLUID_UICOMMON_DEFAULTACTION_HPP__ */
