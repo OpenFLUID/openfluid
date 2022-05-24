@@ -1,4 +1,4 @@
-@page dev_sim2doc Documenting your simulators
+# Documenting your simulators {#dev_sim2doc}
 
 The scientific documentation of simulators is important to clearly describe
 the scientific concepts and methods applied in source code of simulators.

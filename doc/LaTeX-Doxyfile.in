@@ -6,7 +6,7 @@ PROJECT_NUMBER         = @OPENFLUID_VERSION_FULL@
 OUTPUT_DIRECTORY       = @OFBUILD_DOCBUILD_DIR@
 
 FULL_PATH_NAMES        = NO
-
+#STRIP_FROM_PATH        = @OFBUILD_DOC_CONTENTS_DIR@ @CMAKE_CURRENT_BINARY_DIR@/contents
 
 INPUT                  = @OFBUILD_DOC_CONTENTS_DIR@ \
                          @CMAKE_CURRENT_BINARY_DIR@/contents
@@ -30,7 +30,6 @@ USE_PDFLATEX           = YES
 STRIP_CODE_COMMENTS    = NO
 
 LATEX_OUTPUT           = latex
-LATEX_SOURCE_CODE	     = NO
 
 QUIET                  = YES
 WARNINGS               = YES

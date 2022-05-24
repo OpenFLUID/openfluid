@@ -1,10 +1,10 @@
-@page dev_srccode Development of the simulator source code
+# Development of the simulator source code {#dev_srccode}
 
 [TOC]
 
-# General information about simulators architecture {#dev_srccode_general}
+## General information about simulators architecture {#dev_srccode_general}
 
-## Simulator methods sequence and framework interactions {#dev_srccode_general_methods}
+### Simulator methods sequence and framework interactions {#dev_srccode_general_methods}
 
 As previously mentioned, a simulator is a C++ class which defines 
 mandatory methods (see @ref dev_oviewsim_cppclass_methods). 
@@ -58,7 +58,7 @@ _Example for a variable time step simulator, based on the internal computation o
 For fully synchronized coupled simulators, all simulators must return the same duration for the next execution,
 usually **DefaultDeltaT()** .
 
-## OpenFLUID data types {#dev_srccode_general_datatypes}
+### OpenFLUID data types {#dev_srccode_general_datatypes}
 
 Simulation data exchanged through the OpenFLUID framework should be typed with an OpenFLUID defined type.  
 The available simple types are:
@@ -104,15 +104,15 @@ In case of untyped variables, values for the variable can be of any type.
 
 
 
-# Handling the spatial domain {#dev_srccode_space}
+## Handling the spatial domain {#dev_srccode_space}
 
-## Parsing the spatial graph {#dev_srccode_space_parse}
+### Parsing the spatial graph {#dev_srccode_space_parse}
 
 The spatial graph represents the spatial domain where coupled simulators will operate.
 Parsing this graph in different ways is a common task in simulators.
 This graph can be browsed using predefined instructions.  
 
-### Sequential parsing {#dev_srccode_space_parse_seq}
+#### Sequential parsing {#dev_srccode_space_parse_seq}
 
 Spatial units can be parsed following the process order by using the following OpenFLUID instructions:
 
@@ -149,7 +149,7 @@ The second part of the source code shows how to browse all units of the spatial 
 @snippet help.snippets.spatial-parsing-seq/SpatialParsingSeqSim.cpp spatial_parsing_seq
 
 
-### Parallel processing using multithreading {#dev_srccode_space_parse_par}
+#### Parallel processing using multithreading {#dev_srccode_space_parse_par}
 
 A processing defined as a method of a simulator class can be applied in parallel to the spatial graph, 
 following the process order, using the following methods:
@@ -184,7 +184,7 @@ may counterbalance the performance improvements of concurrent computing.
 
 
 
-## Querying the spatial graph {#dev_srccode_space_query}
+### Querying the spatial graph {#dev_srccode_space_query}
 
 The spatial domain graph can be queried during simulations in order to get
 informations about spatial units and connections.
@@ -214,7 +214,7 @@ The following methods are available:
 @endif
 
 
-## Modifying the spatial graph {#dev_srccode_space_mod}
+### Modifying the spatial graph {#dev_srccode_space_mod}
 
 The spatial graph is usually statically defined through the input dataset.
 It can also be defined and modified dynamically during simulations, using primitives to 
@@ -227,7 +227,7 @@ For consistent use of simulators which modify the spatial domain graph,
 please fill the signature with the correct directives.
 See the @ref dev_signature_data_spatial part of the signature declaration.
 
-### Creating and deleting spatial units {#dev_srccode_space_mod_units}
+#### Creating and deleting spatial units {#dev_srccode_space_mod_units}
 
 In order to create and delete units, you can use the following methods:
 @if DocIsLaTeX
@@ -243,7 +243,7 @@ In order to create and delete units, you can use the following methods:
 @endif
 
 
-### Adding and removing spatial connections {#dev_srccode_space_mod_cnx}
+#### Adding and removing spatial connections {#dev_srccode_space_mod_cnx}
 
 Connections between spatial units can be of two types:
 
@@ -270,7 +270,7 @@ _Example:_
 @snippet help.snippets.spatial-connect/SpatialConnectSim.cpp spatial_connect
 
 
-### Generating spatial domain graphs automatically {#dev_srccode_space_mod_gen}
+#### Generating spatial domain graphs automatically {#dev_srccode_space_mod_gen}
 
 A spatial domain graph can be automatically built or extended using a provided method to create a matrix-like graph:
 @if DocIsLaTeX
@@ -284,7 +284,7 @@ A spatial domain graph can be automatically built or extended using a provided m
 @endif
 
 
-# Informations about simulation time {#dev_srccode_time}
+## Informations about simulation time {#dev_srccode_time}
 
 Simulators can access to informations about simulation time.
 There are constant time informations, such as simulation duration or begin and end date,
@@ -343,7 +343,7 @@ _Example of code:_
 @snippet help.snippets.params-env-time/ParamsEnvTimeSim.cpp time
 
 
-# Simulator parameters {#dev_srccode_simparams}
+## Simulator parameters {#dev_srccode_simparams}
 
 Simulators parameters can be accessed in the source code from the
 @if DocIsLaTeX
@@ -379,7 +379,7 @@ OPENFLUID_GetSimulatorParameter
 method to get more informations about other available types
 @if DocIsLaTeX , available on the [OpenFLUID community site](https://community.openfluid-project.org/) @endif ).
 
-# Spatial attributes {#dev_srccode_attrs}
+## Spatial attributes {#dev_srccode_attrs}
 
 In order to access or update values of spatial attributes, or to test if a spatial attribute is present,
 you can use the following methods:
@@ -409,7 +409,7 @@ _Example of use:_
 @snippet help.snippets.attributes/AttributesSim.cpp attributes
 
 
-# Simulation variables {#dev_srccode_vars}
+## Simulation variables {#dev_srccode_vars}
 
 The values for the simulation variables are attached to the spatial units.
 
@@ -469,7 +469,7 @@ _Example:_
 @snippet help.snippets.variables/VariablesSim.cpp variables
 
 
-# Events {#dev_srccode_events}
+## Events {#dev_srccode_events}
 
 A discrete event is defined by the @if DocIsLaTeX **openfluid::core::Event** 
 @else openfluid::core::Event @endif
@@ -512,7 +512,7 @@ _Example of process of events occurring on the current time step:_
 
 
 
-# Internal state data {#dev_srccode_state}
+## Internal state data {#dev_srccode_state}
 
 In order to preserve the internal state of the simulator between calls
 (from the run step to the next one for example), internal variables can be stored as class members.
@@ -576,7 +576,7 @@ _Example of usage of the ID-map structures:_
 @snippet help.snippets.internal-state/InternalStateSim.cpp internal_state_impl
 
 
-# Runtime environment {#dev_srccode_runenv}
+## Runtime environment {#dev_srccode_runenv}
 
 The runtime environment of the simulator are informations about the context during execution of
 the simulation: input and output directories, temporary directory,...  
@@ -603,9 +603,9 @@ The keys for requesting runtime environment information are:
 
 
 
-# Informations, warnings and errors {#dev_srccode_msgs}
+## Informations, warnings and errors {#dev_srccode_msgs}
 
-## Informations and warnings from simulators {#dev_srccode_msgs_log}
+### Informations and warnings from simulators {#dev_srccode_msgs_log}
 
 Simulators can emit informations and warnings to both console and files using various methods
 
@@ -663,7 +663,7 @@ placed in the simulation output directory.
 This file can be browsed using the OpenFLUID-Builder application (_Outputs_ tab) or any text editor. 
 
 
-## Errors from simulators {#dev_srccode_msgs_warnerr}
+### Errors from simulators {#dev_srccode_msgs_warnerr}
 
 Simulators can raise errors to notify the OpenFLUID framework that something wrong or critical had happened. 
 An error stops the simulation the next time the OpenFLUID framework has the control.    
@@ -679,7 +679,7 @@ _Example:_
 @snippet help.snippets.infos-debug/InfosDebugSim.cpp error 
 
 
-# Debugging {#dev_srccode_debug}
+## Debugging {#dev_srccode_debug}
 
 Debugging instructions allow developpers to trace various information during simulations.   
 They are enabled only when debug is enabled at simulators builds. They are ignored for other build types.   
@@ -728,7 +728,7 @@ Additional instructions are available for debugging, see file debug.hpp:
 
 
 
-# Integrating Fortran code {#dev_srccode_fortran}
+## Integrating Fortran code {#dev_srccode_fortran}
 
 The C++/Fortran interface is defined in the openfluid/tools/FortranCPP.hpp file. 
 It allows to integrate Fortran 77/90 code into simulators.<br/>
@@ -765,7 +765,7 @@ when adding fortran source files to the SIM_FORTRAN variable in the CMake.in.con
 (See @ref dev_createsim_exmpl_config).
 
 
-# Embedding R code {#dev_srccode_R}
+## Embedding R code {#dev_srccode_R}
 
 @note The embedding of R code in simulators is currently an experimental feature.
 
@@ -811,7 +811,7 @@ where `prefix` depends on the OpenFLUID installation path and operating system (
 can be used in a coupled model.
 
 
-# Miscellaneous helpers {#dev_srccode_misctools}
+## Miscellaneous helpers {#dev_srccode_misctools}
 
 The OpenFLUID API provides miscellaneous functions and classes to help simulators developpers 
 in their setup of data processing or numerical computation. 

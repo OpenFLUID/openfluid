@@ -1,4 +1,4 @@
-@page apdx_generators File formats for generators
+# File formats for generators {#apdx_generators}
 
 [TOC]
 

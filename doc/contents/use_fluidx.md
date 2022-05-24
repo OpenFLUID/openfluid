@@ -1,4 +1,4 @@
-@page use_fluidx Format of input datasets
+# Format of input datasets {#use_fluidx}
 
 [TOC]
 
@@ -16,7 +16,7 @@ Alternatively, these FluidX files can be created by hand or using external tools
 scientific environments (e.g. R, Matlab), geographic information systems (GIS), ...
 
 
-# Overview {#user_fluidx_overview}
+## Overview {#user_fluidx_overview}
 
 The FluidX file format is an [XML](https://en.wikipedia.org/wiki/XML) based format defined for OpenFLUID input datasets.
 An OpenFLUID dataset can be provided by a one or many files using
@@ -68,10 +68,10 @@ Summary view of the XML structure of FluidX files:
 </openfluid>
 ```
 
-# Sections {#user_fluidx_sections}
+## Sections {#user_fluidx_sections}
 
 
-## Model section {#user_fluidx_sections_model}
+### Model section {#user_fluidx_sections_model}
 
 
 The coupled model is defined by an ordered set of simulators and/or data generators 
@@ -162,9 +162,9 @@ coupled model (not applicable for variable time coupled models)
 
 
 
-## Spatial domain section {#user_fluidx_sections_spatialdomain}
+### Spatial domain section {#user_fluidx_sections_spatialdomain}
 
-### Definition and connectivity {#user_fluidx_sections_spatialdomain_def}
+#### Definition and connectivity {#user_fluidx_sections_spatialdomain_def}
 
 
 The spatial domain is defined by a set of spatial units that are connected each others.
@@ -213,7 +213,7 @@ tag, and must be structured following these rules:
 ```
 
 
-### Attributes {#user_fluidx_sections_spatialdomain_attrs}
+#### Attributes {#user_fluidx_sections_spatialdomain_attrs}
 
 The spatial attributes are static data associated to each spatial unit,
 usually properties and initial conditions.  
@@ -252,7 +252,7 @@ tag, and must be structured following these rules:
 
 
 
-### Discrete events {#user_fluidx_sections_spatialdomain_events}
+#### Discrete events {#user_fluidx_sections_spatialdomain_events}
 
 The discrete events are events occurring on units, and can be processed by simulators. 
 The spatial events must be defined in a section delimited
@@ -299,7 +299,7 @@ tag, and must be structured following these rules:
 
 
 
-## Datastore section {#user_fluidx_sections_datastore}
+### Datastore section {#user_fluidx_sections_datastore}
 
 The datastore lists external data which is available during the simulation.
 The datastore content must be defined in a section delimited by the
@@ -329,7 +329,7 @@ The datastore content must be defined in a section delimited by the
 
 
 
-## Monitoring section {#user_fluidx_sections_monitoring}
+### Monitoring section {#user_fluidx_sections_monitoring}
 
 The monitoring is defined by a set of observers that will be automatically 
 plugged and executed by the OpenFLUID environment.
@@ -405,7 +405,7 @@ The monitoring must be defined in a section delimited by the
 
 
 
-## Run configuration section {#user_fluidx_sections_run}
+### Run configuration section {#user_fluidx_sections_run}
 
 The configuration of the simulation gives the simulation period, the default coupling time step
 and the optional coupling constraint.
@@ -447,7 +447,7 @@ The run configuration must be defined in a section delimited by the
 ```
 
 
-# Runtime variables in parameters {#user_fluidx_params_replacements}
+## Runtime variables in parameters {#user_fluidx_params_replacements}
 
 Parameters of simulators and observers can include variables that will be replaced by corresponding values at runtime.
 These variables are :
@@ -475,7 +475,7 @@ These variables are :
 ```
 
 
-# Example of an input dataset as a single FluidX file {#use_fluidx_exmpl}
+## Example of an input dataset as a single FluidX file {#use_fluidx_exmpl}
 
 ```.xml
 <?xml version="1.0" standalone="yes"?>

@@ -1,5 +1,5 @@
 
-@page use_apps OpenFLUID software environment
+# OpenFLUID software environment {#use_apps}
 
 [TOC]
 
@@ -11,7 +11,7 @@ and propose all concepts and features of the OpenFLUID software environment,
 as they share the unique OpenFLUID software framework. 
 
 
-# Graphical Interface for simulations : OpenFLUID-Builder {#use_apps_builder}
+## Graphical Interface for simulations : OpenFLUID-Builder {#use_apps_builder}
 
 The OpenFLUID-Builder user interface proposes a graphical environment to
 prepare, parameterize and execute simulations. It is a good starting point for users 
@@ -40,7 +40,7 @@ and a spatial data importer to create a spatial domain from standard GIS data fi
 available from a local or an internet server.  
 
 
-# Command-line interface : openfluid {#use_apps_cmd}
+## Command-line interface : openfluid {#use_apps_cmd}
 
 The OpenFLUID command line interface allows to run OpenFLUID simulations from a terminal, 
 using the `openfluid` program. 

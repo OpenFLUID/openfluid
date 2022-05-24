@@ -1,4 +1,4 @@
-@page apdx_prj Structure of an OpenFLUID project
+# Structure of an OpenFLUID project {#apdx_prj}
 
 [TOC]
 

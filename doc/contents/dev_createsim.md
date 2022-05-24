@@ -1,4 +1,4 @@
-@page dev_createsim Creation of a simulator
+# Creation of a simulator {#dev_createsim}
 
 [TOC]
 
@@ -11,7 +11,7 @@ in the dedicated location to be usable by the OpenFLUID platform.
 See also the @ref apdx_workspace appendix for sources codes location in workspaces.
 
 
-# Required tools for development environment {#dev_createsim_env}
+## Required tools for development environment {#dev_createsim_env}
 
 In order to build and develop a simulator, the following tools are required:
 
@@ -24,7 +24,7 @@ Detailed instructions for installation of these tools are available on the OpenF
 Even if simulators can be developped using any text editor, the OpenFLUID-DevStudio is the recommended environment for simulators development.
 
 
-# Creation of a simulator using OpenFLUID-DevStudio {#dev_createsim_ds}
+## Creation of a simulator using OpenFLUID-DevStudio {#dev_createsim_ds}
 
 The OpenFLUID-DevStudio application is made of a main toolbar located on top, 
 a file navigator on the left side and a file editor on the right side.
@@ -45,22 +45,22 @@ the simulator is ready to use for simulations. The build process must be run eac
 the simulator source code is modified to take into account these modifications.
 
 
-# Complete source code example {#dev_createsim_exmpl}
+## Complete source code example {#dev_createsim_exmpl}
 
 The example below show a complete example of an empty simulator, 
 including source code and build configuration using the OpenFLUID CMake module.  
 
 
-## File ExampleSimulator.cpp containing the simulator source code {#dev_createsim_exmpl_cpp}
+### File ExampleSimulator.cpp containing the simulator source code {#dev_createsim_exmpl_cpp}
 
 @snippet help.snippets.example/ExampleSimulator.cpp example_full
 
 
-## File CMake.in.config containing the build configuration {#dev_createsim_exmpl_config}
+### File CMake.in.config containing the build configuration {#dev_createsim_exmpl_config}
 
 @include help.snippets.example/CMake.in.cmake.snippet
 
 
-## File CMakeLists.txt defining the build process {#dev_createsim_exmpl_cmakelists}
+### File CMakeLists.txt defining the build process {#dev_createsim_exmpl_cmakelists}
  
 @include help.snippets.example/CMakeLists.txt.snippet

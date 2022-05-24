@@ -1,6 +1,5 @@
-@mainpage Index
+@mainpage Main Page
 
-<br/>
 
 @if TodoIsDone
 ### Introduction to OpenFLUID
@@ -15,8 +14,8 @@
 
 ### Running simulations with OpenFLUID
 
-* @subpage use_apps
-* @subpage use_fluidx
+* @ref use_apps
+* @ref use_fluidx
 @if TodoIsDone  
 * @subpage use_buddies
 * @subpage use_examples
@@ -36,7 +35,7 @@
 <br/>
 
 
-### Appendix
+### Other information
 
 * @subpage apdx_optenv
 * @subpage apdx_datetime

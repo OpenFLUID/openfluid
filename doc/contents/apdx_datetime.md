@@ -1,4 +1,4 @@
-@page apdx_datetime Datetime formats
+# Datetime formats {#apdx_datetime}
 
 
 OpenFLUID uses the ANSI strftime() standard formats for date time formatting to and from a format string.

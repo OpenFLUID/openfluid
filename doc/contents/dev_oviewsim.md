@@ -1,4 +1,4 @@
-@page dev_oviewsim Overview of an OpenFLUID simulator
+# Overview of an OpenFLUID simulator {#dev_oviewsim}
 
 [TOC]
 
@@ -8,7 +8,7 @@ These two parts have to be developped in a C++ file (.cpp).
 They must be compiled before using it in the OpenFLUID software environment.
 
 
-# Simulator signature {#dev_oviewsim_signature}
+## Simulator signature {#dev_oviewsim_signature}
 
 The signature of a simulator contains meta-informations about the simulator.
 These informations will be mainly used by the OpenFLUID framework for automatic coupling 
@@ -16,7 +16,7 @@ and consistency checking of the simulators of the coupled model.
 To get more informations about the simulators signatures and how to declare them, see part @ref dev_signature.
   
 
-#  Simulator C++ class {#dev_oviewsim_cppclass}
+##  Simulator C++ class {#dev_oviewsim_cppclass}
 
 The computational part of a simulator is defined by a class, 
 inherited from the **openfluid::ware::PluggableSimulator** class.
@@ -26,7 +26,7 @@ You can also develop other methods in order to organize your source code.
 To get more information about the C++ class of a simulator, see part @ref dev_createsim.
 
 
-## Constructor and destructor {#dev_oviewsim_cppclass_cstrdstr}
+### Constructor and destructor {#dev_oviewsim_cppclass_cstrdstr}
 
 The constructor of the simulator is called when the simulator is loaded.
 You may put here the initialization of the private members of the simulator C++ class.  
@@ -35,7 +35,7 @@ You may put here instruction to free any dynamic memory allocated
 for the needs of the computational code (dynamic variables or objects, ...).
 
 
-## Mandatory methods to be defined {#dev_oviewsim_cppclass_methods}
+### Mandatory methods to be defined {#dev_oviewsim_cppclass_methods}
 
 The class of a simulator must define the following methods:
 

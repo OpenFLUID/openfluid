@@ -1,4 +1,4 @@
-@page apdx_workspace Organization of an OpenFLUID workspace
+# Organization of an OpenFLUID workspace {#apdx_workspace}
 
 An OpenFLUID workspace is a directory organized to contain OpenFLUID projects for simulations 
 and source code of simulators, observers and builder-extensions.  

@@ -1,4 +1,4 @@
-@page dev_signature Declaration of the simulator signature
+# Declaration of the simulator signature {#dev_signature}
 
 [TOC]
 
@@ -8,7 +8,7 @@ The signature has to be defined between the @if DocIsLaTeX **BEGIN_SIMULATOR_SIG
 The signature is usually placed in the upper part of the simulator main source file, before the C++ class of the simulator.
 
 
-# Identification {#dev_signature_id}
+## Identification {#dev_signature_id}
 
 The identification part of the signature must contain at least the ID of the simulator. 
 This ID will be used by the framework to load simulators. It is declared in 
@@ -36,7 +36,7 @@ _openfluid::ware::EXPERIMENTAL_, _openfluid::ware::BETA_ or _openfluid::ware::ST
 See the @ref dev_signature_exmpl part for detailed example. 
 
 
-# Informations about scientific application {#dev_signature_sci}
+## Informations about scientific application {#dev_signature_sci}
 
 The informations about scientific applications are only indicative.
 It has no effects on simulator consistency or computational code.
@@ -50,7 +50,7 @@ These informations can be :
  instruction
 
 
-# Data and spatial graph  {#dev_signature_data}
+## Data and spatial graph  {#dev_signature_data}
 
 The data used by the simulators can be:
 
@@ -73,7 +73,7 @@ The declarations of spatial data access include constraint levels:
 * _USED_, this means that the data are used only if they are available or already produced
  
 
-## Simulator parameters {#dev_signature_data_simparams}
+### Simulator parameters {#dev_signature_data_simparams}
 
 Simulator parameters are values provided to each simulator, 
 and are declared using the @if DocIsLaTeX **DECLARE_REQUIRED_PARAMETER** or **DECLARE_USED_PARAMETER**
@@ -90,7 +90,7 @@ _Example of a declaration of a required simulator parameter:_
 @snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_params
 
 
-## Spatial attributes {#dev_signature_data_attrs}
+### Spatial attributes {#dev_signature_data_attrs}
 
 Spatial attributes are constant properties attached to each spatial units, 
 and are declared using @if DocIsLaTeX **DECLARE_REQUIRED_ATTRIBUTE**, **DECLARE_USED_ATTRIBUTE** 
@@ -110,7 +110,7 @@ _Example of attributes declaration:_
 @snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_attributes
 
 
-## Simulation variables {#dev_signature_data_vars}
+### Simulation variables {#dev_signature_data_vars}
 
 Simulation variables are attached to spatial units. They are produced, accessed and modified
 by simulators during simulations.  
@@ -173,7 +173,7 @@ _Example of variable declarations:_
 @snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_variables
 
 
-## Discrete events {#dev_signature_data_events}
+### Discrete events {#dev_signature_data_events}
 
 Discrete events are attached to spatial units, They are accessed or appended by simulators during simulations,
 and are declared using the @if DocIsLaTeX **DECLARE_USED_EVENTS**
@@ -186,7 +186,7 @@ _Example of events declaration:_
 @snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_events
 
 
-## Extra files {#dev_signature_data_extrafiles}
+### Extra files {#dev_signature_data_extrafiles}
 
 Simulators can declare files that they load and manage. This helps users to provide the needed files, and also  
 notifies the OpenFLUID framework to check the presence of the file if it is required.   
@@ -202,7 +202,7 @@ _Example of extra file declarations:_
 @snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_extrafiles
 
 
-## Spatial units graph {#dev_signature_data_spatial}
+### Spatial units graph {#dev_signature_data_spatial}
 
 The spatial units graph representing the landscape can be modified by simulators.
 These modifications are declared in the signature function using two instructions.  
@@ -226,7 +226,7 @@ _Example of declarations for spatial units graph:_
 @snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_spatial
 
 
-# Complete signature example {#dev_signature_exmpl}
+## Complete signature example {#dev_signature_exmpl}
 
 The signature code below shows an example of a possible signature for a simulator.  
   

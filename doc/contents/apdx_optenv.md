@@ -1,8 +1,8 @@
-@page apdx_optenv Environment variables and command line usage 
+# Environment variables and command line usage {#apdx_optenv}
 
 [TOC]
 
-# Environment variables {#apdx_optenv_envvar}
+## Environment variables {#apdx_optenv_envvar}
 
 The OpenFLUID framework takes into account the following environment
 variables (if they are set in the current running environment):
@@ -17,7 +17,7 @@ The path are separated by colon on UNIX systems, and by semicolon on Windows sys
 The path are separated by colon on UNIX systems, and by semicolon on Windows systems. 
 
 
-# Command line usage {#apdx_optenv_cmdopt}
+## Command line usage {#apdx_optenv_cmdopt}
 
 Usage : `openfluid [<command>] [<options>] [<args>]`
 
@@ -34,7 +34,7 @@ Available options:
 * `--version` : display version
 
 
-## Running simulations {#apdx_optenv_cmdopt_run}
+### Running simulations {#apdx_optenv_cmdopt_run}
 
 Run a simulation from a project or an input dataset.
 
@@ -64,7 +64,7 @@ openfluid run /path/to/project
 ``` 
 
 
-## Wares reporting {#apdx_optenv_cmdopt_report}
+### Wares reporting {#apdx_optenv_cmdopt_report}
 
 Display informations about available wares
 
@@ -90,7 +90,7 @@ openfluid report observers --list
 ``` 
 
 
-## Paths {#apdx_optenv_cmdopt_paths}
+### Paths {#apdx_optenv_cmdopt_paths}
 
 Show search paths for wares
 
@@ -104,7 +104,7 @@ Available options:
 
 
 
-## Buddies {#apdx_optenv_cmdopt_buddies}
+### Buddies {#apdx_optenv_cmdopt_buddies}
 
 Execute a buddy. Available buddies are newsim, newdata, sim2doc, examples
 

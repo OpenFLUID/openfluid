@@ -172,7 +172,7 @@ h2 {
 .memtitle, dl.reflist dt {
   background-color: #eaeef5;
   background-image: none;
-  border-bottom: 1px solid;
+  border-bottom: none;
   border-color: #ccc;  
   box-shadow: none;
   font-weight : normal;
@@ -234,6 +234,10 @@ a.el {
 dt {
     font-weight: normal;
     font-style: italic;
+}
+
+div.contents {
+  margin: 45px;
 }
 
 div.ah {
