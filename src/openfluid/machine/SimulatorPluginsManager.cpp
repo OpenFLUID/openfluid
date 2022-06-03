@@ -53,7 +53,7 @@ OPENFLUID_SINGLETON_INITIALIZATION(SimulatorPluginsManager)
 
 
 std::vector<WareContainer<openfluid::ware::SimulatorSignature>>
-SimulatorPluginsManager::getAvailableGhosts(const std::string& /*Pattern*/) const
+SimulatorPluginsManager::getAvailableGhosts(const std::string& IDPattern) const
 {
   std::vector<WareContainer<openfluid::ware::SimulatorSignature>> Containers;
   std::vector<std::string> PluginsPaths = getPluginsSearchPaths();
@@ -78,12 +78,15 @@ SimulatorPluginsManager::getAvailableGhosts(const std::string& /*Pattern*/) cons
     openfluid::ware::SimulatorSignature* TmpSignature = new openfluid::ware::SimulatorSignature();
     if (openfluid::machine::GhostSimulatorFileIO::loadFromFile(GhostsFiles[i],*TmpSignature))
     {
-      auto CurrentGhost = createContainer();
-      CurrentGhost.setGhost();
-      CurrentGhost.setPath(GhostsFiles[i]);
-      CurrentGhost.setSignature(TmpSignature);
-      CurrentGhost.validate();
-      Containers.push_back(std::move(CurrentGhost));
+      if (IDPattern.empty() || openfluid::tools::matchWithWildcard(IDPattern,TmpSignature->ID))
+      {
+        auto CurrentGhost = createContainer();
+        CurrentGhost.setGhost();
+        CurrentGhost.setPath(GhostsFiles[i]);
+        CurrentGhost.setSignature(TmpSignature);
+        CurrentGhost.validate();
+        Containers.push_back(std::move(CurrentGhost));
+      }
     }
   }
 

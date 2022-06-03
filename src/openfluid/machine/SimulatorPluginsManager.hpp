@@ -122,8 +122,14 @@ class OPENFLUID_API SimulatorPluginsManager :
     // =====================================================================
 
 
+    /**
+      Searches for available ghosts using the standard and user paths
+      @param[in] IDPattern if not empty, the list of available wares is filtered using the given pattern 
+                           based on wildcard matching
+      @return the found ghosts
+    */ 
     std::vector<WareContainer<openfluid::ware::SimulatorSignature>> 
-    getAvailableGhosts(const std::string& Pattern = "") const;
+    getAvailableGhosts(const std::string& IDPattern = "") const;
 
 };
 
