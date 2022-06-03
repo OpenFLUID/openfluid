@@ -175,14 +175,10 @@ void Factory::buildDomainFromDescriptor(const openfluid::fluidx::SpatialDomainDe
 void Factory::buildDatastoreFromDescriptor(const openfluid::fluidx::DatastoreDescriptor& Descriptor,
                                            openfluid::core::Datastore& Store)
 {
-  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t Items = Descriptor.items();
-
-  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t::iterator it;
-
-  for(it = Items.begin() ; it != Items.end() ; ++it)
+  for(const auto& Desc : Descriptor.items())
   {
     openfluid::core::DatastoreItem* Item = new openfluid::core::DatastoreItem(
-        (*it)->getID(),(*it)->getPrefixPath(),(*it)->getRelativePath(), (*it)->getType(), (*it)->getUnitsClass());
+        Desc->getID(),Desc->getPrefixPath(),Desc->getRelativePath(), Desc->getType(), Desc->getUnitsClass());
 
     Store.addItem(Item);
   }
@@ -196,27 +192,25 @@ void Factory::buildDatastoreFromDescriptor(const openfluid::fluidx::DatastoreDes
 void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
                                                ModelInstance& MInstance)
 {
-  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::const_iterator it;
-  
   if (ModelDesc.items().empty())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No simulator in model");
   }
 
-  for (it=ModelDesc.items().begin();it!=ModelDesc.items().end();++it)
+  for (const auto* Desc : ModelDesc.items())
   {
-    if ((*it)->isEnabled())
+    if (Desc->isEnabled())
     {
       ModelItemInstance* IInstance = nullptr;
 
-      if ((*it)->isType(openfluid::ware::WareType::UNDEFINED))
+      if (Desc->isType(openfluid::ware::WareType::UNDEFINED))
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   "unknown model item type");
       }
-      else if ((*it)->isType(openfluid::ware::WareType::SIMULATOR))
+      else if (Desc->isType(openfluid::ware::WareType::SIMULATOR))
       {
-        openfluid::ware::WareID_t SimID = ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID();
+        openfluid::ware::WareID_t SimID = dynamic_cast<const openfluid::fluidx::SimulatorDescriptor*>(Desc)->getID();
 
         if (!openfluid::tools::isValidWareID(SimID))
         {
@@ -230,13 +224,12 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
 
         // TODO manage invalid container (should not occur)
         IInstance = new ModelItemInstance(SimulatorRegistry::instance()->wareContainer(SimID));
-        IInstance->Params = (*it)->getParameters();
+        IInstance->Params = Desc->getParameters();
       }
-      else if ((*it)->isType(openfluid::ware::WareType::GENERATOR))
+      else if (Desc->isType(openfluid::ware::WareType::GENERATOR))
       {
-        // instanciation of a data generator
-        openfluid::fluidx::GeneratorDescriptor* GenDesc = (openfluid::fluidx::GeneratorDescriptor*)(*it);
-        
+        auto GenDesc = dynamic_cast<const openfluid::fluidx::GeneratorDescriptor*>(Desc);
+
         auto GenID = SimulatorRegistry::instance()->addGenerator({
                        GenDesc->getGeneratorMethod(),
                        GenDesc->getUnitsClass(),
@@ -251,7 +244,7 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
  
         // TODO manage invalid container (should not occur)
         IInstance = new ModelItemInstance(SimulatorRegistry::instance()->generatorContainer(GenID));
-        IInstance->Params = (*it)->getParameters();
+        IInstance->Params = GenDesc->getParameters();
       }
 
       openfluid::base::RunContextManager::instance()->processWareParams(IInstance->Params);
@@ -273,14 +266,12 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
 void Factory::buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::MonitoringDescriptor& MonDesc,
                                                     MonitoringInstance& MonInstance)
 {
-  openfluid::fluidx::MonitoringDescriptor::SetDescription_t::const_iterator it;
-  ObserverInstance* OInstance;
-
-  for (it=MonDesc.items().begin();it!=MonDesc.items().end();++it)
+  for (const auto* Desc : MonDesc.items())
   {
-    if ((*it)->isEnabled())
+    if (Desc->isEnabled())
     {
-      openfluid::ware::WareID_t ID = ((openfluid::fluidx::ObserverDescriptor*)(*it))->getID();
+      ObserverInstance* OInstance = nullptr;
+      openfluid::ware::WareID_t ID = Desc->getID();
 
       if (!openfluid::tools::isValidWareID(ID))
       {
@@ -294,7 +285,7 @@ void Factory::buildMonitoringInstanceFromDescriptor(const openfluid::fluidx::Mon
 
       // TODO manage invalid container (should not occur)
       OInstance = new ObserverInstance(ObserverRegistry::instance()->wareContainer(ID));
-      OInstance->Params = (*it)->getParameters();
+      OInstance->Params = Desc->getParameters();
       openfluid::base::RunContextManager::instance()->processWareParams(OInstance->Params);
 
       MonInstance.appendObserver(OInstance);

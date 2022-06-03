@@ -90,14 +90,11 @@ void MonitoringInstance::appendObserver(ObserverInstance* ObsInstance)
 void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 {
   openfluid::machine::ObserverPluginsManager* OPlugsMgr = openfluid::machine::ObserverPluginsManager::instance();
+  auto ObsIter = m_Observers.begin();
 
-  std::list<ObserverInstance*>::const_iterator ObsIter;
-  ObserverInstance* CurrentObserver;
-
-  ObsIter = m_Observers.begin();
   while (ObsIter != m_Observers.end())
   {
-    CurrentObserver = (*ObsIter);
+    auto CurrentObserver = *ObsIter;
 
     // TODO throw execption if body is already set?
     if (!CurrentObserver->Body)
@@ -111,7 +108,6 @@ void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger
     CurrentObserver->Body->linkToSpatialGraph(&(m_SimulationBlob.spatialGraph()));
     CurrentObserver->Body->linkToDatastore(&(m_SimulationBlob.datastore()));
     CurrentObserver->Body->initializeWare(CurrentObserver->Container.signature()->ID);
-
     ++ObsIter;
   }
 

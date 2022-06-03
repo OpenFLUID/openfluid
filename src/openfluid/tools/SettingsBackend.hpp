@@ -217,7 +217,7 @@ class OPENFLUID_API SettingsBackend
 
     openfluid::thirdparty::json m_Config;
 
-    const unsigned int m_VersionFormat = 2;
+    const unsigned int m_FormatVersion = 2; // TODO to implement in settings files
 
     std::string m_BackendFile;
 

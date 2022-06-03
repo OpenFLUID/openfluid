@@ -96,14 +96,10 @@ class OPENFLUID_API ChronFileInterpolator
 
     static void displayChronSerie(ChronologicalSerie& Data)
     {
-      ChronologicalSerie::iterator it;
-      ChronologicalSerie::iterator itb = Data.begin();
-      ChronologicalSerie::iterator ite = Data.end();
-
       std::cout << "--------------------------------" << std::endl;
-      for (it=itb;it!=ite;++it)
+      for (const auto& Datum : Data)
       {
-        std::cout << (*it).first.getAsISOString() << " -> " << (*it).second << std::endl;
+        std::cout << Datum.first.getAsISOString() << " -> " << Datum.second << std::endl;
       }
       std::cout << "--------------------------------" << std::endl;
     }

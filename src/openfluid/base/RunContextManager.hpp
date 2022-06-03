@@ -138,7 +138,7 @@ class OPENFLUID_API RunContextManager : public Environment
 
     /**
       Sets the full path of the simulation input directory
-      @return the full path of the directory
+      @param[in] InputDir the full path of the directory
     */
     void setInputDir(const std::string& InputDir);
 
@@ -160,7 +160,7 @@ class OPENFLUID_API RunContextManager : public Environment
 
     /**
       Sets the full path of the simulation output directory
-      @return the full path of the directory
+      @param[in] OutputDir the full path of the directory
     */
     void setOutputDir(const std::string& OutputDir);
 
@@ -222,10 +222,11 @@ class OPENFLUID_API RunContextManager : public Environment
 
     /**
       Unsets the size of the buffer set by the user for simulation variables values
-      @return the size of the buffer
     */
     void unsetValuesBufferUserSize()
-    { m_ValuesBufferSize = 0; }
+    { 
+      m_ValuesBufferSize = 0; 
+    }
 
     /**
       Returns true if the size of the buffer for simulation variables values has been set by the user

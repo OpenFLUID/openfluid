@@ -59,13 +59,25 @@ class OPENFLUID_API GeneratorSpecs
 {
   public:
 
+    /**
+      The method used by the generator to produce the variable
+    */
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method = 
       openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE;
 
+    /**
+      The units class on which the genrators produces the variable
+    */
     openfluid::core::UnitsClass_t UnitsClass;
 
+    /**
+      The name of the produced variable
+    */
     openfluid::core::VariableName_t VariableName;
     
+    /**
+      The size of the produced variable. if > 1, the variabble is a vector of double
+    */
     unsigned int VariableSize = 1;
 };
 
@@ -83,7 +95,7 @@ class OPENFLUID_API SimulatorRegistry : public WareRegistry<openfluid::ware::Sim
   private:
 
     WaresByID_t m_Generators;
-    
+
 
     SimulatorRegistry();
 
@@ -100,35 +112,82 @@ class OPENFLUID_API SimulatorRegistry : public WareRegistry<openfluid::ware::Sim
 
   public:
 
+    /**
+      Loads a simulator ware and adds it in the registry if everything went fine
+      @param[in] ID the ID of the ware to load
+      @return true if the wares is successfully added
+    */
     bool addWare(const openfluid::ware::WareID_t& ID);
 
+    /**
+      Automatically discovers simulators wares (plugins and ghosts) and adds it in the registry, 
+      optionally filtered on IDs using a given pattern
+      @param[in] IDPattern the pattern to filter the wares on ID. Default is empty (no filtering)
+    */
     void discoverWares(const std::string IDPattern = "");
 
+    /**
+      Automatically discovers simulators wares (plugins and optionnaly ghosts) and adds it in the registry, 
+      optionally filtered on IDs using a given pattern
+      @param[in] WithGhosts enable/disable the search for ghosts simulators
+      @param[in] IDPattern the pattern to filter the wares on ID. Default is empty (no filtering)
+    */
     void discoverWares(bool WithGhosts, const std::string IDPattern = "");
 
+    /**
+      Creates a generator and adds it in the registry if everything went fine
+      @param[in] Specs the specifications of the generator to create
+      @return the ID of the generator if successfully added, an empty string otherwise
+    */
     openfluid::ware::WareID_t addGenerator(const GeneratorSpecs& Specs);
 
+    /**
+      Returns the container of the generator given by its ID
+      @param[in] ID The ID of the ware
+      @return The container of the requested generator, an invalid container if not found
+    */
     const WareContainer<openfluid::ware::SimulatorSignature>& 
     generatorContainer(const openfluid::ware::WareID_t& ID) const;
 
+   /**
+      Returns the container of the simulator ware or the generator given by its ID.
+      It searches first in the available simulators then in the created generators.
+      @param[in] ID The ID of the simulator or generator
+      @return The container of the requested ware, an invalid container if not found
+    */
     const WareContainer<openfluid::ware::SimulatorSignature>& 
     wareOrGeneratorContainer(const openfluid::ware::WareID_t& ID) const;
 
+    /**
+      Returns true if a generator already exists with the given ID
+      @param[in] ID The ID of the generator
+      @return true if the generator exists
+    */
     bool hasGenerator(const openfluid::ware::WareID_t& ID) const
     {
       return (m_Generators.find(ID) != m_Generators.end());
     }
 
+    /**
+      Returns the created generators, indexed by ID
+      @return an ID-container map of generators
+    */
     const WaresByID_t& generators() const
     {
       return m_Generators;
     }
 
+    /**
+      Clears the generators stored in the registry
+    */
     void clearGenerators()
     {
       m_Generators.clear();
     }
 
+    /**
+      Clears the registry (simulators and generators)
+    */
     void clear()
     {
       clearWares();

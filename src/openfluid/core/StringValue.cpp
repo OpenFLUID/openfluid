@@ -642,9 +642,9 @@ bool StringValue::toMatrixValue(const unsigned int& RowLength, MatrixValue& Val)
 
   MatrixValue TmpMatrix(RowLength,TmpRowsNbr);
 
-  for (std::vector<std::string>::const_iterator it=Splitted.begin(); it!= Splitted.end(); ++it)
+  for (const auto& Token : Splitted)
   {
-    if (!convertStringToDouble(*it,TmpDbl))
+    if (!convertStringToDouble(Token,TmpDbl))
     {
       return false;
     }

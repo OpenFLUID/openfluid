@@ -301,16 +301,14 @@ bool Attributes::isAttributeExist(const AttributeName_t& aName) const
 
 std::vector<AttributeName_t> Attributes::getAttributesNames() const
 {
-  std::vector<AttributeName_t> TheNames;
+  std::vector<AttributeName_t> Names;
 
-  AttributesMap_t::const_iterator it;
-
-  for (it = m_Data.begin(); it != m_Data.end(); ++it)
+  for (const auto& Attr : m_Data)
   {
-    TheNames.push_back(it->first);
+    Names.push_back(Attr.first);
   }
 
-  return TheNames;
+  return Names;
 }
 
 

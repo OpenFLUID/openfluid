@@ -202,15 +202,15 @@ openfluid::ware::WareParams_t
 {
   openfluid::ware::WareParams_t MergedParams = m_GlobalParams;
 
-  for(openfluid::ware::WareParams_t::const_iterator it = Params.begin();it != Params.end();++it)
+  for(const auto& P : Params)
   {
-    if(!it->second.data().empty())
+    if(!P.second.data().empty())
     {
-      MergedParams[it->first] = it->second;
+      MergedParams[P.first] = P.second;
     }
-    else if(!m_GlobalParams.count(it->first))
+    else if(!m_GlobalParams.count(P.first))
     {
-      MergedParams[it->first] = it->second;
+      MergedParams[P.first] = P.second;
     }
   }
 
@@ -322,11 +322,9 @@ void ModelInstance::clear()
                                               "Trying to clear model after while the model is initialized");
   }
 
-  std::list<ModelItemInstance*>::iterator it;
-
-  for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
+  for (auto* Item : m_ModelItems)
   {
-    (*it)->Body.reset();  // TODO how to delete signatures?
+    Item->Body.reset();
   }
 
   m_ModelItems.clear();

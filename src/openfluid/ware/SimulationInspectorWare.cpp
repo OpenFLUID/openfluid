@@ -904,9 +904,9 @@ openfluid::core::UnitsPtrList_t SimulationInspectorWare::OPENFLUID_GetUnits(
 
     if (UnitsListPtr)
     {
-      for (openfluid::core::UnitsList_t::iterator it = UnitsListPtr->begin(); it != UnitsListPtr->end(); ++it)
+      for (auto& Unit : *UnitsListPtr)
       {
-        UnitsPtrList.push_back(&(*it));
+        UnitsPtrList.push_back(&Unit);
       }
     }
   }

@@ -227,11 +227,10 @@ bool MapValue::remove(const std::string& Key)
 std::vector<std::string> MapValue::getKeys() const
 {
   std::vector<std::string> Keys;
-  Map_t::const_iterator it;
 
-  for (it=m_Value.begin(); it!=m_Value.end(); ++it)
+  for (const auto& KV : m_Value)
   {
-    Keys.push_back((*it).first);
+    Keys.push_back(KV.first);
   }
 
   return Keys;

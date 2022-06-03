@@ -72,10 +72,23 @@ class OPENFLUID_API ObserverRegistry : public WareRegistry<openfluid::ware::Obse
 
   public:
 
+    /**
+      Loads an observer ware and adds it in the registry if everything went fine
+      @param[in] ID the ID of the ware to load
+      @return true if the wares is successfully added
+    */
     bool addWare(const openfluid::ware::WareID_t& ID);
 
+    /**
+      Automatically discovers observer wares and adds it in the registry, 
+      optionally filtered on IDs using a given pattern
+      @param[in] IDPattern the pattern to filter the wares on ID. Default is empty (no filtering)
+    */
     void discoverWares(const std::string IDPattern = "");
 
+    /**
+      Clears the registry
+    */
     void clear()
     {
       clearWares();

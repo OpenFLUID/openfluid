@@ -233,8 +233,6 @@ UnitsPtrList_t* SpatialUnit::childSpatialUnits(const UnitsClass_t& aClass)
 
 void SpatialUnit::streamContents(std::ostream& OStream)
 {
-  UnitsPtrList_t::iterator IDIt;
-  LinkedUnitsListByClassMap_t::iterator ClassIt;
   UnitsPtrList_t UnitsList;
 
   OStream << m_Class << " #"<< m_ID << " (order: " << m_PcsOrder << ")";
@@ -243,14 +241,13 @@ void SpatialUnit::streamContents(std::ostream& OStream)
   {
     OStream << " To[";
 
-    for (ClassIt=m_ToUnits.begin();ClassIt!=m_ToUnits.end();++ClassIt)
+    for (const auto& UnitsClass : m_ToUnits)
     {
+      UnitsList = UnitsClass.second;
 
-      UnitsList = ClassIt->second;
-
-     for (IDIt=UnitsList.begin();IDIt!=UnitsList.end();++IDIt)
+      for (const auto& Unit : UnitsList)
       {
-       OStream << "(" << (*IDIt)->getClass() << "," <<  (*IDIt)->getID() << ") ";
+       OStream << "(" << Unit->getClass() << "," << Unit->getID() << ") ";
       }
 
     }
@@ -261,14 +258,14 @@ void SpatialUnit::streamContents(std::ostream& OStream)
   {
     OStream << " From[";
 
-    for (ClassIt=m_FromUnits.begin();ClassIt!=m_FromUnits.end();++ClassIt)
+    for (const auto& UnitsClass : m_ToUnits)
     {
 
-      UnitsList = ClassIt->second;
+      UnitsList = UnitsClass.second;
 
-     for (IDIt=UnitsList.begin();IDIt!=UnitsList.end();++IDIt)
+      for (const auto& Unit : UnitsList)
       {
-       OStream << "(" << (*IDIt)->getClass() << "," <<  (*IDIt)->getID() << ") ";
+       OStream << "(" << Unit->getClass() << "," << Unit->getID() << ") ";
       }
 
     }

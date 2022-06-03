@@ -309,9 +309,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       m_Title("Spatial domain graph"), m_BaseFileName("spatial-graph"),
       m_Init(false),m_EveryTime(false),m_Final(false),
       m_ShowPcsOrd(false), m_ShowAttributes(false), m_ShowVariables(false)
-    {
-
-    }
+    { }
 
 
     // =====================================================================
@@ -319,9 +317,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
 
     ~DotFilesObserver()
-    {
-
-    }
+    { }
 
 
     // =====================================================================

@@ -252,14 +252,14 @@ bool SpatialDomainDescriptor::isClassNameExists(const openfluid::core::UnitsClas
 
 std::set<std::string> SpatialDomainDescriptor::getClassNames() const
 {
-  std::set<std::string> Classes;
+  std::set<std::string> Names;
 
-  for (SpatialUnitsByIDByClass_t::const_iterator it = m_SpatialUnits.begin(); it != m_SpatialUnits.end(); ++it)
+  for (const auto& UnitsClass : m_SpatialUnits)
   {
-    Classes.insert(it->first);
+    Names.insert(UnitsClass.first);
   }
 
-  return Classes;
+  return Names;
 }
 
 

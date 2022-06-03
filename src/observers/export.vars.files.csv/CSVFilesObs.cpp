@@ -127,6 +127,9 @@ class CSVFilesObserver : public CSVFilesObserverBase
 
   public:
     
+    CSVFilesObserver() : CSVFilesObserverBase()
+    { }
+
     ~CSVFilesObserver()
     {
       onFinalizedRun();

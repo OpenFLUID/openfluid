@@ -152,46 +152,37 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
                             bool UpdateMode,
                             const std::string& SimulatorID)
 {
-  openfluid::core::UnitsList_t::iterator UnitIter;
-  openfluid::core::UnitsList_t* UnitList;
+  openfluid::core::UnitsList_t* UnitsList = nullptr;
 
-  UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
   {
-    UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+    UnitsList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   }
   else
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Unit class " + ClassName +
                                               " does not exist for " + VarName +
-                                             " variable produced by " + SimulatorID);
+                                              " variable produced by " + SimulatorID);
   }
-
-  bool Status = true;
 
   // if not update mode, variables must not exist before creation
   if (!UpdateMode)
   {
-    UnitIter = UnitList->begin();
-    while (UnitIter != UnitList->end())
+    for (const auto& Unit : *UnitsList)
     {
-       Status = !((*UnitIter).variables()->isVariableExist(VarName));
-
-      if (!Status)
+      if (Unit.variables()->isVariableExist(VarName))
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                   VarName + " variable on " + ClassName +
                                                   " produced by " + SimulatorID +
                                                   " cannot be created because it is already created");
       }
-
-      ++UnitIter;
     }
   }
 
-  for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
+  for(auto& Unit : *UnitsList)
   {
-    (*UnitIter).variables()->createVariable(VarName,VarType);
+    Unit.variables()->createVariable(VarName,VarType);
   }
 }
 
@@ -204,13 +195,11 @@ void Engine::checkExistingAttribute(const openfluid::core::AttributeName_t AttrN
                                     const openfluid::core::UnitsClass_t ClassName,
                                     const std::string& SimulatorID)
 {
-  openfluid::core::UnitsList_t::const_iterator UnitIter;
-  openfluid::core::UnitsList_t* UnitList;
+  openfluid::core::UnitsList_t* UnitsList = nullptr;
 
-  UnitList = nullptr;
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
   {
-    UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+    UnitsList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   }
   else
   {
@@ -219,20 +208,14 @@ void Engine::checkExistingAttribute(const openfluid::core::AttributeName_t AttrN
                                              AttrName + " attribute required by " + SimulatorID);
   }
 
-  bool Status = true;
-
-  UnitIter = UnitList->begin();
-  while (Status && (UnitIter != UnitList->end()))
+  for(auto& Unit : *UnitsList)
   {
-    Status = (*UnitIter).attributes()->isAttributeExist(AttrName);
-    if (!Status)
+    if (!Unit.attributes()->isAttributeExist(AttrName))
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 AttrName + " attribute on " + ClassName +
                                                 " required by " + SimulatorID + " is not available");
     }
-
-    ++UnitIter;
   }
 }
 
@@ -245,13 +228,11 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
                              openfluid::core::UnitsClass_t ClassName,
                              const std::string& SimulatorID)
 {
-  openfluid::core::UnitsList_t::iterator UnitIter;
-  openfluid::core::UnitsList_t* UnitList;
-
-  UnitList = nullptr;
+  openfluid::core::UnitsList_t* UnitsList = nullptr;
+ 
   if (m_SimulationBlob.spatialGraph().isUnitsClassExist(ClassName))
   {
-    UnitList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
+    UnitsList = m_SimulationBlob.spatialGraph().spatialUnits(ClassName)->list();
   }
   else
   {
@@ -260,9 +241,9 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
                                                  AttrName + " attribute produced by " + SimulatorID);
   }
 
-  for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
+  for(auto& Unit : *UnitsList)
   {
-    (*UnitIter).attributes()->setValue(AttrName,openfluid::core::NullValue());
+    Unit.attributes()->setValue(AttrName,openfluid::core::NullValue());
   }
 }
 
@@ -273,25 +254,17 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
 
 void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 {
-  openfluid::core::UnitsListByClassMap_t::const_iterator UnitsClassesIter;
-  openfluid::core::UnitsList_t::const_iterator UnitsIter;
-  const openfluid::core::UnitsListByClassMap_t* AllUnits;
-  const openfluid::core::UnitsList_t* UnitsList;
   openfluid::core::VariableName_t ErrorVarName = "";
 
-  AllUnits = m_SimulationBlob.spatialGraph().allSpatialUnitsByClass();
-
-  for (UnitsClassesIter = AllUnits->begin(); UnitsClassesIter != AllUnits->end();++UnitsClassesIter)
+  for (const auto& UnitsClass : (*m_SimulationBlob.spatialGraph().allSpatialUnitsByClass()))
   {
-    UnitsList = UnitsClassesIter->second.list();
-
-    for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
+    for (const auto& Unit : (*UnitsClass.second.list()))
     {
-      if (!((*UnitsIter).variables()->checkAllVariablesCount(ExpectedVarsCount,ErrorVarName)))
+      if (!(Unit.variables()->checkAllVariablesCount(ExpectedVarsCount,ErrorVarName)))
       {
         openfluid::base::ExceptionContext Ctxt;
         Ctxt.addCodeLocation(OPENFLUID_CODE_LOCATION);
-        std::string UnitStr = (*UnitsIter).getClass() + "#" + std::to_string((*UnitsIter).getID());
+        std::string UnitStr = Unit.getClass() + "#" + std::to_string(Unit.getID());
         Ctxt.addSpatialUnit(UnitStr);
 
         throw openfluid::base::FrameworkException(Ctxt,"Production error for variable " +
@@ -460,17 +433,13 @@ void Engine::checkAttributesConsistency()
 
 void Engine::checkExtraFilesConsistency()
 {
-  std::list<ModelItemInstance*>::const_iterator SimIter;
   openfluid::ware::SignatureHandledData HData;
-  ModelItemInstance* CurrentSimulator;
-
 
   // on each simulator
-  for (SimIter = m_ModelInstance.items().begin(); SimIter != m_ModelInstance.items().end(); ++SimIter)
+  for (const auto* Sim : m_ModelInstance.items())
   {
-    CurrentSimulator = *SimIter;
 
-    HData = CurrentSimulator->Container.signature()->HandledData;
+    HData = Sim->Container.signature()->HandledData;
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
@@ -480,7 +449,7 @@ void Engine::checkExtraFilesConsistency()
         throw openfluid::base::FrameworkException(
                 OPENFLUID_CODE_LOCATION,
                 "File " + HData.RequiredExtraFiles[i] +
-                " required by " + CurrentSimulator->Container.signature()->ID + " not found"
+                " required by " + Sim->Container.signature()->ID + " not found"
               );
       }
     }

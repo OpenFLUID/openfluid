@@ -28,6 +28,8 @@
   with the terms contained in the written agreement between You and INRA.
   
 */
+
+
 /**
   @file WareContainer.hpp
 
@@ -52,6 +54,9 @@ namespace openfluid { namespace machine {
 typedef std::string UUID_t;
 
 
+/**
+  @tparam SignatureType the type of the signature to hold in the container
+*/
 template<class SignatureType> 
 class OPENFLUID_API WareContainer
 {  
@@ -89,16 +94,29 @@ class OPENFLUID_API WareContainer
     WareContainer(openfluid::ware::WareType WType) : m_WareType(WType)
     {  }
 
+    /**
+      Returns the ware type
+      @return The ware type
+    */
     openfluid::ware::WareType getWareType() const
     {
       return m_WareType;
     }
 
+    /**
+      Returns the path of the ware
+      @return The ware path
+    */
     std::string getPath() const
     {
       return m_Path;
     }
 
+    /**
+      Sets the path of the ware on disk
+      @param[in] Path the path
+      @throw openfluid::base::FrameworkException if path is already set
+    */
     void setPath(const std::string& Path)
     {
       if (m_Path.empty())
@@ -111,11 +129,20 @@ class OPENFLUID_API WareContainer
       }
     }
 
+    /**
+      Returns the link UID for parameterization UI
+      @return the link UID
+    */
     UUID_t getLinkUID() const
     {
       return m_LinkUID;
     }
 
+    /**
+      Sets the link UID for parameterization UI
+      @param[in] UID the UID
+      @throw openfluid::base::FrameworkException if UID is already set
+    */
     void setLinkUID(const UUID_t& UID)
     {
       if (m_LinkUID.empty())
@@ -128,36 +155,65 @@ class OPENFLUID_API WareContainer
       }
     }
 
+    /**
+      Gives the validation status
+      @return true if the conrtainer is valid
+    */
     bool isValid() const
     {
       return m_Valid;
     }
 
+    /**
+      Sets the container as valid
+      @note a container cannot be invalidated
+    */
     void validate()
     {
       m_Valid = true;
     }
 
+    /**
+      Returns the optional message aosciated to the container
+      @return the message
+    */
     std::string getMessage() const
     {
       return m_Message;
     }
 
+    /**
+      Sets the optional message aosciated to the container
+      @param[in] Message the message
+    */
     void setMessage(const std::string& Message)
     {
       m_Message = Message;
     }
 
+    /**
+      Returns a const reference to the signature as a unique pointer
+      @return the signature held in the container
+    */
     const std::unique_ptr<SignatureType>& signature() const
     {
       return m_Signature;
     }
 
+    /**
+      Indicates if a signature is held by the container
+      @return true if a signature is held
+    */
     bool hasSignature() const
     {
       return (m_Signature.get() != nullptr);
     }
 
+    /**
+      Sets the signature
+      @throw openfluid::base::FrameworkException if signature is already set
+      @note after using this method, the signature is owned by the container
+    */
     void setSignature(SignatureType* Signature)
     {
       if (m_Signature)
@@ -170,11 +226,19 @@ class OPENFLUID_API WareContainer
       }
     }
 
+    /**
+      Returns true if the ware is a ghost
+      @return true if the ware is a ghost
+    */
     bool isGhost() const
     {
       return m_Ghost;
     }
 
+    /**
+      Marks the ware as ghost
+      @note a container marked as ghost cannot be "unghosted"
+    */
     void setGhost()
     {
       m_Ghost = true;

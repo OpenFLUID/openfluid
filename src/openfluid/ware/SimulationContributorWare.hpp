@@ -363,7 +363,6 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       Deletes a unit from the set of units if exists
       @param[in] ClassName class name of the removed unit
       @param[in] ID ID of the added unit
-      @return true if the unit has been correctly deleted
 
       @cond OpenFLUID:completion
       {

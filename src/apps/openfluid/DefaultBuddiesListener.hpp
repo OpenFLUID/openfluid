@@ -59,9 +59,9 @@ class DefaultBuddiesListener : public openfluid::buddies::BuddiesListener
       }
       else
       {
-        for (it = Options.begin();it != Options.end();++it)
+        for (const auto& Opt : Options)
         {
-          std::cout << "    " << it->first << " : " << it->second << std::endl;
+          std::cout << "    " << Opt.first << " : " << Opt.second << std::endl;
         }
       }
     }

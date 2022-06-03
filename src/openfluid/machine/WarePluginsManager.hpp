@@ -270,9 +270,7 @@ class OPENFLUID_API WarePluginsManager
   public:
 
     virtual ~WarePluginsManager()
-    {
-
-    }
+    {  }
 
 
     // =====================================================================
@@ -337,7 +335,7 @@ class OPENFLUID_API WarePluginsManager
 
     /**
       Lists available wares
-      @param[in] IDPattern Pattern if not empty, the list of available wares is filtered using the given pattern 
+      @param[in] IDPattern if not empty, the list of available wares is filtered using the given pattern 
                            based on wildcard matching
       @return The list of found wares
     */
@@ -390,7 +388,8 @@ class OPENFLUID_API WarePluginsManager
 
     /**
       Loads only the body of a ware if the signature is already loaded
-      @param[inout] WareItem The ware container to complete which already includes the signature
+      @param[in] Container The ware container which already includes the signature
+      @return the instanciated body of the ware
     */
     BodyType* getWareBody(const WareContainer<SignatureType>& Container)
     {

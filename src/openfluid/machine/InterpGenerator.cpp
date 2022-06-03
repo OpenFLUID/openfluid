@@ -123,21 +123,18 @@ void InterpGenerator::prepareData()
 
   DistriTables.build(InputDir,m_SourcesFile,m_DistriFile);
 
-  openfluid::tools::DistributionTables::SourceIDFile_t::iterator itb = DistriTables.SourcesTable.begin();
-  openfluid::tools::DistributionTables::SourceIDFile_t::iterator ite = DistriTables.SourcesTable.end();
-
-  for (openfluid::tools::DistributionTables::SourceIDFile_t::iterator it = itb; it != ite; ++it)
+  for (auto& SFile : DistriTables.SourcesTable)
   {
 
-    std::string InFileName = openfluid::tools::FilesystemPath((*it).second).filename();
+    std::string InFileName = openfluid::tools::FilesystemPath(SFile.second).filename();
     std::string OutFilePath = openfluid::tools::Filesystem::joinPath({m_TmpDir,"interp_"+InFileName});
-    openfluid::tools::ChronFileLinearInterpolator CFLI((*it).second,OutFilePath,
+    openfluid::tools::ChronFileLinearInterpolator CFLI(SFile.second,OutFilePath,
                                                        OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),
                                                        OPENFLUID_GetDefaultDeltaT());
 
     CFLI.runInterpolation();
 
-    (*it).second = OutFilePath;
+    SFile.second = OutFilePath;
   }
 
   m_DistriBindings = new openfluid::tools::DistributionBindings(DistriTables);

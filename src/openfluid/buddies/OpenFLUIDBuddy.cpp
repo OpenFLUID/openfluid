@@ -134,14 +134,10 @@ bool OpenFLUIDBuddy::parseOptions(const std::string& OptsStr)
 
 void OpenFLUIDBuddy::streamOptions(std::ostream& OStream)
 {
-
-  std::map<std::string,std::string>::iterator it;
-
-  for (it = m_Options.begin();it != m_Options.end();++it)
+  for (const auto& Opt : m_Options)
   {
-    OStream << it->first << " : " << it->second << std::endl;
+    OStream << Opt.first << " : " << Opt.second << std::endl;
   }
-
 }
 
 

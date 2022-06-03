@@ -234,10 +234,9 @@ void Event::println() const
   std::cout << "Date : " << m_Date.getAsISOString() << std::endl;
   std::cout << "Infos : " << std::endl;
 
-  EventInfosMap_t::const_iterator it;
-  for (it = m_Infos.begin();it != m_Infos.end();++it)
+  for (const auto&  Ev : m_Infos)
   {
-    std::cout << " - " << it->first << " = " << it->second.data() << std::endl;
+    std::cout << " - " << Ev.first << " = " << Ev.second.data() << std::endl;
   }
 }
 

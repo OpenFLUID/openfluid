@@ -115,6 +115,9 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
 
   public:
     
+    CSVMultiColFilesObserver() : CSVFilesObserverBase()
+    { }
+
     ~CSVMultiColFilesObserver()
     {
       onFinalizedRun();
@@ -232,7 +235,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
           std::sort(UnitsClassArray.begin(), UnitsClassArray.end());
           
           // UNITS
-          for (const openfluid::core::UnitsClass_t UnitsClass : UnitsClassArray)
+          for (const auto& UnitsClass : UnitsClassArray)
           {
             std::vector<openfluid::core::UnitID_t> UnitIDArray;
             if (Triplet.UnitsIDsStr == "*")

@@ -44,6 +44,7 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/common/AppMainWindow.hpp>
+#include <openfluid/ui/common/DefaultAction.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -148,7 +149,7 @@ QAction* AppMainWindow::getResetGeometryAction(const QString& Text)
 {
   if (mp_ResetGeometryAction == nullptr)
   {
-    mp_ResetGeometryAction = new QAction(Text,this);
+    mp_ResetGeometryAction = new DefaultAction(Text,this);
     connect(mp_ResetGeometryAction, &QAction::triggered, this, &AppMainWindow::restoreToDefaultGeometry);
   }
 

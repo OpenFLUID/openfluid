@@ -47,18 +47,9 @@
 namespace openfluid { namespace machine {
 
 
-// =====================================================================
-// =====================================================================
-
-
 double SimulationProfiler::getDurationInDecimalSeconds(const TimeResolution_t& Duration)
 {
-/*  return (static_cast<double>(Duration.total_seconds()) +
-         (static_cast<double>(Duration.fractional_seconds()) /
-             static_cast<double>(boost::posix_time::time_duration::ticks_per_second())));*/
-
   return double(Duration.count()) / 1000000000;
-
 }
 
 
@@ -124,29 +115,24 @@ SimulationProfiler::~SimulationProfiler()
   CumulativeFile.open(openfluid::base::RunContextManager::instance()
     ->getOutputFullPath(openfluid::config::CUMULATIVE_PROFILE_FILE).c_str(),std::ios::out);
 
-  WareIDSequence_t::const_iterator ItPrf;
-  WareIDSequence_t::const_iterator ItPrfB = m_OriginalModelSequence.begin();
-  WareIDSequence_t::const_iterator ItPrfE = m_OriginalModelSequence.end();
-
   CumulativeFile << std::fixed << std::setprecision(9);
   CumulativeFile << "ID;INITPARAMS;PREPAREDATA;CHECKCONSISTENCY;INITIALIZERUN;RUNSTEP;FINALIZERUN\n";
 
-  for (ItPrf=ItPrfB;ItPrf!=ItPrfE;++ItPrf)
+  for (const auto& ID : m_OriginalModelSequence)
   {
-    CumulativeFile << *ItPrf;
+    CumulativeFile << ID;
     CumulativeFile << ";" <<
-        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::INITPARAMS]);
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[ID][openfluid::base::SimulationStatus::INITPARAMS]);
     CumulativeFile << ";" <<
-        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::PREPAREDATA]);
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[ID][openfluid::base::SimulationStatus::PREPAREDATA]);
     CumulativeFile << ";" <<
-        getDurationInDecimalSeconds(
-            m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::CHECKCONSISTENCY]);
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[ID][openfluid::base::SimulationStatus::CHECKCONSISTENCY]);
     CumulativeFile << ";" <<
-        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::INITIALIZERUN]);
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[ID][openfluid::base::SimulationStatus::INITIALIZERUN]);
     CumulativeFile << ";" <<
-        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::RUNSTEP]);
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[ID][openfluid::base::SimulationStatus::RUNSTEP]);
     CumulativeFile << ";" <<
-        getDurationInDecimalSeconds(m_CumulativeModelProfile[*ItPrf][openfluid::base::SimulationStatus::FINALIZERUN]);
+        getDurationInDecimalSeconds(m_CumulativeModelProfile[ID][openfluid::base::SimulationStatus::FINALIZERUN]);
     CumulativeFile << "\n";
   }
 
@@ -164,13 +150,9 @@ void SimulationProfiler::flushCurrentProfileToFiles()
 
   m_CurrentSequenceFile << m_CurrentTimeIndex;
 
-  WareIDSequence_t::const_iterator ItSeq;
-  WareIDSequence_t::const_iterator ItSeqB = m_CurrentTimeIndexModelSequence.begin();
-  WareIDSequence_t::const_iterator ItSeqE = m_CurrentTimeIndexModelSequence.end();
-
-  for (ItSeq=ItSeqB;ItSeq!=ItSeqE;++ItSeq)
+  for (const auto& ID : m_CurrentTimeIndexModelSequence)
   {
-    m_CurrentSequenceFile << ";" << *ItSeq;
+    m_CurrentSequenceFile << ";" << ID;
   }
 
   m_CurrentSequenceFile << "\n";
@@ -180,14 +162,9 @@ void SimulationProfiler::flushCurrentProfileToFiles()
 
   m_CurrentProfileFile << m_CurrentTimeIndex;
 
-  WareIDSequence_t::const_iterator ItPrf;
-  WareIDSequence_t::const_iterator ItPrfB = m_OriginalModelSequence.begin();
-  WareIDSequence_t::const_iterator ItPrfE = m_OriginalModelSequence.end();
-
-
-  for (ItPrf=ItPrfB;ItPrf!=ItPrfE;++ItPrf)
+  for (const auto& ID : m_OriginalModelSequence)
   {
-    CurrentTimeIndexModelProfile_t::const_iterator ItPrfT = m_CurrentTimeIndexModelProfile.find(*ItPrf);
+    auto ItPrfT = m_CurrentTimeIndexModelProfile.find(ID);
     if (ItPrfT == m_CurrentTimeIndexModelProfile.end())
     {
       m_CurrentProfileFile << ";NA";
@@ -197,7 +174,6 @@ void SimulationProfiler::flushCurrentProfileToFiles()
       m_CurrentProfileFile << ";" << getDurationInDecimalSeconds((*ItPrfT).second);
     }
   }
-
 
   m_CurrentProfileFile << "\n";
 

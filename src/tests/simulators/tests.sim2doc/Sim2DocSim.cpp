@@ -74,10 +74,10 @@ DEFINE_SIMULATOR_CLASS(Sim2DocSimulator)
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
+BEGIN_SIMULATOR_SIGNATURE("tests.sim2doc")
 
-  DECLARE_NAME("test simulator for ofefunc2doc");
-  DECLARE_DESCRIPTION("This function is a test for the ofefunc2doc doc extraction tool. "
+  DECLARE_NAME("test simulator for sim2doc");
+  DECLARE_DESCRIPTION("This function is a test for the sim2doc doc extraction tool. "
       "Do not use it in a model.");
 
   DECLARE_VERSION("1.0");

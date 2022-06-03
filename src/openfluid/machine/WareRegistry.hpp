@@ -51,8 +51,14 @@ class WareRegistry
 {
   public:
 
+    /**
+      Container type to store ware containers indexed by ID
+    */
     using WaresByID_t = std::map<openfluid::ware::WareID_t,WareContainer<SignatureType>>;
 
+    /**
+      Container type to store ware containers indexed by path
+    */
     using WaresByPath_t = std::map<std::string,WareContainer<SignatureType>>;
 
 
@@ -77,6 +83,11 @@ class WareRegistry
     virtual ~WareRegistry()
     {  }
 
+    /**
+      Adds a container in the registry, as an available or errored ware
+      @param[in] Container the container to add
+      @return true if the container was successfully added, false otherwise
+    */
     bool add(WareContainer<SignatureType> Container)
     {
       if (Container.isValid())
@@ -101,9 +112,6 @@ class WareRegistry
 
     virtual bool addWare(const openfluid::ware::WareID_t& ID) = 0;
 
-    /**
-      Clears and updates the registry with discovered plugins
-    */
     virtual void discoverWares(const std::string IDPattern) = 0;
 
     /**
@@ -132,16 +140,29 @@ class WareRegistry
       return m_InvalidWareContainer;
     }
 
+    /**
+      Returns the available wares, indexed by ID
+      @return an ID-container map of wares
+    */
     const WaresByID_t& availableWares() const
     {
       return m_AvailableWares;
     }
 
+    /**
+      Returns the errored wares, indexed by path
+      @return a path-container map of wares
+    */
     const WaresByPath_t& erroredWares() const
     {
       return m_ErroredWares;
     }
 
+    /**
+      Returns true if a ware has been already registered with the given ID
+      @param[in] ID The ID of the ware
+      @return true if the ware is registered
+    */
     bool hasAvailableWare(const openfluid::ware::WareID_t& ID) const
     {
       return (m_AvailableWares.find(ID) != m_AvailableWares.end());

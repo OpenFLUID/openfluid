@@ -85,11 +85,11 @@ std::vector<std::string> ColumnTextParser::tokenizeLine(const std::string& Line)
   boost::tokenizer<boost::escaped_list_separator<char>>
     Tokenizer(Line, boost::escaped_list_separator<char>("\\",m_Delimiter,"\""));
 
-  for (auto it=Tokenizer.begin(); it!=Tokenizer.end(); ++it)
+  for (const auto& Token : Tokenizer)
   {
-    if (!(*it).empty())
+    if (!Token.empty())
     {
-      Splitted.push_back(*it);
+      Splitted.push_back(Token);
     }
   }
 
@@ -108,11 +108,11 @@ std::vector<std::string> ColumnTextParser::tokenizeString(const std::string& Str
   boost::tokenizer<boost::escaped_list_separator<char>>
     Tokenizer(Str, boost::escaped_list_separator<char>("\\",m_Delimiter,"\""));
 
-  for (auto it=Tokenizer.begin(); it!=Tokenizer.end(); ++it)
+  for (const auto& Token : Tokenizer)
   {
-    if (!(*it).empty())
+    if (!Token.empty())
     {
-      Splitted.push_back(*it);
+      Splitted.push_back(Token);
     }
   }
 

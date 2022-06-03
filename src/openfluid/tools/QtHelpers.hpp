@@ -107,9 +107,9 @@ inline std::list<std::string> toStdStringList(const QStringList& StrList)
 {
   std::list<std::string> TmpList;
 
-  for (int i=0; i<StrList.size(); i++)
+  for (const auto& QStr : StrList)
   {
-    TmpList.push_back(StrList[i].toStdString());
+    TmpList.push_back(QStr.toStdString());
   }
 
   return TmpList;
@@ -129,9 +129,9 @@ inline std::vector<std::string> toStdStringVector(const QStringList& StrList)
 {
   std::vector<std::string> TmpVector;
 
-  for (int i=0; i<StrList.size(); i++)
+  for (const auto& QStr : StrList)
   {
-    TmpVector.push_back(StrList[i].toStdString());
+    TmpVector.push_back(QStr.toStdString());
   }
 
   return TmpVector;
@@ -168,9 +168,10 @@ inline QDateTime toQDateTime(const openfluid::core::DateTime& DT)
 inline QStringList toQStringList(const std::vector<std::string>& StrVect)
 {
   QStringList QSL;
-  for (unsigned int i=0; i<StrVect.size();++i)
+
+  for (const auto& Str : StrVect)
   {
-    QSL.append(QString(StrVect[i].c_str()));
+    QSL.append(QString::fromStdString(Str));
   }
 
   return QSL;
@@ -190,13 +191,9 @@ inline QStringList toQStringList(const std::set<std::string>& StrSet)
 {
   QStringList QSL;
 
-  std::set<std::string>::const_iterator it;
-  std::set<std::string>::const_iterator itb = StrSet.begin();
-  std::set<std::string>::const_iterator ite = StrSet.end();
-
-  for (it=itb;it!= ite;++it)
+  for (const auto& Str : StrSet)
   {
-    QSL.append(QString((*it).c_str()));
+    QSL.append(QString::fromStdString(Str));
   }
 
   return QSL;
@@ -216,13 +213,9 @@ inline QStringList toQStringList(const std::list<std::string>& StrList)
 {
   QStringList QSL;
 
-  std::list<std::string>::const_iterator it;
-  std::list<std::string>::const_iterator itb = StrList.begin();
-  std::list<std::string>::const_iterator ite = StrList.end();
-
-  for (it=itb;it!= ite;++it)
+  for (const auto& Str : StrList)
   {
-    QSL.append(QString((*it).c_str()));
+    QSL.append(QString::fromStdString(Str));
   }
 
   return QSL;
@@ -242,13 +235,9 @@ inline QStringList toQStringList(const std::set<int>& IntSet)
 {
   QStringList QSL;
 
-  std::set<int>::const_iterator it;
-  std::set<int>::const_iterator itb = IntSet.begin();
-  std::set<int>::const_iterator ite = IntSet.end();
-
-  for (it=itb;it!= ite;++it)
+  for (const auto& Int : IntSet)
   {
-    QSL.append(QString("%1").arg(*it));
+    QSL.append(QString("%1").arg(Int));
   }
 
   return QSL;
