@@ -42,7 +42,6 @@
 
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include <openfluid/ware/GeneratorSignature.hpp>
 
 #include "ModelItemWidget.hpp"
 

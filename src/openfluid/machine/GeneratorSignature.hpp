@@ -32,20 +32,21 @@
 /**
   @file GeneratorSignature.hpp
 
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
   @author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__
-#define __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__
+#ifndef __OPENFLUID_MACHINE_GENERATORSIGNATURE_HPP__
+#define __OPENFLUID_MACHINE_GENERATORSIGNATURE_HPP__
 
 
 #include <openfluid/dllexport.hpp>
-
+#include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
 
-namespace openfluid { namespace ware {
+namespace openfluid { namespace machine {
 
 
 class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignature
@@ -77,9 +78,9 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 
     virtual ~GeneratorSignature() = default;
 
-    WareType getType() const
+    openfluid::ware::WareType getType() const
     {
-      return WareType::GENERATOR;
+      return openfluid::ware::WareType::GENERATOR;
     }
 
 };
@@ -88,4 +89,4 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 } } //namespaces
 
 
-#endif /* __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__ */
+#endif /* __OPENFLUID_MACHINE_GENERATORSIGNATURE_HPP__ */

@@ -43,7 +43,7 @@
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/WareDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
-#include <openfluid/ware/GeneratorSignature.hpp>
+#include <openfluid/machine/GeneratorSignature.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -122,7 +122,7 @@ openfluid::ware::WareID_t SimulatorRegistry::addGenerator(const GeneratorSpecs& 
   {
     
     auto Container = createGeneratorContainer();
-    auto Signature = new openfluid::ware::GeneratorSignature(Specs.Method,Specs.UnitsClass,
+    auto Signature = new openfluid::machine::GeneratorSignature(Specs.Method,Specs.UnitsClass,
                                                              Specs.VariableName,Specs.VariableSize);  
 
     Container.setSignature(Signature);

@@ -36,11 +36,11 @@
 */
 
 
-#include <openfluid/ware/GeneratorSignature.hpp>
+#include <openfluid/machine/GeneratorSignature.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
 
 
-namespace openfluid { namespace ware {
+namespace openfluid { namespace machine {
 
 
 GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,

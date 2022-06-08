@@ -50,7 +50,6 @@
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
-#include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 

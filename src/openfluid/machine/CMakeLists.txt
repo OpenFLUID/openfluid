@@ -4,6 +4,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 SET(OPENFLUID_MACHINE_CPP GhostSimulatorFileIO.cpp
                           Generator.cpp FixedGenerator.cpp RandomGenerator.cpp InjectGenerator.cpp InterpGenerator.cpp
+                          GeneratorSignature.cpp
                           ModelInstance.cpp MonitoringInstance.cpp
                           DynamicLib.cpp
                           SimulatorPluginsManager.cpp ObserverPluginsManager.cpp
@@ -16,6 +17,7 @@ SET(OPENFLUID_MACHINE_CPP GhostSimulatorFileIO.cpp
 
 SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp GhostSimulatorFileIO.hpp
                           Generator.hpp FixedGenerator.hpp RandomGenerator.hpp InjectGenerator.hpp InterpGenerator.hpp
+                          GeneratorSignature.hpp
                           WareInstance.hpp ObserverInstance.hpp
                           ModelInstance.hpp MonitoringInstance.hpp
                           ExecutionTimePoint.hpp

@@ -44,7 +44,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/ware/GeneratorSignature.hpp>
+#include <openfluid/machine/GeneratorSignature.hpp>
 
 
 // =====================================================================
@@ -53,8 +53,8 @@
 
 BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
-  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED,
-                                           "TU","var");
+  openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED,
+                                              "TU","var");
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),1);
@@ -68,8 +68,8 @@ BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
-  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM,
-                                           "TU","var",5);
+  openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM,
+                                               "TU","var",5);
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
@@ -83,8 +83,8 @@ BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
-  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP,
-                                           "TU","var");
+  openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP,
+                                              "TU","var");
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
@@ -98,8 +98,8 @@ BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_InjectGeneratorConstructor)
 {
-  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT,
-                                           "TU","var");
+  openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT,
+                                              "TU","var");
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);

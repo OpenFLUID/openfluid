@@ -43,6 +43,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/machine/GeneratorSignature.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
@@ -359,7 +360,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
     else if (CurrentItem->Container.getWareType() == openfluid::ware::WareType::GENERATOR)
     {
       const auto* GenSignature = 
-        dynamic_cast<openfluid::ware::GeneratorSignature*>(CurrentItem->Container.signature().get());
+        dynamic_cast<openfluid::machine::GeneratorSignature*>(CurrentItem->Container.signature().get());
 
       if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED)
       {

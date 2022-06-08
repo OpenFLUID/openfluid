@@ -43,7 +43,7 @@
 #include <openfluid/ui/common/RunCLISimulationDialog.hpp>
 #include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/machine/ObserverRegistry.hpp>
-#include <openfluid/ware/GeneratorSignature.hpp>
+#include <openfluid/machine/GeneratorSignature.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/base/ApplicationException.hpp>
@@ -621,7 +621,7 @@ void ProjectCentral::checkModel()
         if (Item->isType(openfluid::ware::WareType::GENERATOR))
         {
           openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
-              (static_cast<const openfluid::ware::GeneratorSignature*>(Sign))->Method;
+              (static_cast<const openfluid::machine::GeneratorSignature*>(Sign))->Method;
 
           if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM && !RandomMinMaxChecked)
           {
