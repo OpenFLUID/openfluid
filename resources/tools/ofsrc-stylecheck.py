@@ -242,6 +242,9 @@ class SourceTreeChecker:
     @cppOnly
     def checkLicenseHeader(self, Filename, Content):
 
+        if self.isDirective(Content, "!lich"):
+            return
+
         if not Content.startswith(self.LicenseHeader):
             self.addProblem('LICH',Filename,1,'missing or malformed license header')
 
@@ -251,6 +254,9 @@ class SourceTreeChecker:
 
     @cppOnly
     def checkFilename(self, Filename, Content):
+
+        if self.isDirective(Content, "!fnam"):
+            return
 
         ExpectedFilename = os.path.basename(Filename)
         if ExpectedFilename.endswith('.in'):
@@ -270,6 +276,9 @@ class SourceTreeChecker:
 
     @cppOnly
     def checkFileAuthor(self, Filename, Content):
+
+        if self.isDirective(Content, "!auth"):
+            return
 
         Result = re.search( r'\@author \w+', Content)
         if not Result:

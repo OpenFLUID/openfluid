@@ -1,0 +1,5 @@
+This is a file with {{ braces }}
+and no {{percent}}
+
+That's it!
+

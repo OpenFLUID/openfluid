@@ -1,0 +1,1 @@
+This is a file with &amp;, &nbsp; and no &percent;

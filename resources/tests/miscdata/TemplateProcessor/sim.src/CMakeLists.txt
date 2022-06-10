@@ -1,0 +1,3 @@
+PROJECT("%%WAREID%%")
+
+ADD_SUBDIRECTORY(src)
