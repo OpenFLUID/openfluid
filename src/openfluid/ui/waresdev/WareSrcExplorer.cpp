@@ -42,14 +42,16 @@
 #include <QMessageBox>
 #include <QGuiApplication>
 #include <QClipboard>
+#include <QFileDialog>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
-#include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/WareGitDialog.hpp>
 #include <openfluid/ui/common/DefaultAction.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -346,21 +348,9 @@ void WareSrcExplorer::onNewFileAsked()
   }
 
   auto PInfo = 
-  openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(mp_Model->filePath(currentIndex()).toStdString());
+    openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(mp_Model->filePath(currentIndex()).toStdString());
 
-  NewSrcFileAssistant Assistant(
-    openfluid::ui::waresdev::WareSrcUIContainer(QString::fromStdString(PInfo.AbsoluteWarePath),
-                                                PInfo.WareType,QString::fromStdString(PInfo.WareDirName)),
-     this
-  );
-  Assistant.exec();
-
-  QString NewFilePath = Assistant.getNewFilePath();
-
-  if (!NewFilePath.isEmpty())
-  {
-    emit openPathAsked(NewFilePath);
-  }
+  openfluid::ui::common::createNewFile(this,QString::fromStdString(PInfo.AbsoluteWarePath));
 }
 
 
@@ -406,8 +396,7 @@ void WareSrcExplorer::onDeleteFileAsked()
   QString CurrentPath = mp_Model->filePath(currentIndex());
 
   if (QMessageBox::warning(this, tr("Delete file"), tr("Are you sure you want to delete \"%1\"?").arg(CurrentPath),
-                           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
-      == QMessageBox::Cancel)
+                           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
   {
     return;
   }

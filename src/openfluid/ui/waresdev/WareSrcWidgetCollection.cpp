@@ -51,6 +51,7 @@
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -964,11 +965,24 @@ void WareSrcWidgetCollection::newSimulatorFromGhost(const openfluid::ware::Simul
   openfluid::ui::waresdev::NewWareDialog Dialog(Signature, QApplication::activeWindow());
   if (Dialog.exec())
   {
-    QString NewPath = Dialog.getNewWarePath();
+    openfluid::waresdev::WareSrcFactory::Configuration Config;
+    Config.MainClassName = Dialog.getClassName();
+    Config.WithParamsUI = Dialog.isWareUI();
 
-    if (!NewPath.isEmpty())
+    auto WarePath =
+      openfluid::waresdev::WareSrcFactory::createSimulator(
+        Signature,Config,
+        openfluid::base::WorkspaceManager::instance()->getWaresPath(openfluid::ware::WareType::SIMULATOR)
+      );
+
+    if (!WarePath.empty())
     {
-      openPath(NewPath);
+      openPath(QString::fromStdString(WarePath));
+    }
+    else
+    {
+      QMessageBox::critical(nullptr, tr("Create simulator"), tr("Error creating simulator %2 from ghost")
+                                                             .arg(QString::fromStdString(Signature.ID)));
     }
   }
 }
@@ -1000,14 +1014,106 @@ void WareSrcWidgetCollection::newBuilderExtension()
 
 void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
 {
+  auto errorMessage = [](openfluid::ware::WareType Type, const openfluid::ware::WareID_t ID) {
+    // TODO merge with method in FLuidHubAPIClient into a generic function to manage ware types as translatable strings
+    QString TypeStr = "ware";
+    if (Type == openfluid::ware::WareType::SIMULATOR)
+    {
+      TypeStr = tr("simulator");
+    }
+    else if (Type == openfluid::ware::WareType::OBSERVER)
+    {
+      TypeStr = tr("observer");
+    }
+    else if (Type == openfluid::ware::WareType::BUILDEREXT)
+    {
+      TypeStr = tr("builder-extension");
+    }
+
+    QMessageBox::critical(nullptr, tr("Create %1").arg(TypeStr), tr("Error creating %1 %2")
+                                                                 .arg(TypeStr).arg(QString::fromStdString(ID)));
+  };
+
   openfluid::ui::waresdev::NewWareDialog Dialog(Type, QApplication::activeWindow());
+
   if (Dialog.exec())
   {
-    QString NewPath = Dialog.getNewWarePath();
 
-    if (!NewPath.isEmpty())
+    if (Type == openfluid::ware::WareType::SIMULATOR)
     {
-      openPath(NewPath);
+      openfluid::ware::SimulatorSignature Sign;
+      Sign.ID = Dialog.getID();
+      Sign.TimeScheduling.setAsDefaultDeltaT();
+
+      openfluid::waresdev::WareSrcFactory::Configuration Config;
+      Config.MainClassName = Dialog.getClassName();
+      Config.WithParamsUI = Dialog.isWareUI();
+
+      auto WarePath =
+        openfluid::waresdev::WareSrcFactory::createSimulator(
+          Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
+        );
+
+      if (!WarePath.empty())
+      {
+        openPath(QString::fromStdString(WarePath));
+      }
+      else
+      {
+        errorMessage(Type,Sign.ID);
+      }
+    }
+    else if (Type == openfluid::ware::WareType::OBSERVER)
+    {
+      openfluid::ware::ObserverSignature Sign;
+      Sign.ID = Dialog.getID();
+
+      openfluid::waresdev::WareSrcFactory::Configuration Config;
+      Config.MainClassName = Dialog.getClassName();
+      Config.WithParamsUI = Dialog.isWareUI();
+
+      auto WarePath = 
+        openfluid::waresdev::WareSrcFactory::createObserver(
+          Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
+        );
+
+      if (!WarePath.empty())
+      {
+        openPath(QString::fromStdString(WarePath));
+      }
+      else
+      {
+        errorMessage(Type,Sign.ID);
+      }
+    }
+    else if (Type == openfluid::ware::WareType::BUILDEREXT)
+    {
+      openfluid::builderext::BuilderExtensionSignature Sign;
+      Sign.ID = Dialog.getID();
+      Sign.MenuText = Dialog.getBuilderextMenuText().toStdString();
+      Sign.Category = Dialog.getBuilderextCategory();
+
+      openfluid::waresdev::WareSrcFactory::Configuration Config;
+      Config.MainClassName = Dialog.getClassName();
+      Config.UIMode = Dialog.getBuilderextMode();
+
+      auto WarePath = 
+        openfluid::waresdev::WareSrcFactory::createBuilderext(
+          Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
+        );
+
+      if (!WarePath.empty())
+      {
+        openPath(QString::fromStdString(WarePath));
+      }
+      else
+      {
+        errorMessage(Type,Sign.ID);
+      }
+    }
+    else
+    {
+      QMessageBox::critical(0, tr("Create ware"), tr("Internal error during process of ware creation"));
     }
   }
 }

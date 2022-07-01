@@ -667,7 +667,7 @@ void ProjectModuleWidget::whenExtensionAsked(const QString& ID)
 
           QString TabText = WaresTranslationsRegistry::instance()
             ->tryTranslate(QString::fromStdString(Ext.Container.getPath()),
-                           "signature",Ext.Container.signature()->MenuText);
+                           "signature",QString::fromStdString(Ext.Container.signature()->MenuText));
 
           // Replace empty menu text by extension ID
           TabText = QString::fromStdString(openfluid::tools::replaceEmptyString(TabText.toStdString(),WareID));

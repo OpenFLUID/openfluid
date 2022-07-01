@@ -61,7 +61,6 @@
         <widget class="QLabel" name="label">
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -113,23 +112,6 @@
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QLabel" name="SourceFilename_label">
-          <property name="text">
-           <string>Source file name (.cpp)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="SourceFilenameEdit">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="placeholderText">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
          <widget class="QLabel" name="label_13">
           <property name="text">
            <string>C++ class name</string>
@@ -139,7 +121,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="0" column="1">
          <widget class="QLineEdit" name="ClassNameEdit">
           <property name="text">
            <string/>
@@ -229,30 +211,13 @@
                <number>0</number>
               </property>
               <item row="0" column="0">
-               <widget class="QLabel" name="UiParamSourceFilename_label">
-                <property name="text">
-                 <string>UI parameterization source file name (.cpp)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="UiParamSourceFilenameEdit">
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="placeholderText">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
                <widget class="QLabel" name="label_15">
                 <property name="text">
                  <string>UI parameterization C++ class name</string>
                 </property>
                </widget>
               </item>
-              <item row="1" column="1">
+              <item row="0" column="1">
                <widget class="QLineEdit" name="UiParamClassNameEdit">
                 <property name="text">
                  <string/>
@@ -266,40 +231,6 @@
             </widget>
            </item>
           </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QWidget" name="Sim2docWidget" native="true">
-       <layout class="QVBoxLayout" name="verticalLayout_5">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="Line" name="Sim2doc_line">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
          </widget>
         </item>
        </layout>
@@ -404,7 +335,6 @@
       <widget class="QCheckBox" name="JsonCheckBox">
        <property name="font">
         <font>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -448,10 +378,8 @@
  </widget>
  <tabstops>
   <tabstop>IdEdit</tabstop>
-  <tabstop>SourceFilenameEdit</tabstop>
   <tabstop>ClassNameEdit</tabstop>
   <tabstop>UiParamGroupBox</tabstop>
-  <tabstop>UiParamSourceFilenameEdit</tabstop>
   <tabstop>UiParamClassNameEdit</tabstop>
   <tabstop>BextTypeComboBox</tabstop>
   <tabstop>BextCategoryComboBox</tabstop>

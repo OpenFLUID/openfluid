@@ -96,7 +96,7 @@ void WareSrcContainer::update()
   m_AbsoluteUiParamCppPath = "";
 
   std::string CMakeListsFilePath = 
-    openfluid::tools::Filesystem::joinPath({m_AbsolutePath,openfluid::config::WARESDEV_CMAKE_STDFILE});
+    openfluid::tools::Filesystem::joinPath({m_AbsolutePath,"src",openfluid::config::WARESDEV_SRC_CMAKESTDFILE});
 
   if (openfluid::tools::Path(CMakeListsFilePath).isFile())
   {
@@ -111,7 +111,7 @@ void WareSrcContainer::update()
   }
 
   std::string CMakeConfigFilePath = 
-      openfluid::tools::Filesystem::joinPath({m_AbsolutePath,openfluid::config::WARESDEV_CMAKE_USERFILE}); 
+      openfluid::tools::Filesystem::joinPath({m_AbsolutePath,"src",openfluid::config::WARESDEV_SRC_CMAKEUSERFILE});
 
   if (openfluid::tools::Path(CMakeConfigFilePath).isFile())
   {
@@ -129,21 +129,22 @@ void WareSrcContainer::update()
 
     CMakeConfigFile.close();
 
-    auto MainCppFilename = searchMainCppFileName(CMakeConfigContent);
+    std::string MainCppFilename = openfluid::config::WARESDEV_SRC_MAINFILE;
     if (!MainCppFilename.empty())
     {
-      std::string MainCppFilePath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath,MainCppFilename}); 
-
+      std::string MainCppFilePath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath,"src",MainCppFilename});
+ 
       if (openfluid::tools::Path(MainCppFilePath).isFile())
       {
         m_AbsoluteMainCppPath = MainCppFilePath;
       }
     }
 
-    auto UiParamCppFilename = searchUiParamCppFileName(CMakeConfigContent);
+    std::string UiParamCppFilename = openfluid::config::WARESDEV_SRC_PARAMSUIFILE;
     if (!UiParamCppFilename.empty())
     {
-      std::string UiParamCppFilePath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath,UiParamCppFilename});
+      std::string UiParamCppFilePath = 
+        openfluid::tools::Filesystem::joinPath({m_AbsolutePath,"src",UiParamCppFilename});
 
       if (openfluid::tools::Path(UiParamCppFilePath).isFile())
       {
@@ -152,60 +153,6 @@ void WareSrcContainer::update()
     }
 
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string WareSrcContainer::searchMainCppFileName(const std::string& CMakeFileContent)
-{
-  const auto Lines = openfluid::tools::splitString(CMakeFileContent,"\n"); 
-
-  std::string Expr =  "^\\s*SET\\s*\\((?:"+openfluid::config::WARESDEV_CMAKE_SIMCPPVAR+
-                "|"+openfluid::config::WARESDEV_CMAKE_OBSCPPVAR+
-                "|"+openfluid::config::WARESDEV_CMAKE_BEXTCPPVAR+
-                ")\\s+([\\w_.-]+\\.cpp).*$";
-
-  std::regex RE(Expr);
-  std::smatch M;
-
-  for (const auto& L : Lines)
-  {
-    if (std::regex_match(L,M,RE) && !M.empty() > 0)
-    {
-      return M[1];
-    }
-  }
-
-  return "";
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string WareSrcContainer::searchUiParamCppFileName(const std::string& CMakeFileContent)
-{
-  const auto Lines = openfluid::tools::splitString(CMakeFileContent,"\n"); 
-
-  std::string Expr =  "^\\s*SET\\s*\\((?:SIM_PARAMSUI_CPP|OBS_PARAMSUI_CPP)\\s+([\\w_.-]+\\.cpp).*$";
-
-  std::regex RE(Expr);
-  std::smatch M;
-
-  for (const auto& L : Lines)
-  {
-    if (std::regex_match(L,M,RE) && !M.empty() > 0)
-    {
-      return M[1];
-    }
-  }
-
-
-  return "";
 }
 
 
@@ -228,7 +175,7 @@ std::vector<std::string> WareSrcContainer::getDefaultFilesPaths()
   }
   else
   {
-    auto FoundFiles = openfluid::tools::Filesystem::findFilesByExtension(m_AbsolutePath,"cpp",false);
+    auto FoundFiles = openfluid::tools::Filesystem::findFilesByExtension(m_AbsolutePath+"/src","cpp",false);
 
     if (!FoundFiles.empty())
     {

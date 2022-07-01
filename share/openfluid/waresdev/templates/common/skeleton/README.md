@@ -1,0 +1,3 @@
+# %%WAREID%% %%WARETYPE%%
+
+%%WAREDESCRIPTION%%

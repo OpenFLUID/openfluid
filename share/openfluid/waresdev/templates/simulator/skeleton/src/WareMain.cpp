@@ -1,20 +1,27 @@
 /**
-  @file %%ROOTCPPFILENAME%%
+  @file WareMain.cpp
 */
 
 
-#include <openfluid/ware/PluggableObserver.hpp>
+/*
+<sim2doc>
+
+</sim2doc>
+*/
+
+
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_OBSERVER_SIGNATURE("%%WAREID%%")
+BEGIN_SIMULATOR_SIGNATURE("%%WAREID%%")
 
 %%SIGNATUREINFOS%%
-
-END_OBSERVER_SIGNATURE
+%%SIMSIGNATUREDATA%%
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -24,74 +31,95 @@ END_OBSERVER_SIGNATURE
 /**
 
 */
-class %%CLASSNAME%% : public openfluid::ware::PluggableObserver
+class %%CLASSNAME%% : public openfluid::ware::PluggableSimulator
 {
+  private:
 
-
+  
   public:
 
-    %%CLASSNAME%%() : PluggableObserver()
+  
+    %%CLASSNAME%%(): PluggableSimulator()
     {
-
+  
+  
     }
-
+  
+  
     // =====================================================================
     // =====================================================================
-
-
+  
+  
     ~%%CLASSNAME%%()
     {
-
+  
+  
     }
-
-
+  
+  
     // =====================================================================
     // =====================================================================
-
-
+  
+  
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)
     {
 
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    void onPrepared()
-    {
 
     }
 
 
     // =====================================================================
     // =====================================================================
-
-
-    void onInitializedRun()
+  
+  
+    void prepareData()
     {
-
+  
+  
+    }
+  
+  
+    // =====================================================================
+    // =====================================================================
+  
+  
+    void checkConsistency()
+    {
+  
+  
+    }
+  
+  
+    // =====================================================================
+    // =====================================================================
+  
+  
+    openfluid::base::SchedulingRequest initializeRun()
+    {  
+%%SIMINITCODE%%      
+      return %%SIMSCHEDRETURN%%;
     }
 
 
     // =====================================================================
     // =====================================================================
-
-
-    void onStepCompleted()
+  
+  
+    openfluid::base::SchedulingRequest runStep()
     {
-
+%%SIMRUNCODE%%
+      return %%SIMSCHEDRETURN%%;
     }
 
 
     // =====================================================================
     // =====================================================================
-
-
-    void onFinalizedRun()
+  
+  
+    void finalizeRun()
     {
-
+  
+  
     }
 
 };
@@ -101,11 +129,9 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableObserver
 // =====================================================================
 
 
-DEFINE_OBSERVER_CLASS(%%CLASSNAME%%)
+DEFINE_SIMULATOR_CLASS(%%CLASSNAME%%);
 
 
 DEFINE_WARE_LINKUID(WARE_LINKUID)
-
-
 
 

@@ -34,53 +34,197 @@
   @file WareSrcFactory.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
  */
-
-
-#include <QObject>
-#include <QCoreApplication>
-#include <QRegExp>
-#include <QTextStream>
 
 
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace waresdev {
 
 
-WareSrcFactory::WareSrcFactory(openfluid::ware::WareType Type) :
-    m_WareId("")
+openfluid::tools::Path getTemplateSkeletonPath(const std::string& Type)
+{
+  return openfluid::tools::Path({openfluid::base::Environment::getInstallPrefix(),
+                                 openfluid::config::SHARE_WARESDEV_INSTALL_PATH,
+                                 "templates",Type,"skeleton"});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::tools::Path getTemplateFilePath(const std::string& Type, const std::string& Filename)
+{
+  return openfluid::tools::Path({openfluid::base::Environment::getInstallPrefix(),
+                                 openfluid::config::SHARE_WARESDEV_INSTALL_PATH,
+                                 "templates",Type,"files",Filename});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::tools::TemplateProcessor::Data 
+  WareSrcFactory::prepareCommonTemplateData(const openfluid::ware::WareSignature* Signature,
+                                            const Configuration& Config)
+{
+  openfluid::tools::TemplateProcessor::Data Data;
+
+  Data["WAREID"] = Signature->ID;
+  Data["WARETYPE"] = openfluid::ware::stringifyWareType(Signature->getType());
+
+  Data["WAREDESCRIPTION"] = Signature->Description;
+
+  Data["CLASSNAME"] = Config.MainClassName;
+
+  Data["WARELINKUID"] = openfluid::tools::generatePseudoUniqueIdentifier(16);
+
+  Data["SIGNATUREINFOS"] = getSignatureInfos(Signature);
+
+  Data["PARAMSUIENABLED"] = Config.WithParamsUI ? "ON" : "OFF";
+  Data["PARAMSUIROOTCPPFILENAME"] = "";
+
+  if (Config.WithParamsUI)
+  {
+    Data["PARAMSUICLASSNAME"] = Config.ParamsUIClassName;
+    Data["PARAMSUIROOTCPPFILENAME"] = "WareUI.cpp";
+  }
+
+  return Data;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::tools::TemplateProcessor::Data 
+WareSrcFactory::prepareTemplateData(const openfluid::ware::SimulatorSignature& Signature,
+                                    const Configuration& Config)
+{
+  auto Data = prepareCommonTemplateData(static_cast<const openfluid::ware::WareSignature*>(&Signature),Config);
+
+  Data["SIMSIGNATUREDATA"] = getSimulatorSignatureData(Signature);
+
+  Data["SIMSCHEDRETURN"] = getSimulatorSchedulingReturn(Signature);
+  Data["SIMINITCODE"] = getSimulatorInitCode(Signature);
+  Data["SIMRUNCODE"] = getSimulatorRunCode(Signature);
+
+  return Data;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::tools::TemplateProcessor::Data 
+WareSrcFactory::prepareTemplateData(const openfluid::ware::ObserverSignature& Signature,const Configuration& Config)
+{
+  auto Data = prepareCommonTemplateData(static_cast<const openfluid::ware::WareSignature*>(&Signature),Config);
+
+  return Data;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::tools::TemplateProcessor::Data 
+WareSrcFactory::prepareTemplateData(const openfluid::builderext::BuilderExtensionSignature& Signature,
+                                   const Configuration& Config)
+{
+  auto Data = prepareCommonTemplateData(static_cast<const openfluid::ware::WareSignature*>(&Signature),Config);
+
+  Data["BUILDEREXTCATEGORY"] = "openfluid::builderext::ExtensionCategory::OTHER";
+  if (Signature.Category == openfluid::builderext::ExtensionCategory::SPATIAL)
+  {
+    Data["BUILDEREXTCATEGORY"] = "openfluid::builderext::ExtensionCategory::SPATIAL";
+  }
+  if (Signature.Category == openfluid::builderext::ExtensionCategory::MODEL)
+  {
+    Data["BUILDEREXTCATEGORY"] = "openfluid::builderext::ExtensionCategory::MODEL";
+  }
+  if (Signature.Category == openfluid::builderext::ExtensionCategory::RESULTS)
+  {
+    Data["BUILDEREXTCATEGORY"] = "openfluid::builderext::ExtensionCategory::RESULTS";
+  }
+
+  Data["BUILDEREXTMENUTEXT"] = Signature.MenuText;
+
+  return Data;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void renderParamsUIFiles(const std::string& ParentPath, const openfluid::ware::WareID_t& ID,
+                         const openfluid::tools::TemplateProcessor::Data& Data)
+{
+  openfluid::tools::TemplateProcessor TplProc("%%","%%");
+  openfluid::tools::TemplateProcessor::Errors Errors;
+
+  for (const std::string& Ext : {".cpp",".hpp"})
+  {
+    auto CommonFile =  openfluid::tools::Path({openfluid::base::Environment::getInstallPrefix(),
+                                                openfluid::config::SHARE_WARESDEV_INSTALL_PATH,
+                                                "templates","common","files","WareUI"+Ext});
+
+    auto WareSrcSrcFile = openfluid::tools::Path({ParentPath,ID,"src","WareUI"+Ext});
+
+    TplProc.renderFile(CommonFile.toGeneric(),WareSrcSrcFile.toGeneric(),Data,Errors);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string WareSrcFactory::createSimulator(const openfluid::ware::SimulatorSignature& Signature,
+                                            const Configuration& Config,
+                                            const std::string& ParentPath)
 {
   openfluid::base::Environment::init();
 
-  QString TypeSubDir;
+  openfluid::tools::TemplateProcessor TplProc("%%","%%");
+  openfluid::tools::TemplateProcessor::Errors Errors;
 
-  switch (Type)
+  auto Data = prepareTemplateData(Signature,Config);
+  
+  auto CommonSkelPath = getTemplateSkeletonPath("common");
+  auto SkelPath =  getTemplateSkeletonPath("simulator");
+
+  auto WareSrcDir = openfluid::tools::Path({ParentPath,Signature.ID});
+
+  try 
   {
-    case openfluid::ware::WareType::SIMULATOR:
-      TypeSubDir = QString::fromStdString(openfluid::config::SIMULATORS_PATH);
-      break;
-    case openfluid::ware::WareType::OBSERVER:
-      TypeSubDir = QString::fromStdString(openfluid::config::OBSERVERS_PATH);
-      break;
-    case openfluid::ware::WareType::BUILDEREXT:
-      TypeSubDir = QString::fromStdString(openfluid::config::BUILDEREXTS_PATH);
-      break;
-    default:
-      break;
+    TplProc.renderDirectory(CommonSkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+    TplProc.renderDirectory(SkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+
+    if (Config.WithParamsUI)
+    {
+     renderParamsUIFiles(ParentPath,Signature.ID,Data);
+    }
+  }
+  catch(openfluid::base::FrameworkException& E)
+  {
+    return std::string();
   }
 
-  m_SharedTemplatesDir = QDir(
-      QString("%1/%2/templates").arg(
-          QString::fromStdString(openfluid::base::Environment::getInstallPrefix())).arg(
-          QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
-  m_TypedTemplatesDir = QDir(m_SharedTemplatesDir.absoluteFilePath(TypeSubDir));
-
-  m_WareTypeDir = QDir(QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)));
+  return WareSrcDir.toGeneric(); 
 }
 
 
@@ -88,70 +232,39 @@ WareSrcFactory::WareSrcFactory(openfluid::ware::WareType Type) :
 // =====================================================================
 
 
-WareSrcFactory::~WareSrcFactory()
+std::string WareSrcFactory::createObserver(const openfluid::ware::ObserverSignature& Signature, 
+                                           const Configuration& Config,
+                                           const std::string& ParentPath)
 {
+  openfluid::base::Environment::init();
 
-}
+  openfluid::tools::TemplateProcessor TplProc("%%","%%");
+  openfluid::tools::TemplateProcessor::Errors Errors;
 
+  auto Data = prepareTemplateData(Signature,Config);
+  
 
-// =====================================================================
-// =====================================================================
+  auto CommonSkelPath = getTemplateSkeletonPath("common");
+  auto SkelPath =  getTemplateSkeletonPath("observer");
 
+  auto WareSrcDir = openfluid::tools::Path({ParentPath,Signature.ID});
 
-void WareSrcFactory::setWareId(const QString& Id)
-{
-  m_WareId = Id;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcFactory::createCMakeListsFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
-{
-  return (copyTemplateToNewFile(m_TypedTemplatesDir.filePath("CMakeLists.txt.tpl"), "CMakeLists.txt", NewFilePath,
-                                ErrMsg)
-      && replaceInFile(R, NewFilePath, ErrMsg));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcFactory::createJsonFile(QString& NewFilePath, QString& ErrMsg)
-{
-  return copyTemplateToNewFile(m_SharedTemplatesDir.filePath("wareshub.json.tpl"), "wareshub.json",
-                               NewFilePath, ErrMsg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcFactory::createCppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
-{
-  QString TplFilename;
-  switch (R.getBuilderExtType())
+  try 
   {
-    case openfluid::builderext::ExtensionMode::MODAL:
-      TplFilename = "source_modal.cpp.tpl";
-      break;
-    case openfluid::builderext::ExtensionMode::MODELESS:
-      TplFilename = "source_modeless.cpp.tpl";
-      break;
-    case openfluid::builderext::ExtensionMode::WORKSPACE:
-      TplFilename = "source_workspace.cpp.tpl";
-      break;
-    default:
-      TplFilename = "source.cpp.tpl";
-      break;
+    TplProc.renderDirectory(CommonSkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+    TplProc.renderDirectory(SkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+
+    if (Config.WithParamsUI)
+    {
+     renderParamsUIFiles(ParentPath,Signature.ID,Data);
+    }
+  }
+  catch(openfluid::base::FrameworkException& E)
+  {
+    return std::string();
   }
 
-  return (copyTemplateToNewFile(m_TypedTemplatesDir.filePath(TplFilename), R.RootCppFilename, NewFilePath, ErrMsg)
-      && replaceInFile(R, NewFilePath, ErrMsg));
+  return WareSrcDir.toGeneric();
 }
 
 
@@ -159,209 +272,59 @@ bool WareSrcFactory::createCppFile(const Replacements& R, QString& NewFilePath, 
 // =====================================================================
 
 
-bool WareSrcFactory::createHppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
+std::string WareSrcFactory::createBuilderext(const openfluid::builderext::BuilderExtensionSignature& Signature, 
+                                             const Configuration& Config,
+                                             const std::string& ParentPath)
 {
-  QString TplFilename;
-  switch (R.getBuilderExtType())
+  openfluid::base::Environment::init();
+
+  openfluid::tools::TemplateProcessor TplProc("%%","%%");
+  openfluid::tools::TemplateProcessor::Errors Errors;
+
+  auto Data = prepareTemplateData(Signature,Config);
+  
+
+  auto CommonSkelPath = getTemplateSkeletonPath("common");
+  auto SkelPath =  getTemplateSkeletonPath("builderext");
+
+  auto WareSrcDir = openfluid::tools::Path({ParentPath,Signature.ID});
+
+  std::string ModeSuffix;
+  if (Config.UIMode == openfluid::builderext::ExtensionMode::MODAL)
   {
-    case openfluid::builderext::ExtensionMode::MODAL:
-      TplFilename = "source_modal.hpp.tpl";
-      break;
-    case openfluid::builderext::ExtensionMode::MODELESS:
-      TplFilename = "source_modeless.hpp.tpl";
-      break;
-    case openfluid::builderext::ExtensionMode::WORKSPACE:
-      TplFilename = "source_workspace.hpp.tpl";
-      break;
-    default:
-      ErrMsg = QObject::tr("The \".hpp\" template file does not exist");
-      return false;
-      break;
+    ModeSuffix = "modal";
+  }
+  else if (Config.UIMode == openfluid::builderext::ExtensionMode::MODELESS)
+  {
+    ModeSuffix = "modeless";
+  }
+  else if (Config.UIMode == openfluid::builderext::ExtensionMode::WORKSPACE)
+  {
+    ModeSuffix = "workspace";
   }
 
-  return (copyTemplateToNewFile(m_TypedTemplatesDir.filePath(TplFilename), R.RootHppFilename, NewFilePath, ErrMsg)
-      && replaceInFile(R, NewFilePath, ErrMsg));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcFactory::createParamUiCppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
-{
-  return (copyTemplateToNewFile(m_TypedTemplatesDir.filePath("paramsui_source.cpp.tpl"), R.ParamsUiRootCppFilename,
-                                NewFilePath, ErrMsg)
-          && replaceInFile(R, NewFilePath, ErrMsg));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcFactory::createParamUiHppFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
-{
-  return (copyTemplateToNewFile(m_TypedTemplatesDir.filePath("paramsui_source.hpp.tpl"), R.ParamsUiRootHppFilename,
-                                NewFilePath, ErrMsg)
-          && replaceInFile(R, NewFilePath, ErrMsg));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcFactory::createCmakeConfigFile(const Replacements& R, QString& NewFilePath, QString& ErrMsg)
-{
-  return (copyTemplateToNewFile(m_TypedTemplatesDir.filePath("CMake.in.config.tpl"), "CMake.in.config", NewFilePath,
-                                ErrMsg)
-          && replaceInFile(R, NewFilePath, ErrMsg));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcFactory::copyTemplateToNewFile(const QString& TemplatePath, const QString& NewFileName,
-                                           QString& NewFilePath, QString& ErrMsg)
-{
-  if (m_WareId.isEmpty())
+  try 
   {
-    ErrMsg = QObject::tr("Ware ID is empty");
-    return false;
+    TplProc.renderDirectory(CommonSkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+    TplProc.renderDirectory(SkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+
+    for (const std::string& Ext : {".cpp",".hpp"})
+    {
+      auto CommonFile =  openfluid::tools::Path({openfluid::base::Environment::getInstallPrefix(),
+                                                  openfluid::config::SHARE_WARESDEV_INSTALL_PATH,
+                                                  "templates","builderext","files","WareMain_"+ModeSuffix+Ext});
+
+      auto WareSrcSrcFile = openfluid::tools::Path({ParentPath,Signature.ID,"src","WareMain"+Ext});
+
+      TplProc.renderFile(CommonFile.toGeneric(),WareSrcSrcFile.toGeneric(),Data,Errors);
+    }
+  }
+  catch(openfluid::base::FrameworkException& E)
+  {
+    return std::string();
   }
 
-  QDir WareDir = QDir(m_WareTypeDir.filePath(m_WareId));
-  if (!WareDir.exists())
-  {
-    ErrMsg = QObject::tr("Ware directory does not exist");
-    return false;
-  }
-
-  QFile TemplateFile(TemplatePath);
-  if (!TemplateFile.exists())
-  {
-    ErrMsg = QObject::tr("The \"%1\" template file does not exist").arg(QFileInfo(TemplatePath).fileName());
-    return false;
-  }
-
-  NewFilePath = WareDir.absoluteFilePath(NewFileName);
-
-  if (!TemplateFile.copy(NewFilePath))
-  {
-    ErrMsg = QObject::tr("Unable to copy the \"%1\" template file").arg(QFileInfo(TemplatePath).fileName());
-    return false;
-  }
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool WareSrcFactory::replaceInFile(const Replacements& R, const QString& NewFilePath, QString& ErrMsg)
-{
-  QFile File(NewFilePath);
-
-  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-  {
-    ErrMsg = QObject::tr("Unable to open the created file in read mode");
-    return false;
-  }
-
-  QString Str = QTextStream(&File).readAll();
-  File.close();
-
-  Str.replace("%%WAREID%%", m_WareId);
-  Str.replace("%%WARELINKUID%%",R.LinkUID);
-  Str.replace("%%CLASSNAME%%", R.ClassName);
-  Str.replace("%%ROOTCPPFILENAME%%", R.RootCppFilename);
-  Str.replace("%%ROOTHPPFILENAME%%", R.RootHppFilename);
-  Str.replace("%%HPPHEADERGUARD%%", R.HppHeaderGuard);
-  Str.replace("%%PARAMSUIENABLED%%", R.getParamsUiEnabled());
-  Str.replace("%%PARAMSUICLASSNAME%%", R.ParamsUiClassname);
-  Str.replace("%%PARAMSUIROOTCPPFILENAME%%", R.ParamsUiRootCppFilename);
-  Str.replace("%%PARAMSUIROOTHPPFILENAME%%", R.ParamsUiRootHppFilename);
-  Str.replace("%%PARAMSUIHPPHEADERGUARD%%", R.ParamsUiHeaderGuard);
-  Str.replace("%%PARAMSUICOMMENT%%", R.ParamsUiComment);
-  Str.replace("%%SIM2DOCINSTALLDISABLED%%", R.getSim2docInstall());
-  Str.replace("%%SIM2DOCMODE%%", R.getSim2docMode());
-  Str.replace("%%SIGNATUREINFOS%%",R.SignatureInfos);
-  Str.replace("%%SIMSIGNATUREDATA%%",R.SimulatorSignatureData);
-  Str.replace("%%SIMINITCODE%%",R.SimulatorInitCode);
-  Str.replace("%%SIMRUNCODE%%",R.SimulatorRunCode);
-  Str.replace("%%SIMSCHEDRETURN%%",R.SimulatorSchedulingReturn);
-  Str.replace("%%BUILDEREXTCATEGORY%%", R.getBuilderExtCategory());
-  Str.replace("%%BUILDEREXTMENUTEXT%%", R.BuilderExtMenuText);
-
-  if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
-  {
-    ErrMsg = QObject::tr("Unable to open the created file in write mode");
-    return false;
-  }
-
-  QTextStream(&File) << Str;
-  File.close();
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QRegExp WareSrcFactory::getCppFilenameRegExp(QString& Tooltip, bool IsHpp)
-{
-  Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
-  return IsHpp ? QRegExp("[a-zA-Z0-9._-]+\\.hpp") : QRegExp("[a-zA-Z0-9._-]+\\.cpp");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QRegExp WareSrcFactory::getClassnameRegExp(QString& Tooltip)
-{
-  Tooltip = QObject::tr("Accepts only letters, digits, underscores ('_'), and must begin with a letter.");
-  return QRegExp("[a-zA-Z]+[a-zA-Z0-9_]*");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QRegExp WareSrcFactory::getWareIdRegExp(QString& Tooltip)
-{
-  Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
-  return QRegExp("[a-zA-Z0-9._-]+");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString WareSrcFactory::getHeaderGuard(const QString& HppFilename)
-{
-  return HppFilename.toUpper().replace(".", "_").append("__").prepend("__");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString WareSrcFactory::getHppFilename(const QString& CppFilename)
-{
-  QString Hpp(CppFilename);
-  return Hpp.replace(QRegExp("\\.cpp$"), ".hpp");
+  return WareSrcDir.toGeneric();
 }
 
 
@@ -386,21 +349,21 @@ std::string getDeclarationStringFromVarType(openfluid::core::Value::Type VarType
 // =====================================================================
 
 
-QString WareSrcFactory::getSimulatorSignatureInfos(const openfluid::ware::SimulatorSignature& Signature)
+std::string WareSrcFactory::getSignatureInfos(const openfluid::ware::WareSignature* Signature)
 {
   std::string TmpStr;
 
   TmpStr += "  // Informations\n";
-  TmpStr += "  DECLARE_NAME(\""+Signature.Name+"\")\n";
-  TmpStr += "  DECLARE_DESCRIPTION(\""+Signature.Description+"\")\n";
-  TmpStr += "  DECLARE_VERSION(\""+Signature.Version+"\")\n";
+  TmpStr += "  DECLARE_NAME(\""+Signature->Name+"\")\n";
+  TmpStr += "  DECLARE_DESCRIPTION(\""+Signature->Description+"\")\n";
+  TmpStr += "  DECLARE_VERSION(\""+Signature->Version+"\")\n";
 
   TmpStr += "  DECLARE_STATUS(";
-  if (Signature.Status == openfluid::ware::EXPERIMENTAL)
+  if (Signature->Status == openfluid::ware::EXPERIMENTAL)
   {
     TmpStr += "openfluid::ware::EXPERIMENTAL";
   }
-  else if (Signature.Status == openfluid::ware::BETA)
+  else if (Signature->Status == openfluid::ware::BETA)
   {
     TmpStr += "openfluid::ware::BETA";
   }
@@ -410,12 +373,12 @@ QString WareSrcFactory::getSimulatorSignatureInfos(const openfluid::ware::Simula
   }
   TmpStr += ")\n";
 
-  for (auto& Item : Signature.Authors)
+  for (auto& Item : Signature->Authors)
   {
     TmpStr += "  DECLARE_AUTHOR(\""+Item.first+"\",\""+Item.second+"\")\n";
   }
 
-  return QString::fromStdString(TmpStr);
+  return TmpStr;
 }
 
 
@@ -423,9 +386,9 @@ QString WareSrcFactory::getSimulatorSignatureInfos(const openfluid::ware::Simula
 // =====================================================================
 
 
-QString WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::SimulatorSignature& Signature)
+std::string WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::SimulatorSignature& Signature)
 {
-  std::string TmpStr/* = "\n"*/;
+  std::string TmpStr;
 
   // TODO replace indentation size with value from user's preferences
 
@@ -582,14 +545,13 @@ QString WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::Simulat
   }
   else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED)
   {
-    std::string TmpValueStr = (QString::fromStdString("%1").arg(Signature.TimeScheduling.Min)).toStdString();
+    std::string TmpValueStr = std::to_string(Signature.TimeScheduling.Min);
     TmpStr += "  DECLARE_SCHEDULING_FIXED("+TmpValueStr+")\n";
   }
   else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE)
   {
-    std::string TmpValueStr = (QString::fromStdString("%1,%2")
-                               .arg(Signature.TimeScheduling.Min)
-                               .arg(Signature.TimeScheduling.Max)).toStdString();
+    std::string TmpValueStr = std::to_string(Signature.TimeScheduling.Min) + "," +
+                              std::to_string(Signature.TimeScheduling.Max);
     TmpStr += "  DECLARE_SCHEDULING_RANGE("+TmpValueStr+")\n";
   }
   else
@@ -597,7 +559,7 @@ QString WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::Simulat
     TmpStr += "  DECLARE_SCHEDULING_UNDEFINED\n";
   }
 
-  return QString::fromStdString(TmpStr);
+  return TmpStr;
 }
 
 
@@ -605,21 +567,18 @@ QString WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::Simulat
 // =====================================================================
 
 
-QString getSimulatorInitRunCode(const openfluid::ware::SimulatorSignature& Signature,
-                                const std::string& PrimitiveStr)
+std::string getSimulatorCommonCode(const openfluid::ware::SimulatorSignature& Signature,
+                                   const std::string& PrimitiveStr)
 {
   std::string TmpStr;
-  QStringList UnitsClasses;
+  std::set<openfluid::core::UnitsClass_t> UnitsClasses;
 
   for (auto& Item : Signature.HandledData.ProducedVars)
   {
-    UnitsClasses << QString::fromStdString(Item.UnitsClass);
+    UnitsClasses.insert(Item.UnitsClass);
   }
 
-  UnitsClasses.removeDuplicates();
-  UnitsClasses.sort();
-
-  if (!UnitsClasses.isEmpty())
+  if (!UnitsClasses.empty())
   {
     // TODO replace indentation size with value from user's preferences
 
@@ -629,12 +588,12 @@ QString getSimulatorInitRunCode(const openfluid::ware::SimulatorSignature& Signa
     for (auto& UClass : UnitsClasses)
     {
       TmpStr += "\n";
-      TmpStr += "      OPENFLUID_UNITS_ORDERED_LOOP(\""+UClass.toStdString()+"\",U)\n";
+      TmpStr += "      OPENFLUID_UNITS_ORDERED_LOOP(\""+UClass+"\",U)\n";
       TmpStr += "      {\n";
 
       for (auto& Item : Signature.HandledData.ProducedVars)
       {
-        if (Item.UnitsClass == UClass.toStdString())
+        if (Item.UnitsClass == UClass)
         {
           std::string TmpValueStr = "0.0";
           if (Item.DataType == openfluid::core::Value::BOOLEAN)
@@ -678,7 +637,7 @@ QString getSimulatorInitRunCode(const openfluid::ware::SimulatorSignature& Signa
     TmpStr += "      // -- end of automatically generated code --\n";
   }
 
-  return QString::fromStdString(TmpStr);
+  return TmpStr;
 }
 
 
@@ -686,9 +645,9 @@ QString getSimulatorInitRunCode(const openfluid::ware::SimulatorSignature& Signa
 // =====================================================================
 
 
-QString WareSrcFactory::getSimulatorInitCode(const openfluid::ware::SimulatorSignature& Signature)
+std::string WareSrcFactory::getSimulatorInitCode(const openfluid::ware::SimulatorSignature& Signature)
 {
-  return getSimulatorInitRunCode(Signature,"OPENFLUID_InitializeVariable");
+  return getSimulatorCommonCode(Signature,"OPENFLUID_InitializeVariable");
 }
 
 
@@ -696,9 +655,9 @@ QString WareSrcFactory::getSimulatorInitCode(const openfluid::ware::SimulatorSig
 // =====================================================================
 
 
-QString WareSrcFactory::getSimulatorRunCode(const openfluid::ware::SimulatorSignature& Signature)
+std::string WareSrcFactory::getSimulatorRunCode(const openfluid::ware::SimulatorSignature& Signature)
 {
-  return getSimulatorInitRunCode(Signature,"OPENFLUID_AppendVariable");
+  return getSimulatorCommonCode(Signature,"OPENFLUID_AppendVariable");
 }
 
 
@@ -706,14 +665,14 @@ QString WareSrcFactory::getSimulatorRunCode(const openfluid::ware::SimulatorSign
 // =====================================================================
 
 
-QString WareSrcFactory::getSimulatorSchedulingReturn(const openfluid::ware::SimulatorSignature& Signature)
+std::string WareSrcFactory::getSimulatorSchedulingReturn(const openfluid::ware::SimulatorSignature& Signature)
 {
-  QString TmpStr = "DefaultDeltaT()";
+  std::string TmpStr = "DefaultDeltaT()";
 
   if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED ||
       Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE)
   {
-    TmpStr = QString("Duration(%1)").arg(Signature.TimeScheduling.Min);
+    TmpStr = "Duration("+std::to_string(Signature.TimeScheduling.Min)+");";
   }
 
   return TmpStr;

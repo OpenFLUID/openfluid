@@ -4,7 +4,7 @@ SET(OBS_ID "%%WAREID%%")
 
 # list of CPP files
 # ex: SET(OBS_CPP MyObserver.cpp)
-SET(OBS_CPP %%ROOTCPPFILENAME%%)
+SET(OBS_CPP WareMain.cpp)
 
 # list of Fortran files, if any
 # ex: SET(OBS_FORTRAN Calc.f)

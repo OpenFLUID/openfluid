@@ -127,10 +127,6 @@ class OPENFLUID_API WareSrcContainer
 
     void update();
 
-    static std::string searchMainCppFileName(const std::string& CMakeFileContent);
-
-    static std::string searchUiParamCppFileName(const std::string& CMakeFileContent);
-
     std::string getAbsolutePath() const
     {
       return m_AbsolutePath;

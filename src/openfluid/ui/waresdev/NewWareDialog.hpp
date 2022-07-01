@@ -45,6 +45,7 @@
 #include <QDir>
 
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/builderext/BuilderExtensionSignature.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
 #include <openfluid/dllexport.hpp>
 
@@ -85,6 +86,14 @@ class OPENFLUID_API NewWareDialog : public openfluid::ui::common::MessageDialog
 
     void setStatus(const QString WarningMsg);
 
+    static QRegExp getClassnameRegExp(QString& Tooltip);
+
+    static QRegExp getWareIdRegExp(QString& Tooltip);
+
+    static QStringList getBuilderExtTypeTexts();
+
+    static QStringList getBuilderExtCategoryTexts();
+
 
   public:
 
@@ -94,10 +103,17 @@ class OPENFLUID_API NewWareDialog : public openfluid::ui::common::MessageDialog
 
     virtual ~NewWareDialog();
 
-    QString getNewWarePath();
+    openfluid::ware::WareID_t getID() const;
 
-    void accept();
+    std::string getClassName() const;
 
+    bool isWareUI() const;
+
+    openfluid::builderext::ExtensionMode getBuilderextMode() const;
+
+    openfluid::builderext::ExtensionCategory getBuilderextCategory() const;
+
+    QString getBuilderextMenuText() const;
 };
 
 

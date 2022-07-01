@@ -41,8 +41,6 @@
 #define __OPENFLUID_BUILDEREXT_BUILDEREXTENSIONSIGNATURE_HPP__
 
 
-#include <QString>
-
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
@@ -68,9 +66,9 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
 
     ExtensionRole Role;
 
-    QString MenuText;
+    std::string MenuText;
 
-    std::map<QString,QString> ConfigParameters;
+    std::map<std::string,std::string> ConfigParameters;
 
 
     BuilderExtensionSignature():

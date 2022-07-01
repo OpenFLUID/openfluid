@@ -374,7 +374,7 @@ void AppActions::updateExtensionsActionsAndMenus()
 
     QString MenuText = WaresTranslationsRegistry::instance()
       ->tryTranslate(QString::fromStdString(it->second.Container.getPath()),
-                     "signature",it->second.Container.signature()->MenuText);
+                     "signature",QString::fromStdString(it->second.Container.signature()->MenuText));
 
     // Replace empty menu text by extension ID
     MenuText = QString::fromStdString(openfluid::tools::replaceEmptyString(MenuText.toStdString(),(*it).first));

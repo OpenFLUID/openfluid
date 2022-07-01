@@ -45,7 +45,7 @@ assert sys.version_info >= (3, 5)
 class SourceTreeChecker:
 
 
-    def __init__(self, SrcRootPath, IsVerbose, DisableChecks=""):
+    def __init__(self, SrcRootPath, IsVerbose, DisableChecks="", ExcludePaths=""):
 
         self.SrcOpenFLUIDDir = 'src/openfluid'
         self.SrcAppsDir = 'src/apps'
@@ -105,6 +105,7 @@ class SourceTreeChecker:
 
         self.ActiveStyles = list()
         self.ErrorsCount = dict()
+        self.ExcludePathsList = ExcludePaths.split(",")
         DisableChecksList = DisableChecks.split(",")
 
         for Style in list(self.CheckStyles.keys()):
@@ -206,6 +207,16 @@ class SourceTreeChecker:
         FullDirective = self.DirectiveBase + ":" + Directive
         if FullDirective in StrData :
             return True
+        return False
+
+
+############################################################################
+
+
+    def isExcluded(self,Filename):
+        for Excluded in self.ExcludePathsList : 
+          if Filename.startswith(Excluded) :
+              return True
         return False
 
 
@@ -590,7 +601,8 @@ class SourceTreeChecker:
             raise Exception('The given path does not appear to be the OpenFLUID source code')
 
         for File in self.FileList:
-            self.checkFile(File)
+            if not self.isExcluded(File) :
+                self.checkFile(File)
 
         FileCount = len(self.FileList)
 
@@ -611,18 +623,20 @@ class SourceTreeChecker:
 ############################################################################
 ############################################################################
 
+
 if __name__ == "__main__":
     try:
 
         Parser = ArgumentParser(prog='ofsrc_stylecheck')
         Parser.add_argument('-V','--verbose', action='store_true', default=False, help='verbose mode')
         Parser.add_argument('--disable', default="", help='ignore warnings for given categories, splitted by commas. Example "BRAC,PRTY"')
+        Parser.add_argument('--exclude', default="", help='exclude paths from checking, splitted by commas')
         Parser.add_argument('path',default='')
 
         Args = Parser.parse_args()
         Args = vars(Args)
 
-        Checker = SourceTreeChecker(Args['path'],Args['verbose'], Args['disable'])
+        Checker = SourceTreeChecker(Args['path'], Args['verbose'], Args['disable'], Args['exclude'])
         Ret = Checker.run()
 
         sys.exit(int(Ret > 0))

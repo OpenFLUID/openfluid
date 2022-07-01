@@ -49,10 +49,10 @@
 #include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/TextEditMsgStream.hpp>
-#include <openfluid/ui/waresdev/NewSrcFileAssistant.hpp>
 #include <openfluid/ui/waresdev/WareBuildOptionsDialog.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/WareshubJsonEditor.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/waresdev/WareBuildOptions.hpp>
 
 #include "ui_WareSrcWidget.h"
@@ -778,16 +778,7 @@ QString WareSrcWidget::saveAs(const QString& TopDirectory)
 
 void WareSrcWidget::newFile()
 {
-  NewSrcFileAssistant Assistant(m_Container, this);
-  if(Assistant.exec() == QDialog::Accepted)
-  {
-    QString NewFilePath = Assistant.getNewFilePath();
-    if (!NewFilePath.isEmpty())
-    {
-      m_Container.update();
-      openFileTab(openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(NewFilePath.toStdString()));
-    }
-  }
+  openfluid::ui::common::createNewFile(this,m_Container.getAbsolutePath());
 }
 
 

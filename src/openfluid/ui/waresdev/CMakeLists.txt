@@ -4,7 +4,7 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
                               WareSrcToolbar.cpp WareBuildOptionsWidget.cpp WareBuildOptionsDialog.cpp
                               WareSrcSyntaxHighlighter.cpp WareSrcFiletypeManager.cpp TextEditMsgStream.cpp
                               WareSrcExplorer.cpp WareSrcExplorerModel.cpp WareExplorerDialog.cpp
-                              NewSrcFileAssistant.cpp NewWareDialog.cpp FindReplaceDialog.cpp WareSrcMsgViewer.cpp
+                              NewWareDialog.cpp FindReplaceDialog.cpp WareSrcMsgViewer.cpp
                               WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
                               WareSrcActionsCollection.cpp
                               WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WaresImportFilterWidget.cpp WareshubIssueDialog.cpp
@@ -19,7 +19,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
                               WareSrcToolbar.hpp WareBuildOptionsWidget.hpp WareBuildOptionsDialog.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
                               WareSrcExplorer.hpp WareSrcExplorerModel.hpp WareExplorerDialog.hpp
-                              NewSrcFileAssistant.hpp NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
+                              NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
                               WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
                               WareSrcActionsCollection.hpp
                               WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WaresImportFilterWidget.hpp WareshubIssueDialog.hpp
@@ -31,7 +31,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
 
 QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui WareBuildOptionsWidget.ui WareBuildOptionsDialog.ui
                                      EmptyPage.ui CppPage.ui CMakeConfigPage.ui
-                                     NewSrcFileAssistant.ui NewWareDialog.ui FindReplaceDialog.ui
+                                     NewWareDialog.ui FindReplaceDialog.ui
                                      WaresSrcExportDialog.ui WaresSrcImportDialog.ui WaresSrcIOProgressDialog.ui
                                      WaresImportFilterWidget.ui WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
                                      WorkspaceDevProcessDialog.ui

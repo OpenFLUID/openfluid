@@ -1,10 +1,10 @@
 /**
-  @file %%ROOTCPPFILENAME%%
+  @file WareMain.cpp
 
 */
 
 
-#include "%%ROOTHPPFILENAME%%"
+#include "WareMain.hpp"
 
 
 // =====================================================================

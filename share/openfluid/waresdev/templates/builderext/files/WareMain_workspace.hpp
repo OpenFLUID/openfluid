@@ -1,20 +1,20 @@
 /**
-  @file %%ROOTHPPFILENAME%%
+  @file WareMain.hpp
 */
 
 
-#ifndef %%HPPHEADERGUARD%%
-#define %%HPPHEADERGUARD%%
+#ifndef __WAREMAIN_HPP__
+#define __WAREMAIN_HPP__
 
 
-#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-class %%CLASSNAME%% : public openfluid::builderext::PluggableModalExtension
+class %%CLASSNAME%% : public openfluid::builderext::PluggableWorkspaceExtension
 {
   Q_OBJECT;
 
@@ -36,6 +36,4 @@ class %%CLASSNAME%% : public openfluid::builderext::PluggableModalExtension
 };
 
 
-#endif /* %%HPPHEADERGUARD%% */
-
-
+#endif /* __WAREMAIN_HPP__ */

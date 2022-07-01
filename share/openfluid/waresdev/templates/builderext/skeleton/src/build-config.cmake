@@ -4,7 +4,7 @@ SET(BEXT_ID "%%WAREID%%")
 
 # list of CPP files
 # ex: SET(BEXT_CPP MyBuilderext.cpp)
-SET(BEXT_CPP %%ROOTCPPFILENAME%%)
+SET(BEXT_CPP WareMain.cpp)
 
 # list of UI files, if any
 # ex: SET(BEXT_UI MyWidget.ui)

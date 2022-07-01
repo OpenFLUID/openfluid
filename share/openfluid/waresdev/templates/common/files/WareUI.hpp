@@ -1,10 +1,10 @@
 /**
-  @file %%PARAMSUIROOTHPPFILENAME%%
+  @file WareUI.hpp
 */
 
 
-#ifndef %%PARAMSUIHPPHEADERGUARD%%
-#define %%PARAMSUIHPPHEADERGUARD%%
+#ifndef __WAREUI_HPP__
+#define __WAREUI_HPP__
 
 
 #include <openfluid/builderext/PluggableParameterizationExtension.hpp>
@@ -26,5 +26,5 @@ class %%PARAMSUICLASSNAME%%: public openfluid::builderext::PluggableParameteriza
 };
 
 
-#endif /* %%PARAMSUIHPPHEADERGUARD%% */
+#endif /* __WAREUI_HPP__ */
 

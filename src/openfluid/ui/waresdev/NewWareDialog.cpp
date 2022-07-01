@@ -65,36 +65,30 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
                           openfluid::base::WorkspaceManager::instance()->getWaresPath(m_WareType))
                        );
 
-  ui->BextTypeComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtTypeTexts());
-  ui->BextCategoryComboBox->addItems(openfluid::waresdev::WareSrcFactory::Replacements::getBuilderExtCategoryTexts());
+  ui->BextTypeComboBox->addItems(getBuilderExtTypeTexts());
+  ui->BextCategoryComboBox->addItems(getBuilderExtCategoryTexts());
 
   QString WareId;
-  QString SrcFilename;
   QString SrcClassname;
-
-  ui->Sim2docWidget->setVisible(false); // remove sim2doc widget in all cases
 
   switch (m_WareType)
   {
     case openfluid::ware::WareType::SIMULATOR:
       setupMessageUi(tr("Create a new simulator"));
       WareId = "sim.id";
-      SrcFilename = "MySim.cpp";
-      SrcClassname = "MySimulator";
+      SrcClassname = "Simulator";
       ui->BuilderExtWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::OBSERVER:
       setupMessageUi(tr("Create a new observer"));
       WareId = "obs.id";
-      SrcFilename = "MyObs.cpp";
-      SrcClassname = "MyObserver";
+      SrcClassname = "Observer";
       ui->BuilderExtWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::BUILDEREXT:
       setupMessageUi(tr("Create a new Builder extension"));
       WareId = "bext.id";
-      SrcFilename = "MyExt.cpp";
-      SrcClassname = "MyExtension";
+      SrcClassname = "BuilderExtension";
       ui->UiWidget->setVisible(false);
       break;
     default:
@@ -102,24 +96,16 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
   }
 
   QString IDTooltip;
-  QString CppTooltip;
   QString ClassTooltip;
-  QRegExp CppRegExp = openfluid::waresdev::WareSrcFactory::getCppFilenameRegExp(CppTooltip);
-  QRegExp ClassnameRegExp = openfluid::waresdev::WareSrcFactory::getClassnameRegExp(ClassTooltip);
+  QRegExp ClassnameRegExp = getClassnameRegExp(ClassTooltip);
 
   // "required" placeholder
   QString PlaceholderStr = getPlaceholderRequired();
 
   ui->IdEdit->setValidator(
-      new QRegExpValidator(openfluid::waresdev::WareSrcFactory::getWareIdRegExp(IDTooltip), this));
+      new QRegExpValidator(getWareIdRegExp(IDTooltip), this));
   ui->IdEdit->setToolTip(IDTooltip);
   ui->IdEdit->setPlaceholderText(PlaceholderStr);
-  ui->SourceFilenameEdit->setValidator(new QRegExpValidator(CppRegExp, this));
-  ui->SourceFilenameEdit->setToolTip(CppTooltip);
-  ui->SourceFilenameEdit->setPlaceholderText(PlaceholderStr);
-  ui->UiParamSourceFilenameEdit->setValidator(new QRegExpValidator(CppRegExp, this));
-  ui->UiParamSourceFilenameEdit->setToolTip(CppTooltip);
-  ui->UiParamSourceFilenameEdit->setPlaceholderText(PlaceholderStr);
   ui->ClassNameEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
   ui->ClassNameEdit->setToolTip(ClassTooltip);
   ui->ClassNameEdit->setPlaceholderText(PlaceholderStr);
@@ -128,16 +114,12 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
   ui->UiParamClassNameEdit->setPlaceholderText(PlaceholderStr);
 
   connect(ui->IdEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
-  connect(ui->SourceFilenameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
   connect(ui->UiParamGroupBox, SIGNAL(toggled(bool)), this, SLOT(onInformationChanged()));
-  connect(ui->UiParamSourceFilenameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
   connect(ui->ClassNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
   connect(ui->UiParamClassNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onInformationChanged()));
 
   ui->IdEdit->setText(WareId);
-  ui->SourceFilenameEdit->setText(SrcFilename);
   ui->ClassNameEdit->setText(SrcClassname);
-  ui->UiParamSourceFilenameEdit->setText("ParamsUiWidget.cpp");
   ui->UiParamClassNameEdit->setText("ParamsUiWidget");
 }
 
@@ -171,6 +153,55 @@ NewWareDialog::~NewWareDialog()
 // =====================================================================
 
 
+QRegExp NewWareDialog::getClassnameRegExp(QString& Tooltip)
+{
+  Tooltip = QObject::tr("Accepts only letters, digits, underscores ('_'), and must begin with a letter.");
+  return QRegExp("[a-zA-Z]+[a-zA-Z0-9_]*");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QRegExp NewWareDialog::getWareIdRegExp(QString& Tooltip)
+{
+  // TODO see openfluid::tools::isValidWareID() for refactoring
+
+  Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
+  return QRegExp("[A-Za-z0-9]+[A-Za-z0-9_\\.\\-]*");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList NewWareDialog::getBuilderExtTypeTexts()
+{
+  QStringList BextMode_Texts;
+  BextMode_Texts << QObject::tr("Modal") << QObject::tr("Modeless") << QObject::tr("Workspace");
+  return BextMode_Texts;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList NewWareDialog::getBuilderExtCategoryTexts()
+{
+  QStringList BextCategory_Texts;
+  BextCategory_Texts << QObject::tr("Spatial domain") << QObject::tr("Model") << QObject::tr("Results")
+                      << QObject::tr("Other");
+  return BextCategory_Texts;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void NewWareDialog::onInformationChanged()
 {
   QString WarningMsg = "";
@@ -182,18 +213,10 @@ void NewWareDialog::onInformationChanged()
   else if (m_WareTypeDir.exists(ui->IdEdit->text()))
   {
     WarningMsg = tr("Ware ID already exists");
-  }  
-  else if (!ui->SourceFilenameEdit->hasAcceptableInput())
-  {
-    WarningMsg = tr("Source file name must be of the form \"filexxx.cpp\"");
   }
   else if (!ui->ClassNameEdit->hasAcceptableInput())
   {
     WarningMsg = tr("Main class name is empty");
-  }  
-  else if (ui->UiParamGroupBox->isChecked() && !ui->UiParamSourceFilenameEdit->hasAcceptableInput())
-  {
-    WarningMsg = tr("UI parameterization file name must be of the form \"filexxx.cpp\"");
   }
   else if (ui->UiParamGroupBox->isChecked() && !ui->UiParamClassNameEdit->hasAcceptableInput())
   {
@@ -201,16 +224,6 @@ void NewWareDialog::onInformationChanged()
   }  
 
   setStatus(WarningMsg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString NewWareDialog::getNewWarePath()
-{
-  return m_NewWarePath;
 }
 
 
@@ -230,128 +243,84 @@ void NewWareDialog::setStatus(const QString WarningMsg)
 // =====================================================================
 
 
-void NewWareDialog::accept()
+openfluid::ware::WareID_t NewWareDialog::getID() const
 {
-  QString WareId = ui->IdEdit->text();
+  return  ui->IdEdit->text().toStdString();
+}
 
-  bool WithUiParam = ui->UiParamGroupBox->isChecked();
-  bool WithHpp = false;
 
-  openfluid::waresdev::WareSrcFactory Factory(m_WareType);
-  Factory.setWareId(WareId);
+// =====================================================================
+// =====================================================================
 
-  QString NewFilePath, ErrMsg;
-  bool Ok;
 
-  openfluid::waresdev::WareSrcFactory::Replacements Repl;
+std::string NewWareDialog::getClassName() const
+{
+  return  ui->ClassNameEdit->text().toStdString();
+}
 
-  Repl.ClassName = ui->ClassNameEdit->text();
-  Repl.RootCppFilename = ui->SourceFilenameEdit->text();
-  Repl.RootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(Repl.RootCppFilename);
-  Repl.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(Repl.RootHppFilename);
 
-  Repl.SignatureInfos = "  // Informations\n"
-                     "  DECLARE_NAME(\"\")\n"
-                     "  DECLARE_DESCRIPTION(\"\")\n"
-                     "  DECLARE_VERSION(\"\")\n"
-                     "  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL)\n";
+// =====================================================================
+// =====================================================================
 
-  Repl.LinkUID = QUuid::createUuid().toString();
 
-  if (m_WareType == openfluid::ware::WareType::SIMULATOR)
+bool NewWareDialog::isWareUI() const
+{
+  return ui->UiParamGroupBox->isChecked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::builderext::ExtensionMode  NewWareDialog::getBuilderextMode() const
+{
+  if (ui->BextTypeComboBox->currentIndex() == 0)
   {
-    Repl.SimulatorSchedulingReturn = "DefaultDeltaT()";
-
-    if (m_UseSimSignature)
-    {
-      Repl.SignatureInfos = openfluid::waresdev::WareSrcFactory::getSimulatorSignatureInfos(m_SimSignature);
-      Repl.SimulatorSignatureData = openfluid::waresdev::WareSrcFactory::getSimulatorSignatureData(m_SimSignature);
-      Repl.SimulatorInitCode = openfluid::waresdev::WareSrcFactory::getSimulatorInitCode(m_SimSignature);
-      Repl.SimulatorRunCode = openfluid::waresdev::WareSrcFactory::getSimulatorRunCode(m_SimSignature);
-      Repl.SimulatorSchedulingReturn =
-          openfluid::waresdev::WareSrcFactory::getSimulatorSchedulingReturn(m_SimSignature);
-    }
-  }
-  else if (m_WareType == openfluid::ware::WareType::OBSERVER)
-  {
-
-  }
-  else if (m_WareType == openfluid::ware::WareType::BUILDEREXT)
-  {
-    Repl.BuilderExtModeIndex = ui->BextTypeComboBox->currentIndex();
-    Repl.BuilderExtCategoryIndex = ui->BextCategoryComboBox->currentIndex();
-    Repl.BuilderExtMenuText = ui->BextMenutextEdit->text();
-    WithHpp = true;
-    WithUiParam = false;
+    return openfluid::builderext::ExtensionMode::MODAL;
   }
 
-
-  if (WithUiParam &&
-      (m_WareType == openfluid::ware::WareType::SIMULATOR ||
-      m_WareType == openfluid::ware::WareType::OBSERVER))
+  if (ui->BextTypeComboBox->currentIndex() == 1)
   {
-    Repl.ParamsUiEnabled = true;
-    Repl.ParamsUiClassname = ui->UiParamClassNameEdit->text();
-    Repl.ParamsUiRootCppFilename = ui->UiParamSourceFilenameEdit->text();
-    Repl.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(Repl.ParamsUiRootCppFilename);
-    Repl.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(Repl.ParamsUiRootHppFilename);
-    Repl.ParamsUiComment = "";
+    return openfluid::builderext::ExtensionMode::MODELESS;
   }
 
+  return openfluid::builderext::ExtensionMode::WORKSPACE;
+}
 
-  Ok = m_WareTypeDir.mkdir(WareId);
-  if (!Ok)
-  {
-    ErrMsg = tr("Unable to create the ware directory");
-  }
-  else
-  {
-    Ok = Factory.createCMakeListsFile(Repl, NewFilePath, ErrMsg);
-  }
 
-  if (Ok)
-  {
-    Ok = Factory.createCmakeConfigFile(Repl, NewFilePath, ErrMsg);
-  }
+// =====================================================================
+// =====================================================================
 
-  if (Ok)
+
+openfluid::builderext::ExtensionCategory  NewWareDialog::getBuilderextCategory() const
+{
+  if (ui->BextCategoryComboBox->currentIndex() == 0)
   {
-    Ok = Factory.createCppFile(Repl, NewFilePath, ErrMsg);
+    return openfluid::builderext::ExtensionCategory::SPATIAL;
   }
 
-  if (Ok && WithHpp)
+  if (ui->BextCategoryComboBox->currentIndex() == 1)
   {
-    Ok = Factory.createHppFile(Repl, NewFilePath, ErrMsg);
+    return openfluid::builderext::ExtensionCategory::MODEL;
   }
 
-  if (Ok && WithUiParam)
+  if (ui->BextCategoryComboBox->currentIndex() == 2)
   {
-    Ok = Factory.createParamUiCppFile(Repl, NewFilePath, ErrMsg);
+    return openfluid::builderext::ExtensionCategory::RESULTS;
   }
 
-  if (Ok && WithUiParam)
-  {
-    Ok = Factory.createParamUiHppFile(Repl, NewFilePath, ErrMsg);
-  }
+  return openfluid::builderext::ExtensionCategory::OTHER;
+}
 
-  if (Ok && ui->JsonCheckBox->isChecked())
-  {
-    Ok = Factory.createJsonFile(NewFilePath, ErrMsg);
-  }
 
-  if (Ok)
-  {
-    m_NewWarePath = m_WareTypeDir.filePath(WareId);
-    QDialog::accept();
-  }
-  else
-  {
-    if (m_WareTypeDir.exists(WareId))
-    {
-      openfluid::tools::Filesystem::emptyDirectory(m_WareTypeDir.absoluteFilePath(WareId).toStdString());
-    }
-    QMessageBox::warning(this, tr("Error"), tr("Unable to create the ware \"%1\"").arg(ErrMsg));
-  }
+// =====================================================================
+// =====================================================================
+
+
+QString NewWareDialog::getBuilderextMenuText() const
+{
+  return ui->BextMenutextEdit->text();
 }
 
 

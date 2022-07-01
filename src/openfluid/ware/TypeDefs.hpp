@@ -146,6 +146,29 @@ typedef openfluid::core::StringValue WareParamValue_t;
 typedef std::map<WareParamKey_t, WareParamValue_t> WareParams_t;
 
 
+// =====================================================================
+// =====================================================================
+
+
+inline std::string stringifyWareType(WareType Type)
+{
+  if (Type == WareType::SIMULATOR)
+  {
+    return "simulator";
+  }
+  else if (Type == WareType::OBSERVER)
+  {
+    return "observer";
+  }
+  else if (Type == WareType::BUILDEREXT)
+  {
+    return "builderext";
+  }
+
+  return std::string();
+}
+
+
 } } // namespaces
 
 

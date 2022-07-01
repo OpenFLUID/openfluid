@@ -1,9 +1,9 @@
 /**
-  @file %%PARAMSUIROOTCPPFILENAME%%
+  @file WareUI.cpp
 */
 
 
-#include "%%PARAMSUIROOTHPPFILENAME%%"
+#include "WareUI.hpp"
 
 
 

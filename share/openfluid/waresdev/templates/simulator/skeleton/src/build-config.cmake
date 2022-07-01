@@ -4,7 +4,7 @@ SET(SIM_ID "%%WAREID%%")
 
 # list of CPP files, the sim2doc tag must be contained in the first one
 # ex: SET(SIM_CPP MySimulator.cpp)
-SET(SIM_CPP %%ROOTCPPFILENAME%%)
+SET(SIM_CPP WareMain.cpp)
 
 # list of Fortran files, if any
 # ex: SET(SIM_FORTRAN Calc.f)

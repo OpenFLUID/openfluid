@@ -44,16 +44,12 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <QDir>
-#include <QTextStream>
-
 #include <openfluid/waresdev/WareSrcFactory.hpp>
-#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
+
+#include "tests-config.hpp"
 
 
 // =====================================================================
@@ -62,129 +58,129 @@
 
 BOOST_AUTO_TEST_CASE(create_files_sim)
 {
-  openfluid::base::Environment::init();
+  auto Sign = openfluid::ware::SimulatorSignature();
+  Sign.ID = "sim.waresrcfactory.test";
 
-  openfluid::base::WorkspaceManager::instance()->openWorkspace(
-    openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath()
-  );
+  openfluid::waresdev::WareSrcFactory::Configuration Config;
+  Config.MainClassName = "TestSimulator";
 
-  QDir CommonTemplatesDir = QDir(
-      QString("%1/%2/templates").arg(
-          QString::fromStdString(openfluid::base::Environment::getInstallPrefix())).arg(
-          QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
-  QDir TypedTemplatesDir = QDir(CommonTemplatesDir.absoluteFilePath("simulators"));
+  auto SimsPath = openfluid::tools::Path({CONFIGTESTS_OUTPUT_DATA_DIR,"WareSrcFactory","simulators"});
 
-  QString WareTypePath = QString::fromStdString(
-    openfluid::base::WorkspaceManager::instance()->getWaresPath(openfluid::ware::WareType::SIMULATOR)
-  );
-  QDir WareTypeDir = QDir(WareTypePath);
+  SimsPath.removeDirectory(Sign.ID); 
+  BOOST_CHECK(!SimsPath.exists(Sign.ID));
 
-  openfluid::tools::Filesystem::emptyDirectory(WareTypePath.toStdString());
+  openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,SimsPath.toGeneric());
 
-  openfluid::waresdev::WareSrcFactory Factory(openfluid::ware::WareType::SIMULATOR);
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/src"));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/doc"));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/tests"));
 
-  QString NewFilePath, ErrMsg;
-  openfluid::waresdev::WareSrcFactory::Replacements R;
-  R.ClassName = "MySim";
-  R.RootCppFilename = "MySim.cpp";
-  R.Sim2docModeIndex = 1;  //"AUTO"
-  R.Sim2docInstall = true;
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/CMakeLists.txt"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/WareMain.cpp"));
+  BOOST_CHECK(!SimsPath.isFile(Sign.ID+"/src/WareUI.hpp"));
+  BOOST_CHECK(!SimsPath.isFile(Sign.ID+"/src/WareUI.cpp"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
+}
 
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createParamUiCppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createParamUiHppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg), false);
 
-  Factory.setWareId("wrongid");
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createParamUiCppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createParamUiHppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg), false);
+// =====================================================================
+// =====================================================================
 
-  WareTypeDir.mkdir("sim.id");
-  QDir SimDir(WareTypeDir.filePath("sim.id"));
-  Factory.setWareId("sim.id");
 
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(SimDir.exists("CMakeLists.txt"));
-  QFile CMakeTpl(TypedTemplatesDir.filePath("CMakeLists.txt.tpl"));
-  QFile CMakeResult(SimDir.filePath("CMakeLists.txt"));
-  CMakeTpl.open(QIODevice::ReadOnly | QIODevice::Text);
-  CMakeResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString CMakeListsFileContent = QTextStream(&CMakeResult).readAll();
-  BOOST_CHECK(!CMakeListsFileContent.contains("%%"));
-  BOOST_CHECK(CMakeListsFileContent.contains("PROJECT(\"sim.id\")"));
-  CMakeTpl.close();
-  CMakeResult.close();
+BOOST_AUTO_TEST_CASE(create_files_sim_withui)
+{
+  auto Sign = openfluid::ware::SimulatorSignature();
+  Sign.ID = "sim.waresrcfactory.test-withui";
 
-  BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), true);
-  BOOST_CHECK(SimDir.exists("wareshub.json"));
-  QFile JsonTpl(CommonTemplatesDir.filePath("wareshub.json.tpl"));
-  QFile JsonResult(SimDir.filePath("wareshub.json"));
-  JsonTpl.open(QIODevice::ReadOnly | QIODevice::Text);
-  JsonResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  BOOST_CHECK_EQUAL(QTextStream(&JsonTpl).readAll().toStdString(), QTextStream(&JsonResult).readAll().toStdString());
-  JsonTpl.close();
-  JsonResult.close();
+  openfluid::waresdev::WareSrcFactory::Configuration Config;
+  Config.MainClassName = "TestSimulator";
+  Config.WithParamsUI = true;
+  Config.ParamsUIClassName = "TestSimulatorUI";
 
-  BOOST_CHECK_EQUAL(Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(SimDir.exists("CMake.in.config"));
-  QFile CMakeConfigResult(SimDir.filePath("CMake.in.config"));
-  CMakeConfigResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString CMakeConfigFileContent = QTextStream(&CMakeConfigResult).readAll();
-  BOOST_CHECK(!CMakeConfigFileContent.contains("%%"));
-  BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_ID \"sim.id\")"));
-  BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_CPP MySim.cpp)"));
-  BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_PARAMSUI_ENABLED OFF)"));
-  BOOST_CHECK(CMakeConfigFileContent.contains("SET(SIM_PARAMSUI_CPP )"));
-  CMakeConfigResult.close();
+  auto SimsPath = openfluid::tools::Path({CONFIGTESTS_OUTPUT_DATA_DIR,"WareSrcFactory","simulators"});
 
-  BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(SimDir.exists("MySim.cpp"));
-  QFile CppResult(SimDir.filePath("MySim.cpp"));
-  CppResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString CppFileContent = QTextStream(&CppResult).readAll();
-  BOOST_CHECK(!CppFileContent.contains("%%"));
-  BOOST_CHECK(CppFileContent.contains("file MySim.cpp"));
-  BOOST_CHECK(CppFileContent.contains("BEGIN_SIMULATOR_SIGNATURE(\"sim.id\")"));
-  BOOST_CHECK(CppFileContent.contains("class MySim : public openfluid::ware::PluggableSimulator"));
-  CppResult.close();
+  SimsPath.removeDirectory(Sign.ID); 
+  BOOST_CHECK(!SimsPath.exists(Sign.ID));
 
-  R.ParamsUiClassname = "MyWidget";
-  R.ParamsUiRootCppFilename = "MyWidget.cpp";
-  R.ParamsUiRootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.ParamsUiRootCppFilename);
-  R.ParamsUiHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.ParamsUiRootHppFilename);
+  openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,SimsPath.toGeneric());
 
-  BOOST_CHECK_EQUAL(Factory.createParamUiCppFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(SimDir.exists("MyWidget.cpp"));
-  QFile CppUiResult(SimDir.filePath("MyWidget.cpp"));
-  CppUiResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString CppUiFileContent = QTextStream(&CppUiResult).readAll();
-  BOOST_CHECK(!CppUiFileContent.contains("%%"));
-  BOOST_CHECK(CppUiFileContent.contains("file MyWidget.cpp"));
-  BOOST_CHECK(CppUiFileContent.contains("#include \"MyWidget.hpp\""));
-  BOOST_CHECK(CppUiFileContent
-                .contains("MyWidget::MyWidget() : openfluid::builderext::PluggableParameterizationExtension()"));
-  CppUiResult.close();
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/src"));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/doc"));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/tests"));
 
-  BOOST_CHECK_EQUAL(Factory.createParamUiHppFile(R, NewFilePath, ErrMsg), true);
-  QFile HppUiResult(SimDir.filePath("MyWidget.hpp"));
-  HppUiResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString HppUiFileContent = QTextStream(&HppUiResult).readAll();
-  BOOST_CHECK(!HppUiFileContent.contains("%%"));
-  BOOST_CHECK(HppUiFileContent.contains("file MyWidget.hpp"));
-  BOOST_CHECK(HppUiFileContent.contains("#ifndef __MYWIDGET_HPP__"));
-  BOOST_CHECK(HppUiFileContent
-                .contains("class MyWidget: public openfluid::builderext::PluggableParameterizationExtension"));
-  HppUiResult.close();
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/CMakeLists.txt"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/WareMain.cpp"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/WareUI.hpp"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/WareUI.cpp"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
+}
 
-  openfluid::tools::FilesystemPath(WareTypePath.toStdString()).removeDirectory();
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(create_files_obs)
+{
+  auto Sign = openfluid::ware::ObserverSignature();
+  Sign.ID = "obs.waresrcfactory.test-withui";
+
+  openfluid::waresdev::WareSrcFactory::Configuration Config;
+  Config.MainClassName = "TestObserver";
+
+  auto ObssPath = openfluid::tools::Path({CONFIGTESTS_OUTPUT_DATA_DIR,"WareSrcFactory","observers"});
+
+  ObssPath.removeDirectory(Sign.ID); 
+  BOOST_CHECK(!ObssPath.exists(Sign.ID));
+
+  openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ObssPath.toGeneric());
+
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/src"));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/doc"));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/tests"));
+
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/CMakeLists.txt"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/WareMain.cpp"));
+  BOOST_CHECK(!ObssPath.isFile(Sign.ID+"/src/WareUI.hpp"));
+  BOOST_CHECK(!ObssPath.isFile(Sign.ID+"/src/WareUI.cpp"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(create_files_obs_withui)
+{
+  auto Sign = openfluid::ware::ObserverSignature();
+  Sign.ID = "obs.waresrcfactory.test";
+
+  openfluid::waresdev::WareSrcFactory::Configuration Config;
+  Config.MainClassName = "TestObserver";
+  Config.WithParamsUI = true;
+  Config.ParamsUIClassName = "TestObserverUI";
+
+  auto ObssPath = openfluid::tools::Path({CONFIGTESTS_OUTPUT_DATA_DIR,"WareSrcFactory","observers"});
+
+  ObssPath.removeDirectory(Sign.ID); 
+  BOOST_CHECK(!ObssPath.exists(Sign.ID));
+
+  openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ObssPath.toGeneric());
+
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/src"));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/doc"));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/tests"));
+
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/CMakeLists.txt"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/WareMain.cpp"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/WareUI.hpp"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/WareUI.cpp"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
 }
 
 
@@ -194,168 +190,32 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
 
 BOOST_AUTO_TEST_CASE(create_files_bext)
 {
-  openfluid::base::Environment::init();
+  auto Sign = openfluid::builderext::BuilderExtensionSignature();
+  Sign.ID = "bext.waresrcfactory.test";
+  Sign.Role = openfluid::builderext::ExtensionRole::FEATURE;
+  Sign.Category = openfluid::builderext::ExtensionCategory::RESULTS;
+  Sign.MenuText = "Test Builer-Extension";
 
-  QDir CommonTemplatesDir = QDir(
-      QString("%1/%2/templates").arg(
-          QString::fromStdString(openfluid::base::Environment::getInstallPrefix())).arg(
-          QString::fromStdString(openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
-  QDir TypedTemplatesDir = QDir(CommonTemplatesDir.absoluteFilePath("builderexts"));
+  openfluid::waresdev::WareSrcFactory::Configuration Config;
+  Config.MainClassName = "TestBuilderext";
+  Config.UIMode = openfluid::builderext::ExtensionMode::WORKSPACE;
+ 
 
-  QString WareTypePath = QString::fromStdString(
-    openfluid::base::WorkspaceManager::instance()->getWaresPath(openfluid::ware::WareType::BUILDEREXT)
-  );
-  QDir WareTypeDir = QDir(WareTypePath);
+  auto BextsPath = openfluid::tools::Path({CONFIGTESTS_OUTPUT_DATA_DIR,"WareSrcFactory","builderexts"});
 
-  openfluid::tools::Filesystem::emptyDirectory(WareTypePath.toStdString());
+  BextsPath.removeDirectory(Sign.ID); 
+  BOOST_CHECK(!BextsPath.exists(Sign.ID));
 
-  openfluid::waresdev::WareSrcFactory Factory(openfluid::ware::WareType::BUILDEREXT);
+  openfluid::waresdev::WareSrcFactory::createBuilderext(Sign,Config,BextsPath.toGeneric());
 
-  QString NewFilePath, ErrMsg;
-  openfluid::waresdev::WareSrcFactory::Replacements R;
-  R.ClassName = "MyBext";
-  R.RootCppFilename = "MyBext.cpp";
-  R.RootHppFilename = openfluid::waresdev::WareSrcFactory::getHppFilename(R.RootCppFilename);
-  R.HppHeaderGuard = openfluid::waresdev::WareSrcFactory::getHeaderGuard(R.RootHppFilename);
-  R.BuilderExtCategoryIndex = 0;  //"openfluid::builderext::ExtensionCategory::SPATIAL"
-  R.BuilderExtMenuText = "bla bla";
+  BOOST_CHECK(BextsPath.isDirectory(Sign.ID));
+  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/src"));
+  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/doc"));
+  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/tests"));
 
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createParamUiCppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createParamUiHppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg), false);
-
-  Factory.setWareId("wrongid");
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createParamUiCppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createParamUiHppFile(R, NewFilePath, ErrMsg), false);
-  BOOST_CHECK_EQUAL(Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg), false);
-
-  WareTypeDir.mkdir("bext.id");
-  QDir BextDir(WareTypeDir.filePath("bext.id"));
-  Factory.setWareId("bext.id");
-
-  BOOST_CHECK_EQUAL(Factory.createCMakeListsFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("CMakeLists.txt"));
-  QFile CMakeTpl(TypedTemplatesDir.filePath("CMakeLists.txt.tpl"));
-  QFile CMakeResult(BextDir.filePath("CMakeLists.txt"));
-  CMakeTpl.open(QIODevice::ReadOnly | QIODevice::Text);
-  CMakeResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString CMakeListsFileContent = QTextStream(&CMakeResult).readAll();
-  BOOST_CHECK(!CMakeListsFileContent.contains("%%"));
-  BOOST_CHECK(CMakeListsFileContent.contains("PROJECT(\"bext.id\")"));
-  CMakeTpl.close();
-  CMakeResult.close();
-
-  BOOST_CHECK_EQUAL(Factory.createJsonFile(NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("wareshub.json"));
-  QFile JsonTpl(CommonTemplatesDir.filePath("wareshub.json.tpl"));
-  QFile JsonResult(BextDir.filePath("wareshub.json"));
-  JsonTpl.open(QIODevice::ReadOnly | QIODevice::Text);
-  JsonResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  BOOST_CHECK_EQUAL(QTextStream(&JsonTpl).readAll().toStdString(), QTextStream(&JsonResult).readAll().toStdString());
-  JsonTpl.close();
-  JsonResult.close();
-
-  BOOST_CHECK_EQUAL(Factory.createCmakeConfigFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("CMake.in.config"));
-  QFile CMakeConfigResult(BextDir.filePath("CMake.in.config"));
-  CMakeConfigResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString CMakeConfigFileContent = QTextStream(&CMakeConfigResult).readAll();
-  BOOST_CHECK(!CMakeConfigFileContent.contains("%%"));
-  BOOST_CHECK(CMakeConfigFileContent.contains("SET(BEXT_ID \"bext.id\")"));
-  BOOST_CHECK(CMakeConfigFileContent.contains("SET(BEXT_CPP MyBext.cpp)"));
-  CMakeConfigResult.close();
-
-  R.BuilderExtModeIndex = 0;  //openfluid::builderext::ExtensionMode::MODAL
-
-  BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("MyBext.cpp"));
-  QFile CppResult(BextDir.filePath("MyBext.cpp"));
-  CppResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString CppFileContent = QTextStream(&CppResult).readAll();
-  BOOST_CHECK(!CppFileContent.contains("%%"));
-  BOOST_CHECK(CppFileContent.contains("file MyBext.cpp"));
-  BOOST_CHECK(CppFileContent.contains("#include \"MyBext.hpp\""));
-  BOOST_CHECK(CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", "
-                                      "openfluid::builderext::ExtensionMode::MODAL)"));
-  BOOST_CHECK(CppFileContent.contains("DECLARE_CATEGORY(openfluid::builderext::ExtensionCategory::SPATIAL)"));
-  BOOST_CHECK(CppFileContent.contains("DECLARE_MENUTEXT(\"bla bla\")"));
-  BOOST_CHECK(CppFileContent.contains("MyBext::MyBext()"));
-  CppResult.remove();
-
-  BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("MyBext.hpp"));
-  QFile HppResult(BextDir.filePath("MyBext.hpp"));
-  HppResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  QString HppFileContent = QTextStream(&HppResult).readAll();
-  BOOST_CHECK(!HppFileContent.contains("%%"));
-  BOOST_CHECK(HppFileContent.contains("file MyBext.hpp"));
-  BOOST_CHECK(HppFileContent.contains("#ifndef __MYBEXT_HPP__"));
-  BOOST_CHECK(HppFileContent.contains("class MyBext : public openfluid::builderext::PluggableModalExtension"));
-  HppResult.remove();
-
-
-  R.BuilderExtModeIndex = 1;  //openfluid::builderext::ExtensionMode::MODELESS
-
-  BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("MyBext.cpp"));
-  CppResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  CppFileContent = QTextStream(&CppResult).readAll();
-  BOOST_CHECK(!CppFileContent.contains("%%"));
-  BOOST_CHECK(CppFileContent.contains("file MyBext.cpp"));
-  BOOST_CHECK(CppFileContent.contains("#include \"MyBext.hpp\""));
-  //std::cout << CppFileContent.toStdString() << std::endl;
-  BOOST_CHECK(CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", "
-                                     "openfluid::builderext::ExtensionMode::MODELESS)"));
-  BOOST_CHECK(CppFileContent.contains("DECLARE_CATEGORY(openfluid::builderext::ExtensionCategory::SPATIAL)"));
-  BOOST_CHECK(CppFileContent.contains("DECLARE_MENUTEXT(\"bla bla\")"));
-  BOOST_CHECK(CppFileContent.contains("MyBext::MyBext()"));
-  CppResult.remove();
-
-  BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("MyBext.hpp"));
-  HppResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  HppFileContent = QTextStream(&HppResult).readAll();
-  BOOST_CHECK(!HppFileContent.contains("%%"));
-  BOOST_CHECK(HppFileContent.contains("file MyBext.hpp"));
-  BOOST_CHECK(HppFileContent.contains("#ifndef __MYBEXT_HPP__"));
-  BOOST_CHECK(HppFileContent.contains("class MyBext : public openfluid::builderext::PluggableModelessExtension"));
-  HppResult.remove();
-
-
-  R.BuilderExtModeIndex = 2;  //openfluid::builderext::ExtensionMode::WORKSPACE
-
-  BOOST_CHECK_EQUAL(Factory.createCppFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("MyBext.cpp"));
-  CppResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  CppFileContent = QTextStream(&CppResult).readAll();
-  BOOST_CHECK(!CppFileContent.contains("%%"));
-  BOOST_CHECK(CppFileContent.contains("file MyBext.cpp"));
-  BOOST_CHECK(CppFileContent.contains("#include \"MyBext.hpp\""));
-  BOOST_CHECK(CppFileContent.contains("BEGIN_BUILDEREXT_SIGNATURE(\"bext.id\", "
-                                      "openfluid::builderext::ExtensionMode::WORKSPACE)"));
-  BOOST_CHECK(CppFileContent.contains("DECLARE_CATEGORY(openfluid::builderext::ExtensionCategory::SPATIAL)"));
-  BOOST_CHECK(CppFileContent.contains("DECLARE_MENUTEXT(\"bla bla\")"));
-  BOOST_CHECK(CppFileContent.contains("MyBext::MyBext()"));
-  CppResult.close();
-
-  BOOST_CHECK_EQUAL(Factory.createHppFile(R, NewFilePath, ErrMsg), true);
-  BOOST_CHECK(BextDir.exists("MyBext.hpp"));
-  HppResult.open(QIODevice::ReadOnly | QIODevice::Text);
-  HppFileContent = QTextStream(&HppResult).readAll();
-  BOOST_CHECK(!HppFileContent.contains("%%"));
-  BOOST_CHECK(HppFileContent.contains("file MyBext.hpp"));
-  BOOST_CHECK(HppFileContent.contains("#ifndef __MYBEXT_HPP__"));
-  BOOST_CHECK(HppFileContent.contains("class MyBext : public openfluid::builderext::PluggableWorkspaceExtension"));
-  HppResult.close();
-
-  openfluid::tools::FilesystemPath(WareTypePath.toStdString()).removeDirectory();
+  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/CMakeLists.txt"));
+  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/src/WareMain.cpp"));
+  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/src/WareMain.hpp"));
+  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
 }
 

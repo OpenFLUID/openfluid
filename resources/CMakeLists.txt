@@ -95,7 +95,7 @@ IF(PYTHON3_EXECUTABLE)
                     COMMENT "Checking source code style"
                     COMMAND "${PYTHON3_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
-                            "${CMAKE_SOURCE_DIR}"
+                            "${CMAKE_SOURCE_DIR}" "--exclude=share"
                    )
 
   # cppcheck tool

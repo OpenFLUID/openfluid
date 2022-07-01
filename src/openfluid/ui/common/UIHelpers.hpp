@@ -49,6 +49,10 @@
 #include <QIcon>
 #include <QApplication>
 #include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
+
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -177,6 +181,41 @@ inline QPixmap getImage(const QString& ImageName,const QString& ResourcePath,boo
   }
 
   return QPixmap(TmpPath);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline void createNewFile(QWidget* Parent, const QString& Path)
+{
+  if (Path.isEmpty())
+  {
+    return;
+  }
+
+  QString FileToCreate = QFileDialog::getSaveFileName(Parent,
+                                                      QApplication::translate("openfluid::ui::common","Create file"),
+                                                      Path,
+                                                      QApplication::translate("openfluid::ui::common","All files"));
+
+  if (!FileToCreate.isEmpty())
+  {
+    auto NewFilePath = openfluid::tools::Path(FileToCreate.toStdString());
+    
+    if (NewFilePath.isDirectory())
+    {
+      QMessageBox::critical(Parent,QApplication::translate("openfluid::ui::common","Error creating file"),
+                           QApplication::translate("openfluid::ui::common","\"%1\" is an existing directory")
+                             .arg(QString::fromStdString(NewFilePath.toNative())));
+    }
+    else
+    {
+      NewFilePath.makeFile();
+    }
+    
+  }  
 }
 
 
