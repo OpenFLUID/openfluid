@@ -46,6 +46,7 @@
 namespace openfluid { namespace config {
 
 const std::string BUILD_TYPE = "@OFBUILD_BUILD_TYPE@";
+const std::string BUILD_TIMESTAMP = "@OFBUILD_BUILD_TIMESTAMP@";
 
 const std::string BUILD_CMAKE_VERSION = "@CMAKE_VERSION@";
 
