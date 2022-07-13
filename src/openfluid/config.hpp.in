@@ -46,7 +46,6 @@
 
 // Definitions based on build options
 #define OPENFLUID_GUI_ENABLED @OFBUILD_ENABLE_GUI_01@
-#define OPENFLUID_SIM2DOC_ENABLED @OFBUILD_ENABLE_SIM2DOC_01@
 
 
 namespace openfluid { namespace config {
@@ -178,10 +177,6 @@ const std::string SHARE_INSTALL_PATH = "@OPENFLUID_SHARE_INSTALL_PATH@";
 const std::string SHARE_COMMON_INSTALL_PATH = "@OPENFLUID_SHARE_COMMON_INSTALL_PATH@";
 const std::string SHARE_APPS_INSTALL_PATH = "@OPENFLUID_SHARE_APPS_INSTALL_PATH@";
 const std::string SHARE_WARESDEV_INSTALL_PATH = "@OPENFLUID_SHARE_WARESDEV_INSTALL_PATH@";
-
-
-// sim2doc default template file path
-const std::string SIM2DOC_TPLFILE_NAME = "sim2doc_tpl.tex";
 
 
 // Version information

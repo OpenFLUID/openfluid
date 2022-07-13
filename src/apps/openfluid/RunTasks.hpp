@@ -31,17 +31,33 @@
 
 
 /**
-  @file BuddiesListener.cpp
+  @file RunTasks.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
-
-#include <openfluid/buddies/BuddiesListener.hpp>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+*/
 
 
-namespace openfluid { namespace buddies {
+#include "TasksBase.hpp"
 
 
-} } //namespaces
+#ifndef __OPENFLUID_CMDLINEAPP_RUNTASKS_HPP__
+#define __OPENFLUID_CMDLINEAPP_RUNTASKS_HPP__
 
+
+class RunTasks : public TasksBase
+{
+  public:
+
+    RunTasks() = delete;
+
+    RunTasks(const openfluid::utils::CommandLineParser& Parser) : TasksBase(Parser)
+    { }
+
+    virtual ~RunTasks()
+    { }
+
+    int process();
+};
+
+
+#endif /* __OPENFLUID_CMDLINEAPP_RUNTASKS_HPP__ */

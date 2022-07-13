@@ -88,12 +88,10 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
   addSeparator();
   addAction(mp_ActionsCollection->action("ConfigureWare"));
   addAction(mp_ActionsCollection->action("BuildWare"));
-#if OPENFLUID_SIM2DOC_ENABLED
   if (m_DisplayDocBuild)
   {
     addAction(mp_ActionsCollection->action("GenerateDoc"));
   }
-#endif
 
   if (m_IsIncluded)
   {
@@ -122,12 +120,10 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
     SubMenu = Menu->addMenu(tr("Build"));
     SubMenu->addAction(mp_ActionsCollection->action("ConfigureWare"));
     SubMenu->addAction(mp_ActionsCollection->action("BuildWare"));
-#if OPENFLUID_SIM2DOC_ENABLED
     if (m_DisplayDocBuild)
     {
       SubMenu->addAction(mp_ActionsCollection->action("GenerateDoc"));
     }
-#endif
     SubMenu->addSeparator();
     SubMenu->addAction(mp_ActionsCollection->action("OpenWareOptions"));
 

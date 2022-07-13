@@ -1,0 +1,651 @@
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-Help
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "-h")
+SET_TESTS_PROPERTIES(cmdline-openfluid-Help 
+                     PROPERTIES PASS_REGULAR_EXPRESSION "openfluid \\[<command>\\] \\[<options>\\] \\[<args>\\]")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-HelpWhenNothing
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-HelpWhenNothing 
+                     PROPERTIES PASS_REGULAR_EXPRESSION "openfluid \\[<command>\\] \\[<options>\\] \\[<args>\\]")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-Version 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "version")
+SET_TESTS_PROPERTIES(cmdline-openfluid-Version PROPERTIES PASS_REGULAR_EXPRESSION ${OPENFLUID_VERSION_FULL})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-VersionNumeric
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "version" "-n")
+SET_TESTS_PROPERTIES(cmdline-openfluid-VersionNumeric PROPERTIES PASS_REGULAR_EXPRESSION ${OPENFLUID_VERSION_NUMERIC})
+
+
+###########################################################################
+
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-VersionAsOption
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "--version")
+SET_TESTS_PROPERTIES(cmdline-openfluid-VersionAsOption PROPERTIES PASS_REGULAR_EXPRESSION ${OPENFLUID_VERSION_FULL})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-Info 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "info")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-Info PROPERTIES FAIL_REGULAR_EXPRESSION "foobar")
+SET_TESTS_PROPERTIES(cmdline-openfluid-Info PROPERTIES FAIL_REGULAR_EXPRESSION "barfoo")
+SET_TESTS_PROPERTIES(cmdline-openfluid-Info PROPERTIES PASS_REGULAR_EXPRESSION "${OFBUILD_TESTS_USERDATA_DIR}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-Info PROPERTIES PASS_REGULAR_EXPRESSION "${OFBUILD_TESTS_TEMP_DIR}")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportSimulatorsList 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "report" "simulators" "--list"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsList PROPERTIES PASS_REGULAR_EXPRESSION "tests.tools")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsList PROPERTIES FAIL_REGULAR_EXPRESSION "tests.empty")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportSimulators
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "report" "simulators"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulators PROPERTIES PASS_REGULAR_EXPRESSION "tests.tools")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulators PROPERTIES FAIL_REGULAR_EXPRESSION "tests.empty")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportSimulatorsListJSON 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "simulators" "--list" "--format=json"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsListJSON PROPERTIES PASS_REGULAR_EXPRESSION "tests.tools")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsListJSON PROPERTIES FAIL_REGULAR_EXPRESSION "tests.empty")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportSimulatorsJSON 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "report" "simulators" "--format=json"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsJSON PROPERTIES PASS_REGULAR_EXPRESSION "tests.tools")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsJSON PROPERTIES FAIL_REGULAR_EXPRESSION "tests.empty")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportObserversList 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "observers" "--list"
+                           "-n" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversList PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversList PROPERTIES FAIL_REGULAR_EXPRESSION "tests.tools")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportObservers
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "observers"
+                           "-n" "${OFBUILD_TESTS_BINARY_DIR}")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObservers PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObservers PROPERTIES FAIL_REGULAR_EXPRESSION "tests.tools")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportObserversListJSON
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "observers" "--list" "--format=json"
+                           "-n" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversListJSON PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversListJSON PROPERTIES FAIL_REGULAR_EXPRESSION "tests.tools")
+
+
+###########################################################################
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportObserversReport
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "observers" "--format=json"
+                           "-n" "${OFBUILD_TESTS_BINARY_DIR}")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversReport PROPERTIES FAIL_REGULAR_EXPRESSION "tests.tools")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportSimulatorsReport
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" 
+                           "simulators")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsReport 
+                     PROPERTIES ENVIRONMENT "OPENFLUID_SIMS_PATH=${OFBUILD_TESTS_BINARY_DIR};OPENFLUID_TEMP_PATH=${OFBUILD_TESTS_TEMP_DIR};OPENFLUID_USERDATA_PATH=${OFBUILD_TESTS_USERDATA_DIR}")                           
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.use")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.prod")    
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportSimulatorsNoEnvVar 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "simulators")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsNoEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.use")  
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsNoEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.prod")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportSimulatorsNoEnvVar PROPERTIES WILL_FAIL TRUE)        
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportObserversEnvVar 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "observers")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversEnvVar 
+                     PROPERTIES ENVIRONMENT "OPENFLUID_OBSS_PATH=${OFBUILD_TESTS_BINARY_DIR};OPENFLUID_TEMP_PATH=${OFBUILD_TESTS_TEMP_DIR};OPENFLUID_USERDATA_PATH=${OFBUILD_TESTS_USERDATA_DIR}")                           
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")  
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ReportObserversNoEnvVar 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "observers")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversNoEnvVar  PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")
+SET_TESTS_PROPERTIES(cmdline-openfluid-ReportObserversNoEnvVar  PROPERTIES WILL_FAIL TRUE)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-RunVerbose
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "run"
+                           "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.Coupling"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Verbose"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                           "-v")
+  
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-RunQuiet
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "run"
+                           "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.Coupling"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Quiet"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                           "-q")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-RunInputDoesNotExist
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "run" "${CMAKE_BINARY_DIR}/path/does/not/exist")
+SET_TESTS_PROPERTIES(cmdline-openfluid-RunInputDoesNotExist PROPERTIES WILL_FAIL TRUE)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-RunInputWithNoModel
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "run"
+                           "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.NoModel"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.NoModel"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+ PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.NoModel"
+)
+SET_TESTS_PROPERTIES(cmdline-openfluid-RunInputWithNoModel PROPERTIES WILL_FAIL TRUE)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-RunInputWithNoRunconfig
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "run"
+                           "${OFBUILD_TESTS_INPUT_DATASETS_DIR}/OPENFLUID.IN.NoRun"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.NoRun"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(cmdline-openfluid-RunInputWithNoRunconfig PROPERTIES WILL_FAIL TRUE)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesHelp 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples" "--help" 
+                  )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorsSelection
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples" "--simulators-only=fire.surf.prod-spread,water.atm-surf.rain-su.files"
+                           "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel" 
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel/wares-dev/simulators/fire.surf.prod-spread/FireProdSpreadSim.cpp"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel/wares-dev/simulators/water.atm-surf.rain-su.files/CMake.in.cmake"
+                  )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorsAll
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples" "--simulators-only"
+                           "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall"       
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall/wares-dev/simulators/examples.primitives.unitsA.prod/ExampleUnitsAProd.cpp"
+                  )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorMissing
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples" "--simulators-only=fake.name"
+                           "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simmis" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simmis"
+                  )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesProjectsSelection
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples" "--projects-only=Firespread,Primitives"
+                           "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjsel" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjsel" 
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjsel/projects/Firespread/IN/model.fluidx"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjsel/projects/Primitives/IN/model.fluidx"
+                  )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesProjectsAll
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples" "--projects-only"
+                           "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjall" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjall"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjall/projects/Manhattan/IN/model.fluidx"
+                  )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesAll
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples"
+                           "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all"                              
+                  )
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesSimulatorsSelection)
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesSimulatorsAll)
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesSimulatorMissing)
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesProjectsSelection)
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesProjectsAll)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesRunPrimitives
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "run" 
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives"                                                   
+                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/fullA_unitsA1_var1.csv"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/fullB_unitsB2_var5.csv"
+                   )
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesRunPrimitives APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesAll)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-PrepareWorkspaceHelp
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "prepare-workspace" "--help"
+                  )
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-PrepareWorkspace
+         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                 "prepare-workspace" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/prepare-workspace"
+         )
+SET_PROPERTY(TEST cmdline-openfluid-PrepareWorkspace APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE}) # TOIMPL
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareHelp
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "create-ware" "--help"
+                  )
+
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareSimulator
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "create-ware" "--type=simulator" "--id=tests.cmdline.sim"
+                           "-p" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim" 
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim/CMakeLists.txt")
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-CheckSimulator
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "check" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-CheckSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
+SET_PROPERTY(TEST cmdline-openfluid-CheckSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-DocalyzeSimulator
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "docalyze" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-DocalyzeSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
+SET_PROPERTY(TEST cmdline-openfluid-DocalyzeSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-ConfigureSimulator
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "configure" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-BuildSimulator
+         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                  "build" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-BuildSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureSimulator)
+SET_PROPERTY(TEST cmdline-openfluid-BuildSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-PurgeSimulator
+         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                  "build" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-PurgeSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-BuildSimulator)
+SET_PROPERTY(TEST cmdline-openfluid-PurgeSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareSimulatorParamsUI
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "create-ware" "--type=simulator" "--id=tests.cmdline.sim-ui" "--with-paramsui"
+                           "-p" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim-ui" 
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim-ui/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim-ui/src/WareUI.cpp")
+
+
+###########################################################################
+
+ADD_TEST(NAME cmdline-openfluid-ConfigureSimulatorParamsUI
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "configure" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim-ui") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulatorParamsUI)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureSimulatorParamsUI APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-BuildSimulatorParamsUI
+         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                  "build" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim-ui") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-BuildSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureSimulatorParamsUI)
+SET_PROPERTY(TEST cmdline-openfluid-BuildSimulatorParamsUI APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareObserver
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "create-ware" "--type=observer" "--id=tests.cmdline.obs"
+                           "-p" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs" 
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs/CMakeLists.txt")
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-CheckObserver
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "check" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.obs") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-CheckObserver APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareObserver)
+SET_PROPERTY(TEST cmdline-openfluid-CheckObserver APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-ConfigureObserver
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "configure" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.obs") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureObserver APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareObserver)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureObserver APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-BuildObserver
+         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                  "build" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.obs") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-BuildObserver APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureObserver)
+SET_PROPERTY(TEST cmdline-openfluid-BuildObserver APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareObserverParamsUI
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "create-ware" "--type=observer" "--id=tests.cmdline.obs-ui" "--with-paramsui"
+                           "-p" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs-ui" 
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs-ui/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs-ui/src/WareUI.cpp")
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-ConfigureObserverParamsUI
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "configure" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.obs-ui") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureObserverParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareObserverParamsUI)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureObserverParamsUI APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-BuildObserverParamsUI
+         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                  "build" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.obs-ui") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-BuildObserverParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureObserverParamsUI)
+SET_PROPERTY(TEST cmdline-openfluid-BuildObserverParamsUI APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareBuilderext
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "create-ware" "--type=builderext" "--id=tests.cmdline.bext"
+                           "--bext-mode=modal" "--bext-category=spatial" "--bext-menutext=CmdLine generated"
+                           "-p" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext/tests.cmdline.bext" 
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext/tests.cmdline.bext/CMakeLists.txt")
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-CheckBuilderext
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "check" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.bext") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-CheckBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareBuilderext)
+SET_PROPERTY(TEST cmdline-openfluid-CheckBuilderext APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-ConfigureBuilderext
+        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                "configure" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.bext") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareBuilderext)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureBuilderext APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+ADD_TEST(NAME cmdline-openfluid-BuildBuilderext
+         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                  "build" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.bext") # TOIMPL
+SET_PROPERTY(TEST cmdline-openfluid-BuildBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureBuilderext)
+SET_PROPERTY(TEST cmdline-openfluid-BuildBuilderext APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateDataHelp
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "create-data" "--help")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateDataset
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                              "create-data" "--type=dataset" "--name=NewDataset.IN" "--with-sample-data"
+                              "--parent-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewDataset.IN")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateDatasetCheck
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "run"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewDataset.IN"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewDataset.OUT"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}"
+                  )
+SET_PROPERTY(TEST cmdline-openfluid-CreateDatasetCheck APPEND PROPERTY DEPENDS cmdline-openfluid-CreateDataset)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateEmptyDataset
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                              "create-data" "--type=dataset" "--name=NewEmptyDataset.IN"
+                              "--parent-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewEmptyDataset.IN"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewEmptyDataset.IN/model.fluidx")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateProject
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                              "create-data" "--type=project" "--name=NewProject" "-s"
+                              "--parent-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data"
+                              )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateProjectCheck
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "run"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewProject"
+                  )
+SET_PROPERTY(TEST cmdline-openfluid-CreateProjectCheck APPEND PROPERTY DEPENDS cmdline-openfluid-CreateProject)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateEmptyProject
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                              "create-data" "--type=project" "--name=NewEmptyProject" 
+                              "--parent-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewEmptyProject/IN/model.fluidx"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewEmptyProject/openfluid-project.json")
+

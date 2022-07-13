@@ -29,12 +29,6 @@ OPTION(OFBUILD_ENABLE_APP_DEVSTUDIO "enable build of openfluid-devstudio applica
 OPTION(OFBUILD_ENABLE_APP_LOGEXPLORER "enable build of openfluid-logexplorer application" ON)
 OPTION(OFBUILD_ENABLE_WARESDEV_BUILDER_INTEGRATION "enable integration of wares development in builder application" ON)
 
-IF(UNIX AND NOT APPLE)
-  OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" ON)
-ELSE()
-  OPTION(OFBUILD_ENABLE_SIM2DOC "enable build of sim2doc buddy" OFF)
-ENDIF()
-
 OPTION(OFBUILD_ENABLE_SANITIZER "" OFF)
 
 OPTION(OFBUILD_TESTS_ENABLE_HEAVY "enable build of heavy tests" OFF)
@@ -113,7 +107,7 @@ ELSE()
 ENDIF()
 
 
-# Hack for avoiding conflicts between Boost libraries and Qt moc system
+# workaround to avoid conflicts between Boost libraries and Qt moc system
 SET(CMAKE_AUTOMOC_MOC_OPTIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)

@@ -167,7 +167,6 @@ BOOST_AUTO_TEST_CASE(check_parser)
   std::list<std::string> ArgValues4 {"-h"};
   BOOST_REQUIRE(Parser.parse(ArgValues4));
   Parser.printHelp(std::cout);
-//  std::cout << "\n" << Parser.getParsingMessage() << std::endl;
 
   std::cout << "=================================" << std::endl;
 
@@ -180,7 +179,6 @@ BOOST_AUTO_TEST_CASE(check_parser)
   std::list<std::string> ArgValues5 {"search","--help"};
   BOOST_REQUIRE(Parser.parse(ArgValues5));
   Parser.printHelp(std::cout);
-//  std::cout << "\n" << Parser.getParsingMessage() << std::endl;
 
   std::cout << "=================================" << std::endl;
 

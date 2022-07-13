@@ -31,57 +31,38 @@
 
 
 /**
-  @file NewDataBuddy.hpp
+  @file WareTasks.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
 
-#ifndef __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__
-#define __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__
+#include "TasksBase.hpp"
 
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
+#ifndef __OPENFLUID_CMDLINEAPP_WARETASKS_HPP__
+#define __OPENFLUID_CMDLINEAPP_WARETASKS_HPP__
 
 
-namespace openfluid { namespace buddies {
-
-
-class OPENFLUID_API NewDataBuddy : public OpenFLUIDBuddy
+class WareTasks : public TasksBase
 {
   private:
 
-    std::string m_OutputDirPath;
+    int processCreateWare();
 
-    std::string getXMLHeader();
-
-    std::string getXMLFooter();
-
-    void generateRunXML();
-
-    void generateModelXML();
-
-    void generateOutputXML();
-
-    void generateEventsXML();
-
-    void generateDDefXML();
-
-    void generateDDataXML();
 
   public:
 
-    NewDataBuddy(openfluid::buddies::BuddiesListener* Listener);
+    WareTasks() = delete;
 
-    ~NewDataBuddy();
+    WareTasks(const openfluid::utils::CommandLineParser& Parser) : TasksBase(Parser)
+    { }
 
-    bool run();
+    virtual ~WareTasks()
+    { }
 
+    int process();
 };
 
 
-} } //namespaces
-
-
-#endif /* __OPENFLUID_BUDDIES_NEWDATABUDDY_HPP__ */
+#endif /* __OPENFLUID_CMDLINEAPP_WARETASKS_HPP__ */

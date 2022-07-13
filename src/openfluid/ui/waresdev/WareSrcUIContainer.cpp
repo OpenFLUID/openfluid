@@ -37,6 +37,7 @@
 
 
 #include <QCoreApplication>
+#include <QMessageBox> // HACk
 
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -261,39 +262,8 @@ void WareSrcUIContainer::build()
 
 void WareSrcUIContainer::generateDoc()
 {
-  // run configure if build dir does not exist
-  if (!openfluid::tools::FilesystemPath(m_BuildDirPath).exists())
-  {
-    configure();
-
-    while (!mp_Process->waitForFinished(200))  // TODO better to replace this by a threaded process
-    {
-      qApp->processEvents();
-    }
-
-    mp_Stream->write(
-      openfluid::waresdev::WareSrcMsgParser::WareSrcMsg(
-        "\n================================================================================\n\n\n",
-        openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND
-      )
-    );
-  }
-
-
-  QString Target = getGenerateDocTarget();
-
-
-  delete mp_CurrentParser;
-  mp_CurrentParser = new openfluid::waresdev::WareSrcMsgParserNone();
-
-
-  // === build and run command
-
-  openfluid::utils::CMakeProxy::CommandInfos CmdInfos = 
-    openfluid::utils::CMakeProxy::getBuildCommand(QString::fromStdString(m_BuildDirPath),Target);
-
-  runCommand(CmdInfos, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
-
+  // TOIMPL
+  QMessageBox::critical(nullptr,"Generate doc","not implemented",QMessageBox::Close);
 }
 
 
@@ -302,7 +272,7 @@ void WareSrcUIContainer::generateDoc()
 
 
 void WareSrcUIContainer::runCommand(const openfluid::utils::CMakeProxy::CommandInfos& CmdInfos, 
-                                  const QProcessEnvironment& Env, WareSrcProcess::Type CmdType)
+                                    const QProcessEnvironment& Env, WareSrcProcess::Type CmdType)
 {
   if (mp_Process->state() != WareSrcProcess::NotRunning)
   {

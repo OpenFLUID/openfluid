@@ -69,6 +69,16 @@ bool OPENFLUID_API isValidAlphaNumName(const std::string& Name);
 
 
 /**
+  Checks whether a dataset or project name is valid or not.\n
+  To be valid, a name must only contain alphanumeric, '_', '-', '.' characters,
+  and must begin by an alphanumeric character.
+  @param[in] Name the name to check
+  @return true if the name is valid
+*/
+bool OPENFLUID_API isValidDatasetName(const std::string& Name);
+
+
+/**
   Checks whether a ware ID is valid or not.\n
   To be valid, a ware ID must only contain alphanumeric, '_', '-', '.' characters,
   and must begin by an alphanumeric character.

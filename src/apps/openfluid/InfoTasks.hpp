@@ -30,52 +30,41 @@
 */
 
 
-
 /**
-  @file OFEFunc2DocSim.h
+  @file InfoTasks.hpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
-#ifndef __SIM2DOCSIM_H__
-#define __SIM2DOCSIM_H__
 
-#include <openfluid/ware/PluggableSimulator.hpp>
+#include "TasksBase.hpp"
 
 
+#ifndef __OPENFLUID_CMDLINEAPP_INFOTASKS_HPP__
+#define __OPENFLUID_CMDLINEAPP_INFOTASKS_HPP__
 
-// =====================================================================
-// =====================================================================
 
-
-/**
-
-*/
-class Sim2DocSimulator : public openfluid::ware::PluggableSimulator
+class InfoTasks : public TasksBase
 {
 
+  private:
+
+    int processVersion();
+
+    int processInfo();
+
   public:
-    /**
-      Constructor
-    */
-    Sim2DocSimulator();
 
-    /**
-      Destructor
-    */
-    ~Sim2DocSimulator();
+    InfoTasks() = delete;
 
-    void initParams(const openfluid::ware::WareParams_t& Params);
+    InfoTasks(const openfluid::utils::CommandLineParser& Parser) : TasksBase(Parser)
+    { }
 
-    void prepareData();
+    virtual ~InfoTasks()
+    { }
 
-    void checkConsistency();
-
-    openfluid::base::SchedulingRequest initializeRun();
-
-    openfluid::base::SchedulingRequest runStep();
-
-    void finalizeRun();
-
+    int process();
 };
 
 
-#endif  /* __SIM2DOCSIM_H__ */
+#endif /* __OPENFLUID_CMDLINEAPP_INFOTASKS_HPP__ */

@@ -1,13 +1,13 @@
 
 
-SET (OPENFLUID_BASE_CPP Environment.cpp RunContextManager.cpp 
+SET (OPENFLUID_BASE_CPP Environment.cpp RunContextManager.cpp ExamplesManager.cpp
                         SimulationStatus.cpp
                         SimulationLogger.cpp
                         PreferencesManager.cpp WorkspaceManager.cpp  
                         )
 
 SET (OPENFLUID_BASE_HPP Init.hpp
-                        Environment.hpp RunContextManager.hpp
+                        Environment.hpp RunContextManager.hpp ExamplesManager.hpp
                         Exception.hpp OtherException.hpp FrameworkException.hpp ApplicationException.hpp ExceptionContext.hpp
                         Listener.hpp IOListener.hpp
                         SchedulingRequest.hpp

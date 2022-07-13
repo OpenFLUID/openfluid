@@ -318,6 +318,23 @@ class CommandLineCommand
 
 
     /**
+      Adds many options to the command
+      @param[in] Options The option list to add
+    */
+    void addOptions(const std::vector<CommandLineOption>& Options)
+    {
+      for (const auto& Opt : Options)
+      {
+        addOption(Opt);
+      }
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
       Activates the given option with the given value
       @param[in] LongName The long name of the option
       @param[in] Value The value for activation (default is empty)
@@ -844,7 +861,7 @@ class CommandLineParser
       }
 
       OutStm << "\nAvailable options:\n";
-      OutStm << "  --help,-h : display this help message\n";
+      OutStm << "  --help, -h : display this help message\n";
 
       for (auto& Opt : m_Commands[m_ActiveCommand].options())
       {

@@ -167,16 +167,13 @@ void WareSrcActionsCollection::createActions()
 
 
   // Generate doc
-
-#if OPENFLUID_SIM2DOC_ENABLED
-    m_Actions["GenerateDoc"] = new openfluid::ui::common::DefaultAction(
-                                     openfluid::ui::common::getIcon("generate-doc","/ui/common",false),
-                                     tr("Generate doc"),this);
-    if (m_WithShortcuts)
-    {
-      m_Actions["GenerateDoc"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
-    }
-#endif
+  m_Actions["GenerateDoc"] = new openfluid::ui::common::DefaultAction(
+                                   openfluid::ui::common::getIcon("generate-doc","/ui/common",false),
+                                   tr("Generate doc"),this);
+  if (m_WithShortcuts)
+  {
+    m_Actions["GenerateDoc"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+  }
 
 
   // Options

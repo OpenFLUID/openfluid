@@ -12,3 +12,7 @@ TARGET_LINK_LIBRARIES(openfluid-minimal
                       openfluid-tools
                       openfluid-fluidx
                      )
+
+IF(OFBUILD_ENABLE_TESTING)
+  ADD_SUBDIRECTORY(tests)
+ENDIF()

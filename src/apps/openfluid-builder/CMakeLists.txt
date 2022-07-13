@@ -260,7 +260,6 @@ ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-base
-                      openfluid-buddies
                       openfluid-core
                       openfluid-machine
                       openfluid-ware
@@ -318,7 +317,6 @@ ENDIF()
 TARGET_LINK_LIBRARIES(openfluid-builder
                       ${GDAL_LIBRARIES}
                       openfluid-base
-                      openfluid-buddies
                       openfluid-core
                       openfluid-ware
                       openfluid-machine

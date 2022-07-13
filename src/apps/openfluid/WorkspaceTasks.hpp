@@ -31,58 +31,34 @@
 
 
 /**
-  @file OpenFLUIDBuddy.hpp
+  @file WorkspaceTasks.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
-
-
-#ifndef __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__
-#define __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+*/
 
 
-#include <string>
-#include <map>
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/BuddiesListener.hpp>
+#include "TasksBase.hpp"
 
 
-namespace openfluid { namespace buddies {
+#ifndef __OPENFLUID_CMDLINEAPP_WORKSPACETASKS_HPP__
+#define __OPENFLUID_CMDLINEAPP_WORKSPACETASKS_HPP__
 
 
-class OPENFLUID_API OpenFLUIDBuddy
+class WorkspaceTasks : public TasksBase
 {
-  protected:
-
-    std::map<std::string,std::string> m_Options;
-
-    std::map<std::string,std::string> m_RequiredOptionsHelp;
-    std::map<std::string,std::string> m_OtherOptionsHelp;
-
-    void setOptionIfNotSet(const std::string& OptionName, const std::string& OptionValue);
-
-    std::string getYesNoFromOneZero(const std::string& VStr);
-
-    openfluid::buddies::BuddiesListener* mp_Listener;
-
-
+ 
   public:
 
-    OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener);
+    WorkspaceTasks() = delete;
 
-    virtual ~OpenFLUIDBuddy();
+    WorkspaceTasks(const openfluid::utils::CommandLineParser& Parser) : TasksBase(Parser)
+    { }
 
-    bool parseOptions(const std::string& OptsStr);
+    virtual ~WorkspaceTasks()
+    { }
 
-    void streamOptions(std::ostream& OStream);
-
-    virtual bool run() = 0;
-
-    void invokeHelp();
+    int process();
 };
 
 
-} } //namespaces
-
-#endif /* __OPENFLUID_BUDDIES_OPENFLUIDBUDDY_HPP__ */
+#endif /* __OPENFLUID_CMDLINEAPP_WORKSPACETASKS_HPP__ */

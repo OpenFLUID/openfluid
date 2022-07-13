@@ -73,13 +73,9 @@ WorkspaceDevDashboardDialog::WorkspaceDevDashboardDialog(QWidget* Parent,
   ui->BuildCheckBox->setChecked(true);
   connect(ui->BuildCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildChanged()));
 
-#if OPENFLUID_SIM2DOC_ENABLED
-  ui->DocCheckBox->setChecked(true);
+  ui->DocCheckBox->setChecked(false); // HACK to set to true
+  ui->DocCheckBox->setEnabled(false); // HACK to remove
   connect(ui->DocCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildChanged()));
-#else
-  ui->DocCheckBox->setChecked(false);
-  ui->DocCheckBox->setVisible(false);
-#endif
 
   connect(ui->BuildDocRunButton,SIGNAL(clicked()),this,SLOT(runBuildDoc()));
 

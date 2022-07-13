@@ -180,26 +180,8 @@ ENDFUNCTION()
 
 FUNCTION(OFBUILD_ADD_EXAMPLE_DOC_BUILD_TARGET WAREID ROOTCPPFILENAME OUTPUTDIR)
 
-  SET(WAREID ${WAREID})
-  SET(ROOTCPPFILENAME ${ROOTCPPFILENAME})
-  SET(OUTPUTDIR ${OUTPUTDIR})
+  # TOIMPL
 
-  ADD_CUSTOM_TARGET(update-example-doc-${WAREID}
-                    DEPENDS ${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}
-                    COMMENT "Updating example ${WAREID} doc"
-                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                            "buddy" 
-                            "sim2doc"
-                            "--options=inputcpp=${ROOTCPPFILENAME},outputdir=${OUTPUTDIR}/${WAREID}/tmpDoc,pdf=1${_TPL_OPTION}"
-                   )
-
-  ADD_CUSTOM_COMMAND(TARGET update-example-doc-${WAREID}
-                     POST_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E rename ${OUTPUTDIR}/${WAREID}/tmpDoc/${WAREID}.pdf ${OUTPUTDIR}/${WAREID}.pdf
-                     COMMAND ${CMAKE_COMMAND} -E remove_directory ${OUTPUTDIR}/${WAREID}
-                    )
-  
-  ADD_DEPENDENCIES(update-example-docs update-example-doc-${WAREID})
 ENDFUNCTION()
 
 

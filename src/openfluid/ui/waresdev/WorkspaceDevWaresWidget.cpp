@@ -52,11 +52,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 const WorkspaceDevDashboardTypes::ActionsByRows WorkspaceDevWaresWidget::Actions =
 {
-  {{"configure","Configure"},{"build","Build"}
-#if OPENFLUID_SIM2DOC_ENABLED
-  ,{"doc","Doc"}
-#endif
-  },
+  {{"configure","Configure"},{"build","Build"},{"doc","Doc"}},
   {{"wareshub","wareshub.json"},{"readme","README"},{"license","LICENSE"}},
   {{"purge","Purge"}}
 };

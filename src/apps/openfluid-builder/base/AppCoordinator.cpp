@@ -50,10 +50,10 @@
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/base/ExamplesManager.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/config.hpp>
@@ -914,28 +914,23 @@ void AppCoordinator::whenOpenExampleAsked()
 
 void AppCoordinator::whenRestoreExamplesAsked()
 {
-  if (QMessageBox::question(&m_MainWindow,tr("Reinstall examples projects"),
+  if (QMessageBox::question(&m_MainWindow,tr("Reinstall example projects"),
                             tr("Reinstalling will overwrite all modifications "
                                 "and delete simulations results associated to these examples.")+
                             "\n\n"+
                             tr("Proceed anyway?"),
                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
-    openfluid::buddies::BuddiesListener Listener;
-
-    openfluid::buddies::ExamplesBuddy Buddy(&Listener);
-    Buddy.parseOptions("force=1");
-    try
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    
+    if (!openfluid::base::ExamplesManager::installAllProjects("","",true))
     {
-      QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-      Buddy.run();
       QApplication::restoreOverrideCursor();
+      QMessageBox::critical(&m_MainWindow,tr("Reinstall example projects"),tr("Error reinstalling example projects"));
     }
-    catch (openfluid::base::Exception& e)
+    else
     {
       QApplication::restoreOverrideCursor();
-      QMessageBox::critical(&m_MainWindow,tr("Restore examples projects"),
-                            tr("Error restoring example projects"));
     }
   }
 }

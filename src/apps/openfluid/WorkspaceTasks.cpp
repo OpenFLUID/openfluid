@@ -31,40 +31,21 @@
 
 
 /**
-  @file NewSimBuddy.hpp
+  @file WorkspaceTasks.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
 
-#ifndef __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__
-#define __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__
+#include "WorkspaceTasks.hpp"
 
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
-
-
-namespace openfluid { namespace buddies {
-
-
-class OPENFLUID_API NewSimulatorBuddy : public OpenFLUIDBuddy
+int WorkspaceTasks::process()
 {
-  private:
-    void writeSimulatorCPP();
+  if (m_Cmd.getName() == "prepare-workspace")
+  {
+    return notImplemented();
+  }
 
-  public:
-
-    NewSimulatorBuddy(openfluid::buddies::BuddiesListener* Listener);
-
-    ~NewSimulatorBuddy();
-
-    bool run();
-
-};
-
-
-} } //namespaces
-
-
-#endif /* __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__ */
+  return unknownCommand();
+}

@@ -40,7 +40,7 @@
 #include <QImage>
 
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/buddies/ExamplesBuddy.hpp>
+#include <openfluid/base/ExamplesManager.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/machine/SimulatorRegistry.hpp>
@@ -316,11 +316,8 @@ void ModelWidget::addSimulator()
     
     
     // Add simulator source to examples waresdev folder (if existing)
-    openfluid::buddies::BuddiesListener Listener;
-    openfluid::buddies::ExamplesBuddy ExBuddy(&Listener);
-    ExBuddy.parseOptions("selection=single,simulator="+ID.toStdString());
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    ExBuddy.run();
+    openfluid::base::ExamplesManager::installSimulator(ID.toStdString());
     QApplication::restoreOverrideCursor();
 
     m_Model.appendItem(SimDesc);

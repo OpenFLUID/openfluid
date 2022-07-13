@@ -233,9 +233,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(mp_ActionsCollection->action("OpenWareOptions"), SIGNAL(triggered()),
           this, SLOT(displayBuildOptionsDialog()));
 
-#if OPENFLUID_SIM2DOC_ENABLED
   connect(mp_ActionsCollection->action("GenerateDoc"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(generateDoc()));
-#endif
 
   connect(mp_ActionsCollection->action("OpenExplorer"), SIGNAL(triggered()), 
           mp_WidgetsCollection, SLOT(openExplorer()));
@@ -431,9 +429,8 @@ void MainWindow::createMenus()
   Menu = menuBar()->addMenu(tr("Build"));
   Menu->addAction(mp_ActionsCollection->action("ConfigureWare"));
   Menu->addAction(mp_ActionsCollection->action("BuildWare"));
-#if OPENFLUID_SIM2DOC_ENABLED
   Menu->addAction(mp_ActionsCollection->action("GenerateDoc"));
-#endif
+
   Menu->addSeparator();
   Menu->addAction(mp_ActionsCollection->action("OpenWareOptions"));
 

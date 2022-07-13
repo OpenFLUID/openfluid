@@ -42,7 +42,8 @@
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/buddies/ExamplesBuddy.hpp>
+#include <openfluid/base/ExamplesManager.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 
 #include "ui_OpenExampleProjectDialog.h"
 #include "OpenExampleProjectDialog.hpp"
@@ -59,13 +60,12 @@ OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
 
   // installation of missing examples
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  openfluid::buddies::BuddiesListener Listener;
-  openfluid::buddies::ExamplesBuddy(&Listener).run();
+  openfluid::base::ExamplesManager::installAllProjects();
   QApplication::restoreOverrideCursor();
 
-  m_ProjectsRootPath = QString(openfluid::base::Environment::getUserExamplesDir().c_str()) +
-                       QString("/") +
-                       QString(openfluid::config::PROJECTS_PATH.c_str());
+  m_ProjectsRootPath = QString::fromStdString(openfluid::tools::Filesystem::joinPath(
+                         {openfluid::base::Environment::getUserExamplesDir(),openfluid::config::PROJECTS_PATH})
+                       );
 
   QStringList ExamplesDirs;
   ExamplesDirs = QDir(m_ProjectsRootPath).entryList(QStringList("*"),QDir::Dirs | QDir::NoDotAndDotDot);

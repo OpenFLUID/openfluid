@@ -410,12 +410,6 @@ OPENFLUID_ADD_TEST(NAME simulators-ManyUnits
 
 ###########################################################################
 
-                         
-OFBUILD_ADD_SIMULATOR(tests.sim2doc ${OFBUILD_TESTS_BINARY_DIR})
-
-
-###########################################################################
-
 
 OFBUILD_ADD_SIMULATOR(tests.tools ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Tools

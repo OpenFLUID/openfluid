@@ -92,9 +92,7 @@ std::vector<std::string> splitString(const std::string& StrToSplit,
 // =====================================================================
 
 
-std::vector<std::string> splitString(const std::string& StrToSplit,
-                                                   char Separator,
-                                                   bool ReturnsEmpty)
+std::vector<std::string> splitString(const std::string& StrToSplit,char Separator,bool ReturnsEmpty)
 {
   std::vector<std::string> SplitParts;
 

@@ -397,9 +397,8 @@ unsigned int WareSrcContainer::getBuildJobs() const
 
 std::string WareSrcContainer::getGenerateDocTarget() const
 {
-  // build target is "$ID-doc-pdf-install" if current build mode is BUILD_WITHINSTALL, "$ID-doc-pdf" in other cases
-  // wher $ID is the ware ID
-  return (m_ID+"-"+(m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "doc-pdf-install" : "doc-pdf"));
+  // TOIMPL
+  return std::string();
 }
 
 

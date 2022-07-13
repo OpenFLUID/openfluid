@@ -172,12 +172,10 @@ QToolButton {
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), this, SLOT(configure()));
   connect(mp_ActionsCollection->action("BuildWare"), SIGNAL(triggered()), this, SLOT(build()));
   
-#if OPENFLUID_SIM2DOC_ENABLED
   if (IsSimulator)
   {
     connect(mp_ActionsCollection->action("GenerateDoc"), SIGNAL(triggered()), this, SLOT(generateDoc()));
   }
-#endif
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
   connect(ui->WareSrcFileCollection, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));

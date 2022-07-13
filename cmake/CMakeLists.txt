@@ -1,7 +1,6 @@
 
 SET(OFBUILD_COMPONENTS_DEFAULT_LIST   
   base
-  buddies
   core
   fluidx
   machine  

@@ -31,51 +31,42 @@
 
 
 /**
-  @file BuddiesListener.hpp
+  @file DataTasks.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
 
-#ifndef __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__
-#define __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__
+#include "TasksBase.hpp"
 
 
-#include <string>
-#include <map>
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/base/Listener.hpp>
+#ifndef __OPENFLUID_CMDLINEAPP_DATATASKS_HPP__
+#define __OPENFLUID_CMDLINEAPP_DATATASKS_HPP__
 
 
-namespace openfluid { namespace buddies {
-
-
-class OPENFLUID_API BuddiesListener : public openfluid::base::Listener
+class DataTasks : public TasksBase
 {
   private:
+
+    int generateData(const std::string Path, bool WithExample);
+
+    int processCreateData();
+
+    int processInstallExamples();
 
 
   public:
 
-    BuddiesListener() {};
+    DataTasks() = delete;
 
-    virtual ~BuddiesListener() {};
+    DataTasks(const openfluid::utils::CommandLineParser& Parser) : TasksBase(Parser)
+    { }
 
-    virtual void onInfo(const std::string& /*Message*/) {};
+    virtual ~DataTasks()
+    { }
 
-    virtual void onStageCompleted(const std::string& /*Message*/) {};
-
-    virtual void onSubstageCompleted(const std::string& /*Message*/) {};
-
-    virtual void onHelpRequired(const std::map<std::string,std::string>& /*OptionsHelp*/) {};
-
-    virtual void onHelpOthers(const std::map<std::string,std::string>& /*OptionsHelp*/) {};
-
+    int process();
 };
 
 
-} } //namespaces
-
-
-#endif /* __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__ */
+#endif /* __OPENFLUID_CMDLINEAPP_DATATASKS_HPP__ */
