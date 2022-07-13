@@ -95,6 +95,14 @@ IF(PYTHON3_EXECUTABLE)
                     COMMENT "Checking source code style"
                     COMMAND "${PYTHON3_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
+                            "${CMAKE_SOURCE_DIR}" "--exclude=share" "--disable=UNRT"
+                   )
+
+  # checkstyle tool for releases
+  ADD_CUSTOM_TARGET(stylecheck-release
+                    COMMENT "Checking source code style for release"
+                    COMMAND "${PYTHON3_EXECUTABLE}"
+                            "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
                             "${CMAKE_SOURCE_DIR}" "--exclude=share"
                    )
 

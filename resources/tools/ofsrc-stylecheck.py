@@ -90,7 +90,8 @@ class SourceTreeChecker:
 
         self.CheckStyles = dict()
         self.CheckStyles["LLEN"] = (self.checkLineLength, "lines")
-        self.CheckStyles["PRTY"] = (self.checkPrettyCode, "lines")
+        self.CheckStyles["DIRT"] = (self.checkDirtyTags, "lines")
+        self.CheckStyles["UNRT"] = (self.checkUnreleasableTags, "lines")
         self.CheckStyles["LICH"] = (self.checkLicenseHeader, "content")
         self.CheckStyles["AUTH"] = (self.checkFileAuthor, "content")
         self.CheckStyles["FNAM"] = (self.checkFilename, "content")
@@ -117,7 +118,8 @@ class SourceTreeChecker:
 
         self.MaxLineLength = 120
 
-        self.PrettyCodeTag = '#prettycode'
+        self.DirtyCodeTags = ['DIRTYCODE','#prettycode']
+        self.UnreleasableTags = ['TOIMPL','FIXME','HACK']
 
         self.OFDependentIncludes = ["unistd.h"]
 
@@ -152,7 +154,8 @@ class SourceTreeChecker:
 
     @staticmethod
     def isCMakeFile(Filename):
-        return (Filename.endswith('CMakeLists.txt') or Filename.endswith('.cmake'))
+        return (Filename.endswith('CMakeLists.txt') or 
+                Filename.endswith('.cmake') or Filename.endswith('.cmake.in'))
 
 
 ############################################################################
@@ -238,12 +241,36 @@ class SourceTreeChecker:
 ############################################################################
 
 
-    def checkPrettyCode(self, Filename, Lines):
+    @staticmethod
+    def findTags(Tags,Str):
+
+        for T in Tags:
+            if T.lower() in Str.lower():
+                return True
+        return False
+
+
+############################################################################
+
+
+    def checkDirtyTags(self, Filename, Lines):
 
         i = 1
         for Line in Lines :
-            if self.PrettyCodeTag in Line.lower():
-                self.addProblem('PRTY',Filename,i,'line contains the',self.PrettyCodeTag,'tag')
+            if SourceTreeChecker.findTags(self.DirtyCodeTags,Line):
+                self.addProblem('DIRT',Filename,i,'line contains a dirty code tag')
+            i += 1
+
+
+############################################################################
+
+
+    def checkUnreleasableTags(self, Filename, Lines):
+        
+        i = 1
+        for Line in Lines :
+            if SourceTreeChecker.findTags(self.UnreleasableTags,Line):
+                self.addProblem('UNRT',Filename,i,'line contains an unreleasable tag')
             i += 1
 
 
