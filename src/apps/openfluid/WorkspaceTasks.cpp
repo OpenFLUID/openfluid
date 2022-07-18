@@ -37,6 +37,9 @@
 */
 
 
+#include <openfluid/base/WorkspaceManager.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+
 #include "WorkspaceTasks.hpp"
 
 
@@ -44,7 +47,12 @@ int WorkspaceTasks::process()
 {
   if (m_Cmd.getName() == "prepare-workspace")
   {
-    return notImplemented();
+    auto Path = (m_Cmd.getOptionValue("path").empty() ? 
+                 openfluid::tools::Filesystem::currentPath() : m_Cmd.getOptionValue("path"));
+
+    openfluid::base::WorkspaceManager::prepareWorkspace(Path);
+
+    return 0;
   }
 
   return unknownCommand();

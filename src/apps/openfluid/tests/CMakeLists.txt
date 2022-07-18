@@ -356,7 +356,6 @@ ADD_TEST(NAME cmdline-openfluid-PrepareWorkspace
          COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                  "prepare-workspace" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/prepare-workspace"
          )
-SET_PROPERTY(TEST cmdline-openfluid-PrepareWorkspace APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE}) # TOIMPL
 
 
 ###########################################################################
@@ -366,7 +365,6 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareHelp
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "create-ware" "--help"
                   )
-
 
 
 ###########################################################################

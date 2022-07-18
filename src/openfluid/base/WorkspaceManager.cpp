@@ -82,7 +82,7 @@ WorkspaceManager::~WorkspaceManager()
 // =====================================================================
 
 
-void WorkspaceManager::updateSettingsFile(const std::string& FilePath) const
+void WorkspaceManager::updateSettingsFile(const std::string& FilePath)
 {
 #if (OPENFLUID_VERSION_NUMERIC >= OPENFLUID_VERSION_COMPUTE(2,3,0))
 # warning "the project file format compatibility is deprecated and should be removed"
@@ -176,21 +176,7 @@ void WorkspaceManager::prepareWorkspace()
 
   if (!m_WorkspacePath.empty())
   {
-    const std::vector<std::string> PathsToCheck = {
-      m_WorkspacePath,
-      getProjectsPath(),
-      getWaresPath(),
-      getWaresPath(openfluid::ware::WareType::SIMULATOR),
-      getWaresPath(openfluid::ware::WareType::OBSERVER),
-      getWaresPath(openfluid::ware::WareType::BUILDEREXT)
-    };
-
-    for (const auto& P: PathsToCheck)
-    {
-      auto PPath = openfluid::tools::FilesystemPath(P);
-      PPath.makeDirectory();
-      m_IsOpen = m_IsOpen && PPath.isDirectory();  
-    }
+    prepareWorkspace(m_WorkspacePath);
 
     // try to convert a former openfluid-waredev.conf file if necessary
     updateSettingsFile(getSettingsFile());
@@ -210,6 +196,32 @@ void WorkspaceManager::loadSettings()
   if (!openfluid::tools::FilesystemPath(getSettingsFile()).isFile())
   {
     m_Settings->save();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceManager::prepareWorkspace(const std::string& Path)
+{
+  if (!Path.empty())
+  {
+    const std::vector<std::string> PathsToCheck = {
+      Path,
+      getProjectsPath(Path),
+      getWaresPath(Path),
+      getWaresPath(Path,openfluid::ware::WareType::SIMULATOR),
+      getWaresPath(Path,openfluid::ware::WareType::OBSERVER),
+      getWaresPath(Path,openfluid::ware::WareType::BUILDEREXT)
+    };
+
+    for (const auto& P: PathsToCheck)
+    {
+      auto PPath = openfluid::tools::FilesystemPath(P);
+      PPath.makeDirectory();
+    }
   }
 }
 

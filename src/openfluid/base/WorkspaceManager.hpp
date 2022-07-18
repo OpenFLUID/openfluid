@@ -71,7 +71,7 @@ class OPENFLUID_API WorkspaceManager
 
     ~WorkspaceManager();
 
-    void updateSettingsFile(const std::string& FilePath) const;
+    static void updateSettingsFile(const std::string& FilePath);
 
     void prepareWorkspace();
 
@@ -86,6 +86,8 @@ class OPENFLUID_API WorkspaceManager
 
       std::string Path;
     };
+
+    static void prepareWorkspace(const std::string& Path);
 
     void openWorkspace(const std::string& Path);
 
