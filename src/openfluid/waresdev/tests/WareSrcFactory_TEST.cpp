@@ -195,11 +195,11 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   Sign.Role = openfluid::builderext::ExtensionRole::FEATURE;
   Sign.Category = openfluid::builderext::ExtensionCategory::RESULTS;
   Sign.MenuText = "Test Builer-Extension";
+  Sign.Mode = openfluid::builderext::ExtensionMode::WORKSPACE;
 
   openfluid::waresdev::WareSrcFactory::Configuration Config;
   Config.MainClassName = "TestBuilderext";
-  Config.UIMode = openfluid::builderext::ExtensionMode::WORKSPACE;
- 
+
 
   auto BextsPath = openfluid::tools::Path({CONFIGTESTS_OUTPUT_DATA_DIR,"WareSrcFactory","builderexts"});
 

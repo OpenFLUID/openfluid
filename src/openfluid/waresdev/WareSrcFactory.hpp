@@ -62,8 +62,6 @@ class OPENFLUID_API WareSrcFactory
 
         bool WithParamsUI = false;
         
-        openfluid::builderext::ExtensionMode UIMode;
-        
         std::string MainClassName = "WareMain";
 
         std::string ParamsUIClassName = "WareUIWidget";

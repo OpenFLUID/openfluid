@@ -1092,10 +1092,10 @@ void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
       Sign.ID = Dialog.getID();
       Sign.MenuText = Dialog.getBuilderextMenuText().toStdString();
       Sign.Category = Dialog.getBuilderextCategory();
+      Sign.Mode = Dialog.getBuilderextMode();
 
       openfluid::waresdev::WareSrcFactory::Configuration Config;
       Config.MainClassName = Dialog.getClassName();
-      Config.UIMode = Dialog.getBuilderextMode();
 
       auto WarePath = 
         openfluid::waresdev::WareSrcFactory::createBuilderext(

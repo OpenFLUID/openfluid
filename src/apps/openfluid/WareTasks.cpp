@@ -105,7 +105,6 @@ int WareTasks::processCreateWare()
     {
       Sign.Mode = openfluid::builderext::ExtensionMode::WORKSPACE;
     }
-    Config.UIMode = Sign.Mode; // HACK check globally if Config.UIMode is relevant or is a doublon of Sign.Mode 
 
     // Category
     Sign.Category = openfluid::builderext::ExtensionCategory::OTHER;

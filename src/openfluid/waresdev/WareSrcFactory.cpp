@@ -290,15 +290,15 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
   auto WareSrcDir = openfluid::tools::Path({ParentPath,Signature.ID});
 
   std::string ModeSuffix;
-  if (Config.UIMode == openfluid::builderext::ExtensionMode::MODAL)
+  if (Signature.Mode == openfluid::builderext::ExtensionMode::MODAL)
   {
     ModeSuffix = "modal";
   }
-  else if (Config.UIMode == openfluid::builderext::ExtensionMode::MODELESS)
+  else if (Signature.Mode == openfluid::builderext::ExtensionMode::MODELESS)
   {
     ModeSuffix = "modeless";
   }
-  else if (Config.UIMode == openfluid::builderext::ExtensionMode::WORKSPACE)
+  else if (Signature.Mode == openfluid::builderext::ExtensionMode::WORKSPACE)
   {
     ModeSuffix = "workspace";
   }
