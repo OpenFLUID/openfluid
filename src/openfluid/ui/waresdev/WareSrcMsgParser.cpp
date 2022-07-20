@@ -38,10 +38,10 @@
 */
 
 
-#include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgParser.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcMsgParser::WareSrcMsg WareSrcMsgParserNone::parse(const QString& MessageLine,
@@ -114,4 +114,4 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& Message
 }
 
 
-} } // namespaces
+} } } // namespaces

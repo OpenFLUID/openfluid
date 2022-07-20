@@ -31,25 +31,24 @@
 
 
 /**
- @file WaresDevPackage.cpp
- @brief Implements ...
+  @file WaresDevPackage.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
 */
 
 
 #include <QSettings>
 #include <QCoreApplication>
 
-#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/ui/waresdev/WaresDevPackage.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& TempSubFolderName) :
@@ -453,4 +452,4 @@ void WaresDevImportPackage::copyWares()
 }
 
 
-} } // namespaces
+} } } // namespaces

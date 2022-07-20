@@ -47,8 +47,8 @@
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
-#include <openfluid/waresdev/WaresDevPackage.hpp>
-#include <openfluid/waresdev/FluidHubWaresImportWorker.hpp>
+#include <openfluid/ui/waresdev/WaresDevPackage.hpp>
+#include <openfluid/ui/waresdev/FluidHubWaresImportWorker.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 #include <openfluid/ui/config.hpp>
@@ -256,7 +256,7 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
 
   try
   {
-    mp_ImportFilePkg = new openfluid::waresdev::WaresDevImportPackage(PackageFilePath);
+    mp_ImportFilePkg = new WaresDevImportPackage(PackageFilePath);
 
     mp_ImportFilePkg->moveToThread(Thread);
 
@@ -346,7 +346,7 @@ void WaresSrcImportDialog::onHubConnectButtonClicked()
     try
     {
       bool SslNoVerify = openfluid::base::PreferencesManager::instance()->isWaresdevGitSslNoVerify();
-      mp_FluidHubWaresImportWorker = new openfluid::waresdev::FluidHubWaresImportWorker(HubUrl, SslNoVerify);
+      mp_FluidHubWaresImportWorker = new FluidHubWaresImportWorker(HubUrl, SslNoVerify);
 
       mp_FluidHubWaresImportWorker->moveToThread(Thread);
 

@@ -180,7 +180,7 @@ class OPENFLUID_API WareshubJsonEditor: public QWidget, public WareFileEditor
     void clearLineMessages()
     { }
 
-    void addLineMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg /*Message*/)
+    void addLineMessage(WareSrcMsgParser::WareSrcMsg /*Message*/)
     { }
 
     void updateLineNumberArea()

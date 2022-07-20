@@ -92,7 +92,7 @@ class CompletionBuilder:
             src_rootpath, self._SRC_OPENFLUID_DIR)
         self._GENERATED_FILE_NAME = "CompletionProviderAPIData.cpp"
         self._GENERATED_FILE_PATH = os.path.join(
-            self._SRC_OPENFLUID_ROOTPATH, "waresdev", self._GENERATED_FILE_NAME)
+            self._SRC_OPENFLUID_ROOTPATH, "ui", "waresdev", self._GENERATED_FILE_NAME)
         self._GENERATED_RULE_PATTERN = """\
 // extracted from {}
 addRule(
@@ -237,11 +237,8 @@ addRule(
 
             genfile.write(self._GENERATED_RULE_PATTERN.format(doc["file"],
                                                               " | ".join(
-                                                                  doc["contexts"]),
-                                                              ",\n".join(
-                                                                  menupathlist),
-                                                              title,
-                                                              text))
+                                                                  ["ContextFlags::"+ctxt for ctxt in doc["contexts"]]),
+                                                              ",\n".join(menupathlist),title,text))
         genfile.close()
 
 

@@ -43,7 +43,6 @@
 
 
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/waresdev/WareSrcMsgStream.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -101,7 +100,6 @@ class OPENFLUID_API WareSrcContainer
     */
     std::string m_AbsoluteJsonPath;
 
-    openfluid::waresdev::WareSrcMsgStream* mp_Stream;
 
     ConfigMode m_ConfigMode;
 
@@ -198,8 +196,6 @@ class OPENFLUID_API WareSrcContainer
     unsigned int getBuildJobs() const;
 
     void prepareBuildDirectory() const;
-
-    void setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream);
 
     void setConfigMode(ConfigMode Mode);
 

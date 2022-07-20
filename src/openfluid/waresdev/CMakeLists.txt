@@ -2,23 +2,12 @@
 
 SET(OPENFLUID_WARESDEV_CPP WareSrcEnquirer.cpp 
                            WareSrcContainer.cpp 
-                           OStreamMsgStream.cpp
-                           WareSrcFactory.cpp 
-                           WareSrcMsgParser.cpp
-                           WaresDevPackage.cpp 
-                           FluidHubWaresImportWorker.cpp
-                           CompletionProvider.cpp
+                           WareSrcFactory.cpp
                            )
 
 SET(OPENFLUID_WARESDEV_HPP WareSrcEnquirer.hpp 
                            WareSrcContainer.hpp WareSrcContainerOps.hpp 
-                           WareSrcMsgStream.hpp 
-                           OStreamMsgStream.cpp
                            WareSrcFactory.hpp 
-                           WareSrcMsgParser.hpp 
-                           WaresDevPackage.hpp 
-                           FluidHubWaresImportWorker.hpp
-                           CompletionProvider.hpp
                            WareBuildOptions.hpp
                            )
 
@@ -36,8 +25,6 @@ SET_TARGET_PROPERTIES(openfluid-waresdev PROPERTIES VERSION "${OPENFLUID_VERSION
 
 TARGET_LINK_LIBRARIES(openfluid-waresdev
                       openfluid-base
-                      openfluid-utils
-                      Qt5::Core
                      )
 
 

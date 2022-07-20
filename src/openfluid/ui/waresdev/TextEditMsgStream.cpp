@@ -65,7 +65,7 @@ void TextEditMsgStream::clear()
 // =====================================================================
 
 
-void TextEditMsgStream::write(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
+void TextEditMsgStream::write(const WareSrcMsgParser::WareSrcMsg& Msg)
 {
   mp_Edit->writeMessage(Msg);
 }

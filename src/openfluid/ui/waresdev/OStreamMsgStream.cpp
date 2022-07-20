@@ -38,10 +38,10 @@
  */
 
 
-#include <openfluid/waresdev/OStreamMsgStream.hpp>
+#include <openfluid/ui/waresdev/OStreamMsgStream.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 // =====================================================================
@@ -75,4 +75,4 @@ void OStreamMsgStream::write(const WareSrcMsgParser::WareSrcMsg& Msg)
 }
 
 
-} }  // namespaces
+} } }  // namespaces

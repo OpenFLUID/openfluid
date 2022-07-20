@@ -85,7 +85,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   openfluid::ware::WareType WType =
       openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(FilePath.toStdString()).WareType;
 
-  m_CompletionRules = openfluid::waresdev::CompletionProvider::instance()->getRules(ProgLang,WType);
+  m_CompletionRules = openfluid::ui::waresdev::CompletionProvider::instance()->getRules(ProgLang,WType);
 
   mp_SignalMapper = new QSignalMapper(this);
 
@@ -102,12 +102,12 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
     {
       QString MenuEntry = tr("Other");
 
-      if (RuleItem.Orig == openfluid::waresdev::CompletionProvider::Origin::OPENFLUID)
+      if (RuleItem.Orig == openfluid::ui::waresdev::CompletionProvider::Origin::OPENFLUID)
       {
         MenuEntry = "OpenFLUID";
         IconPath =  ":/ui/common/icons/OFcode.png";
       }
-      else if (RuleItem.Orig == openfluid::waresdev::CompletionProvider::Origin::CPP)
+      else if (RuleItem.Orig == openfluid::ui::waresdev::CompletionProvider::Origin::CPP)
       {
         MenuEntry = "C++";
         IconPath =  ":/ui/common/icons/cppcode.png";
@@ -886,7 +886,7 @@ void WareSrcFileEditor::clearLineMessages()
 // =====================================================================
 
 
-void WareSrcFileEditor::addLineMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Message)
+void WareSrcFileEditor::addLineMessage(WareSrcMsgParser::WareSrcMsg Message)
 {
   QTextBlock Block = document()->findBlockByNumber(Message.m_LineNb - 1);
 

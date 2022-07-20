@@ -45,7 +45,7 @@
 #include <QPlainTextEdit>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgParser.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -57,9 +57,9 @@ class OPENFLUID_API WareSrcMsgViewer: public QPlainTextEdit
 
   private:
 
-    QMap<openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType, QTextCharFormat> m_FormatByMsgType;
+    QMap<WareSrcMsgParser::WareSrcMsg::MessageType, QTextCharFormat> m_FormatByMsgType;
 
-    QMap<int, openfluid::waresdev::WareSrcMsgParser::WareSrcMsg> m_MessagesByBlockNumber;
+    QMap<int, WareSrcMsgParser::WareSrcMsg> m_MessagesByBlockNumber;
 
 
   protected:
@@ -68,7 +68,7 @@ class OPENFLUID_API WareSrcMsgViewer: public QPlainTextEdit
 
   signals:
 
-    void messageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+    void messageClicked(WareSrcMsgParser::WareSrcMsg& Msg);
 
 
   public:
@@ -79,7 +79,7 @@ class OPENFLUID_API WareSrcMsgViewer: public QPlainTextEdit
 
     void clearMessages();
 
-    void writeMessage(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+    void writeMessage(const WareSrcMsgParser::WareSrcMsg& Msg);
 
 };
 

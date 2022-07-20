@@ -37,10 +37,10 @@
 */
 
 
-#include <openfluid/waresdev/CompletionProvider.hpp>
+#include <openfluid/ui/waresdev/CompletionProvider.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 OPENFLUID_SINGLETON_INITIALIZATION(CompletionProvider)
@@ -312,4 +312,4 @@ void CompletionProvider::initializeCppRules()
 }
 
 
-} } // namespaces
+} } } // namespaces

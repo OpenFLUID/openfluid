@@ -44,7 +44,7 @@
 #include <QString>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgParser.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
 
 
@@ -79,7 +79,7 @@ class OPENFLUID_API WareFileEditor
 
     virtual void clearLineMessages() = 0;
 
-    virtual void addLineMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Message) = 0;
+    virtual void addLineMessage(WareSrcMsgParser::WareSrcMsg Message) = 0;
 
     virtual void updateLineNumberArea() = 0;
 

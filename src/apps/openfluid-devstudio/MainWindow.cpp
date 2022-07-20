@@ -62,7 +62,7 @@
 #include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevDashboardDialog.hpp>
-#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/ui/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>

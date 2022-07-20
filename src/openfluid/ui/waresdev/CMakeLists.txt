@@ -1,5 +1,7 @@
 
 SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
+                              OStreamMsgStream.cpp
+                              WareSrcMsgParser.cpp
                               WareSrcWidget.cpp WareSrcFileEditor.cpp WareSrcWidgetCollection.cpp
                               WareSrcToolbar.cpp WareBuildOptionsWidget.cpp WareBuildOptionsDialog.cpp
                               WareSrcSyntaxHighlighter.cpp WareSrcFiletypeManager.cpp TextEditMsgStream.cpp
@@ -8,13 +10,19 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
                               WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
                               WareSrcActionsCollection.cpp
                               WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WaresImportFilterWidget.cpp WareshubIssueDialog.cpp
+                              WaresDevPackage.cpp 
+                              FluidHubWaresImportWorker.cpp
                               WorkspaceDevDashboardWorker.cpp
                               WorkspaceDevProcessWorker.cpp 
                               WorkspaceDevBuildWorker.cpp WorkspaceDevCheckWorker.cpp WorkspaceDevPurgeWorker.cpp
                               WorkspaceDevDashboardDialog.cpp WorkspaceDevWaresWidget.cpp WorkspaceDevGitWidget.cpp WorkspaceDevActionsWidget.cpp
-                              WorkspaceDevProcessDialog.cpp)
+                              WorkspaceDevProcessDialog.cpp
+                              CompletionProvider.cpp)
 
 SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
+                              WareSrcMsgStream.hpp 
+                              OStreamMsgStream.hpp
+                              WareSrcMsgParser.hpp
                               WareSrcWidget.hpp WareSrcFileEditor.hpp WareSrcWidgetCollection.hpp
                               WareSrcToolbar.hpp WareBuildOptionsWidget.hpp WareBuildOptionsDialog.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
@@ -23,11 +31,14 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
                               WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
                               WareSrcActionsCollection.hpp
                               WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WaresImportFilterWidget.hpp WareshubIssueDialog.hpp
+                              WaresDevPackage.hpp 
+                              FluidHubWaresImportWorker.hpp
                               WorkspaceDevDashboardTypes.hpp WorkspaceDevDashboardWorker.hpp 
                               WorkspaceDevProcessWorker.hpp 
                               WorkspaceDevBuildWorker.hpp WorkspaceDevCheckWorker.hpp WorkspaceDevPurgeWorker.hpp
                               WorkspaceDevDashboardDialog.hpp WorkspaceDevWaresWidget.hpp WorkspaceDevGitWidget.hpp WorkspaceDevActionsWidget.hpp
-                              WorkspaceDevProcessDialog.hpp)
+                              WorkspaceDevProcessDialog.hpp
+                              CompletionProvider.hpp)
 
 QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui WareBuildOptionsWidget.ui WareBuildOptionsDialog.ui
                                      EmptyPage.ui CppPage.ui CMakeConfigPage.ui
@@ -61,7 +72,7 @@ TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       openfluid-utils
                       openfluid-tools
                       Qt5::Core
-                      Qt5::Widgets                                            
+                      Qt5::Widgets
                      )
 
 

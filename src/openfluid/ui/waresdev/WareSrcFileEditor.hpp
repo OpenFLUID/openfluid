@@ -46,7 +46,7 @@
 #include <QMenu>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/CompletionProvider.hpp>
+#include <openfluid/ui/waresdev/CompletionProvider.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
 #include <openfluid/ui/common/DefaultAction.hpp>
@@ -87,7 +87,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
     {
       private:
 
-        openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType m_MajorMarkerType;
+        WareSrcMsgParser::WareSrcMsg::MessageType m_MajorMarkerType;
         QStringList m_ContentList;
 
         QColor Red = QColor(openfluid::ui::config::LINEMARKER_ERRCOLOR);
@@ -97,7 +97,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
 
         QRect m_Rect;
 
-        LineMarker(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content) :
+        LineMarker(WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content) :
             m_MajorMarkerType(MsgType)
         {
           QString Cleared = Content.trimmed();
@@ -114,7 +114,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
 
         QColor getColor() const
         {
-          if (m_MajorMarkerType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR)
+          if (m_MajorMarkerType == WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR)
           {
             return Red;
           }
@@ -146,9 +146,9 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
         // =====================================================================
 
 
-        void update(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content)
+        void update(WareSrcMsgParser::WareSrcMsg::MessageType MsgType, const QString& Content)
         {
-          if (MsgType == openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR)
+          if (MsgType == WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR)
           {
             m_MajorMarkerType = MsgType;
           }
@@ -173,7 +173,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
 
     int m_SpaceCharWidth;
 
-    openfluid::waresdev::CompletionProvider::Rules m_CompletionRules;
+    openfluid::ui::waresdev::CompletionProvider::Rules m_CompletionRules;
 
     QSignalMapper* mp_SignalMapper;
 
@@ -238,7 +238,7 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
 
     void clearLineMessages();
 
-    void addLineMessage(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Message);
+    void addLineMessage(WareSrcMsgParser::WareSrcMsg Message);
 
     void updateLineNumberArea();
 

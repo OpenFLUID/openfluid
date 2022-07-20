@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OPENFLUID_WARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__
-#define __OPENFLUID_WARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__
+#define __OPENFLUID_UIWARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__
 
 
 #include <QObject>
@@ -50,7 +50,7 @@
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 class OPENFLUID_API FluidHubWaresImportWorker: public QObject
@@ -127,7 +127,7 @@ class OPENFLUID_API FluidHubWaresImportWorker: public QObject
 };
 
 
-} } // namespaces
+} } } // namespaces
 
 
-#endif /* __OPENFLUID_WARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__ */

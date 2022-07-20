@@ -40,12 +40,12 @@
 #include <QCoreApplication>
 #include <QFileInfo>
 
-#include <openfluid/waresdev/FluidHubWaresImportWorker.hpp>
+#include <openfluid/ui/waresdev/FluidHubWaresImportWorker.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 FluidHubWaresImportWorker::FluidHubWaresImportWorker(const QString& WareshubUrl, bool SslNoVerify) :
@@ -280,4 +280,4 @@ bool FluidHubWaresImportWorker::clone()
 }
 
 
-} } // namespaces
+} } } // namespaces

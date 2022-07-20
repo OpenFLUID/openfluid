@@ -41,7 +41,7 @@
 #include <QThread>
 
 #include <openfluid/base/WorkspaceManager.hpp>
-#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/ui/waresdev/WaresDevPackage.hpp>
 #include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 #include <openfluid/ui/waresdev/WaresSrcExportDialog.hpp>
 #include <openfluid/ui/config.hpp>
@@ -165,10 +165,8 @@ void WaresSrcExportDialog::exportToPackage()
 
   QThread* Thread = new QThread();
 
-  openfluid::waresdev::WaresDevExportPackage Pkg(ui->PackagePathLineEdit->text(),
-                                                 getSelectedWares(),
-                                                 ui->PackagersLineEdit->text(),
-                                                 ui->PackageDescriptionTextEdit->toPlainText());
+  WaresDevExportPackage Pkg(ui->PackagePathLineEdit->text(),getSelectedWares(),
+                            ui->PackagersLineEdit->text(),ui->PackageDescriptionTextEdit->toPlainText());
 
   openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Compression of wares sources:"), false, this);
 

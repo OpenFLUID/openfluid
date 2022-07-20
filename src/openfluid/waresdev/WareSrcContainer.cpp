@@ -48,7 +48,6 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
-#include <openfluid/waresdev/OStreamMsgStream.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/config.hpp>
 
@@ -60,8 +59,7 @@ WareSrcContainer::WareSrcContainer(const std::string& AbsolutePath, openfluid::w
                                    const std::string& WareID) :
     m_AbsolutePath(AbsolutePath), m_Type(Type), m_ID(WareID),
     m_AbsoluteCMakeConfigPath(), m_AbsoluteMainCppPath(), m_AbsoluteUiParamCppPath(),
-    m_AbsoluteCMakeListsPath(), m_AbsoluteJsonPath(),
-    mp_Stream(new openfluid::waresdev::OStreamMsgStream())
+    m_AbsoluteCMakeListsPath(), m_AbsoluteJsonPath()
 {
   update();
 
@@ -307,20 +305,6 @@ void WareSrcContainer::prepareBuildDirectory() const
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "unable to create build directory");
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcContainer::setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream)
-{
-  if (mp_Stream)
-  {
-    delete mp_Stream;
-  }
-  mp_Stream = &Stream;
 }
 
 

@@ -49,14 +49,10 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcMsgViewer::WareSrcMsgViewer(QWidget* Parent) :
     QPlainTextEdit(Parent)
 {
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND]
-                    .setForeground(QColor("blue"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD]
-                    .setForeground(QColor("black"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING]
-                    .setForeground(QColor("orange"));
-  m_FormatByMsgType[openfluid::waresdev::WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR]
-                    .setForeground(QColor("red"));
+  m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND].setForeground(QColor("blue"));
+  m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD].setForeground(QColor("black"));
+  m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING].setForeground(QColor("orange"));
+  m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR].setForeground(QColor("red"));
 }
 
 
@@ -88,7 +84,7 @@ void WareSrcMsgViewer::clearMessages()
 // =====================================================================
 
 
-void WareSrcMsgViewer::writeMessage(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
+void WareSrcMsgViewer::writeMessage(const WareSrcMsgParser::WareSrcMsg& Msg)
 {
   QTextCursor Cursor = textCursor();
 
@@ -111,7 +107,7 @@ void WareSrcMsgViewer::writeMessage(const openfluid::waresdev::WareSrcMsgParser:
 
 void WareSrcMsgViewer::mouseDoubleClickEvent(QMouseEvent* /*Event*/)
 {
-  QMap<int, openfluid::waresdev::WareSrcMsgParser::WareSrcMsg>::iterator it = m_MessagesByBlockNumber.find(
+  QMap<int, WareSrcMsgParser::WareSrcMsg>::iterator it = m_MessagesByBlockNumber.find(
       textCursor().blockNumber());
 
   if (it != m_MessagesByBlockNumber.end())

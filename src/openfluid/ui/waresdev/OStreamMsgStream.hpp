@@ -26,45 +26,47 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
 
 /**
- @file WareSrcMsgStream.hpp
- @brief Header of ...
+  @file OStreamMsgStream.hpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
+  @author Aline LIBRES <aline.libres@gmail.com>
+*/
 
 
-#ifndef __OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP__
-#define __OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_OSTREAMMSGSTREAM_HPP__
+#define __OPENFLUID_UIWARESDEV_OSTREAMMSGSTREAM_HPP__
 
+
+#include <iostream>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgStream.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API WareSrcMsgStream
+class OPENFLUID_API OStreamMsgStream: public WareSrcMsgStream
 {
+  private:
+
+    std::ostream& m_Stream;
+
   public:
 
-    WareSrcMsgStream() = default;
+    OStreamMsgStream(std::ostream& Stream = std::cout);
 
-    virtual ~WareSrcMsgStream()
-    { }
+    void clear();
 
-    virtual void clear() = 0;
-
-    virtual void write(const openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg) = 0;
+    void write(const WareSrcMsgParser::WareSrcMsg& Msg);
 };
 
 
-} }  // namespaces
+} } }  // namespaces
 
 
-#endif /* __OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_OSTREAMMSGSTREAM_HPP__ */

@@ -45,7 +45,8 @@
 
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/waresdev/WareSrcContainerOps.hpp>
-#include <openfluid/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgParser.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgStream.hpp>
 #include <openfluid/tools/Timer.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/dllexport.hpp>
@@ -103,11 +104,13 @@ class OPENFLUID_API WareSrcUIContainer: public QObject,
 
     WareSrcProcess* mp_Process;
 
+    WareSrcMsgStream* mp_Stream;
+
     openfluid::tools::Timer m_ProcessTimer;
 
-    openfluid::waresdev::WareSrcMsgParser* mp_CurrentParser;
+    WareSrcMsgParser* mp_CurrentParser;
 
-    QList<openfluid::waresdev::WareSrcMsgParser::WareSrcMsg> m_Messages;  
+    QList<WareSrcMsgParser::WareSrcMsg> m_Messages;  
 
     void runCommand(const openfluid::utils::CMakeProxy::CommandInfos& CmdInfos, const QProcessEnvironment& Env,
                     WareSrcProcess::Type CmdType = WareSrcProcess::Type::NONE);
@@ -176,6 +179,8 @@ class OPENFLUID_API WareSrcUIContainer: public QObject,
       return Vars;
     }
 
+    void setMsgStream(WareSrcMsgStream& Stream);
+
     void configure();
 
     void build();
@@ -186,7 +191,7 @@ class OPENFLUID_API WareSrcUIContainer: public QObject,
 
     QProcessEnvironment getBuildEnvironment() const;
 
-    QList<openfluid::waresdev::WareSrcMsgParser::WareSrcMsg> getMessages();
+    QList<WareSrcMsgParser::WareSrcMsg> getMessages();
 
     bool isProcessRunning() const;
 };

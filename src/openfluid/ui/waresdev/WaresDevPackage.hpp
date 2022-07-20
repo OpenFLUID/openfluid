@@ -31,15 +31,14 @@
 
 
 /**
- @file WaresDevPackage.hpp
- @brief Header of ...
+  @file WaresDevPackage.hpp
+ 
+  @author Aline LIBRES <aline.libres@gmail.com>
+*/
 
- @author Aline LIBRES <aline.libres@gmail.com>
- */
 
-
-#ifndef __OPENFLUID_WARESDEV_WARESDEVPACKAGE_HPP__
-#define __OPENFLUID_WARESDEV_WARESDEVPACKAGE_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESDEVPACKAGE_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESDEVPACKAGE_HPP__
 
 
 #include <QString>
@@ -52,7 +51,7 @@
 #include <openfluid/utils/CMakeProxy.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 class OPENFLUID_API WaresDevPackage: public QObject
@@ -178,7 +177,7 @@ class OPENFLUID_API WaresDevImportPackage: public WaresDevPackage
 };
 
 
-} } // namespaces
+} } } // namespaces
 
 
-#endif /* __OPENFLUID_WARESDEV_WARESDEVPACKAGE_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESDEVPACKAGE_HPP__ */

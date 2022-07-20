@@ -56,13 +56,12 @@ namespace Ui {
 class WaresSrcImportDialog;
 }
 
-namespace openfluid { namespace waresdev {
-class WaresDevImportPackage;
-class FluidHubWaresImportWorker;
-} }
-
 
 namespace openfluid { namespace ui { namespace waresdev {
+
+
+class WaresDevImportPackage;
+class FluidHubWaresImportWorker;
 
 
 class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageDialog
@@ -115,9 +114,9 @@ class OPENFLUID_API WaresSrcImportDialog: public openfluid::ui::common::MessageD
         { QString::fromStdString(openfluid::config::OBSERVERS_PATH), openfluid::ware::WareType::OBSERVER },
         { QString::fromStdString(openfluid::config::BUILDEREXTS_PATH), openfluid::ware::WareType::BUILDEREXT } };
 
-    openfluid::waresdev::WaresDevImportPackage* mp_ImportFilePkg = nullptr;
+    WaresDevImportPackage* mp_ImportFilePkg = nullptr;
 
-    openfluid::waresdev::FluidHubWaresImportWorker* mp_FluidHubWaresImportWorker = nullptr;
+    FluidHubWaresImportWorker* mp_FluidHubWaresImportWorker = nullptr;
 
     QMap<openfluid::ware::WareType, QStringList> m_AlreadySelectedHubWares;
 

@@ -49,7 +49,7 @@
 #include <QDir>
 #include <QSettings>
 
-#include <openfluid/waresdev/WaresDevPackage.hpp>
+#include <openfluid/ui/waresdev/WaresDevPackage.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -242,7 +242,7 @@ BOOST_FIXTURE_TEST_CASE(PkgImport_fetchInformation,F)
 {
   createImportConfiguration();
 
-  openfluid::waresdev::WaresDevImportPackage PkgImport(TestPackagePath);
+  openfluid::ui::waresdev::WaresDevImportPackage PkgImport(TestPackagePath);
 
   PkgImport.fetchInformation();
 
@@ -296,7 +296,7 @@ BOOST_FIXTURE_TEST_CASE(PkgImport_copyWares,F)
 {
   createImportConfiguration();
 
-  openfluid::waresdev::WaresDevImportPackage PkgImport(TestPackagePath);
+  openfluid::ui::waresdev::WaresDevImportPackage PkgImport(TestPackagePath);
 
   PkgImport.fetchInformation();
 
@@ -340,7 +340,7 @@ BOOST_FIXTURE_TEST_CASE(PkgExport,F)
 {
   createExportConfiguration();
 
-  openfluid::waresdev::WaresDevExportPackage PkgExport(OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),
+  openfluid::ui::waresdev::WaresDevExportPackage PkgExport(OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),
                                                        ToExportWareFoldersPaths,
                                                        "the packager",
                                                        "the description");

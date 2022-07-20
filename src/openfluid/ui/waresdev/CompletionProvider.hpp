@@ -37,8 +37,8 @@
 */
 
 
-#ifndef __OPENFLUID_WARESDEV_COMPLETIONPROVIDER_HPP__
-#define __OPENFLUID_WARESDEV_COMPLETIONPROVIDER_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_COMPLETIONPROVIDER_HPP__
+#define __OPENFLUID_UIWARESDEV_COMPLETIONPROVIDER_HPP__
 
 
 #include <QObject>
@@ -53,7 +53,7 @@
 #include <openfluid/utils/SingletonMacros.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 class OPENFLUID_API CompletionProvider : public QObject
@@ -137,7 +137,7 @@ class OPENFLUID_API CompletionProvider : public QObject
 Q_DECLARE_OPERATORS_FOR_FLAGS(CompletionProvider::Context)
 
 
-} } // namespaces
+} } } // namespaces
 
 
-#endif /* __OPENFLUID_WARESDEV_COMPLETIONPROVIDER_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_COMPLETIONPROVIDER_HPP__ */

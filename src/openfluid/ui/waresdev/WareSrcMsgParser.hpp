@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__
-#define __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCMSGPARSER_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCMSGPARSER_HPP__
 
 
 #include <QRegExp>
@@ -48,7 +48,7 @@
 #include <openfluid/dllexport.hpp>
 
 
-namespace openfluid { namespace waresdev {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 class OPENFLUID_API WareSrcMsgParser
@@ -138,7 +138,7 @@ class OPENFLUID_API WareSrcMsgParserCMake: public WareSrcMsgParser
 };
 
 
-} } // namespaces
+} } } // namespaces
 
 
-#endif /* __OPENFLUID_WARESDEV_WARESRCMSGPARSER_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCMSGPARSER_HPP__ */

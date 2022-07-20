@@ -198,8 +198,8 @@ QToolButton {
   mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(ui->WareSrcMessageWidget);
   m_Container.setMsgStream(*mp_TextEditMsgStream);
 
-  connect(ui->WareSrcMessageWidget, SIGNAL(messageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg&)), this,
-          SLOT(onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg&)));
+  connect(ui->WareSrcMessageWidget, SIGNAL(messageClicked(WareSrcMsgParser::WareSrcMsg&)),
+          this, SLOT(onMessageClicked(WareSrcMsgParser::WareSrcMsg&)));
 }
 
 
@@ -278,7 +278,7 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
   {
     WareSrcFileEditor* SrcEditor = new WareSrcFileEditor(AbsolutePath, this);
 
-    for (openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
+    for (WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
     {
       if (Msg.m_Path == AbsolutePath)
       {
@@ -907,7 +907,7 @@ void WareSrcWidget::clearEditorsMessages()
 
 void WareSrcWidget::onProcessFinished()
 {
-  for (openfluid::waresdev::WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
+  for (WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
   {
     if (WareFileEditor* Editor = m_WareFilesByPath.value(Msg.m_Path, 0))
     {
@@ -926,7 +926,7 @@ void WareSrcWidget::onProcessFinished()
 // =====================================================================
 
 
-void WareSrcWidget::onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg)
+void WareSrcWidget::onMessageClicked(WareSrcMsgParser::WareSrcMsg& Msg)
 {
   auto Info = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(Msg.m_Path.toStdString());
 

@@ -75,7 +75,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void onProcessFinished();
 
-    void onMessageClicked(openfluid::waresdev::WareSrcMsgParser::WareSrcMsg& Msg);
+    void onMessageClicked(WareSrcMsgParser::WareSrcMsg& Msg);
 
     void notifyConfigureLaunched(openfluid::ware::WareType Type, const QString& ID);
 
