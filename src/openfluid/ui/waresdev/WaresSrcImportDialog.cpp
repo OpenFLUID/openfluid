@@ -223,6 +223,8 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
     }
 
     updateHubWaresList();
+    ui->UsernameLineEdit->setText(
+      QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevImportHubUsername()));
   }
 
   updatePackageInfo();
@@ -395,8 +397,6 @@ void WaresSrcImportDialog::onHubConnectButtonClicked()
     updateHubWaresList();
 
     openfluid::base::PreferencesManager::instance()->setWaresdevImportHubUrl(ui->HubUrlLineEdit->text().toStdString());
-    openfluid::base::PreferencesManager::instance()->setWaresdevImportHubUsername(
-      ui->UsernameLineEdit->text().toStdString());
   }
 }
 
@@ -433,6 +433,9 @@ void WaresSrcImportDialog::onHubLoginButtonClicked()
           Widget->setEnabled(false);
         }
         updateHubWaresList();
+
+        openfluid::base::PreferencesManager::instance()->setWaresdevImportHubUsername(
+          ui->UsernameLineEdit->text().toStdString());  // username is added to preferences when validated by login
       }
       else
       {
