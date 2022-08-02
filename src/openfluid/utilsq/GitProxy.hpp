@@ -89,8 +89,6 @@ class OPENFLUID_API GitProxy : public QObject, public ProgramProxy<GitProxy>
 
     QString m_TmpPath;
 
-    QFile m_AskPassFile;
-
     static void findGitProgram();
 
 

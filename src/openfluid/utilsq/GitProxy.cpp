@@ -65,11 +65,6 @@ GitProxy::GitProxy()
 GitProxy::~GitProxy()
 {
   delete mp_Process;
-
-  if (!m_AskPassFile.fileName().isEmpty())
-  {
-    m_AskPassFile.remove();
-  }
 }
 
 
