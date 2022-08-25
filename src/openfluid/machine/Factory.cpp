@@ -177,10 +177,8 @@ void Factory::buildDatastoreFromDescriptor(const openfluid::fluidx::DatastoreDes
 {
   for(const auto& Desc : Descriptor.items())
   {
-    openfluid::core::DatastoreItem* Item = new openfluid::core::DatastoreItem(
-        Desc->getID(),Desc->getPrefixPath(),Desc->getRelativePath(), Desc->getType(), Desc->getUnitsClass());
-
-    Store.addItem(Item);
+    Store.addItem(openfluid::core::DatastoreItem(Desc->getID(),Desc->getPrefixPath(),Desc->getRelativePath(),
+                                                 Desc->getType(), Desc->getUnitsClass()));
   }
 }
 

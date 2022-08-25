@@ -58,11 +58,9 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::Datastore* Store = new openfluid::core::Datastore();
+  openfluid::core::Datastore Store;
 
-  BOOST_CHECK_EQUAL(Store->getItems().size(),0);
-
-  delete Store;
+  BOOST_CHECK_EQUAL(Store.getItems().size(),0);
 }
 
 
@@ -72,66 +70,49 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_addItem_regular)
 {
-  openfluid::core::DatastoreItem* VectSUItem =
-      new openfluid::core::DatastoreItem("mymap","path1","datastore/testvect",
-          openfluid::core::UnstructuredValue::UnstructuredType::VECTOR, "SU");
+  openfluid::core::Datastore Store;
 
-  openfluid::core::DatastoreItem* VectItem =
-      new openfluid::core::DatastoreItem("mymap2","path2","datastore/testvect.shp",
-          openfluid::core::UnstructuredValue::UnstructuredType::VECTOR);
+  Store.addItem(openfluid::core::DatastoreItem("mymap","path1","datastore/testvect",
+                  openfluid::core::UnstructuredValue::UnstructuredType::VECTOR, "SU"));
+  Store.addItem(openfluid::core::DatastoreItem("mymap2","path2","datastore/testvect.shp",
+                  openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
+  Store.addItem(openfluid::core::DatastoreItem("myrast","path3","datastore/testrast.tif",
+                  openfluid::core::UnstructuredValue::UnstructuredType::RASTER));
 
-  openfluid::core::DatastoreItem* RastSUItem =
-      new openfluid::core::DatastoreItem("myrast","path3","datastore/testrast.tif",
-          openfluid::core::UnstructuredValue::UnstructuredType::RASTER);
+  BOOST_CHECK_EQUAL(Store.getItems().size(),3);
 
-  openfluid::core::Datastore* Store = new openfluid::core::Datastore();
+  BOOST_CHECK_EQUAL(Store.getItems().at("mymap").getID(),"mymap");
+  BOOST_CHECK_EQUAL(Store.getItems().find("mymap")->second.getID(),"mymap");
 
-  Store->addItem(VectSUItem);
-  Store->addItem(VectItem);
-  Store->addItem(RastSUItem);
+  openfluid::core::Datastore::DataItemsById_t::iterator it;
 
-  BOOST_CHECK_EQUAL(Store->getItems().size(),3);
-
-  BOOST_CHECK_EQUAL(Store->getItems().at("mymap")->getID(),"mymap");
-  BOOST_CHECK_EQUAL(Store->getItems().find("mymap")->second->getID(),"mymap");
-
-  openfluid::core::Datastore::DataItemsById_t::iterator i;
-  openfluid::core::DatastoreItem* Item = nullptr;
-
-  i = Store->getItems().find("mymap");
-  Item = (*i).second;
-  BOOST_REQUIRE(Item != 0);
-  BOOST_CHECK_EQUAL(Item->getID(),"mymap");
-  BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path1");
-  BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect");
-  BOOST_CHECK_EQUAL(Item->getUnitsClass(),"SU");
-  BOOST_REQUIRE(Item->value() != 0);
-  BOOST_CHECK_EQUAL(static_cast<int>(Item->value()->getType()), 
-                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
+  it = Store.getItems().find("mymap");
+  BOOST_REQUIRE(it != Store.getItems().end());
+  auto Item = (*it).second;
+  BOOST_CHECK_EQUAL(Item.getID(),"mymap");
+  BOOST_CHECK_EQUAL(Item.getPrefixPath(),"path1");
+  BOOST_CHECK_EQUAL(Item.getRelativePath(),"datastore/testvect");
+  BOOST_CHECK_EQUAL(Item.getUnitsClass(),"SU");
+  BOOST_REQUIRE(Item.value() != nullptr);
+  BOOST_CHECK(Item.value()->getType() == openfluid::core::UnstructuredValue::UnstructuredType::VECTOR);
                     
-  i = Store->getItems().find("mymap2");
-  Item = (*i).second;
-  BOOST_REQUIRE(Item != 0);
-  BOOST_CHECK_EQUAL(Item->getID(),"mymap2");
-  BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path2");
-  BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testvect.shp");
-  BOOST_CHECK_EQUAL(Item->getUnitsClass(),"");
-  BOOST_REQUIRE(Item->value() != 0);
-  BOOST_CHECK_EQUAL(static_cast<int>(Item->value()->getType()), 
-                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
+  it = Store.getItems().find("mymap2");
+  Item = (*it).second;
+  BOOST_CHECK_EQUAL(Item.getID(),"mymap2");
+  BOOST_CHECK_EQUAL(Item.getPrefixPath(),"path2");
+  BOOST_CHECK_EQUAL(Item.getRelativePath(),"datastore/testvect.shp");
+  BOOST_CHECK_EQUAL(Item.getUnitsClass(),"");
+  BOOST_REQUIRE(Item.value() != nullptr);
+  BOOST_CHECK(Item.value()->getType() == openfluid::core::UnstructuredValue::UnstructuredType::VECTOR);
 
-  i = Store->getItems().find("myrast");
-  Item = (*i).second;
-  BOOST_REQUIRE(Item != 0);
-  BOOST_CHECK_EQUAL(Item->getID(),"myrast");
-  BOOST_CHECK_EQUAL(Item->getPrefixPath(),"path3");
-  BOOST_CHECK_EQUAL(Item->getRelativePath(),"datastore/testrast.tif");
-  BOOST_CHECK_EQUAL(Item->getUnitsClass(),"");
-  BOOST_REQUIRE(Item->value() != 0);
-  BOOST_CHECK_EQUAL(static_cast<int>(Item->value()->getType()), 
-                    static_cast<int>(openfluid::core::UnstructuredValue::UnstructuredType::RASTER));
-
-  delete Store;
+  it = Store.getItems().find("myrast");
+  Item = (*it).second;
+  BOOST_CHECK_EQUAL(Item.getID(),"myrast");
+  BOOST_CHECK_EQUAL(Item.getPrefixPath(),"path3");
+  BOOST_CHECK_EQUAL(Item.getRelativePath(),"datastore/testrast.tif");
+  BOOST_CHECK_EQUAL(Item.getUnitsClass(),"");
+  BOOST_REQUIRE(Item.value() != nullptr);
+  BOOST_CHECK(Item.value()->getType() == openfluid::core::UnstructuredValue::UnstructuredType::RASTER);
 }
 
 
@@ -141,23 +122,15 @@ BOOST_AUTO_TEST_CASE(check_addItem_regular)
 
 BOOST_AUTO_TEST_CASE(check_getItem)
 {
-  openfluid::core::DatastoreItem* VectSUItem =
-      new openfluid::core::DatastoreItem("mymap","","datastore/testvect",
-          openfluid::core::UnstructuredValue::UnstructuredType::VECTOR, "SU");
+  openfluid::core::Datastore Store;
 
-  openfluid::core::DatastoreItem* VectItem =
-      new openfluid::core::DatastoreItem("mymap2","","datastore/testvect.shp",
-          openfluid::core::UnstructuredValue::UnstructuredType::VECTOR);
+  Store.addItem(openfluid::core::DatastoreItem("mymap","","datastore/testvect",
+                  openfluid::core::UnstructuredValue::UnstructuredType::VECTOR, "SU"));
+  Store.addItem(openfluid::core::DatastoreItem("mymap2","","datastore/testvect.shp",
+                  openfluid::core::UnstructuredValue::UnstructuredType::VECTOR));
 
-  openfluid::core::Datastore* Store = new openfluid::core::Datastore();
-
-  Store->addItem(VectSUItem);
-  Store->addItem(VectItem);
-
-  BOOST_CHECK_EQUAL(Store->item("mymap")->getID(),"mymap");
-  BOOST_CHECK(!Store->item("wrongId"));
-  BOOST_CHECK_EQUAL(Store->item("mymap2")->getID(),"mymap2");
-
-  delete Store;
+  BOOST_CHECK_EQUAL(Store.item("mymap")->getID(),"mymap");
+  BOOST_CHECK(!Store.item("wrongId"));
+  BOOST_CHECK_EQUAL(Store.item("mymap2")->getID(),"mymap2");
 }
 

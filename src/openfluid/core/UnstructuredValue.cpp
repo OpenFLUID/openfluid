@@ -38,7 +38,7 @@
 */
 
 
-#include "UnstructuredValue.hpp"
+#include <openfluid/core/UnstructuredValue.hpp>
 
 
 namespace openfluid { namespace core {

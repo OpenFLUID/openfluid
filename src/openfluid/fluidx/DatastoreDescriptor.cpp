@@ -38,7 +38,7 @@
  */
 
 
-#include "DatastoreDescriptor.hpp"
+#include <openfluid/fluidx/DatastoreDescriptor.hpp>
 
 
 namespace openfluid { namespace fluidx {

@@ -40,8 +40,7 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-
-#include "DatastoreItem.hpp"
+#include <openfluid/core/DatastoreItem.hpp>
 
 
 namespace openfluid { namespace core {
@@ -50,33 +49,21 @@ namespace openfluid { namespace core {
 DatastoreItem::DatastoreItem(const std::string& ID,
                              const std::string& PrefixPath, const std::string& RelativePath,
                              UnstructuredValue::UnstructuredType Type, const std::string& UnitsClass) :
-  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitsClass(UnitsClass), m_Value(0)
+  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitsClass(UnitsClass)
 {
-  switch (Type)
+  if (Type == UnstructuredValue::UnstructuredType::VECTOR)
   {
-    case UnstructuredValue::UnstructuredType::VECTOR:
-      m_Value = new openfluid::core::GeoVectorValue(m_PrefixPath,m_RelativePath);
-      break;
-    case UnstructuredValue::UnstructuredType::RASTER:
-      m_Value = new openfluid::core::GeoRasterValue(m_PrefixPath,m_RelativePath);
-      break;
-    default:
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                "No value to instanciate for item type "
-                                                + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
-      break;
+    m_Value = std::make_shared<openfluid::core::GeoVectorValue>(m_PrefixPath,m_RelativePath);
   }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-DatastoreItem::~DatastoreItem()
-{
-  delete m_Value;
+  else if (Type == UnstructuredValue::UnstructuredType::RASTER)
+  {
+    m_Value = std::make_shared<openfluid::core::GeoRasterValue>(m_PrefixPath,m_RelativePath);
+  }
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"No value to instanciate for item type "
+                                                + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
+  }
 }
 
 
@@ -126,7 +113,7 @@ std::string DatastoreItem::getUnitsClass() const
 
 UnstructuredValue* DatastoreItem::value()
 {
-  return m_Value;
+  return m_Value.get();
 }
 
 
@@ -136,7 +123,7 @@ UnstructuredValue* DatastoreItem::value()
 
 const UnstructuredValue* DatastoreItem::value() const
 {
-  return m_Value;
+  return m_Value.get();
 }
 
 

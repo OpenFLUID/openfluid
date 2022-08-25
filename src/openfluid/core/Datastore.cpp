@@ -37,26 +37,13 @@
 
 
 #include <openfluid/core/DatastoreItem.hpp>
-#include "Datastore.hpp"
+#include <openfluid/core/Datastore.hpp>
 
 
 namespace openfluid { namespace core {
 
 
-Datastore::~Datastore()
-{
-  for (DataItemsById_t::iterator it = m_ItemsById.begin(); it != m_ItemsById.end(); ++it)
-  {
-    delete (*it).second;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-Datastore::DataItemsById_t Datastore::getItems()
+Datastore::DataItemsById_t& Datastore::getItems()
 {
   return m_ItemsById;
 }
@@ -66,7 +53,7 @@ Datastore::DataItemsById_t Datastore::getItems()
 // =====================================================================
 
 
-const Datastore::DataItemsById_t Datastore::getItems() const
+const Datastore::DataItemsById_t& Datastore::getItems() const
 {
   return m_ItemsById;
 }
@@ -82,7 +69,7 @@ DatastoreItem* Datastore::item(const std::string& ItemID)
 
   if (it != m_ItemsById.end())
   {
-    return it->second;
+    return &(it->second);
   }
 
   return nullptr;
@@ -93,16 +80,9 @@ DatastoreItem* Datastore::item(const std::string& ItemID)
 // =====================================================================
 
 
-void Datastore::addItem(const DatastoreItem* Item)
+void Datastore::addItem(const DatastoreItem& Item)
 {
-  DataItemsById_t::iterator it = m_ItemsById.find(Item->getID());
-
-  if (it != m_ItemsById.end())
-  {
-    delete it->second;
-  }
-
-  m_ItemsById[Item->getID()] = const_cast<DatastoreItem*>(Item);
+  m_ItemsById.insert_or_assign(Item.getID(),Item);
 }
 
 

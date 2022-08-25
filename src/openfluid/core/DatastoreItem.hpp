@@ -42,6 +42,7 @@
 
 
 #include <string>
+#include <memory>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
@@ -65,7 +66,7 @@ class OPENFLUID_API DatastoreItem
 
     std::string m_UnitsClass;
 
-    UnstructuredValue* m_Value;
+    std::shared_ptr<UnstructuredValue> m_Value;
 
 
   public:
@@ -86,11 +87,6 @@ class OPENFLUID_API DatastoreItem
     DatastoreItem(const std::string& ID,
                   const std::string& PrefixPath, const std::string& RelativePath,
                   UnstructuredValue::UnstructuredType Type, const std::string& UnitsClass = "");
-
-    /**
-      @brief Destroys the resource and its associated value.
-    */
-    ~DatastoreItem();
 
     std::string getID() const;
 

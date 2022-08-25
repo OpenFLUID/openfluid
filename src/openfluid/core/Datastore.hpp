@@ -44,13 +44,12 @@
 #include <map>
 #include <string>
 
+#include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace core {
 
-
-class DatastoreItem;
 
 /**
   Container class for holding information about additional resources.
@@ -62,7 +61,7 @@ class OPENFLUID_API Datastore
    /**
      Type to store items indexed by their ID
    */
-   typedef std::map<std::string, DatastoreItem*> DataItemsById_t;
+   typedef std::map<std::string, DatastoreItem> DataItemsById_t;
 
 
   private:
@@ -77,21 +76,16 @@ class OPENFLUID_API Datastore
     Datastore() = default;
 
     /**
-      Destroys all items of the datastore.
-    */
-    ~Datastore();
-
-    /**
       Gets all items of the datastore.
      @return A map of all items of the datastore.
     */
-    DataItemsById_t getItems();
+    DataItemsById_t& getItems();
 
     /**
       Gets all items of the datastore.
       @return A const map of all items of the datastore.
     */
-    const DataItemsById_t getItems() const;
+    const DataItemsById_t& getItems() const;
 
     /**
       Gets the item of the datastore matching the given ID.
@@ -106,7 +100,7 @@ class OPENFLUID_API Datastore
 
      @param[in] Item The item to add.
     */
-    void addItem(const DatastoreItem* Item);
+    void addItem(const DatastoreItem& Item);
 };
 
 

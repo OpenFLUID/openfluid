@@ -72,21 +72,14 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
 {
   if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::UnstructuredType::VECTOR)
   {
-    openfluid::core::DatastoreItem* DSItem = nullptr;
-
     if (m_LocalDatastore.item(DSItemDesc->getID()) == nullptr)
     {
-      DSItem = new openfluid::core::DatastoreItem(DSItemDesc->getID(),
-                                                  DSItemDesc->getPrefixPath(),
-                                                  DSItemDesc->getRelativePath(),
-                                                  DSItemDesc->getType(),
-                                                  DSItemDesc->getUnitsClass());
-      m_LocalDatastore.addItem(DSItem);
+      m_LocalDatastore.addItem(openfluid::core::DatastoreItem(DSItemDesc->getID(),DSItemDesc->getPrefixPath(),
+                                                              DSItemDesc->getRelativePath(),DSItemDesc->getType(),
+                                                              DSItemDesc->getUnitsClass()));
     }
-    else
-    {
-      DSItem = m_LocalDatastore.item(DSItemDesc->getID());
-    }
+
+    openfluid::core::DatastoreItem* DSItem = m_LocalDatastore.item(DSItemDesc->getID());
 
     openfluid::core::GeoVectorValue* VectorData = dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->value());
 
