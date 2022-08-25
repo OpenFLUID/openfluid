@@ -54,23 +54,57 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::DateTime DT0;
+  {
+    openfluid::core::DateTime DT;
+    BOOST_REQUIRE_EQUAL(DT.getYear(),1900);
+    BOOST_REQUIRE_EQUAL(DT.getMonth(),1);
+    BOOST_REQUIRE_EQUAL(DT.getDay(),1);
+    BOOST_REQUIRE_EQUAL(DT.getHour(),0);
+    BOOST_REQUIRE_EQUAL(DT.getMinute(),0);
+    BOOST_REQUIRE_EQUAL(DT.getSecond(),0);
+  }
 
-  BOOST_REQUIRE_EQUAL(DT0.getYear(),1900);
-  BOOST_REQUIRE_EQUAL(DT0.getMonth(),1);
-  BOOST_REQUIRE_EQUAL(DT0.getDay(),1);
-  BOOST_REQUIRE_EQUAL(DT0.getHour(),0);
-  BOOST_REQUIRE_EQUAL(DT0.getMinute(),0);
-  BOOST_REQUIRE_EQUAL(DT0.getSecond(),0);
+  {
+    openfluid::core::DateTime DT(2009,9,8,13,11,25);
+    BOOST_REQUIRE_EQUAL(DT.getYear(),2009);
+    BOOST_REQUIRE_EQUAL(DT.getMonth(),9);
+    BOOST_REQUIRE_EQUAL(DT.getDay(),8);
+    BOOST_REQUIRE_EQUAL(DT.getHour(),13);
+    BOOST_REQUIRE_EQUAL(DT.getMinute(),11);
+    BOOST_REQUIRE_EQUAL(DT.getSecond(),25);
+  }
 
-  openfluid::core::DateTime DT(2009,9,8,13,11,25);
+  {
+    openfluid::core::DateTime DT(2022,8,25);
+    BOOST_REQUIRE_EQUAL(DT.getYear(),2022);
+    BOOST_REQUIRE_EQUAL(DT.getMonth(),8);
+    BOOST_REQUIRE_EQUAL(DT.getDay(),25);
+    BOOST_REQUIRE_EQUAL(DT.getHour(),0);
+    BOOST_REQUIRE_EQUAL(DT.getMinute(),0);
+    BOOST_REQUIRE_EQUAL(DT.getSecond(),0);
+  }
 
-  BOOST_REQUIRE_EQUAL(DT.getYear(),2009);
-  BOOST_REQUIRE_EQUAL(DT.getMonth(),9);
-  BOOST_REQUIRE_EQUAL(DT.getDay(),8);
-  BOOST_REQUIRE_EQUAL(DT.getHour(),13);
-  BOOST_REQUIRE_EQUAL(DT.getMinute(),11);
-  BOOST_REQUIRE_EQUAL(DT.getSecond(),25);
+  {
+    const auto DT = openfluid::core::DateTime::fromString("2022#08#25%11#12#13","%Y#%m#%d%%%H#%M#%S");
+    BOOST_REQUIRE_EQUAL(DT.getYear(),2022);
+    BOOST_REQUIRE_EQUAL(DT.getMonth(),8);
+    BOOST_REQUIRE_EQUAL(DT.getDay(),25);
+    BOOST_REQUIRE_EQUAL(DT.getHour(),11);
+    BOOST_REQUIRE_EQUAL(DT.getMinute(),12);
+    BOOST_REQUIRE_EQUAL(DT.getSecond(),13);
+  }
+
+  {
+    const auto DT = openfluid::core::DateTime::fromISOString("2022-07-31 15:17:03");
+    BOOST_REQUIRE_EQUAL(DT.getYear(),2022);
+    BOOST_REQUIRE_EQUAL(DT.getMonth(),7);
+    BOOST_REQUIRE_EQUAL(DT.getDay(),31);
+    BOOST_REQUIRE_EQUAL(DT.getHour(),15);
+    BOOST_REQUIRE_EQUAL(DT.getMinute(),17);
+    BOOST_REQUIRE_EQUAL(DT.getSecond(),3);
+  }
+
+  BOOST_REQUIRE(openfluid::core::DateTime::now() > openfluid::core::DateTime(0,0,0,0,0,0));
 }
 
 

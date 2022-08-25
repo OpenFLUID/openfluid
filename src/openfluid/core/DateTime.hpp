@@ -134,9 +134,15 @@ class OPENFLUID_API DateTime
     DateTime(DateTime&&) = default;
 
     /**
-      Constructor from date details
+      Constructor from date and time details
     */
     DateTime(int Year, int Month, int Day, int Hour, int Minute, int Second);
+
+    /**
+      Constructor from date only details
+    */
+    DateTime(int Year, int Month, int Day) : DateTime(Year,Month,Day,0,0,0)
+    { }
 
     /**
       Constructor
@@ -153,6 +159,24 @@ class OPENFLUID_API DateTime
     ~DateTime() = default;
 
     /**
+      Creates a DateTime object with current date and time
+    */
+    static DateTime now();
+
+    /**
+      Creates a DateTime object from a string
+      @param[in] DateTimeStr The date and time string
+      @param[in] FormatStr The format string, using strftime() style
+    */
+    static DateTime fromString(const std::string& DateTimeStr, const std::string& FormatStr);
+
+    /**
+      Creates a DateTime object from an ISO formatted string
+      @param[in] DateTimeStr The ISO formatted date and time string (YYYY-MM-DD hh:mm:ss)
+    */
+    static DateTime fromISOString(const std::string& DateTimeStr);
+
+    /**
       Sets the date and time from the parameters
     */
     bool set(int Year, int Month, int Day, int Hour, int Minute, int Second);
@@ -160,18 +184,22 @@ class OPENFLUID_API DateTime
     /**
       Sets the date and time from the number of seconds since first day of 4713BC
     */
-
     void set(const RawTime_t& SecondsSince0000);
 
 
     /**
       Sets the date and time from an ISO formatted string (YYYY-MM-DD hh:mm:ss)
+      @param[in] DateTimeStr The ISO formatted date and time string (YYYY-MM-DD hh:mm:ss)
+      @return true if the operation is successful
     */
     bool setFromISOString(const std::string& DateTimeStr);
 
 
     /**
       Sets the date and time from a string using the given format
+      @param[in] DateTimeStr The date and time string
+      @param[in] FormatStr The format string, using strftime() style
+      @return true if the operation is successful
     */
     bool setFromString(const std::string& DateTimeStr, const std::string& FormatStr);
 

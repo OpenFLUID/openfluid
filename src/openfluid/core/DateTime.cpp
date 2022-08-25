@@ -40,6 +40,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <ctime>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -72,6 +73,46 @@ DateTime::DateTime(int Year, int Month, int Day, int Hour, int Minute, int Secon
 DateTime::DateTime(RawTime_t SecondsSince0000)
 {
   set(SecondsSince0000);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+DateTime DateTime::now()
+{
+  const std::time_t NowT = std::time(nullptr);
+  const std::tm* NowTM = std::localtime(&NowT);
+
+  openfluid::core::DateTime DT(NowTM->tm_year+1900,NowTM->tm_mon+1,NowTM->tm_mday,
+                               NowTM->tm_hour,NowTM->tm_min,NowTM->tm_sec);
+
+  return DT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+DateTime DateTime::fromString(const std::string& DateTimeStr, const std::string& FormatStr)
+{
+  openfluid::core::DateTime DT;
+  DT.setFromString(DateTimeStr,FormatStr);
+  return DT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+DateTime DateTime::fromISOString(const std::string& DateTimeStr)
+{
+  openfluid::core::DateTime DT;
+  DT.setFromISOString(DateTimeStr);
+  return DT;
 }
 
 
@@ -162,8 +203,6 @@ void DateTime::set(const RawTime_t& SecondsSince0000)
   m_RawTime = SecondsSince0000;
 
   updateYMDHMSFromRawTime();
-
-
 }
 
 
@@ -176,6 +215,7 @@ void DateTime::updateYMDHMSFromRawTime()
   /** @internal
 
     http://en.wikipedia.org/wiki/Talk:Julian_day
+
   */
 
   RawTime_t n, c, y, m, a, Year, Month, Day;
@@ -287,7 +327,6 @@ std::string  DateTime::getAsString(const std::string& Format) const
   strftime(pCh,80,Format.c_str(),&m_TM);
 
   return std::string(pCh,strlen(pCh));
-
 }
 
 
