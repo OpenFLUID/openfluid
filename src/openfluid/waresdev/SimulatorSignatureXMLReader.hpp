@@ -31,42 +31,33 @@
 
 
 /**
-  @file GhostSimulatorFileIO.hpp
+  @file SimulatorSignatureXMLReader.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
 
-#ifndef __OPENFLUID_MACHINE_GHOSTSIMULATORFILEIO_HPP__
-#define __OPENFLUID_MACHINE_GHOSTSIMULATORFILEIO_HPP__
+#ifndef __OPENFLUID_WARESDEV_SIMULATORSIGNATUREXMLREADER_HPP__
+#define __OPENFLUID_WARESDEV_SIMULATORSIGNATUREXMLREADER_HPP__
 
 
-#include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/dllexport.hpp>
 
 
-namespace openfluid { namespace machine {
+namespace openfluid { namespace waresdev {
 
 
 /**
-  Manages I/O of ghost simulators signatures
+  Read of ghost simulators signatures in old XML format
 */
-class OPENFLUID_API GhostSimulatorFileIO
+class OPENFLUID_API SimulatorSignatureXMLReader
 {
   public:
 
     static inline std::string const FormatVersion = "ghostsim 1";
 
-    GhostSimulatorFileIO() = delete;
-
-    /**
-      Saves given signature of a ghost simulator to file
-      @param[in] Signature The signature to save to file
-      @param[in] DirPath The directory path where the signature is saved as a file. 
-                         The name of the created file is automatically created using the simulator ID.
-      @return true if the signature was successfully saved, false otherwise
-    */
-    static bool saveToFile(const openfluid::ware::SimulatorSignature& Signature, const std::string& DirPath);
+    SimulatorSignatureXMLReader() = delete;
 
     /**
       Loads a signature of a ghost simulator from a file
@@ -81,4 +72,4 @@ class OPENFLUID_API GhostSimulatorFileIO
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_MACHINE_GHOSTSIMULATORFILEIO_HPP__ */
+#endif /* __OPENFLUID_WARESDEV_SIMULATORSIGNATUREXMLREADER_HPP__ */

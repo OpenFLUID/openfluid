@@ -585,15 +585,15 @@ void ProjectCentral::checkModel()
 
         for (auto itParam = ReqParams.begin();itParam != ReqParams.end(); ++itParam)
         {
-          m_SimulatorsParamsLists[QString::fromStdString(ID)] << QString::fromStdString(itParam->DataName);
+          m_SimulatorsParamsLists[QString::fromStdString(ID)] << QString::fromStdString(itParam->Name);
 
-          if (!isParamSet(Item, itParam->DataName))
+          if (!isParamSet(Item, itParam->Name))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                                         .addMessage(tr("Required parameter %1 for simulator %2 is not set")
-                                                    .arg(QString::fromStdString(itParam->DataName))
+                                                    .arg(QString::fromStdString(itParam->Name))
                                                     .arg(QString::fromStdString(ID)));
           }
         }
@@ -604,15 +604,15 @@ void ProjectCentral::checkModel()
 
         for (auto itParam = UsParams.begin();itParam != UsParams.end(); ++itParam)
         {
-          m_SimulatorsParamsLists[QString::fromStdString(ID)] << QString::fromStdString(itParam->DataName);
+          m_SimulatorsParamsLists[QString::fromStdString(ID)] << QString::fromStdString(itParam->Name);
 
-          if (!isParamSet(Item, itParam->DataName))
+          if (!isParamSet(Item, itParam->Name))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
               ProjectStatusLevel::PRJ_WARNING);
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
                                         .addMessage(tr("Used parameter %1 for simulator %2 is not set")
-                                                    .arg(QString::fromStdString(itParam->DataName))
+                                                    .arg(QString::fromStdString(itParam->Name))
                                                     .arg(QString::fromStdString(ID)));
           }
         }
@@ -661,17 +661,17 @@ void ProjectCentral::checkModel()
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
                                 .addMessage(tr("Unit class %1 does not exist for attribute %2 required by %3")
                                             .arg(QString::fromStdString(itReqData->UnitsClass))
-                                            .arg(QString::fromStdString(itReqData->DataName))
+                                            .arg(QString::fromStdString(itReqData->Name))
                                             .arg(QString::fromStdString(ID)));
           }
-          else if (!(Domain.getAttributesNames(itReqData->UnitsClass).count(itReqData->DataName)
-              || AttrsUnits.count(std::make_pair(itReqData->UnitsClass, itReqData->DataName))))
+          else if (!(Domain.getAttributesNames(itReqData->UnitsClass).count(itReqData->Name)
+              || AttrsUnits.count(std::make_pair(itReqData->UnitsClass, itReqData->Name))))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
                                 .addMessage(tr("Attribute %1 required on %2 units by %3 does not exist")
-                                            .arg(QString::fromStdString(itReqData->DataName))
+                                            .arg(QString::fromStdString(itReqData->Name))
                                             .arg(QString::fromStdString(itReqData->UnitsClass))
                                             .arg(QString::fromStdString(ID)));
           }
@@ -692,13 +692,13 @@ void ProjectCentral::checkModel()
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
                                 .addMessage(tr("Unit class %1 does not exist for attribute %2 produced by %3")
                                             .arg(QString::fromStdString(itProdData->UnitsClass))
-                                            .arg(QString::fromStdString(itProdData->DataName))
+                                            .arg(QString::fromStdString(itProdData->Name))
                                             .arg(QString::fromStdString(ID)));
           }
 
-          if (!AttrsUnits.count(std::make_pair(itProdData->UnitsClass, itProdData->DataName)))
+          if (!AttrsUnits.count(std::make_pair(itProdData->UnitsClass, itProdData->Name)))
           {
-            AttrsUnits.insert(std::make_pair(itProdData->UnitsClass, itProdData->DataName));
+            AttrsUnits.insert(std::make_pair(itProdData->UnitsClass, itProdData->Name));
           }
           else
           {
@@ -708,7 +708,7 @@ void ProjectCentral::checkModel()
                                 .addMessage(tr("Attribute %1 produced on %2 units by %3 "
                                     "is already produced by another simulator")
                                             .arg(QString::fromStdString(itProdData->UnitsClass))
-                                            .arg(QString::fromStdString(itProdData->DataName))
+                                            .arg(QString::fromStdString(itProdData->Name))
                                             .arg(QString::fromStdString(ID)));
           }
         }
@@ -762,7 +762,7 @@ void ProjectCentral::checkModel()
 
         for (auto itData = ProdVars.begin(); itData != ProdVars.end(); ++itData)
         {
-          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
+          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->Name);
 
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
@@ -772,15 +772,15 @@ void ProjectCentral::checkModel()
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
                                         .arg(QString::fromStdString(itData->UnitsClass))
-                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(itData->Name))
                                         .arg(QString::fromStdString(ID)));
           }
 
-          if (!VarsUnits.count(std::make_pair(itData->UnitsClass, itData->DataName)))
+          if (!VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
           {
-            VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->DataName));
+            VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->Name));
             TypedVarsUnits.insert(std::make_pair(itData->UnitsClass,
-                                                 std::make_pair(itData->DataName, itData->DataType)));
+                                                 std::make_pair(itData->Name, itData->DataType)));
           }
           else
           {
@@ -788,7 +788,7 @@ void ProjectCentral::checkModel()
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
                             .addMessage(tr("Variable %1 on %2 produced by %3 is already produced "
                                            "by another simulator or generator")
-                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(itData->Name))
                                         .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(ID)));
           }
@@ -798,7 +798,7 @@ void ProjectCentral::checkModel()
         const auto& UpVars = Sign->HandledData.UpdatedVars;
         for (auto itData = UpVars.begin(); itData != UpVars.end(); ++itData)
         {
-          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
+          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->Name);
 
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
@@ -808,16 +808,16 @@ void ProjectCentral::checkModel()
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 produced by %3")
                                         .arg(QString::fromStdString(itData->UnitsClass))
-                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(itData->Name))
                                         .arg(QString::fromStdString(ID)));
           }
 
-          if (!VarsUnits.count(std::make_pair(itData->UnitsClass, itData->DataName)))
+          if (!VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
           {
-            VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->DataName));
+            VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->Name));
             TypedVarsUnits.insert(
                 std::make_pair(itData->UnitsClass,
-                               std::make_pair(itData->DataName, itData->DataType)));
+                               std::make_pair(itData->Name, itData->DataType)));
           }
         }
       }
@@ -842,7 +842,7 @@ void ProjectCentral::checkModel()
 
         for (auto itData = ReqVars.begin(); itData != ReqVars.end(); ++itData)
         {
-          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
+          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->Name);
 
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
               !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
@@ -852,22 +852,22 @@ void ProjectCentral::checkModel()
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT)
                             .addMessage(tr("Unit class %1 does not exist for variable %2 required by %3")
                                         .arg(QString::fromStdString(itData->UnitsClass))
-                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(itData->Name))
                                         .arg(QString::fromStdString(ID)));
           }
 
           if ((itData->DataType == openfluid::core::Value::NONE
-              && !VarsUnits.count(std::make_pair(itData->UnitsClass, itData->DataName)))
+              && !VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
               || (itData->DataType != openfluid::core::Value::NONE && !TypedVarsUnits.count(
                   std::make_pair(itData->UnitsClass,
-                                 std::make_pair(itData->DataName, itData->DataType)))))
+                                 std::make_pair(itData->Name, itData->DataType)))))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELDEF)
                             .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
                                            "by another simulator or generator")
-                                        .arg(QString::fromStdString(itData->DataName))
+                                        .arg(QString::fromStdString(itData->Name))
                                         .arg(QString::fromStdString(itData->UnitsClass))
                                         .arg(QString::fromStdString(ID)));
           }
@@ -878,7 +878,7 @@ void ProjectCentral::checkModel()
 
         for (auto itData = UsedVars.begin(); itData != UsedVars.end(); ++itData)
         {
-          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->DataName);
+          m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->Name);
         }
       }
     }

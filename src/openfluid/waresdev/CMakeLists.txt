@@ -3,12 +3,19 @@
 SET(OPENFLUID_WARESDEV_CPP WareSrcEnquirer.cpp 
                            WareSrcContainer.cpp 
                            WareSrcFactory.cpp
+                           SimulatorSignatureSerializer.cpp ObserverSignatureSerializer.cpp BuilderextSignatureSerializer.cpp
+                           SimulatorSignatureXMLReader.cpp
+                           GhostsHelpers.cpp
                            )
 
 SET(OPENFLUID_WARESDEV_HPP WareSrcEnquirer.hpp 
                            WareSrcContainer.hpp WareSrcContainerOps.hpp 
                            WareSrcFactory.hpp 
                            WareBuildOptions.hpp
+                           WareSignatureSerializer.hpp
+                           SimulatorSignatureSerializer.hpp ObserverSignatureSerializer.hpp BuilderextSignatureSerializer.hpp
+                           SimulatorSignatureXMLReader.hpp
+                           GhostsHelpers.hpp
                            )
 
 
@@ -19,12 +26,14 @@ SET_TARGET_PROPERTIES(openfluid-waresdev PROPERTIES VERSION "${OPENFLUID_VERSION
                                         LIBRARY_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
                                         RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
-                                        AUTOMOC ON
                                         COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 TARGET_LINK_LIBRARIES(openfluid-waresdev
                       openfluid-base
+                      openfluid-core
+                      openfluid-ware
+                      openfluid-thirdparty-tinyxml2
                      )
 
 

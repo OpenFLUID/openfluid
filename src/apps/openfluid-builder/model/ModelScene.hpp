@@ -71,7 +71,7 @@ class ModelScene : public QGraphicsScene
 
     void addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::OutNodeType FromOutNode,
                        ModelItemGraphics* ToItem, ConnectorGraphics::InNodeType ToInNode,
-                       const openfluid::ware::SignatureTypedSpatialDataItem& VarInfos);
+                       const openfluid::ware::SignatureSpatialDataItem& VarInfos);
 
 
   public slots:

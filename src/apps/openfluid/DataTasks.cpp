@@ -201,17 +201,17 @@ int DataTasks::processCreateData()
     return error("missing data type");
   }
 
-  const auto& Name = m_Cmd.getOptionValue("name");
+  const auto Name = m_Cmd.getOptionValue("name");
 
   if (!openfluid::tools::isValidDatasetName(Name))
   {
     return error("invalid data name");
   }
 
-  const auto& TypeStr = m_Cmd.getOptionValue("type");
+  const auto TypeStr = m_Cmd.getOptionValue("type");
   
-  const auto& ParentPath = (m_Cmd.getOptionValue("parent-path").empty() ? openfluid::tools::Filesystem::currentPath() : 
-                                                                          m_Cmd.getOptionValue("parent-path"));
+  const auto ParentPath = (m_Cmd.getOptionValue("parent-path").empty() ? openfluid::tools::Filesystem::currentPath() : 
+                                                                         m_Cmd.getOptionValue("parent-path"));
 
   if (TypeStr == "dataset")
   {

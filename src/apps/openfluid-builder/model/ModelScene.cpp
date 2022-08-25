@@ -228,13 +228,13 @@ void ModelScene::buildConnections()
       {
         if (ToMItemG != FromMItemG)
         {
-          if (FromMItemG->hasProducedVariable(ReqVarInfos.UnitsClass,ReqVarInfos.DataName))
+          if (FromMItemG->hasProducedVariable(ReqVarInfos.UnitsClass,ReqVarInfos.Name))
           {
             ProviderItem = FromMItemG;
             ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_PROD;
           }
 
-          if (FromMItemG->hasUpdatedVariable(ReqVarInfos.UnitsClass,ReqVarInfos.DataName))
+          if (FromMItemG->hasUpdatedVariable(ReqVarInfos.UnitsClass,ReqVarInfos.Name))
           {
             ProviderItem = FromMItemG;
             ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_OUTUP;
@@ -261,13 +261,13 @@ void ModelScene::buildConnections()
         if (ToMItemG != FromMItemG)
         {
 
-          if (FromMItemG->hasProducedVariable(UsedVarInfos.UnitsClass,UsedVarInfos.DataName))
+          if (FromMItemG->hasProducedVariable(UsedVarInfos.UnitsClass,UsedVarInfos.Name))
           {
             ProviderItem = FromMItemG;
             ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_PROD;
           }
 
-          if (FromMItemG->hasUpdatedVariable(UsedVarInfos.UnitsClass,UsedVarInfos.DataName))
+          if (FromMItemG->hasUpdatedVariable(UsedVarInfos.UnitsClass,UsedVarInfos.Name))
           {
             ProviderItem = FromMItemG;
             ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_OUTUP;
@@ -293,13 +293,13 @@ void ModelScene::buildConnections()
       {
         if (ToMItemG != FromMItemG)
         {
-          if (FromMItemG->hasProducedVariable(UpdatedVarInfos.UnitsClass,UpdatedVarInfos.DataName))
+          if (FromMItemG->hasProducedVariable(UpdatedVarInfos.UnitsClass,UpdatedVarInfos.Name))
           {
             ProviderItem = FromMItemG;
             ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_PROD;
           }
 
-          if (FromMItemG->hasUpdatedVariable(UpdatedVarInfos.UnitsClass,UpdatedVarInfos.DataName))
+          if (FromMItemG->hasUpdatedVariable(UpdatedVarInfos.UnitsClass,UpdatedVarInfos.Name))
           {
             ProviderItem = FromMItemG;
             ProviderOutNode = ConnectorGraphics::OutNodeType::NODE_OUTUP;
@@ -330,7 +330,7 @@ void ModelScene::buildConnections()
 
 void ModelScene::addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::OutNodeType FromOutNode,
                                ModelItemGraphics* ToItem, ConnectorGraphics::InNodeType ToInNode,
-                               const openfluid::ware::SignatureTypedSpatialDataItem& VarInfos)
+                               const openfluid::ware::SignatureSpatialDataItem& VarInfos)
 {
   bool Found = false;
 

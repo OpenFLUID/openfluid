@@ -51,7 +51,7 @@ GeneratorGraphics::GeneratorGraphics(const QPointF& Coords,
   ModelItemGraphics(Coords,ID,tr("Generator"),Order,BorderColor,Parent)
 {
   m_ProducedVars.push_back(
-    openfluid::ware::SignatureTypedSpatialDataItem(VarName.toStdString(),UnitsClass.toStdString(),"",""));
+    openfluid::ware::SignatureSpatialDataItem(VarName.toStdString(),UnitsClass.toStdString(),"",""));
 
   // Out slot
   drawIOSlot(getProducedIOPosition(),SlotType::SLOT_PROD,m_ProducedVars);

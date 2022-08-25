@@ -1,0 +1,72 @@
+{
+  "openfluid-ware": {
+    "id": "tests.primitives-ghost.variables-untyped.use",
+    "name": "",
+    "description": "",
+    "version": "",
+    "status": "experimental",
+    "authors": [],
+    "contacts": [],
+    "license": "",
+    "tags": [],
+    "links": [],
+    "issues": [],
+    "simulator": {
+      "data": {
+        "parameters": {
+          "required": [],
+          "used": []
+        },
+        "attributes": {
+          "required": [],
+          "used": [],
+          "produced": []
+        },
+        "variables": {
+          "produced": [],
+          "required": [
+            {
+              "name": "tests.double",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": ""
+            }
+          ],
+          "used": [
+            {
+              "name": "tests.string",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": ""
+            }
+          ],
+          "updated": [
+            {
+              "name": "tests.vector",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": ""
+            }
+          ]
+        },
+        "events": [],
+        "extrafiles": {
+          "required": [],
+          "used": []
+        }
+      },
+      "spatial_graph": {
+        "description": "",
+        "details": []
+      },
+      "scheduling": {
+        "type": "default",
+        "min": 0,
+        "max": 0
+      }
+    }
+  }
+}

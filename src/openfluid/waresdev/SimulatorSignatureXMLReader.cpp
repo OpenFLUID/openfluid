@@ -31,26 +31,24 @@
 
 
 /**
-  @file GhostSimulatorFileIO.cpp
+  @file SimulatorSignatureXMLReader.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
 
-#include <fstream>
 #include <algorithm>
 
 #include <boost/algorithm/string.hpp>
 
 #include <openfluid/thirdparty/XML.hpp>
-#include <openfluid/machine/GhostSimulatorFileIO.hpp>
+#include <openfluid/waresdev/SimulatorSignatureXMLReader.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 
 
-namespace openfluid { namespace machine {
+namespace openfluid { namespace waresdev {
 
 
 class DataNodeFields
@@ -94,246 +92,8 @@ class DataNodeFields
 // =====================================================================
 
 
-void insertParameter(const openfluid::ware::SignatureDataItem& Data,
-                     const std::string& IoModeStr, openfluid::thirdparty::xml::XMLElement* BaseElt)
-{
-  auto ParamElt = BaseElt->InsertNewChildElement("parameter");
-  ParamElt->SetAttribute("name",Data.DataName.c_str());
-  ParamElt->SetAttribute("iomode",IoModeStr.c_str());
-  ParamElt->SetAttribute("siunit",Data.DataUnit.c_str());
-  ParamElt->SetText(Data.Description.c_str());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void insertExtraFile(const std::string& Name,
-                     const std::string& IoModeStr, openfluid::thirdparty::xml::XMLElement* BaseElt)
-{
-  auto ParamElt = BaseElt->InsertNewChildElement("extrafile");
-  ParamElt->SetAttribute("name",Name.c_str());
-  ParamElt->SetAttribute("iomode",IoModeStr.c_str());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void insertVariable(const openfluid::ware::SignatureTypedSpatialDataItem& Data,
-                    const std::string& IoModeStr, openfluid::thirdparty::xml::XMLElement* BaseElt)
-{
-  auto VarElt = BaseElt->InsertNewChildElement("variable");
-  VarElt->SetAttribute("name",Data.DataName.c_str());
-  VarElt->SetAttribute("iomode",IoModeStr.c_str());
-  VarElt->SetAttribute("unitsclass",Data.UnitsClass.c_str());
-  if (Data.DataType != openfluid::core::Value::NONE)
-  {
-    VarElt->SetAttribute("type",openfluid::core::Value::getStringFromValueType(Data.DataType).c_str());
-  }
-  VarElt->SetAttribute("siunit",Data.DataUnit.c_str());
-  VarElt->SetText(Data.Description.c_str());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void insertAttribute(const openfluid::ware::SignatureSpatialDataItem& Data,
-                     const std::string& IoModeStr, openfluid::thirdparty::xml::XMLElement* BaseElt)
-{
-  auto AttrElt = BaseElt->InsertNewChildElement("attribute");
-  AttrElt->SetAttribute("name",Data.DataName.c_str());
-  AttrElt->SetAttribute("iomode",IoModeStr.c_str());
-  AttrElt->SetAttribute("unitsclass",Data.UnitsClass.c_str());
-  AttrElt->SetAttribute("siunit",Data.DataUnit.c_str());
-  AttrElt->SetText(Data.Description.c_str());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void insertEvents(const std::string& EventsClass, openfluid::thirdparty::xml::XMLElement* BaseElt)
-{
-  auto EvElt = BaseElt->InsertNewChildElement("events");
-  EvElt->SetAttribute("unitsclass",EventsClass.c_str());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool GhostSimulatorFileIO::saveToFile(const openfluid::ware::SimulatorSignature& Signature, const std::string& DirPath)
-{
-  std::string FilePath = openfluid::tools::Filesystem::joinPath({DirPath,Signature.ID+
-                                                                            openfluid::config::SIMULATORS_GHOSTS_SUFFIX+
-                                                                            openfluid::config::GHOSTS_EXT});
-
-  openfluid::thirdparty::xml::XMLDocument Doc;
-  auto OFElt = openfluid::thirdparty::prepareOpenFLUIDXMLDoc(Doc,FormatVersion);
-
-  // ghost-simulator
-  auto GhostElt = OFElt->InsertNewChildElement("ghost-simulator");
-  GhostElt->SetAttribute("ID",Signature.ID.c_str());
-  
-  
-  // infos
-  auto InfElt = GhostElt->InsertNewChildElement("infos");
-  InfElt->InsertNewChildElement("name")->SetText(Signature.Name.c_str());
-  InfElt->InsertNewChildElement("description")->SetText(Signature.Description.c_str());
-  
-  for (auto& Author: Signature.Authors)
-  {
-    auto AuthElt = InfElt->InsertNewChildElement("author");
-    AuthElt->SetAttribute("name",Author.first.c_str());
-    AuthElt->SetAttribute("email",Author.second.c_str());
-  }
-
-  std::string StatusStr = "experimental";
-  if (Signature.Status == openfluid::ware::BETA)
-  {
-    StatusStr = "beta";
-  }
-  else if (Signature.Status == openfluid::ware::STABLE)
-  {
-    StatusStr = "stable";
-  }
-  InfElt->InsertNewChildElement("status")->SetText(StatusStr.c_str());
-  
-  InfElt->InsertNewChildElement("version")->SetText(Signature.Version.c_str());
-  InfElt->InsertNewChildElement("domain")->SetText(Signature.Domain.c_str());
-  InfElt->InsertNewChildElement("process")->SetText(Signature.Process.c_str());
-  InfElt->InsertNewChildElement("method")->SetText(Signature.Method.c_str());
-
-
-  // data
-  auto DataElt = GhostElt->InsertNewChildElement("data");
-
-
-  // parameters
-  for (auto& Param: Signature.HandledData.RequiredParams)
-  {
-    insertParameter(Param,"required",DataElt);
-  }
-
-  for (auto& Param: Signature.HandledData.UsedParams)
-  {
-    insertParameter(Param,"used",DataElt);
-  }
-
-
-  // extrafiles
-  for (auto& ExtraFile: Signature.HandledData.RequiredExtraFiles)
-  {
-    insertExtraFile(ExtraFile,"required",DataElt);
-  }
-
-  for (auto& ExtraFile: Signature.HandledData.UsedExtraFiles)
-  {
-    insertExtraFile(ExtraFile,"used",DataElt);
-  }
-
-
-  // variables
-  for (auto& Var: Signature.HandledData.RequiredVars)
-  {
-    insertVariable(Var,"required",DataElt);
-  }
-
-  for (auto& Var: Signature.HandledData.UsedVars)
-  {
-    insertVariable(Var,"used",DataElt);
-  }
-
-  for (auto& Var: Signature.HandledData.ProducedVars)
-  {
-    insertVariable(Var,"produced",DataElt);
-  }
-
-  for (auto& Var: Signature.HandledData.UpdatedVars)
-  {
-    insertVariable(Var,"updated",DataElt);
-  }
-
-
-  // attributes
-  for (auto& Var: Signature.HandledData.RequiredAttribute)
-  {
-    insertAttribute(Var,"required",DataElt);
-  }
-
-  for (auto& Var: Signature.HandledData.UsedAttribute)
-  {
-    insertAttribute(Var,"used",DataElt);
-  }
-
-  for (auto& Var: Signature.HandledData.ProducedAttribute)
-  {
-    insertAttribute(Var,"produced",DataElt);
-  }
-
-
-  // events
-  for (auto& EventsClass: Signature.HandledData.UsedEventsOnUnits)
-  {
-    insertEvents(EventsClass,DataElt);
-  }
-
-
-  // spatial graph
-  auto GraphElt = GhostElt->InsertNewChildElement("spatialgraph");
-
-  GraphElt->InsertNewChildElement("description")->SetText(Signature.HandledUnitsGraph.UpdatedUnitsGraph.c_str());
-
-  for (auto& UClass: Signature.HandledUnitsGraph.UpdatedUnitsClass)
-  {
-    auto GraphClassElt = GraphElt->InsertNewChildElement("unitsclass");
-    GraphClassElt->SetAttribute("name",UClass.UnitsClass.c_str());
-    GraphClassElt->SetText(UClass.Description.c_str());
-  }
-
-
-  // scheduling
-  auto SchedElt = GhostElt->InsertNewChildElement("scheduling");
-
-  if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::UNDEFINED)
-  {
-    SchedElt->SetAttribute("mode","undefined");
-  }
-  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT)
-  {
-    SchedElt->SetAttribute("mode","default");
-  }
-  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::FIXED)
-  {
-    SchedElt->SetAttribute("mode","fixed");
-    SchedElt->SetAttribute("value",Signature.TimeScheduling.Min);
-  }
-  else if (Signature.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::RANGE)
-  {
-    SchedElt->SetAttribute("mode","range");
-    SchedElt->SetAttribute("min",Signature.TimeScheduling.Min);
-    SchedElt->SetAttribute("max",Signature.TimeScheduling.Max);
-  }
-
-
-  Doc.SaveFile(FilePath.c_str());
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::ware::SimulatorSignature& Signature)
+bool SimulatorSignatureXMLReader::loadFromFile(const std::string& FilePath, 
+                                               openfluid::ware::SimulatorSignature& Signature)
 {
   Signature.clear();
 
@@ -439,8 +199,8 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
               }
 
               openfluid::ware::SignatureDataItem Param;
-              Param.DataName = Data.Name;
-              Param.DataUnit = Data.SIUnit;
+              Param.Name = Data.Name;
+              Param.SIUnit = Data.SIUnit;
               Param.Description = Data.Description;
 
               if (Data.IOMode == "required")
@@ -490,11 +250,11 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
                 return false;
               }
 
-              openfluid::ware::SignatureTypedSpatialDataItem Variable;
-              Variable.DataName = Data.Name;
+              openfluid::ware::SignatureSpatialDataItem Variable;
+              Variable.Name = Data.Name;
               Variable.UnitsClass = Data.UnitsClass;
               Variable.Description = Data.Description;
-              Variable.DataUnit = Data.SIUnit;
+              Variable.SIUnit = Data.SIUnit;
               if (!Data.Type.empty())
               {
                 if (!openfluid::core::Value::getValueTypeFromString(Data.Type,Variable.DataType))
@@ -530,10 +290,10 @@ bool GhostSimulatorFileIO::loadFromFile(const std::string& FilePath, openfluid::
               }
 
               openfluid::ware::SignatureSpatialDataItem Attribute;
-              Attribute.DataName = Data.Name;
+              Attribute.Name = Data.Name;
               Attribute.UnitsClass = Data.UnitsClass;
               Attribute.Description = Data.Description;
-              Attribute.DataUnit = Data.SIUnit;
+              Attribute.SIUnit = Data.SIUnit;
 
               if (Data.IOMode == "required")
               {

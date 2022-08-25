@@ -50,11 +50,11 @@
 namespace openfluid { namespace ware {
 
 
-typedef std::string SimMethod_t;
+typedef std::string SimMethod_t; // TOIMPL to remove, replaced by tags
 
-typedef std::string SimProcess_t;
+typedef std::string SimProcess_t; // TOIMPL to remove, replaced by tags
 
-typedef std::string SimDomain_t;
+typedef std::string SimDomain_t; // TOIMPL to remove, replaced by tags
 
 
 // =====================================================================
@@ -68,17 +68,18 @@ class OPENFLUID_API SignatureDataItem
 {
   public:
 
-    std::string DataName;
+    std::string Name;
     std::string Description;
-    std::string DataUnit;
+    std::string SIUnit;
+    openfluid::core::Value::Type DataType = openfluid::core::Value::NONE;
 
-    SignatureDataItem() :
-      DataName(""),Description(""),DataUnit("")
-    {  }
+    SignatureDataItem()
+    { }
 
-    SignatureDataItem(const std::string& DName, const std::string& DDescription, const std::string& DUnit) :
-      DataName(DName),Description(DDescription),DataUnit(DUnit)
-    {  }
+    SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI);
+
+    SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI,
+                      openfluid::core::Value::Type T);
 };
 
 
@@ -95,37 +96,18 @@ class OPENFLUID_API SignatureSpatialDataItem : public SignatureDataItem
 
     openfluid::core::UnitsClass_t UnitsClass;
 
-    SignatureSpatialDataItem() :
-      SignatureDataItem(), UnitsClass("")
-    {  }
+    SignatureSpatialDataItem() : SignatureDataItem()
+    { }
 
-    SignatureSpatialDataItem(const std::string& DName, const openfluid::core::UnitsClass_t& UClass,
-                             const std::string& DDescription, const std::string& DUnit) :
-      SignatureDataItem(DName,DDescription,DUnit),UnitsClass(UClass)
-    {  }
-};
+    SignatureSpatialDataItem(const std::string& N, const openfluid::core::UnitsClass_t& U,
+                             const std::string& D, const std::string& SI) :
+      SignatureDataItem(N,D,SI),UnitsClass(U)
+    { }
 
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-Class for storage of the definition of typed data handled by the simulator.
-*/
-class OPENFLUID_API SignatureTypedSpatialDataItem : public SignatureSpatialDataItem
-{
-
-  public:
-
-    openfluid::core::Value::Type DataType;
-
-    SignatureTypedSpatialDataItem() :
-      SignatureSpatialDataItem(), DataType(openfluid::core::Value::NONE) 
-    {  }
-
-    SignatureTypedSpatialDataItem(const std::string& DName, const openfluid::core::UnitsClass_t& UClass,
-                                  const std::string& DDescription, const std::string& DUnit);
+    SignatureSpatialDataItem(const std::string& N, const openfluid::core::UnitsClass_t& U,
+                             const std::string& D, const std::string& SI, openfluid::core::Value::Type T) :
+      SignatureDataItem(N,D,SI,T),UnitsClass(U)
+    { }
 };
 
 
@@ -146,25 +128,25 @@ class OPENFLUID_API SignatureHandledData
 
     std::vector<SignatureDataItem> RequiredParams;
 
-    std::vector<SignatureTypedSpatialDataItem> ProducedVars;
+    std::vector<SignatureSpatialDataItem> ProducedVars;
 
-    std::vector<SignatureTypedSpatialDataItem> UpdatedVars;
+    std::vector<SignatureSpatialDataItem> UpdatedVars;
 
-    std::vector<SignatureTypedSpatialDataItem> RequiredVars;
+    std::vector<SignatureSpatialDataItem> RequiredVars;
 
-    std::vector<SignatureTypedSpatialDataItem> UsedVars;
+    std::vector<SignatureSpatialDataItem> UsedVars;
 
-    std::vector<SignatureSpatialDataItem> ProducedAttribute;
+    std::vector<SignatureSpatialDataItem> ProducedAttribute; // TOIMPL add plural
 
-    std::vector<SignatureSpatialDataItem> RequiredAttribute;
+    std::vector<SignatureSpatialDataItem> RequiredAttribute; // TOIMPL add plural
 
-    std::vector<SignatureSpatialDataItem> UsedAttribute;
+    std::vector<SignatureSpatialDataItem> UsedAttribute; // TOIMPL add plural
 
-    std::vector<std::string> RequiredExtraFiles;
+    std::vector<std::string> RequiredExtraFiles; // TOIMPL add description associated with each file?
 
-    std::vector<std::string> UsedExtraFiles;
+    std::vector<std::string> UsedExtraFiles; // TOIMPL add description associated with each file?
 
-    std::vector<openfluid::core::UnitsClass_t> UsedEventsOnUnits;
+    std::vector<openfluid::core::UnitsClass_t> UsedEventsOnUnits; // TOIMPL add description to units class events?
 
 
     SignatureHandledData()
@@ -227,7 +209,7 @@ class OPENFLUID_API SignatureUnitsGraph
 
     std::string UpdatedUnitsGraph;
 
-    std::vector<SignatureUnitsClassItem> UpdatedUnitsClass;
+    std::vector<SignatureUnitsClassItem> UpdatedUnitsClass; // TOIMPL add plural
 
 
     SignatureUnitsGraph()
@@ -294,6 +276,40 @@ class OPENFLUID_API SignatureTimeScheduling
       Max = MaxVal;
     }
 
+    std::string getTypeAsString() const
+    {
+      if (Type == SchedulingType::DEFAULT)
+      {
+        return "default";
+      }
+      else if (Type == SchedulingType::FIXED)
+      {
+        return "fixed";
+      }
+      else if (Type == SchedulingType::RANGE)
+      {
+        return "range";
+      }
+      return "undefined";
+    }
+
+    void setTypeFromString(const std::string& ST)
+    {
+      Type = SchedulingType::UNDEFINED;
+
+      if (ST == "default")
+      {
+        Type = SchedulingType::DEFAULT;
+      }
+      else if (ST == "fixed")
+      {
+        Type = SchedulingType::FIXED;
+      }
+      else if (ST == "range")
+      {
+        Type = SchedulingType::RANGE;
+      }
+    }
 };
 
 
@@ -318,17 +334,17 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
     /**
       Plugin domain (i.e. hydrology, pop, erosion, ...)
     */
-    SimDomain_t Domain;
+    SimDomain_t Domain; // TOIMPL to remove, replaced by tags
 
     /**
       Plugin simulated process (i.e. surface rainfall-runoff production, ditch infiltration, ...)
     */
-    SimProcess_t Process;
+    SimProcess_t Process; // TOIMPL to remove, replaced by tags
 
     /**
       Plugin involved method (i.e. morel-seytoux, hayami, ...)
     */
-    SimMethod_t Method;
+    SimMethod_t Method; // TOIMPL to remove, replaced by tags
 
     /**
       Handled data
@@ -356,9 +372,9 @@ class OPENFLUID_API SimulatorSignature : public WareSignature
     void clear()
     {
       WareSignature::clear();
-      Domain.clear();
-      Process.clear();
-      Method.clear();
+      Domain.clear(); // TOIMPL to remove
+      Process.clear(); // TOIMPL to remove
+      Method.clear(); // TOIMPL to remove
       HandledData.clear();
       HandledUnitsGraph.clear();
       TimeScheduling.setAsUndefined();

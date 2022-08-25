@@ -39,6 +39,9 @@
 
 
 #include <openfluid/waresdev/WareSrcFactory.hpp>
+#include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
+#include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
+#include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
@@ -197,6 +200,8 @@ std::string WareSrcFactory::createSimulator(const openfluid::ware::SimulatorSign
                                             const Configuration& Config,
                                             const std::string& ParentPath)
 {
+  // TOIMPL "wareinfo.json" as a configuration variable
+
   openfluid::base::Environment::init();
 
   openfluid::tools::TemplateProcessor TplProc("%%","%%");
@@ -208,11 +213,14 @@ std::string WareSrcFactory::createSimulator(const openfluid::ware::SimulatorSign
   auto SkelPath =  getTemplateSkeletonPath("simulator");
 
   auto WareSrcDir = openfluid::tools::Path({ParentPath,Signature.ID});
+  auto WareInfoFile = openfluid::tools::Path({ParentPath,Signature.ID,"wareinfo.json"});
 
   try 
   {
     TplProc.renderDirectory(CommonSkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
     TplProc.renderDirectory(SkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+
+    SimulatorSignatureSerializer().writeToJSONFile(Signature,WareInfoFile.toGeneric());
 
     if (Config.WithParamsUI)
     {
@@ -236,6 +244,8 @@ std::string WareSrcFactory::createObserver(const openfluid::ware::ObserverSignat
                                            const Configuration& Config,
                                            const std::string& ParentPath)
 {
+  // TOIMPL "wareinfo.json" as a configuration variable
+
   openfluid::base::Environment::init();
 
   openfluid::tools::TemplateProcessor TplProc("%%","%%");
@@ -248,11 +258,14 @@ std::string WareSrcFactory::createObserver(const openfluid::ware::ObserverSignat
   auto SkelPath =  getTemplateSkeletonPath("observer");
 
   auto WareSrcDir = openfluid::tools::Path({ParentPath,Signature.ID});
+  auto WareInfoFile = openfluid::tools::Path({ParentPath,Signature.ID,"wareinfo.json"});
 
   try 
   {
     TplProc.renderDirectory(CommonSkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
     TplProc.renderDirectory(SkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+
+    ObserverSignatureSerializer().writeToJSONFile(Signature,WareInfoFile.toGeneric());
 
     if (Config.WithParamsUI)
     {
@@ -276,6 +289,8 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
                                              const Configuration& Config,
                                              const std::string& ParentPath)
 {
+  // TOIMPL "wareinfo.json" as a configuration variable
+  
   openfluid::base::Environment::init();
 
   openfluid::tools::TemplateProcessor TplProc("%%","%%");
@@ -288,25 +303,16 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
   auto SkelPath =  getTemplateSkeletonPath("builderext");
 
   auto WareSrcDir = openfluid::tools::Path({ParentPath,Signature.ID});
+  auto WareInfoFile = openfluid::tools::Path({ParentPath,Signature.ID,"wareinfo.json"}); 
 
-  std::string ModeSuffix;
-  if (Signature.Mode == openfluid::builderext::ExtensionMode::MODAL)
-  {
-    ModeSuffix = "modal";
-  }
-  else if (Signature.Mode == openfluid::builderext::ExtensionMode::MODELESS)
-  {
-    ModeSuffix = "modeless";
-  }
-  else if (Signature.Mode == openfluid::builderext::ExtensionMode::WORKSPACE)
-  {
-    ModeSuffix = "workspace";
-  }
+  auto ModeSuffix = Signature.getModeAsString();
 
   try 
   {
     TplProc.renderDirectory(CommonSkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
     TplProc.renderDirectory(SkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
+
+    BuilderextSignatureSerializer().writeToJSONFile(Signature,WareInfoFile.toGeneric());
 
     for (const std::string& Ext : {".cpp",".hpp"})
     {
@@ -400,16 +406,16 @@ std::string WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::Sim
   // -- Parameters
   for (auto& Item : Signature.HandledData.RequiredParams)
   {
-    TmpStr += "  DECLARE_REQUIRED_PARAMETER(\""+Item.DataName+"\","
+    TmpStr += "  DECLARE_REQUIRED_PARAMETER(\""+Item.Name+"\","
                                            "\""+Item.Description+"\","
-                                           "\""+Item.DataUnit+"\")\n";
+                                           "\""+Item.SIUnit+"\")\n";
   }
 
   for (auto& Item : Signature.HandledData.UsedParams)
   {
-    TmpStr += "  DECLARE_USED_PARAMETER(\""+Item.DataName+"\","
+    TmpStr += "  DECLARE_USED_PARAMETER(\""+Item.Name+"\","
                                        "\""+Item.Description+"\","
-                                       "\""+Item.DataUnit+"\")\n";
+                                       "\""+Item.SIUnit+"\")\n";
   }
 
   // -- Extra files
@@ -440,26 +446,26 @@ std::string WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::Sim
 
   for (auto& Item : Signature.HandledData.RequiredAttribute)
   {
-    TmpStr += "  DECLARE_REQUIRED_ATTRIBUTE(\""+Item.DataName+"\","
+    TmpStr += "  DECLARE_REQUIRED_ATTRIBUTE(\""+Item.Name+"\","
                                            "\""+Item.UnitsClass+"\","
                                            "\""+Item.Description+"\","
-                                           "\""+Item.DataUnit+"\")\n";
+                                           "\""+Item.SIUnit+"\")\n";
   }
 
   for (auto& Item : Signature.HandledData.UsedAttribute)
   {
-    TmpStr += "  DECLARE_USED_ATTRIBUTE(\""+Item.DataName+"\","
+    TmpStr += "  DECLARE_USED_ATTRIBUTE(\""+Item.Name+"\","
                                        "\""+Item.UnitsClass+"\","
                                        "\""+Item.Description+"\","
-                                       "\""+Item.DataUnit+"\")\n";
+                                       "\""+Item.SIUnit+"\")\n";
   }
 
   for (auto& Item : Signature.HandledData.ProducedAttribute)
   {
-    TmpStr += "  DECLARE_PRODUCED_ATTRIBUTE(\""+Item.DataName+"\","
+    TmpStr += "  DECLARE_PRODUCED_ATTRIBUTE(\""+Item.Name+"\","
                                            "\""+Item.UnitsClass+"\","
                                            "\""+Item.Description+"\","
-                                           "\""+Item.DataUnit+"\")\n";
+                                           "\""+Item.SIUnit+"\")\n";
   }
 
 
@@ -487,34 +493,34 @@ std::string WareSrcFactory::getSimulatorSignatureData(const openfluid::ware::Sim
 
   for (auto& Item : Signature.HandledData.RequiredVars)
   {
-    TmpStr += "  DECLARE_REQUIRED_VARIABLE(\""+Item.DataName+getDeclarationStringFromVarType(Item.DataType)+"\","
+    TmpStr += "  DECLARE_REQUIRED_VARIABLE(\""+Item.Name+getDeclarationStringFromVarType(Item.DataType)+"\","
                                           "\""+Item.UnitsClass+"\","
                                           "\""+Item.Description+"\","
-                                          "\""+Item.DataUnit+"\")\n";
+                                          "\""+Item.SIUnit+"\")\n";
   }
 
   for (auto& Item : Signature.HandledData.UsedVars)
   {
-    TmpStr += "  DECLARE_USED_VARIABLE(\""+Item.DataName+getDeclarationStringFromVarType(Item.DataType)+"\","
+    TmpStr += "  DECLARE_USED_VARIABLE(\""+Item.Name+getDeclarationStringFromVarType(Item.DataType)+"\","
                                           "\""+Item.UnitsClass+"\","
                                           "\""+Item.Description+"\","
-                                          "\""+Item.DataUnit+"\")\n";
+                                          "\""+Item.SIUnit+"\")\n";
   }
 
   for (auto& Item : Signature.HandledData.ProducedVars)
   {
-    TmpStr += "  DECLARE_PRODUCED_VARIABLE(\""+Item.DataName+getDeclarationStringFromVarType(Item.DataType)+"\","
+    TmpStr += "  DECLARE_PRODUCED_VARIABLE(\""+Item.Name+getDeclarationStringFromVarType(Item.DataType)+"\","
                                           "\""+Item.UnitsClass+"\","
                                           "\""+Item.Description+"\","
-                                          "\""+Item.DataUnit+"\")\n";
+                                          "\""+Item.SIUnit+"\")\n";
   }
 
   for (auto& Item : Signature.HandledData.UpdatedVars)
   {
-    TmpStr += "  DECLARE_UPDATED_VARIABLE(\""+Item.DataName+getDeclarationStringFromVarType(Item.DataType)+"\","
+    TmpStr += "  DECLARE_UPDATED_VARIABLE(\""+Item.Name+getDeclarationStringFromVarType(Item.DataType)+"\","
                                           "\""+Item.UnitsClass+"\","
                                           "\""+Item.Description+"\","
-                                          "\""+Item.DataUnit+"\")\n";
+                                          "\""+Item.SIUnit+"\")\n";
   }
 
   // -- Spatial graph
@@ -629,7 +635,7 @@ std::string getSimulatorCommonCode(const openfluid::ware::SimulatorSignature& Si
             TmpValueStr = "openfluid::core::NullValue()";
           }
 
-          TmpStr += "        "+PrimitiveStr+"(U,\""+Item.DataName+"\","+TmpValueStr+");\n";
+          TmpStr += "        "+PrimitiveStr+"(U,\""+Item.Name+"\","+TmpValueStr+");\n";
         }
       }
       TmpStr += "      }\n";

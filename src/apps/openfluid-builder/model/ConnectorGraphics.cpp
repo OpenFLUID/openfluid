@@ -177,7 +177,7 @@ void ConnectorGraphics::updatePosition()
 // =====================================================================
 
 
-void ConnectorGraphics::addVariable(const openfluid::ware::SignatureTypedSpatialDataItem& VarInfos)
+void ConnectorGraphics::addVariable(const openfluid::ware::SignatureSpatialDataItem& VarInfos)
 {
   m_VariablesInfos.append(VarInfos);
   updatePosition();
@@ -210,7 +210,7 @@ QString ConnectorGraphics::getVariablesString() const
       Text += "\n";
     }
 
-    Text += QString::fromStdString(VarInfo.DataName);
+    Text += QString::fromStdString(VarInfo.Name);
   }
 
   return Text;
@@ -234,7 +234,7 @@ QString ConnectorGraphics::getToolTipString() const
     {
       Text += "<li>";
       Text += "<p style='white-space:pre'>";
-      Text += "<b>" + QString::fromStdString(VarInfos.DataName) + "</b>" +
+      Text += "<b>" + QString::fromStdString(VarInfos.Name) + "</b>" +
               " {" + QString::fromStdString(VarInfos.UnitsClass) + "}";
 
       if (VarInfos.DataType != openfluid::core::Value::NONE)

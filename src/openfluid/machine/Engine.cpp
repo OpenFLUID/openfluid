@@ -289,7 +289,7 @@ void Engine::checkParametersConsistency()
       bool FilledParam = false;
 
       // searching for parameter in local parameters
-      auto it = IInstance->Params.find(Param.DataName);
+      auto it = IInstance->Params.find(Param.Name);
       if (it != IInstance->Params.end())
       {
         FoundParam = true;
@@ -298,7 +298,7 @@ void Engine::checkParametersConsistency()
       else
       {
         // searching for parameter in global parameters
-        auto git = m_ModelInstance.globalParameters().find(Param.DataName);
+        auto git = m_ModelInstance.globalParameters().find(Param.Name);
         if (git != m_ModelInstance.globalParameters().end())
         {
           FoundParam = true;
@@ -310,13 +310,13 @@ void Engine::checkParametersConsistency()
       if (!FoundParam)
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Cannot find parameter " + Param.DataName +
+                                                  "Cannot find parameter " + Param.Name +
                                                   " required by " + IInstance->Container.signature()->ID);
       }
       else if (!FilledParam)
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                  "Parameter " + Param.DataName +
+                                                  "Parameter " + Param.Name +
                                                   " required by " + IInstance->Container.signature()->ID + " is empty");
       }
     }
@@ -354,14 +354,14 @@ void Engine::checkModelConsistency()
     // checking variables to create (produced)
     for (i=0;i< HData.ProducedVars.size();i++)
     {
-      createVariable(HData.ProducedVars[i].DataName,HData.ProducedVars[i].DataType,HData.ProducedVars[i].UnitsClass,
+      createVariable(HData.ProducedVars[i].Name,HData.ProducedVars[i].DataType,HData.ProducedVars[i].UnitsClass,
                      false,CurrentSimulator->Container.signature()->ID);
     }
 
     // checking variables to update
     for (i=0;i<HData.UpdatedVars.size();i++)
     {
-      createVariable(HData.UpdatedVars[i].DataName,HData.UpdatedVars[i].DataType,HData.UpdatedVars[i].UnitsClass,
+      createVariable(HData.UpdatedVars[i].Name,HData.UpdatedVars[i].DataType,HData.UpdatedVars[i].UnitsClass,
                      true,CurrentSimulator->Container.signature()->ID);
     }
     ++SimIter;
@@ -378,7 +378,7 @@ void Engine::checkModelConsistency()
     // checking required variables
     for (i=0;i< HData.RequiredVars.size();i++)
     {
-      checkExistingVariable(HData.RequiredVars[i].DataName,HData.RequiredVars[i].DataType,
+      checkExistingVariable(HData.RequiredVars[i].Name,HData.RequiredVars[i].DataType,
                             HData.RequiredVars[i].UnitsClass,CurrentSimulator->Container.signature()->ID);
     }
 
@@ -410,14 +410,14 @@ void Engine::checkAttributesConsistency()
     // checking required attribute
     for(i=0; i < HData.RequiredAttribute.size();i++)
     {
-      checkExistingAttribute(HData.RequiredAttribute[i].DataName,HData.RequiredAttribute[i].UnitsClass,
+      checkExistingAttribute(HData.RequiredAttribute[i].Name,HData.RequiredAttribute[i].UnitsClass,
                              CurrentSimulator->Container.signature()->ID);
     }
 
     // checking produced attribute
     for(i=0; i < HData.ProducedAttribute.size();i++)
     {
-      createAttribute(HData.ProducedAttribute[i].DataName,HData.ProducedAttribute[i].UnitsClass,
+      createAttribute(HData.ProducedAttribute[i].Name,HData.ProducedAttribute[i].UnitsClass,
                       CurrentSimulator->Container.signature()->ID);
     }
 

@@ -65,7 +65,7 @@ class ConnectorGraphics : public QGraphicsPathItem
     ModelItemGraphics* mp_ToItem;
     InNodeType m_ToInNode;
 
-    QList<openfluid::ware::SignatureTypedSpatialDataItem> m_VariablesInfos;
+    QList<openfluid::ware::SignatureSpatialDataItem> m_VariablesInfos;
 
     QGraphicsSimpleTextItem* mp_VarsText;
 
@@ -86,7 +86,7 @@ class ConnectorGraphics : public QGraphicsPathItem
 
     void updatePosition();
 
-    void addVariable(const openfluid::ware::SignatureTypedSpatialDataItem& VarInfos);
+    void addVariable(const openfluid::ware::SignatureSpatialDataItem& VarInfos);
 
     ModelItemGraphics* fromItem()
     { return mp_FromItem; }

@@ -2,13 +2,13 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
-SET(OPENFLUID_WARE_CPP SimulatorSignature.cpp
+SET(OPENFLUID_WARE_CPP WareIssues.cpp SimulatorSignature.cpp
                        PluggableWare.cpp SimulationDrivenWare.cpp SimulationInspectorWare.cpp SimulationContributorWare.cpp
                        PluggableSimulator.cpp PluggableObserver.cpp
                        WareParamsTree.cpp
                        )
 
-SET(OPENFLUID_WARE_HPP WareSignature.hpp SimulatorSignature.hpp ObserverSignature.hpp
+SET(OPENFLUID_WARE_HPP WareIssues.hpp WareSignature.hpp SimulatorSignature.hpp ObserverSignature.hpp
                        PluggableWare.hpp SimulationDrivenWare.hpp SimulationInspectorWare.hpp SimulationContributorWare.hpp
                        PluggableSimulator.hpp PluggableObserver.hpp                       
                        TypeDefs.hpp

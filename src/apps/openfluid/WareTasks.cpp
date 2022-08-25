@@ -39,6 +39,7 @@
 
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
+#include <openfluid/waresdev/GhostsHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
 
@@ -57,16 +58,16 @@ int WareTasks::processCreateWare()
     return error("missing ware type");
   }
   
-  const auto& ID = m_Cmd.getOptionValue("id");
+  const auto ID = m_Cmd.getOptionValue("id");
 
   if (!openfluid::tools::isValidWareID(ID))
   {
     return error("invalid ware ID");
   }
 
-  const auto& TypeStr = m_Cmd.getOptionValue("type");
+  const auto TypeStr = m_Cmd.getOptionValue("type");
 
-  const auto& ParentPath = (m_Cmd.getOptionValue("parent-path").empty() ? openfluid::tools::Filesystem::currentPath() : 
+  const auto ParentPath = (m_Cmd.getOptionValue("parent-path").empty() ? openfluid::tools::Filesystem::currentPath() : 
                                                                           m_Cmd.getOptionValue("parent-path"));
 
   openfluid::waresdev::WareSrcFactory::Configuration Config;
@@ -153,7 +154,7 @@ int WareTasks::process()
   {
     return notImplemented(); // TOIMPL
   }
-  else if (m_Cmd.getName() == "migrate")
+  else if (m_Cmd.getName() == "migrate-ware")
   {
     return notImplemented(); // TOIMPL
   }
@@ -177,7 +178,28 @@ int WareTasks::process()
   {
     return notImplemented(); // TOIMPL
   }
+  else if (m_Cmd.getName() == "info2build")
+  {
+    return notImplemented(); // TOIMPL
+  }
+  else if (m_Cmd.getName() == "migrate-ghostsim")
+  {
+    if (!m_Cmd.isOptionActive("type"))
+    {
+      return error("missing ware type");
+    }
 
+    const auto ID = m_Cmd.getOptionValue("id");
+    const auto ParentPath = (m_Cmd.getOptionValue("parent-path").empty() ? 
+                             openfluid::tools::Filesystem::currentPath() : m_Cmd.getOptionValue("parent-path"));
+
+    if (openfluid::waresdev::migrateGhostSimulator(ParentPath,ID))
+    {
+      return 0;
+    }
+    return error();
+  }
+  
   return unknownCommand();
 }
 

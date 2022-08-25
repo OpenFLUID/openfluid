@@ -1,0 +1,157 @@
+{
+  "openfluid-ware": {
+    "id": "simA",
+    "name": "Simulator A",
+    "description": "This is \"simulator A\"",
+    "version": "1.0",
+    "status": "beta",
+    "authors": [
+      {
+        "name": "John Doe",
+        "email": "doe@foobar.org"
+      },
+      {
+        "name": "Tony Stark",
+        "email": "iron@shield.org"
+      }
+    ],
+    "contacts": [],
+    "license": "",
+    "tags": [],
+    "links": [],
+    "issues": [],
+    "simulator": {
+      "data": {
+        "parameters": {
+          "required": [
+            {
+              "name": "param1",
+              "description": "parameter 1",
+              "siunit": "m/s",
+              "type": ""
+            }
+          ],
+          "used": [
+            {
+              "name": "param2",
+              "description": "parameter 2",
+              "siunit": "",
+              "type": ""
+            }
+          ]
+        },
+        "attributes": {
+          "required": [
+            {
+              "name": "attr1",
+              "unitsclass": "UA",
+              "description": "attribute 1",
+              "siunit": "",
+              "type": ""
+            },
+            {
+              "name": "attr2",
+              "unitsclass": "UA",
+              "description": "",
+              "siunit": "",
+              "type": ""
+            }
+          ],
+          "used": [
+            {
+              "name": "attr3",
+              "unitsclass": "UB",
+              "description": "attribute 3",
+              "siunit": "m",
+              "type": ""
+            }
+          ],
+          "produced": [
+            {
+              "name": "attr4",
+              "unitsclass": "UB",
+              "description": "attribute 4",
+              "siunit": "m2",
+              "type": ""
+            }
+          ]
+        },
+        "variables": {
+          "produced": [
+            {
+              "name": "var3",
+              "unitsclass": "UA",
+              "description": "variable 3",
+              "siunit": "m3",
+              "type": "vector"
+            },
+            {
+              "name": "var4",
+              "unitsclass": "UA",
+              "description": "variable 4",
+              "siunit": "m",
+              "type": ""
+            }
+          ],
+          "required": [
+            {
+              "name": "var1",
+              "unitsclass": "UA",
+              "description": "variable 1",
+              "siunit": "",
+              "type": ""
+            }
+          ],
+          "used": [
+            {
+              "name": "var2",
+              "unitsclass": "UB",
+              "description": "variable 2",
+              "siunit": "m",
+              "type": "double"
+            }
+          ],
+          "updated": [
+            {
+              "name": "var5",
+              "unitsclass": "UB",
+              "description": "variable 5",
+              "siunit": "",
+              "type": ""
+            }
+          ]
+        },
+        "events": [
+          "UA",
+          "UB"
+        ],
+        "extrafiles": {
+          "required": [
+            "file1.dat"
+          ],
+          "used": [
+            "file2.dat"
+          ]
+        }
+      },
+      "spatial_graph": {
+        "description": "modifications on UA & UB",
+        "details": [
+          {
+            "unitsclass": "UA",
+            "description": "update of UA"
+          },
+          {
+            "unitsclass": "UB",
+            "description": ""
+          }
+        ]
+      },
+      "scheduling": {
+        "type": "default",
+        "min": 0,
+        "max": 0
+      }
+    }
+  }
+}

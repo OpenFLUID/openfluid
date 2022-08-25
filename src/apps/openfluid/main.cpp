@@ -188,10 +188,10 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto MigrateCmd = openfluid::utils::CommandLineCommand("migrate","migrate ware sources to current version "
-                                                                   "("+openfluid::config::VERSION_FULL+")"); 
-  MigrateCmd.addOptions({{"path","p","Path to the ware sources",true}}); // TOIMPL
-  Parser.addCommand(MigrateCmd);
+  auto MigrateWareCmd = openfluid::utils::CommandLineCommand("migrate-ware","migrate ware sources to current version "
+                                                                            "("+openfluid::config::VERSION_FULL+")"); 
+  MigrateWareCmd.addOptions({{"path","p","Path to the ware sources",true}}); // TOIMPL
+  Parser.addCommand(MigrateWareCmd);
 
   // ---
 
@@ -225,11 +225,21 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto Sign2BuildCmd = openfluid::utils::CommandLineCommand("sign2build","generate build files frow ware signature");
-  Sign2BuildCmd.addOptions({{"path","p","Path to the ware sources",true}}); // TOIMPL and find another command name ? 
-  Parser.addCommand(Sign2BuildCmd);
+  auto Info2BuildCmd = openfluid::utils::CommandLineCommand("info2build","generate build files frow ware information");
+  Info2BuildCmd.addOptions({{"path","p","Path to the ware sources",true}}); // TOIMPL and find another command name ? 
+  Parser.addCommand(Info2BuildCmd);
 
   // ---
+
+  auto MigrateGhostCmd = openfluid::utils::CommandLineCommand("migrate-ghostsim",
+                                                              "migrate ghost simulator to current version "
+                                                              "("+openfluid::config::VERSION_FULL+")"); 
+  MigrateGhostCmd.addOptions({{"parent-path","p","Parent path to the ghost simulator to migrate",true},
+                              {"id","i","ID of the ghost simulator to migrate",true}});
+  Parser.addCommand(MigrateGhostCmd);
+
+  // ---
+
 
   Parser.addOption(openfluid::utils::CommandLineOption("version","","display OpenFLUID version"));
 
@@ -283,12 +293,14 @@ int main(int argc, char **argv)
   }
   else if (ActiveCmdStr == "create-ware" ||
            ActiveCmdStr == "check" ||
-           ActiveCmdStr == "migrate" ||
+           ActiveCmdStr == "migrate-ware" ||
            ActiveCmdStr == "docalyze" ||
            ActiveCmdStr == "configure" ||
            ActiveCmdStr == "build" ||
            ActiveCmdStr == "buildinstall" ||
-           ActiveCmdStr == "purge")  
+           ActiveCmdStr == "purge"  ||
+           ActiveCmdStr == "info2build" ||
+           ActiveCmdStr == "migrate-ghostsim")  
   {
     return WareTasks(Parser).process();
   }

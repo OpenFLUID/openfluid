@@ -153,16 +153,16 @@ std::string ModelItemWidget::getParamValue(const std::string& ParamName, openflu
 
   for (const auto& Param : RequiredParams)
   {
-    std::string ParamName = Param.DataName;
-    addParam(ParamName, getParamValue(ParamName, DescParams), Param.DataUnit, ParamsInSign, true, false);
+    std::string ParamName = Param.Name;
+    addParam(ParamName, getParamValue(ParamName, DescParams), Param.SIUnit, ParamsInSign, true, false);
   }
 
   // Used params
 
   for (const auto& Param : UsedParams)
   {
-    std::string ParamName = Param.DataName;
-    addParam(ParamName, getParamValue(ParamName, DescParams), Param.DataUnit, ParamsInSign, false, false);
+    std::string ParamName = Param.Name;
+    addParam(ParamName, getParamValue(ParamName, DescParams), Param.SIUnit, ParamsInSign, false, false);
   }
   return ParamsInSign;
 }

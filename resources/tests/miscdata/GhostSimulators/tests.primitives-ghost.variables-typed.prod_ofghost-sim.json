@@ -1,0 +1,112 @@
+{
+  "openfluid-ware": {
+    "id": "tests.primitives-ghost.variables-typed.prod",
+    "name": "",
+    "description": "",
+    "version": "",
+    "status": "experimental",
+    "authors": [],
+    "contacts": [],
+    "license": "",
+    "tags": [],
+    "links": [],
+    "issues": [],
+    "simulator": {
+      "data": {
+        "parameters": {
+          "required": [],
+          "used": []
+        },
+        "attributes": {
+          "required": [],
+          "used": [],
+          "produced": []
+        },
+        "variables": {
+          "produced": [
+            {
+              "name": "tests.typed.none",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": ""
+            },
+            {
+              "name": "tests.typed.double",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": "double"
+            },
+            {
+              "name": "tests.typed.integer",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": "integer"
+            },
+            {
+              "name": "tests.typed.string",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": "string"
+            },
+            {
+              "name": "tests.typed.bool",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": "boolean"
+            },
+            {
+              "name": "tests.typed.vector",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": "vector"
+            },
+            {
+              "name": "tests.typed.oldvector",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": "vector"
+            },
+            {
+              "name": "tests.typed.matrix",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": "matrix"
+            },
+            {
+              "name": "tests.typed.map",
+              "unitsclass": "TestUnits",
+              "description": "",
+              "siunit": "",
+              "type": "map"
+            }
+          ],
+          "required": [],
+          "used": [],
+          "updated": []
+        },
+        "events": [],
+        "extrafiles": {
+          "required": [],
+          "used": []
+        }
+      },
+      "spatial_graph": {
+        "description": "",
+        "details": []
+      },
+      "scheduling": {
+        "type": "default",
+        "min": 0,
+        "max": 0
+      }
+    }
+  }
+}

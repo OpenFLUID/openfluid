@@ -120,6 +120,8 @@ void BuilderApp::initialize()
     openfluid::base::Environment::addExtraBuilderextsDirs(ExtraPaths[i].toStdString());
   }
 
+  // TOIMPL migrate ghosts automatically ?
+
 
   // Extensions
 

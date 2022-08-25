@@ -132,14 +132,14 @@ void SignatureWidget::clearAllInfos()
 // =====================================================================
 
 
-QString SignatureWidget::formatAuthors(const openfluid::ware::WareSignature::AuthorsList_t& AuthList)
+QString SignatureWidget::formatAuthors(const openfluid::ware::WareSignature::PeopleList_t& AuthList)
 {
   QString Str;
 
-  openfluid::ware::WareSignature::AuthorsList_t::const_iterator itb = AuthList.begin();
-  openfluid::ware::WareSignature::AuthorsList_t::const_iterator ite = AuthList.end();
-  openfluid::ware::WareSignature::AuthorsList_t::const_iterator itl = AuthList.end().operator--();
-  openfluid::ware::WareSignature::AuthorsList_t::const_iterator it;
+  openfluid::ware::WareSignature::PeopleList_t::const_iterator itb = AuthList.begin();
+  openfluid::ware::WareSignature::PeopleList_t::const_iterator ite = AuthList.end();
+  openfluid::ware::WareSignature::PeopleList_t::const_iterator itl = AuthList.end().operator--();
+  openfluid::ware::WareSignature::PeopleList_t::const_iterator it;
 
   for (it=itb; it!= ite; ++it)
   {
@@ -279,10 +279,10 @@ void SignatureWidget::updateParametersCategory(const std::vector<openfluid::ware
     Item = new QTableWidgetItem(CatStr);
         ui->ParametersTableWidget->setItem(i+BaseIndex, 0, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataName));
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).Name));
     ui->ParametersTableWidget->setItem(i+BaseIndex, 1, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataUnit));
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).SIUnit));
     ui->ParametersTableWidget->setItem(i+BaseIndex, 2, Item);
 
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).Description));
@@ -357,7 +357,7 @@ void SignatureWidget::updateExtrafiles(const openfluid::ware::SimulatorSignature
 // =====================================================================
 
 
-void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* Infos,
+void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware::SignatureSpatialDataItem>* Infos,
                                               const QString& CatStr, unsigned int BaseIndex)
 {
 
@@ -368,14 +368,14 @@ void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware:
     Item = new QTableWidgetItem(CatStr);
     ui->VariablesTableWidget->setItem(i+BaseIndex, 0, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataName));
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).Name));
     ui->VariablesTableWidget->setItem(i+BaseIndex, 1, Item);
 
     Item = new QTableWidgetItem(QString::fromStdString(
         openfluid::core::Value::getStringFromValueType(Infos->at(i).DataType)));
     ui->VariablesTableWidget->setItem(i+BaseIndex, 2, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataUnit));
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).SIUnit));
     ui->VariablesTableWidget->setItem(i+BaseIndex, 3, Item);
 
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).UnitsClass));
@@ -394,13 +394,13 @@ void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware:
 
 void SignatureWidget::updateVariables(const openfluid::ware::SimulatorSignature* Signature)
 {
-  const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* ProdVars =
+  const std::vector<openfluid::ware::SignatureSpatialDataItem>* ProdVars =
       &(Signature->HandledData.ProducedVars);
-  const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* ReqVars =
+  const std::vector<openfluid::ware::SignatureSpatialDataItem>* ReqVars =
       &(Signature->HandledData.RequiredVars);
-  const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* UsVars =
+  const std::vector<openfluid::ware::SignatureSpatialDataItem>* UsVars =
       &(Signature->HandledData.UsedVars);
-  const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* UpdVars =
+  const std::vector<openfluid::ware::SignatureSpatialDataItem>* UpdVars =
       &(Signature->HandledData.UpdatedVars);
 
 
@@ -433,10 +433,10 @@ void SignatureWidget::updateAttributesCategory(const std::vector<openfluid::ware
     Item = new QTableWidgetItem(CatStr);
     ui->AttributesTableWidget->setItem(i+BaseIndex, 0, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataName));
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).Name));
     ui->AttributesTableWidget->setItem(i+BaseIndex, 1, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).DataUnit));
+    Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).SIUnit));
     ui->AttributesTableWidget->setItem(i+BaseIndex, 2, Item);
 
     Item = new QTableWidgetItem(QString::fromStdString(Infos->at(i).UnitsClass));

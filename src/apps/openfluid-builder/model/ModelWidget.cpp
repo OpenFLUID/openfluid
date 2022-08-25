@@ -206,9 +206,9 @@ void ModelWidget::addGlobalParam()
 
       for (auto it = Items.begin(); it != Items.end(); ++it)
       {
-        if (!CompPList.contains(QString::fromStdString((*it).DataName)))
+        if (!CompPList.contains(QString::fromStdString((*it).Name)))
         {
-          CompPList.append(QString::fromStdString((*it).DataName));
+          CompPList.append(QString::fromStdString((*it).Name));
         }
       }
     }

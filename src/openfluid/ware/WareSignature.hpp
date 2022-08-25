@@ -39,6 +39,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/ware/WareIssues.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 
 
@@ -55,7 +56,14 @@ class OPENFLUID_API WareSignature
 
     virtual openfluid::ware::WareType getType() const = 0;
 
-    typedef std::vector<std::pair<std::string,std::string> > AuthorsList_t;
+    using Person_t = std::pair<std::string,std::string>;
+
+    using Link_t = std::pair<std::string,std::string>;
+
+    using PeopleList_t = std::vector<Person_t>;
+
+    using LinksList_t = std::vector<Link_t>;
+
 
     /**
       Information about build context
@@ -69,24 +77,46 @@ class OPENFLUID_API WareSignature
     std::string Description;
 
     /**
-    Version number
+      Version string
     */
     WareVersion_t Version;
 
     /**
-    Development status
+      Development status
     */
     WareStatus_t Status;
 
     /**
-    Authors as a list of pairs [name,email]
+      Authors as a list of pairs [name,email]
     */
-    AuthorsList_t Authors;
+    PeopleList_t Authors;
+
+    /**
+      Contacts as a list of pairs [name,email]
+    */
+    PeopleList_t Contacts; 
+
+    /**
+      SPDX code for software license
+    */
+    std::string License;
+
+    /**
+      List of tags
+    */
+    std::vector<std::string> Tags;
+
+    /**
+      List of links
+    */
+    LinksList_t Links;
 
 
-    // =====================================================================
-    // =====================================================================
-
+    /**
+      Issues
+    */ 
+    WareIssues Issues;
+    
 
     WareSignature()
     {
@@ -121,6 +151,11 @@ class OPENFLUID_API WareSignature
       Version.clear();
       Status = WareStatus_t::EXPERIMENTAL;
       Authors.clear();
+      License.clear();
+      Contacts.clear();
+      Tags.clear();
+      Links.clear();
+      Issues.clear();
     }
 
 
@@ -128,20 +163,37 @@ class OPENFLUID_API WareSignature
     // =====================================================================
 
 
-    static std::string getStatusAsString(const WareStatus_t& Status)
+    std::string getStatusAsString() const
     {
-      std::string Str = "experimental";
-
       if (Status == WareStatus_t::BETA)
       {
-        Str = "beta";
+        return "beta";
       }
       else if (Status == WareStatus_t::STABLE)
       {
-        Str = "stable";
+        return "stable";
       }
 
-      return Str;
+      return "experimental";
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void setStatusFromString(const std::string& StatusStr)
+    {
+      Status = WareStatus_t::EXPERIMENTAL;
+
+      if (StatusStr == "beta")
+      {
+        Status = WareStatus_t::BETA;
+      }
+      else if (StatusStr == "stable")
+      {
+        Status = WareStatus_t::STABLE;
+      }
     }
 
 };

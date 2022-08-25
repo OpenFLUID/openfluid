@@ -130,12 +130,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,10);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,30);
 
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedParams[1].DataName,"param2");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedParams[1].Name,"param2");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedParams[1].Description,"this is param2");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedParams[1].DataUnit,"m3");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredParams[0].DataName,"param3");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedParams[1].SIUnit,"m3");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredParams[0].Name,"param3");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredParams[0].Description,"this is param3");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredParams[0].DataUnit,"m");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredParams[0].SIUnit,"m");
 
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredAttribute.size(),2);
@@ -143,12 +143,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedAttribute.size(),1);
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars.size(),3);
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[1].DataName,"pvar2");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[1].Name,"pvar2");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[1].UnitsClass,"UnitClassA");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[2].UnitsClass,"UnitClassB");
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars.size(),3);
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[1].DataName,"pvar2");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[1].Name,"pvar2");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[1].UnitsClass,"UnitClassA");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredVars[2].UnitsClass,"UnitClassB");
 

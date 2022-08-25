@@ -49,10 +49,11 @@
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/machine/ObserverRegistry.hpp>
-#include <openfluid/machine/GhostSimulatorFileIO.hpp>
 #include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
+#include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
+#include <openfluid/waresdev/GhostsHelpers.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 
@@ -747,9 +748,7 @@ void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::Wa
       if (Dlg.exec() == QDialog::Accepted)
       {
         auto Signature = Dlg.getSignature();
-        openfluid::machine::GhostSimulatorFileIO::saveToFile(
-          Signature,openfluid::tools::FilesystemPath(Container.getPath()).dirname()
-        );
+        openfluid::waresdev::SimulatorSignatureSerializer().writeToJSONFile(Signature,Container.getPath());
         updateSimulatorsWares();
       }
     }
@@ -839,9 +838,10 @@ void ProjectModuleWidget::whenNewGhostSimulatorAsked()
   if (Dlg.exec() == QDialog::Accepted)
   {
     openfluid::ware::SimulatorSignature Signature = Dlg.getSignature();
-    openfluid::machine::GhostSimulatorFileIO::saveToFile(
-        Signature,
-        openfluid::base::Environment::getDefaultSimulatorsDirs().front());
+    auto GhostFilePath = 
+      openfluid::waresdev::getGhostSimulatorPath(openfluid::base::Environment::getDefaultSimulatorsDirs().front(),
+      Signature.ID);
+    openfluid::waresdev::SimulatorSignatureSerializer().writeToJSONFile(Signature,GhostFilePath);
     updateSimulatorsWares();
   }
 }

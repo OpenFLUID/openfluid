@@ -1,0 +1,107 @@
+{
+  "openfluid-ware": {
+    "name": "Simulator signature for unit testing",
+    "description": "This is a simulator signature\n that should be used for **unit testing only**",
+    "version": "2022.07",
+    "status": "beta",
+    "authors": [
+      {
+        "name": "Author 1",
+        "email": "auth1@organization.org"
+      },
+      {
+        "name": "Author 2",
+        "email": "auth2@organization.org"
+      }
+    ],
+    "contact": {
+      "name": "OpenFLUID contact",
+      "email": "contact@openfluid-project.org"
+    },
+    "license": "GPL-3.0-or-later",
+    "tags": [
+      "simulator",
+      "unit testing",
+      "development",
+      "software quality"
+    ],
+    "links": [
+      {
+        "label": "OpenFLUID",
+        "url": "www.openfluid-project.org"
+      },
+      {
+        "label": "OpenFLUID community",
+        "url": "community.openfluid-project.org"
+      }
+    ],
+    "issues": [],
+    "simulator": {
+      "data": {
+        "parameters": {
+          "required": [
+            {
+              "name": "param1",
+              "description": "parameter 1",
+              "siunit": "x",
+              "type": ""
+            }
+          ]
+        },
+        "attributes": {
+          "required": []
+        },
+        "variables": {
+          "produced": [
+            {
+              "name": "var1",
+              "unitsclass": "YU",
+              "description": "the var 1",
+              "siunit": "x",
+              "type": ""
+            },
+            {
+              "name": "var2",
+              "unitsclass": "YU",
+              "description": "the var 2",
+              "siunit": "y",
+              "type": "double"
+            }
+          ],
+          "required": [
+            {
+              "name": "var3",
+              "unitsclass": "YU",
+              "description": "the var 3",
+              "siunit": "",
+              "type": "integer"
+            }
+          ]
+        },
+        "events": [
+          "ZU"
+        ],
+        "extrafiles": {
+          "required": [
+            "forced_data1.csv",
+            "forced_data2.csv"
+          ]
+        }
+      },
+      "spatial_graph": {
+        "description": "Spatial graph is modified",
+        "details": [
+          {
+            "unitsclass": "YU",
+            "description": "YU units connections to XU units are updated"
+          }
+        ]
+      },
+      "scheduling": {
+        "type": "fixed",
+        "min": 300,
+        "max": 300
+      }
+    }
+  }
+}

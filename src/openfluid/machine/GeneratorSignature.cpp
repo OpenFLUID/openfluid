@@ -72,7 +72,7 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
   std::string TypedVarName = VariableName;
   VariableSize > 1 ? TypedVarName += "[vector]" : TypedVarName += "[double]";
 
-  HandledData.ProducedVars.push_back(openfluid::ware::SignatureTypedSpatialDataItem(TypedVarName,UnitsClass,"",""));
+  HandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem(TypedVarName,UnitsClass,"",""));
 }
 
 

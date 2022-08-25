@@ -44,20 +44,31 @@
 namespace openfluid { namespace ware {
 
 
-SignatureTypedSpatialDataItem::SignatureTypedSpatialDataItem(const std::string& DName,
-                                                             const openfluid::core::UnitsClass_t& UClass,
-                                                             const std::string& DDescription,
-                                                             const std::string& DUnit):
- SignatureSpatialDataItem(DName,UClass,DDescription,DUnit)
+SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D,const std::string& SI,
+                                     openfluid::core::Value::Type T):
+  Name(N),Description(D),SIUnit(SI),DataType(T)
 {
-
-  if (!openfluid::tools::extractVariableNameAndType(DName,DataName,DataType))
+  if (!openfluid::tools::isValidVariableName(N))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Variable " + DName + " is not well formatted.");
+                                              "Variable " + N + " is not well formatted.");
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI):
+  Description(D),SIUnit(SI)
+{
+  if (!openfluid::tools::extractVariableNameAndType(N,this->Name,this->DataType))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Variable " + N + " with optional type is not well formatted.");
+  }
+}
 
 } } //namespaces
 

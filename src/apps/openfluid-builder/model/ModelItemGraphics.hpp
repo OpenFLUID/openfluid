@@ -60,7 +60,7 @@ class ModelItemGraphics : public QObject, public QGraphicsRectItem
     /**
       Structure for storage of input/output variables in graphical view of models
     */
-    typedef std::vector<openfluid::ware::SignatureTypedSpatialDataItem> IOSet_t;
+    typedef std::vector<openfluid::ware::SignatureSpatialDataItem> IOSet_t;
 
 
   protected:

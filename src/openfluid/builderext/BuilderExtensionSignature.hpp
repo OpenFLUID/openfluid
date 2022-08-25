@@ -68,7 +68,7 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
 
     std::string MenuText;
 
-    std::map<std::string,std::string> ConfigParameters;
+    std::map<std::string,std::string> ConfigParameters;  // NOTE currently not used 
 
 
     BuilderExtensionSignature():
@@ -82,8 +82,88 @@ class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSign
       return openfluid::ware::WareType::BUILDEREXT;
     }
 
+    std::string getModeAsString() const
+    {
+      if (Mode == ExtensionMode::MODAL)
+      {
+        return "modal";
+      }
+      else if (Mode == ExtensionMode::MODELESS)
+      {
+        return "modeless";
+      }
+      else if (Mode == ExtensionMode::WORKSPACE)
+      {
+        return "workspace";
+      }
+      return "";
+    }
+
+    bool setModeFromString(const std::string& M)
+    {
+      if (M == "modal")
+      {
+        Mode = ExtensionMode::MODAL;
+        return true;
+      }
+      else if (M == "modeless")
+      {
+        Mode = ExtensionMode::MODELESS;
+        return true;
+      }
+      else if (M == "workspace")
+      {
+        Mode = ExtensionMode::WORKSPACE;
+        return true;
+      }
+      return false;
+    }
+
+    std::string getCategoryAsString() const
+    {
+      if (Category == ExtensionCategory::MODEL)
+      {
+        return "model";
+      }
+      else if (Category == ExtensionCategory::SPATIAL)
+      {
+        return "spatial";
+      }
+      else if (Category == ExtensionCategory::RESULTS)
+      {
+        return "results";
+      }
+      return "other";
+    }
+
+    bool setCategoryFromString(const std::string& C)
+    {
+      if (C == "model")
+      {
+        Category = ExtensionCategory::MODEL;
+        return true;
+      }
+      else if (C == "spatial")
+      {
+        Category = ExtensionCategory::SPATIAL;
+        return true;
+      }
+      else if (C == "results")
+      {
+        Category = ExtensionCategory::RESULTS;
+        return true;
+      }
+      else if (C == "other")
+      {
+        Category = ExtensionCategory::OTHER;
+        return true;
+      }
+      return false;
+    }
 };
 
+
 } } // namespaces
+
 
 #endif /* __OPENFLUID_BUILDEREXT_BUILDEREXTENSIONSIGNATURE_HPP__ */

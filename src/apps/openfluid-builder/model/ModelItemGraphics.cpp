@@ -310,7 +310,7 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const SlotType& Type,
     for (auto& VarInfos : VarsInfos)
     {
       ToolTipString += "<li>";
-      ToolTipString += "<p style='white-space:pre'><b>" + QString::fromStdString(VarInfos.DataName) + "</b>" +
+      ToolTipString += "<p style='white-space:pre'><b>" + QString::fromStdString(VarInfos.Name) + "</b>" +
                        " {"+QString::fromStdString(VarInfos.UnitsClass)+ "}";
 
       if (VarInfos.DataType != openfluid::core::Value::NONE)
@@ -324,9 +324,9 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const SlotType& Type,
         ToolTipString += ": " + QString::fromStdString(VarInfos.Description);
       }
 
-      if (!VarInfos.DataUnit.empty())
+      if (!VarInfos.SIUnit.empty())
       {
-        ToolTipString += " (" + QString::fromStdString(VarInfos.DataUnit)+")";
+        ToolTipString += " (" + QString::fromStdString(VarInfos.SIUnit)+")";
       }
 
       ToolTipString += "</p></li>";
@@ -442,7 +442,7 @@ bool ModelItemGraphics::hasProducedVariable(const std::string& UnitsClass, const
 {
   for (auto& Var : m_ProducedVars)
   {
-    if (Var.UnitsClass == UnitsClass && Var.DataName == Name)
+    if (Var.UnitsClass == UnitsClass && Var.Name == Name)
     {
       return true;
     }
@@ -460,7 +460,7 @@ bool ModelItemGraphics::hasUpdatedVariable(const std::string& UnitsClass, const 
 {
   for (auto& Var : m_UpdatedVars)
   {
-    if (Var.UnitsClass == UnitsClass && Var.DataName == Name)
+    if (Var.UnitsClass == UnitsClass && Var.Name == Name)
     {
       return true;
     }

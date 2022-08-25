@@ -80,7 +80,7 @@ class SignatureWidget : public QWidget
 
     void updateExtrafiles(const openfluid::ware::SimulatorSignature* Signature);
 
-    void updateVariablesCategory(const std::vector<openfluid::ware::SignatureTypedSpatialDataItem>* Infos,
+    void updateVariablesCategory(const std::vector<openfluid::ware::SignatureSpatialDataItem>* Infos,
                                  const QString& CatStr,
                                  unsigned int BaseIndex);
 
@@ -96,7 +96,7 @@ class SignatureWidget : public QWidget
 
     void updateSpatialGraph(const openfluid::ware::SimulatorSignature* Signature);
 
-    QString formatAuthors(const openfluid::ware::WareSignature::AuthorsList_t& AuthList);
+    QString formatAuthors(const openfluid::ware::WareSignature::PeopleList_t& AuthList);
 
     void clearAllInfos();
 

@@ -39,7 +39,7 @@
 
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/GhostSimulatorFileIO.hpp>
+#include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -75,9 +75,11 @@ SimulatorPluginsManager::getAvailableGhosts(const std::string& IDPattern) const
 
   for (i=0;i<GhostsFiles.size();i++)
   {
-    openfluid::ware::SimulatorSignature* TmpSignature = new openfluid::ware::SimulatorSignature();
-    if (openfluid::machine::GhostSimulatorFileIO::loadFromFile(GhostsFiles[i],*TmpSignature))
+    try
     {
+      openfluid::ware::SimulatorSignature* TmpSignature = new openfluid::ware::SimulatorSignature();
+      
+      *TmpSignature = openfluid::waresdev::SimulatorSignatureSerializer().readFromJSONFile(GhostsFiles[i]);
       if (IDPattern.empty() || openfluid::tools::matchWithWildcard(IDPattern,TmpSignature->ID))
       {
         auto CurrentGhost = createContainer();
@@ -87,7 +89,15 @@ SimulatorPluginsManager::getAvailableGhosts(const std::string& IDPattern) const
         CurrentGhost.validate();
         Containers.push_back(std::move(CurrentGhost));
       }
+      else
+      {
+        delete TmpSignature;
+      }
+
     }
+    catch(...)
+    { }
+   
   }
 
   return Containers;

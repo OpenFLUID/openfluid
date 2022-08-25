@@ -2,8 +2,7 @@
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
-SET(OPENFLUID_MACHINE_CPP GhostSimulatorFileIO.cpp
-                          Generator.cpp FixedGenerator.cpp RandomGenerator.cpp InjectGenerator.cpp InterpGenerator.cpp
+SET(OPENFLUID_MACHINE_CPP Generator.cpp FixedGenerator.cpp RandomGenerator.cpp InjectGenerator.cpp InterpGenerator.cpp
                           GeneratorSignature.cpp
                           ModelInstance.cpp MonitoringInstance.cpp
                           DynamicLib.cpp
@@ -15,7 +14,7 @@ SET(OPENFLUID_MACHINE_CPP GhostSimulatorFileIO.cpp
                           Factory.cpp Engine.cpp MachineListener.cpp
                           )
 
-SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp GhostSimulatorFileIO.hpp
+SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp
                           Generator.hpp FixedGenerator.hpp RandomGenerator.hpp InjectGenerator.hpp InterpGenerator.hpp
                           GeneratorSignature.hpp
                           WareInstance.hpp ObserverInstance.hpp
@@ -48,6 +47,7 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-base
                       openfluid-ware
                       openfluid-fluidx
+                      openfluid-waresdev
                       openfluid-thirdparty-tinyxml2
                      )
 
