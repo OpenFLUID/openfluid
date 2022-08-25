@@ -321,6 +321,32 @@ std::string escapePattern(const std::string& Str)
 // =====================================================================
 
 
+std::string escapeString(const std::string& Str)
+{
+  std::string EscStr;
+
+  for (const auto& C : Str)
+  {
+    switch (C)
+    { 
+      case '\\' : EscStr += "\\\\"; break;
+      case '\n': EscStr += "\\n"; break;
+      case '\t': EscStr += "\\t"; break;
+      case '\r': EscStr += "\\r"; break;
+      case '\v': EscStr += "\\v"; break;
+      case '\f': EscStr += "\\f"; break;
+      case '\a': EscStr += "\\a"; break;
+      default : EscStr += C;
+    }
+  }
+  return EscStr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::pair<int,int> fromGeometryString(const std::string& Str, const std::string& GeomInfo)
 {
   std::pair<int,int> Values{0,0};

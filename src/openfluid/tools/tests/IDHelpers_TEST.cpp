@@ -178,6 +178,8 @@ BOOST_AUTO_TEST_CASE(check_variables_operations)
   BOOST_REQUIRE(!openfluid::tools::isValidVariableName("abc.def.ghi "));
   BOOST_REQUIRE(!openfluid::tools::isValidVariableName("abc.dèf.ghi "));
   BOOST_REQUIRE(!openfluid::tools::isValidVariableName("àbc.def.ghi "));
+  BOOST_REQUIRE(!openfluid::tools::isValidVariableName("abc.def.ghi[]"));
+  BOOST_REQUIRE(!openfluid::tools::isValidVariableName("abc.def.ghi[double]"));
 
 
   // typed variables

@@ -55,8 +55,8 @@ namespace openfluid { namespace thirdparty {
 namespace xml = tinyxml2;
 
 
-std::string getXMLAttribute(const xml::XMLElement* const Elt, const std::string& AttrName,
-                            const std::string& DefaultValue = "")
+inline std::string getXMLAttribute(const xml::XMLElement* const Elt, const std::string& AttrName,
+                                   const std::string& DefaultValue = "")
 {
   if (Elt != nullptr && Elt->Attribute(AttrName.c_str()) != nullptr) 
   {
@@ -70,7 +70,7 @@ std::string getXMLAttribute(const xml::XMLElement* const Elt, const std::string&
 // =====================================================================
 
 
-std::string getXMLText(const xml::XMLElement* const Elt, const std::string& DefaultValue = "")
+inline std::string getXMLText(const xml::XMLElement* const Elt, const std::string& DefaultValue = "")
 {
   if (Elt != nullptr && Elt->GetText() != nullptr) 
   {
@@ -84,7 +84,7 @@ std::string getXMLText(const xml::XMLElement* const Elt, const std::string& Defa
 // =====================================================================
 
 
-std::string getOpenFLUIDXMLFormat(const xml::XMLElement* const Elt)
+inline std::string getOpenFLUIDXMLFormat(const xml::XMLElement* const Elt)
 {  
   return getXMLAttribute(Elt,"format");
 }
@@ -94,7 +94,8 @@ std::string getOpenFLUIDXMLFormat(const xml::XMLElement* const Elt)
 // =====================================================================
 
 
-openfluid::thirdparty::xml::XMLElement* prepareOpenFLUIDXMLDoc(xml::XMLDocument& Doc, const std::string& FormatVersion)
+inline openfluid::thirdparty::xml::XMLElement* prepareOpenFLUIDXMLDoc(xml::XMLDocument& Doc, 
+                                                                      const std::string& FormatVersion)
 {
   auto Decl = Doc.NewDeclaration();
   Doc.InsertFirstChild(Decl);

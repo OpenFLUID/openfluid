@@ -107,7 +107,7 @@ void OPENFLUID_API microsleep(const unsigned long USec);
   @param[in] Format an strftime()-like format string
   @return the formatted date-time
 */
-std::string OPENFLUID_API getNowAsString(const std::string& Format);
+std::string OPENFLUID_API getNowAsString(const std::string& Format); // TOIMPL to replace by DateTime::now()
 
 
 /**
@@ -124,6 +124,14 @@ std::string OPENFLUID_API generatePseudoUniqueIdentifier(const unsigned int Leng
   @return the regex pattern with special chars that are escaped
 */
 std::string OPENFLUID_API escapePattern(const std::string& Str);
+
+
+/**
+  Returns the given string with special chars that are escaped
+  @param[in] Str the string
+  @return the string with special chars that are escaped
+*/
+std::string OPENFLUID_API escapeString(const std::string& Str);
 
 
 /**
