@@ -31,15 +31,15 @@
 
 
 /**
-  @file FluidHubWaresImportWorker.hpp
+  @file GitImportWorker.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
-  @author Armel THONI <armel.thoni@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__
-#define __OPENFLUID_UIWARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_GITIMPORTWORKER_HPP__
+#define __OPENFLUID_UIWARESDEV_GITIMPORTWORKER_HPP__
 
 
 #include <QObject>
@@ -53,32 +53,27 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API FluidHubWaresImportWorker: public QObject
+class OPENFLUID_API GitImportWorker: public QObject
 {
   Q_OBJECT
 
 
-  public:
+  protected:
 
-    typedef QMap<openfluid::ware::WareType, openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t>
-      WaresDetailsByIDByType_t;
+    QString m_Username = "";
+    QString m_Password = "";
 
-
-  private:
-
-    openfluid::utils::FluidHubAPIClient* mp_HubClient;
-
-    QString m_HubUrl;
-
-    QString m_Username;
-
-    QString m_Password;
+    int m_Progress = 0;
+    double m_ProgressRatio = 100;
 
     bool m_SslNoVerify;
 
-    WaresDetailsByIDByType_t m_AvailableWaresDetailsByIDByType;
 
-    std::map<openfluid::ware::WareType, QStringList> m_SelectedWaresUrlByType;
+    std::vector<std::pair<QString, QString>> m_ElementsToImport; // first: Git URL, second: local path
+
+  protected slots:
+
+    virtual bool importElement(const QString& GitUrl, const QString& ContextPath) = 0;
 
 
   signals:
@@ -92,37 +87,26 @@ class OPENFLUID_API FluidHubWaresImportWorker: public QObject
     void progressed(int Value);
 
 
-  public slots :
+  public slots:
 
-    bool connect();
+    void setSelectedElements(const std::vector<std::pair<QString, QString>>& SelectedElements);
 
-    void disconnect();
-
-    bool login(const QString& Username, const QString& Password);
-
-    void logout();
-
-    bool clone();
+    bool runImports();
 
 
   public:
 
-    FluidHubWaresImportWorker(const QString& WareshubUrl, bool SslNoVerify = false);
+    GitImportWorker(bool SslNoVerify = false);
 
-    ~FluidHubWaresImportWorker();
+    ~GitImportWorker();
 
-    bool isConnected() const;
+    void setupUser(const QString& Username, const QString& Password);
 
-    bool isLoggedIn() const;
-
-    bool isV0ofAPI() const;
-
-    QString getUsername() const;
-
-    openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t getAvailableWaresWithDetails(
-      openfluid::ware::WareType Type) const;
-
-    void setSelectedWaresUrl(const std::map<openfluid::ware::WareType, QStringList>& SelectedWaresUrlByType);
+    void setProgressValues(int Progress, double ProgressRatio)
+    {
+      m_Progress = Progress;
+      m_ProgressRatio = ProgressRatio;
+    }
 
 };
 
@@ -130,4 +114,4 @@ class OPENFLUID_API FluidHubWaresImportWorker: public QObject
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UIWARESDEV_FLUIDHUBWARESIMPORTWORKER_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_GITIMPORTWORKER_HPP__ */

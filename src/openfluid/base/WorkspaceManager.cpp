@@ -295,11 +295,6 @@ std::string WorkspaceManager::getWaresPath(const std::string& WorkspacePath, ope
     return openfluid::tools::Filesystem::joinPath({WorkspacePath,openfluid::config::WARESDEV_PATH,
                                                    openfluid::config::BUILDEREXTS_PATH});
   }
-  else if (Type == openfluid::ware::WareType::FRAGMENT)
-  {
-    return openfluid::tools::Filesystem::joinPath({WorkspacePath,openfluid::config::WARESDEV_PATH,
-                                                   openfluid::config::FRAGMENTS_PATH});
-  }
 
   return openfluid::tools::Filesystem::joinPath({WorkspacePath,openfluid::config::WARESDEV_PATH});
 }

@@ -103,6 +103,8 @@ class OPENFLUID_API FluidHubAPIClient
 
     static QString wareTypeToString(openfluid::ware::WareType Type);
 
+    WaresDetailsByID_t getAvailableElementsWithDetails(QString& Path, const QString& Username) const;
+
 
   public:
 
@@ -212,6 +214,13 @@ class OPENFLUID_API FluidHubAPIClient
     */
     WaresDetailsByID_t getAvailableWaresWithDetails(openfluid::ware::WareType Type, 
                                                     const QString& Username = "") const;
+
+    /**
+      Returns the detailed list of all available fragments in the current FluidHub
+      @param[in] Username Optional username used in returned git URL
+      @return the detailed list of fragments
+    */
+    WaresDetailsByID_t getAvailableFragmentsWithDetails(const QString& Username = "") const;
 
     /**
       Returns the news as an RSS string content

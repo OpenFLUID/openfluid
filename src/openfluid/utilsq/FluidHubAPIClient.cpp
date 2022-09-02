@@ -38,6 +38,7 @@
 */
 
 
+#include <openfluid/config.hpp>
 #include <openfluid/thirdparty/JSON.hpp>
 #include <openfluid/utilsq/FluidHubAPIClient.hpp>
 
@@ -440,18 +441,16 @@ std::string FluidHubAPIClient::getUserUnixname(const std::string& Email, const s
   }
   return "";
 }
-  
+
 
 // =====================================================================
 // =====================================================================
 
 
-FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDetails(openfluid::ware::WareType Type, 
-                                                                                      const QString& Username) const
+FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableElementsWithDetails(QString& Path, 
+                                                                                         const QString& Username) const
 {
-  WaresDetailsByID_t WaresDesc = std::map<openfluid::ware::WareID_t,WareDetailedDescription>();
-
-  QString Path = wareTypeToString(Type);
+  FluidHubAPIClient::WaresDetailsByID_t WaresDesc;
 
   if (isConnected() && isCapable(m_WareCapabilityName) && !(Path.isEmpty()))
   {
@@ -485,6 +484,33 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDe
   }
 
   return WaresDesc;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableFragmentsWithDetails(const QString& Username) const
+{
+  QString Path = QString::fromStdString(openfluid::config::FRAGMENTS_PATH);
+
+  return getAvailableElementsWithDetails(Path, Username);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDetails(openfluid::ware::WareType Type, 
+                                                                                      const QString& Username) const
+{
+  WaresDetailsByID_t WaresDesc;
+
+  QString Path = wareTypeToString(Type);
+
+  return getAvailableElementsWithDetails(Path, Username);
 }
 
 

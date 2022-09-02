@@ -38,11 +38,13 @@
 
 
 #include <QAction>
+#include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
 #include <QGuiApplication>
 #include <QClipboard>
 #include <QFileDialog>
+#include <QInputDialog>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
@@ -52,6 +54,7 @@
 #include <openfluid/ui/waresdev/WareGitDialog.hpp>
 #include <openfluid/ui/common/DefaultAction.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/waresdev/FragmentsSrcImportDialog.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -117,6 +120,7 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   Menu.addAction(tr("New file"), this, SLOT(onNewFileAsked()));
   Menu.addAction(tr("New folder"), this, SLOT(onNewFolderAsked()));
+  Menu.addAction(tr("Add fragment"), this, SLOT(onNewFragmentAsked()));
 
   Menu.addSeparator();
 
@@ -173,15 +177,27 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   QMenu GitMenu;
   GitMenu.setTitle("Git");
-  GitMenu.addAction("Status", this, SLOT(onGitStatusAsked()));
-  GitMenu.addAction("Log", this, SLOT(onGitLogAsked()));
-  Menu.addMenu(&GitMenu);
 
-  GitMenu.setEnabled(false);
+  QAction* InitAction = new QAction("Init", this);
+  QAction* StatusAction = new QAction("Status", this);
+  QAction* LogAction = new QAction("Log", this);
+  GitMenu.addAction(InitAction);
+  GitMenu.addAction(StatusAction);
+  GitMenu.addAction(LogAction);
+  connect(InitAction, SIGNAL(triggered()), this, SLOT(onGitInitAsked()));
+  connect(StatusAction, SIGNAL(triggered()), this, SLOT(onGitStatusAsked()));
+  connect(LogAction, SIGNAL(triggered()), this, SLOT(onGitLogAsked()));
+  
+  Menu.addMenu(&GitMenu);
 
   if (currentIndex().data(Qt::DisplayRole).toString().contains("[") && openfluid::utils::GitProxy::isAvailable())
   {
-    GitMenu.setEnabled(true);
+    InitAction->setEnabled(false);
+  }
+  else
+  {
+    StatusAction->setEnabled(false);
+    LogAction->setEnabled(false);
   }
 
   Menu.exec(viewport()->mapToGlobal(Point));
@@ -373,12 +389,42 @@ void WareSrcExplorer::onNewFolderAsked()
     );
 
   QString NewPath = WareExplorerDialog::getCreateFolderPath(this, WarePath, CurrentPath);
-
   if (!NewPath.isEmpty())
   {
     QDir(WarePath).mkdir(NewPath);
     setCurrentPath(NewPath);
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onNewFragmentAsked()
+{
+  if (!openfluid::utils::GitProxy::isAvailable())
+  {
+    QMessageBox::warning(this, tr("Import not available"), tr("Git program can not be found."));
+    return;
+  }
+  if (!currentIndex().isValid())
+  {
+    return;
+  }
+
+  QString CurrentPath = mp_Model->filePath(currentIndex());
+
+  QString WarePath = 
+    QString::fromStdString(
+      openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
+    );
+
+  openfluid::utils::GitProxy Git;
+  bool HasWareVersionControl = Git.status(WarePath).m_IsGitTracked;
+
+  openfluid::ui::waresdev::FragmentsSrcImportDialog Dialog(this, WarePath, HasWareVersionControl);
+  Dialog.exec();
 }
 
 
@@ -409,6 +455,31 @@ void WareSrcExplorer::onDeleteFileAsked()
   {
     QMessageBox::critical(0, tr("Error"), tr("Unable to remove the file \"%1\"").arg(CurrentPath));
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onGitInitAsked()
+{
+  openfluid::utils::GitProxy Git;
+
+  QString CurrentPath = mp_Model->filePath(currentIndex());
+
+  QString WarePath = 
+    QString::fromStdString(
+      openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
+    );
+
+  openfluid::ui::waresdev::WareGitDialog Dialog;
+  Dialog.setWindowTitle("git init");
+
+  Dialog.setContent(Git.init(WarePath));
+  Dialog.exec();
+
+  mp_Model->updateGitStatusInfo(CurrentPath);
 }
 
 

@@ -26,31 +26,54 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 
 /**
-  @file main.cpp
+  @file WaresImportWorker.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
-*/
-
-
-#include <cstdlib>
-#include <iostream>
+  @author Aline LIBRES <aline.libres@gmail.com>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
+ */
 
 
-int main()
+#ifndef __OPENFLUID_UIWARESDEV_WARESIMPORTWORKER_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESIMPORTWORKER_HPP__
+
+
+#include <QObject>
+#include <QMap>
+#include <QStringList>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/utilsq/FluidHubAPIClient.hpp>
+#include <openfluid/ui/waresdev/GitImportWorker.hpp>
+
+
+namespace openfluid { namespace ui { namespace waresdev {
+
+
+class OPENFLUID_API WaresImportWorker: public GitImportWorker
 {
-   char* Pwd = std::getenv(OFBUILD_GITASKPASS_ENVVAR);
+  Q_OBJECT
 
-   if (Pwd)
-   {
-     std::cout <<  Pwd << std::endl;
-   }
-   else
-   {     
-     std::cout << "" << std::endl;
-   }
-}
+
+  protected slots:
+
+    bool importElement(const QString& GitUrl, const QString& ContextPath);
+
+
+  public:
+
+    WaresImportWorker(bool SslNoVerify = false);
+
+    ~WaresImportWorker();
+
+};
+
+
+} } } // namespaces
+
+
+#endif /* __OPENFLUID_UIWARESDEV_WARESIMPORTWORKER_HPP__ */

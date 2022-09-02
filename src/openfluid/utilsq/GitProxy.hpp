@@ -118,15 +118,27 @@ class OPENFLUID_API GitProxy : public QObject, public ProgramProxy<GitProxy>
 
     static QString getCurrentOpenFLUIDBranchName();
 
-    bool clone(const QString& FromUrl, const QString& ToPath,
+    bool launchCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
+                      const QString& Username = "", const QString& Password = "",
+                      bool SslNoVerify = false, const QString& WorkingDirectory = "");
+
+    bool addSubmodule(const QString& FromUrl, const QString& ToPath, const QString& LocalGitRepoPath,
                const QString& Username = "", const QString& Password = "",
                bool SslNoVerify = false);
 
+    bool clone(const QString& FromUrl, const QString& ToPath,
+               const QString& Username = "", const QString& Password = "",
+               bool SslNoVerify = false, const QString& LocalGitRepoPath = "", bool WithoutVersioning = false);
+
     TreeStatusInfo status(const QString& Path);
+
+    std::pair<int, QString> commandHtml(const QString& Path, QStringList Args, bool RequiringGit=true);
 
     QString statusHtml(const QString& Path, bool WithColorCodes);
 
     QString logHtml(const QString& Path, bool WithColorCodes);
+
+    QString init(const QString& WorkingDirectory);
 
 };
 

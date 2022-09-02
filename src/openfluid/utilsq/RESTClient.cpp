@@ -155,13 +155,15 @@ RESTClient::RESTClient()
 
 void RESTClient::removeRawHeader(const QByteArray Key)
 {
+  t_HeadersList NewHeaders;
   for (auto Header : m_RawHeaders)
   {
-    if (Header.first == Key)
+    if (Header.first != Key)
     {
-      m_RawHeaders.remove(Header);
+      NewHeaders.push_back(Header);
     }
   }
+  m_RawHeaders = NewHeaders;
 }
 
 

@@ -8,7 +8,8 @@ SET(OPENFLUID_WARESDEV_CPP WareSrcEnquirer.cpp
                            GhostsHelpers.cpp
                            )
 
-SET(OPENFLUID_WARESDEV_HPP WareSrcEnquirer.hpp 
+SET(OPENFLUID_WARESDEV_HPP WareSrcHelpers.hpp
+                           WareSrcEnquirer.hpp 
                            WareSrcContainer.hpp WareSrcContainerOps.hpp 
                            WareSrcFactory.hpp 
                            WareBuildOptions.hpp

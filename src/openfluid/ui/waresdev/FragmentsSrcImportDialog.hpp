@@ -30,15 +30,14 @@
  */
 
 /**
-  @file WaresSrcImportDialog.hpp
+  @file FragmentsSrcImportDialog.hpp
 
-  @author Aline LIBRES <aline.libres@gmail.com>
   @author Armel THÖNI <armel.thoni@inra.fr>
  */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WARESSRCIMPORTDIALOG_HPP__
-#define __OPENFLUID_UIWARESDEV_WARESSRCIMPORTDIALOG_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_FRAGMENTSSRCIMPORTDIALOG_HPP__
+#define __OPENFLUID_UIWARESDEV_FRAGMENTSSRCIMPORTDIALOG_HPP__
 
 
 #include <QListWidget>
@@ -57,74 +56,55 @@
 
 
 namespace Ui {
-class WaresSrcImportDialog;
+class FragmentsSrcImportDialog;
 }
+
+namespace openfluid { namespace waresdev {
+class WaresDevImportPackage;
+class WaresImportWorker;
+} }
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class WaresDevImportPackage;
 class WaresImportWorker;
 
 
-class OPENFLUID_API WaresSrcImportDialog: public AbstractSrcImportDialog
+class OPENFLUID_API FragmentsSrcImportDialog: public AbstractSrcImportDialog
 {
   Q_OBJECT
 
-  private slots :
-  
+
+  private slots:
+
     bool check();
-
-    void onSourceChanged(QAbstractButton* ClickedButton);
-
-    void onPackagePathButtonClicked();
-
-    void onWaresListRefreshAsked();
 
 
   private:
-    std::map<openfluid::ware::WareType, QListWidget*> m_ListWidgetsByWareType;
 
-    Ui::WaresSrcImportDialog* ui;
+    Ui::FragmentsSrcImportDialog* ui;
+
+    QString m_WarePath;
+    bool m_HasWareVersionControl;
 
     QButtonGroup m_SourceBtGroup;
+    QButtonGroup m_StrategyBtGroup;
 
-    QString m_PackagePathLabelDefault = "<i>No package selected</i>";
+    QList<QWidget*> m_HubConnectWidgets;
 
+    QList<QWidget*> m_GitLoginWidgets;
 
-    std::map<openfluid::ware::WareType, WaresImportFilterWidget*> m_FilterWidgetsByWareType;
+    bool isFragmentInWare(std::string FragmentName);
 
-    std::map<QString, openfluid::ware::WareType> m_WareTypeConverter = {
-        { QString::fromStdString(openfluid::config::SIMULATORS_PATH), openfluid::ware::WareType::SIMULATOR },
-        { QString::fromStdString(openfluid::config::OBSERVERS_PATH), openfluid::ware::WareType::OBSERVER },
-        { QString::fromStdString(openfluid::config::BUILDEREXTS_PATH), openfluid::ware::WareType::BUILDEREXT } };
-
-    WaresDevImportPackage* mp_ImportFilePkg = nullptr;
-
-    QMap<openfluid::ware::WareType, QStringList> m_AlreadySelectedHubWares;
-
-    void updatePackageInfo();
-
-    void updatePackageWaresList();
-
-    QStringList getSelectedWares();
-
-    std::map<openfluid::ware::WareType, QStringList> getSelectedWaresByType();
-
-    bool wareItemDisplay(const openfluid::ware::WareType Type, const QString WareId, QListWidgetItem* Item);
-
-    bool isWareDisplayed(const openfluid::ware::WareType& Type, const QString WareId, const bool WareInWorkspace, 
-                         const bool WareNotAuthorized);
+    bool fragmentItemDisplay(const QString WareId, QListWidgetItem* Item);
 
 
   protected slots:
 
-    void onHubConnectButtonClicked();
-
     void onImportAsked();
 
-
+  
   protected:
 
     QLineEdit* hubUrlLineEdit();
@@ -144,16 +124,17 @@ class OPENFLUID_API WaresSrcImportDialog: public AbstractSrcImportDialog
     void updateHubElementsList();
 
     void customHideWidget(QWidget* Widget);
+
+    QStringList getSelectedFragments();
     
     void postConnectSetup();
 
 
   public:
 
-    explicit WaresSrcImportDialog(QWidget* Parent);
+    explicit FragmentsSrcImportDialog(QWidget* Parent, QString WarePath, bool HasWareVersionControl);
 
-    ~WaresSrcImportDialog();
-    
+    ~FragmentsSrcImportDialog();
 
 };
 
@@ -161,4 +142,4 @@ class OPENFLUID_API WaresSrcImportDialog: public AbstractSrcImportDialog
 } } } //namespaces
 
 
-#endif /* __OPENFLUID_UIWARESDEV_WARESSRCIMPORTDIALOG_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_FRAGMENTSSRCIMPORTDIALOG_HPP__ */

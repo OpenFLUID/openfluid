@@ -7,11 +7,13 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
                               WareSrcSyntaxHighlighter.cpp WareSrcFiletypeManager.cpp TextEditMsgStream.cpp
                               WareSrcExplorer.cpp WareSrcExplorerModel.cpp WareExplorerDialog.cpp
                               NewWareDialog.cpp FindReplaceDialog.cpp WareSrcMsgViewer.cpp
-                              WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
+                              SrcImportSequenceManager.cpp
+                              HubManager.cpp
+                              WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp FragmentsSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
                               WareSrcActionsCollection.cpp
                               WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WaresImportFilterWidget.cpp WareshubIssueDialog.cpp
                               WaresDevPackage.cpp 
-                              FluidHubWaresImportWorker.cpp
+                              AbstractSrcImportDialog.cpp GitImportWorker.cpp WaresImportWorker.cpp FragmentsImportWorker.cpp
                               WorkspaceDevDashboardWorker.cpp
                               WorkspaceDevProcessWorker.cpp 
                               WorkspaceDevBuildWorker.cpp WorkspaceDevCheckWorker.cpp WorkspaceDevPurgeWorker.cpp
@@ -28,11 +30,13 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
                               WareSrcExplorer.hpp WareSrcExplorerModel.hpp WareExplorerDialog.hpp
                               NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
-                              WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
+                              SrcImportSequenceManager.hpp
+                              HubManager.hpp
+                              WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp FragmentsSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
                               WareSrcActionsCollection.hpp
                               WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WaresImportFilterWidget.hpp WareshubIssueDialog.hpp
                               WaresDevPackage.hpp 
-                              FluidHubWaresImportWorker.hpp
+                              AbstractSrcImportDialog.hpp GitImportWorker.hpp WaresImportWorker.hpp FragmentsImportWorker.hpp
                               WorkspaceDevDashboardTypes.hpp WorkspaceDevDashboardWorker.hpp 
                               WorkspaceDevProcessWorker.hpp 
                               WorkspaceDevBuildWorker.hpp WorkspaceDevCheckWorker.hpp WorkspaceDevPurgeWorker.hpp
@@ -43,7 +47,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
 QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui WareBuildOptionsWidget.ui WareBuildOptionsDialog.ui
                                      EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                                      NewWareDialog.ui FindReplaceDialog.ui
-                                     WaresSrcExportDialog.ui WaresSrcImportDialog.ui WaresSrcIOProgressDialog.ui
+                                     WaresSrcExportDialog.ui WaresSrcImportDialog.ui FragmentsSrcImportDialog.ui WaresSrcIOProgressDialog.ui
                                      WaresImportFilterWidget.ui WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
                                      WorkspaceDevProcessDialog.ui
                                      WorkspaceDevDashboardDialog.ui WorkspaceDevWaresWidget.ui WorkspaceDevGitWidget.ui)

@@ -267,9 +267,9 @@ std::map<std::string,std::string> WareSrcContainer::getConfigureVariables() cons
   }
 
   // Adding contextual paths for fragment detection
-  Vars["OPENFLUID_CURRENT_USER_DATA_PATH"] = QString::fromStdString(openfluid::base::Environment::getUserDataDir());
-  Vars["OPENFLUID_CURRENT_WORKSPACE_PATH"] = QString::fromStdString(
-    openfluid::base::WorkspaceManager::instance()->getWorkspacePath());  // workspace root
+  Vars["OPENFLUID_CURRENT_USER_DATA_PATH"] = openfluid::base::Environment::getUserDataDir();
+  Vars["OPENFLUID_CURRENT_WORKSPACE_PATH"] = 
+    openfluid::base::WorkspaceManager::instance()->getWorkspacePath();  // workspace root
 
   return Vars;
 }
