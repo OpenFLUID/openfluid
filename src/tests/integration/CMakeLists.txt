@@ -179,11 +179,10 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorConfigure
                              "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.sim.cmake" 
                              "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.sim.cmake"
-                             "-DOpenFLUIDHelpers_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                              "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                             "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"                             
+                             "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"                             
                    PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.sim.cmake")                                                                                          
 
 
@@ -220,11 +219,10 @@ IF(OFBUILD_ENABLE_GUI)
                               "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                               "${CMAKE_CURRENT_SOURCE_DIR}/tests.simui.cmake"
-                              "-DOpenFLUIDHelpers_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                               "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                               "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                               "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
-                              "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                              "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
                      PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake")                              
 ENDIF()
 
@@ -253,11 +251,10 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverConfigure
                               "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obs.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                               "${CMAKE_CURRENT_SOURCE_DIR}/tests.obs.cmake"
-                              "-DOpenFLUIDHelpers_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                               "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                               "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                               "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
-                              "-DOBS_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                              "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
                     PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obs.cmake")                              
                               
 
@@ -293,11 +290,10 @@ IF(OFBUILD_ENABLE_GUI)
                               "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                               "${CMAKE_CURRENT_SOURCE_DIR}/tests.obsui.cmake"
-                              "-DOpenFLUIDHelpers_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                               "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                               "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                               "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
-                              "-DOBS_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                              "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
                       PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.obsui.cmake")                              
 ENDIF()
 
@@ -326,11 +322,10 @@ IF(OFBUILD_ENABLE_APP_BUILDER)
                         "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake" 
                         "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
                         "${CMAKE_CURRENT_SOURCE_DIR}/tests.bext.cmake"
-                        "-DOpenFLUIDHelpers_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                         "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                         "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                         "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
-                        "-DBEXT_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                        "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
                       PRE_TEST EMPTY_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake")         
 ENDIF()
 
@@ -342,7 +337,9 @@ IF(OFBUILD_ENABLE_APP_BUILDER)
   OPENFLUID_ADD_TEST(NAME integration-CMakeModuleBuilderextBuild
                      COMMAND "${CMAKE_COMMAND}"
                              "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake" 
-                             "${CMAKE_COMMAND}" "--build" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake")
+                             "${CMAKE_COMMAND}" "--build" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.bext.cmake"
+                             "--target" "install"
+                             "--clean-first")
   SET_PROPERTY(TEST integration-CMakeModuleBuilderextBuild APPEND PROPERTY DEPENDS integration-CMakeModuleBuilderextConfigure)                                                            
 ENDIF()
 

@@ -169,9 +169,9 @@ int main(int argc, char **argv)
                             {"id","i","ID of the ware sources to create",true},
                             {"main-class","m","name to use for the main C++ class",true},
                             {"with-paramsui","w","generate the C++ class of the parameterization UI"
-                                                 "(simularors and observers only)"},
+                                                 "(simulators and observers only)"},
                             {"paramsui-class","u","name to use for the C++ class of the parameterization UI"
-                                                  "(simularors and observers only)",true},
+                                                  "(simulators and observers only)",true},
                             {"bext-menutext","","menu text to launch the Builder-Extension",true},
                             {"bext-category","","category the Builder-Extension"
                                                  "(spatial|model|results|other, default is other)",true},
@@ -226,7 +226,8 @@ int main(int argc, char **argv)
   // ---
 
   auto Info2BuildCmd = openfluid::utils::CommandLineCommand("info2build","generate build files frow ware information");
-  Info2BuildCmd.addOptions({{"path","p","Path to the ware sources",true}}); // TOIMPL and find another command name ? 
+  Info2BuildCmd.addOptions({{"src-path","s","Source path containing the wareinfo.json file",true}});
+  Info2BuildCmd.addOptions({{"dest-path","d","Destination path where build information will be generated",true}});
   Parser.addCommand(Info2BuildCmd);
 
   // ---

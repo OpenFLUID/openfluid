@@ -6,21 +6,6 @@
 #include <openfluid/ware/PluggableObserver.hpp>
 
 
-// =====================================================================
-// =====================================================================
-
-
-BEGIN_OBSERVER_SIGNATURE("%%WAREID%%")
-
-%%SIGNATUREINFOS%%
-
-END_OBSERVER_SIGNATURE
-
-
-// =====================================================================
-// =====================================================================
-
-
 /**
 
 */
@@ -103,9 +88,5 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableObserver
 
 DEFINE_OBSERVER_CLASS(%%CLASSNAME%%)
 
-
 DEFINE_WARE_LINKUID(WARE_LINKUID)
-
-
-
 

@@ -479,14 +479,20 @@ void MainWindow::setWorkspaceDefaults()
 
   WMgr->openWorkspace(openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath());
 
-  std::vector<std::string> LastOpenWares = WMgr->getOpenWaresPaths();
-
+  const std::vector<std::string> LastOpenWares = WMgr->getOpenWaresPaths();
   for (const auto& WarePath : LastOpenWares)
   {
-    mp_WidgetsCollection->openPath(QString::fromStdString(WarePath));
+    if (openfluid::tools::FilesystemPath(WarePath).isDirectory())
+    {
+      mp_WidgetsCollection->openPath(QString::fromStdString(WarePath));
+    }
   }
 
-  mp_WidgetsCollection->setCurrent(QString::fromStdString(WMgr->getActiveWarePath()));
+  const auto ActiveWarePath = WMgr->getActiveWarePath();
+  if (openfluid::tools::FilesystemPath(ActiveWarePath).isDirectory())
+  {
+    mp_WidgetsCollection->setCurrent(QString::fromStdString(ActiveWarePath));
+  }
 
   mp_BuildStatusWidget->setBuildOptions(m_BuildOptions);
 }

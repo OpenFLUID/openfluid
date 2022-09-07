@@ -39,6 +39,7 @@
 
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -688,12 +689,12 @@ std::string SimulatorSignatureSerializer::getCPPSpatialDataString(
 // =====================================================================
 
 
-std::string SimulatorSignatureSerializer::toCPP(const openfluid::ware::SimulatorSignature& Sign) const
+std::string SimulatorSignatureSerializer::toWareCPP(const openfluid::ware::SimulatorSignature& Sign) const
 {
   std::string CPP;
   
   CPP += getCPPHead("openfluid/ware/SimulatorSignature.hpp","openfluid::ware::SimulatorSignature");
-  CPP += toCPPBase(Sign);
+  CPP += toWareCPPBase(Sign);
   
   CPP += "\n";
   
@@ -755,5 +756,40 @@ std::string SimulatorSignatureSerializer::toCPP(const openfluid::ware::Simulator
   return CPP;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+std::string SimulatorSignatureSerializer::toWareCMake(const openfluid::ware::SimulatorSignature& Sign) const
+{
+  std::string CMake;
+
+  CMake += getHead("#");
+  CMake += toWareCMakeBase(Sign);
+
+  CMake += "SET(WARE_TYPE \"simulator\")\n";
+  CMake += "SET(WARE_IS_SIMULATOR TRUE)\n";
+
+  return CMake;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorSignatureSerializer::writeToBuildFiles(const openfluid::ware::SimulatorSignature& Sign,
+                                                     const std::string& Path) const
+{
+  writeToWareCPPFile(Sign,
+                     openfluid::tools::Path({Path,openfluid::config::WARESDEV_BUILD_MAINSIGN}).toGeneric());
+  writeToParamsUICPPFile(Sign,
+                         openfluid::tools::Path({Path,openfluid::config::WARESDEV_BUILD_PARAMSUISIGN}).toGeneric());
+  writeToWareCMakeFile(Sign,
+                       openfluid::tools::Path({Path,openfluid::config::WARESDEV_BUILD_MAININFO}).toGeneric());
+  writeToParamsUICMakeFile(Sign,
+                           openfluid::tools::Path({Path,openfluid::config::WARESDEV_BUILD_PARAMSUIINFO}).toGeneric());
+}
 
 } }  // namespaces

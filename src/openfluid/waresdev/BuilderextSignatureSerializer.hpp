@@ -65,7 +65,11 @@ class OPENFLUID_API BuilderextSignatureSerializer :
 
     openfluid::thirdparty::json toJSON(const openfluid::builderext::BuilderExtensionSignature& Sign) const;
 
-    std::string toCPP(const openfluid::builderext::BuilderExtensionSignature& Sign) const;
+    std::string toWareCPP(const openfluid::builderext::BuilderExtensionSignature& Sign) const;
+
+    std::string toWareCMake(const openfluid::builderext::BuilderExtensionSignature& Sign) const;
+
+    void writeToBuildFiles(const openfluid::builderext::BuilderExtensionSignature& Sign, const std::string& Path) const;
 };
 
 

@@ -13,21 +13,6 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
-// =====================================================================
-// =====================================================================
-
-
-BEGIN_SIMULATOR_SIGNATURE("%%WAREID%%")
-
-%%SIGNATUREINFOS%%
-%%SIMSIGNATUREDATA%%
-END_SIMULATOR_SIGNATURE
-
-
-// =====================================================================
-// =====================================================================
-
-
 /**
 
 */
@@ -131,7 +116,5 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableSimulator
 
 DEFINE_SIMULATOR_CLASS(%%CLASSNAME%%);
 
-
 DEFINE_WARE_LINKUID(WARE_LINKUID)
-
 

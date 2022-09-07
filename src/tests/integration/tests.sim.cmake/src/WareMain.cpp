@@ -29,51 +29,27 @@
   
 */
 
-/*
-<sim2doc>
-This is a text for testing \LaTeX doc
-</sim2doc>
-*/
-
 /**
-  @file CMakeSimUI.cpp
+  @file WareMain.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
  */
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 
-// =====================================================================
-// =====================================================================
-
-
-BEGIN_SIMULATOR_SIGNATURE("tests.simui.cmake")
-
-  DECLARE_NAME("test simulator built using the OpenFLUID cmake module");
-  DECLARE_DESCRIPTION("");
-
-  DECLARE_VERSION("1.0");
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
-
-  DECLARE_DOMAIN("");
-  DECLARE_PROCESS("");
-  DECLARE_METHOD("");
-
-END_SIMULATOR_SIGNATURE
-
 /**
 
 */
-class CMakeSimulatorParamsUI : public openfluid::ware::PluggableSimulator
+class CMakeSimulator : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  CMakeSimulatorParamsUI() : PluggableSimulator()
+  CMakeSimulator() : PluggableSimulator()
   {
 
 
@@ -84,7 +60,7 @@ class CMakeSimulatorParamsUI : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  ~CMakeSimulatorParamsUI()
+  ~CMakeSimulator()
   {
 
 
@@ -118,7 +94,7 @@ class CMakeSimulatorParamsUI : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    std::cout << "\nCMake module built simulator with parameterization ui" << std::endl;
+    std::cout << "\nCMake module built simulator" << std::endl;
 
     return DefaultDeltaT();
   }
@@ -151,20 +127,5 @@ class CMakeSimulatorParamsUI : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_SIMULATOR_CLASS(CMakeSimulatorParamsUI)
+DEFINE_SIMULATOR_CLASS(CMakeSimulator)
 
-
-// =====================================================================
-// =====================================================================
-
-
-#ifdef OPENFLUID_PARAMSUI_ENABLED
-
-
-#include "CMakeSimParamsWidget.hpp"
-
-
-DEFINE_PARAMETERIZATIONWIDGET_CLASS(CMakeSimParamsWidget)
-
-
-#endif

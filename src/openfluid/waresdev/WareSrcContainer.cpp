@@ -109,7 +109,7 @@ void WareSrcContainer::update()
   }
 
   std::string CMakeConfigFilePath = 
-      openfluid::tools::Filesystem::joinPath({m_AbsolutePath,"src",openfluid::config::WARESDEV_SRC_CMAKEUSERFILE});
+      openfluid::tools::Filesystem::joinPath({m_AbsolutePath,"src",openfluid::config::WARESDEV_SRC_CMAKESTDFILE});
 
   if (openfluid::tools::Path(CMakeConfigFilePath).isFile())
   {

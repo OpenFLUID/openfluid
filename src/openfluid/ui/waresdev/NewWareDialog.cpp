@@ -40,7 +40,6 @@
 
 #include <QPushButton>
 #include <QMessageBox>
-#include <QUuid>
 
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>

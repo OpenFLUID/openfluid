@@ -39,6 +39,7 @@
 
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -85,16 +86,17 @@ BuilderextSignatureSerializer::toJSON(const openfluid::builderext::BuilderExtens
 // =====================================================================
 
 
-std::string BuilderextSignatureSerializer::toCPP(const openfluid::builderext::BuilderExtensionSignature& Sign) const
+std::string BuilderextSignatureSerializer::toWareCPP(const openfluid::builderext::BuilderExtensionSignature& Sign) const
 {
   std::string CPP;
   
   CPP += getCPPHead("openfluid/builderext/BuilderExtensionSignature.hpp",
                     "openfluid::builderext::BuilderExtensionSignature");
-  CPP += toCPPBase(Sign);
+  CPP += toWareCPPBase(Sign);
   
   CPP += "\n";
 
+  CPP += getCPPAssignment("Role","openfluid::builderext::ExtensionRole::FEATURE");
   CPP += getCPPAssignment("Mode","openfluid::builderext::ExtensionMode::"+
                                  openfluid::tools::toUpperCase(Sign.getModeAsString()));  
   CPP += getCPPAssignment("Category","openfluid::builderext::ExtensionCategory::"+
@@ -104,6 +106,37 @@ std::string BuilderextSignatureSerializer::toCPP(const openfluid::builderext::Bu
   CPP += getCPPTail();
 
   return CPP;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string BuilderextSignatureSerializer::toWareCMake(const openfluid::builderext::BuilderExtensionSignature& Sign) 
+  const
+{
+  std::string CMake;
+
+  CMake += getHead("#");
+  CMake += toWareCMakeBase(Sign);
+
+  CMake += "SET(WARE_TYPE \"builderext\")\n";
+  CMake += "SET(WARE_IS_BUILDEREXT TRUE)\n";
+
+  return CMake;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BuilderextSignatureSerializer::writeToBuildFiles(const openfluid::builderext::BuilderExtensionSignature& Sign, 
+                                                      const std::string& Path) const
+{
+  writeToWareCPPFile(Sign,openfluid::tools::Path({Path,openfluid::config::WARESDEV_BUILD_MAINSIGN}).toGeneric());
+  writeToWareCMakeFile(Sign,openfluid::tools::Path({Path,openfluid::config::WARESDEV_BUILD_MAININFO}).toGeneric());
 }
 
 

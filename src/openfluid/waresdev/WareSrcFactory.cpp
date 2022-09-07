@@ -87,19 +87,18 @@ openfluid::tools::TemplateProcessor::Data
 
   Data["WAREDESCRIPTION"] = Signature->Description;
 
+  Data["CPPFILES"] = openfluid::config::WARESDEV_SRC_MAINFILE;
   Data["CLASSNAME"] = Config.MainClassName;
-
-  Data["WARELINKUID"] = openfluid::tools::generatePseudoUniqueIdentifier(16);
 
   Data["SIGNATUREINFOS"] = getSignatureInfos(Signature);
 
   Data["PARAMSUIENABLED"] = Config.WithParamsUI ? "ON" : "OFF";
-  Data["PARAMSUIROOTCPPFILENAME"] = "";
+  Data["PARAMSUICOMMENTCHAR"] = Config.WithParamsUI ? "" : "#";
+  Data["PARAMSUICPPFILES"] = Config.WithParamsUI ? openfluid::config::WARESDEV_SRC_PARAMSUIFILE : "";
 
   if (Config.WithParamsUI)
   {
     Data["PARAMSUICLASSNAME"] = Config.ParamsUIClassName;
-    Data["PARAMSUIROOTCPPFILENAME"] = "WareUI.cpp";
   }
 
   return Data;
@@ -289,7 +288,7 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
                                              const Configuration& Config,
                                              const std::string& ParentPath)
 {
-  // TOIMPL "wareinfo.json" as a configuration variable
+  // TOIMPL "wareinfo.json" "src" as a configuration variable
   
   openfluid::base::Environment::init();
 
@@ -300,7 +299,6 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
   
 
   auto CommonSkelPath = getTemplateSkeletonPath("common");
-  auto SkelPath =  getTemplateSkeletonPath("builderext");
 
   auto WareSrcDir = openfluid::tools::Path({ParentPath,Signature.ID});
   auto WareInfoFile = openfluid::tools::Path({ParentPath,Signature.ID,"wareinfo.json"}); 
@@ -310,7 +308,6 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
   try 
   {
     TplProc.renderDirectory(CommonSkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
-    TplProc.renderDirectory(SkelPath.toGeneric(),WareSrcDir.toGeneric(),Data,Errors);
 
     BuilderextSignatureSerializer().writeToJSONFile(Signature,WareInfoFile.toGeneric());
 

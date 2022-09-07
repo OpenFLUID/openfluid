@@ -56,7 +56,7 @@
 #
 # Examples of use:
 #
-# Find OpenFLUID package, including all libraries
+# Find OpenFLUID package
 # FIND_PACKAGE(OpenFLUID)
 #
 # Find OpenFLUID package, including specified libraries only
@@ -67,7 +67,7 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
-IF(OpenFLUID_FOUND AND OpenFLUID_DIR)
+IF(OpenFLUID_FOUND AND OpenFLUID_DIR AND OpenFLUID_COMPONENTS_FOUND)
   RETURN()
 ENDIF()
 
@@ -84,9 +84,6 @@ SET(_OpenFLUID_SEARCH_DIRS
 )
 
 
-SET(_OpenFLUID_FOUND 1)
-
-
 MACRO(_OpenFLUID_RETURN MSG)
   IF (OpenFLUID_FIND_REQUIRED)
     MESSAGE(FATAL_ERROR "${MSG}")
@@ -94,6 +91,7 @@ MACRO(_OpenFLUID_RETURN MSG)
     MESSAGE(SEND_ERROR "${MSG}")
   ENDIF()  
   SET(OpenFLUID_FOUND 0)
+  SET(OpenFLUID_COMPONENTS_FOUND 0)
   RETURN()
 ENDMACRO()
 
@@ -101,113 +99,120 @@ ENDMACRO()
 ###########################################################################
 
 
-FIND_PATH(_OpenFLUID_INCLUDE_DIR
-  NAMES
-    openfluid/config.hpp
-  HINTS
-    ${_OpenFLUID_SEARCH_DIRS}
-  PATH_SUFFIXES
-    @OFBUILD_INCLUDE_INSTALL_PATH@
-)
+IF(NOT OpenFLUID_FOUND)
 
+  SET(_OpenFLUID_FOUND 1)
 
-IF(NOT _OpenFLUID_INCLUDE_DIR)
-  _OpenFLUID_RETURN("Unable to find OpenFLUID (header files not found)")
-ENDIF()
-
-
-###########################################################################
-
-
-FIND_PROGRAM(_OpenFLUID_CMD_PROGRAM 
-  NAME @OPENFLUID_CMD_APP@
-  HINTS
-    ${_OpenFLUID_SEARCH_DIRS}
-  PATH_SUFFIXES
-    @OFBUILD_BIN_INSTALL_PATH@
-)
-
-
-IF(NOT _OpenFLUID_CMD_PROGRAM)
-  _OpenFLUID_RETURN("Unable to find the OpenFLUID program")
-ENDIF()
-
-
-###########################################################################
-
-
-FILE(STRINGS "${_OpenFLUID_INCLUDE_DIR}/openfluid/config.hpp" _OpenFLUID_VERSION_CONFIG_LINE REGEX "VERSION_FULL = \"[0-9.a-z~]+\"")
-STRING(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+(~[a-z]+[0-9]*)?" _OpenFLUID_VERSION "${_OpenFLUID_VERSION_CONFIG_LINE}")
-
-IF(NOT _OpenFLUID_VERSION)
-  _OpenFLUID_RETURN("Unable to determine the OpenFLUID version")
-ENDIF()
-
-
-###########################################################################
-
-
-EXECUTE_PROCESS(COMMAND ${_OpenFLUID_CMD_PROGRAM} "--version"
-  OUTPUT_VARIABLE _OpenFLUID_CMD_OUTPUT
-)
-
-STRING(FIND ${_OpenFLUID_CMD_OUTPUT} ${_OpenFLUID_VERSION} _OpenFLUID_CMD_TEST_VERSION)
-
-IF(${_OpenFLUID_CMD_TEST_VERSION} LESS 0)
-  _OpenFLUID_RETURN("Unable to find the OpenFLUID program")
-ENDIF()
-
-
-###########################################################################
-
-
-MESSAGE(STATUS "Found OpenFLUID version ${_OpenFLUID_VERSION}")
-
-SET(_OpenFLUID_FIND_COMPONENTS
-  @OFBUILD_COMPONENTS_DEFAULT_LIST@
-)
-
-
-IF(OpenFLUID_FIND_COMPONENTS)
-  SET(_OpenFLUID_FIND_COMPONENTS ${OpenFLUID_FIND_COMPONENTS})
-ENDIF()
-
-
-SET(_OpenFLUID_LIBRARIES)
-FOREACH(COMPONENT ${_OpenFLUID_FIND_COMPONENTS})
-  STRING(TOUPPER ${COMPONENT} UPPERCOMPONENT)
-
-  FIND_LIBRARY(_OpenFLUID_${UPPERCOMPONENT}_LIBRARY
+  FIND_PATH(_OpenFLUID_INCLUDE_DIR
     NAMES
-      openfluid-${COMPONENT}
+      openfluid/config.hpp
     HINTS
       ${_OpenFLUID_SEARCH_DIRS}
     PATH_SUFFIXES
-      @OFBUILD_LIB_INSTALL_PATH@ @OFBUILD_LIB_INSTALL_PATH@64
-    )
-    
-  IF("${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" STREQUAL "_OpenFLUID_${UPPERCOMPONENT}_LIBRARY-NOTFOUND")
-    _OpenFLUID_RETURN("library for component ${COMPONENT} not found!")
-  ELSE()
-    LIST(APPEND _OpenFLUID_LIBRARIES "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}")
-    MESSAGE(STATUS "    ${COMPONENT}")   
-    IF(NOT _OpenFLUID_LIBRARY_DIR)
-      GET_FILENAME_COMPONENT(_DIR "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" PATH)
-      SET(_OpenFLUID_LIBRARY_DIR "${_DIR}")      
-    ENDIF()
-  ENDIF()        
-ENDFOREACH()
+      @OFBUILD_INCLUDE_INSTALL_PATH@
+  )
+
+
+  IF(NOT _OpenFLUID_INCLUDE_DIR)
+    _OpenFLUID_RETURN("Unable to find OpenFLUID (header files not found)")
+  ENDIF()
+
+
+  ### Find command line tool
+
+  FIND_PROGRAM(_OpenFLUID_CMD_PROGRAM 
+    NAME @OPENFLUID_CMD_APP@
+    HINTS
+      ${_OpenFLUID_SEARCH_DIRS}
+    PATH_SUFFIXES
+      @OFBUILD_BIN_INSTALL_PATH@
+  )
+
+
+  IF(NOT _OpenFLUID_CMD_PROGRAM)
+    _OpenFLUID_RETURN("Unable to find the OpenFLUID program")
+  ENDIF()
+
+
+  ### Check version consistency
+
+  FILE(STRINGS "${_OpenFLUID_INCLUDE_DIR}/openfluid/config.hpp" _OpenFLUID_VERSION_CONFIG_LINE REGEX "VERSION_FULL = \"[0-9.a-z~]+\"")
+  STRING(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+(~[a-z]+[0-9]*)?" _OpenFLUID_VERSION "${_OpenFLUID_VERSION_CONFIG_LINE}")
+
+  IF(NOT _OpenFLUID_VERSION)
+    _OpenFLUID_RETURN("Unable to determine the OpenFLUID version")
+  ENDIF()
+
+  EXECUTE_PROCESS(COMMAND ${_OpenFLUID_CMD_PROGRAM} "--version"
+    OUTPUT_VARIABLE _OpenFLUID_CMD_OUTPUT
+  )
+
+  STRING(FIND ${_OpenFLUID_CMD_OUTPUT} ${_OpenFLUID_VERSION} _OpenFLUID_CMD_TEST_VERSION)
+
+  IF(${_OpenFLUID_CMD_TEST_VERSION} LESS 0)
+    _OpenFLUID_RETURN("Unable to find the OpenFLUID program")
+  ENDIF()
+
+
+  ### Find home dir
+
+  FIND_PATH(_OpenFLUID_HOME_DIR
+    NAME @OFBUILD_BIN_INSTALL_PATH@/@OPENFLUID_CMD_APP@
+    HINTS
+      ${_OpenFLUID_SEARCH_DIRS}
+    PATH_SUFFIXES
+  )
+
+
+  ### Everything is fine
+
+  MESSAGE(STATUS "Found OpenFLUID version ${_OpenFLUID_VERSION}")
+
+ENDIF()
 
 
 ###########################################################################
 
 
-FIND_PATH(_OpenFLUID_HOME_DIR
-  NAME @OFBUILD_BIN_INSTALL_PATH@/@OPENFLUID_CMD_APP@
-  HINTS
-    ${_OpenFLUID_SEARCH_DIRS}
-  PATH_SUFFIXES
-)
+IF (NOT OpenFLUID_COMPONENTS_FOUND AND OpenFLUID_FIND_COMPONENTS)
+
+  IF ("${OpenFLUID_FIND_COMPONENTS}" STREQUAL "all")
+    SET(OpenFLUID_FIND_COMPONENTS @OFBUILD_COMPONENTS_DEFAULT_LIST@)
+  ENDIF()
+
+  SET(_OpenFLUID_COMPONENTS_FOUND 1)
+  SET(_OpenFLUID_LIBRARIES)
+
+  MESSAGE(STATUS "Found OpenFLUID components")
+
+
+  ### Search for components (= corresponding libraries)
+
+  FOREACH(COMPONENT ${OpenFLUID_FIND_COMPONENTS})
+    STRING(TOUPPER ${COMPONENT} UPPERCOMPONENT)
+
+    FIND_LIBRARY(_OpenFLUID_${UPPERCOMPONENT}_LIBRARY
+      NAMES
+        openfluid-${COMPONENT}
+      HINTS
+        ${_OpenFLUID_SEARCH_DIRS}
+      PATH_SUFFIXES
+        @OFBUILD_LIB_INSTALL_PATH@ @OFBUILD_LIB_INSTALL_PATH@64
+    )
+    
+    IF("${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" STREQUAL "_OpenFLUID_${UPPERCOMPONENT}_LIBRARY-NOTFOUND")
+      _OpenFLUID_RETURN("library for component ${COMPONENT} not found!")
+    ELSE()
+      LIST(APPEND _OpenFLUID_LIBRARIES "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}")
+      MESSAGE(STATUS "  ${COMPONENT}")   
+      IF(NOT _OpenFLUID_LIBRARY_DIR)
+        GET_FILENAME_COMPONENT(_DIR "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" PATH)
+        SET(_OpenFLUID_LIBRARY_DIR "${_DIR}")      
+      ENDIF()
+    ENDIF()
+  ENDFOREACH()
+
+ENDIF()
 
 
 ###########################################################################
@@ -220,7 +225,20 @@ IF(_OpenFLUID_FOUND)
 
   SET(OpenFLUID_INCLUDE_DIR ${_OpenFLUID_INCLUDE_DIR} CACHE PATH "OpenFLUID include directory")
   SET(OpenFLUID_INCLUDE_DIRS ${_OpenFLUID_INCLUDE_DIR} CACHE PATH "OpenFLUID include directories")
-   
+    
+  SET(OpenFLUID_CMD_PROGRAM ${_OpenFLUID_CMD_PROGRAM} CACHE FILEPATH "OpenFLUID program")
+  
+  SET(OpenFLUID_SIMULATOR_FILENAME_SUFFIX "@OPENFLUID_SIMULATORS_SUFFIX@" CACHE STRING "OpenFLUID simulator file name suffix")
+  SET(OpenFLUID_OBSERVER_FILENAME_SUFFIX "@OPENFLUID_OBSERVERS_SUFFIX@" CACHE STRING "OpenFLUID observer file name suffix")
+  SET(OpenFLUID_BUILDEREXT_FILENAME_SUFFIX "@OPENFLUID_BUILDEREXTS_SUFFIX@" CACHE STRING "OpenFLUID-Builder extension file name suffix")
+  
+  SET(OpenFLUID_FOUND 1 CACHE STRING "OpenFLUID found")
+
+  INCLUDE("${CMAKE_CURRENT_LIST_DIR}/OpenFLUIDHelpers.cmake")
+ENDIF()
+
+
+IF (_OpenFLUID_COMPONENTS_FOUND)
   FOREACH(COMPONENT ${_OpenFLUID_FIND_COMPONENTS})
     STRING(TOUPPER ${COMPONENT} UPPERCOMPONENT)
     SET(OpenFLUID_${UPPERCOMPONENT}_LIBRARY "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" CACHE FILEPATH "OpenFLUID ${COMPONENT} library")
@@ -230,13 +248,6 @@ IF(_OpenFLUID_FOUND)
     
   SET(OpenFLUID_LIBRARY_DIR ${_OpenFLUID_LIBRARY_DIR} CACHE PATH "OpenFLUID library directory")
   SET(OpenFLUID_LIBRARY_DIRS ${_OpenFLUID_LIBRARY_DIR} CACHE PATH "OpenFLUID library directories")
-  
-  SET(OpenFLUID_CMD_PROGRAM ${_OpenFLUID_CMD_PROGRAM} CACHE FILEPATH "OpenFLUID program")
-  
-  SET(OpenFLUID_SIMULATOR_FILENAME_SUFFIX "@OPENFLUID_SIMULATORS_SUFFIX@" CACHE STRING "OpenFLUID simulator file name suffix")
-  SET(OpenFLUID_OBSERVER_FILENAME_SUFFIX "@OPENFLUID_OBSERVERS_SUFFIX@" CACHE STRING "OpenFLUID observer file name suffix")
-  SET(OpenFLUID_BUILDEREXT_FILENAME_SUFFIX "@OPENFLUID_BUILDEREXTS_SUFFIX@" CACHE STRING "OpenFLUID-Builder extension file name suffix")
-  
-  SET(OpenFLUID_FOUND 1 CACHE STRING "OpenFLUID found!")
-ENDIF()
 
+  SET(OpenFLUID_COMPONENTS_FOUND 1 CACHE STRING "OpenFLUID found")
+ENDIF()

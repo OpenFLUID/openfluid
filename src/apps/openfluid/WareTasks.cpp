@@ -40,7 +40,11 @@
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/waresdev/GhostsHelpers.hpp>
+#include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
+#include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
+#include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
 
 #include "WareTasks.hpp"
@@ -144,6 +148,58 @@ int WareTasks::processCreateWare()
 // =====================================================================
 
 
+int WareTasks::processInfo2Build()
+{
+  if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
+  {
+    return error("missing or empty source path");
+  }
+
+  if (!m_Cmd.isOptionActive("dest-path") || m_Cmd.getOptionValue("dest-path").empty())
+  {
+    return error("missing or empty destination path");
+  }
+
+  openfluid::tools::Path SrcFilehObj({m_Cmd.getOptionValue("src-path"),"wareinfo.json"});
+  openfluid::tools::Path DestDirObj(m_Cmd.getOptionValue("dest-path"));
+
+  if (SrcFilehObj.isFile())
+  {
+    const auto Type = openfluid::waresdev::detectWareType(SrcFilehObj.toGeneric());
+
+    if (Type == openfluid::ware::WareType::SIMULATOR)
+    {
+      const auto Sign = openfluid::waresdev::SimulatorSignatureSerializer().readFromJSONFile(SrcFilehObj.toGeneric());
+      openfluid::waresdev::SimulatorSignatureSerializer().writeToBuildFiles(Sign,DestDirObj.toGeneric());
+    }
+    else if (Type == openfluid::ware::WareType::OBSERVER)
+    {
+      const auto Sign = openfluid::waresdev::ObserverSignatureSerializer().readFromJSONFile(SrcFilehObj.toGeneric());
+      openfluid::waresdev::ObserverSignatureSerializer().writeToBuildFiles(Sign,DestDirObj.toGeneric());
+    }
+    else if (Type == openfluid::ware::WareType::BUILDEREXT)
+    {      
+      const auto Sign = openfluid::waresdev::BuilderextSignatureSerializer().readFromJSONFile(SrcFilehObj.toGeneric());
+      openfluid::waresdev::BuilderextSignatureSerializer().writeToBuildFiles(Sign,DestDirObj.toGeneric());
+    }
+    else
+    {
+      return error("unable to detect ware type in wareinfo.json file");
+    }
+  }
+  else
+  {
+    return error("wareinfo.json file not found in source directory");
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int WareTasks::process()
 {
   if (m_Cmd.getName() == "create-ware")
@@ -180,7 +236,7 @@ int WareTasks::process()
   }
   else if (m_Cmd.getName() == "info2build")
   {
-    return notImplemented(); // TOIMPL
+    return processInfo2Build();
   }
   else if (m_Cmd.getName() == "migrate-ghostsim")
   {

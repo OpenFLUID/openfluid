@@ -29,17 +29,19 @@
   
 */
 
-/*
-<sim2doc>
-This is a text for testing \LaTeX doc
-</sim2doc>
-*/
 
 /**
-  @file CMakeSim.cpp
+  @file WareMain.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+*/
+
+
+/*
+<sim2doc>
+
+</sim2doc>
+*/
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -49,31 +51,17 @@ This is a text for testing \LaTeX doc
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("tests.sim.cmake")
-
-  DECLARE_NAME("test simulator built using the OpenFLUID cmake module");
-  DECLARE_DESCRIPTION("");
-
-  DECLARE_VERSION("1.0");
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
-
-  DECLARE_DOMAIN("");
-  DECLARE_PROCESS("");
-  DECLARE_METHOD("");
-
-END_SIMULATOR_SIGNATURE
-
 /**
 
 */
-class CMakeSimulator : public openfluid::ware::PluggableSimulator
+class CMakeSimulatorParamsUI : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  CMakeSimulator() : PluggableSimulator()
+  CMakeSimulatorParamsUI() : PluggableSimulator()
   {
 
 
@@ -84,7 +72,7 @@ class CMakeSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  ~CMakeSimulator()
+  ~CMakeSimulatorParamsUI()
   {
 
 
@@ -118,7 +106,7 @@ class CMakeSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    std::cout << "\nCMake module built simulator" << std::endl;
+    std::cout << "\nCMake module built simulator with parameterization ui" << std::endl;
 
     return DefaultDeltaT();
   }
@@ -151,5 +139,6 @@ class CMakeSimulator : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_SIMULATOR_CLASS(CMakeSimulator)
+DEFINE_SIMULATOR_CLASS(CMakeSimulatorParamsUI)
 
+DEFINE_WARE_LINKUID(WARE_LINKUID)

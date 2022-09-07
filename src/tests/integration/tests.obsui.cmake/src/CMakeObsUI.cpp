@@ -31,7 +31,7 @@
 
 
 /**
-  @file CMakeObs.cpp
+  @file CMakeObsUI.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
@@ -44,28 +44,13 @@
 // =====================================================================
 
 
-BEGIN_OBSERVER_SIGNATURE("tests.obs.cmake")
-
-  DECLARE_NAME("test observer built using the OpenFLUID cmake module");
-  DECLARE_DESCRIPTION("");
-
-  DECLARE_VERSION("1.0");
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
-
-END_OBSERVER_SIGNATURE
-
-
-// =====================================================================
-// =====================================================================
-
-
-class CMakeObserver : public openfluid::ware::PluggableObserver
+class CMakeObserverParamsUI : public openfluid::ware::PluggableObserver
 {
 
 
   public:
 
-    CMakeObserver() : PluggableObserver()
+    CMakeObserverParamsUI() : PluggableObserver()
     {
 
     }
@@ -75,7 +60,7 @@ class CMakeObserver : public openfluid::ware::PluggableObserver
     // =====================================================================
 
 
-    ~CMakeObserver()
+    ~CMakeObserverParamsUI()
     {
 
     }
@@ -107,7 +92,7 @@ class CMakeObserver : public openfluid::ware::PluggableObserver
 
     void onInitializedRun()
     {
-      std::cout << "\nCMake module built observer" << std::endl;
+      std::cout << "\nCMake module built observer with parameterization ui" << std::endl;
     }
 
 
@@ -138,4 +123,6 @@ class CMakeObserver : public openfluid::ware::PluggableObserver
 // =====================================================================
 
 
-DEFINE_OBSERVER_CLASS(CMakeObserver)
+DEFINE_OBSERVER_CLASS(CMakeObserverParamsUI)
+
+DEFINE_WARE_LINKUID(WARE_LINKUID)

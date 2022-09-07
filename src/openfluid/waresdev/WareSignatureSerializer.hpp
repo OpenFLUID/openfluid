@@ -59,11 +59,53 @@
 
 namespace openfluid { namespace waresdev {
 
+// TOIMPL move into WareSignatureSerializer class? or elsewhere?
+inline openfluid::ware::WareType detectWareType(const std::string& Path)
+{
+  std::ifstream InFile(Path,std::ifstream::in);
+
+  try 
+  {
+    auto Json = openfluid::thirdparty::json::parse(InFile);
+  
+    if (Json.contains("openfluid-ware"))
+    {
+      const auto JsonWare = Json["openfluid-ware"];
+      if (JsonWare.contains("simulator"))
+      {
+        return openfluid::ware::WareType::SIMULATOR; 
+      }
+      else if (JsonWare.contains("observer"))
+      {
+        return openfluid::ware::WareType::OBSERVER; 
+      }
+      else if (JsonWare.contains("builderext"))
+      {
+        return openfluid::ware::WareType::BUILDEREXT; 
+      }
+    }
+  }
+  catch (openfluid::thirdparty::json::exception& E)
+  {
+    return openfluid::ware::WareType::UNDEFINED;
+  }  
+
+  return openfluid::ware::WareType::UNDEFINED;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 template<class SignatureType>
 class OPENFLUID_API WareSignatureSerializer
 {
   protected:
+
+    const std::string m_LinkUID;
+
+    static std::string getHead(const std::string CommentChar);
 
     static std::string getCPPHead(const std::string& WareIncludeStr, const std::string& WareTypeStr);
 
@@ -82,13 +124,18 @@ class OPENFLUID_API WareSignatureSerializer
 
     static std::string getCPPTail();
 
+    static std::string getCMakeHead();
+
     SignatureType fromJSONBase(const openfluid::thirdparty::json& Json) const;
 
     openfluid::thirdparty::json toJSONBase(const SignatureType& Sign) const;
 
-    std::string toCPPBase(const SignatureType& Sign) const;
+    std::string toWareCPPBase(const SignatureType& Sign) const;
 
-    WareSignatureSerializer()
+    std::string toWareCMakeBase(const SignatureType& Sign) const;
+
+    WareSignatureSerializer():
+      m_LinkUID(openfluid::tools::generatePseudoUniqueIdentifier(24))
     { }
 
 
@@ -101,13 +148,23 @@ class OPENFLUID_API WareSignatureSerializer
 
     virtual openfluid::thirdparty::json toJSON(const SignatureType& Sign) const = 0;
 
-    virtual std::string toCPP(const SignatureType& Sign) const = 0;
+    virtual std::string toWareCPP(const SignatureType& Sign) const = 0;
 
-    SignatureType readFromJSONFile(const std::string& Path) const;
+    virtual std::string toWareCMake(const SignatureType& Sign) const = 0;
 
-    void writeToJSONFile(const SignatureType& Sign, const std::string& Path) const;
+    SignatureType readFromJSONFile(const std::string& FilePath) const;
 
-    void writeToCPPFile(const SignatureType& Sign, const std::string& Path) const;
+    void writeToJSONFile(const SignatureType& Sign, const std::string& FilePath) const;
+
+    void writeToWareCPPFile(const SignatureType& Sign, const std::string& FilePath) const;
+
+    void writeToParamsUICPPFile(const SignatureType& Sign, const std::string& FilePath) const;
+
+    void writeToWareCMakeFile(const SignatureType& Sign, const std::string& FilePath) const;
+
+    void writeToParamsUICMakeFile(const SignatureType& Sign, const std::string& FilePath) const;
+
+    virtual void writeToBuildFiles(const SignatureType& Sign, const std::string& Path) const = 0;
 };
 
 
@@ -116,18 +173,33 @@ class OPENFLUID_API WareSignatureSerializer
 
 
 template<class SignatureType>
-std::string WareSignatureSerializer<SignatureType>::getCPPHead(const std::string& WareIncludeStr,
-                                                               const std::string& WareTypeStr)
+std::string WareSignatureSerializer<SignatureType>::getHead(const std::string CommentChar)
 {
   std::string Head =
-  "// ======\n"
-  "// AUTOMATICALLY GENERATED FILE. DO NOT EDIT MANUALLY\n"
-  "// ======\n\n"
-  "#include <"+WareIncludeStr+">\n\n"
-  "extern \"C\" {\n"
-  "OPENFLUID_PLUGIN "+WareTypeStr+"* "+std::string(WARESIGNATURE_PROC_NAME)+"()\n"
-  "{\n"
-  +WareTypeStr+"* Signature = new "+WareTypeStr+"();\n\n"; 
+  CommentChar + " ======\n" +
+  CommentChar + " AUTOMATICALLY GENERATED FILE. DO NOT EDIT MANUALLY\n" +
+  CommentChar + " ======\n\n"; 
+
+  return Head;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<class SignatureType>
+std::string WareSignatureSerializer<SignatureType>::getCPPHead(const std::string& WareIncludeStr,
+                                                                   const std::string& WareTypeStr)
+{
+  std::string Head = getHead("//");
+  
+  Head += 
+    "#include <"+WareIncludeStr+">\n\n"
+    "extern \"C\" {\n"
+    "OPENFLUID_PLUGIN "+WareTypeStr+"* "+std::string(WARESIGNATURE_PROC_NAME)+"()\n"
+    "{\n"
+    +WareTypeStr+"* Signature = new "+WareTypeStr+"();\n\n"; 
 
   return Head;
 }
@@ -475,7 +547,7 @@ std::string WareSignatureSerializer<SignatureType>::getCPPDateTimeString(const o
 
 
 template<class SignatureType>
-std::string WareSignatureSerializer<SignatureType>::toCPPBase(const SignatureType& Sign) const
+std::string WareSignatureSerializer<SignatureType>::toWareCPPBase(const SignatureType& Sign) const
 {
   std::string CPP;
 
@@ -555,6 +627,22 @@ std::string WareSignatureSerializer<SignatureType>::toCPPBase(const SignatureTyp
 
 
 template<class SignatureType>
+std::string WareSignatureSerializer<SignatureType>::toWareCMakeBase(const SignatureType& Sign) const
+{
+  std::string CMake;
+
+  CMake += "SET(WARE_ID \""+Sign.ID+"\")\n";
+  CMake += "SET(WARE_LINKUID \""+m_LinkUID+"\")\n";
+
+  return CMake;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<class SignatureType>
 SignatureType WareSignatureSerializer<SignatureType>::readFromJSONFile(const std::string& Path) const
 {
   std::ifstream InFile(Path,std::ifstream::in);
@@ -578,13 +666,14 @@ SignatureType WareSignatureSerializer<SignatureType>::readFromJSONFile(const std
 
 
 template<class SignatureType>
-void WareSignatureSerializer<SignatureType>::writeToJSONFile(const SignatureType& Sign, const std::string& Path) const
+void WareSignatureSerializer<SignatureType>::writeToJSONFile(const SignatureType& Sign,
+                                                             const std::string& FilePath) const
 {
   openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
 
   Json["openfluid-ware"] = toJSON(Sign);
 
-  std::ofstream OutFile(Path,std::ofstream::out);
+  std::ofstream OutFile(FilePath,std::ofstream::out);
   OutFile << Json.dump(2);
 }
 
@@ -594,11 +683,74 @@ void WareSignatureSerializer<SignatureType>::writeToJSONFile(const SignatureType
 
 
 template<class SignatureType>
-void WareSignatureSerializer<SignatureType>::writeToCPPFile(const SignatureType& Sign, const std::string& Path) const
+void WareSignatureSerializer<SignatureType>::writeToWareCPPFile(const SignatureType& Sign,
+                                                                const std::string& FilePath) const
 {
-  std::ofstream OutFile(Path,std::ofstream::out);
+  std::ofstream OutFile(FilePath,std::ofstream::out);
 
-  OutFile << toCPP(Sign);
+  OutFile << toWareCPP(Sign);
+  OutFile << "\n\n";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<class SignatureType>
+void WareSignatureSerializer<SignatureType>::writeToParamsUICPPFile(const SignatureType& Sign,
+                                                                    const std::string& FilePath) const
+{
+  std::ofstream OutFile(FilePath,std::ofstream::out);
+
+  OutFile << getCPPHead("openfluid/builderext/BuilderExtensionSignature.hpp",
+                        "openfluid::builderext::BuilderExtensionSignature");
+
+  OutFile << getCPPAssignment("ID",Sign.ID+openfluid::config::WARESDEV_PARAMSUI_IDSUFFIX,true);
+  OutFile << getCPPAssignment("Role","openfluid::builderext::ExtensionRole::PARAMETERIZATION");
+  OutFile << getCPPAssignment("BuildInfo.SDKVersion",openfluid::config::VERSION_FULL,true);
+  OutFile << getCPPAssignment("BuildInfo.BuildType","(WAREBUILD_BUILD_TYPE)");
+  OutFile << getCPPAssignment("BuildInfo.CompilerID","(WAREBUILD_COMPILER_ID)");
+  OutFile << getCPPAssignment("BuildInfo.CompilerVersion","(WAREBUILD_COMPILER_VERSION)");
+  OutFile << getCPPAssignment("BuildInfo.CompilationFlags","(WAREBUILD_COMPILATION_FLAGS)");
+
+  OutFile <<  getCPPTail();
+
+  OutFile << "\n\n";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<class SignatureType>
+void WareSignatureSerializer<SignatureType>::writeToWareCMakeFile(const SignatureType& Sign, 
+                                                                  const std::string& FilePath) const
+{
+  std::ofstream OutFile(FilePath,std::ofstream::out);
+
+  OutFile << toWareCMake(Sign);
+  OutFile << "\n\n";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<class SignatureType>
+void WareSignatureSerializer<SignatureType>::writeToParamsUICMakeFile(const SignatureType& Sign, 
+                                                                      const std::string& FilePath) const
+{
+  std::ofstream OutFile(FilePath,std::ofstream::out);
+
+  OutFile << getHead("#");
+  OutFile << "SET(WARE_ID \""+Sign.ID+openfluid::config::WARESDEV_PARAMSUI_IDSUFFIX+"\")\n";
+  OutFile << "SET(WARE_LINKUID \""+m_LinkUID+"\")\n";
+  OutFile << "SET(WARE_TYPE \"builderext\")\n";
+  OutFile << "SET(WARE_IS_BUILDEREXT TRUE)\n";
+  OutFile << "SET(WARE_IS_PARAMSUI TRUE)\n";
   OutFile << "\n\n";
 }
 

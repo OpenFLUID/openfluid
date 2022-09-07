@@ -108,27 +108,27 @@ struct F
   void createTestFiles()
   {
     // right CMake content
-    appendRealDirFile("ware_ok","src/"+openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+    appendRealDirFile("ware_ok","src/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
     appendRealDirFile("ware_ok","src/"+openfluid::config::WARESDEV_SRC_MAINFILE);
     appendRealDirFile("ware_ok","src/other.cpp");
     appendRealDirFile("ware_wrongcmake");
     
     // wrong CMake content
-    appendRealDirFile("ware_wrongcmake","src/"+openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+    appendRealDirFile("ware_wrongcmake","src/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
     appendRealDirFile("ware_wrongcmake","src/WareMain.cpp");
     appendRealDirFile("ware_wrongcmake","src/other.txt");
     
     // right CMake content
-    appendRealDirFile("ware_nomaincpp","src/"+openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+    appendRealDirFile("ware_nomaincpp","src/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
     appendRealDirFile("ware_nomaincpp","src/other.cpp");
     appendRealDirFile("ware_nocmake","src/WareMain.cpp");
     appendRealDirFile("ware_nocmake","src/other.cpp");
     
     // right CMake content
-    appendRealDirFile("ware_nocpp","src/"+openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+    appendRealDirFile("ware_nocpp","src/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
     appendRealDirFile("ware_empty");
     appendRealDirFile("ware_empty2");
-    appendRealDirFile("ware_empty2/subdir","src/"+openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+    appendRealDirFile("ware_empty2/subdir","src/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
 
     for (const auto& DF : m_RealDirsFiles)
     {
@@ -144,11 +144,11 @@ struct F
 
     std::vector<std::string> RightCmake;
     RightCmake.push_back(openfluid::tools::Filesystem::joinPath({m_SimulatorsPath,"ware_ok","src",
-                                                                 openfluid::config::WARESDEV_SRC_CMAKEUSERFILE}));
+                                                                 openfluid::config::WARESDEV_SRC_CMAKESTDFILE}));
     RightCmake.push_back(openfluid::tools::Filesystem::joinPath({m_SimulatorsPath,"ware_nomaincpp","src",
-                                                                 openfluid::config::WARESDEV_SRC_CMAKEUSERFILE}));
+                                                                 openfluid::config::WARESDEV_SRC_CMAKESTDFILE}));
     RightCmake.push_back(openfluid::tools::Filesystem::joinPath({m_SimulatorsPath,"ware_nocpp","src",
-                                                                 openfluid::config::WARESDEV_SRC_CMAKEUSERFILE}));
+                                                                 openfluid::config::WARESDEV_SRC_CMAKESTDFILE}));
     for(const auto& F : RightCmake)
     {
       std::ofstream RCFile(F);
@@ -160,7 +160,7 @@ struct F
     }
 
     std::ofstream File(openfluid::tools::Filesystem::joinPath({m_SimulatorsPath,"ware_wrongcmake","src",
-                                                               openfluid::config::WARESDEV_SRC_CMAKEUSERFILE}));
+                                                               openfluid::config::WARESDEV_SRC_CMAKESTDFILE}));
     File << "# list of CPP files, the sim2doc tag must be contained in the first one\n"
             "# ex: SET(SIM_CPP MySim.cpp)\n"
             "SET(SIM_CPP wrongmain.cpp)\n";
@@ -188,7 +188,7 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
                                                openfluid::ware::WareType::SIMULATOR,"")
                                                  .getDefaultFilesPaths();
   BOOST_REQUIRE_EQUAL(List.size(),2);
-  BOOST_CHECK_EQUAL(openfluid::tools::Path(List[0]).filename(),openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+  BOOST_CHECK_EQUAL(openfluid::tools::Path(List[0]).filename(),openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
   BOOST_CHECK_EQUAL(openfluid::tools::Path(List[1]).filename(),"WareMain.cpp");
 
 
@@ -196,14 +196,14 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
                                                openfluid::ware::WareType::SIMULATOR,"")
                                                 .getDefaultFilesPaths();
   BOOST_REQUIRE_EQUAL(List.size(),2);
-  BOOST_CHECK_EQUAL(openfluid::tools::Path(List[0]).filename(),openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+  BOOST_CHECK_EQUAL(openfluid::tools::Path(List[0]).filename(),openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
   BOOST_CHECK_EQUAL(openfluid::tools::Path(List[1]).filename(),openfluid::config::WARESDEV_SRC_MAINFILE);
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirsFiles["ware_nomaincpp"].AbsolutePath,
                                                openfluid::ware::WareType::SIMULATOR,"")
                                                  .getDefaultFilesPaths();
   BOOST_REQUIRE_EQUAL(List.size(),2);
-  BOOST_CHECK_EQUAL(openfluid::tools::Path(List[0]).filename(),openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+  BOOST_CHECK_EQUAL(openfluid::tools::Path(List[0]).filename(),openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
   BOOST_CHECK_EQUAL(openfluid::tools::Path(List[1]).filename(),"other.cpp");
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirsFiles["ware_nocmake"].AbsolutePath, 
@@ -216,7 +216,7 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
                                                openfluid::ware::WareType::SIMULATOR,"")
                                                .getDefaultFilesPaths();
   BOOST_REQUIRE_EQUAL(List.size(),1);
-  BOOST_CHECK_EQUAL(openfluid::tools::Path(List[0]).filename(),openfluid::config::WARESDEV_SRC_CMAKEUSERFILE);
+  BOOST_CHECK_EQUAL(openfluid::tools::Path(List[0]).filename(),openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirsFiles["ware_empty"].AbsolutePath,
                                                openfluid::ware::WareType::SIMULATOR,"")

@@ -101,7 +101,8 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
 
   public:
 
-    PluggableParameterizationExtension() : QWidget(),
+    PluggableParameterizationExtension() : 
+      QWidget(), PluggableBuilderExtension(),
       mp_Desc(nullptr), mp_Params(nullptr)
     {
 
@@ -124,6 +125,7 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
     {
       mp_Desc = Desc;
     }
+
 
     virtual void update() = 0;
 

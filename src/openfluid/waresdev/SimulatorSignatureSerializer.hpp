@@ -114,7 +114,11 @@ class OPENFLUID_API SimulatorSignatureSerializer : public WareSignatureSerialize
 
     openfluid::thirdparty::json toJSON(const openfluid::ware::SimulatorSignature& Sign) const;
 
-    std::string toCPP(const openfluid::ware::SimulatorSignature& Sign) const;
+    std::string toWareCPP(const openfluid::ware::SimulatorSignature& Sign) const;
+
+    std::string toWareCMake(const openfluid::ware::SimulatorSignature& Sign) const;
+
+    void writeToBuildFiles(const openfluid::ware::SimulatorSignature& Sign, const std::string& Path) const;
 };
 
 

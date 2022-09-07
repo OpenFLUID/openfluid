@@ -7,22 +7,6 @@
 #include "WareMain.hpp"
 
 
-// =====================================================================
-// =====================================================================
-
-
-BEGIN_BUILDEREXT_SIGNATURE("%%WAREID%%", openfluid::builderext::ExtensionMode::MODAL)
-
-  DECLARE_CATEGORY(%%BUILDEREXTCATEGORY%%)
-  DECLARE_MENUTEXT("%%BUILDEREXTMENUTEXT%%")
-
-END_BUILDEREXT_SIGNATURE
-
-
-// =====================================================================
-// =====================================================================
-
-
 %%CLASSNAME%%::%%CLASSNAME%%() :
   openfluid::builderext::PluggableModalExtension()
 {
@@ -85,5 +69,4 @@ void %%CLASSNAME%%::manageSimulationFinish()
 
 
 DEFINE_BUILDEREXT_CLASS(%%CLASSNAME%%)
-
 

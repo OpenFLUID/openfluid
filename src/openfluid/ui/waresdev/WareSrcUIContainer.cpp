@@ -37,7 +37,7 @@
 
 
 #include <QCoreApplication>
-#include <QMessageBox> // HACk
+#include <QMessageBox> // HACK
 
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/PreferencesManager.hpp>

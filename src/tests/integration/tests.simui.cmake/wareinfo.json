@@ -1,0 +1,48 @@
+{
+  "openfluid-ware": {
+    "id": "tests.simui.cmake",
+    "name": "",
+    "description": "",
+    "version": "",
+    "status": "experimental",
+    "authors": [],
+    "contacts": [],
+    "license": "",
+    "tags": [],
+    "links": [],
+    "issues": [],
+    "simulator": {
+      "data": {
+        "parameters": {
+          "required": [],
+          "used": []
+        },
+        "attributes": {
+          "required": [],
+          "used": [],
+          "produced": []
+        },
+        "variables": {
+          "produced": [],
+          "required": [],
+          "used": [],
+          "updated": []
+        },
+        "events": [],
+        "extrafiles": {
+          "required": [],
+          "used": []
+        }
+      },
+      "spatial_graph": {
+        "description": "",
+        "details": []
+      },
+      "scheduling": {
+        "type": "undefined",
+        "min": 0,
+        "max": 0
+      }
+    }
+  }
+}

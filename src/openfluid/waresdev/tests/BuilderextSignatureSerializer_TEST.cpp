@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE(write_cpp)
 {
   auto Sign = getRefSignature();
 
-  openfluid::waresdev::BuilderextSignatureSerializer().writeToCPPFile(Sign,WorkPath.toGeneric()+"/signature.cpp");
+  openfluid::waresdev::BuilderextSignatureSerializer().writeToWareCPPFile(Sign,WorkPath.toGeneric()+"/signature.cpp");
 }
 
 

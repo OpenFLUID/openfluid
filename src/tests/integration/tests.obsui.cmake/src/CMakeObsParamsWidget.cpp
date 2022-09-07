@@ -26,50 +26,31 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
 
-
-/**
-  @file CMakeBExt.cpp
-
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
 
-#include <QPushButton>
+/**
+  @file CMakeObsParamsWidget.cpp
 
-#include "ui_bext.h"
-#include "CMakeBExt.hpp"
-
-
-// =====================================================================
-// =====================================================================
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+*/
 
 
-BEGIN_BUILDEREXT_SIGNATURE("tests.bext.cmake",openfluid::builderext::ExtensionMode::MODAL)
-
-  DECLARE_CATEGORY(openfluid::builderext::ExtensionCategory::OTHER)
-  DECLARE_MENUTEXT("tests.bext.cmake")
-
-END_BUILDEREXT_SIGNATURE
+#include <QMessageBox>
 
 
-// =====================================================================
-// =====================================================================
+#include "CMakeObsParamsWidget.hpp"
+#include "ui_CMakeObsParamsWidget.h"
 
 
-CMakeBuilderExtension::CMakeBuilderExtension() :
-  openfluid::builderext::PluggableModalExtension(),
-  ui(new Ui::BExtDialog)
+CMakeObsParamsWidget::CMakeObsParamsWidget(): openfluid::builderext::PluggableParameterizationExtension(),
+  ui(new Ui::CMakeObsParamsWidget)
 {
-  Q_INIT_RESOURCE(bext);
-
   ui->setupUi(this);
 
-  ui->CloseButton->setIcon(QPixmap(":/file-close.png"));
+  connect(ui->ClickButton,SIGNAL(clicked()),this,SLOT(showMessage()));
 
-  connect(ui->CloseButton,SIGNAL(clicked()),this,SLOT(reject()));
 }
 
 
@@ -77,7 +58,7 @@ CMakeBuilderExtension::CMakeBuilderExtension() :
 // =====================================================================
 
 
-CMakeBuilderExtension::~CMakeBuilderExtension()
+CMakeObsParamsWidget::~CMakeObsParamsWidget()
 {
   delete ui;
 }
@@ -87,7 +68,7 @@ CMakeBuilderExtension::~CMakeBuilderExtension()
 // =====================================================================
 
 
-void CMakeBuilderExtension::update()
+void CMakeObsParamsWidget::update()
 {
 
 }
@@ -97,5 +78,16 @@ void CMakeBuilderExtension::update()
 // =====================================================================
 
 
-DEFINE_BUILDEREXT_CLASS(CMakeBuilderExtension)
+void CMakeObsParamsWidget::showMessage()
+{
+  QMessageBox::information(nullptr,tr("Clicked!"),"You clicked on me!");
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_BUILDEREXT_CLASS(CMakeObsParamsWidget)
+
+DEFINE_WARE_LINKUID(WARE_LINKUID)

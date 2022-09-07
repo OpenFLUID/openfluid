@@ -26,37 +26,57 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
-
-
-/**
-  @file CMakeSimParamsWidget.cpp
-
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  
 */
 
 
-#include <QMessageBox>
-#include <QVBoxLayout>
+/**
+  @file CMakeBExt.cpp
+
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+ */
+
+
 #include <QPushButton>
-#include <QLabel>
+
+#include "ui_bext.h"
+#include "CMakeBExt.hpp"
 
 
-#include "CMakeSimParamsWidget.hpp"
+// =====================================================================
+// =====================================================================
 
 
-CMakeSimParamsWidget::CMakeSimParamsWidget(): openfluid::builderext::PluggableParameterizationExtension()
+CMakeBuilderExtension::CMakeBuilderExtension() :
+  openfluid::builderext::PluggableModalExtension(),
+  ui(new Ui::BExtDialog)
 {
-  QVBoxLayout* Layout = new QVBoxLayout;
+  Q_INIT_RESOURCE(bext);
 
-  mp_Button = new QPushButton("Click me!");
-  Layout->addWidget(mp_Button);
-  Layout->addWidget(new QLabel("This widget is handcrafted"));
+  ui->setupUi(this);
 
-  setLayout(Layout);
+  ui->CloseButton->setIcon(QPixmap(":/file-close.png"));
 
-  connect(mp_Button,SIGNAL(clicked()),this,SLOT(showMessage()));
+  connect(ui->CloseButton,SIGNAL(clicked()),this,SLOT(reject()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+CMakeBuilderExtension::~CMakeBuilderExtension()
+{
+  delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CMakeBuilderExtension::update()
+{
 
 }
 
@@ -65,27 +85,5 @@ CMakeSimParamsWidget::CMakeSimParamsWidget(): openfluid::builderext::PluggablePa
 // =====================================================================
 
 
-CMakeSimParamsWidget::~CMakeSimParamsWidget()
-{
+DEFINE_BUILDEREXT_CLASS(CMakeBuilderExtension)
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void CMakeSimParamsWidget::update()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void CMakeSimParamsWidget::showMessage()
-{
-  QMessageBox::information(nullptr,tr("Clicked!"),"You clicked on me!");
-}

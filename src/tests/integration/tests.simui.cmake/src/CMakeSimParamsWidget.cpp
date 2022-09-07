@@ -31,26 +31,32 @@
 
 
 /**
-  @file CMakeObsParamsWidget.cpp
+  @file CMakeSimParamsWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
 #include <QMessageBox>
+#include <QVBoxLayout>
+#include <QPushButton>
+#include <QLabel>
 
 
-#include "CMakeObsParamsWidget.hpp"
-#include "ui_CMakeObsParamsWidget.h"
+#include "CMakeSimParamsWidget.hpp"
 
 
-CMakeObsParamsWidget::CMakeObsParamsWidget(): openfluid::builderext::PluggableParameterizationExtension(),
-  ui(new Ui::CMakeObsParamsWidget)
+CMakeSimParamsWidget::CMakeSimParamsWidget(): openfluid::builderext::PluggableParameterizationExtension()
 {
-  ui->setupUi(this);
+  QVBoxLayout* Layout = new QVBoxLayout;
 
-  connect(ui->ClickButton,SIGNAL(clicked()),this,SLOT(showMessage()));
+  mp_Button = new QPushButton("Click me!");
+  Layout->addWidget(mp_Button);
+  Layout->addWidget(new QLabel("This widget is handcrafted"));
 
+  setLayout(Layout);
+
+  connect(mp_Button,SIGNAL(clicked()),this,SLOT(showMessage()));
 }
 
 
@@ -58,17 +64,7 @@ CMakeObsParamsWidget::CMakeObsParamsWidget(): openfluid::builderext::PluggablePa
 // =====================================================================
 
 
-CMakeObsParamsWidget::~CMakeObsParamsWidget()
-{
-  delete ui;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void CMakeObsParamsWidget::update()
+CMakeSimParamsWidget::~CMakeSimParamsWidget()
 {
 
 }
@@ -78,7 +74,26 @@ void CMakeObsParamsWidget::update()
 // =====================================================================
 
 
-void CMakeObsParamsWidget::showMessage()
+void CMakeSimParamsWidget::update()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CMakeSimParamsWidget::showMessage()
 {
   QMessageBox::information(nullptr,tr("Clicked!"),"You clicked on me!");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_BUILDEREXT_CLASS(CMakeSimParamsWidget)
+
+DEFINE_WARE_LINKUID(WARE_LINKUID)

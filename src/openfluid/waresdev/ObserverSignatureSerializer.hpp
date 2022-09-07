@@ -63,7 +63,11 @@ class OPENFLUID_API ObserverSignatureSerializer : public WareSignatureSerializer
 
     openfluid::thirdparty::json toJSON(const openfluid::ware::ObserverSignature& Sign) const;
 
-    std::string toCPP(const openfluid::ware::ObserverSignature& Sign) const;
+    std::string toWareCPP(const openfluid::ware::ObserverSignature& Sign) const;
+
+    std::string toWareCMake(const openfluid::ware::ObserverSignature& Sign) const;
+
+    void writeToBuildFiles(const openfluid::ware::ObserverSignature& Sign, const std::string& Path) const;
 };
 
 
