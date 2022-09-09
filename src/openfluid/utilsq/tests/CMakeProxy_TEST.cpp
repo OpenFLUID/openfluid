@@ -48,7 +48,7 @@
 
 #include <QCoreApplication>
 
-#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
 #include <openfluid/base/Environment.hpp>
 
 #include "tests-config.hpp"

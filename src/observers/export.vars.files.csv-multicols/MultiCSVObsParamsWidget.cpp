@@ -39,7 +39,7 @@
 
 #include <QMessageBox>
 
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "MultiEditSetDialog.hpp"
@@ -390,7 +390,7 @@ void MultiCSVObsParamsWidget::addSet()
   }
 
   QStringList FormatNames = getFormatNames();
-  QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
+  QStringList ClassNames = openfluid::utils::toQStringList(mp_Desc->spatialDomain().getClassNames());
   MultiEditSetDialog AddDlg(SetNames,FormatNames,ClassNames,this);
 
   if (AddDlg.exec() == QDialog::Accepted)
@@ -428,7 +428,7 @@ void MultiCSVObsParamsWidget::editSet()
     }
 
     QStringList FormatNames = getFormatNames();
-    QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
+    QStringList ClassNames = openfluid::utils::toQStringList(mp_Desc->spatialDomain().getClassNames());
     MultiEditSetDialog EditDlg(SetNames,FormatNames,ClassNames,this);
 
     QString SetStr = "set."+EditedSet+".";

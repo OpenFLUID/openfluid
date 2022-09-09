@@ -41,7 +41,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
@@ -589,7 +589,7 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
       ui->VariableNameEdit->setText(QString::fromStdString(Serie.VarName));
       ui->UnitsClassComboBox->clear();
 
-      QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
+      QStringList ClassNames = openfluid::utils::toQStringList(mp_Desc->spatialDomain().getClassNames());
       for (auto& ClassName : ClassNames)
       {
         ui->UnitsClassComboBox->addItem(ClassName);

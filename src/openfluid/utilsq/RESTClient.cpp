@@ -46,7 +46,7 @@
 #include <QNetworkReply>
 #include <QEventLoop>
 
-#include <openfluid/utils/RESTClient.hpp>
+#include <openfluid/utilsq/RESTClient.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
 

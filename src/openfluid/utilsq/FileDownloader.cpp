@@ -44,7 +44,7 @@
 #include <QFile>
 
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/utils/FileDownloader.hpp>
+#include <openfluid/utilsq/FileDownloader.hpp>
 
 
 namespace openfluid { namespace utils {

@@ -48,7 +48,7 @@
 
 #include <QCoreApplication>
 
-#include <openfluid/utils/GrassGISProxy.hpp>
+#include <openfluid/utilsq/GrassGISProxy.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 

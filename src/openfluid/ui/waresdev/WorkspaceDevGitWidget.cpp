@@ -39,7 +39,7 @@
 
 #include <openfluid/ui/waresdev/WorkspaceDevGitWidget.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utilsq/GitProxy.hpp>
 
 #include "ui_WorkspaceDevGitWidget.h"
 

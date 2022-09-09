@@ -42,7 +42,7 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 
 #include "builderconfig.hpp"
 #include "ModelScene.hpp"
@@ -132,7 +132,7 @@ void ModelScene::refresh()
 
       if (!PosStr.empty())
       {
-        Position = openfluid::tools::toQPoint(PosStr);
+        Position = openfluid::utils::toQPoint(PosStr);
       }
       else
       {

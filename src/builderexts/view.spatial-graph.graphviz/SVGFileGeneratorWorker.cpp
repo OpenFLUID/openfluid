@@ -41,7 +41,7 @@
 #include <QProcess>
 #include <QFile>
 
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 
 #include "SVGFileGeneratorWorker.hpp"
 

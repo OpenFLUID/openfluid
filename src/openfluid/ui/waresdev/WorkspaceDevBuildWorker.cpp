@@ -43,8 +43,8 @@
 
 #include <openfluid/ui/waresdev/WorkspaceDevBuildWorker.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -98,7 +98,7 @@ void WorkspaceDevBuildWorker::run()
 
       Container.prepareBuildDirectory();
 
-      QStringList ExtraOptionsList = openfluid::tools::convertArgsStringToList(Container.getConfigureExtraOptions());
+      QStringList ExtraOptionsList = openfluid::utils::convertArgsStringToList(Container.getConfigureExtraOptions());
 
       openfluid::utils::CMakeProxy::CommandInfos ConfigCommand = 
         openfluid::utils::CMakeProxy::getConfigureCommand(Container.getBuildDirPath(),

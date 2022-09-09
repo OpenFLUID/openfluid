@@ -40,7 +40,7 @@
 #include <QDir>
 #include <QProcess>
 
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>

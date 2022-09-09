@@ -39,8 +39,8 @@
 
 #include <QProcess>
 
-#include <openfluid/utils/CMakeProxy.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 
 
 namespace openfluid { namespace utils {

@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __OPENFLUID_UTILS_GITPROXY_HPP__
-#define __OPENFLUID_UTILS_GITPROXY_HPP__
+#ifndef __OPENFLUID_UTILSQ_GITPROXY_HPP__
+#define __OPENFLUID_UTILSQ_GITPROXY_HPP__
 
 
 #include <QString>
@@ -49,7 +49,7 @@
 #include <QFile>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/utils/ProgramProxy.hpp>
+#include <openfluid/utilsq/ProgramProxy.hpp>
 
 
 namespace openfluid { namespace utils {
@@ -136,4 +136,4 @@ class OPENFLUID_API GitProxy : public QObject, public ProgramProxy<GitProxy>
 } } // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_GITPROXY_HPP__ */
+#endif /* __OPENFLUID_UTILSQ_GITPROXY_HPP__ */

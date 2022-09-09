@@ -41,7 +41,7 @@
 #include <QFileDialog>
 
 #include <openfluid/ui/common/LogExplorerDialog.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/config.hpp>
 

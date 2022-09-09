@@ -67,9 +67,9 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
-#include <openfluid/utils/GitProxy.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
@@ -525,7 +525,7 @@ void MainWindow::onQuitRequested()
   {
     auto* WMgr = openfluid::base::WorkspaceManager::instance();
 
-    WMgr->setOpenWaresPaths(openfluid::tools::toStdStringVector(mp_WidgetsCollection->getOpenWarePaths()));
+    WMgr->setOpenWaresPaths(openfluid::utils::toStdStringVector(mp_WidgetsCollection->getOpenWarePaths()));
 
     WMgr->setActiveWarePath(mp_WidgetsCollection->getCurrentWarePath().toStdString());
 

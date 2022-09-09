@@ -49,7 +49,7 @@
 
 #include <QCoreApplication>
 
-#include <openfluid/utils/FluidHubAPIClient.hpp>
+#include <openfluid/utilsq/FluidHubAPIClient.hpp>
 
 #include "tests-config.hpp"
 

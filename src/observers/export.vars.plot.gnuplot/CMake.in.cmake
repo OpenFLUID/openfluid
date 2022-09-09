@@ -1,5 +1,5 @@
 SET(OBS_CPP export.vars.plot.gnuplot/GNUplotObs.cpp export.vars.plot.gnuplot/GNUplotObsTools.cpp)
-SET(OBS_EXTRA_LINKS openfluid-utils)
+SET(OBS_EXTRA_LINKS openfluid-utilsq)
 SET(OBS_INSTALL_ENABLED ON)
 SET(OBS_TRANSLATIONS_ENABLED ON)
 

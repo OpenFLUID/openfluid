@@ -40,8 +40,8 @@
 #include <openfluid/dllexport.hpp>
 
 
-#ifndef __OPENFLUID_UTILS_PROGRAMPROXY_HPP__
-#define __OPENFLUID_UTILS_PROGRAMPROXY_HPP__
+#ifndef __OPENFLUID_UTILSQ_PROGRAMPROXY_HPP__
+#define __OPENFLUID_UTILSQ_PROGRAMPROXY_HPP__
 
 
 namespace openfluid { namespace utils {
@@ -102,4 +102,4 @@ template<typename T>QString ProgramProxy<T>::m_Version = "";
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_PROGRAMPROXY_HPP__ */
+#endif /* __OPENFLUID_UTILSQ_PROGRAMPROXY_HPP__ */

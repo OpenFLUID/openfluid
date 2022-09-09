@@ -40,7 +40,7 @@
 #include <QMessageBox>
 
 #include <observers/export.vars.files.csv/EditSetDialog.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "CSVObsParamsWidget.hpp"
@@ -382,7 +382,7 @@ void CSVObsParamsWidget::addSet()
     FormatNames << QString::fromStdString(Format.first);
   }
 
-  QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
+  QStringList ClassNames = openfluid::utils::toQStringList(mp_Desc->spatialDomain().getClassNames());
 
   EditSetDialog AddDlg(SetNames,FormatNames,ClassNames,this);
 
@@ -426,7 +426,7 @@ void CSVObsParamsWidget::editSet()
       FormatNames << QString::fromStdString(Format.first);
     }
 
-    QStringList ClassNames = openfluid::tools::toQStringList(mp_Desc->spatialDomain().getClassNames());
+    QStringList ClassNames = openfluid::utils::toQStringList(mp_Desc->spatialDomain().getClassNames());
 
     EditSetDialog EditDlg(SetNames,FormatNames,ClassNames,this);
 

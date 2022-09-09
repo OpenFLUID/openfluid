@@ -39,7 +39,7 @@
 
 
 #include <openfluid/thirdparty/JSON.hpp>
-#include <openfluid/utils/FluidHubAPIClient.hpp>
+#include <openfluid/utilsq/FluidHubAPIClient.hpp>
 
 
 namespace openfluid { namespace utils {

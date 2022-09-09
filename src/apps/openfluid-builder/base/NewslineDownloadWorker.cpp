@@ -42,7 +42,7 @@
 #include <QTextStream>
 #include <QDateTime>
 
-#include <openfluid/utils/FluidHubAPIClient.hpp>
+#include <openfluid/utilsq/FluidHubAPIClient.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/config.hpp>

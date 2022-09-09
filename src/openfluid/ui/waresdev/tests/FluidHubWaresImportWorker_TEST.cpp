@@ -49,7 +49,7 @@
 
 #include <openfluid/ui/waresdev/FluidHubWaresImportWorker.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
-#include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utilsq/GitProxy.hpp>
 
 #include "tests-config.hpp"
 

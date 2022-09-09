@@ -46,7 +46,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 
 
 // =====================================================================

@@ -22,7 +22,7 @@ SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp
                         FileLogger.hpp
                         SettingsBackend.hpp
                         TemplateProcessor.hpp
-                        DataHelpers.hpp IDHelpers.hpp QtHelpers.hpp MiscHelpers.hpp
+                        DataHelpers.hpp IDHelpers.hpp MiscHelpers.hpp
                         Timer.hpp
                         FortranCPP.hpp
                         )

@@ -50,7 +50,7 @@
 
 #include <QCoreApplication>
 
-#include <openfluid/utils/RESTClient.hpp>
+#include <openfluid/utilsq/RESTClient.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
 #include "tests-config.hpp"

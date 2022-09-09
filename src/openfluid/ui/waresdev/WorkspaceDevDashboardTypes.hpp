@@ -47,7 +47,7 @@
 #include <QString>
 
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utilsq/GitProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {

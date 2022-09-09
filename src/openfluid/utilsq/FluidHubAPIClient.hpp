@@ -37,8 +37,8 @@
 */
 
 
-#ifndef __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__
-#define __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__
+#ifndef __OPENFLUID_UTILSQ_FLUIDHUBAPICLIENT_HPP__
+#define __OPENFLUID_UTILSQ_FLUIDHUBAPICLIENT_HPP__
 
 
 #include <set>
@@ -47,7 +47,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/utils/RESTClient.hpp>
+#include <openfluid/utilsq/RESTClient.hpp>
 
 
 namespace openfluid { namespace utils {
@@ -227,4 +227,4 @@ class OPENFLUID_API FluidHubAPIClient
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__ */
+#endif /* __OPENFLUID_UTILSQ_FLUIDHUBAPICLIENT_HPP__ */

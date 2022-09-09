@@ -36,8 +36,8 @@
 */
 
 
-#ifndef __OPENFLUID_UTILS_GRASSGISPROXY_HPP__
-#define __OPENFLUID_UTILS_GRASSGISPROXY_HPP__
+#ifndef __OPENFLUID_UTILSQ_GRASSGISPROXY_HPP__
+#define __OPENFLUID_UTILSQ_GRASSGISPROXY_HPP__
 
 
 #include <map>
@@ -45,7 +45,7 @@
 
 #include <QStringList>
 
-#include <openfluid/utils/ProgramProxy.hpp>
+#include <openfluid/utilsq/ProgramProxy.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -205,5 +205,5 @@ class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_GRASSGISPROXY_HPP__ */
+#endif /* __OPENFLUID_UTILSQ_GRASSGISPROXY_HPP__ */
 

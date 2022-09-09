@@ -45,8 +45,8 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utils/GitProxy.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
 #include <openfluid/ui/waresdev/WaresDevPackage.hpp>
 #include <openfluid/ui/waresdev/FluidHubWaresImportWorker.hpp>
 #include <openfluid/ui/waresdev/WaresSrcImportDialog.hpp>

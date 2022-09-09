@@ -42,7 +42,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 

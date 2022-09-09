@@ -51,9 +51,9 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utils/GitProxy.hpp>
-#include <openfluid/utils/FluidHubAPIClient.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/utilsq/FluidHubAPIClient.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 
 #include "tests-config.hpp"
 

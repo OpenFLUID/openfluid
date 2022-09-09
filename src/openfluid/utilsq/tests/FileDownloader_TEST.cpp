@@ -48,7 +48,7 @@
 
 #include <QCoreApplication>
 
-#include <openfluid/utils/FileDownloader.hpp>
+#include <openfluid/utilsq/FileDownloader.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 

@@ -41,7 +41,7 @@
 
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/OStreamMsgStream.hpp>
 
@@ -206,7 +206,7 @@ void WareSrcUIContainer::configure()
   // === build and run command
 
   QStringList ExtraOptionsList = 
-      openfluid::tools::convertArgsStringToList(getConfigureExtraOptions());
+      openfluid::utils::convertArgsStringToList(getConfigureExtraOptions());
 
   openfluid::utils::CMakeProxy::CommandInfos CmdInfos = 
     openfluid::utils::CMakeProxy::getConfigureCommand(QString::fromStdString(m_BuildDirPath),getAbsolutePath(),

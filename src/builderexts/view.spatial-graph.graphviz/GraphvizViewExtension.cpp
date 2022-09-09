@@ -41,7 +41,7 @@
 #include <QThread>
 #include <QMessageBox>
 
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_GraphvizWidget.h"

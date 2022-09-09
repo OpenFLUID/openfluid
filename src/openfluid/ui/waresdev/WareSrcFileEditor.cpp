@@ -54,7 +54,7 @@
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
 #include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/global.hpp>
 
 

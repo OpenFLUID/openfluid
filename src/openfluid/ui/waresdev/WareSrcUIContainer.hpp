@@ -48,7 +48,7 @@
 #include <openfluid/ui/waresdev/WareSrcMsgParser.hpp>
 #include <openfluid/ui/waresdev/WareSrcMsgStream.hpp>
 #include <openfluid/tools/Timer.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
 #include <openfluid/dllexport.hpp>
 
 

@@ -44,7 +44,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_SpatialDomainWidget.h"
@@ -210,7 +210,7 @@ void SpatialDomainWidget::refresh()
 {
   // -------- prepare classes list --------
 
-  QStringList OriginalClassesList = openfluid::tools::toQStringList(m_Domain.getClassNames());
+  QStringList OriginalClassesList = openfluid::utils::toQStringList(m_Domain.getClassNames());
   QStringList ClassesList;
 
   // get display order for classes from project config file
@@ -223,12 +223,12 @@ void SpatialDomainWidget::refresh()
   {
     openfluid::base::RunContextManager::instance()
     ->setProjectContextValue("/builder/spatial/unitsclasses","order",
-                             openfluid::tools::toStdStringVector(OriginalClassesList));
+                             openfluid::utils::toStdStringVector(OriginalClassesList));
     ClassesList = OriginalClassesList;
   }
   else
   {
-    ClassesList = openfluid::tools::toQStringList(TmpList);
+    ClassesList = openfluid::utils::toQStringList(TmpList);
 
     // find classes in project config file that are not in original dataset
     QStringList ClassesToRemove;
@@ -266,7 +266,7 @@ void SpatialDomainWidget::refresh()
 
     openfluid::base::RunContextManager::instance()
       ->setProjectContextValue("/builder/spatial/unitsclasses","order",
-                               openfluid::tools::toStdStringVector(ClassesList));
+                               openfluid::utils::toStdStringVector(ClassesList));
   }
 
 
@@ -712,8 +712,8 @@ void SpatialDomainWidget::refreshClassAttributes()
 
   if (!m_ActiveClass.isEmpty())
   {
-    QStringList AttrNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
-    QStringList IDs = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+    QStringList AttrNames = openfluid::utils::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+    QStringList IDs = openfluid::utils::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
     ui->AttributesTableWidget->setColumnCount(AttrNames.size());
     ui->AttributesTableWidget->setRowCount(IDs.size());
@@ -936,7 +936,7 @@ void SpatialDomainWidget::setAllMapLayersVisible()
 
 void SpatialDomainWidget::addUnitsClass()
 {
-  QStringList ExistingClasses = openfluid::tools::toQStringList(m_Domain.getClassNames());
+  QStringList ExistingClasses = openfluid::utils::toQStringList(m_Domain.getClassNames());
 
   AddUnitsClassDialog AddDlg(ExistingClasses,this);
   if (AddDlg.exec() == QDialog::Accepted)
@@ -1054,9 +1054,9 @@ void SpatialDomainWidget::removeUnitsClass(QString ClassName)
 
 void SpatialDomainWidget::addUnit()
 {
-  QStringList AttrsNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+  QStringList AttrsNames = openfluid::utils::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
 
-  QStringList UnitsIDs = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+  QStringList UnitsIDs = openfluid::utils::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
   AddUnitToClassDialog AddDlg(m_ActiveClass,AttrsNames,UnitsIDs,this);
   if (AddDlg.exec() == QDialog::Accepted)
@@ -1383,7 +1383,7 @@ void SpatialDomainWidget::editAttributesValues()
 
 void SpatialDomainWidget::renameAttribute()
 {
-  QStringList AttrsNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+  QStringList AttrsNames = openfluid::utils::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
 
   if (AttrsNames.isEmpty())
   {
@@ -1417,7 +1417,7 @@ void SpatialDomainWidget::removeAttribute()
 {
   bool OK = true;
 
-  QStringList AttrsNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+  QStringList AttrsNames = openfluid::utils::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
 
   if (AttrsNames.isEmpty())
   {
@@ -1703,7 +1703,7 @@ void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
 
 void SpatialDomainWidget::addEvent()
 {
-  QStringList UnitsIDsList = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+  QStringList UnitsIDsList = openfluid::utils::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
   AddEventDialog AddEventDlg(m_ActiveClass,UnitsIDsList,
                              m_FluidxDesc.runConfiguration().getBeginDate(),
@@ -1753,7 +1753,7 @@ void SpatialDomainWidget::editEvent()
 
     if (EvDesc)
     {
-      QStringList UnitsIDsList = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+      QStringList UnitsIDsList = openfluid::utils::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
       openfluid::core::UnitID_t OriginUnitID = ui->EventsTableWidget->item(Row,1)->text().toInt();
 

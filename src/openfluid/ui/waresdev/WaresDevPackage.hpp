@@ -48,7 +48,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {

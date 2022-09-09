@@ -42,11 +42,11 @@
 #include <QStringList>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/utils/ProgramProxy.hpp>
+#include <openfluid/utilsq/ProgramProxy.hpp>
 
 
-#ifndef __OPENFLUID_UTILS_CMAKEPROXY_HPP__
-#define __OPENFLUID_UTILS_CMAKEPROXY_HPP__
+#ifndef __OPENFLUID_UTILSQ_CMAKEPROXY_HPP__
+#define __OPENFLUID_UTILSQ_CMAKEPROXY_HPP__
 
 
 namespace openfluid { namespace utils {
@@ -97,4 +97,4 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_CMAKEPROXY_HPP__ */
+#endif /* __OPENFLUID_UTILSQ_CMAKEPROXY_HPP__ */

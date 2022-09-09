@@ -47,7 +47,7 @@
 #include <QStringList>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/utils/FluidHubAPIClient.hpp>
+#include <openfluid/utilsq/FluidHubAPIClient.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {

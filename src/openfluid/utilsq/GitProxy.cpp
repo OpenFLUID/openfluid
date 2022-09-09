@@ -40,9 +40,9 @@
 #include <QDir>
 #include <QTextStream>
 
-#include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utilsq/GitProxy.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 #include <openfluid/config.hpp>
 
 

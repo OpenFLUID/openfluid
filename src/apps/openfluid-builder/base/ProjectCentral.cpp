@@ -50,7 +50,7 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 
 #include "ProjectCentral.hpp"
 #include "AppTools.hpp"
@@ -917,7 +917,7 @@ void ProjectCentral::checkModel()
 void ProjectCentral::checkSpatialDomain()
 {
   // Build list of units classes
-  m_UnitsClassesList = openfluid::tools::toQStringList(m_FXDesc.spatialDomain().getClassNames());
+  m_UnitsClassesList = openfluid::utils::toQStringList(m_FXDesc.spatialDomain().getClassNames());
 
 
   // Build list of attributes by units class
@@ -925,7 +925,7 @@ void ProjectCentral::checkSpatialDomain()
   for (const auto& UClass : m_UnitsClassesList)
   {
     m_AttributesLists[UClass] =
-      openfluid::tools::toQStringList(m_FXDesc.spatialDomain().getAttributesNames(UClass.toStdString()));
+      openfluid::utils::toQStringList(m_FXDesc.spatialDomain().getAttributesNames(UClass.toStdString()));
     m_AttributesLists[UClass].sort();
   }
 }

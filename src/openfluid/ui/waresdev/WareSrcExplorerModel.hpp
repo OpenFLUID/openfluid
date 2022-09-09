@@ -45,7 +45,7 @@
 #include <QFileSystemModel>
 #include <QFileSystemWatcher>
 
-#include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utilsq/GitProxy.hpp>
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/dllexport.hpp>
 

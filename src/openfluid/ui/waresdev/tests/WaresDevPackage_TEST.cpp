@@ -54,7 +54,7 @@
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
 #include <openfluid/config.hpp>
 
 #include "tests-config.hpp"

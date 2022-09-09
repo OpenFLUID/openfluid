@@ -41,7 +41,7 @@
 #include <QDir>
 
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
 
 
 namespace openfluid { namespace utils {

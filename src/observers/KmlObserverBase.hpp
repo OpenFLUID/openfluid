@@ -49,8 +49,8 @@
 
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
-#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utilsq/ExternalProgram.hpp>
+#include <openfluid/utilsq/CMakeProxy.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
 
