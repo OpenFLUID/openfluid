@@ -191,7 +191,7 @@ void SimulatorWidget::refresh()
 
     if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Container.getLinkUID()))
     {
-      mp_ParamsWidget = static_cast<openfluid::builderext::PluggableParameterizationExtension*>(
+      mp_ParamsWidget = static_cast<openfluid::ui::builderext::PluggableParameterizationExtension*>(
           ExtensionsRegistry::instance()->instanciateParameterizationExtension(Container.getLinkUID()));
       mp_ParamsWidget->setParent(this);
       mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));

@@ -44,7 +44,7 @@
 #include <QDialog>
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModalExtension.hpp>
 
 
 namespace Ui
@@ -53,7 +53,7 @@ namespace Ui
 }
 
 
-class DummyModalSpatialClassic : public openfluid::builderext::PluggableModalExtension
+class DummyModalSpatialClassic : public openfluid::ui::builderext::PluggableModalExtension
 {
   Q_OBJECT;
 
@@ -71,7 +71,7 @@ class DummyModalSpatialClassic : public openfluid::builderext::PluggableModalExt
 
   public slots:
 
-    void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
 
   public:

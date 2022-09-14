@@ -7,14 +7,14 @@
 #define __WAREMAIN_HPP__
 
 
-#include <openfluid/builderext/PluggableModelessExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModelessExtension.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-class %%CLASSNAME%% : public openfluid::builderext::PluggableModelessExtension
+class %%CLASSNAME%% : public openfluid::ui::builderext::PluggableModelessExtension
 {
   Q_OBJECT;
 
@@ -27,7 +27,7 @@ class %%CLASSNAME%% : public openfluid::builderext::PluggableModelessExtension
 
     bool initialize();
 
-    void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
     void manageSimulationStart();
  

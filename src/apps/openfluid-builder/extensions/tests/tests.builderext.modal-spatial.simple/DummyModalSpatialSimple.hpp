@@ -41,16 +41,16 @@
 #define __DUMMYMODALSPATIALSIMPLE_HPP__
 
 
-#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModalExtension.hpp>
 
 
-class DummyModalSpatialSimple : public openfluid::builderext::PluggableModalExtension
+class DummyModalSpatialSimple : public openfluid::ui::builderext::PluggableModalExtension
 {
   Q_OBJECT;
 
   public slots:
 
-    void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
 
   public:

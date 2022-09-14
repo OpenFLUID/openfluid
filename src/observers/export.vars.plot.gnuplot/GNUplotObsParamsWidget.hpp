@@ -40,7 +40,7 @@
 #define __GNUPLOTOBSPARAMSWIDGET_HPP__
 
 
-#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
+#include <openfluid/ui/builderext/PluggableParameterizationExtension.hpp>
 
 #include "GNUplotObsTools.hpp"
 
@@ -55,7 +55,7 @@ namespace Ui
 }
 
 
-class GNUplotObsParamsWidget: public openfluid::builderext::PluggableParameterizationExtension
+class GNUplotObsParamsWidget: public openfluid::ui::builderext::PluggableParameterizationExtension
 {
   Q_OBJECT;
 

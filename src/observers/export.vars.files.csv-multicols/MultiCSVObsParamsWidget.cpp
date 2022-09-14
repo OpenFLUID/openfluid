@@ -57,7 +57,7 @@ END_BUILDEREXT_SIGNATURE
 // =====================================================================
 
 
-MultiCSVObsParamsWidget::MultiCSVObsParamsWidget(): openfluid::builderext::PluggableParameterizationExtension(),
+MultiCSVObsParamsWidget::MultiCSVObsParamsWidget(): openfluid::ui::builderext::PluggableParameterizationExtension(),
   ui(new Ui::MultiCSVObsParamsWidget)
 {
   ui->setupUi(this);

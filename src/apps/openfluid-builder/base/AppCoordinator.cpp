@@ -299,7 +299,7 @@ bool AppCoordinator::setProjectModule(const QString& ProjectPath)
 
 
     connect(static_cast<ProjectModuleWidget*>(mp_CurrentModule),
-            SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+            SIGNAL(fluidxChanged(openfluid::ui::builderext::FluidXUpdateFlags::Flags)),
             this,SLOT(enableSave()));
 
     connect(static_cast<ProjectModuleWidget*>(mp_CurrentModule),SIGNAL(savePerformed()),

@@ -8,7 +8,7 @@
 
 
 %%CLASSNAME%%::%%CLASSNAME%%() :
-  openfluid::builderext::PluggableWorkspaceExtension()
+  openfluid::ui::builderext::PluggableWorkspaceExtension()
 {
 
 }
@@ -38,7 +38,7 @@ bool %%CLASSNAME%%::initialize()
 // =====================================================================
 
 
-void %%CLASSNAME%%::update(openfluid::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
+void %%CLASSNAME%%::update(openfluid::ui::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
 {
 
 }

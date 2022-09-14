@@ -37,7 +37,7 @@
  */
 
 
-#include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
+#include <openfluid/ui/builderext/PluggableWorkspaceExtension.hpp>
 
 #include "GraphvizScene.hpp"
 
@@ -51,7 +51,7 @@ namespace Ui
   class GraphvizWidget;
 }
 
-class GraphvizViewExtension : public openfluid::builderext::PluggableWorkspaceExtension
+class GraphvizViewExtension : public openfluid::ui::builderext::PluggableWorkspaceExtension
 {
   Q_OBJECT;
 
@@ -84,7 +84,7 @@ class GraphvizViewExtension : public openfluid::builderext::PluggableWorkspaceEx
 
   public slots:
 
-      void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+      void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
 
   public:

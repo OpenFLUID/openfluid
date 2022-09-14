@@ -263,11 +263,11 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-core
                       openfluid-machine
                       openfluid-ware
+                      openfluid-fluidx
                       openfluid-tools
                       openfluid-utils
                       openfluid-ui-common
-                      openfluid-builderext
-                      openfluid-fluidx
+                      openfluid-ui-builderext
                       openfluid-ui-waresdev
                       openfluid-waresdev
                       Qt5::Core

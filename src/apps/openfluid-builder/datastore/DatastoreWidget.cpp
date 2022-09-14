@@ -317,7 +317,7 @@ void DatastoreWidget::addItem()
 
       m_Datastore.appendItem(DSItemDesc);
 
-      emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
+      emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
 
       refresh();
     }
@@ -363,7 +363,7 @@ void DatastoreWidget::removeItem()
     {
       m_Datastore.removeItem(DSItemIndex);
 
-      emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
+      emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
 
       refresh();
     }
@@ -391,7 +391,7 @@ void DatastoreWidget::moveItemUp()
 
     m_Datastore.moveItem(From,To);
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
 
     refresh();
 
@@ -422,7 +422,7 @@ void DatastoreWidget::moveItemDown()
 
     m_Datastore.moveItem(From,To);
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE);
 
     refresh();
 

@@ -31,61 +31,42 @@
 
 
 /**
-  @file PluggableModalExtension.hpp
+  @file PluggableWorkspaceExtension.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
-*/
+ */
 
 
-#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__
-#define __OPENFLUID_BUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__
+#include <openfluid/ui/builderext/PluggableWorkspaceExtension.hpp>
 
 
-#include <QDialog>
-
-#include <openfluid/builderext/PluggableFeatureExtension.hpp>
-#include <openfluid/dllexport.hpp>
+namespace openfluid { namespace ui { namespace builderext {
 
 
-namespace openfluid { namespace builderext {
-
-class OPENFLUID_API PluggableModalExtension : public QDialog, public PluggableFeatureExtension
+void PluggableWorkspaceExtension::update(FluidXUpdateFlags::Flags /*UpdateFlags*/)
 {
-  Q_OBJECT;
+
+}
 
 
-  signals:
-
-    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
-                         openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL);
+// =====================================================================
+// =====================================================================
 
 
-  public slots:
+void PluggableWorkspaceExtension::manageSimulationStart()
+{
 
-    virtual void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
-
-    virtual void manageSimulationStart();
-
-    virtual void manageSimulationFinish();
+}
 
 
-  public:
-
-    PluggableModalExtension():
-      QDialog(nullptr), PluggableFeatureExtension()
-    { }
+// =====================================================================
+// =====================================================================
 
 
-    ~PluggableModalExtension()
-    { }
+void PluggableWorkspaceExtension::manageSimulationFinish()
+{
+
+}
 
 
-    virtual bool initialize()
-    { return true; }
-
-};
-
-} } // namespaces
-
-
-#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__ */
+} } }  // namespaces

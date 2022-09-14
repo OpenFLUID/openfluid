@@ -43,7 +43,7 @@
 
 #include <QWidget>
 
-#include <openfluid/builderext/FluidXUpdateFlags.hpp>
+#include <openfluid/ui/builderext/FluidXUpdateFlags.hpp>
 
 
 namespace openfluid { namespace fluidx {
@@ -61,8 +61,8 @@ class WorkspaceWidget : public QWidget
 
   signals:
 
-    void changed(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
-                 openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL);
+    void changed(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags =
+                 openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL);
 
 
   public slots:

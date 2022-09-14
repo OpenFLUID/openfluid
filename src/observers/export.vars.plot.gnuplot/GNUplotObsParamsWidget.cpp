@@ -58,7 +58,7 @@ END_BUILDEREXT_SIGNATURE
 // =====================================================================
 
 
-GNUplotObsParamsWidget::GNUplotObsParamsWidget(): openfluid::builderext::PluggableParameterizationExtension(),
+GNUplotObsParamsWidget::GNUplotObsParamsWidget(): openfluid::ui::builderext::PluggableParameterizationExtension(),
   ui(new Ui::GNUplotObsParamsWidget)
 {
   ui->setupUi(this);

@@ -39,7 +39,7 @@
 
 #include <QLabel>
 
-#include <openfluid/builderext/PluggableModelessExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModelessExtension.hpp>
 
 
 // =====================================================================
@@ -59,12 +59,12 @@ END_BUILDEREXT_SIGNATURE
 // =====================================================================
 
 
-class DummyModelessOtherSimple : public openfluid::builderext::PluggableModelessExtension
+class DummyModelessOtherSimple : public openfluid::ui::builderext::PluggableModelessExtension
 {
   public:
 
     DummyModelessOtherSimple() :
-      openfluid::builderext::PluggableModelessExtension()
+      openfluid::ui::builderext::PluggableModelessExtension()
     {
       new QLabel("test",this);
     }

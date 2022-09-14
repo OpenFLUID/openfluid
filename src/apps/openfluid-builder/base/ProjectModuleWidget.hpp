@@ -45,8 +45,9 @@
 #include <QFileSystemWatcher>
 #include <QTimer>
 
-#include <openfluid/builderext/FluidXUpdateFlags.hpp>
+#include <openfluid/ui/builderext/FluidXUpdateFlags.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModelessExtension.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 
@@ -99,11 +100,11 @@ class ProjectModuleWidget : public AbstractModuleWidget
 
   private slots:
 
-    void releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender = nullptr);
+    void releaseModelessExtension(openfluid::ui::builderext::PluggableModelessExtension* Sender = nullptr);
 
-    void dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    void dispatchChanges(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
-    void dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    void dispatchChangesFromExtension(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
     void updateSimulatorsWares();
 
@@ -173,7 +174,7 @@ class ProjectModuleWidget : public AbstractModuleWidget
 
   signals:
 
-    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    void fluidxChanged(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
     void savePerformed();
 

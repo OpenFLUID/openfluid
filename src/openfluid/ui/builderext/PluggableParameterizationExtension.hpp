@@ -37,8 +37,8 @@
 */
 
 
-#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__
-#define __OPENFLUID_BUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__
+#ifndef __OPENFLUID_UIBUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__
+#define __OPENFLUID_UIBUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__
 
 
 #include <QWidget>
@@ -80,10 +80,11 @@
 // =====================================================================
 
 
-namespace openfluid { namespace builderext {
+namespace openfluid { namespace ui { namespace builderext {
 
 
-class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public PluggableBuilderExtension
+class OPENFLUID_API PluggableParameterizationExtension : public QWidget, 
+                                                         public openfluid::builderext::PluggableBuilderExtension
 {
   Q_OBJECT;
 
@@ -132,7 +133,7 @@ class OPENFLUID_API PluggableParameterizationExtension : public QWidget, public 
 };
 
 
-} }  // namespaces
+} } }  // namespaces
 
 
-#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__ */
+#endif /* __OPENFLUID_UIBUILDEREXT_PLUGGABLEPARAMETERIZATIONEXTENSION_HPP__ */

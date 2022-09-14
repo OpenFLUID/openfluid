@@ -1,6 +1,9 @@
 
 ADD_SUBDIRECTORY(common)
 ADD_SUBDIRECTORY(waresdev)
+IF (OFBUILD_ENABLE_APP_BUILDER)
+  ADD_SUBDIRECTORY(builderext)
+ENDIF()
 
 CONFIGURE_FILE(config.hpp.in config.hpp @ONLY)
 

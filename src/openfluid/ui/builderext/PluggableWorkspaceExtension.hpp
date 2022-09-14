@@ -31,42 +31,56 @@
 
 
 /**
-  @file PluggableModalExtension.cpp
+  @file PluggableWorkspaceExtension.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
-*/
+ */
 
 
-#include <openfluid/builderext/PluggableModalExtension.hpp>
+#ifndef __OPENFLUID_UIBUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__
+#define __OPENFLUID_UIBUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__
 
 
-namespace openfluid { namespace builderext {
+#include <QWidget>
+
+#include <openfluid/ui/builderext/PluggableFeatureExtension.hpp>
+#include <openfluid/dllexport.hpp>
 
 
-void PluggableModalExtension::update(openfluid::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
+namespace openfluid { namespace ui { namespace builderext {
+
+class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public PluggableFeatureExtension
 {
+  Q_OBJECT;
 
-}
+  signals:
 
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableModalExtension::manageSimulationStart()
-{
-
-}
+    void fluidxChanged(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags = 
+                         openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL);
 
 
-// =====================================================================
-// =====================================================================
+  public slots:
+
+    virtual void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+
+    virtual void manageSimulationStart();
+
+    virtual void manageSimulationFinish();
 
 
-void PluggableModalExtension::manageSimulationFinish()
-{
+  public:
 
-}
+    PluggableWorkspaceExtension():
+      QWidget(nullptr), PluggableFeatureExtension()
+    { }
 
 
-} }  // namespaces
+    virtual bool initialize()
+    { return true; }
+};
+
+
+} } }  // namespaces
+
+
+#endif /* __OPENFLUID_UIBUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__ */

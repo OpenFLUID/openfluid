@@ -37,14 +37,14 @@
 */
 
 
-#include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
+#include <openfluid/ui/builderext/PluggableWorkspaceExtension.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-class DummyWorkspaceOtherSimple : public openfluid::builderext::PluggableWorkspaceExtension
+class DummyWorkspaceOtherSimple : public openfluid::ui::builderext::PluggableWorkspaceExtension
 {
   Q_OBJECT;
 

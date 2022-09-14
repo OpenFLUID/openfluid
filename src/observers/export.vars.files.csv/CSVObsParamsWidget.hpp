@@ -41,7 +41,7 @@
 #define __CSVOBSPARAMSWIDGET_HPP__
 
 
-#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
+#include <openfluid/ui/builderext/PluggableParameterizationExtension.hpp>
 
 #include "CSVObsTools.hpp"
 
@@ -52,7 +52,7 @@ namespace Ui
 }
 
 
-class CSVObsParamsWidget: public openfluid::builderext::PluggableParameterizationExtension
+class CSVObsParamsWidget: public openfluid::ui::builderext::PluggableParameterizationExtension
 {
   Q_OBJECT;
 

@@ -44,7 +44,7 @@
 #include <QListWidgetItem>
 #include <QCloseEvent>
 
-#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModalExtension.hpp>
 
 #include "PrecheckImportDialog.hpp"
 #include "SourceInfos.hpp"
@@ -60,7 +60,7 @@ namespace Ui
 }
 
 
-class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExtension
+class OGRGDALImportExtension : public openfluid::ui::builderext::PluggableModalExtension
 {
   Q_OBJECT;
 
@@ -144,7 +144,7 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
 
   public slots:
 
-    void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
 
   public:

@@ -37,7 +37,7 @@
  */
 
 
-#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModalExtension.hpp>
 #include "DummyModalSpatialSimple.hpp"
 
 
@@ -58,7 +58,7 @@ END_BUILDEREXT_SIGNATURE
 
 
 DummyModalSpatialSimple::DummyModalSpatialSimple() :
-  openfluid::builderext::PluggableModalExtension()
+  openfluid::ui::builderext::PluggableModalExtension()
 {
 
 }
@@ -68,7 +68,7 @@ DummyModalSpatialSimple::DummyModalSpatialSimple() :
 // =====================================================================
 
 
-void DummyModalSpatialSimple::update(openfluid::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
+void DummyModalSpatialSimple::update(openfluid::ui::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
 {
   std::string DirStr;
 

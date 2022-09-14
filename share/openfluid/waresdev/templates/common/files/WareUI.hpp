@@ -7,10 +7,10 @@
 #define __WAREUI_HPP__
 
 
-#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
+#include <openfluid/ui/builderext/PluggableParameterizationExtension.hpp>
 
 
-class %%PARAMSUICLASSNAME%%: public openfluid::builderext::PluggableParameterizationExtension
+class %%PARAMSUICLASSNAME%%: public openfluid::ui::builderext::PluggableParameterizationExtension
 {
   Q_OBJECT;
 

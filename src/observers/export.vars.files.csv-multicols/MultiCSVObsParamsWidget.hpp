@@ -41,7 +41,7 @@
 #define __MULTICSVOBSPARAMSWIDGET_HPP__
 
 
-#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
+#include <openfluid/ui/builderext/PluggableParameterizationExtension.hpp>
 
 #include "MultiCSVObsTools.hpp"
 
@@ -52,7 +52,7 @@ namespace Ui
 }
 
 
-class MultiCSVObsParamsWidget: public openfluid::builderext::PluggableParameterizationExtension
+class MultiCSVObsParamsWidget: public openfluid::ui::builderext::PluggableParameterizationExtension
 {
   Q_OBJECT;
 

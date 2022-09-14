@@ -56,7 +56,7 @@ END_BUILDEREXT_SIGNATURE
 
 
 DummyWorkspaceOtherSimple::DummyWorkspaceOtherSimple() :
-  openfluid::builderext::PluggableWorkspaceExtension()
+  openfluid::ui::builderext::PluggableWorkspaceExtension()
 {
   QPushButton* Button = new QPushButton("emit signal",this);
   connect(Button,SIGNAL(clicked()),this,SLOT(change()));

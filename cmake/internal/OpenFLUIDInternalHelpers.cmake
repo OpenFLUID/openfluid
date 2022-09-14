@@ -362,7 +362,7 @@ FUNCTION(OFBUILD_ADD_BUILDER_EXTENSION EXT_SRCDIR EXT_BINDIR)
                         openfluid-base
                         openfluid-tools
                         openfluid-ware
-                        openfluid-builderext
+                        openfluid-ui-builderext
                         Qt5::Core
                         Qt5::Widgets
                         ${EXT_EXTRA_LINKS}

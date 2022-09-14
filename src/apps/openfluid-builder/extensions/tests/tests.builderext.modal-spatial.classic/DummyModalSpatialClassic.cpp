@@ -56,7 +56,7 @@ END_BUILDEREXT_SIGNATURE
 
 
 DummyModalSpatialClassic::DummyModalSpatialClassic() :
-  openfluid::builderext::PluggableModalExtension(),ui(new Ui::DummyModalSpatialClassic)
+  openfluid::ui::builderext::PluggableModalExtension(),ui(new Ui::DummyModalSpatialClassic)
 {
   Q_INIT_RESOURCE(spatialclassic);
 
@@ -105,7 +105,7 @@ void DummyModalSpatialClassic::addUnitClass()
     UDesc.setProcessOrder(1);
     mp_Desc->spatialDomain().addUnit(UDesc);
 
-    emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
+    emit fluidxChanged(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
   }
 }
 
@@ -118,8 +118,8 @@ void DummyModalSpatialClassic::clearSpatialDomain()
 {
   mp_Desc->spatialDomain().clearDomain();
 
-  emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
-                     openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
+  emit fluidxChanged(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
+                     openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
 
 }
 
@@ -128,11 +128,11 @@ void DummyModalSpatialClassic::clearSpatialDomain()
 // =====================================================================
 
 
-void DummyModalSpatialClassic::update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
+void DummyModalSpatialClassic::update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
-  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL) ||
-      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS) ||
-      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT))
+  if (UpdateFlags.testFlag(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL) ||
+      UpdateFlags.testFlag(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS) ||
+      UpdateFlags.testFlag(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT))
   {
     ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)")
                             .arg(mp_Desc->spatialDomain().getClassNames().size()));

@@ -233,7 +233,7 @@ void ModelWidget::addGlobalParam()
     int Position = ui->GlobalParamsAreaContents->layout()->count()-1;
     ((QBoxLayout*)(ui->GlobalParamsAreaContents->layout()))->insertWidget(Position,ParamWidget);
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
   }
 }
 
@@ -252,7 +252,7 @@ void ModelWidget::removeGlobalParam(const QString& Name)
       W->deleteLater();
       m_Model.eraseGlobalParameter(Name.toStdString());
 
-      emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
+      emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
       return;
     }
   }
@@ -266,7 +266,7 @@ void ModelWidget::removeGlobalParam(const QString& Name)
 void ModelWidget::updateGlobalParamValue(const QString& Name, const QString& Value)
 {
   m_Model.setGlobalParameter(Name.toStdString(),Value.toStdString());
-  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
+  emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
 }
 
 
@@ -339,7 +339,7 @@ void ModelWidget::addSimulator()
 
     refreshScene();
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
   }
 }
 
@@ -387,7 +387,7 @@ void ModelWidget::addGenerator()
 
     refreshScene();
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
   }
 }
 
@@ -415,7 +415,7 @@ void ModelWidget::moveModelItemUp(const QString& /*ID*/, int CurrentIndex)
 
   refreshScene();
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
+  emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
 }
 
 
@@ -443,7 +443,7 @@ void ModelWidget::moveModelItemDown(const QString& /*ID*/, int CurrentIndex)
 
   refreshScene();
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
+  emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
 }
 
 
@@ -468,7 +468,7 @@ void ModelWidget::removeModelItem(const QString& /*ID*/, int CurrentIndex)
 
   refreshScene();
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
+  emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF);
 }
 
 
@@ -581,8 +581,8 @@ void ModelWidget::dispatchChangesFromChildren()
 {
   refreshScene();
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF |
-               openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
+  emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELDEF |
+               openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_MODELPARAMS);
 }
 
 

@@ -37,11 +37,11 @@
 */
 
 
-#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEFEATUREEXTENSION_HPP__
-#define __OPENFLUID_BUILDEREXT_PLUGGABLEFEATUREEXTENSION_HPP__
+#ifndef __OPENFLUID_UIBUILDEREXT_PLUGGABLEFEATUREEXTENSION_HPP__
+#define __OPENFLUID_UIBUILDEREXT_PLUGGABLEFEATUREEXTENSION_HPP__
 
 
-#include <openfluid/builderext/FluidXUpdateFlags.hpp>
+#include <openfluid/ui/builderext/FluidXUpdateFlags.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
 
 
@@ -139,10 +139,10 @@
 // =====================================================================
 
 
-namespace openfluid { namespace builderext {
+namespace openfluid { namespace ui { namespace builderext {
 
 
-class OPENFLUID_API PluggableFeatureExtension : public PluggableBuilderExtension
+class OPENFLUID_API PluggableFeatureExtension : public openfluid::builderext::PluggableBuilderExtension
 {
 
   protected:
@@ -178,7 +178,7 @@ class OPENFLUID_API PluggableFeatureExtension : public PluggableBuilderExtension
 };
 
 
-} }  // namespaces
+} } } // namespaces
 
 
-#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEFEATUREEXTENSION_HPP__ */
+#endif /* __OPENFLUID_UIBUILDEREXT_PLUGGABLEFEATUREEXTENSION_HPP__ */

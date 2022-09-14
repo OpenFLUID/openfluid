@@ -66,7 +66,7 @@ END_BUILDEREXT_SIGNATURE
 
 
 GraphvizViewExtension::GraphvizViewExtension() :
-  openfluid::builderext::PluggableWorkspaceExtension(), ui(new Ui::GraphvizWidget),
+  openfluid::ui::builderext::PluggableWorkspaceExtension(), ui(new Ui::GraphvizWidget),
   mp_GraphvizScene(nullptr)
 {
   ui->setupUi(this);
@@ -180,10 +180,10 @@ void GraphvizViewExtension::launchSVGFileGeneration()
 // =====================================================================
 
 
-void GraphvizViewExtension::update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
+void GraphvizViewExtension::update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
-  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL) ||
-      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT))
+  if (UpdateFlags.testFlag(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL) ||
+      UpdateFlags.testFlag(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT))
   {
 
     if (ui->ToolsWidget->isEnabled())  // check if no other worker is running

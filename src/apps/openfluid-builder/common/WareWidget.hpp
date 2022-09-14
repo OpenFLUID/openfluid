@@ -44,7 +44,7 @@
 #include <QMouseEvent>
 #include <QWidget>
 
-#include <openfluid/builderext/PluggableParameterizationExtension.hpp>
+#include <openfluid/ui/builderext/PluggableParameterizationExtension.hpp>
 #include <openfluid/ui/common/ActionLabel.hpp>
 
 #include "SignatureWidget.hpp"
@@ -101,7 +101,7 @@ class WareWidget : public QWidget
 
     bool m_ParamsExpanded;
 
-    openfluid::builderext::PluggableParameterizationExtension* mp_ParamsWidget;
+    openfluid::ui::builderext::PluggableParameterizationExtension* mp_ParamsWidget;
 
 
     virtual void setAvailableWare(bool Available);

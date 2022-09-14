@@ -43,7 +43,7 @@
 
 #include <QDialog>
 
-#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModalExtension.hpp>
 
 
 namespace Ui
@@ -52,7 +52,7 @@ namespace Ui
 }
 
 
-class CMakeBuilderExtension : public openfluid::builderext::PluggableModalExtension
+class CMakeBuilderExtension : public openfluid::ui::builderext::PluggableModalExtension
 {
   Q_OBJECT;
 

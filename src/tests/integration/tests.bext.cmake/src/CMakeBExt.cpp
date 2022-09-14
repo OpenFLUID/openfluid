@@ -48,7 +48,7 @@
 
 
 CMakeBuilderExtension::CMakeBuilderExtension() :
-  openfluid::builderext::PluggableModalExtension(),
+  openfluid::ui::builderext::PluggableModalExtension(),
   ui(new Ui::BExtDialog)
 {
   Q_INIT_RESOURCE(bext);

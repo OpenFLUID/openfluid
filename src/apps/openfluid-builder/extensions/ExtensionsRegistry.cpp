@@ -37,7 +37,7 @@
  */
 
 
-#include <openfluid/builderext/PluggableModelessExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModelessExtension.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 
 #include "ExtensionsRegistry.hpp"
@@ -152,8 +152,8 @@ void ExtensionsRegistry::releaseAllFeatureExtensions()
         (*it).second.Container.hasSignature() &&
         (*it).second.Container.signature()->Mode == openfluid::builderext::ExtensionMode::MODELESS)
     {
-      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second.Body.get())->close();
-      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second.Body.get())->deleteLater();
+      dynamic_cast<openfluid::ui::builderext::PluggableModelessExtension*>((*it).second.Body.get())->close();
+      dynamic_cast<openfluid::ui::builderext::PluggableModelessExtension*>((*it).second.Body.get())->deleteLater();
     }
   }
 }

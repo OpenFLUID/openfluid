@@ -31,48 +31,65 @@
 
 
 /**
-  @file FluidXUpdateFlags.hpp
+  @file PluggableModalExtension.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDEREXT_FLUIDXUPDATEFLAGS_HPP__
-#define __OPENFLUID_BUILDEREXT_FLUIDXUPDATEFLAGS_HPP__
+#ifndef __OPENFLUID_UIBUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__
+#define __OPENFLUID_UIBUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__
 
 
-#include <QFlags>
+#include <QDialog>
 
+#include <openfluid/ui/builderext/PluggableFeatureExtension.hpp>
 #include <openfluid/dllexport.hpp>
 
 
-namespace openfluid { namespace builderext {
+namespace openfluid { namespace ui { namespace builderext {
 
 
-class OPENFLUID_API FluidXUpdateFlags
+class OPENFLUID_API PluggableModalExtension : public QDialog, public PluggableFeatureExtension
 {
+  Q_OBJECT;
+
+
+  signals:
+
+    void fluidxChanged(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags = 
+                         openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL);
+
+
+  public slots:
+
+    virtual void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+
+    virtual void manageSimulationStart();
+
+    virtual void manageSimulationFinish();
+
+
   public:
 
-    enum class Flag
-    {
-      FLUIDX_MODELDEF = 1 << 0,
-      FLUIDX_MODELPARAMS = 1 << 2,
-      FLUIDX_SPATIALSTRUCT = 1 << 3,
-      FLUIDX_SPATIALATTRS = 1 << 4,
-      FLUIDX_SPATIALEVENTS = 1 << 5,
-      FLUIDX_DATASTORE = 1 << 6,
-      FLUIDX_MONITORING = 1 << 7,
-      FLUIDX_RUNCONFIG = 1 << 8,
-      FLUIDX_ALL = 1 << 9
-    };
+    PluggableModalExtension():
+      QDialog(nullptr), PluggableFeatureExtension()
+    { }
 
-    Q_DECLARE_FLAGS(Flags, Flag)
+
+    ~PluggableModalExtension()
+    { }
+
+
+    virtual bool initialize()
+    { 
+      return true; 
+    }
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(FluidXUpdateFlags::Flags)
 
-} }  // namespaces
+} } }  // namespaces
 
 
-#endif /* __OPENFLUID_BUILDEREXT_FLUIDXUPDATEFLAGS_HPP__ */
+#endif /* __OPENFLUID_UIBUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__ */

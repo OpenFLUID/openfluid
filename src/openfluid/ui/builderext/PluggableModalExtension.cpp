@@ -31,19 +31,19 @@
 
 
 /**
-  @file PluggableWorkspaceExtension.cpp
+  @file PluggableModalExtension.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModalExtension.hpp>
 
 
-namespace openfluid { namespace builderext {
+namespace openfluid { namespace ui { namespace builderext {
 
 
-void PluggableWorkspaceExtension::update(openfluid::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
+void PluggableModalExtension::update(FluidXUpdateFlags::Flags /*UpdateFlags*/)
 {
 
 }
@@ -53,7 +53,7 @@ void PluggableWorkspaceExtension::update(openfluid::builderext::FluidXUpdateFlag
 // =====================================================================
 
 
-void PluggableWorkspaceExtension::manageSimulationStart()
+void PluggableModalExtension::manageSimulationStart()
 {
 
 }
@@ -63,10 +63,10 @@ void PluggableWorkspaceExtension::manageSimulationStart()
 // =====================================================================
 
 
-void PluggableWorkspaceExtension::manageSimulationFinish()
+void PluggableModalExtension::manageSimulationFinish()
 {
 
 }
 
 
-} }  // namespaces
+} } }  // namespaces

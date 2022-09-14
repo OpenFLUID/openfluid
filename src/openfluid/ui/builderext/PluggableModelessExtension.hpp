@@ -37,18 +37,19 @@
 */
 
 
-#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__
-#define __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__
+#ifndef __OPENFLUID_UIBUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__
+#define __OPENFLUID_UIBUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__
 
 
 #include <QDialog>
 #include <QCloseEvent>
 
-#include <openfluid/builderext/PluggableFeatureExtension.hpp>
+#include <openfluid/ui/builderext/PluggableFeatureExtension.hpp>
 #include <openfluid/dllexport.hpp>
 
 
-namespace openfluid { namespace builderext {
+namespace openfluid { namespace ui { namespace builderext {
+
 
 class OPENFLUID_API PluggableModelessExtension : public QDialog, public PluggableFeatureExtension
 {
@@ -56,13 +57,13 @@ class OPENFLUID_API PluggableModelessExtension : public QDialog, public Pluggabl
 
   signals:
 
-    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
-                         FluidXUpdateFlags::Flag::FLUIDX_ALL);
+    void fluidxChanged(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags = 
+                         openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_ALL);
 
 
   public slots:
 
-    virtual void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    virtual void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
     virtual void manageSimulationStart();
 
@@ -95,7 +96,7 @@ class OPENFLUID_API PluggableModelessExtension : public QDialog, public Pluggabl
 };
 
 
-} } // namespaces
+} } }  // namespaces
 
 
-#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__ */
+#endif /* __OPENFLUID_UIBUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__ */

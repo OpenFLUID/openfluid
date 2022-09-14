@@ -31,42 +31,50 @@
 
 
 /**
-  @file PluggableModelessExtension.cpp
+  @file FluidXUpdateFlags.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
-*/
+ */
 
 
-#include <openfluid/builderext/PluggableModelessExtension.hpp>
+#ifndef __OPENFLUID_UIBUILDEREXT_FLUIDXUPDATEFLAGS_HPP__
+#define __OPENFLUID_UIBUILDEREXT_FLUIDXUPDATEFLAGS_HPP__
 
 
-namespace openfluid { namespace builderext {
+#include <QFlags>
+
+#include <openfluid/dllexport.hpp>
 
 
-void PluggableModelessExtension::update(openfluid::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
+namespace openfluid { namespace ui { namespace builderext {
+
+
+class OPENFLUID_API FluidXUpdateFlags
 {
+  public:
 
-}
+    enum class Flag
+    {
+      FLUIDX_MODELDEF = 1 << 0,
+      FLUIDX_MODELPARAMS = 1 << 2,
+      FLUIDX_SPATIALSTRUCT = 1 << 3,
+      FLUIDX_SPATIALATTRS = 1 << 4,
+      FLUIDX_SPATIALEVENTS = 1 << 5,
+      FLUIDX_DATASTORE = 1 << 6,
+      FLUIDX_MONITORING = 1 << 7,
+      FLUIDX_RUNCONFIG = 1 << 8,
+      FLUIDX_ALL = 1 << 9
+    };
 
+    Q_DECLARE_FLAGS(Flags, Flag)
 
-// =====================================================================
-// =====================================================================
-
-
-void PluggableModelessExtension::manageSimulationStart()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableModelessExtension::manageSimulationFinish()
-{
-
-}
+};
 
 
-} }  // namespaces
+Q_DECLARE_OPERATORS_FOR_FLAGS(FluidXUpdateFlags::Flags)
+
+
+} } } // namespaces
+
+
+#endif /* __OPENFLUID_UIBUILDEREXT_FLUIDXUPDATEFLAGS_HPP__ */

@@ -6,7 +6,7 @@
 #include "WareUI.hpp"
 
 
-%%PARAMSUICLASSNAME%%::%%PARAMSUICLASSNAME%%() : openfluid::builderext::PluggableParameterizationExtension()
+%%PARAMSUICLASSNAME%%::%%PARAMSUICLASSNAME%%() : openfluid::ui::builderext::PluggableParameterizationExtension()
 {
 
 }

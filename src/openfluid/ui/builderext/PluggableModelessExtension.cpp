@@ -31,56 +31,42 @@
 
 
 /**
-  @file PluggableWorkspaceExtension.hpp
+  @file PluggableModelessExtension.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+*/
 
 
-#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__
-#define __OPENFLUID_BUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__
+#include <openfluid/ui/builderext/PluggableModelessExtension.hpp>
 
 
-#include <QWidget>
-
-#include <openfluid/builderext/PluggableFeatureExtension.hpp>
-#include <openfluid/dllexport.hpp>
+namespace openfluid { namespace ui { namespace builderext {
 
 
-namespace openfluid { namespace builderext {
-
-class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public PluggableFeatureExtension
+void PluggableModelessExtension::update(FluidXUpdateFlags::Flags /*UpdateFlags*/)
 {
-  Q_OBJECT;
 
-  signals:
-
-    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags = 
-                         FluidXUpdateFlags::Flag::FLUIDX_ALL);
+}
 
 
-  public slots:
-
-    virtual void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
-
-    virtual void manageSimulationStart();
-
-    virtual void manageSimulationFinish();
+// =====================================================================
+// =====================================================================
 
 
-  public:
+void PluggableModelessExtension::manageSimulationStart()
+{
 
-    PluggableWorkspaceExtension():
-      QWidget(nullptr), PluggableFeatureExtension()
-    { }
-
-
-    virtual bool initialize()
-    { return true; }
-};
+}
 
 
-} } // namespaces
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__ */
+void PluggableModelessExtension::manageSimulationFinish()
+{
+
+}
+
+
+} } }  // namespaces

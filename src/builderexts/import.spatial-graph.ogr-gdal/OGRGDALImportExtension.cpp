@@ -88,7 +88,7 @@ modalSession has been exited prematurely - check for a reentrant call to endModa
 */
 
 OGRGDALImportExtension::OGRGDALImportExtension() :
-  openfluid::builderext::PluggableModalExtension(), ui(new Ui::OGRGDALDialog),
+  openfluid::ui::builderext::PluggableModalExtension(), ui(new Ui::OGRGDALDialog),
   m_CurrentSrcIndex(-1), mp_PrecheckImportDlg(nullptr)
 {
   ui->setupUi(this);
@@ -209,7 +209,7 @@ bool OGRGDALImportExtension::initialize()
 // =====================================================================
 
 
-void OGRGDALImportExtension::update(openfluid::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
+void OGRGDALImportExtension::update(openfluid::ui::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
 {
 
 }
@@ -799,9 +799,9 @@ void OGRGDALImportExtension::updateEmptyStringReplacement()
 
 void OGRGDALImportExtension::handleCloseRequired()
 {
-  openfluid::builderext::FluidXUpdateFlags::Flags ChangesFlags =
-      openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
-      openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS;
+  openfluid::ui::builderext::FluidXUpdateFlags::Flags ChangesFlags =
+      openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
+      openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS;
 
   bool DatastoreChanged = false;
 
@@ -812,7 +812,7 @@ void OGRGDALImportExtension::handleCloseRequired()
 
   if (DatastoreChanged)
   {
-    ChangesFlags = ChangesFlags | openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE;
+    ChangesFlags = ChangesFlags | openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_DATASTORE;
   }
 
   emit fluidxChanged(ChangesFlags);

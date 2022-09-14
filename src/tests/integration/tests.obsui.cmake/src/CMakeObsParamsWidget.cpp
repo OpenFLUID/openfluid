@@ -44,7 +44,7 @@
 #include "ui_CMakeObsParamsWidget.h"
 
 
-CMakeObsParamsWidget::CMakeObsParamsWidget(): openfluid::builderext::PluggableParameterizationExtension(),
+CMakeObsParamsWidget::CMakeObsParamsWidget(): openfluid::ui::builderext::PluggableParameterizationExtension(),
   ui(new Ui::CMakeObsParamsWidget)
 {
   ui->setupUi(this);

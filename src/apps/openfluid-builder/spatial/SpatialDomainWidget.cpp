@@ -949,7 +949,7 @@ void SpatialDomainWidget::addUnitsClass()
 
     updateUpDownButtons();
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
 
     refresh();
   }
@@ -1041,8 +1041,8 @@ void SpatialDomainWidget::removeUnitsClass(QString ClassName)
 
   refresh();
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
-               openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
+  emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
+               openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
 
   QApplication::restoreOverrideCursor();
 }
@@ -1092,8 +1092,8 @@ void SpatialDomainWidget::addUnit()
 
     refreshMap();
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
-                 openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
+                 openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
   }
 }
 
@@ -1145,8 +1145,8 @@ void SpatialDomainWidget::removeUnit()
 
     refresh();
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
-                 openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT |
+                 openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
     QApplication::restoreOverrideCursor();
   }
 }
@@ -1196,7 +1196,7 @@ void SpatialDomainWidget::addConnection()
 
     updateUnitSelection(ui->IDsListWidget->currentRow());
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
 
     QApplication::restoreOverrideCursor();
   }
@@ -1266,7 +1266,7 @@ void SpatialDomainWidget::removeConnection()
 
        updateUnitSelection(ui->IDsListWidget->currentRow());
 
-       emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
+       emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
 
        QApplication::restoreOverrideCursor();
     }
@@ -1290,7 +1290,7 @@ void SpatialDomainWidget::addAttribute()
                           AddDlg.getDefaultValue().toStdString());
     refreshClassAttributes();
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
   }
 }
 
@@ -1403,7 +1403,7 @@ void SpatialDomainWidget::renameAttribute()
 
       refreshClassAttributes();
 
-      emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
+      emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
     }
   }
 }
@@ -1448,7 +1448,7 @@ void SpatialDomainWidget::removeAttribute()
 
         refreshClassAttributes();
 
-        emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
+        emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
       }
     }
   }
@@ -1678,7 +1678,7 @@ void SpatialDomainWidget::updateFluidXAttributeFromCellValue(int Row, int Column
   {
     m_Domain.setAttribute(m_ActiveClass.toStdString(),ID,Attr,Value);
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALATTRS);
   }
 }
 
@@ -1693,7 +1693,7 @@ void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
   (&const_cast<openfluid::fluidx::SpatialUnitDescriptor&>(m_Domain.spatialUnit(m_ActiveClass.toStdString(),ID)))
       ->setProcessOrder(PcsOrd);
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
+  emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALSTRUCT);
 }
 
 
@@ -1728,7 +1728,7 @@ void SpatialDomainWidget::addEvent()
                       AddEventDlg.getUnitID(),
                       Ev);
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALEVENTS);
+    emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALEVENTS);
 
     refreshClassEvents();
   }
@@ -1791,7 +1791,7 @@ void SpatialDomainWidget::editEvent()
           m_Domain.addEvent(m_ActiveClass.toStdString(),FinalUnitID,Ev);
         }
 
-        emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALEVENTS);
+        emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALEVENTS);
 
         refreshClassEvents();
       }
@@ -1837,7 +1837,7 @@ void SpatialDomainWidget::removeEvents()
         SelItems = ui->EventsTableWidget->selectedItems();
       }
 
-      emit changed(openfluid::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALEVENTS);
+      emit changed(openfluid::ui::builderext::FluidXUpdateFlags::Flag::FLUIDX_SPATIALEVENTS);
 
       refreshClassEvents();
     }

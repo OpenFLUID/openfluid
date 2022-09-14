@@ -7,14 +7,14 @@
 #define __WAREMAIN_HPP__
 
 
-#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/ui/builderext/PluggableModalExtension.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-class %%CLASSNAME%% : public openfluid::builderext::PluggableModalExtension
+class %%CLASSNAME%% : public openfluid::ui::builderext::PluggableModalExtension
 {
   Q_OBJECT;
 
@@ -27,7 +27,7 @@ class %%CLASSNAME%% : public openfluid::builderext::PluggableModalExtension
 
     bool initialize();
 
-    void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+    void update(openfluid::ui::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
     void manageSimulationStart();
  
