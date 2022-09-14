@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
     BOOST_REQUIRE_EQUAL(DT.getSecond(),3);
   }
 
-  BOOST_REQUIRE(openfluid::core::DateTime::now() > openfluid::core::DateTime(0,0,0,0,0,0));
+  BOOST_REQUIRE(openfluid::core::DateTime::now() > openfluid::core::DateTime(0,1,1,0,0,0));
 }
 
 

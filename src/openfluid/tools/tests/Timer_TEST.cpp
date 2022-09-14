@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::tools::millisleep(50);
   T.stop();
   BOOST_REQUIRE_EQUAL(T.isRunning(),false);
-  BOOST_REQUIRE(T.elapsed() >= 50);
+  BOOST_REQUIRE(T.elapsed() >= 40);
   std::cout << T.elapsed() << std::endl;
   std::cout << T.elapsedAsPrettyString() << std::endl;
 
@@ -122,22 +122,23 @@ BOOST_AUTO_TEST_CASE(check_operations)
   T.restart();
   BOOST_REQUIRE_EQUAL(T.isRunning(),true);
   openfluid::tools::millisleep(50);
-  BOOST_REQUIRE(T.elapsed() >= 50);
+  BOOST_REQUIRE(T.elapsed() >= 40);
   BOOST_REQUIRE_EQUAL(T.isRunning(),true);
   openfluid::tools::millisleep(150);
   BOOST_REQUIRE_EQUAL(T.isRunning(),true);
-  BOOST_REQUIRE(T.elapsed() >= 200);
+  openfluid::tools::millisleep(50);
+  BOOST_REQUIRE(T.elapsed() >= 190);
   openfluid::tools::millisleep(50);
   T.stop();
   BOOST_REQUIRE_EQUAL(T.isRunning(),false);
-  BOOST_REQUIRE(T.elapsed() >= 250);
+  BOOST_REQUIRE(T.elapsed() >= 240);
   std::cout << T.elapsed() << std::endl;
   std::cout << T.elapsedAsPrettyString() << std::endl;
 
   openfluid::tools::Timer TAuto(true);
   BOOST_REQUIRE_EQUAL(TAuto.isRunning(),true);
   openfluid::tools::millisleep(50);
-  BOOST_REQUIRE(TAuto.elapsed() >= 50);
+  BOOST_REQUIRE(TAuto.elapsed() >= 40);
   std::cout << TAuto.elapsedAsPrettyString() << std::endl;
   TAuto.stop();
   BOOST_REQUIRE_EQUAL(T.isRunning(),false);
