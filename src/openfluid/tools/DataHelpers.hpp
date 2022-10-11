@@ -34,6 +34,8 @@
   @file DataHelpers.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+
+  @deprecated Since version 2.2.0. Include openfluid/tools/StringHelpers.hpp file instead
  */
 
 
@@ -45,11 +47,10 @@
 #include <list>
 #include <sstream>
 #include <vector>
-#include <set>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core/DateTime.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -60,9 +61,10 @@ namespace openfluid { namespace tools {
   @param[in] StrToConvert the string to convert
   @param[out] Converted the result of the conversion
   @return true if the conversion is correct
+  @deprecated Since version 2.2.0. Use openfluid::tools::toNumeric() instead
 */
 template<typename T>
-inline bool convertString(const std::string& StrToConvert, T* Converted)
+[[deprecated]] inline bool convertString(const std::string& StrToConvert, T* Converted)
 {
   std::istringstream iss(StrToConvert);
   char c;
@@ -79,9 +81,10 @@ inline bool convertString(const std::string& StrToConvert, T* Converted)
   @param[in] StrToConvert the string to convert
   @return true the string converted
   @throws openfluid::base::FrameworkException Error in string conversion
+  @deprecated Since version 2.2.0. Use openfluid::tools::toNumeric() instead
 */
 template<typename T>
-inline T convertString(const std::string& StrToConvert)
+[[deprecated]] inline T convertString(const std::string& StrToConvert)
 {
   T Converted;
 
@@ -99,29 +102,14 @@ inline T convertString(const std::string& StrToConvert)
 
 
 /**
-  @deprecated Since version 2.1.0. Use openfluid::tools::convertString instead
-*/
-template<typename T>
-[[deprecated]] inline bool ConvertString(const std::string& StrToConvert, T* Converted);
-template<typename T>
-inline bool ConvertString(const std::string& StrToConvert, T* Converted)
-{
-  return convertString(StrToConvert,Converted);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
   Converts a value to a string
   @param[in] ValueToConvert the value to convert
   @param[out] StrConverted the result of the conversion
   @return true if the conversion is correct
+  @deprecated Since version 2.2.0. Use std::to_string() instead
 */
 template<typename T>
-inline bool convertValue(const T& ValueToConvert, std::string* StrConverted)
+[[deprecated]] inline bool convertValue(const T& ValueToConvert, std::string* StrConverted)
 {
   std::ostringstream oss;
   bool IsOK = !(oss << ValueToConvert).fail();
@@ -144,9 +132,10 @@ inline bool convertValue(const T& ValueToConvert, std::string* StrConverted)
   @param[in] ValueToConvert the value to convert
   @return the converted value
   @throws openfluid::base::FrameworkException Error in value conversion
+  @deprecated Since version 2.2.0. Use std::to_string() instead
 */
 template<typename T>
-inline std::string convertValue(const T& ValueToConvert)
+[[deprecated]] inline std::string convertValue(const T& ValueToConvert)
 {
   std::string Converted;
 
@@ -164,44 +153,15 @@ inline std::string convertValue(const T& ValueToConvert)
 
 
 /**
-  @deprecated Since version 2.1.0. Use openfluid::tools::convertValue instead
-*/
-template<typename T>
-[[deprecated]] inline bool ConvertValue(const T& ValueToConvert, std::string* StrConverted);
-template<typename T>
-inline bool ConvertValue(const T& ValueToConvert, std::string* StrConverted)
-{
-  return convertValue(ValueToConvert,StrConverted);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
   Function for tokenizing string into a vector of tokens
   @param[in] StrToTokenize the string to tokenize
   @param[out] Tokens the resulting tokens
   @param[in] Delimiters the string delimiter
+  @deprecated Since version 2.2.0. Use openfluid::tools::split() instead
 */
-void OPENFLUID_API tokenizeString(const std::string& StrToTokenize,
-                                  std::vector<std::string>& Tokens,
-                                  const std::string& Delimiters);
-
-
-/**
-  @deprecated Since version 2.1.0. Use openfluid::tools::tokenizeString instead
-*/
-[[deprecated]] inline void TokenizeString(const std::string& StrToTokenize,
-                                          std::vector<std::string>& Tokens,
-                                          const std::string& Delimiters);
-inline void TokenizeString(const std::string& StrToTokenize,
-                           std::vector<std::string>& Tokens,
-                           const std::string& Delimiters)
-{
-  tokenizeString(StrToTokenize,Tokens,Delimiters);
-}
+[[deprecated]]void OPENFLUID_API tokenizeString(const std::string& StrToTokenize,
+                                                std::vector<std::string>& Tokens,
+                                                const std::string& Delimiters);
 
 
 /**
@@ -210,23 +170,11 @@ inline void TokenizeString(const std::string& StrToTokenize,
   @param[in] Separators the string of separators used to split the string
   @param[in] ReturnsEmpty if true, the empty strings are returned
   @return a vector of strings
+  @deprecated Since version 2.2.0. Use openfluid::tools::split() instead
 */
-std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit,
-                                                   const std::string& Separators,
-                                                   bool ReturnsEmpty = false);
-
-/**
-  @deprecated Since version 2.1.0. Use openfluid::tools::splitString instead
-*/
-[[deprecated]] inline std::vector<std::string> SplitString(const std::string& StrToSplit,
-                                                           const std::string& Separators,
-                                                           bool ReturnsEmpty = false) ;
-inline std::vector<std::string> SplitString(const std::string& StrToSplit,
-                                            const std::string& Separators,
-                                            bool ReturnsEmpty)
-{
-  return splitString(StrToSplit,Separators,ReturnsEmpty);
-}
+[[deprecated]] std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit,
+                                                                  const std::string& Separators,
+                                                                  bool ReturnsEmpty = false);
 
 
 /**
@@ -235,10 +183,11 @@ inline std::vector<std::string> SplitString(const std::string& StrToSplit,
   @param[in] Separator the separator character used to split the string
   @param[in] ReturnsEmpty if true, the empty strings are returned
   @return a vector of strings
+  @deprecated Since version 2.2.0. Use openfluid::tools::split() instead
 */
-std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit,
-                                                   char Separator,
-                                                   bool ReturnsEmpty = false);
+[[deprecated]] std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit,
+                                                                  char Separator,
+                                                                  bool ReturnsEmpty = false);
 
 
 /**
@@ -246,48 +195,10 @@ std::vector<std::string> OPENFLUID_API splitString(const std::string& StrToSplit
   @param[in] Data the string to work on
   @param[in] ToSearch the target substring
   @param[in] ReplaceStr the replacement substring
+  @deprecated Since version 2.2.0. Use openfluid::tools::replace() instead
 */
-void OPENFLUID_API stringReplace(std::string& Data, const std::string& ToSearch, const std::string& ReplaceStr);
-
-
-/**
-  Converts a string to lower case
-  @param[in] Str the string to convert
-  @return the string converted to lower case
-*/
-std::string OPENFLUID_API toLowerCase(const std::string& Str);
-
-
-/**
-  Converts a string to upper case
-  @param[in] Str the string to convert
-  @return the string converted to upper case
-*/
-std::string OPENFLUID_API toUpperCase(const std::string& Str);
-
-
-/**
-  Trims all the whitespaces character located on the right side of the string
-  @param[in] Str the string to trim
-  @return the trimmed string
-*/
-std::string OPENFLUID_API trimRight(const std::string& Str);
-
-
-/**
-  Trims all the whitespaces character located on the left side of the string
-  @param[in] Str the string to trim
-  @return the trimmed string
-*/
-std::string OPENFLUID_API trimLeft(const std::string& Str);
-
-
-/**
-  Trims all the whitespaces character located on both right and left sides of the string
-  @param[in] Str the string to trim
-  @return the trimmed string
-*/
-std::string OPENFLUID_API trim(const std::string& Str);
+[[deprecated]] void OPENFLUID_API stringReplace(std::string& Data, 
+                                                const std::string& ToSearch, const std::string& ReplaceStr);
 
 
 } } // namespaces

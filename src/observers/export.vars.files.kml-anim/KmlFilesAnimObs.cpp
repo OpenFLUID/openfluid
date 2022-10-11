@@ -42,7 +42,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
 #include "../KmlObserverBase.hpp"
@@ -147,13 +147,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
     void updateKmlFile()
     {
       openfluid::core::SpatialUnit* UU;
-
       openfluid::core::TimeIndex_t CurrentTI = OPENFLUID_GetCurrentTimeIndex();
-
-
-      std::string CurrentTIStr;
-
-      openfluid::tools::convertValue(CurrentTI,&CurrentTIStr);
+      std::string CurrentTIStr = std::to_string(CurrentTI);
 
       std::ofstream CurrentKmlFile(std::string(m_TmpDir+"/"+m_KmzSubDir+"/"+
                                                m_KmzDataSubDir+"/t_"+ CurrentTIStr+".kml").c_str());
@@ -394,7 +389,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
         std::string ColorScaleString;
 
         ColorScaleString = ParamsTree.root().child("layers").child("anim").getChildValue("colorscale","");
-        ColorScaleVector = openfluid::tools::splitString(ColorScaleString,";",false);
+        ColorScaleVector = openfluid::tools::split(ColorScaleString,";",false);
 
         if (ColorScaleVector.size() % 2 == 0)
         {
@@ -440,7 +435,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
               else
               {
                 // value item
-                if (openfluid::tools::convertString(ColorScaleVector[i],&TmpVal))
+                if (openfluid::tools::toNumeric(ColorScaleVector[i],TmpVal))
                 {
                   TmpColorValue.second = TmpVal;
                   m_AnimLayerInfo.ColorScale.push_back(TmpColorValue);

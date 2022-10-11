@@ -230,7 +230,7 @@ int RunTasks::process()
   {
     unsigned int MaxThreads = 0;
 
-    if (openfluid::tools::convertString(m_Cmd.getOptionValue("max-threads"),&MaxThreads))
+    if (openfluid::tools::toNumeric(m_Cmd.getOptionValue("max-threads"),MaxThreads))
     {
       openfluid::base::RunContextManager::instance()->setWaresMaxNumThreads(MaxThreads);
     }

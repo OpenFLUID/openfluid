@@ -43,7 +43,7 @@
 
 #include <openfluid/thirdparty/XML.hpp>
 #include <openfluid/waresdev/SimulatorSignatureXMLReader.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/config.hpp>
 

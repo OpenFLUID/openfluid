@@ -38,7 +38,7 @@
 
 
 #include <openfluid/machine/FixedGenerator.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -63,7 +63,7 @@ void FixedGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 
   std::string DeltaTStr;
   if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) &&
-      !openfluid::tools::convertString(DeltaTStr,&m_DeltaT))
+      !openfluid::tools::toNumeric(DeltaTStr,m_DeltaT))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"wrong value for deltat");
   }

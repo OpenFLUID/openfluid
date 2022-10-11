@@ -47,7 +47,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/config.hpp>
 

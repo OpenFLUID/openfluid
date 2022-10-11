@@ -45,7 +45,7 @@
 #include <string>
 #include <iomanip>
 
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -216,37 +216,33 @@ class Timer
           {
             if (!Seconds)
             {
-              TmpStr = "0."+
-                      TmpStr;
+              TmpStr = "0."
+                       +TmpStr;
             }
             else
             {
-              TmpStr = openfluid::tools::convertValue(Seconds)+"."+
-                      TmpStr;
+              TmpStr = std::to_string(Seconds)+"."
+                       +TmpStr;
             }
           }
           else
           {
-            TmpStr = openfluid::tools::convertValue(Minutes)+"m "+
-                    openfluid::tools::convertValue(Seconds)+"."+
-                    TmpStr;
+            TmpStr = std::to_string(Minutes)+"m "+std::to_string(Seconds)+"."
+                    +TmpStr;
           }
         }
         else
         {
-          TmpStr = openfluid::tools::convertValue(Hours)+"h "+
-                  openfluid::tools::convertValue(Minutes)+"m "+
-                  openfluid::tools::convertValue(Seconds)+"."+
-                  TmpStr;
+          TmpStr = std::to_string(Hours)+"h "+std::to_string(Minutes)+"m "+std::to_string(Seconds)+"."
+                   +TmpStr;
         }
       }
       else
       {
-        TmpStr = openfluid::tools::convertValue(Days)+"d "+
-                openfluid::tools::convertValue(Hours)+"h "+
-                openfluid::tools::convertValue(Minutes)+"m "+
-                openfluid::tools::convertValue(Seconds)+"."+
-                TmpStr;
+        TmpStr = std::to_string(Days)+"d "+std::to_string(Hours)+"h "+
+                 std::to_string(Minutes)+"m "+
+                 std::to_string(Seconds)+"."
+                 +TmpStr;
       }
 
       return TmpStr;

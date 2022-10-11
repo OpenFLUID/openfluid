@@ -38,7 +38,7 @@
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 // =====================================================================
@@ -173,9 +173,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
       {
         CurrentUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
 
-        // std::string SrcClassStr = CurrentUnit->getClass();
-        std::string SrcIDStr = "";
-        openfluid::tools::convertValue(CurrentUnit->getID(),&SrcIDStr);
+        std::string SrcIDStr = std::to_string(CurrentUnit->getID());
 
         for (unsigned int i=0;i<ClassVector.size();i++)
         {
@@ -187,8 +185,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
 
             for (itToUnitsPtrList=ToUnitsPtrList->begin();itToUnitsPtrList!=ToUnitsPtrList->end();++itToUnitsPtrList)
             {
-              std::string DestIDStr = "";
-              openfluid::tools::convertValue((*itToUnitsPtrList)->getID(),&DestIDStr);
+              std::string DestIDStr = std::to_string((*itToUnitsPtrList)->getID());
 /*              std::cout << SrcClassStr << "#" << SrcIDStr << " --> "<< DestClassStr << "#" << DestIDStr << std::endl;
               std::cout.flush();*/
             }
@@ -211,8 +208,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
         CurrentUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
 
         // std::string SrcClassStr = CurrentUnit->getClass();
-        std::string SrcIDStr = "";
-        openfluid::tools::convertValue(CurrentUnit->getID(),&SrcIDStr);
+        std::string SrcIDStr = std::to_string(CurrentUnit->getID());
 
         for (unsigned int i=0;i<ClassVector.size();i++)
         {
@@ -227,8 +223,7 @@ class ParseUnitsSimulator : public openfluid::ware::PluggableSimulator
                  itFromUnitsPtrList!=FromUnitsPtrList->end();
                  ++itFromUnitsPtrList)
             {
-              std::string DestIDStr = "";
-              openfluid::tools::convertValue((*itFromUnitsPtrList)->getID(),&DestIDStr);
+              std::string DestIDStr = std::to_string((*itFromUnitsPtrList)->getID());
 /*              std::cout << SrcClassStr << "#" << SrcIDStr << " <-- "<< DestClassStr << "#" << DestIDStr << std::endl;
               std::cout.flush();*/
             }

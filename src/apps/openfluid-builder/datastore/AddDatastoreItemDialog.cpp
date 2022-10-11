@@ -49,7 +49,7 @@
 #include <openfluid/ui/common/ShortcutCompleter.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
 #include <openfluid/base/RunContextManager.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 #include "ui_EditDatastoreItemDialog.h"
 #include "AddDatastoreItemDialog.hpp"

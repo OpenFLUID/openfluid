@@ -39,7 +39,7 @@
 
 #include <QFileDialog>
 
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
 
 #include "ui_SourceAddDialog.h"

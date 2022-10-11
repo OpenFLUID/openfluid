@@ -45,7 +45,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/thirdparty/XML.hpp>
 
@@ -243,7 +243,7 @@ class FluidXReaderImplementation
 
             if (!VarSize.empty())
             {
-              if (!openfluid::tools::convertString(VarSize,&VarSizeNum))
+              if (!openfluid::tools::toNumeric(VarSize,VarSizeNum))
               {
                 throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                           "wrong variable size format in generator ("+
@@ -329,7 +329,7 @@ class FluidXReaderImplementation
           {
             int DeltaTNum;
 
-            if (!openfluid::tools::convertString(DeltaT, &DeltaTNum))
+            if (!openfluid::tools::toNumeric(DeltaT,DeltaTNum))
             {
               throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                         "empty or wrong value for deltat (" + m_CurrentFile + ")");
@@ -373,7 +373,7 @@ class FluidXReaderImplementation
           {
             unsigned int SizeNum;
 
-            if (!openfluid::tools::convertString(Size,&SizeNum))
+            if (!openfluid::tools::toNumeric(Size,SizeNum))
             {
               throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                   "wrong format for size attribute for valuesbuffer tag (" + m_CurrentFile + ")");
@@ -420,7 +420,7 @@ class FluidXReaderImplementation
       if (!UnitID.empty() && !UnitClass.empty())
       {
         unsigned int UnitIDNum;
-        if (!openfluid::tools::convertString(UnitID,&UnitIDNum))
+        if (!openfluid::tools::toNumeric(UnitID,UnitIDNum))
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong format for ID in unit definition (" + m_CurrentFile + ")");
@@ -458,13 +458,13 @@ class FluidXReaderImplementation
 
           UnitDesc.setUnitsClass(UnitsClass);
 
-          if (!openfluid::tools::convertString(ID,&IDNum))
+          if (!openfluid::tools::toNumeric(ID,IDNum))
           {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                 "wrong format for ID in unit definition (" + m_CurrentFile + ")");
           }
 
-          if (!openfluid::tools::convertString(PcsOrd,&PcsOrdNum))
+          if (!openfluid::tools::toNumeric(PcsOrd,PcsOrdNum))
           {
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                 "wrong format for process order in unit definition (" + m_CurrentFile + ")");
@@ -521,7 +521,7 @@ class FluidXReaderImplementation
             "missing or wrong unitsclass or colorder in domain attributes (" + m_CurrentFile + ")");
       }
 
-      auto ColOrderVect = openfluid::tools::splitString(ColOrder,";");
+      auto ColOrderVect = openfluid::tools::split(ColOrder,";");
       if (ColOrderVect.empty())
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -567,7 +567,7 @@ class FluidXReaderImplementation
         }
 
         openfluid::core::UnitID_t IDNum;
-        if (!openfluid::tools::convertString(ID,&IDNum))
+        if (!openfluid::tools::toNumeric(ID,IDNum))
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                     "wrong format for unit ID in event (" + m_CurrentFile + ")");

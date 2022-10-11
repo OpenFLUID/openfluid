@@ -43,7 +43,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
@@ -128,7 +128,7 @@ void WorkspaceManager::updateSettingsFile(const std::string& FilePath)
             if (openfluid::tools::toLowerCase(Key) == "openwares")
             {
               std::vector<std::string> OpenArray;
-              auto OpenWares = openfluid::tools::splitString(Value,",");
+              auto OpenWares = openfluid::tools::split(Value,",");
 
               for (const auto& W : OpenWares)
               {
@@ -145,7 +145,7 @@ void WorkspaceManager::updateSettingsFile(const std::string& FilePath)
             {
               std::string ConfigMode;
               std::string BuildMode;
-              auto Modes = openfluid::tools::splitString(Value,"|");
+              auto Modes = openfluid::tools::split(Value,"|");
               
               if (Modes.size() == 2)
               {

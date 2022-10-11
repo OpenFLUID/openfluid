@@ -40,7 +40,7 @@
 #include <regex>
 
 #include <openfluid/tools/IDHelpers.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -48,7 +48,7 @@ namespace openfluid { namespace tools {
 
 std::string classIDToString(const openfluid::core::UnitsClass_t& Class, openfluid::core::UnitID_t ID)
 {
-  return Class + "#" + openfluid::tools::convertValue(ID);
+  return Class + "#" + std::to_string(ID);
 }
 
 

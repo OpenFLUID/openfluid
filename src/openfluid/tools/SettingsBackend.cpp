@@ -41,7 +41,7 @@
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/SettingsBackend.hpp>
 
 

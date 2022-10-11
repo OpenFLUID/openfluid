@@ -38,7 +38,7 @@
 
 
 #include <openfluid/ware/WareParamsTree.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -66,7 +66,7 @@ void WareParamsTree::setParams(const WareParams_t& Params)
   {
     WareParamsTreeNode* CurrentNode = &m_Root;
 
-    std::vector<std::string> SplittedKeys = openfluid::tools::splitString(ParamItem.first,".");
+    std::vector<std::string> SplittedKeys = openfluid::tools::split(ParamItem.first,".");
 
     for (std::string& Key : SplittedKeys)
     {
@@ -90,7 +90,7 @@ void WareParamsTree::setParams(const WareParams_t& Params)
 
 openfluid::core::StringValue WareParamsTree::getValueUsingFullKey(const std::string& FullName) const
 {
-  std::vector<std::string> SplittedKeys = openfluid::tools::splitString(FullName,".");
+  std::vector<std::string> SplittedKeys = openfluid::tools::split(FullName,".");
 
   const WareParamsTreeNode* CurrentNode = &m_Root;
 

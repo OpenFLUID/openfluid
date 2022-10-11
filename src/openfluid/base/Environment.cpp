@@ -42,7 +42,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/config.hpp>
@@ -432,7 +432,7 @@ void Environment::addExtraSimulatorsDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-  ExtraDirs = openfluid::tools::splitString(Dirs, openfluid::tools::FilesystemPath::listSeparator());
+  ExtraDirs = openfluid::tools::split(Dirs,openfluid::tools::FilesystemPath::listSeparator());
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
@@ -485,7 +485,7 @@ void Environment::addExtraObserversDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-  ExtraDirs = openfluid::tools::splitString(Dirs,openfluid::tools::FilesystemPath::listSeparator());
+  ExtraDirs = openfluid::tools::split(Dirs,openfluid::tools::FilesystemPath::listSeparator());
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {
@@ -540,7 +540,7 @@ void Environment::addExtraBuilderextsDirs(const std::string& Dirs)
 {
   std::vector<std::string> ExtraDirs;
 
-  ExtraDirs = openfluid::tools::splitString(Dirs,openfluid::tools::FilesystemPath::listSeparator());
+  ExtraDirs = openfluid::tools::split(Dirs,openfluid::tools::FilesystemPath::listSeparator());
 
   for (int i = ExtraDirs.size() - 1; i >= 0; i--)
   {

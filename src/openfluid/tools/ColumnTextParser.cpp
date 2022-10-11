@@ -45,7 +45,7 @@
 #include <boost/tokenizer.hpp>
 
 #include <openfluid/tools/ColumnTextParser.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 
 
@@ -350,7 +350,7 @@ bool ColumnTextParser::getLongValue(unsigned int Line, unsigned int Column, long
 
   if (StrValue.length() != 0)
   {
-    return openfluid::tools::convertString(StrValue,Value);
+    return openfluid::tools::toNumeric(StrValue,(*Value));
   }
 
   return false;
@@ -368,7 +368,7 @@ bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, do
 
   if (StrValue.length() != 0)
   {
-    return openfluid::tools::convertString(StrValue,Value);
+    return openfluid::tools::toNumeric(StrValue,(*Value));
   }
 
   return false;

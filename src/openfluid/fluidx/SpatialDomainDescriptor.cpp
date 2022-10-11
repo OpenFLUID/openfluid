@@ -44,7 +44,7 @@
 
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace fluidx {
@@ -634,7 +634,7 @@ void SpatialDomainDescriptor::deleteEvent(const openfluid::core::UnitsClass_t& U
   catch (std::out_of_range& e)
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "cannot delete event " + openfluid::tools::convertValue(EventID) +
+                                              "cannot delete event " + std::to_string(EventID) +
                                               " on units " + openfluid::tools::classIDToString(UnitsClass,UnitID));
   }
 
@@ -675,7 +675,7 @@ openfluid::fluidx::EventDescriptor& SpatialDomainDescriptor::event(const openflu
   }
 
   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                            "cannot find event with ID " + openfluid::tools::convertValue(ID));
+                                            "cannot find event with ID " + std::to_string(ID));
 }
 
 
@@ -704,7 +704,7 @@ const openfluid::fluidx::EventDescriptor& SpatialDomainDescriptor::event(const o
   }
 
   throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                            "cannot find event with ID " + openfluid::tools::convertValue(ID));
+                                            "cannot find event with ID " + std::to_string(ID));
 }
 
 

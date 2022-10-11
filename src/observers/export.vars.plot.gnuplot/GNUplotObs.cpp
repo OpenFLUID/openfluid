@@ -42,7 +42,7 @@
 
 #include <openfluid/utilsq/ExternalProgram.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
 #include "GNUplotObsTools.hpp"
@@ -444,8 +444,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
             }
             else
             {
-              std::string UnitIDStr;
-              openfluid::tools::convertValue((*Sit)->UnitID,&UnitIDStr);
+              std::string UnitIDStr = std::to_string((*Sit)->UnitID);
               Label= (*Sit)->VarName + " (" + (*Sit)->UnitsClass + "#" + UnitIDStr + ")";
             }
           }

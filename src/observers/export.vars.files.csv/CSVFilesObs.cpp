@@ -41,7 +41,7 @@
 #include <sstream>
 #include <iomanip>
 
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
 #include "CSVObsTools.hpp"
@@ -233,7 +233,7 @@ class CSVFilesObserver : public CSVFilesObserverBase
             // process selected variables
             std::vector<openfluid::core::VariableName_t> TmpVarArray;
 
-            TmpVarArray = openfluid::tools::splitString(SetFiles.second.SetDefinition.VariablesStr,";");
+            TmpVarArray = openfluid::tools::split(SetFiles.second.SetDefinition.VariablesStr,";");
 
             for (unsigned int i = 0; i < TmpVarArray.size(); i++)
             {
@@ -275,13 +275,12 @@ class CSVFilesObserver : public CSVFilesObserverBase
 
             openfluid::core::UnitID_t UID;
 
-            std::vector<std::string> UIDArray =
-                openfluid::tools::splitString(SetFiles.second.SetDefinition.UnitsIDsStr, ";");
+            std::vector<std::string> UIDArray = openfluid::tools::split(SetFiles.second.SetDefinition.UnitsIDsStr, ";");
 
             for (unsigned int i = 0; i < UIDArray.size(); i++)
             {
               TmpU = nullptr;
-              if (openfluid::tools::convertString(UIDArray[i],&UID))
+              if (openfluid::tools::toNumeric(UIDArray[i],UID))
               {
                 TmpU = mp_SpatialData->spatialUnit(SetFiles.second.SetDefinition.UnitsClass,UID);
                 if (TmpU != nullptr)

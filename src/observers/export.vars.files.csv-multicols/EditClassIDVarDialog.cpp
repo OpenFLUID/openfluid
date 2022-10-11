@@ -39,7 +39,7 @@
 #include <QPushButton>
 
 #include <openfluid/tools/IDHelpers.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
 #include "EditClassIDVarDialog.hpp"
@@ -123,10 +123,10 @@ void EditClassIDVarDialog::checkGlobal()
       QRegExp Exp("^[0-9]+([-;][0-9]+)*$");
         
       std::string UnitsIDsStr = ui->SelectedUnitsTextEdit->toPlainText().trimmed().toStdString();
-      std::vector<std::string> ContiguousIDs = openfluid::tools::splitString(UnitsIDsStr, ";"); 
+      std::vector<std::string> ContiguousIDs = openfluid::tools::split(UnitsIDsStr, ";"); 
       for (std::string& ContiguousID : ContiguousIDs)
       {
-        std::vector<std::string> IDLimits = openfluid::tools::splitString(ContiguousID, "-");
+        std::vector<std::string> IDLimits = openfluid::tools::split(ContiguousID, "-");
         if (IDLimits.size() > 2)
         {
           setMessage(tr("Contiguous dashes in units list"));
@@ -241,10 +241,10 @@ std::vector<ClassIDVar> EditClassIDVarDialog::getClassIDVarSettings()
   else
   {
     std::string UnitsIDsStr = ui->SelectedUnitsTextEdit->toPlainText().trimmed().toStdString();
-    std::vector<std::string> ContiguousIDs = openfluid::tools::splitString(UnitsIDsStr, ";"); 
+    std::vector<std::string> ContiguousIDs = openfluid::tools::split(UnitsIDsStr, ";"); 
     for (std::string& ContiguousID : ContiguousIDs)
     {
-      std::vector<std::string> IDLimits = openfluid::tools::splitString(ContiguousID, "-");
+      std::vector<std::string> IDLimits = openfluid::tools::split(ContiguousID, "-");
       if (IDLimits.size() == 1)
       {
         UnitsIDs.push_back(IDLimits[0]);
@@ -267,7 +267,7 @@ std::vector<ClassIDVar> EditClassIDVarDialog::getClassIDVarSettings()
   else
   {
     std::string VarsStr = ui->SelectedVariablesTextEdit->toPlainText().trimmed().toStdString();
-    Vars = openfluid::tools::splitString(VarsStr, ";");
+    Vars = openfluid::tools::split(VarsStr, ";");
   }
   
   bool HasPrecision = false;

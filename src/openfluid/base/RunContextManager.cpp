@@ -43,7 +43,7 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -244,7 +244,7 @@ void RunContextManager::updateProjectFile(const std::string& ProjectFilePath)
             if (openfluid::tools::toLowerCase(Key) == "order")
             {
               std::vector<std::string> OrderArray;
-              auto Classes = openfluid::tools::splitString(Value,",");
+              auto Classes = openfluid::tools::split(Value,",");
 
               for (const auto& C : Classes)
               {
@@ -255,7 +255,7 @@ void RunContextManager::updateProjectFile(const std::string& ProjectFilePath)
             }
             else
             {
-              auto SplittedKey = openfluid::tools::splitString(Key,".");
+              auto SplittedKey = openfluid::tools::split(Key,".");
               if (SplittedKey.size() == 2)
               {
                 auto ClassName = openfluid::tools::trim(SplittedKey[0]);

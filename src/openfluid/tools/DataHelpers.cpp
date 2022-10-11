@@ -37,6 +37,8 @@
  */
 
 
+#include <utility>
+
 #include <boost/algorithm/string.hpp>
 
 #include <openfluid/tools/DataHelpers.hpp>
@@ -117,55 +119,5 @@ void stringReplace(std::string& Data, const std::string& ToSearch, const std::st
   boost::replace_all(Data, ToSearch, ReplaceStr);
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-std::string toLowerCase(const std::string& Str)
-{
-  return boost::to_lower_copy(Str);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string toUpperCase(const std::string& Str)
-{
-  return boost::to_upper_copy(Str);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string trimRight(const std::string& Str)
-{
-  return boost::trim_right_copy(Str);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string trimLeft(const std::string& Str)
-{
-  return boost::trim_left_copy(Str);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string trim(const std::string& Str)
-{
-  return boost::trim_copy(Str);
-}
-
-
 } } // namespaces
+

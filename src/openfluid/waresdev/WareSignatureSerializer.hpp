@@ -52,7 +52,7 @@
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
 

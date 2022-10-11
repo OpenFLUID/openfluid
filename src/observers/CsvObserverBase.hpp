@@ -45,7 +45,7 @@
 #include <vector>
 
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 
 
@@ -376,7 +376,7 @@ inline openfluid::core::StringValue basicParseFormatsFromParamsTree(
 inline std::vector<std::string> CSVFormat::generateFormatFields(const std::string& FormatName)
 {
   std::string VisibleColSeparator = ColSeparator;
-  openfluid::tools::stringReplace(VisibleColSeparator, "\t", "\\t");
+  VisibleColSeparator = openfluid::tools::replace(VisibleColSeparator, "\t", "\\t");
   return {
            FormatName, 
            VisibleColSeparator,

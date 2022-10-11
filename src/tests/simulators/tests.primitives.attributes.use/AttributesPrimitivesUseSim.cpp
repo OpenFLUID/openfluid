@@ -40,7 +40,7 @@
 #include <QString>
 
 #include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 
@@ -441,8 +441,7 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
         }
 
         //string
-        std::string RefStr;
-        openfluid::tools::convertValue(TU->getID(),&RefStr);
+        std::string RefStr = std::to_string(TU->getID());
         RefStr = "CODE"+RefStr;
         VarString = "";
         OPENFLUID_GetAttribute(TU,"indataString",VarString);

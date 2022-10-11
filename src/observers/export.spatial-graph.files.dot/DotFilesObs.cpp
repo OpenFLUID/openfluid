@@ -44,7 +44,7 @@
 
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 // =====================================================================
@@ -115,16 +115,14 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
     std::string generateDotNode(const openfluid::core::SpatialUnit* Unit,
                                 const std::string& Options)
     {
-      std::string IDStr;
-      openfluid::tools::convertValue(Unit->getID(),&IDStr);
+      std::string IDStr = std::to_string(Unit->getID());
       std::string IDClassStr = Unit->getClass()+"#"+IDStr;
 
       std::string NodeLabel = "<b>"+IDClassStr+"</b>";
 
       if (m_ShowPcsOrd)
       {
-        std::string PcsOrdStr;
-        openfluid::tools::convertValue(Unit->getProcessOrder(),&PcsOrdStr);
+        std::string PcsOrdStr = std::to_string(Unit->getProcessOrder());
         NodeLabel += "<br/>("+PcsOrdStr+")";
       }
 
@@ -233,8 +231,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
           TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
-          std::string IDStr = "";
-          openfluid::tools::convertValue(TheUnit->getID(),&IDStr);
+          std::string IDStr = std::to_string(TheUnit->getID());
           DotFile << generateDotNode(TheUnit,Options) << "\n";
         }
       }
@@ -250,8 +247,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
         {
           TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
           std::string SrcClassStr = TheUnit->getClass();
-          std::string SrcIDStr = "";
-          openfluid::tools::convertValue(TheUnit->getID(),&SrcIDStr);
+          std::string SrcIDStr = std::to_string(TheUnit->getID());
 
           for (unsigned int i=0;i<ClassVector.size();i++)
           {
@@ -265,8 +261,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
               for (itToUnits=ToUnits->begin();itToUnits!=ToUnits->end();++itToUnits)
               {
-                std::string DestIDStr = "";
-                openfluid::tools::convertValue((*itToUnits)->getID(),&DestIDStr);
+                std::string DestIDStr = std::to_string((*itToUnits)->getID());
 
                 DotFile << generateDotEdge(SrcClassStr,SrcIDStr,DestClassStr,DestIDStr,"") << "\n";
 
@@ -283,8 +278,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
               for (itParentUnits=ParentUnits->begin();itParentUnits!=ParentUnits->end();++itParentUnits)
               {
-                std::string DestIDStr = "";
-                openfluid::tools::convertValue((*itParentUnits)->getID(),&DestIDStr);
+                std::string DestIDStr = std::to_string((*itParentUnits)->getID());
 
                 DotFile << generateDotEdge(SrcClassStr,SrcIDStr,
                                            DestClassStr,DestIDStr,

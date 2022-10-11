@@ -39,7 +39,7 @@
 
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -69,7 +69,7 @@ bool ProgressiveChronFileReader::getNextValue(ChronItem_t& Value)
     if (Values.size() == 2)
     {
       if (DT.setFromString(Values.front(),m_DateFormat) &&
-          openfluid::tools::convertString(Values.back(),&Val))
+          openfluid::tools::toNumeric(Values.back(),Val))
       {
         Value.first = DT;
         Value.second = Val;

@@ -43,7 +43,7 @@
 
 #include <openfluid/base/OtherException.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 #include "MultiCSVObsTools.hpp"
 
@@ -100,7 +100,7 @@ std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string& Selec
                                                         const unsigned int DefaultPrecision, 
                                                         const std::string& DefaultFloatFormat)
 {
-  std::vector<std::string> Columns = openfluid::tools::splitString(SelectionStr, ";");
+  std::vector<std::string> Columns = openfluid::tools::split(SelectionStr, ";");
   
   
   std::vector<ClassIDVar> CSVTriplets;

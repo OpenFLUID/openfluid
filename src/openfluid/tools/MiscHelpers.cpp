@@ -50,7 +50,7 @@
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -143,9 +143,9 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
 
   std::vector<std::string> SplittedA, SplittedB;
 
-  SplittedA = splitString(LowCaseA,".~",false);
+  SplittedA = split(LowCaseA,".~",false);
 
-  SplittedB = splitString(LowCaseB,".~",false);
+  SplittedB = split(LowCaseB,".~",false);
 
   if ( !(SplittedA.size()==3 || SplittedA.size()==4) || !(SplittedB.size()==3 || SplittedB.size()==4))
   {
@@ -165,10 +165,10 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB, bo
     StatusB = SplittedB[3];
   }
 
-  if (convertString(SplittedA[0],&MajorA) && convertString(SplittedA[1],&MinorA) &&
-      convertString(SplittedA[2],&PatchA) &&
-      convertString(SplittedB[0],&MajorB) && convertString(SplittedB[1],&MinorB) &&
-      convertString(SplittedB[2],&PatchB))
+  if (toNumeric(SplittedA[0],MajorA) && toNumeric(SplittedA[1],MinorA) &&
+      toNumeric(SplittedA[2],PatchA) &&
+      toNumeric(SplittedB[0],MajorB) && toNumeric(SplittedB[1],MinorB) &&
+      toNumeric(SplittedB[2],PatchB))
   {
     if (MajorA > MajorB)
     {

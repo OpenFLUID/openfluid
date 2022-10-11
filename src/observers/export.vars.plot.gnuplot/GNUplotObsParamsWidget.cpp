@@ -43,7 +43,7 @@
 
 #include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 #include "GNUplotObsParamsWidget.hpp"
 #include "ui_GNUplotObsParamsWidget.h"
@@ -444,7 +444,7 @@ void GNUplotObsParamsWidget::removeSerie()
           GraphSeriesStr = Pos->second;
         }
 
-        std::vector<std::string> GraphSeries = openfluid::tools::splitString(GraphSeriesStr, ";");
+        std::vector<std::string> GraphSeries = openfluid::tools::split(GraphSeriesStr, ";");
         GraphSeriesStr.clear();
 
         for (auto GSit = GraphSeries.begin(); GSit != GraphSeries.end(); ++GSit)
@@ -510,7 +510,7 @@ void GNUplotObsParamsWidget::renameSerie(QListWidgetItem* Item)
           GraphSeriesStr = Pos->second;
         }
 
-        std::vector<std::string> GraphSeries = openfluid::tools::splitString(GraphSeriesStr, ";");
+        std::vector<std::string> GraphSeries = openfluid::tools::split(GraphSeriesStr, ";");
         GraphSeriesStr.clear();
 
         for (auto GSit = GraphSeries.begin(); GSit != GraphSeries.end(); ++GSit)

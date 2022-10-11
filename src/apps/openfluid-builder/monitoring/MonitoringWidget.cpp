@@ -38,7 +38,7 @@
 
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 #include "ui_WaresManagementWidget.h"
 #include "ui_MonitoringWidget.h"

@@ -38,7 +38,7 @@
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 // =====================================================================
@@ -225,8 +225,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           CurrentUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
 
           std::string SrcClassStr = CurrentUnit->getClass();
-          std::string SrcIDStr = "";
-          openfluid::tools::convertValue(CurrentUnit->getID(),&SrcIDStr);
+          std::string SrcIDStr = std::to_string(CurrentUnit->getID());
 
           for (unsigned int i=0;i<ClassVector.size();i++)
           {
@@ -238,8 +237,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
               for (itToUnitsPtrList=ToUnitsPtrList->begin();itToUnitsPtrList!=ToUnitsPtrList->end();++itToUnitsPtrList)
               {
-                std::string DestIDStr = "";
-                openfluid::tools::convertValue((*itToUnitsPtrList)->getID(),&DestIDStr);
+                std::string DestIDStr = std::to_string((*itToUnitsPtrList)->getID());
                 std::cout << SrcClassStr << "#" << SrcIDStr << " --> "<< DestClassStr << "#" << DestIDStr << std::endl;
                 std::cout.flush();
               }
@@ -262,8 +260,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           CurrentUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
 
           std::string SrcClassStr = CurrentUnit->getClass();
-          std::string SrcIDStr = "";
-          openfluid::tools::convertValue(CurrentUnit->getID(),&SrcIDStr);
+          std::string SrcIDStr = std::to_string(CurrentUnit->getID());
 
           for (unsigned int i=0;i<ClassVector.size();i++)
           {
@@ -278,8 +275,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
                    itFromUnitsPtrList!=FromUnitsPtrList->end();
                    ++itFromUnitsPtrList)
               {
-                std::string DestIDStr = "";
-                openfluid::tools::convertValue((*itFromUnitsPtrList)->getID(),&DestIDStr);
+                std::string DestIDStr = std::to_string((*itFromUnitsPtrList)->getID());
                 std::cout << SrcClassStr << "#" << SrcIDStr << " <-- "<< DestClassStr << "#" << DestIDStr << std::endl;
                 std::cout.flush();
               }
@@ -437,10 +433,9 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       {
         if (TU->getProcessOrder() < LastPcsOrd)
         {
-
-          openfluid::tools::convertValue(LastPcsOrd,&LastStr);
-          openfluid::tools::convertValue(TU->getProcessOrder(),&CurrentStr);
-          openfluid::tools::convertValue(TU->getID(),&IDStr);
+          LastStr = std::to_string(LastPcsOrd);
+          CurrentStr = std::to_string(TU->getProcessOrder());
+          IDStr = std::to_string(TU->getID());
           OPENFLUID_RaiseError("wrong process order at unit TestUnits#"+ IDStr +
                                " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
         }
@@ -453,9 +448,9 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       {
         if (OU->getProcessOrder() < LastPcsOrd)
         {
-          openfluid::tools::convertValue(LastPcsOrd,&LastStr);
-          openfluid::tools::convertValue(OU->getProcessOrder(),&CurrentStr);
-          openfluid::tools::convertValue(OU->getID(),&IDStr);
+          LastStr = std::to_string(LastPcsOrd);
+          CurrentStr = std::to_string(TU->getProcessOrder());
+          IDStr = std::to_string(TU->getID());
           OPENFLUID_RaiseError("wrong process order at unit OtherUnits#"+ IDStr +
                                " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
         }
@@ -470,9 +465,9 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
         if (ZU->getProcessOrder() < LastPcsOrd)
         {
-          openfluid::tools::convertValue(LastPcsOrd,&LastStr);
-          openfluid::tools::convertValue(ZU->getProcessOrder(),&CurrentStr);
-          openfluid::tools::convertValue(ZU->getID(),&IDStr);
+          LastStr = std::to_string(LastPcsOrd);
+          CurrentStr = std::to_string(TU->getProcessOrder());
+          IDStr = std::to_string(TU->getID());
         }
         LastPcsOrd = ZU->getProcessOrder();
       }
@@ -497,9 +492,9 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       {
         if (ZU->getProcessOrder() < LastPcsOrd)
         {
-          openfluid::tools::convertValue(LastPcsOrd,&LastStr);
-          openfluid::tools::convertValue(ZU->getProcessOrder(),&CurrentStr);
-          openfluid::tools::convertValue(ZU->getID(),&IDStr);
+          LastStr = std::to_string(LastPcsOrd);
+          CurrentStr = std::to_string(TU->getProcessOrder());
+          IDStr = std::to_string(TU->getID());
           OPENFLUID_RaiseError("wrong process order at unit PerfUnits#"+ IDStr +
                                " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
         }

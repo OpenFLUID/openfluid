@@ -53,7 +53,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/global.hpp>
@@ -153,7 +153,7 @@ void PreferencesManager::updateSettingsFile(const std::string& FilePath) const
             std::string LowerKey = openfluid::tools::toLowerCase(Key);
 
             std::vector<std::string> PathsArray;
-            auto Paths = openfluid::tools::splitString(Value,",");
+            auto Paths = openfluid::tools::split(Value,",");
 
             for (const auto& P : Paths)
             {
@@ -307,9 +307,9 @@ void PreferencesManager::updateSettingsFile(const std::string& FilePath) const
           for(const auto& Entry : Section.second)
           {
             auto [Key,Value] = cleanKeyValue(Entry.first,Entry.second.get_value<std::string>());
-            openfluid::tools::stringReplace(Key,"%20"," ");
+            Key = openfluid::tools::replace(Key,"%20"," ");
 
-            auto Commands = openfluid::tools::splitString(Value,",");
+            auto Commands = openfluid::tools::split(Value,",");
 
             if (Commands.size() == 3)
             {
@@ -329,11 +329,11 @@ void PreferencesManager::updateSettingsFile(const std::string& FilePath) const
 
             if (openfluid::tools::toLowerCase(Key) == "list")
             {
-              auto Order = openfluid::tools::splitString(Value,",");
+              auto Order = openfluid::tools::split(Value,",");
 
               for (auto O: Order)
               {
-                openfluid::tools::stringReplace(O,"%20"," ");
+                O = openfluid::tools::replace(O,"%20"," ");
                 ExtToolsOrder.push_back(openfluid::tools::trim(O));
               }
             }
@@ -442,7 +442,7 @@ void PreferencesManager::updateSettingsFile(const std::string& FilePath) const
                   }
                   if (SHLInfo == "decoration")
                   {
-                    auto ExistingDeco = openfluid::tools::splitString(Value,",");
+                    auto ExistingDeco = openfluid::tools::split(Value,",");
                     std::vector<std::string> Deco;
 
                     for (const auto& D : ExistingDeco)

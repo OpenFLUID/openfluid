@@ -43,7 +43,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/base/IOListener.hpp>
@@ -251,7 +251,7 @@ int DataTasks::processInstallExamples()
     auto OptStr = m_Cmd.getOptionValue("simulators-only");
     if (!OptStr.empty() && OptStr != "*")
     {
-      auto Selection = openfluid::tools::splitString(OptStr,",");
+      auto Selection = openfluid::tools::split(OptStr,",");
       bool AllIsOK = true;
       for (const auto& S : Selection)
       {
@@ -271,7 +271,7 @@ int DataTasks::processInstallExamples()
     auto OptStr = m_Cmd.getOptionValue("projects-only");
     if (!OptStr.empty() && OptStr != "*")
     {
-      auto Selection = openfluid::tools::splitString(OptStr,",");
+      auto Selection = openfluid::tools::split(OptStr,",");
       bool AllIsOK = true;
       for (const auto& S : Selection)
       {

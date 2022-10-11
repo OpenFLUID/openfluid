@@ -48,7 +48,7 @@
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/machine/InjectGenerator.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -513,8 +513,7 @@ void ModelInstance::checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, co
      if (!(SReq.RequestType == openfluid::base::SchedulingRequest::DURATION &&
            SReq.Duration ==  m_SimulationBlob.simulationStatus().getDefaultDeltaT()))
      {
-       std::string TIStr;
-       openfluid::tools::convertValue(m_SimulationBlob.simulationStatus().getCurrentTimeIndex(),&TIStr);
+       std::string TIStr = std::to_string(m_SimulationBlob.simulationStatus().getCurrentTimeIndex());
        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                           "DeltaT checked mode not respected by simulator " + ID +
                                           " at time index " + TIStr);

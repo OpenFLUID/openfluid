@@ -43,7 +43,7 @@
 #include <iomanip>
 
 #include <openfluid/utilsq/ExternalProgram.hpp>
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
 #include "../KmlObserverBase.hpp"
@@ -509,7 +509,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
         }
         else
         {
-          openfluid::tools::tokenizeString((*it).VarsListStr,(*it).VarsList,";");
+          (*it).VarsList = openfluid::tools::split((*it).VarsListStr,";");
         }
 
         if ((*it).VarsList.empty())

@@ -37,7 +37,7 @@
 */
 
 
-#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 #include "GNUplotObsTools.hpp"
 
@@ -116,7 +116,7 @@ std::vector<std::string> parsePlotFromParamsTree(const openfluid::ware::WarePara
         }
 
         std::string UnitIDStr = Serie.second.getChildValue("unitID","");
-        openfluid::tools::convertString(UnitIDStr, &SInfo.UnitID);
+        openfluid::tools::toNumeric(UnitIDStr,SInfo.UnitID);
 
         SInfo.Type = SerieInfo::SerieType::SERIE_VAR;
       }
@@ -143,7 +143,7 @@ std::vector<std::string> parsePlotFromParamsTree(const openfluid::ware::WarePara
       GInfo.YLabel = Graph.second.getChildValue("ylabel", "");
 
       std::vector<std::string> SeriesStr =
-          openfluid::tools::splitString(Graph.second.getChildValue("series",""), ";", false);
+          openfluid::tools::split(Graph.second.getChildValue("series",""), ";");
 
       for (std::vector<std::string>::const_iterator it = SeriesStr.begin(); it != SeriesStr.end(); ++it)
       {
