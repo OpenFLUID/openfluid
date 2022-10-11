@@ -1,7 +1,4 @@
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-
-
 SET(OPENFLUID_WARE_CPP WareIssues.cpp SimulatorSignature.cpp
                        PluggableWare.cpp SimulationDrivenWare.cpp SimulationInspectorWare.cpp SimulationContributorWare.cpp
                        PluggableSimulator.cpp PluggableObserver.cpp
@@ -33,7 +30,8 @@ TARGET_LINK_LIBRARIES(openfluid-ware
                       openfluid-core
                       openfluid-base
                       openfluid-fluidx
-                      openfluid-tools)
+                      openfluid-tools
+                      Boost::boost)
 
 
 INSTALL(TARGETS openfluid-ware

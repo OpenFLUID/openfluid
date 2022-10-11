@@ -1,8 +1,7 @@
 FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)  
 
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS}
-                    "${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src/tests")
+INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src/tests")
 
 
 ###########################################################################

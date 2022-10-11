@@ -1,4 +1,3 @@
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 SET(OPENFLUID_TOOLS_CPP ColumnTextParser.cpp
                         ChronologicalSerie.cpp
@@ -42,6 +41,7 @@ SET_TARGET_PROPERTIES(openfluid-tools PROPERTIES VERSION "${OPENFLUID_VERSION_MA
 TARGET_LINK_LIBRARIES(openfluid-tools 
                       openfluid-core
                       openfluid-thirdparty-tinyxml2
+                      Boost::boost
                      )
 
 IF(WIN32)

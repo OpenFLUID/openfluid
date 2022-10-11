@@ -1,5 +1,3 @@
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-
 
 SET(OPENFLUID_FLUIDX_CPP WareDescriptor.cpp GeneratorDescriptor.cpp
                          CoupledModelDescriptor.cpp MonitoringDescriptor.cpp
@@ -38,7 +36,8 @@ TARGET_LINK_LIBRARIES(openfluid-fluidx
                       openfluid-base
                       openfluid-core
                       openfluid-tools
-                      openfluid-thirdparty-tinyxml2)
+                      openfluid-thirdparty-tinyxml2
+                      Boost::boost)
 
 
 INSTALL(TARGETS openfluid-fluidx

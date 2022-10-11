@@ -1,7 +1,4 @@
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-
-
 SET(OPENFLUID_MACHINE_CPP Generator.cpp FixedGenerator.cpp RandomGenerator.cpp InjectGenerator.cpp InterpGenerator.cpp
                           GeneratorSignature.cpp
                           ModelInstance.cpp MonitoringInstance.cpp
@@ -49,6 +46,7 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-fluidx
                       openfluid-waresdev
                       openfluid-thirdparty-tinyxml2
+                      Boost::boost
                      )
 
 IF(UNIX)
