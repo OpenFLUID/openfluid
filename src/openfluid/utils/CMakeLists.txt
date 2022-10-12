@@ -1,12 +1,22 @@
 INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR})
 
+# Hack for boost::process on Windows/MinGW only
+IF(MINGW)
+  FIND_PACKAGE(Boost REQUIRED filesystem)
+  IF(Boost_VERSION GREATER 107000)
+    ADD_DEFINITIONS(-DBOOST_USE_WINDOWS_H -DWIN32_LEAN_AND_MEAN)
+  ENDIF()
+ENDIF()
+
 
 SET(OPENFLUID_UTILS_CPP GDALHelpers.cpp
+                        Process.cpp
                         )
 
 SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMachineListener.hpp
                         GDALHelpers.hpp GDALCompatibility.hpp
                         KillableSingleton.hpp MeyerSingleton.hpp SingletonMacros.hpp
+                        Process.hpp
                         CommandLineParser.hpp)
 
 
@@ -21,7 +31,12 @@ SET_TARGET_PROPERTIES(openfluid-utils PROPERTIES VERSION "${OPENFLUID_VERSION_MA
                                         COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
-TARGET_LINK_LIBRARIES(openfluid-utils ${GDAL_LIBRARIES})
+TARGET_LINK_LIBRARIES(openfluid-utils 
+                      openfluid-tools
+                      ${GDAL_LIBRARIES}
+                      Boost::boost 
+                      $<$<BOOL:${MINGW}>:Boost::filesystem> $<$<BOOL:${MINGW}>:ws2_32> # MinGW hack
+                      )
 
 
 
