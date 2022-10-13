@@ -36,12 +36,11 @@
 */
 
 
-#include <QString>
-
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/core/TreeValue.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 // =====================================================================
@@ -241,24 +240,18 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           RefDouble = (double)TUID/10;
           RefLong = TUID;
           RefBool = (TUID%2 == 0);
-          RefString = QString("ID %1").arg(TUID).toStdString();
+          RefString = openfluid::tools::format("ID %d",TUID);
 
           PreDouble = TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT())*m_ParamDouble;
           PreLong = TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT())*m_ParamLong;
           PreBool = ((TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT()))%2 == 0);
-          PreString = QString("%1 %2x%3")
-                      .arg(QString::fromStdString(m_ParamString))
-                      .arg(TUID)
-                      .arg(CurrIndex-OPENFLUID_GetDefaultDeltaT())
-                      .toStdString();
+          PreString = openfluid::tools::format("%s %dx%d",
+                                               m_ParamString.c_str(),TUID,CurrIndex-OPENFLUID_GetDefaultDeltaT()); 
 
           NewDouble = TUID*CurrIndex*m_ParamDouble;
           NewLong = TUID*CurrIndex*m_ParamLong;
           NewBool = ((TUID*CurrIndex)%2 == 0);
-          NewString = QString("%1 %2x%3")
-                      .arg(QString::fromStdString(m_ParamString))
-                      .arg(TUID).arg(CurrIndex)
-                      .toStdString();
+          NewString = openfluid::tools::format("%s %dx%d",m_ParamString.c_str(),TUID,CurrIndex);
 
 
           // ====== Variables ======
@@ -1087,12 +1080,12 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           RefDouble = (double)TUID/10;
           RefLong = TUID;
           RefBool = (TUID%2 == 0);
-          RefString = QString("ID %1").arg(TUID).toStdString();
+          RefString = "ID "+std::to_string(TUID);
 
           NewDouble = TUID*CurrIndex*0.1;
           NewLong = TUID*CurrIndex*10;
           NewBool = ((TUID*CurrIndex)%2 == 0);
-          NewString = QString("%1 %2x%3").arg("strvalue").arg(TUID).arg(CurrIndex).toStdString();
+          NewString = openfluid::tools::format("strvalue %dx%d",TUID,CurrIndex);
 
 
           // double

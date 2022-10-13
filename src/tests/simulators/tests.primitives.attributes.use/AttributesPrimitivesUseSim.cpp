@@ -37,12 +37,11 @@
 */
 
 
-#include <QString>
-
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 // =====================================================================
@@ -217,7 +216,7 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
         RefDouble = (double)TUID/10;
         RefLong = TUID;
         RefBool = (TUID%2 == 0);
-        RefString = QString("ID %1").arg(TUID).toStdString();
+        RefString = openfluid::tools::format("ID %d",TUID);
 
 
         if (!OPENFLUID_IsAttributeExist(TU,"indataDouble"))

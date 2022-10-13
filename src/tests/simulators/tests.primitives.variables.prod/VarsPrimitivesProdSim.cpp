@@ -36,11 +36,10 @@
 */
 
 
-#include <QString>
-
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/core/TreeValue.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 // =====================================================================
@@ -181,7 +180,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheDouble = (double)TUID/10;
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
-          TheString = QString("ID %1").arg(TU->getID()).toStdString();
+          TheString = openfluid::tools::format("ID %d",TU->getID());
 
           OPENFLUID_InitializeVariable(TU,"tests.double",TheDouble);
           OPENFLUID_InitializeVariable(TU,"tests.integer",TheLong);
@@ -242,7 +241,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheDouble = (double)TUID/10;
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
-          TheString = QString("ID %1").arg(TU->getID()).toStdString();
+          TheString = openfluid::tools::format("ID %d",TU->getID());
 
 
           OPENFLUID_InitializeVariable(TU,"tests.typed.none",TheDouble);
@@ -319,7 +318,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheDouble = (double)TUID/10;
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
-          TheString = QString("ID %1").arg(TUID).toStdString();
+          TheString = openfluid::tools::format("ID %d",TUID);
 
 
           // double
@@ -965,7 +964,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheDouble = (double)TUID/10;
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
-          TheString = QString("ID %1").arg(TUID).toStdString();
+          TheString = openfluid::tools::format("ID %d",TUID);
 
           // none
 

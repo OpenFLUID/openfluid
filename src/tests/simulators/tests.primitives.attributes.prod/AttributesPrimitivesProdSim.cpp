@@ -36,10 +36,9 @@
 */
 
 
-#include <QString>
-
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core/MapValue.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 // =====================================================================
@@ -158,7 +157,7 @@ class AttributesPrimitivesProdSimulator : public openfluid::ware::PluggableSimul
         double Dbl = (double)TU->getID() / 10;
         long Lg = TU->getID();
         bool Bl = (TU->getID()%2 == 0);
-        std::string Str = QString("ID %1").arg(TU->getID()).toStdString();
+        std::string Str = openfluid::tools::format("ID %d",TU->getID());
 
         OPENFLUID_SetAttribute(TU,"indataDouble2",Dbl);
         OPENFLUID_SetAttribute(TU,"indataDouble3",openfluid::core::DoubleValue(Dbl));

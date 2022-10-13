@@ -135,7 +135,6 @@ FUNCTION(OFBUILD_ADD_SIMULATOR SIM_SRCDIR SIM_BINDIR)
                         openfluid-base
                         openfluid-ware
                         openfluid-tools
-                        Qt5::Core
                         ${SIM_LINK_LIBS}
                         ${SIM_EXTRA_LINKS}
                         ${_FORTRAN_LINK_LIBS})
@@ -265,7 +264,6 @@ FUNCTION(OFBUILD_ADD_OBSERVER OBS_SRCDIR OBS_BINDIR)
                         openfluid-base
                         openfluid-ware
                         openfluid-tools
-                        Qt5::Core
                         ${OBS_EXTRA_LINKS})
 
   TARGET_COMPILE_DEFINITIONS("${OBS_ID}${OPENFLUID_OBSERVERS_SUFFIX}" PRIVATE 

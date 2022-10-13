@@ -37,14 +37,12 @@
  */
 
 
-#include <QStringList>
-#include <QDir>
-
 #include <ogrsf_frmts.h>
 
 #include <openfluid/utils/GDALCompatibility.hpp>
 #include <openfluid/utils/GDALHelpers.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
@@ -125,7 +123,7 @@ class GeoVectorSerie
       VariablesSet(VarsSet),
       WhenMode(Mode), WhenContinuousDelay(ContModeDelay), LatestContinuousIndex(0),
       GeoSource(nullptr), GeoLayer(nullptr),
-      OutfilePattern(SName+"_"+"%1"+"."+OutfileExt),
+      OutfilePattern(SName+"_%s."+OutfileExt),
       OFLDIDFieldIndex(-1)
     {
 
@@ -204,17 +202,18 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
           if ((*itV).second.size()>10)
           {
 
-            QString BaseName = QString::fromStdString((*itV).second).left(8);
+            std::string BaseName = (*itV).second.substr(0,8);
             int Nbr = 1;
 
-            QString NewFieldName = QString(BaseName+"%1").arg(Nbr);
+            std::string NewFieldName = openfluid::tools::format("%s%d",BaseName.c_str(),Nbr);
 
-            while (isFieldExist(NewFieldName.toStdString(),VarsSet) && Nbr < 100)
+            while (isFieldExist(NewFieldName,VarsSet) && Nbr < 100)
             {
               Nbr++;
+              NewFieldName = openfluid::tools::format("%s%d",BaseName.c_str(),Nbr);
             }
 
-            (*itV).second = NewFieldName.toStdString();
+            (*itV).second = NewFieldName;
           }
         }
       }
@@ -229,19 +228,19 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
     {
       GeoVectorSerie::VariablesSet_t VarsSet;
 
-      QStringList VarsList = QString::fromStdString(VarsStr).split(";");
+      auto VarsList = openfluid::tools::split(VarsStr,";");
 
-      for (int i=0; i<VarsList.size();i++)
+      for (auto i=0; i<VarsList.size();i++)
       {
-        QStringList VarsNameAlias = VarsList[i].split("=>");
+        auto VarsNameAlias = openfluid::tools::split(VarsList[i],"=>");
 
         if (VarsNameAlias.size() == 1)
         {
-          VarsSet[VarsNameAlias[0].toStdString()] = VarsNameAlias[0].toStdString();
+          VarsSet[VarsNameAlias[0]] = VarsNameAlias[0];
         }
         else if (VarsNameAlias.size() == 2)
         {
-          VarsSet[VarsNameAlias[0].toStdString()] = VarsNameAlias[1].toStdString();
+          VarsSet[VarsNameAlias[0]] = VarsNameAlias[1];
         }
         else
         {
@@ -282,17 +281,14 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
         return true;
       }
 
-
-      QString WhenQStr = QString::fromStdString(WhenStr);
-
-      if (WhenQStr.startsWith("continuous"))
+      if (openfluid::tools::startsWith(WhenStr,"continuous"))
       {
-        QStringList WhenQParts = WhenQStr.split(";");
+        auto WhenParts = openfluid::tools::split(WhenStr,";");
 
-        if (WhenQParts.size() == 2)
+        if (WhenParts.size() == 2)
         {
           bool IsConverted;
-          ContinuousDelay = WhenQParts[1].toULongLong(&IsConverted);
+          IsConverted = openfluid::tools::toNumeric(WhenParts[1],ContinuousDelay);
 
           if (IsConverted)
           {
@@ -337,7 +333,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
     void processSerie(GeoVectorSerie& Serie)
     {
-      QString IndexStr = "init";
+      std::string IndexStr = "init";
 
       openfluid::base::SimulationStatus::SimulationStage CurrentStage =
           OPENFLUID_GetCurrentStage();
@@ -355,7 +351,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
         if (Serie.WhenMode == GeoVectorSerie::WhenModeCases::WHENCONTINUOUS)
         {
           openfluid::core::TimeIndex_t CurrentIndex = OPENFLUID_GetCurrentTimeIndex();
-          IndexStr = QString("%1").arg(CurrentIndex);
+          IndexStr = std::to_string(CurrentIndex);
 
           if (Serie.LatestContinuousIndex + Serie.WhenContinuousDelay < CurrentIndex)
           {
@@ -380,7 +376,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
       if (OKToWrite)
       {
         std::string FullFilePath =
-            m_OutputPath + "/" + QString(QString::fromStdString(Serie.OutfilePattern).arg(IndexStr)).toStdString();
+            m_OutputPath + "/" + openfluid::tools::format(Serie.OutfilePattern,IndexStr.c_str());
 
 
         GDALDriver_COMPAT* Driver = GDALGetDriverByName_COMPAT(m_GDALFormat.c_str());
@@ -393,7 +389,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
         GDALDataset_COMPAT* CreatedFile = GDALCreate_COMPAT(Driver,FullFilePath.c_str());
 
-        std::string CreatedLayerName = QFileInfo(QString::fromStdString(FullFilePath)).completeBaseName().toStdString();
+        std::string CreatedLayerName = openfluid::tools::Path(FullFilePath).basename();
 
         OGRLayer* CreatedLayer = CreatedFile->CreateLayer(CreatedLayerName.c_str(),nullptr,
                                                           Serie.GeoLayer->GetLayerDefn()->GetGeomType(),
@@ -468,16 +464,16 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
                 }
                 else
                 {
-                  QString Msg = QString("Variable %1 on unit %2#%3 is not a double or a compatible type")
-                                .arg(VarName.c_str()).arg(UU->getClass().c_str()).arg(UU->getID());
-                  OPENFLUID_LogWarning(Msg.toStdString());
+                  auto Msg = openfluid::tools::format("Variable %s on unit %s#%d is not a double or a compatible type",
+                                                       VarName.c_str(),UU->getClass().c_str(),UU->getID());
+                  OPENFLUID_LogWarning(Msg);
                 }
               }
               else
               {
-                QString Msg = QString("Variable %1 does not exist on unit %2#%3")
-                              .arg(VarName.c_str()).arg(UU->getClass().c_str()).arg(UU->getID());
-                OPENFLUID_LogWarning(Msg.toStdString());
+                auto Msg = openfluid::tools::format("Variable %s does not exist on unit %s#%d",
+                                                    VarName.c_str(),UU->getClass().c_str(),UU->getID());
+                OPENFLUID_LogWarning(Msg);
               }
 
               if (IsValueCreated) // OpenFLUID value is written to GIS file only if it is double or converted to double
@@ -488,9 +484,9 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
             if (CreatedLayer->CreateFeature(CreatedFeature) != OGRERR_NONE)
             {
-              QString Msg = QString("Feature for unit %1#%2 cannot be created")
-                            .arg(UU->getClass().c_str()).arg(UU->getID());
-              OPENFLUID_LogWarning(Msg.toStdString());
+              auto Msg = openfluid::tools::format("Feature for unit %s#%d cannot be created",
+                                                  UU->getClass().c_str(),UU->getID());
+              OPENFLUID_LogWarning(Msg);
             }
 
 
@@ -672,7 +668,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
 
       // preparation of output directory for series (if any)
-      QDir().mkpath(QString::fromStdString(m_OutputPath));
+      openfluid::tools::Path(m_OutputPath).makeDirectory();
 
 
       // preparation of series
