@@ -177,7 +177,7 @@ void GitProxy::processErrorOutputAsInfo()
 
 bool GitProxy::launchCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
                              const QString& Username, const QString& Password,
-                             bool SslNoVerify, const QString& WorkingDirectory)
+                             bool SslNoVerify, const QString& WorkingDirectory, bool UsernameViaEnv)
 {
   if (FromUrl.isEmpty() || ToPath.isEmpty())
   {
@@ -203,7 +203,7 @@ bool GitProxy::launchCommand(QStringList Args, const QString& FromUrl, const QSt
 
   QProcessEnvironment PcsEnv = QProcessEnvironment::systemEnvironment();
 
-  if (!Username.isEmpty() && !Url.contains("@"))
+  if (!Username.isEmpty() && !Url.contains("@") && !UsernameViaEnv)
   {
     Url.replace("http://", QString("http://%1@").arg(Username));
     Url.replace("https://", QString("https://%1@").arg(Username));
@@ -213,6 +213,10 @@ bool GitProxy::launchCommand(QStringList Args, const QString& FromUrl, const QSt
   {
     PcsEnv.insert("GIT_ASKPASS",QString::fromStdString(openfluid::config::GITASKPASS_APP));
     PcsEnv.insert(OFBUILD_GITASKPASS_ENVVAR,Password);
+    if (UsernameViaEnv)
+    {
+      PcsEnv.insert(OFBUILD_GITASKUSER_ENVVAR,Username);
+    }
   }
 
   if (SslNoVerify)
@@ -259,7 +263,7 @@ bool GitProxy::addSubmodule(const QString& FromUrl, const QString& ToPath, const
                             bool SslNoVerify)
 {
   QStringList Args = {"submodule", "add", "--progress"};
-  return launchCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath);
+  return launchCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath, true);
 }
 
 
@@ -276,7 +280,7 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
   {
     Args << "--depth=1";
   }
-  return launchCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath);
+  return launchCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath, true);
 }
 
 

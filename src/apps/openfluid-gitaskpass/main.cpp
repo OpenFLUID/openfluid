@@ -34,23 +34,53 @@
   @file main.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inra.fr>
 */
 
 
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 
-int main()
+int main(int argc, char* argv[])
 {
-   char* Pwd = std::getenv(OFBUILD_GITASKPASS_ENVVAR);
+  bool IsUserRequest = false;
+  if (argc >= 1 && argv[1])
+  {
+    std::string Request = argv[1];
+    // WARNING: following condition uses the git input message, 
+    // so if git uses regionalization "Username" may be translated
+    // and this check will fail
+    if (Request.find("Username") != std::string::npos)
+    {
+      IsUserRequest = true;
+    }
+  }
 
-   if (Pwd)
-   {
-     std::cout <<  Pwd << std::endl;
-   }
-   else
-   {     
-     std::cout << "" << std::endl;
-   }
+  if (IsUserRequest)
+  {
+    char* Usr = std::getenv(OFBUILD_GITASKUSER_ENVVAR);
+    if (Usr)
+    {
+      std::cout <<  Usr << std::endl;
+    }
+    else
+    {
+      std::cout << "" << std::endl;
+    }
+  }
+  else
+  {
+    char* Pwd = std::getenv(OFBUILD_GITASKPASS_ENVVAR);
+    if (Pwd)
+    {
+      std::cout <<  Pwd << std::endl;
+    }
+    else
+    {
+      std::cout << "" << std::endl;
+    }
+  }
 }

@@ -120,7 +120,7 @@ class OPENFLUID_API GitProxy : public QObject, public ProgramProxy<GitProxy>
 
     bool launchCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
                       const QString& Username = "", const QString& Password = "",
-                      bool SslNoVerify = false, const QString& WorkingDirectory = "");
+                      bool SslNoVerify = false, const QString& WorkingDirectory = "", bool UsernameViaEnv = false);
 
     bool addSubmodule(const QString& FromUrl, const QString& ToPath, const QString& LocalGitRepoPath,
                const QString& Username = "", const QString& Password = "",
