@@ -40,7 +40,9 @@
 
 
 #include <QObject>
+#include <QApplication>
 
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/utilsq/FluidHubAPIClient.hpp>
 
 
@@ -53,12 +55,14 @@ class OPENFLUID_API HubManager: public QObject
 
   private:
 
+    class HubConnectWorker;
+
     typedef std::map<openfluid::ware::WareType, openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t>
       WaresDetailsByIDByType_t;
-      
+
     openfluid::utils::FluidHubAPIClient* mp_HubClient;
 
-    std::string m_HubUrl;
+    std::string m_HubUrl = "";
 
     std::string m_Username = "";
     std::string m_Password = "";
@@ -81,9 +85,9 @@ class OPENFLUID_API HubManager: public QObject
 
   public slots :
 
-    bool connect();
+    void asyncConnectToHub();
 
-    void disconnect();
+    void disconnectFromHub();
 
     bool login(const std::string& UserID, const std::string& Password);
 
@@ -91,6 +95,8 @@ class OPENFLUID_API HubManager: public QObject
   
   
   public:
+
+    void setUrl(std::string Url);
 
     bool isConnected() const;
 
@@ -102,15 +108,49 @@ class OPENFLUID_API HubManager: public QObject
 
     std::string getPassword() const;
 
+    bool connectToHub();
+
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t getAvailableWaresWithDetails(
       openfluid::ware::WareType Type) const;
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t getAvailableFragmentsWithDetails() const;
 
+    HubManager();
+
     HubManager(std::string WareshubUrl);
 
     ~HubManager();
 
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class HubManager::HubConnectWorker : public QObject
+{
+  Q_OBJECT
+
+  private:
+
+    HubManager* mp_Parent;
+
+
+  signals:
+
+    void finished(bool Ok, const QString& Message);
+
+
+  public slots :
+    
+    bool run();
+
+
+  public:
+
+    HubConnectWorker(HubManager* Parent);
 
 };
 

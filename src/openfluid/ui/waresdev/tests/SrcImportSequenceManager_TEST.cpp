@@ -69,7 +69,7 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_v0_fails,HubTestFixture)
 
   openfluid::ui::waresdev::HubManager M(UrlHttpsV0.toStdString());
   openfluid::ui::waresdev::SrcImportSequenceManager W;
-  M.connect();
+  M.connectToHub();
   M.login("wrongname", "wrongpass");
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(M) } } });
@@ -92,7 +92,7 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_v1_fails,HubTestFixture)
   }
 
   openfluid::ui::waresdev::HubManager M(UrlHttpsV1.toStdString());
-  M.connect();
+  M.connectToHub();
   BOOST_CHECK_EQUAL(M.login("wrongname@somewhere", "wrongpass"), false);
 
   openfluid::ui::waresdev::SrcImportSequenceManager W;
@@ -120,14 +120,14 @@ BOOST_FIXTURE_TEST_CASE(clone_https_ok,HubTestFixture)
     return;
   }
 
-  openfluid::ui::waresdev::HubManager M(UrlHttps.toStdString());
-  BOOST_CHECK(M.connect());
-  BOOST_CHECK(M.login(Username, Password));
+  openfluid::ui::waresdev::HubManager M(UrlHttpsV0.toStdString());
+  BOOST_CHECK(M.connectToHub());
+  M.login("gitof", "gitof");// Check not relevant, no validation is done on login when direct unixname
 
   openfluid::ui::waresdev::SrcImportSequenceManager W;
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(M) } } });
 
-  BOOST_CHECK(W.clone());
+  BOOST_CHECK(W.onCloneRequest());
 
   QDir WareDir(TestWaresDevSimulatorsDir.absoluteFilePath(FirstAvailSimId));
   BOOST_CHECK(WareDir.exists());

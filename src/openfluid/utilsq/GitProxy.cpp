@@ -185,7 +185,8 @@ bool GitProxy::launchCommand(QStringList Args, const QString& FromUrl, const QSt
     return false;
   }
 
-  // Manual check if .git/index.lock detected (ongoing process)
+  // Manual check if .git/index.lock detected (meaning that another git process is already running)
+  // HACK see if removable for release
   if (!WorkingDirectory.isEmpty())
   {
     openfluid::tools::FilesystemPath GitIndexLockPath = 

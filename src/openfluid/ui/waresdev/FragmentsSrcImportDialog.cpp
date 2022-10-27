@@ -154,20 +154,20 @@ void FragmentsSrcImportDialog::updateHubElementsList()
 {
   clearListWidgets();
 
-  if (!mp_HubManager)
+  if (!m_HubManager.isConnected())
   {
     return;
   }
   auto Mgr = openfluid::base::WorkspaceManager::instance();
 
-  QString UserName = QString::fromStdString(mp_HubManager->getUsername());
+  QString UserName = QString::fromStdString(m_HubManager.getUsername());
   QString ErrStr;
 
-  for (const auto& FragmentPair : mp_HubManager->getAvailableFragmentsWithDetails())
+  for (const auto& FragmentPair : m_HubManager.getAvailableFragmentsWithDetails())
   {
     QString FragmentId = QString::fromStdString(FragmentPair.first);
     std::string WarePath = openfluid::tools::Filesystem::joinPath({Mgr->getWorkspacePath(),
-                                                                   openfluid::config::FRAGMENTS_PATH,
+                                                                   openfluid::config::WARESDEV_FRAGMENTS_DIR,
                                                                    FragmentId.toStdString()});
 
     bool WareNotAuthorized = !openfluid::waresdev::hasUserAccess(UserName.toStdString(), 
@@ -294,7 +294,7 @@ bool FragmentsSrcImportDialog::check()
     {
       return false;
     }
-    else if (mp_HubManager->isV0ofAPI())
+    else if (m_HubManager.isV0ofAPI())
     {
       setMessage(tr("Hub API version too old for fragment import"));
       return false;
@@ -365,7 +365,7 @@ void FragmentsSrcImportDialog::onImportAsked()
   if (ui->tabWidget->currentIndex() == 0)  // HUB TAB
   {
     FragmentUrls = getSelectedFragments();
-    Username = QString::fromStdString(mp_HubManager->getUsername());
+    Username = QString::fromStdString(m_HubManager.getUsername());
     Password = ui->HubPasswordLineEdit->text();
   }
   else  // GIT TAB
@@ -404,7 +404,7 @@ bool FragmentsSrcImportDialog::isFragmentInWare(std::string FragmentName)
 {
   openfluid::tools::FilesystemPath FragmentTheoricalPath({m_WarePath.toStdString(), 
                                                           openfluid::config::WARESDEV_SRC_DIR, 
-                                                          openfluid::config::FRAGMENTS_PATH, 
+                                                          openfluid::config::WARESDEV_FRAGMENTS_DIR, 
                                                           FragmentName});
   return FragmentTheoricalPath.isDirectory();
 }

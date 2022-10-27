@@ -68,8 +68,8 @@ class OPENFLUID_API GitImportWorker: public QObject
 
     bool m_SslNoVerify;
 
-
     std::vector<std::pair<QString, QString>> m_ElementsToImport; // first: Git URL, second: local path
+
 
   protected slots:
 

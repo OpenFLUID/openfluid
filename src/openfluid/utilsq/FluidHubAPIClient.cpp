@@ -493,7 +493,7 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableElementsWit
 
 FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableFragmentsWithDetails(const QString& Username) const
 {
-  QString Path = QString::fromStdString(openfluid::config::FRAGMENTS_PATH);
+  QString Path = QString::fromStdString(openfluid::config::WARESDEV_FRAGMENTS_DIR);
 
   return getAvailableElementsWithDetails(Path, Username);
 }

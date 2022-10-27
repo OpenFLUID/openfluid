@@ -115,7 +115,7 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
   }
 
   openfluid::tools::FilesystemPath SrcFragmentsSubPath({openfluid::config::WARESDEV_SRC_DIR, 
-                                                        openfluid::config::FRAGMENTS_PATH});
+                                                        openfluid::config::WARESDEV_FRAGMENTS_DIR});
   openfluid::tools::FilesystemPath FragmentsPath({RootPath.toStdString(), SrcFragmentsSubPath.toNative()});
 
   bool FragmentDirCreated = false;

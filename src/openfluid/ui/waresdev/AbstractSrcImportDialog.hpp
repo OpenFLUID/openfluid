@@ -81,8 +81,7 @@ class OPENFLUID_API AbstractSrcImportDialog: public openfluid::ui::common::Messa
 
   protected:
 
-    SrcImportSequenceManager* mp_SrcImportSequenceManager = nullptr;
-    openfluid::ui::waresdev::HubManager* mp_HubManager = nullptr;
+    openfluid::ui::waresdev::HubManager m_HubManager;
 
     QList<QWidget*> m_HubLoginWidgets;
     QList<QWidget*> m_HubConnectionInfoWidgets;

@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(connect_wrong_url_fails)
   std::cout << " ======== <empty URL> ========" << std::endl;
 
   openfluid::ui::waresdev::HubManager M("");
-  BOOST_CHECK_EQUAL(M.connect(), false);
+  BOOST_CHECK_EQUAL(M.connectToHub(), false);
 }
 
 
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(connect_http_v0_ok)
   std::cout << " ======== " << HubTestFixture::UrlHttpV0.toStdString() << " ========" << std::endl;
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpV0.toStdString());
-  BOOST_CHECK(M.connect());
+  BOOST_CHECK(M.connectToHub());
   BOOST_CHECK(M.isConnected());
 }
 
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(connect_http_v1_ok)
   std::cout << " ======== " << HubTestFixture::UrlHttpV1.toStdString() << " ========" << std::endl;
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpV1.toStdString());
-  BOOST_CHECK(M.connect());
+  BOOST_CHECK(M.connectToHub());
   BOOST_CHECK(M.isConnected());
 }
 
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_v0_ok)
   }
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpsV0.toStdString());
-  BOOST_CHECK(M.connect());
+  BOOST_CHECK(M.connectToHub());
   BOOST_CHECK(M.isConnected());
 }
 
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_v1_ok)
   }
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpsV1.toStdString());
-  BOOST_CHECK(M.connect());
+  BOOST_CHECK(M.connectToHub());
   BOOST_CHECK(M.isConnected());
 }
 
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE(connect_https_ssl_ok_redirect)
   std::cout << " ======== " << HubTestFixture::UrlHttpsV0Redirect.toStdString() << " (ok) ========" << std::endl;
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpsV0Redirect.toStdString());
-  BOOST_CHECK(M.connect());
+  BOOST_CHECK(M.connectToHub());
   BOOST_CHECK(M.isConnected());
 }
 #endif
@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_v0_ok)
   std::cout << " ======== " << HubTestFixture::UrlHttpsV0.toStdString() << " (noverify) ========" << std::endl;
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpsV0.toStdString());
-  BOOST_CHECK(M.connect());
+  BOOST_CHECK(M.connectToHub());
   BOOST_CHECK(M.isConnected());
 }
 
@@ -188,7 +188,7 @@ BOOST_AUTO_TEST_CASE(connect_https_sslNoverify_v1_ok)
   std::cout << " ======== " << HubTestFixture::UrlHttpsV1.toStdString() << " (noverify) ========" << std::endl;
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpsV1.toStdString());  // , true
-  BOOST_CHECK(M.connect());
+  BOOST_CHECK(M.connectToHub());
   BOOST_CHECK(M.isConnected());
 }
 
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(ware_list_not_connected_ok)
 BOOST_AUTO_TEST_CASE(ware_list_http_v0_ok)
 {
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpV0.toStdString());
-  M.connect();
+  M.connectToHub();
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT).size(), 1);
@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE(ware_list_http_v0_ok)
 BOOST_AUTO_TEST_CASE(ware_list_http_v1_ok)
 {
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpV1.toStdString());
-  M.connect();
+  M.connectToHub();
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT).size(), 1);
@@ -247,7 +247,7 @@ BOOST_AUTO_TEST_CASE(ware_list_https_v0_ok)
   }
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpsV0.toStdString());
-  M.connect();
+  M.connectToHub();
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT).size(), 1);
@@ -267,7 +267,7 @@ BOOST_AUTO_TEST_CASE(ware_list_https_v1_ok)
   }
 
   openfluid::ui::waresdev::HubManager M(HubTestFixture::UrlHttpsV1.toStdString());
-  M.connect();
+  M.connectToHub();
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::SIMULATOR).size(), 4);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT).size(), 1);

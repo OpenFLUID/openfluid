@@ -39,6 +39,7 @@
 #include <string>
 
 #include <QString>
+#include <QThread>
 #include <QApplication>
 
 #include <openfluid/base/PreferencesManager.hpp>
@@ -46,6 +47,18 @@
 
 
 namespace openfluid { namespace ui { namespace waresdev {
+
+
+HubManager::HubManager() : mp_HubClient(new openfluid::utils::FluidHubAPIClient()), 
+  m_HubUrl(""), m_Username(""), m_Password("")
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 HubManager::HubManager(std::string WareshubUrl) : mp_HubClient(new openfluid::utils::FluidHubAPIClient()), 
   m_HubUrl(WareshubUrl), m_Username(""), m_Password("")
@@ -68,8 +81,28 @@ HubManager::~HubManager()
 // =====================================================================
 
 
+void HubManager::setUrl(std::string Url)
+{
+  // reset instance
+    m_Username = "";
+    m_Password = "";
+    m_AvailableWaresDetailsByIDByType.clear();
+    m_AvailableFragmentsDetails.clear();
+
+    m_HubUrl = Url;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool HubManager::isConnected() const
 {
+  if (m_HubUrl.size() == 0)
+  {
+    return false;
+  }
   return mp_HubClient->isConnected();
 }
 
@@ -127,7 +160,7 @@ openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t HubManager::getAvailable
 // =====================================================================
 
 
-void HubManager::disconnect()
+void HubManager::disconnectFromHub()
 {
   mp_HubClient->disconnect();
 }
@@ -179,41 +212,35 @@ void HubManager::logout()
 // =====================================================================
 
 
-bool HubManager::connect()
+bool HubManager::connectToHub()
 {
-  m_AvailableWaresDetailsByIDByType.clear();
-  m_AvailableFragmentsDetails.clear();
+  // to run the connexion synchronously
+  return HubConnectWorker(this).run();
+}
 
-  openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
-  if (openfluid::base::PreferencesManager::instance()->isWaresdevGitSslNoVerify())
-  {
-    SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
-  }
 
-  bool OK = mp_HubClient->connect(QString::fromStdString(m_HubUrl), SSLConfig); 
-  // TODO convert hub strings from QString to std
+// =====================================================================
+// =====================================================================
 
-  for (const auto& ByType : mp_HubClient->getAllAvailableWares())
-  {
-    m_AvailableWaresDetailsByIDByType[ByType.first] = mp_HubClient->getAvailableWaresWithDetails(ByType.first, 
-                                                                              QString::fromStdString(m_Username));
-  }
-  m_AvailableFragmentsDetails = mp_HubClient->getAvailableFragmentsWithDetails(QString::fromStdString(m_Username));
 
-  if (!OK)
-  {
-    emit finished(false, tr("Fetching information failed"));
-  }
-  else
-  {
-    emit finished(true, tr("Fetching information completed"));
-  }
+void HubManager::asyncConnectToHub()
+{
+  // to run the connexion asynchronously
 
-  if (qApp && qApp->thread() != thread())
-  {
-    moveToThread(qApp->thread());
-  }
-  return OK;
+  QThread* Thread = new QThread();
+
+  HubConnectWorker* TmpHubConnectWorker = new HubConnectWorker(this);
+
+  TmpHubConnectWorker->moveToThread(Thread);
+
+  connect(Thread, SIGNAL(started()), TmpHubConnectWorker, SLOT(run()));
+  connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
+  connect(TmpHubConnectWorker, SIGNAL(finished(bool, const QString&)), TmpHubConnectWorker, SLOT(deleteLater()));
+  connect(TmpHubConnectWorker, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+  connect(TmpHubConnectWorker, SIGNAL(finished(bool, const QString&)), this,
+          SIGNAL(finished(bool, const QString&)));
+
+  Thread->start();
 }
 
 
@@ -234,6 +261,57 @@ std::string HubManager::getUsername() const
 std::string HubManager::getPassword() const
 {
   return m_Password;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+HubManager::HubConnectWorker::HubConnectWorker(HubManager* Parent) : mp_Parent(Parent)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool HubManager::HubConnectWorker::run()
+{
+  openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
+  if (openfluid::base::PreferencesManager::instance()->isWaresdevGitSslNoVerify())
+  {
+    SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
+  }
+
+  bool OK = mp_Parent->mp_HubClient->connect(QString::fromStdString(mp_Parent->m_HubUrl), SSLConfig); 
+  // TODO convert hub strings from QString to std
+
+  for (const auto& ByType : mp_Parent->mp_HubClient->getAllAvailableWares())
+  {
+    mp_Parent->m_AvailableWaresDetailsByIDByType[ByType.first] = 
+      mp_Parent->mp_HubClient->getAvailableWaresWithDetails(ByType.first, 
+                                                            QString::fromStdString(mp_Parent->m_Username));
+  }
+  mp_Parent->m_AvailableFragmentsDetails = 
+    mp_Parent->mp_HubClient->getAvailableFragmentsWithDetails(QString::fromStdString(mp_Parent->m_Username));
+
+  if (!OK)
+  {
+    emit finished(false, tr("Fetching information failed"));
+  }
+  else
+  {
+    emit finished(true, tr("Fetching information completed"));
+  }
+
+  if (qApp && qApp->thread() != thread())
+  {
+    moveToThread(qApp->thread());
+  }
+  return OK;
 }
 
 

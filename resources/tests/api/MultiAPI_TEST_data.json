@@ -275,6 +275,9 @@
               ],
               "builderexts" : [
                 "examples.bext.X"
+              ],
+              "fragments": [
+                "examples.frag.F"
               ]
             }
           }
@@ -297,14 +300,14 @@
                 "description": "This is examples.sim.A...", 
                 "git_url": "https://host.domain.org/foo-wareshub/git/simulators/examples.sim.A", 
                 "users_ro": ["*"], "users_rw": ["user1", "user2", "user3"], 
-                "ware_url": "http://147.100.175.211:8181/api/wares/simulators/sim.staging.example1", 
+                "ware_url": "https://host.domain.org/foo-wareshub/api/wares/simulators/sim.staging.example1", 
                 "git_branches": ["openfluid-2.0", "openfluid-2.1"], 
                 "issues_counts": {"bugs": 1, "features": 0, "reviews": 2}
               }, 
               "examples.sim.B": 
               {
                 "description": "This is sim.staging.example2...", 
-                "git_url": "http://147.100.175.211:8181/git-service/wares/simulators/sim.staging.example2", "users_ro": ["jbuckley", "kcobain", "dgrohl"], "users_rw": ["dgrohl"], "ware_url": "http://147.100.175.211:8181/api/wares/simulators/sim.staging.example2", 
+                "git_url": "https://host.domain.org/foo-wareshub/git-service/wares/simulators/sim.staging.example2", "users_ro": ["jbuckley", "kcobain", "dgrohl"], "users_rw": ["dgrohl"], "ware_url": "https://host.domain.org/foo-wareshub/api/wares/simulators/sim.staging.example2", 
                 "git_branches": ["openfluid-1.8", "openfluid-2.0", "openfluid-2.1"],
                 "issues_counts": {"bugs": 0, "features": 0, "reviews": 0}
               }, 
@@ -319,7 +322,7 @@
               "examples.sim.D": 
               {
                 "description": "This is sim.staging.example2...", 
-                "git_url": "http://147.100.175.211:8181/git-service/wares/simulators/sim.staging.example2", "users_ro": ["jbuckley", "kcobain", "dgrohl"], "users_rw": ["dgrohl"], "ware_url": "http://147.100.175.211:8181/api/wares/simulators/sim.staging.example2", "git_branches": [], 
+                "git_url": "https://host.domain.org/foo-wareshub/git-service/wares/simulators/sim.staging.example2", "users_ro": ["jbuckley", "kcobain", "dgrohl"], "users_rw": ["dgrohl"], "ware_url": "https://host.domain.org/foo-wareshub/api/wares/simulators/sim.staging.example2",
                 "git_branches": ["master"],
                 "issues_counts": {"bugs": 1, "features": 1, "reviews": 1}
               }
@@ -345,7 +348,7 @@
                     "git_url": "https://host.domain.org/foo-wareshub/git/observers/examples.obs.J",
                     "users_ro": ["user1"],
                     "users_rw": ["user2"],
-                    "ware_url": "http://147.100.175.211:8181/api/wares/observers/examples.obs.J",
+                    "ware_url": "https://host.domain.org/foo-wareshub/api/wares/observers/examples.obs.J",
                     "git_branches": [],
                     "issues_counts": {
                         "bugs": 0,
@@ -355,7 +358,7 @@
                 }, 
                 "examples.obs.K": {
                   "description": "E2",
-                  "git_url": "http://147.100.175.211:8181/git-service/wares/observers/examples.obs.K",
+                  "git_url": "https://host.domain.org/foo-wareshub/git-service/wares/observers/examples.obs.K",
                   "users_ro": [
                       "kcobain",
                       "dgrohl"
@@ -364,7 +367,7 @@
                       "dgrohl",
                       "kcobain"
                   ],
-                  "ware_url": "http://147.100.175.211:8181/api/wares/observers/examples.obs.K",
+                  "ware_url": "https://host.domain.org/foo-wareshub/api/wares/observers/examples.obs.K",
                   "git_branches": [],
                   "issues_counts": {
                       "bugs": 0,
@@ -394,12 +397,42 @@
                     "git_url": "https://host.domain.org/foo-wareshub/git/builderexts/examples.bext.X",
                     "users_ro": [],
                     "users_rw": ["*"],
-                    "ware_url": "http://147.100.175.211:8181/api/wares/observers/examples.obs.J",
+                    "ware_url": "https://host.domain.org/foo-wareshub/api/wares/observers/examples.obs.J",
                     "git_branches": ["openfluid-2.0", "openfluid-2.1"], 
                     "issues_counts": {
                         "bugs": 1,
                         "features": 0,
                         "reviews": 2
+                    }
+                }
+            }
+          }
+        }
+      },
+
+      {
+        "path" : "/wares/fragments",
+        "get" : {
+          "expected" : {
+            "headers" : {
+              "Accept" : "application/x.openfluid.FLUIDhub+json;version=1.0"
+            }
+          },
+          "returned": 
+          {
+            "body" : 
+              {
+                "examples.frag.F": {
+                    "description": "This is examples.frag.F...",
+                    "git_url": "https://host.domain.org/foo-wareshub/git/fragments/examples.frag.F",
+                    "users_ro": ["*"],
+                    "users_rw": [],
+                    "ware_url": "https://host.domain.org/foo-wareshub/api/wares/fragments/examples.frag.F",
+                    "git_branches": ["master"], 
+                    "issues_counts": {
+                        "bugs": 0,
+                        "features": 1,
+                        "reviews": 0
                     }
                 }
             }

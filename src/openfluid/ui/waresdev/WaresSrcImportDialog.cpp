@@ -170,20 +170,15 @@ void WaresSrcImportDialog::updateHubElementsList()
 {
   clearListWidgets();
 
-  if (!mp_HubManager)
-  {
-    return;
-  }
-
   auto Mgr = openfluid::base::WorkspaceManager::instance();
 
-  QString UserName = QString::fromStdString(mp_HubManager->getUsername());
+  QString UserName = QString::fromStdString(m_HubManager.getUsername());
   QString ErrStr;
 
   for (const auto& Pair : m_ListWidgetsByWareType)
   {
     openfluid::ware::WareType Type = Pair.first;
-    for (const auto& WarePair : mp_HubManager->getAvailableWaresWithDetails(Type))
+    for (const auto& WarePair : m_HubManager.getAvailableWaresWithDetails(Type))
     {
       QString WareId = QString::fromStdString(WarePair.first);
       std::string WarePath = Mgr->getWarePath(Type,WareId.toStdString());
@@ -383,7 +378,7 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
   else
   {
     ui->WaresGroupBox->setTitle(tr("Available wares on Hub"));
-    ui->HubUrlLineEdit->setEnabled(!mp_HubManager || !mp_HubManager->isConnected());
+    ui->HubUrlLineEdit->setEnabled(!m_HubManager.isConnected());
     for (const auto& Pair : m_FilterWidgetsByWareType)
     {
       Pair.second->showAuthorizationFilterCheckbox(true);
@@ -459,7 +454,7 @@ void WaresSrcImportDialog::onPackagePathButtonClicked()
 
 void WaresSrcImportDialog::onHubConnectButtonClicked()
 {
-  if (mp_HubManager && mp_HubManager->isConnected())
+  if (m_HubManager.isConnected())
   {
     m_AlreadySelectedHubWares = QMap<openfluid::ware::WareType, QStringList>(getSelectedWaresByType());
   }
@@ -648,20 +643,18 @@ void WaresSrcImportDialog::onImportAsked()
   }
   else
   {
-    if (!mp_HubManager)
+    if (!m_HubManager.isConnected())
     {
       return;
     }
 
     SrcImportSequenceManager* LocalSrcImportSequenceManager = new SrcImportSequenceManager();
-    QString Username = QString::fromStdString(mp_HubManager->getUsername());
-    QString Password = QString::fromStdString(mp_HubManager->getPassword());
+    QString Username = QString::fromStdString(m_HubManager.getUsername());
+    QString Password = QString::fromStdString(m_HubManager.getPassword());
     LocalSrcImportSequenceManager->setSelectedWaresUrl(getSelectedWaresByType());
     LocalSrcImportSequenceManager->setupUser(Username, Password);
     setupImportManagerThread(LocalSrcImportSequenceManager, Thread, &ProgressDialog);
     runThread(Thread, ProgressDialog);
-    
-    delete LocalSrcImportSequenceManager;
   }
   
 }

@@ -73,7 +73,6 @@ AbstractSrcImportDialog::AbstractSrcImportDialog(QWidget* Parent) :
 
 AbstractSrcImportDialog::~AbstractSrcImportDialog()
 {
-  delete mp_SrcImportSequenceManager;
 }
 
 
@@ -94,7 +93,7 @@ bool AbstractSrcImportDialog::checkHubSection()
     hubConnectButton()->setEnabled(true);
   }
 
-  if (!mp_HubManager || !mp_HubManager->isConnected())
+  if (!m_HubManager.isConnected())
   {
     setMessage(tr("Not connected to a Hub"));
     return false;
@@ -110,9 +109,9 @@ bool AbstractSrcImportDialog::checkHubSection()
 
 void AbstractSrcImportDialog::onHubConnectButtonClicked()
 {
-  if (mp_HubManager && mp_HubManager->isConnected())
+  if (m_HubManager.isConnected())
   {
-    mp_HubManager->disconnect();
+    m_HubManager.disconnectFromHub();
 
     clearListWidgets();
 
@@ -123,7 +122,7 @@ void AbstractSrcImportDialog::onHubConnectButtonClicked()
       Widget->setEnabled(true);
     }
 
-    mp_HubManager->logout();
+    m_HubManager.logout();
     hubLoginButton()->setText(m_HubButtonLoginLabel);
 
     // Hide login fields
@@ -145,34 +144,19 @@ void AbstractSrcImportDialog::onHubConnectButtonClicked()
       return;
     }
 
-    if (mp_HubManager)
-    {
-      delete mp_HubManager;
-      mp_HubManager = nullptr;
-    }
+    m_HubManager.setUrl(HubUrl.toStdString());
 
-    QThread* Thread = new QThread();
     openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Connecting to Hub:"), true, this);
 
     try
     {
-      mp_HubManager = new openfluid::ui::waresdev::HubManager(HubUrl.toStdString());
-
-      mp_HubManager->moveToThread(Thread);
-
-      connect(Thread, SIGNAL(started()), mp_HubManager, SLOT(connect()));
-      connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
-
-      connect(mp_HubManager, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
-      connect(mp_HubManager, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
-              SLOT(finishAndQuit(bool, const QString&)));
-
-      connect(mp_HubManager, SIGNAL(info(const QString&)), &ProgressDialog,
-              SLOT(writeInfo(const QString&)));
-      connect(mp_HubManager, SIGNAL(error(const QString&)), &ProgressDialog,
-              SLOT(writeError(const QString&)));
-
-      Thread->start();
+      connect(&m_HubManager, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
+        SLOT(finishAndQuit(bool, const QString&)));
+      connect(&m_HubManager, SIGNAL(info(const QString&)), &ProgressDialog,
+          SLOT(writeInfo(const QString&)));
+    connect(&m_HubManager, SIGNAL(error(const QString&)), &ProgressDialog,
+          SLOT(writeError(const QString&)));
+      m_HubManager.asyncConnectToHub();
     }
     catch (std::exception& e)
     {
@@ -189,7 +173,7 @@ void AbstractSrcImportDialog::onHubConnectButtonClicked()
         Widget->setEnabled(true);
       }
 
-      if (mp_HubManager->isV0ofAPI())
+      if (m_HubManager.isV0ofAPI())
       {
         hubUsernameLabel()->setText(tr("Username"));
       }
@@ -216,23 +200,23 @@ void AbstractSrcImportDialog::onHubConnectButtonClicked()
 
 void AbstractSrcImportDialog::onHubLoginButtonClicked()
 {
-  if (mp_HubManager->isLoggedIn())
+  if (m_HubManager.isLoggedIn())
   {
     hubLoginButton()->setText(m_HubButtonLoginLabel);
     for (auto& Widget : m_HubLoginWidgets)
     {
       Widget->setEnabled(true);
     }
-    mp_HubManager->logout();
+    m_HubManager.logout();
     updateHubElementsList();
     return;
   }
   else
   {
     setMessage();
-    if (mp_HubManager)
+    if (m_HubManager.isConnected())
     {
-      if (mp_HubManager->login(usernameLineEdit()->text().toStdString(), passwordLineEdit()->text().toStdString()))
+      if (m_HubManager.login(usernameLineEdit()->text().toStdString(), passwordLineEdit()->text().toStdString()))
       {
         hubLoginButton()->setText(m_HubButtonLogoutLabel);
         for (auto& Widget : m_HubLoginWidgets)
@@ -264,7 +248,7 @@ void AbstractSrcImportDialog::genericItemDisplay(bool AlreadyDisplayed,
 {
   if (!AlreadyDisplayed)
   {
-    if (mp_HubManager->isLoggedIn())
+    if (m_HubManager.isLoggedIn())
     {
       if (NotAuthorized)
       {
@@ -319,6 +303,8 @@ void AbstractSrcImportDialog::setupImportManagerThread(
   connect(SrcImportSequenceManager, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
   connect(SrcImportSequenceManager, SIGNAL(finished(bool, const QString&)), ProgressDialogPtr,
           SLOT(finish(bool, const QString&)));
+  connect(SrcImportSequenceManager, SIGNAL(finished(bool, const QString&)), SrcImportSequenceManager, 
+          SLOT(deleteLater()));
 
   connect(SrcImportSequenceManager, SIGNAL(info(const QString&)), ProgressDialogPtr, 
           SLOT(writeInfo(const QString&)));
