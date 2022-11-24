@@ -48,7 +48,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -87,7 +87,7 @@ class OPENFLUID_API WaresDevPackage: public QObject
 
     WaresDevPackage(const QString& PackageFilePath, const QString& TempSubFolderName);
 
-    void createAndLauchProcess(const openfluid::utils::CMakeProxy::CommandInfos& Command);
+    void createAndLauchProcess(const openfluid::utils::Process::Command& Command);
 
 
   signals:

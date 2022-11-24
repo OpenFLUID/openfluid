@@ -46,7 +46,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/utilsq/ExternalProgram.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 
 // =====================================================================
@@ -58,46 +58,46 @@ BOOST_AUTO_TEST_CASE(check_registered)
   openfluid::utils::ExternalProgram ExtProg =
       openfluid::utils::ExternalProgram::getRegisteredProgram(
         openfluid::utils::ExternalProgram::RegisteredPrograms::CMake);
-  std::cout << "Looking for CMake: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for CMake: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(
     openfluid::utils::ExternalProgram::RegisteredPrograms::Gcc);
-  std::cout << "Looking for gcc: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for gcc: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(
     openfluid::utils::ExternalProgram::RegisteredPrograms::Zip);
-  std::cout << "Looking for zip: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for zip: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(
     openfluid::utils::ExternalProgram::RegisteredPrograms::SevenZip);
-  std::cout << "Looking for 7zip: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for 7zip: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(
     openfluid::utils::ExternalProgram::RegisteredPrograms::Gnuplot);
-  std::cout << "Looking for gnuplot: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for gnuplot: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg =
       openfluid::utils::ExternalProgram::getRegisteredProgram(
         openfluid::utils::ExternalProgram::RegisteredPrograms::GoogleEarth);
-  std::cout << "Looking for GoogleEarth: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for GoogleEarth: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(
     openfluid::utils::ExternalProgram::RegisteredPrograms::PdfLatex);
-  std::cout << "Looking for pdflatex: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for pdflatex: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg = openfluid::utils::ExternalProgram::getRegisteredProgram(
     openfluid::utils::ExternalProgram::RegisteredPrograms::BibTex);
-  std::cout << "Looking for bibtex: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for bibtex: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg =
       openfluid::utils::ExternalProgram::getRegisteredProgram(
         openfluid::utils::ExternalProgram::RegisteredPrograms::Latex2HTML);
-  std::cout << "Looking for latex2html: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for latex2html: " << ExtProg.getFullProgramPath() << std::endl;
 
   ExtProg =
       openfluid::utils::ExternalProgram::getRegisteredProgram(
         openfluid::utils::ExternalProgram::RegisteredPrograms::GrassGis);
-  std::cout << "Looking for GRASS GIS: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+  std::cout << "Looking for GRASS GIS: " << ExtProg.getFullProgramPath() << std::endl;
 }
 
 
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(check_others)
 {
 #if defined(Q_OS_UNIX)
   openfluid::utils::ExternalProgram ExtProg("ls");
-    std::cout << "Looking for ls: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+    std::cout << "Looking for ls: " << ExtProg.getFullProgramPath() << std::endl;
 #endif
 }
 

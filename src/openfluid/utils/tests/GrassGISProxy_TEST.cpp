@@ -46,16 +46,14 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <QCoreApplication>
-
-#include <openfluid/utilsq/GrassGISProxy.hpp>
+#include <openfluid/utils/GrassGISProxy.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 
 #include "tests-config.hpp"
 
 
-QString BaseWorkDir = QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR+"/GrassGISProxy");
+std::string BaseWorkDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/GrassGISProxy";
 
 
 // =====================================================================
@@ -64,7 +62,7 @@ QString BaseWorkDir = QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR+"/Grass
 
 BOOST_AUTO_TEST_CASE(check_init)
 {
-  BOOST_REQUIRE(!openfluid::utils::GrassGISProxy::getVersion().isEmpty());
+  BOOST_REQUIRE(!openfluid::utils::GrassGISProxy::getVersion().empty());
 }
 
 
@@ -158,7 +156,7 @@ BOOST_AUTO_TEST_CASE(check_job)
   GRASS.appendTask("g.version",{},{"-e"});
   GRASS.appendTask("g.gisenv");
 
-  std::cout << GRASS.jobLines().join("\n").toStdString() << std::endl;
+  std::cout << openfluid::tools::join(GRASS.jobLines(),"\n") << std::endl;
 
   BOOST_REQUIRE_EQUAL(GRASS.jobLines().size(),2);
 
@@ -192,12 +190,12 @@ BOOST_AUTO_TEST_CASE(check_process1)
 
   GRASS.appendTask("g.mapset",{{"mapset","somewhere"}},{"-c"});
   GRASS.appendTask("v.import",
-                   {{"input",QString::fromStdString(CONFIGTESTS_INPUT_MISCDATA_DIR+"/GeoVectorValue/SU.shp")},
+                   {{"input",CONFIGTESTS_INPUT_MISCDATA_DIR+"/GeoVectorValue/SU.shp"},
                     {"output","importedSU"}},
                    {});
   GRASS.appendTask("g.mapsets",{},{"-l"});
 
-  std::cout << GRASS.jobLines().join("\n").toStdString() << std::endl;
+  std::cout << openfluid::tools::join(GRASS.jobLines(),"\n") << std::endl;
 
   BOOST_REQUIRE_EQUAL(GRASS.jobLines().size(),3);
 
@@ -261,7 +259,7 @@ BOOST_AUTO_TEST_CASE(check_gisenv)
 
   std::map<std::string,std::string> GisenvValues = GRASS.gisenv();
 
-  BOOST_REQUIRE_EQUAL(GisenvValues["GISDBASE"],QString(BaseWorkDir+"/data").toStdString());
+  BOOST_REQUIRE_EQUAL(GisenvValues["GISDBASE"],BaseWorkDir+"/data");
   BOOST_REQUIRE_EQUAL(GisenvValues["LOCATION_NAME"],"gisenv");
   BOOST_REQUIRE_EQUAL(GisenvValues["MAPSET"],"PERMANENT");
 
@@ -317,15 +315,13 @@ BOOST_AUTO_TEST_CASE(check_mapsets)
 
 int main(int argc, char *argv[])
 {
-  QCoreApplication app(argc, argv);
-
   openfluid::base::Environment::init();
 
   if (openfluid::utils::GrassGISProxy::isAvailable())
   {
-    std::cout << openfluid::utils::GrassGISProxy::getVersion().toStdString() << std::endl;
+    std::cout << openfluid::utils::GrassGISProxy::getVersion() << std::endl;
 
-    auto BaseWorkDirFSP = openfluid::tools::FilesystemPath(BaseWorkDir.toStdString());
+    auto BaseWorkDirFSP = openfluid::tools::FilesystemPath(BaseWorkDir);
     BaseWorkDirFSP.removeDirectory();
     BaseWorkDirFSP.makeDirectory();
 

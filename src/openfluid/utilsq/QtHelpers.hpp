@@ -45,6 +45,7 @@
 #include <list>
 #include <vector>
 #include <set>
+#include <map>
 #include <regex>
 
 #include <QVariant>
@@ -135,6 +136,28 @@ inline std::vector<std::string> toStdStringVector(const QStringList& StrList)
   }
 
   return TmpVector;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Transforms a std::map of QString,QString into a std::map of std::string,std::string
+  @param[in] StrMap the map to transform
+  @return The std::map of QString,QString>transformed into a std::map of std::string,std::string
+*/
+inline std::map<std::string,std::string> toStdStringMap(const std::map<QString,QString>& StrMap)
+{
+  std::map<std::string,std::string> TmpMap;
+
+  for (const auto& QStrStr : StrMap)
+  {
+    TmpMap[QStrStr.first.toStdString()] = QStrStr.second.toStdString();
+  }
+
+  return TmpMap;
 }
 
 

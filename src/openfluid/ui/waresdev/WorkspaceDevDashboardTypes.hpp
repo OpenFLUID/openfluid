@@ -47,7 +47,7 @@
 #include <QString>
 
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -80,15 +80,15 @@ class WorkspaceDevDashboardTypes
 
         int DirtyCounter = 0;
 
-        std::map<openfluid::utils::GitProxy::FileStatus,int> IndexCounters =
+        std::map<GitUIProxy::FileStatus,int> IndexCounters =
         {
-         {openfluid::utils::GitProxy::FileStatus::UNTRACKED,0},
-         {openfluid::utils::GitProxy::FileStatus::TRACKED,0},
-         {openfluid::utils::GitProxy::FileStatus::IGNORED,0},
-         {openfluid::utils::GitProxy::FileStatus::CONFLICT,0},
-         {openfluid::utils::GitProxy::FileStatus::ADDED,0},
-         {openfluid::utils::GitProxy::FileStatus::DELETED,0},
-         {openfluid::utils::GitProxy::FileStatus::MODIFIED,0}
+         {GitUIProxy::FileStatus::UNTRACKED,0},
+         {GitUIProxy::FileStatus::TRACKED,0},
+         {GitUIProxy::FileStatus::IGNORED,0},
+         {GitUIProxy::FileStatus::CONFLICT,0},
+         {GitUIProxy::FileStatus::ADDED,0},
+         {GitUIProxy::FileStatus::DELETED,0},
+         {GitUIProxy::FileStatus::MODIFIED,0}
         };
 
     };

@@ -733,7 +733,7 @@ QString WareSrcWidget::saveAs(const QString& TopDirectory)
   }
 
   QString CurrentFilePath = CurrentEditor->getFilePath();
-  QString CurrentWarePath = m_Container.getAbsolutePath();
+  QString CurrentWarePath = QString::fromStdString(m_Container.getAbsolutePath());
 
   QString NewFilePath = WareExplorerDialog::getSaveFilePath(this,
                                                             TopDirectory.isEmpty() ? CurrentWarePath : TopDirectory,
@@ -776,7 +776,7 @@ QString WareSrcWidget::saveAs(const QString& TopDirectory)
 
 void WareSrcWidget::newFile()
 {
-  openfluid::ui::common::createNewFile(this,m_Container.getAbsolutePath());
+  openfluid::ui::common::createNewFile(this,QString::fromStdString(m_Container.getAbsolutePath()));
 }
 
 
@@ -822,8 +822,10 @@ void WareSrcWidget::deleteCurrentFile()
 
 void WareSrcWidget::openFile()
 {
-  QString PathToOpen = openfluid::ui::waresdev::WareExplorerDialog::getOpenFilePath(this, m_Container.getAbsolutePath(),
-                                                                                    getCurrentFilePath());
+  QString PathToOpen = 
+    openfluid::ui::waresdev::WareExplorerDialog::getOpenFilePath(this,
+                                                                 QString::fromStdString(m_Container.getAbsolutePath()),
+                                                                 getCurrentFilePath());
 
   if (PathToOpen.isEmpty())
   {
@@ -930,7 +932,7 @@ void WareSrcWidget::onMessageClicked(WareSrcMsgParser::WareSrcMsg& Msg)
 {
   auto Info = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(Msg.m_Path.toStdString());
 
-  if (Info.AbsoluteWarePath != m_Container.getAbsolutePath().toStdString())
+  if (Info.AbsoluteWarePath != m_Container.getAbsolutePath())
   {
     return;
   }

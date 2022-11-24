@@ -54,7 +54,8 @@
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
 #include "tests-config.hpp"
@@ -360,11 +361,12 @@ BOOST_FIXTURE_TEST_CASE(PkgExport,F)
 
   BOOST_CHECK(OutOfwdpDir.exists("my_package.ofwdp"));
 
-  openfluid::utils::CMakeProxy::CommandInfos Command =
-      openfluid::utils::CMakeProxy::getTarUncompressCommand(OutOfwdpPath,
-                                                            OutOfwdpDir.absoluteFilePath("my_package.ofwdp"),"z");
+  auto Command =
+      openfluid::utils::CMakeProxy::getTarUncompressCommand(
+        OutOfwdpPath.toStdString(),OutOfwdpDir.absoluteFilePath("my_package.ofwdp").toStdString(),"z");
 
-  BOOST_CHECK(!QProcess::execute(Command.Program,Command.Args));
+  BOOST_CHECK(!QProcess::execute(QString::fromStdString(Command.Program),
+                                 openfluid::utils::toQStringList(Command.Args)));
 
   QStringList FilesInPackage = OutOfwdpDir.entryList(QDir::NoDotAndDotDot | QDir::Files);
   BOOST_CHECK(FilesInPackage.contains("ofwdp.conf"));
@@ -408,7 +410,7 @@ int main(int argc, char *argv[])
 
   if (openfluid::utils::CMakeProxy::isAvailable())
   {
-    std::cout << openfluid::utils::CMakeProxy::getVersion().toStdString() << std::endl;
+    std::cout << openfluid::utils::CMakeProxy::getVersion() << std::endl;
     return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
   }
   else

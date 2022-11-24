@@ -37,10 +37,9 @@
 */
 
 
-#include <QProcess>
-
-#include <openfluid/utilsq/CMakeProxy.hpp>
-#include <openfluid/utilsq/ExternalProgram.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace utils {
@@ -68,26 +67,21 @@ CMakeProxy::~CMakeProxy()
 
 void CMakeProxy::findCMakeProgram()
 {
-  if (m_ExecutablePath.isEmpty())
+  if (m_ExecutablePath.empty())
   {
-    m_ExecutablePath = ExternalProgram::getRegisteredProgram(
-      ExternalProgram::RegisteredPrograms::CMake).getFullProgramPath();
+    m_ExecutablePath = 
+      ExternalProgram::getRegisteredProgram(ExternalProgram::RegisteredPrograms::CMake).getFullProgramPath();
 
-    if (!m_ExecutablePath.isEmpty())
+    if (!m_ExecutablePath.empty())
     {
-      QProcess Pcs;
+      Process P(m_ExecutablePath,{"--version"});
+      P.run();
+      const auto OutLines = P.stdOutLines();
 
-      Pcs.start(QString("\"%1\" --version").arg(m_ExecutablePath));
-
-      Pcs.waitForReadyRead(-1);
-      Pcs.waitForFinished(-1);
-
-      QStringList Output = QString::fromUtf8(Pcs.readAll()).split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
-
-      if (!Output.isEmpty() && Output[0].startsWith("cmake version "))
+      if (!OutLines.empty() && openfluid::tools::startsWith(OutLines[0],"cmake version "))
       {
-        m_Version = Output[0];
-        m_Version.remove(0,14);
+        m_Version = OutLines[0];
+        m_Version.erase(0,14);
       }
     }
   }
@@ -102,7 +96,7 @@ bool CMakeProxy::isAvailable()
 {
   findCMakeProgram();
 
-  return (!m_ExecutablePath.isEmpty() && !m_Version.isEmpty());
+  return (!m_ExecutablePath.empty() && !m_Version.empty());
 }
 
 
@@ -110,11 +104,11 @@ bool CMakeProxy::isAvailable()
 // =====================================================================
 
 
-CMakeProxy::CommandInfos CMakeProxy::getConfigureCommand(const QString& BuildDir, const QString& SrcDir,
-                                                         const std::map<QString,QString>& Variables,
-                                                         const QString& Generator, const QStringList& Options)
+Process::Command CMakeProxy::getConfigureCommand(const std::string& BuildDir, const std::string& SrcDir,
+                                                 const std::map<std::string,std::string>& Variables,
+                                                 const std::string& Generator, const std::vector<std::string>& Options)
 {
-  CMakeProxy::CommandInfos Cmd;
+  Process::Command Cmd;
 
   if (!isAvailable())
   {
@@ -126,14 +120,14 @@ CMakeProxy::CommandInfos CMakeProxy::getConfigureCommand(const QString& BuildDir
   Cmd.Args << "-E" << "chdir" << BuildDir; // cd to build directory
   Cmd.Args << m_ExecutablePath << SrcDir;  // cmake configure command with the sources directory 
 
-  if (!Generator.isEmpty())
+  if (!Generator.empty())
   {
     Cmd.Args << "-G" << Generator;
   }
 
   for (const auto& Var : Variables)
   {
-    Cmd.Args << QString("-D%1=%2").arg(Var.first).arg(Var.second);
+    Cmd.Args << std::string("-D"+Var.first+"="+Var.second);
   }
 
   for (const auto& Opt : Options)
@@ -149,13 +143,13 @@ CMakeProxy::CommandInfos CMakeProxy::getConfigureCommand(const QString& BuildDir
 // =====================================================================
 
 
-CMakeProxy::CommandInfos CMakeProxy::getBuildCommand(const QString& BuildDir,
-                                                     const QString& Target,
-                                                     const unsigned int Jobs,
-                                                     const QStringList& CMakeOptions, 
-                                                     const QStringList& OtherOptions)
+Process::Command CMakeProxy::getBuildCommand(const std::string& BuildDir,
+                                             const std::string& Target,
+                                             const unsigned int Jobs,
+                                             const std::vector<std::string>& CMakeOptions, 
+                                             const std::vector<std::string>& OtherOptions)
 {
-  CMakeProxy::CommandInfos Cmd;
+  Process::Command Cmd;
 
   if (!isAvailable())
   {
@@ -167,7 +161,7 @@ CMakeProxy::CommandInfos CMakeProxy::getBuildCommand(const QString& BuildDir,
   Cmd.Args << "-E" << "chdir" << BuildDir; // cd to build directory
   Cmd.Args << m_ExecutablePath << "--build" << "."; // build command in the current directory 
 
-  if (!Target.isEmpty())
+  if (!Target.empty())
   {
     Cmd.Args << "--target" << Target;
   }
@@ -184,7 +178,7 @@ CMakeProxy::CommandInfos CMakeProxy::getBuildCommand(const QString& BuildDir,
 
     if (Jobs)
     {
-      Cmd.Args << "-j" << QString("%1").arg(Jobs);
+      Cmd.Args << "-j" << std::to_string(Jobs);
     }
 
     for (const auto& Opt : OtherOptions)
@@ -201,12 +195,12 @@ CMakeProxy::CommandInfos CMakeProxy::getBuildCommand(const QString& BuildDir,
 // =====================================================================
 
 
-CMakeProxy::CommandInfos CMakeProxy::getTarCompressCommand(const QString& WorkDir,
-                                                           const QString& TarFilePath, 
-                                                           const QStringList& RelativePathsToCompress,
-                                                           const QString& Options)
+Process::Command CMakeProxy::getTarCompressCommand(const std::string& WorkDir,
+                                                   const std::string& TarFilePath, 
+                                                   const std::vector<std::string>& RelativePathsToCompress,
+                                                   const std::string& Options)
 {
-  CMakeProxy::CommandInfos Cmd;
+  Process::Command Cmd;
 
   if (!isAvailable())
   {
@@ -229,10 +223,10 @@ CMakeProxy::CommandInfos CMakeProxy::getTarCompressCommand(const QString& WorkDi
 // =====================================================================
 
 
-CMakeProxy::CommandInfos CMakeProxy::getTarUncompressCommand(const QString& WorkDir, const QString& TarFilePath,
-                                                             const QString& Options)
+Process::Command CMakeProxy::getTarUncompressCommand(const std::string& WorkDir, const std::string& TarFilePath,
+                                                     const std::string& Options)
 {
-  CMakeProxy::CommandInfos Cmd;
+  Process::Command Cmd;
 
   if (!isAvailable())
   {

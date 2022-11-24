@@ -49,7 +49,7 @@
 
 #include <openfluid/ui/waresdev/HubManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
-#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 
 #include "HubTestFixture.hpp"
 #include "tests-config.hpp"

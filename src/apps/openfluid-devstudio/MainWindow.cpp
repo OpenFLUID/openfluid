@@ -67,8 +67,8 @@
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
-#include <openfluid/utilsq/GitProxy.hpp>
-#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/utilsq/QtHelpers.hpp>
 
 #include "MainWindow.hpp"
@@ -569,7 +569,7 @@ void MainWindow::onPreferencesAsked()
 
 void MainWindow::onImportWareSourcesAsked()
 {
-  if (openfluid::utils::CMakeProxy::isAvailable() || openfluid::utils::GitProxy::isAvailable())
+  if (openfluid::utils::CMakeProxy::isAvailable() || openfluid::ui::waresdev::GitUIProxy::isAvailable())
   {
     openfluid::ui::waresdev::WaresSrcImportDialog Dialog(this);
     Dialog.exec();

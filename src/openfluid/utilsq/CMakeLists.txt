@@ -1,15 +1,7 @@
 
-SET(OPENFLUID_UTILSQTDEP_CPP ExternalProgram.cpp
-                        CMakeProxy.cpp GitProxy.cpp GrassGISProxy.cpp
-                        FileDownloader.cpp FluidHubAPIClient.cpp RESTClient.cpp
-                        )
+SET(OPENFLUID_UTILSQTDEP_CPP FileDownloader.cpp FluidHubAPIClient.cpp RESTClient.cpp)
 
-SET(OPENFLUID_UTILSQTDEP_HPP ExternalProgram.hpp 
-                        ProgramProxy.hpp CMakeProxy.hpp GitProxy.hpp GrassGISProxy.hpp
-                        FileDownloader.hpp FluidHubAPIClient.hpp RESTClient.hpp
-                        )
-
-SET_SOURCE_FILES_PROPERTIES(GitProxy.cpp PROPERTIES COMPILE_DEFINITIONS "OFBUILD_GITASKPASS_ENVVAR=\"${OFBUILD_GITASKPASS_ENVVAR}\";OFBUILD_GITASKUSER_ENVVAR=\"${OFBUILD_GITASKUSER_ENVVAR}\"")
+SET(OPENFLUID_UTILSQTDEP_HPP FileDownloader.hpp FluidHubAPIClient.hpp RESTClient.hpp QtHelpers.hpp)
 
 
 
@@ -26,6 +18,7 @@ SET_TARGET_PROPERTIES(openfluid-utilsq PROPERTIES VERSION "${OPENFLUID_VERSION_M
 
 TARGET_LINK_LIBRARIES(openfluid-utilsq
                       openfluid-base
+                      openfluid-utils
                       Qt5::Core
                       Qt5::Network
                       )

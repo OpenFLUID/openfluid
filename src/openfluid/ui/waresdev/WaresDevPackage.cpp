@@ -45,6 +45,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -110,7 +111,7 @@ QStringList WaresDevPackage::getWaresPaths()
 // =====================================================================
 
 
-void WaresDevPackage::createAndLauchProcess(const openfluid::utils::CMakeProxy::CommandInfos& Command)
+void WaresDevPackage::createAndLauchProcess(const openfluid::utils::Process::Command& Cmd)
 {
   if (mp_Process)
   {
@@ -123,7 +124,7 @@ void WaresDevPackage::createAndLauchProcess(const openfluid::utils::CMakeProxy::
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
 
-  mp_Process->start(Command.Program,Command.Args);
+  mp_Process->start(QString::fromStdString(Cmd.Program),openfluid::utils::toQStringList(Cmd.Args));
 
   mp_Process->waitForFinished(-1);
   mp_Process->waitForReadyRead(-1);
@@ -293,12 +294,15 @@ void WaresDevExportPackage::compress()
   }
 
 
-  openfluid::utils::CMakeProxy::CommandInfos Command = 
-    openfluid::utils::CMakeProxy::getTarCompressCommand(WaresdevPath,m_PackageFilePath,RelativePathsToExport,"vz");
+  openfluid::utils::Process::Command Cmd = 
+    openfluid::utils::CMakeProxy::getTarCompressCommand(WaresdevPath.toStdString(),
+                                                        m_PackageFilePath.toStdString(),
+                                                        openfluid::utils::toStdStringVector(RelativePathsToExport),
+                                                        "vz");
 
   QDir::setCurrent(WaresdevPath);
 
-  createAndLauchProcess(Command);
+  createAndLauchProcess(Cmd);
 
   if (!QFile(ConfFileInWareDirAbsPath).remove())
   {
@@ -359,10 +363,11 @@ void WaresDevImportPackage::fetchInformation()
 
 void WaresDevImportPackage::uncompress()
 {
-  openfluid::utils::CMakeProxy::CommandInfos Command = 
-    openfluid::utils::CMakeProxy::getTarUncompressCommand(m_PackageTempPath,m_PackageFilePath,"vz");
+  openfluid::utils::Process::Command Cmd = 
+    openfluid::utils::CMakeProxy::getTarUncompressCommand(m_PackageTempPath.toStdString(),
+                                                          m_PackageFilePath.toStdString(),"vz");
 
-  createAndLauchProcess(Command);
+  createAndLauchProcess(Cmd);
 }
 
 

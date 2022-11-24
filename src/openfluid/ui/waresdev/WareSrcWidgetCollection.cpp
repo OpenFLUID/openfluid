@@ -225,7 +225,8 @@ void WareSrcWidgetCollection::onCurrentTabChanged(int Index)
   {
     QString FilePath = Ware->getCurrentFilePath();
 
-    emit currentTabChanged(FilePath.isEmpty() ? Ware->wareSrcContainer().getAbsolutePath() : FilePath);
+    emit currentTabChanged(FilePath.isEmpty() ? 
+                           QString::fromStdString(Ware->wareSrcContainer().getAbsolutePath()) : FilePath);
   }
 
   checkModifiedStatus();
@@ -240,7 +241,7 @@ void WareSrcWidgetCollection::closeWareTab(WareSrcWidget* Ware)
 {
   mp_TabWidget->removeTab(mp_TabWidget->indexOf(Ware));
 
-  m_WareSrcWidgetByPath.remove(Ware->wareSrcContainer().getAbsolutePath());
+  m_WareSrcWidgetByPath.remove(QString::fromStdString(Ware->wareSrcContainer().getAbsolutePath()));
 
   delete Ware;
 }
@@ -459,7 +460,7 @@ QString WareSrcWidgetCollection::getCurrentWarePath()
 {
   if (WareSrcWidget* CurrentWare = currentWareWidget())
   {
-    return CurrentWare->wareSrcContainer().getAbsolutePath();
+    return QString::fromStdString(CurrentWare->wareSrcContainer().getAbsolutePath());
   }
 
   return "";
@@ -780,7 +781,7 @@ QStringList WareSrcWidgetCollection::getOpenWarePaths()
   {
     if (WareSrcWidget* Ware = qobject_cast<WareSrcWidget*>(mp_TabWidget->widget(Index)))
     {
-      OpenPaths << Ware->wareSrcContainer().getAbsolutePath();
+      OpenPaths << QString::fromStdString(Ware->wareSrcContainer().getAbsolutePath());
     }
   }
   return OpenPaths;

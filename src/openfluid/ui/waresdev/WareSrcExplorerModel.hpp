@@ -45,7 +45,7 @@
 #include <QFileSystemModel>
 #include <QFileSystemWatcher>
 
-#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/dllexport.hpp>
 
@@ -77,15 +77,15 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
      */
     QMap<QString, openfluid::waresdev::WareSrcEnquirer::WarePathInfo> m_PathInfos;
 
-    std::map<openfluid::utils::GitProxy::FileStatus, QString> m_IconByGitStatus =
+    std::map<GitUIProxy::FileStatus, QString> m_IconByGitStatus =
         {
-          { openfluid::utils::GitProxy::FileStatus::TRACKED, ":/ui/common/emblems/git_tracked.png" },
-          { openfluid::utils::GitProxy::FileStatus::UNTRACKED, ":/ui/common/emblems/git_untracked.png" },
-          { openfluid::utils::GitProxy::FileStatus::IGNORED, "" },
-          { openfluid::utils::GitProxy::FileStatus::CONFLICT, ":/ui/common/emblems/git_conflict.png" },
-          { openfluid::utils::GitProxy::FileStatus::ADDED, ":/ui/common/emblems/git_added.png" },
-          { openfluid::utils::GitProxy::FileStatus::DELETED, "" },
-          { openfluid::utils::GitProxy::FileStatus::MODIFIED, ":/ui/common/emblems/git_staged.png" }
+          { GitUIProxy::FileStatus::TRACKED, ":/ui/common/emblems/git_tracked.png" },
+          { GitUIProxy::FileStatus::UNTRACKED, ":/ui/common/emblems/git_untracked.png" },
+          { GitUIProxy::FileStatus::IGNORED, "" },
+          { GitUIProxy::FileStatus::CONFLICT, ":/ui/common/emblems/git_conflict.png" },
+          { GitUIProxy::FileStatus::ADDED, ":/ui/common/emblems/git_added.png" },
+          { GitUIProxy::FileStatus::DELETED, "" },
+          { GitUIProxy::FileStatus::MODIFIED, ":/ui/common/emblems/git_staged.png" }
         };
 
     QMap<QString, QString> m_GitBranchByWarePath;

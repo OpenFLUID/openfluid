@@ -55,6 +55,23 @@
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_cmd)
+{
+  {
+    openfluid::utils::Process::Command Cmd{
+      .Program = CONFIGTESTS_CMAKE_PROGRAM,
+      .Args = {"--option=value","-x","/path/to/work"},
+    };
+
+    BOOST_REQUIRE_EQUAL(Cmd.joined(),CONFIGTESTS_CMAKE_PROGRAM+" --option=value -x /path/to/work");
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(check_object)
 {
   {

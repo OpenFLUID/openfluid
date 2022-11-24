@@ -44,6 +44,7 @@
 #include <boost/process.hpp>
 
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/utils/Process.hpp>
 
 
@@ -52,9 +53,7 @@ namespace openfluid { namespace utils {
 
 std::string Process::Command::joined(const std::string& Sep) const
 {
-  std::stringstream JoinedArgs;
-  std::copy(Args.begin(),Args.end(),std::ostream_iterator<std::string>(JoinedArgs,Sep.c_str()));
-  return (Program + Sep + JoinedArgs.str());
+  return (Program + Sep + openfluid::tools::join(Args,Sep));
 }
 
 

@@ -43,12 +43,13 @@
 
 
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include <boost/test/unit_test.hpp>
 
-#include <QCoreApplication>
-
-#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/base/Environment.hpp>
 
 #include "tests-config.hpp"
@@ -56,37 +57,37 @@
 
 BOOST_AUTO_TEST_CASE(check_configurecmd)
 {
-  openfluid::utils::CMakeProxy::CommandInfos Cmd;
+  openfluid::utils::Process::Command Cmd;
 
   Cmd = openfluid::utils::CMakeProxy::getConfigureCommand("/tmp/build","/tmp/src");
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.joined().endsWith("/tmp/src"));
+  std::cout << Cmd.joined() << ":" << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),"/tmp/src"));
 
 
   Cmd = openfluid::utils::CMakeProxy::getConfigureCommand("/tmp/build","/tmp/src",
                                                           {{"CMAKE_INSTALL_PREFIX","/usr"},
                                                            {"CMAKE_BUILD_TYPE","release"}});
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.joined().endsWith("/tmp/src -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),
+                                           "/tmp/src -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr"));
 
 
   Cmd = openfluid::utils::CMakeProxy::getConfigureCommand("/tmp/build","/tmp/src",
                                                           {{"CMAKE_INSTALL_PREFIX","/usr"},
                                                            {"CMAKE_BUILD_TYPE","release"}},
                                                           "Ninja");
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(
-    Cmd.joined().endsWith("/tmp/src -G Ninja -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),
+                                           "/tmp/src -G Ninja -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr"));
 
 
   Cmd = openfluid::utils::CMakeProxy::getConfigureCommand("/tmp/build","/tmp/src",
                                                           {{"CMAKE_INSTALL_PREFIX","/usr"},
                                                            {"CMAKE_BUILD_TYPE","release"}},
                                                           "Ninja",{"-Wdev","--trace"});
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(
-    Cmd.joined()
-       .endsWith("/tmp/src -G Ninja -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr -Wdev --trace"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(
+    Cmd.joined(),"/tmp/src -G Ninja -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr -Wdev --trace"));
 }
 
 
@@ -96,23 +97,23 @@ BOOST_AUTO_TEST_CASE(check_configurecmd)
 
 BOOST_AUTO_TEST_CASE(check_buildcmd)
 {
-  openfluid::utils::CMakeProxy::CommandInfos Cmd;
+  openfluid::utils::Process::Command Cmd;
 
   Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build");
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.joined().endsWith("--build ."));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),"--build ."));
 
   Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install");
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.joined().endsWith("--build . --target install"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),"--build . --target install"));
 
   Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install",1,{"--clean-first"});
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.joined().endsWith("--build . --target install --clean-first -- -j 1"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),"--build . --target install --clean-first -- -j 1"));
 
   Cmd = openfluid::utils::CMakeProxy::getBuildCommand("/tmp/build","install",4,{"--clean-first"},{"VERBOSE=1"});
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.joined().endsWith("--build . --target install --clean-first -- -j 4 VERBOSE=1"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),"--build . --target install --clean-first -- -j 4 VERBOSE=1"));
 }
 
 
@@ -122,19 +123,20 @@ BOOST_AUTO_TEST_CASE(check_buildcmd)
 
 BOOST_AUTO_TEST_CASE(check_tarcmd)
 {
-  openfluid::utils::CMakeProxy::CommandInfos Cmd;
-  QStringList FilesToCompress = {"dir1/fileb.txt","dir1/filea.txt","dir3/filey.txt"};
+  openfluid::utils::Process::Command Cmd;
+
+  std::vector<std::string> FilesToCompress = {"dir1/fileb.txt","dir1/filea.txt","dir3/filey.txt"};
 
   Cmd = openfluid::utils::CMakeProxy::getTarCompressCommand("/tmp/compress","compressedfile.tar.gz",FilesToCompress);
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(
-      Cmd.joined().endsWith("tar cf compressedfile.tar.gz dir1/fileb.txt dir1/filea.txt dir3/filey.txt"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(
+    Cmd.joined(),"tar cf compressedfile.tar.gz dir1/fileb.txt dir1/filea.txt dir3/filey.txt"));
 
   Cmd = openfluid::utils::CMakeProxy::getTarCompressCommand("/tmp/compress","compressedfile.tar.gz",
                                                             FilesToCompress,"vz");
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(
-      Cmd.joined().endsWith("tar cfvz compressedfile.tar.gz dir1/fileb.txt dir1/filea.txt dir3/filey.txt"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(
+      Cmd.joined(),"tar cfvz compressedfile.tar.gz dir1/fileb.txt dir1/filea.txt dir3/filey.txt"));
 }
 
 
@@ -144,15 +146,15 @@ BOOST_AUTO_TEST_CASE(check_tarcmd)
 
 BOOST_AUTO_TEST_CASE(check_untarcmd)
 {
-  openfluid::utils::CMakeProxy::CommandInfos Cmd;
+  openfluid::utils::Process::Command Cmd;
 
   Cmd = openfluid::utils::CMakeProxy::getTarUncompressCommand("/tmp/compress","compressedfile.tar.gz");
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.joined().endsWith("tar xf compressedfile.tar.gz"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),"tar xf compressedfile.tar.gz"));
 
   Cmd = openfluid::utils::CMakeProxy::getTarUncompressCommand("/tmp/compress","compressedfile.tar.gz","vz");
-  std::cout << Cmd.joined().toStdString() << std::endl;
-  BOOST_REQUIRE(Cmd.joined().endsWith("tar xfvz compressedfile.tar.gz"));
+  std::cout << Cmd.joined() << std::endl;
+  BOOST_REQUIRE(openfluid::tools::endsWith(Cmd.joined(),"tar xfvz compressedfile.tar.gz"));
 }
 
 
@@ -162,13 +164,12 @@ BOOST_AUTO_TEST_CASE(check_untarcmd)
 
 int main(int argc, char *argv[])
 {
-  QCoreApplication app(argc, argv);
 
   openfluid::base::Environment::init();
 
   if (openfluid::utils::CMakeProxy::isAvailable())
   {
-    std::cout << openfluid::utils::CMakeProxy::getVersion().toStdString() << std::endl;
+    std::cout << openfluid::utils::CMakeProxy::getVersion() << std::endl;
     return ::boost::unit_test::unit_test_main(&init_unit_test, argc, argv);
   }
   else

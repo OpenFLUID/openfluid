@@ -43,14 +43,11 @@
 
 #include <ogrsf_frmts.h>
 
-#include <QProcess>
-#include <QDir>
-
-
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utilsq/ExternalProgram.hpp>
-#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
 
@@ -278,21 +275,16 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       openfluid::tools::FilesystemPath(KmzFilePath).removeDirectory();
 
-      QFileInfoList FoundFiles =
-            QDir(QString::fromStdString(InputDir)).entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
+      std::vector<std::string> FoundFiles = openfluid::tools::Filesystem::findDirectories(InputDir,true);
+      FoundFiles << openfluid::tools::Filesystem::findFiles(InputDir,true);
 
-      QStringList FilePaths;
-      for (int i=0;i<FoundFiles.size();i++)
-      {
-        FilePaths << FoundFiles[i].absoluteFilePath();
-      }
+      openfluid::utils::Process::Command Cmd = openfluid::utils::CMakeProxy::getTarCompressCommand(InputDir,
+                                                                                                   KmzFilePath,
+                                                                                                   FoundFiles);
 
-      openfluid::utils::CMakeProxy::CommandInfos Command = 
-        openfluid::utils::CMakeProxy::getTarCompressCommand(QString::fromStdString(InputDir),
-                                                            QString::fromStdString(KmzFilePath),
-                                                            FilePaths);
-
-      QProcess::execute(Command.Program, Command.Args << "--format=zip");
+      Cmd.Args << "--format=zip";
+      
+      openfluid::utils::Process::execute(Cmd);
     }
 
 
@@ -310,10 +302,8 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
         if (GEarthProgram.isFound())
         {
-          QProcess::execute(GEarthProgram.getFullProgramPath(),
-                            {  QDir(QString::fromStdString(m_OutputDir))
-                               .absoluteFilePath(QString::fromStdString(m_OutputFileName))
-                            });
+          openfluid::utils::Process::execute(
+            GEarthProgram.getFullProgramPath(),{openfluid::tools::Path({m_OutputDir,m_OutputFileName}).toGeneric()});
         }
         else
         {

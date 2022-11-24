@@ -82,7 +82,7 @@ class HubTestFixture
         QString::fromStdString(Mgr->getWaresPath(openfluid::ware::WareType::SIMULATOR))
       );
 
-      CurrentOFBranchName = openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName().toStdString();
+      CurrentOFBranchName = openfluid::ui::waresdev::GitUIProxy::getCurrentOpenFLUIDBranchName().toStdString();
     }
 
     ~HubTestFixture()

@@ -11,12 +11,16 @@ ENDIF()
 
 SET(OPENFLUID_UTILS_CPP GDALHelpers.cpp
                         Process.cpp
+                        ExternalProgram.cpp 
+                        CMakeProxy.cpp GitProxy.cpp GrassGISProxy.cpp
                         )
 
 SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMachineListener.hpp
                         GDALHelpers.hpp GDALCompatibility.hpp
                         KillableSingleton.hpp MeyerSingleton.hpp SingletonMacros.hpp
                         Process.hpp
+                        ExternalProgram.hpp
+                        ProgramProxy.hpp CMakeProxy.hpp GitProxy.hpp GrassGISProxy.hpp
                         CommandLineParser.hpp)
 
 
@@ -32,6 +36,7 @@ SET_TARGET_PROPERTIES(openfluid-utils PROPERTIES VERSION "${OPENFLUID_VERSION_MA
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 TARGET_LINK_LIBRARIES(openfluid-utils 
+                      openfluid-base
                       openfluid-tools
                       ${GDAL_LIBRARIES}
                       Boost::boost 

@@ -39,7 +39,7 @@
 
 #include <openfluid/ui/waresdev/WorkspaceDevGitWidget.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 
 #include "ui_WorkspaceDevGitWidget.h"
 
@@ -56,7 +56,7 @@ WorkspaceDevGitWidget::WorkspaceDevGitWidget(const WorkspaceDevDashboardTypes::W
   if (Infos.IsTracked)
   {
     ui->InfosWidget->setCurrentIndex(0);
-    if (Infos.BranchName != openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName())
+    if (Infos.BranchName != GitUIProxy::getCurrentOpenFLUIDBranchName())
     {
       ui->BranchLabel->setText("<font style='color: orange;'>"+Infos.BranchName+"</font>");
     }  
@@ -115,15 +115,15 @@ QString WorkspaceDevGitWidget::getStatusString(const WorkspaceDevDashboardTypes:
   updateStatusString(StatusStr,
                      tr("dirty"),Infos.DirtyCounter);
   updateStatusString(StatusStr,
-                     tr("untracked"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::UNTRACKED));
+                     tr("untracked"),Infos.IndexCounters.at(GitUIProxy::FileStatus::UNTRACKED));
   updateStatusString(StatusStr,
-                     tr("modified"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::MODIFIED));
+                     tr("modified"),Infos.IndexCounters.at(GitUIProxy::FileStatus::MODIFIED));
   updateStatusString(StatusStr,
-                     tr("added"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::ADDED));
+                     tr("added"),Infos.IndexCounters.at(GitUIProxy::FileStatus::ADDED));
   updateStatusString(StatusStr,
-                     tr("deleted"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::DELETED));
+                     tr("deleted"),Infos.IndexCounters.at(GitUIProxy::FileStatus::DELETED));
   updateStatusString(StatusStr,
-                     tr("conflict"),Infos.IndexCounters.at(openfluid::utils::GitProxy::FileStatus::CONFLICT));
+                     tr("conflict"),Infos.IndexCounters.at(GitUIProxy::FileStatus::CONFLICT));
 
   if (StatusStr.isEmpty())
   {

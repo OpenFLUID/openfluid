@@ -26,80 +26,47 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
+
 
 /**
-  @file ProgramProxy.hpp
+  @file GitProxy.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 */
 
 
-#include <QString>
+#ifndef __OPENFLUID_UTILS_GITPROXY_HPP__
+#define __OPENFLUID_UTILS_GITPROXY_HPP__
+
+
+#include <openfluid/utils/ProgramProxy.hpp>
 #include <openfluid/dllexport.hpp>
-
-
-#ifndef __OPENFLUID_UTILSQ_PROGRAMPROXY_HPP__
-#define __OPENFLUID_UTILSQ_PROGRAMPROXY_HPP__
 
 
 namespace openfluid { namespace utils {
 
 
-template<typename T>
-class ProgramProxy
+class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
 {
-  protected:
+  private:
 
-     static QString m_ExecutablePath;
-
-     static QString m_Version;
+    static void findGitProgram();
 
 
   public:
-    
-    struct CommandInfos
-    {
-      QString Program;
 
-      QStringList Args;
+    GitProxy();
 
-      QString joined(const QString& Sep = " ") const
-      {
-        return (Program + Sep + Args.join(Sep));
-      }
-    };
+    virtual ~GitProxy();
 
-
-    static bool isAvailable()
-    { 
-      return false; 
-    }
-
-    static QString getVersion()
-    { 
-      return m_Version; 
-    }
-
-    static QString getExecutablePath()
-    { 
-      return m_ExecutablePath; 
-    }
+    static bool isAvailable();
 
 };
 
 
-// =====================================================================
-// =====================================================================
+} } // namespaces
 
 
-template<typename T> QString ProgramProxy<T>::m_ExecutablePath = "";
-
-template<typename T>QString ProgramProxy<T>::m_Version = "";
-
-
-} }  // namespaces
-
-
-#endif /* __OPENFLUID_UTILSQ_PROGRAMPROXY_HPP__ */
+#endif /* __OPENFLUID_UTILS_GITPROXY_HPP__ */

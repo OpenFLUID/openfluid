@@ -37,18 +37,18 @@
  */
 
 
-#include <QFileInfo>
-#include <QDir>
+#include <algorithm>
 
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utilsq/ExternalProgram.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 
 namespace openfluid { namespace utils {
 
 
-ExternalProgram::ExternalProgram(const QStringList& ProgramNames,
-                                 const QStringList& SearchPaths,
+ExternalProgram::ExternalProgram(const std::vector<std::string>& ProgramNames,
+                                 const std::vector<std::string>& SearchPaths,
                                  bool UsePathEnv) :
   m_ProgramNames(ProgramNames), m_SearchPaths(SearchPaths), m_UsePathEnv(UsePathEnv)
 {
@@ -60,8 +60,8 @@ ExternalProgram::ExternalProgram(const QStringList& ProgramNames,
 // =====================================================================
 
 
-ExternalProgram::ExternalProgram(const QString& ProgramName,
-                                 const QStringList& SearchPaths,
+ExternalProgram::ExternalProgram(const std::string& ProgramName,
+                                 const std::vector<std::string>& SearchPaths,
                                  bool UsePathEnv) :
   m_SearchPaths(SearchPaths), m_UsePathEnv(UsePathEnv)
 {
@@ -85,12 +85,12 @@ ExternalProgram::~ExternalProgram()
 
 
 ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
-                                                      const QStringList& SearchPaths,
+                                                      const std::vector<std::string>& SearchPaths,
                                                       bool UsePathEnv)
 {
-  QStringList ProgNames;
+  std::vector<std::string> ProgNames;
 
-  QStringList ModSearchPaths = SearchPaths;
+  std::vector<std::string> ModSearchPaths = SearchPaths;
 
   if (Prog == RegisteredPrograms::CMake)
   {
@@ -141,7 +141,7 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
 
 #if defined(OPENFLUID_OS_MAC)
     ProgNames << "Google Earth";
-    ModSearchPaths.append("/Applications/Google Earth.app/Contents/MacOS/");
+    ModSearchPaths.push_back("/Applications/Google Earth.app/Contents/MacOS/");
 #endif
 
 #if defined(OPENFLUID_OS_WINDOWS)
@@ -213,24 +213,23 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
 // =====================================================================
 
 
-QString ExternalProgram::findUsingPATHEnvVar(const QStringList& ProgramNames)
+std::string ExternalProgram::findUsingPATHEnvVar(const std::vector<std::string>& ProgramNames)
 {
-  QString PATHStr(qgetenv("PATH"));
+  std::string PATHStr(std::getenv("PATH"));
 
-  QStringList PathsList;
+  std::vector<std::string> PathsList;
 
-  if (!PATHStr.isEmpty())
+  if (!PATHStr.empty())
   {
-    PathsList = PATHStr.split(openfluid::tools::FilesystemPath::listSeparator(),QString::SkipEmptyParts);
+    PathsList = openfluid::tools::split(PATHStr,openfluid::tools::FilesystemPath::listSeparator());
   }
 
 #if defined(OPENFLUID_OS_UNIX)
-  if (!PathsList.contains("/usr/local/bin"))
+  if (std::find(PathsList.begin(), PathsList.end(), std::string("/usr/local/bin")) != PathsList.end())
   {
-   PathsList.append("/usr/local/bin");
+   PathsList.push_back("/usr/local/bin");
   }
 #endif
-
 
   return findUsingPathsList(ProgramNames,PathsList);
 }
@@ -240,16 +239,17 @@ QString ExternalProgram::findUsingPATHEnvVar(const QStringList& ProgramNames)
 // =====================================================================
 
 
-QString ExternalProgram::findUsingPathsList(const QStringList& ProgramNames, const QStringList& PathsList)
+std::string ExternalProgram::findUsingPathsList(const std::vector<std::string>& ProgramNames,
+                                                const std::vector<std::string>& PathsList)
 {
-  for (auto& CurrentPath : PathsList)
+  for (const auto& CurrentPath : PathsList)
   {
-    for (auto& CurentName : ProgramNames)
+    for (const auto& CurentName : ProgramNames)
     {
-      QFileInfo FileToTest(QDir(CurrentPath),CurentName);
+      const auto FileToTest = openfluid::tools::Path({CurrentPath,CurentName});
       if (FileToTest.isFile())
       {
-        return FileToTest.absoluteFilePath();
+        return FileToTest.toGeneric();
       }
     }
   }
@@ -266,12 +266,12 @@ void ExternalProgram::searchForProgram()
 {
   m_FullProgramPath = "";
 
-  if (!m_SearchPaths.isEmpty())
+  if (!m_SearchPaths.empty())
   {
     m_FullProgramPath = findUsingPathsList(m_ProgramNames,m_SearchPaths);
   }
 
-  if (m_FullProgramPath.isEmpty() && m_UsePathEnv)
+  if (m_FullProgramPath.empty() && m_UsePathEnv)
   {
     m_FullProgramPath = findUsingPATHEnvVar(m_ProgramNames);
   }

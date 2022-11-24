@@ -420,7 +420,7 @@ void WareSrcExplorer::onNewFragmentAsked()
       openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
     );
 
-  openfluid::utils::GitProxy Git;
+  GitUIProxy Git;
   bool HasWareVersionControl = Git.status(WarePath).m_IsGitTracked;
 
   openfluid::ui::waresdev::FragmentsSrcImportDialog Dialog(this, WarePath, HasWareVersionControl);
@@ -464,7 +464,7 @@ void WareSrcExplorer::onDeleteFileAsked()
 
 void WareSrcExplorer::onGitInitAsked()
 {
-  openfluid::utils::GitProxy Git;
+  GitUIProxy Git;
 
   QString CurrentPath = mp_Model->filePath(currentIndex());
 
@@ -489,7 +489,7 @@ void WareSrcExplorer::onGitInitAsked()
 
 void WareSrcExplorer::onGitStatusAsked()
 {
-  openfluid::utils::GitProxy Git;
+  GitUIProxy Git;
 
   openfluid::ui::waresdev::WareGitDialog Dialog;
   Dialog.setWindowTitle("git status");
@@ -504,7 +504,7 @@ void WareSrcExplorer::onGitStatusAsked()
 
 void WareSrcExplorer::onGitLogAsked()
 {
-  openfluid::utils::GitProxy Git;
+  GitUIProxy Git;
 
   openfluid::ui::waresdev::WareGitDialog Dialog;
   Dialog.setWindowTitle("git log");

@@ -37,11 +37,12 @@
  */
 
 
-#ifndef __OPENFLUID_UTILSQ_EXTERNALPROGRAM_HPP__
-#define __OPENFLUID_UTILSQ_EXTERNALPROGRAM_HPP__
+#ifndef __OPENFLUID_UTILS_EXTERNALPROGRAM_HPP__
+#define __OPENFLUID_UTILS_EXTERNALPROGRAM_HPP__
 
 
-#include <QStringList>
+#include <string>
+#include <vector>
 
 #include <openfluid/dllexport.hpp>
 
@@ -55,11 +56,11 @@ class OPENFLUID_API ExternalProgram
 {
   private:
 
-    QStringList m_ProgramNames;
+    std::vector<std::string> m_ProgramNames;
 
-    QString m_FullProgramPath;
+    std::string m_FullProgramPath;
 
-    QStringList m_SearchPaths;
+    std::vector<std::string> m_SearchPaths;
 
     bool m_UsePathEnv;
 
@@ -83,8 +84,8 @@ class OPENFLUID_API ExternalProgram
       @param[in] UsePathEnv Enable the use of PATH environment variable to search for the program.
       Default value is true.
     */
-    ExternalProgram(const QStringList& ProgramNames,
-                    const QStringList& SearchPaths = QStringList(),
+    ExternalProgram(const std::vector<std::string>& ProgramNames,
+                    const std::vector<std::string>& SearchPaths = std::vector<std::string>(),
                     bool UsePathEnv = true);
 
     /**
@@ -94,8 +95,8 @@ class OPENFLUID_API ExternalProgram
       @param[in] UsePathEnv Enable the use of PATH environment variable to search for the program.
       Default value is true.
     */
-    ExternalProgram(const QString& ProgramName,
-                    const QStringList& SearchPaths = QStringList(),
+    ExternalProgram(const std::string& ProgramName,
+                    const std::vector<std::string>& SearchPaths = std::vector<std::string>(),
                     bool UsePathEnv = true);
 
     ~ExternalProgram();
@@ -109,15 +110,15 @@ class OPENFLUID_API ExternalProgram
       @return An ExternalProgram object initialized with the registered program to find
     */
     static ExternalProgram getRegisteredProgram(RegisteredPrograms Prog,
-                                                const QStringList& SearchPaths = QStringList(),
-                                                bool UsePathEnv = true);
+                                               const std::vector<std::string>& SearchPaths = std::vector<std::string>(),
+                                               bool UsePathEnv = true);
 
     /**
       Finds a program using the PATH environment variable
       @param[in] ProgramNames The list of the potential program names of the program to find
       @return The full path of the first found program
     */
-    static QString findUsingPATHEnvVar(const QStringList& ProgramNames);
+    static std::string findUsingPATHEnvVar(const std::vector<std::string>& ProgramNames);
 
     /**
       Finds a program using a given paths list
@@ -125,14 +126,17 @@ class OPENFLUID_API ExternalProgram
       @param[in] PathsList The list of paths to search
       @return The full path of the first found program
     */
-    static QString findUsingPathsList(const QStringList& ProgramNames, const QStringList& PathsList);
+    static std::string findUsingPathsList(const std::vector<std::string>& ProgramNames, 
+                                          const std::vector<std::string>& PathsList);
 
     /**
       Returns true if the current program has been found
       @return true if the current program has been found
     */
     bool isFound() const
-    { return !m_FullProgramPath.isEmpty(); };
+    { 
+      return !m_FullProgramPath.empty(); 
+    };
 
     /**
       Searches for the program
@@ -143,12 +147,14 @@ class OPENFLUID_API ExternalProgram
       Returns the full path of the program
       @return the full path of the program if it has been found, otherwise an empty string
     */
-    QString getFullProgramPath() const
-    { return m_FullProgramPath; };
+    std::string getFullProgramPath() const
+    { 
+      return m_FullProgramPath; 
+    };
 
 };
 
 
 } } // namespaces
 
-#endif /* __OPENFLUID_UTILSQ_EXTERNALPROGRAM_HPP__ */
+#endif /* __OPENFLUID_UTILS_EXTERNALPROGRAM_HPP__ */

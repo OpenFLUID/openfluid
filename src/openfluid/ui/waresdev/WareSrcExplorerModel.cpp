@@ -44,7 +44,7 @@
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
-#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -92,14 +92,14 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
   {
     // we get branch name for direct children that are tracked wares
     // (we have to do it here because onDirectoryLoaded is not called if the ware is not expanded)
-    openfluid::utils::GitProxy Git;
+    GitUIProxy Git;
     for (const auto& ChildPathInfo : m_PathInfos)
     {
       if (ChildPathInfo.IsWareDirectory)
       {
         QString WarePath = QString::fromStdString(ChildPathInfo.AbsolutePath);
 
-        openfluid::utils::GitProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
+        GitUIProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
 
         if (TreeStatus.m_IsGitTracked)
         {
@@ -146,8 +146,8 @@ void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
     return;
   }
 
-  openfluid::utils::GitProxy Git;
-  openfluid::utils::GitProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
+  GitUIProxy Git;
+  GitUIProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
 
   if (TreeStatus.m_IsGitTracked)
   {
@@ -213,13 +213,13 @@ void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
 
     // setting default with TRACKED
 
-    applyIconRecursively(WarePath, m_IconByGitStatus[openfluid::utils::GitProxy::FileStatus::TRACKED]);
+    applyIconRecursively(WarePath, m_IconByGitStatus[GitUIProxy::FileStatus::TRACKED]);
 
 
     // parsing status outputs
 
-    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> FileStatus = TreeStatus.m_FileStatusByTreePath;
-    for (QMap<QString, openfluid::utils::GitProxy::FileStatusInfo>::iterator it = FileStatus.begin();
+    QMap<QString, GitUIProxy::FileStatusInfo> FileStatus = TreeStatus.m_FileStatusByTreePath;
+    for (QMap<QString, GitUIProxy::FileStatusInfo>::iterator it = FileStatus.begin();
          it != FileStatus.end(); ++it)
     {
       QString AbsolutePath = QString("%1/%2").arg(WarePath).arg(it.key());
@@ -235,7 +235,7 @@ void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
       {
         AbsolutePath.chop(1);
 
-        applyIconRecursively(AbsolutePath, m_IconByGitStatus[openfluid::utils::GitProxy::FileStatus::UNTRACKED]);
+        applyIconRecursively(AbsolutePath, m_IconByGitStatus[GitUIProxy::FileStatus::UNTRACKED]);
       }
     }
   }

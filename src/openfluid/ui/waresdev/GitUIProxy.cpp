@@ -30,7 +30,7 @@
  */
 
 /**
- @file GitProxy.cpp
+ @file GitUIProxy.cpp
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
@@ -41,20 +41,18 @@
 #include <QDir>
 #include <QTextStream>
 
-#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utilsq/ExternalProgram.hpp>
-#include <openfluid/config.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/config.hpp>
 
 
-namespace openfluid { namespace utils {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
-GitProxy::GitProxy()
+GitUIProxy::GitUIProxy() : openfluid::utils::GitProxy()
 {
-  findGitProgram();
-
   // TODO use a subdir in tmp dir given by openfluid::tools::Filesystem::makeUniqueSubdirectory()
   m_TmpPath = QString::fromStdString(openfluid::base::Environment::getTempDir());
 }
@@ -64,7 +62,7 @@ GitProxy::GitProxy()
 // =====================================================================
 
 
-GitProxy::~GitProxy()
+GitUIProxy::~GitUIProxy()
 {
   delete mp_Process;
 }
@@ -74,51 +72,7 @@ GitProxy::~GitProxy()
 // =====================================================================
 
 
-void GitProxy::findGitProgram()
-{
-  if (m_ExecutablePath.isEmpty())
-  {
-    m_ExecutablePath = ExternalProgram::getRegisteredProgram(
-      ExternalProgram::RegisteredPrograms::Git).getFullProgramPath();
-
-    if (!m_ExecutablePath.isEmpty())
-    {
-      QProcess Pcs;
-
-      Pcs.start(m_ExecutablePath,{"--version"});
-
-      Pcs.waitForReadyRead(-1);
-      Pcs.waitForFinished(-1);
-
-      QString Res = QString::fromUtf8(Pcs.readAll());
-
-      if (Res.startsWith("git version "))
-      {
-        Res.remove(0,12);
-        m_Version = Res;
-      }
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool GitProxy::isAvailable()
-{
-  findGitProgram();
-
-  return (!m_ExecutablePath.isEmpty() && !m_Version.isEmpty());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString GitProxy::getCurrentOpenFLUIDBranchName()
+QString GitUIProxy::getCurrentOpenFLUIDBranchName()
 {
   return "openfluid-" + QString::fromStdString(openfluid::base::Environment::getVersionMajorMinor());
 }
@@ -128,7 +82,7 @@ QString GitProxy::getCurrentOpenFLUIDBranchName()
 // =====================================================================
 
 
-void GitProxy::processStandardOutput()
+void GitUIProxy::processStandardOutput()
 {
   mp_Process->setReadChannel(QProcess::StandardOutput);
 
@@ -143,7 +97,7 @@ void GitProxy::processStandardOutput()
 // =====================================================================
 
 
-void GitProxy::processErrorOutput()
+void GitUIProxy::processErrorOutput()
 {
   mp_Process->setReadChannel(QProcess::StandardError);
 
@@ -159,7 +113,7 @@ void GitProxy::processErrorOutput()
 // =====================================================================
 
 
-void GitProxy::processErrorOutputAsInfo()
+void GitUIProxy::processErrorOutputAsInfo()
 {
   mp_Process->setReadChannel(QProcess::StandardError);
 
@@ -175,9 +129,9 @@ void GitProxy::processErrorOutputAsInfo()
 // =====================================================================
 
 
-bool GitProxy::launchCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
-                             const QString& Username, const QString& Password,
-                             bool SslNoVerify, const QString& WorkingDirectory, bool UsernameViaEnv)
+bool GitUIProxy::launchCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
+                               const QString& Username, const QString& Password,
+                               bool SslNoVerify, const QString& WorkingDirectory, bool UsernameViaEnv)
 {
   if (FromUrl.isEmpty() || ToPath.isEmpty())
   {
@@ -239,7 +193,7 @@ bool GitProxy::launchCommand(QStringList Args, const QString& FromUrl, const QSt
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutputAsInfo()));
 
-  mp_Process->start(m_ExecutablePath,Args);
+  mp_Process->start(QString::fromStdString(m_ExecutablePath),Args);
 
   mp_Process->waitForFinished(-1);
   mp_Process->waitForReadyRead(-1);
@@ -258,9 +212,9 @@ bool GitProxy::launchCommand(QStringList Args, const QString& FromUrl, const QSt
 // =====================================================================
 
 
-bool GitProxy::addSubmodule(const QString& FromUrl, const QString& ToPath, const QString& LocalGitRepoPath,
-                            const QString& Username, const QString& Password,
-                            bool SslNoVerify)
+bool GitUIProxy::addSubmodule(const QString& FromUrl, const QString& ToPath, const QString& LocalGitRepoPath,
+                              const QString& Username, const QString& Password,
+                              bool SslNoVerify)
 {
   QStringList Args = {"submodule", "add", "--progress"};
   return launchCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath, true);
@@ -271,9 +225,9 @@ bool GitProxy::addSubmodule(const QString& FromUrl, const QString& ToPath, const
 // =====================================================================
 
 
-bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
-                     const QString& Username, const QString& Password,
-                     bool SslNoVerify, const QString& LocalGitRepoPath, bool WithoutVersioning)
+bool GitUIProxy::clone(const QString& FromUrl, const QString& ToPath,
+                       const QString& Username, const QString& Password,
+                       bool SslNoVerify, const QString& LocalGitRepoPath, bool WithoutVersioning)
 {
   QStringList Args = {"clone", "--recurse-submodules", "--progress"};
   if (WithoutVersioning)
@@ -288,7 +242,7 @@ bool GitProxy::clone(const QString& FromUrl, const QString& ToPath,
 // =====================================================================
 
 
-GitProxy::TreeStatusInfo GitProxy::status(const QString& Path)
+GitUIProxy::TreeStatusInfo GitUIProxy::status(const QString& Path)
 {
   TreeStatusInfo TreeStatus;
   QDir PathDir(Path);
@@ -305,7 +259,7 @@ GitProxy::TreeStatusInfo GitProxy::status(const QString& Path)
 
   QStringList Args = {"status","--porcelain","--ignored","-b"};
 
-  mp_Process->start(m_ExecutablePath,Args);
+  mp_Process->start(QString::fromStdString(m_ExecutablePath),Args);
 
   mp_Process->waitForReadyRead(-1);
   mp_Process->waitForFinished(-1);
@@ -375,7 +329,7 @@ GitProxy::TreeStatusInfo GitProxy::status(const QString& Path)
 // =====================================================================
 
 
-std::pair<int, QString> GitProxy::commandHtml(const QString& Path, QStringList Args, bool RequiringGit)
+std::pair<int, QString> GitUIProxy::commandHtml(const QString& Path, QStringList Args, bool RequiringGit)
 {
   QDir PathDir(Path);
 
@@ -387,7 +341,7 @@ std::pair<int, QString> GitProxy::commandHtml(const QString& Path, QStringList A
   mp_Process = new QProcess();
   mp_Process->setWorkingDirectory(Path);
 
-  mp_Process->start(m_ExecutablePath,Args);
+  mp_Process->start(QString::fromStdString(m_ExecutablePath),Args);
 
   mp_Process->waitForReadyRead(-1);
   mp_Process->waitForFinished(-1);
@@ -406,7 +360,7 @@ std::pair<int, QString> GitProxy::commandHtml(const QString& Path, QStringList A
 // =====================================================================
 
 
-QString GitProxy::statusHtml(const QString& Path, bool WithColorCodes)
+QString GitUIProxy::statusHtml(const QString& Path, bool WithColorCodes)
 {
 
   QStringList Args;
@@ -426,7 +380,7 @@ QString GitProxy::statusHtml(const QString& Path, bool WithColorCodes)
 // =====================================================================
 
 
-QString GitProxy::logHtml(const QString& Path, bool WithColorCodes)
+QString GitUIProxy::logHtml(const QString& Path, bool WithColorCodes)
 {
 
   QStringList Args;
@@ -445,7 +399,7 @@ QString GitProxy::logHtml(const QString& Path, bool WithColorCodes)
 // =====================================================================
 
 
- QString GitProxy::init(const QString& Path)
+ QString GitUIProxy::init(const QString& Path)
 {
   QStringList Args;
   Args << "init";
@@ -453,4 +407,4 @@ QString GitProxy::logHtml(const QString& Path, bool WithColorCodes)
 }
 
 
-} } // namespaces
+} } } // namespaces

@@ -48,7 +48,7 @@
 #include <openfluid/ui/waresdev/WareSrcMsgParser.hpp>
 #include <openfluid/ui/waresdev/WareSrcMsgStream.hpp>
 #include <openfluid/tools/Timer.hpp>
-#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -112,7 +112,7 @@ class OPENFLUID_API WareSrcUIContainer: public QObject,
 
     QList<WareSrcMsgParser::WareSrcMsg> m_Messages;  
 
-    void runCommand(const openfluid::utils::CMakeProxy::CommandInfos& CmdInfos, const QProcessEnvironment& Env,
+    void runCommand(const openfluid::utils::Process::Command& Cmd, const QProcessEnvironment& Env,
                     WareSrcProcess::Type CmdType = WareSrcProcess::Type::NONE);
 
 
@@ -136,48 +136,6 @@ class OPENFLUID_API WareSrcUIContainer: public QObject,
     WareSrcUIContainer(const QString& AbsolutePath, openfluid::ware::WareType Type, const QString& WareID);
 
     virtual ~WareSrcUIContainer();
-
-    QString getAbsolutePath() const
-    {
-      return QString::fromStdString(openfluid::waresdev::WareSrcContainer::getAbsolutePath());
-    }
-
-    QString getBuildDirPath() const
-    {
-      return QString::fromStdString(openfluid::waresdev::WareSrcContainer::getBuildDirPath());
-    }
-
-    QString getConfigureGenerator() const
-    {
-      return QString::fromStdString(openfluid::waresdev::WareSrcContainer::getConfigureGenerator());
-    }
-
-    QString getConfigureExtraOptions() const
-    {
-      return QString::fromStdString(openfluid::waresdev::WareSrcContainer::getConfigureExtraOptions());
-    }
-
-    QString getBuildTarget() const
-    {
-      return QString::fromStdString(openfluid::waresdev::WareSrcContainer::getBuildTarget());
-    }
-
-    QString getGenerateDocTarget() const
-    {
-      return QString::fromStdString(openfluid::waresdev::WareSrcContainer::getGenerateDocTarget());
-    }
-
-    std::map<QString,QString> getConfigureVariables() const
-    {
-      std::map<QString,QString> Vars;
-
-      for (const auto& V : openfluid::waresdev::WareSrcContainer::getConfigureVariables())
-      {
-        Vars[QString::fromStdString(V.first)] = QString::fromStdString(V.second);
-      }
-
-      return Vars;
-    }
 
     void setMsgStream(WareSrcMsgStream& Stream);
 

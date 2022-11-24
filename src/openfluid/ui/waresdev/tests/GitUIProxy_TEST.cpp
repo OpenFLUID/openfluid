@@ -30,16 +30,16 @@
  */
 
 /**
- @file GitProxy_TEST.cpp
+  @file GitUIProxy_TEST.cpp
 
- @author Aline LIBRES <aline.libres@gmail.com>
+  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
 #define BOOST_TEST_NO_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_cmakeproxy
+#define BOOST_TEST_MODULE unittest_gituiproxy
 
 
 #include <iostream>
@@ -51,9 +51,9 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 #include <openfluid/utilsq/FluidHubAPIClient.hpp>
-#include <openfluid/utilsq/ExternalProgram.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 #include "tests-config.hpp"
 
@@ -95,7 +95,7 @@ class F
 
       forceRemove(QString::fromStdString(TestPath));
 
-      CurrentOFBranchName = openfluid::utils::GitProxy::getCurrentOpenFLUIDBranchName().toStdString();
+      CurrentOFBranchName = openfluid::ui::waresdev::GitUIProxy::getCurrentOpenFLUIDBranchName().toStdString();
     }
 
     ~F()
@@ -174,8 +174,8 @@ class F
 
     void launchGitCommand(const QString& Args)
     {
-      QString GitPgm = openfluid::utils::ExternalProgram::getRegisteredProgram(
-          openfluid::utils::ExternalProgram::RegisteredPrograms::Git).getFullProgramPath();
+      QString GitPgm = QString::fromStdString(openfluid::utils::ExternalProgram::getRegisteredProgram(
+          openfluid::utils::ExternalProgram::RegisteredPrograms::Git).getFullProgramPath());
 
       QProcess Process;
       Process.setWorkingDirectory(DestPath);
@@ -194,7 +194,7 @@ class F
 
 BOOST_FIXTURE_TEST_CASE(clone_wrong_url_fails,F)
 {
-  openfluid::utils::GitProxy Git;
+  openfluid::ui::waresdev::GitUIProxy Git;
 
   BOOST_CHECK(!Git.clone("wrongurl", DestPath));
 
@@ -208,7 +208,7 @@ BOOST_FIXTURE_TEST_CASE(clone_wrong_url_fails,F)
 
 BOOST_FIXTURE_TEST_CASE(clone_empty_url_fails,F)
 {
-  openfluid::utils::GitProxy Git;
+  openfluid::ui::waresdev::GitUIProxy Git;
 
   BOOST_CHECK(!Git.clone("", DestPath));
 
@@ -224,7 +224,7 @@ BOOST_FIXTURE_TEST_CASE(clone_empty_dest_fails,F)
 {
   if (!Url.isEmpty())
   {
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
 
     BOOST_CHECK(!Git.clone(Url, ""));
 
@@ -247,7 +247,7 @@ BOOST_FIXTURE_TEST_CASE(clone_noauth_ok,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
 
     BOOST_CHECK(Git.clone(Url, DestPath));
 
@@ -271,7 +271,7 @@ BOOST_FIXTURE_TEST_CASE(clone_wrong_auth_fails,F)
   {
     std::cout << "URL : " << AuthUrl.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
 
     BOOST_CHECK(!Git.clone(AuthUrl, DestPath, "wrongname", "wrongpass"));
 
@@ -296,7 +296,7 @@ BOOST_FIXTURE_TEST_CASE(clone_auth_ok,F)
     std::cout << "username : " << AuthUsername.toStdString() << std::endl;
     std::cout << "password : " << AuthPassword.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
 
     BOOST_CHECK(Git.clone(AuthUrl, DestPath, AuthUsername, AuthPassword));
 
@@ -326,7 +326,7 @@ BOOST_FIXTURE_TEST_CASE(clone_no_valid_cert_ok,F)
   {
     // TODO to enable once cloning will be possible from the testing FluidHub service
     /*
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
 
     BOOST_CHECK(Git.clone(FirstAvailSimUrl, DestPath, NoValidCertUsername, NoValidCertPassword, true));
 
@@ -349,7 +349,7 @@ BOOST_FIXTURE_TEST_CASE(status_no_git,F)
 {
   QDir().mkpath(DestPath);
 
-  openfluid::utils::GitProxy Git;
+  openfluid::ui::waresdev::GitUIProxy Git;
 
   BOOST_CHECK_EQUAL(Git.status(DestPath).m_IsGitTracked, false);
 }
@@ -365,7 +365,7 @@ BOOST_FIXTURE_TEST_CASE(status_git_unchanged,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
 
     Git.clone(Url, DestPath);
 
@@ -390,17 +390,17 @@ BOOST_FIXTURE_TEST_CASE(status_git_untracked,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
     Git.clone(Url, DestPath);
 
     QFile File(DestDir.filePath("new_file.txt"));
     File.open(QIODevice::WriteOnly);
 
-    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    auto Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, false);
     BOOST_CHECK_EQUAL(static_cast<int>(Paths["new_file.txt"].m_IndexStatus), 
-                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::UNTRACKED));
+                      static_cast<int>(openfluid::ui::waresdev::GitUIProxy::FileStatus::UNTRACKED));
   }
   else
   {
@@ -419,7 +419,7 @@ BOOST_FIXTURE_TEST_CASE(status_git_added,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
     Git.clone(Url, DestPath);
 
     QFile File(DestDir.filePath("new_file.txt"));
@@ -427,11 +427,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_added,F)
 
     launchGitCommand("add new_file.txt");
 
-    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    auto Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, false);
     BOOST_CHECK_EQUAL(static_cast<int>(Paths["new_file.txt"].m_IndexStatus), 
-                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::ADDED));
+                      static_cast<int>(openfluid::ui::waresdev::GitUIProxy::FileStatus::ADDED));
   }
   else
   {
@@ -450,7 +450,7 @@ BOOST_FIXTURE_TEST_CASE(status_git_added_modified,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
     Git.clone(Url, DestPath);
 
     QFile File(DestDir.filePath("new_file.txt"));
@@ -462,11 +462,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_added_modified,F)
     FileContent << "some text";
     File.close();
 
-    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    auto Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["new_file.txt"].m_IsDirty, true);
     BOOST_CHECK_EQUAL(static_cast<int>(Paths["new_file.txt"].m_IndexStatus), 
-                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::ADDED));
+                      static_cast<int>(openfluid::ui::waresdev::GitUIProxy::FileStatus::ADDED));
   }
   else
   {
@@ -485,7 +485,7 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
     Git.clone(Url, DestPath);
 
     QFile File(DestDir.filePath("a/a1.txt"));
@@ -494,11 +494,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified,F)
     FileContent << "some text";
     File.close();
 
-    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    auto Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, true);
     BOOST_CHECK_EQUAL(static_cast<int>(Paths["a/a1.txt"].m_IndexStatus), 
-                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::TRACKED));
+                      static_cast<int>(openfluid::ui::waresdev::GitUIProxy::FileStatus::TRACKED));
   }
   else
   {
@@ -517,7 +517,7 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_staged,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
     Git.clone(Url, DestPath);
 
     QFile File(DestDir.filePath("a/a1.txt"));
@@ -528,11 +528,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_staged,F)
 
     launchGitCommand("add a/a1.txt");
 
-    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    auto Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, false);
     BOOST_CHECK_EQUAL(static_cast<int>(Paths["a/a1.txt"].m_IndexStatus), 
-                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::MODIFIED));
+                      static_cast<int>(openfluid::ui::waresdev::GitUIProxy::FileStatus::MODIFIED));
   }
   else
   {
@@ -551,7 +551,7 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_partially_staged,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
     Git.clone(Url, DestPath);
 
     QFile File(DestDir.filePath("a/a1.txt"));
@@ -566,11 +566,11 @@ BOOST_FIXTURE_TEST_CASE(status_git_modified_partially_staged,F)
     FileContent << "other text";
     File.close();
 
-    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    auto Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, true);
     BOOST_CHECK_EQUAL(static_cast<int>(Paths["a/a1.txt"].m_IndexStatus), 
-                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::MODIFIED));
+                      static_cast<int>(openfluid::ui::waresdev::GitUIProxy::FileStatus::MODIFIED));
   }
   else
   {
@@ -589,16 +589,16 @@ BOOST_FIXTURE_TEST_CASE(status_git_deleted,F)
   {
     std::cout << "URL : " << Url.toStdString() << std::endl;
 
-    openfluid::utils::GitProxy Git;
+    openfluid::ui::waresdev::GitUIProxy Git;
     Git.clone(Url, DestPath);
 
     launchGitCommand("rm a/a1.txt");
 
-    QMap<QString, openfluid::utils::GitProxy::FileStatusInfo> Paths = Git.status(DestPath).m_FileStatusByTreePath;
+    auto Paths = Git.status(DestPath).m_FileStatusByTreePath;
     BOOST_CHECK_EQUAL(Paths.size(), 1);
     BOOST_CHECK_EQUAL(Paths["a/a1.txt"].m_IsDirty, false);
     BOOST_CHECK_EQUAL(static_cast<int>(Paths["a/a1.txt"].m_IndexStatus), 
-                      static_cast<int>(openfluid::utils::GitProxy::FileStatus::DELETED));
+                      static_cast<int>(openfluid::ui::waresdev::GitUIProxy::FileStatus::DELETED));
   }
   else
   {
@@ -622,14 +622,14 @@ int main(int argc, char *argv[])
     std::cout << "** Test not run due to disabled network requests **" << std::endl;
     return CONFIGTESTS_SKIP_CODE;
   }
-  else if (!openfluid::utils::GitProxy::isAvailable())
+  else if (!openfluid::ui::waresdev::GitUIProxy::isAvailable())
   {
     std::cout << "** Test not run due to failing to find git program **" << std::endl;
     return CONFIGTESTS_SKIP_CODE;
   }
   else
   {
-    std::cout << "Found git version " << openfluid::utils::GitProxy::getVersion().toStdString() << std::endl;
+    std::cout << "Found git version " << openfluid::ui::waresdev::GitUIProxy::getVersion() << std::endl;
   }
 
 

@@ -26,56 +26,69 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-
- */
+  
+*/
 
 /**
-  @file WaresImportWorker.cpp
+  @file ProgramProxy.hpp
 
-  @author Aline LIBRES <aline.libres@gmail.com>
-  @author Armel THÖNI <armel.thoni@inrae.fr>
- */
-
-
-#include <QCoreApplication>
-#include <QFileInfo>
-
-#include <openfluid/ui/waresdev/WaresImportWorker.hpp>
-#include <openfluid/ui/waresdev/GitUIProxy.hpp>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+*/
 
 
-namespace openfluid { namespace ui { namespace waresdev {
+#ifndef __OPENFLUID_UTILS_PROGRAMPROXY_HPP__
+#define __OPENFLUID_UTILS_PROGRAMPROXY_HPP__
 
 
-WaresImportWorker::WaresImportWorker(bool SslNoVerify) : GitImportWorker(SslNoVerify)
+#include <string>
+
+#include <openfluid/utils/Process.hpp>
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid { namespace utils {
+
+
+template<typename T>
+class ProgramProxy
 {
+  protected:
 
-}
+     static std::string m_ExecutablePath;
+
+     static std::string m_Version;
+
+
+  public:
+    
+    static bool isAvailable()
+    { 
+      return false; 
+    }
+
+    static std::string getVersion()
+    { 
+      return m_Version; 
+    }
+
+    static std::string getExecutablePath()
+    { 
+      return m_ExecutablePath; 
+    }
+
+};
 
 
 // =====================================================================
 // =====================================================================
 
 
-WaresImportWorker::~WaresImportWorker()
-{
-  
-}
+template<typename T> std::string ProgramProxy<T>::m_ExecutablePath = "";
+
+template<typename T> std::string ProgramProxy<T>::m_Version = "";
 
 
-// =====================================================================
-// =====================================================================
+} }  // namespaces
 
 
-bool WaresImportWorker::importElement(const QString& GitUrl, const QString& WareTypePath)
-{
-  QString DestPath = QString("%1/%2").arg(WareTypePath).arg(QFileInfo(GitUrl).fileName());
-  
-  GitUIProxy Git;
-  QObject::connect(&Git, SIGNAL(info(const QString&)), this, SIGNAL(info(const QString&)));
-  QObject::connect(&Git, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));
-  return Git.clone(GitUrl, DestPath, m_Username, m_Password, m_SslNoVerify);
-}
-
-
-} } } // namespaces
+#endif /* __OPENFLUID_UTILS_PROGRAMPROXY_HPP__ */

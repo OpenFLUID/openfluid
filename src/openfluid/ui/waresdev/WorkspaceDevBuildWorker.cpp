@@ -43,7 +43,7 @@
 
 #include <openfluid/ui/waresdev/WorkspaceDevBuildWorker.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
-#include <openfluid/utilsq/CMakeProxy.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/utilsq/QtHelpers.hpp>
 
 
@@ -98,21 +98,23 @@ void WorkspaceDevBuildWorker::run()
 
       Container.prepareBuildDirectory();
 
-      QStringList ExtraOptionsList = openfluid::utils::convertArgsStringToList(Container.getConfigureExtraOptions());
+      QStringList ExtraOptionsList = 
+        openfluid::utils::convertArgsStringToList(QString::fromStdString(Container.getConfigureExtraOptions()));
 
-      openfluid::utils::CMakeProxy::CommandInfos ConfigCommand = 
-        openfluid::utils::CMakeProxy::getConfigureCommand(Container.getBuildDirPath(),
-                                                          Container.getAbsolutePath(),
-                                                          Container.getConfigureVariables(),
-                                                          Container.getConfigureGenerator(),
-                                                          ExtraOptionsList);
+      auto ConfigCommand = 
+      openfluid::utils::CMakeProxy::getConfigureCommand(Container.getBuildDirPath(),
+                                                        Container.getAbsolutePath(),
+                                                        Container.getConfigureVariables(),
+                                                        Container.getConfigureGenerator(),
+                                                        openfluid::utils::toStdStringVector(ExtraOptionsList));
 
       writeMessage();
       writeMessage("====== "+tr("Configuring %1").arg(WItem.ID)+" ======");
       writeMessage();
 
 
-      mp_Process->start(ConfigCommand.Program,ConfigCommand.Args);
+      mp_Process->start(QString::fromStdString(ConfigCommand.Program),
+                        openfluid::utils::toQStringList(ConfigCommand.Args));
 
       mp_Process->waitForStarted(-1);
       mp_Process->waitForReadyRead(-1);
@@ -133,11 +135,13 @@ void WorkspaceDevBuildWorker::run()
           writeMessage("====== "+tr("Building %1").arg(WItem.ID)+" ======");
           writeMessage();
 
-          openfluid::utils::CMakeProxy::CommandInfos BuildCommand = 
+          openfluid::utils::Process::Command BuildCommand = 
             openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),
-                                                          Container.getBuildTarget(),Container.getBuildJobs());
+                                                          Container.getBuildTarget(),
+                                                          Container.getBuildJobs());
 
-          mp_Process->start(BuildCommand.Program,BuildCommand.Args);
+          mp_Process->start(QString::fromStdString(BuildCommand.Program),
+                            openfluid::utils::toQStringList(BuildCommand.Args));
 
           mp_Process->waitForStarted(-1);
           mp_Process->waitForReadyRead(-1);
@@ -160,10 +164,12 @@ void WorkspaceDevBuildWorker::run()
           writeMessage("====== "+tr("Generating doc : %1").arg(WItem.ID)+" ======");
           writeMessage();
 
-          openfluid::utils::CMakeProxy::CommandInfos DocCommand = 
-            openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),Container.getGenerateDocTarget());
+          openfluid::utils::Process::Command DocCommand = 
+            openfluid::utils::CMakeProxy::getBuildCommand(Container.getBuildDirPath(),
+                                                          Container.getGenerateDocTarget());
 
-          mp_Process->start(DocCommand.Program,DocCommand.Args);
+          mp_Process->start(QString::fromStdString(DocCommand.Program),
+                            openfluid::utils::toQStringList(DocCommand.Args));
 
           mp_Process->waitForStarted(-1);
           mp_Process->waitForReadyRead(-1);

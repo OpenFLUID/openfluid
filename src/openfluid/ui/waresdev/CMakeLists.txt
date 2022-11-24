@@ -2,6 +2,7 @@
 SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
                               OStreamMsgStream.cpp
                               WareSrcMsgParser.cpp
+                              GitUIProxy.cpp
                               WareSrcWidget.cpp WareSrcFileEditor.cpp WareSrcWidgetCollection.cpp
                               WareSrcToolbar.cpp WareBuildOptionsWidget.cpp WareBuildOptionsDialog.cpp
                               WareSrcSyntaxHighlighter.cpp WareSrcFiletypeManager.cpp TextEditMsgStream.cpp
@@ -25,6 +26,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
                               WareSrcMsgStream.hpp 
                               OStreamMsgStream.hpp
                               WareSrcMsgParser.hpp
+                              GitUIProxy.hpp
                               WareSrcWidget.hpp WareSrcFileEditor.hpp WareSrcWidgetCollection.hpp
                               WareSrcToolbar.hpp WareBuildOptionsWidget.hpp WareBuildOptionsDialog.hpp
                               WareSrcSyntaxHighlighter.hpp WareSrcFiletypeManager.hpp TextEditMsgStream.hpp
@@ -55,6 +57,8 @@ QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui Ware
 
 #QT5_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)
 
+SET_SOURCE_FILES_PROPERTIES(GitUIProxy.cpp PROPERTIES COMPILE_DEFINITIONS "OFBUILD_GITASKPASS_ENVVAR=\"${OFBUILD_GITASKPASS_ENVVAR}\";OFBUILD_GITASKUSER_ENVVAR=\"${OFBUILD_GITASKUSER_ENVVAR}\"")
+
 
 ADD_LIBRARY(openfluid-ui-waresdev SHARED ${OPENFLUID_UI_WARESDEV_CPP} ${OPENFLUID_UI_WARESDEV_HPP}
                                          ${OPENFLUID_UI_WARESDEV_UI}
@@ -73,6 +77,7 @@ SET_TARGET_PROPERTIES(openfluid-ui-waresdev PROPERTIES VERSION "${OPENFLUID_VERS
 TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       openfluid-ui-common
                       openfluid-waresdev
+                      openfluid-utils
                       openfluid-utilsq
                       openfluid-tools
                       Qt5::Core

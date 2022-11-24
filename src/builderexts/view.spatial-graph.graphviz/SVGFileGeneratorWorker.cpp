@@ -41,7 +41,7 @@
 #include <QProcess>
 #include <QFile>
 
-#include <openfluid/utilsq/ExternalProgram.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 #include "SVGFileGeneratorWorker.hpp"
 
@@ -200,7 +200,7 @@ void SVGFileGeneratorWorker::run()
     Args << "-o";    
     Args << m_SVGFileName;
 
-    QProcess::execute(DotProgram.getFullProgramPath(),Args);
+    QProcess::execute(QString::fromStdString(DotProgram.getFullProgramPath()),Args);
   }
 
 

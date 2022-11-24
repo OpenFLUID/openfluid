@@ -42,7 +42,8 @@
 #include <iostream>
 #include <iomanip>
 
-#include <openfluid/utilsq/ExternalProgram.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/Process.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
@@ -189,7 +190,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
             if (m_PlotProgram.isFound())
             {
-              QProcess::execute(m_PlotProgram.getFullProgramPath(),{ QString::fromStdString(ScriptFilename)});
+              openfluid::utils::Process::execute(m_PlotProgram.getFullProgramPath(),{ScriptFilename});
             }
 
           }

@@ -31,31 +31,30 @@
 
 
 /**
- @file GitProxy.hpp
+ @file GitUIProxy.hpp
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
 */
 
 
-#ifndef __OPENFLUID_UTILSQ_GITPROXY_HPP__
-#define __OPENFLUID_UTILSQ_GITPROXY_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_GITUIPROXY_HPP__
+#define __OPENFLUID_UIWARESDEV_GITUIPROXY_HPP__
 
 
 #include <QString>
 #include <QObject>
 #include <QProcess>
 #include <QMap>
-#include <QFile>
 
+#include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/utilsq/ProgramProxy.hpp>
 
 
-namespace openfluid { namespace utils {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
-class OPENFLUID_API GitProxy : public QObject, public ProgramProxy<GitProxy>
+class OPENFLUID_API GitUIProxy : public QObject, public openfluid::utils::GitProxy
 {
   Q_OBJECT
 
@@ -110,11 +109,9 @@ class OPENFLUID_API GitProxy : public QObject, public ProgramProxy<GitProxy>
 
   public:
 
-    GitProxy();
+    GitUIProxy();
 
-    ~GitProxy();
-
-    static bool isAvailable();
+    ~GitUIProxy();
 
     static QString getCurrentOpenFLUIDBranchName();
 
@@ -143,7 +140,7 @@ class OPENFLUID_API GitProxy : public QObject, public ProgramProxy<GitProxy>
 };
 
 
-} } // namespaces
+} } } // namespaces
 
 
-#endif /* __OPENFLUID_UTILSQ_GITPROXY_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_GITUIPROXY_HPP__ */

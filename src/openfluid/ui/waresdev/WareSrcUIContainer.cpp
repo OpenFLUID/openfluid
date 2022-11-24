@@ -200,20 +200,20 @@ void WareSrcUIContainer::configure()
   prepareBuildDirectory();
 
   delete mp_CurrentParser;
-  mp_CurrentParser = new WareSrcMsgParserCMake(getAbsolutePath());
+  mp_CurrentParser = new WareSrcMsgParserCMake(QString::fromStdString(getAbsolutePath()));
 
 
   // === build and run command
 
   QStringList ExtraOptionsList = 
-      openfluid::utils::convertArgsStringToList(getConfigureExtraOptions());
+      openfluid::utils::convertArgsStringToList(QString::fromStdString(getConfigureExtraOptions()));
 
-  openfluid::utils::CMakeProxy::CommandInfos CmdInfos = 
-    openfluid::utils::CMakeProxy::getConfigureCommand(QString::fromStdString(m_BuildDirPath),getAbsolutePath(),
-                                                      getConfigureVariables(), getConfigureGenerator(),
-                                                      ExtraOptionsList);
+  openfluid::utils::Process::Command Cmd = 
+    openfluid::utils::CMakeProxy::getConfigureCommand(m_BuildDirPath,getAbsolutePath(),
+                                                      getConfigureVariables(),getConfigureGenerator(),
+                                                      openfluid::utils::toStdStringVector(ExtraOptionsList));
 
-  runCommand(CmdInfos, getConfigureEnvironment(), WareSrcProcess::Type::CONFIGURE);
+  runCommand(Cmd, getConfigureEnvironment(), WareSrcProcess::Type::CONFIGURE);
 }
 
 
@@ -252,20 +252,16 @@ void WareSrcUIContainer::build()
     );
   }
 
-
-  QString Target = getBuildTarget();
-
-
   delete mp_CurrentParser;
   mp_CurrentParser = new WareSrcMsgParserGcc();
 
 
   // === build and run command
 
-  openfluid::utils::CMakeProxy::CommandInfos CmdInfos =
-    openfluid::utils::CMakeProxy::getBuildCommand(QString::fromStdString(m_BuildDirPath),Target,m_BuildJobs);
+  openfluid::utils::Process::Command Cmd =
+    openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,getBuildTarget(),m_BuildJobs);
 
-  runCommand(CmdInfos, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
+  runCommand(Cmd, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
 }
 
 
@@ -284,7 +280,7 @@ void WareSrcUIContainer::generateDoc()
 // =====================================================================
 
 
-void WareSrcUIContainer::runCommand(const openfluid::utils::CMakeProxy::CommandInfos& CmdInfos, 
+void WareSrcUIContainer::runCommand(const openfluid::utils::Process::Command& Cmd, 
                                     const QProcessEnvironment& Env, WareSrcProcess::Type CmdType)
 {
   if (mp_Process->state() != WareSrcProcess::NotRunning)
@@ -316,12 +312,12 @@ void WareSrcUIContainer::runCommand(const openfluid::utils::CMakeProxy::CommandI
     mp_Stream->write(PATHMessage);
   }
 
-  auto CommandMessage = WareSrcMsgParser::WareSrcMsg(QString("%1\n").arg(CmdInfos.joined()),
+  auto CommandMessage = WareSrcMsgParser::WareSrcMsg(QString::fromStdString(Cmd.joined()+"\n"),
                                                      WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND);
   mp_Stream->write(CommandMessage);
 
   mp_Process->setProcessEnvironment(Env);
-  mp_Process->start(CmdInfos.Program,CmdInfos.Args);
+  mp_Process->start(QString::fromStdString(Cmd.Program),openfluid::utils::toQStringList(Cmd.Args));
 }
 
 

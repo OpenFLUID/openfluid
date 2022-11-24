@@ -36,16 +36,15 @@
 */
 
 
-#ifndef __OPENFLUID_UTILSQ_GRASSGISPROXY_HPP__
-#define __OPENFLUID_UTILSQ_GRASSGISPROXY_HPP__
+#ifndef __OPENFLUID_UTILS_GRASSGISPROXY_HPP__
+#define __OPENFLUID_UTILS_GRASSGISPROXY_HPP__
 
 
 #include <map>
 #include <vector>
 
-#include <QStringList>
-
-#include <openfluid/utilsq/ProgramProxy.hpp>
+#include <openfluid/utils/ProgramProxy.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -56,36 +55,36 @@ class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
 {
   private:
 
-    QString m_GISBase;
+    std::string m_GISBase;
 
-    QString m_Location;
+    std::string m_Location;
 
-    QString m_Mapset;
+    std::string m_Mapset;
 
-    QStringList m_JobLines;
+    std::vector<std::string> m_JobLines;
 
-    QString m_OutputFile;
+    std::string m_OutputFile;
 
-    QString m_ErrorFile;
+    std::string m_ErrorFile;
 
     static void findGrassGISProgram();
 
-    static QString getCommandLine(const QString& Command,
-                                  const std::map<QString,QString> Arguments = {},
-                                  const std::vector<QString> Options = {});
+    static std::string getCommandLine(const std::string& Command,
+                                      const std::map<std::string,std::string>& Arguments = {},
+                                      const std::vector<std::string>& Options = {});
 
-    static QString writeJobFile(const QStringList& Lines, const QString& DirPath);
+    static std::string writeJobFile(const std::vector<std::string>& Lines, const std::string& DirPath);
 
-    int executeGrassJob(const QString& JobFilePath) const;
+    int executeGrassJob(const std::string& JobFilePath) const;
 
-    int executeGrassJobReturningData(const QString& JobFilePath, QStringList& Lines) const;
+    int executeGrassJobReturningData(const std::string& JobFilePath, std::vector<std::string>& Lines) const;
 
 
   public:
 
     GrassGISProxy() = delete;
 
-    GrassGISProxy(const QString& GISBase, const QString& Location, const QString& Mapset = "PERMANENT");
+    GrassGISProxy(const std::string& GISBase, const std::string& Location, const std::string& Mapset = "PERMANENT");
 
     virtual ~GrassGISProxy();
 
@@ -95,21 +94,27 @@ class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
       Sets the current location to use for next GRASS execution
       @param[in] Location the location directory
     */
-    void setLocation(const QString& Location)
-    { m_Location = Location; };
+    void setLocation(const std::string& Location)
+    { 
+      m_Location = Location; 
+    }
 
     /**
       Sets the current mapset to use for next GRASS execution
       @param[in] Mapset the mapset directory
     */
-    void setMapset(const QString& Mapset)
-    { m_Mapset = Mapset; }
+    void setMapset(const std::string& Mapset)
+    { 
+      m_Mapset = Mapset;
+    }
 
     /**
       Clears all appended tasks.
     */
     void clearTasks()
-    { m_JobLines.clear(); };
+    { 
+      m_JobLines.clear();
+    }
 
     /**
       Appends a task to the current GRASS job.
@@ -117,9 +122,9 @@ class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
       @param[in] Arguments a key-value map of arguments to pass to the GRASS command
       @param[in] Options options to pass to the GRASS command
     */
-    void appendTask(const QString& Command,
-                    const std::map<QString,QString> Arguments = {},
-                    const std::vector<QString> Options = {});
+    void appendTask(const std::string& Command,
+                    const std::map<std::string,std::string>& Arguments = {},
+                    const std::vector<std::string>& Options = {});
 
     /**
       Runs a GRASS job made of appended tasks. Once finished, the task queue is cleared.
@@ -134,32 +139,38 @@ class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
       @param[in] Options options to pass to the GRASS command
       @return the exit code of the execution
     */
-    int runSingleTask(const QString& Command,
-                      const std::map<QString,QString> Arguments = {},
-                      const std::vector<QString> Options = {}) const;
+    int runSingleTask(const std::string& Command,
+                      const std::map<std::string,std::string>& Arguments = {},
+                      const std::vector<std::string>& Options = {}) const;
 
     /**
       Sets the file path where the standard output stream will be redirected.
       If not set or empty, the stream is redirected to a temporary file.
       @param[in] FullPath the full path for the output file
     */
-    void setOutputFile(const QString& FullPath)
-    { m_OutputFile = FullPath; }
+    void setOutputFile(const std::string& FullPath)
+    { 
+      m_OutputFile = FullPath;
+    }
 
     /**
       Sets the file path where the standard error stream will be redirected.
       If not set or empty, the stream is redirected to a temporary file.
       @param[in] FullPath the full path for the error file
     */
-    void setErrorFile(const QString& FullPath)
-    { m_ErrorFile = FullPath; }
+    void setErrorFile(const std::string& FullPath)
+    { 
+      m_ErrorFile = FullPath;
+    }
 
     /**
       Returns the current command lines of the job
       @return a list of command lines
     */
-    const QStringList& jobLines() const
-    { return m_JobLines; }
+    const std::vector<std::string>& jobLines() const
+    { 
+      return m_JobLines;
+    }
 
 
     /**
@@ -175,7 +186,7 @@ class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
       @return true  if the location has been created, false if it could not be created
               or if it already exists
     */
-    bool createLocation(const QString& EPSG) const;
+    bool createLocation(const std::string& EPSG) const;
 
     /**
       Returns the region informations as a key-value map,
@@ -198,12 +209,11 @@ class OPENFLUID_API GrassGISProxy : public ProgramProxy<GrassGISProxy>
     */
     std::vector<std::string> mapsets() const;
 
-
 };
 
 
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILSQ_GRASSGISPROXY_HPP__ */
+#endif /* __OPENFLUID_UTILS_GRASSGISPROXY_HPP__ */
 

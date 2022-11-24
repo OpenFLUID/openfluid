@@ -1,8 +1,12 @@
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}/src/tests")
 
 
-SET(UNITTEST_LINK_LIBRARIES openfluid-base openfluid-waresdev openfluid-ui-waresdev)
+SET(UNITTEST_LINK_LIBRARIES openfluid-base openfluid-utils openfluid-waresdev openfluid-ui-waresdev)
 
 OFBUILD_DISCOVER_UNITTESTS(uiwaresdev)
 
 SET_TESTS_PROPERTIES(unit-uiwaresdev-WaresDevPackage_TEST PROPERTIES RUN_SERIAL true)
+
+IF(NOT WIN32)
+  SET_TESTS_PROPERTIES(unit-uiwaresdev-GitUIProxy_TEST PROPERTIES ENVIRONMENT "PATH=${OFBUILD_DIST_BIN_DIR}:$ENV{PATH}")
+ENDIF()

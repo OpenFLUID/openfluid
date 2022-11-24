@@ -89,7 +89,7 @@ void WorkspaceDevDashboardWorker::run()
   };
 
 
-  openfluid::utils::GitProxy Git;
+  GitUIProxy Git;
 
   for (auto& RootPath : RootPathsByType)
   {
@@ -102,7 +102,7 @@ void WorkspaceDevDashboardWorker::run()
       Infos.Type = RootPath.first;
       Infos.ID = FileInfo.fileName();
       Infos.Path = CurrentDir.absoluteFilePath(FileInfo.fileName());
-      openfluid::utils::GitProxy::TreeStatusInfo TreeStatus = Git.status(Infos.Path);
+      GitUIProxy::TreeStatusInfo TreeStatus = Git.status(Infos.Path);
 
       if (TreeStatus.m_IsGitTracked)
       {

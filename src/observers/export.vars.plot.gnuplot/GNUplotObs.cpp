@@ -37,12 +37,11 @@
 */
 
 
-#include <QDir>
-#include <QProcess>
-
-#include <openfluid/utilsq/ExternalProgram.hpp>
+#include <openfluid/utils/Process.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 
 #include "GNUplotObsTools.hpp"
@@ -338,16 +337,16 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
         if (GNUPlotProgram.isFound())
         {          
-          QStringList Args;
+          std::vector<std::string> Args;
 
           if (m_Plot.Persistent)
           {
             Args << "-persist";
           }
 
-          Args << QDir(QString::fromStdString(m_OutputDir)).absoluteFilePath("script.gnuplot");
+          Args << openfluid::tools::Path({m_OutputDir,"script.gnuplot"}).toGeneric();
 
-          QProcess::execute(GNUPlotProgram.getFullProgramPath(),Args);
+          openfluid::utils::Process::execute(GNUPlotProgram.getFullProgramPath(),Args);
         }
         else
         {

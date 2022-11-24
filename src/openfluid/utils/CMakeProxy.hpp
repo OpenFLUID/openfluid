@@ -39,14 +39,12 @@
 #include <map>
 #include <vector>
 
-#include <QStringList>
-
 #include <openfluid/dllexport.hpp>
-#include <openfluid/utilsq/ProgramProxy.hpp>
+#include <openfluid/utils/ProgramProxy.hpp>
 
 
-#ifndef __OPENFLUID_UTILSQ_CMAKEPROXY_HPP__
-#define __OPENFLUID_UTILSQ_CMAKEPROXY_HPP__
+#ifndef __OPENFLUID_UTILS_CMAKEPROXY_HPP__
+#define __OPENFLUID_UTILS_CMAKEPROXY_HPP__
 
 
 namespace openfluid { namespace utils {
@@ -67,9 +65,10 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
 
     static bool isAvailable();
 
-    static CommandInfos getConfigureCommand(const QString& BuildDir, const QString& SrcDir,
-                                            const std::map<QString,QString>& Variables = {},
-                                            const QString& Generator = "", const QStringList& Options = {});
+    static Process::Command getConfigureCommand(const std::string& BuildDir, const std::string& SrcDir,
+                                                const std::map<std::string,std::string>& Variables = {},
+                                                const std::string& Generator = "", 
+                                                const std::vector<std::string>& Options = {});
 
     /**
       Returns a build command prepared using the given arguments
@@ -79,17 +78,19 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
       @param[in] CMakeOptions a string of options passed to CMake (empty by default)
       @param[in] OtherOptions a string of options passed to the build tool (empty by default)
     */
-    static CommandInfos getBuildCommand(const QString& BuildDir,
-                                        const QString& Target = "",
-                                        const unsigned int Jobs = 0,
-                                        const QStringList& CMakeOptions = {}, const QStringList& OtherOptions = {});
+    static Process::Command getBuildCommand(const std::string& BuildDir,
+                                            const std::string& Target = "",
+                                            const unsigned int Jobs = 0,
+                                            const std::vector<std::string>& CMakeOptions = {}, 
+                                            const std::vector<std::string>& OtherOptions = {});
 
-    static CommandInfos getTarCompressCommand(const QString& WorkDir,
-                                              const QString& TarFilePath, const QStringList& RelativePathsToCompress,
-                                              const QString& Options = "");
+    static Process::Command getTarCompressCommand(const std::string& WorkDir,
+                                                  const std::string& TarFilePath,
+                                                  const std::vector<std::string>& RelativePathsToCompress,
+                                                  const std::string& Options = "");
 
-    static CommandInfos getTarUncompressCommand(const QString& WorkDir, const QString& TarFilePath,
-                                                const QString& Options = "");
+    static Process::Command getTarUncompressCommand(const std::string& WorkDir, const std::string& TarFilePath,
+                                                    const std::string& Options = "");
 
 };
 
@@ -97,4 +98,4 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILSQ_CMAKEPROXY_HPP__ */
+#endif /* __OPENFLUID_UTILS_CMAKEPROXY_HPP__ */

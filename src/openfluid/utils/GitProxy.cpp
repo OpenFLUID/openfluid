@@ -30,25 +30,35 @@
  */
 
 /**
-  @file GitImportWorker.cpp
+ @file GitProxy.cpp
 
-  @author Aline LIBRES <aline.libres@gmail.com>
-  @author Armel THÖNI <armel.thoni@inrae.fr>
- */
+ @author Aline LIBRES <aline.libres@gmail.com>
+ @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
+*/
 
 
-#include <QCoreApplication>
-#include <QFileInfo>
-
-#include <openfluid/ui/waresdev/GitImportWorker.hpp>
-#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/config.hpp>
 
 
-namespace openfluid { namespace ui { namespace waresdev {
+namespace openfluid { namespace utils {
 
 
-GitImportWorker::GitImportWorker(bool SslNoVerify) : m_SslNoVerify(SslNoVerify)
+GitProxy::GitProxy()
+{
+  findGitProgram();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+GitProxy::~GitProxy()
 {
 
 }
@@ -58,67 +68,39 @@ GitImportWorker::GitImportWorker(bool SslNoVerify) : m_SslNoVerify(SslNoVerify)
 // =====================================================================
 
 
-GitImportWorker::~GitImportWorker()
+void GitProxy::findGitProgram()
 {
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GitImportWorker::setupUser(const QString& Username, const QString& Password)
-{
-  m_Username = Username;
-  m_Password = Password;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GitImportWorker::setSelectedElements(const std::vector<std::pair<QString, QString>>& SelectedElements)
-{
-  m_ElementsToImport = SelectedElements;
-} 
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool GitImportWorker::runImports()
-{
-  bool OK = true;
-  for (const auto& Pair : m_ElementsToImport) 
+  if (m_ExecutablePath.empty())
   {
-    if (!importElement(Pair.first, Pair.second))
+    m_ExecutablePath = 
+      ExternalProgram::getRegisteredProgram(ExternalProgram::RegisteredPrograms::Git).getFullProgramPath();
+
+    if (!m_ExecutablePath.empty())
     {
-      OK = false;
-      break;
+      Process P(m_ExecutablePath,{"--version"});
+      P.run();
+      const auto OutLines = P.stdOutLines();
+
+      if (!OutLines.empty() && openfluid::tools::startsWith(OutLines[0],"git version "))
+      {
+        m_Version = OutLines[0];
+        m_Version.erase(0,12);
+      }
     }
-
-    m_Progress += m_ProgressRatio;
-    emit progressed(m_Progress);
   }
-  if (OK)
-  {
-    emit finished(true,tr("Import completed"));
-  }
-  else
-  {
-    emit finished(false, tr("Import failed"));
-  }
-  
-  if (qApp && qApp->thread() != thread())
-  {
-    moveToThread(qApp->thread());
-  }
-
-  return OK;
 }
 
 
-} } } // namespaces
+// =====================================================================
+// =====================================================================
+
+
+bool GitProxy::isAvailable()
+{
+  findGitProgram();
+
+  return (!m_ExecutablePath.empty() && !m_Version.empty());
+}
+
+
+} } // namespaces

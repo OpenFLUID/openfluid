@@ -45,7 +45,7 @@
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/ui/waresdev/FragmentsImportWorker.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
-#include <openfluid/utilsq/GitProxy.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 
 
@@ -127,7 +127,7 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
   // FETCHING REPO
   openfluid::tools::FilesystemPath DestSubPath({SrcFragmentsSubPath.toGeneric(), RepoName.toStdString()});
     
-  openfluid::utils::GitProxy Git;
+  GitUIProxy Git;
   QObject::connect(&Git, SIGNAL(info(const QString&)), this, SIGNAL(info(const QString&)));
   QObject::connect(&Git, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));
 
