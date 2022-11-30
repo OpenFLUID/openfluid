@@ -142,6 +142,7 @@ BOOST_AUTO_TEST_CASE(check_parser)
 
   std::list<std::string> ArgValues2 {"search","-p","/p/path","-e","*.*"};
   BOOST_REQUIRE(Parser.parse(ArgValues2));
+  BOOST_REQUIRE(Parser.thirdPartyArgs().empty());
   Parser.printState(std::cout);
 
   std::cout << "=================================" << std::endl;
@@ -182,10 +183,17 @@ BOOST_AUTO_TEST_CASE(check_parser)
 
   std::cout << "=================================" << std::endl;
 
+  std::list<std::string> ThirdArgValues6 {"search","--path=/p/path","---","-e","*.*"};
+  BOOST_REQUIRE(Parser.parse(ThirdArgValues6));
+  BOOST_REQUIRE_EQUAL(Parser.thirdPartyArgs()[0],"-e");
+  BOOST_REQUIRE_EQUAL(Parser.thirdPartyArgs()[1],"*.*");
+  BOOST_REQUIRE(!SearchCmd.isOptionActive("extended"));
+
+  std::cout << "=================================" << std::endl;
+
   Parser.addOption(openfluid::utils::CommandLineOption("version","","display program version"));
   BOOST_REQUIRE(Parser.parse(ArgValues4));
   Parser.printHelp(std::cout);
 
   std::cout << std::endl;
 }
-

@@ -497,6 +497,8 @@ class CommandLineParser
 
     std::vector<std::string> m_ExtraArgs;
 
+    std::vector<std::string> m_ThirdPartyArgs;
+
     std::string m_ParsingMessage;
 
     bool m_HelpAsked;
@@ -538,6 +540,21 @@ class CommandLineParser
     const std::vector<std::string>& extraArgs() const
     { 
       return m_ExtraArgs; 
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Returns the third party arguments given to the command,
+      mainly used to pass arguments to a third party program
+      @return a vector of arguments
+    */
+    const std::vector<std::string>& thirdPartyArgs() const
+    { 
+      return m_ThirdPartyArgs; 
     }
 
 
@@ -657,6 +674,13 @@ class CommandLineParser
       {
         std::string Arg = ArgValues.front();
         ArgValues.pop_front();
+
+        if (Arg == "---")
+        {
+          m_ThirdPartyArgs = { std::make_move_iterator(std::begin(ArgValues)),
+                               std::make_move_iterator(std::end(ArgValues)) };
+          return true;
+        }
 
         if (Arg[0] != '-')
         {
@@ -801,6 +825,7 @@ class CommandLineParser
       m_ActiveCommand.clear();
       m_ParsingMessage.clear();
       m_ExtraArgs.clear();
+      m_ThirdPartyArgs.clear();
 
       for (auto& Cmd : m_Commands)
       {
