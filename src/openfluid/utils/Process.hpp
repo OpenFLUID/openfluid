@@ -256,6 +256,24 @@ class OPENFLUID_API Process
     */
     static int execute(const Command& Cmd, const Environment& Env = Environment());
 
+    /**
+      Executes a process using the given program, arguments and execution environment
+      with default standard i/o (stdout,stderr,stdin). It works as std::system with more options.
+      @param[in] Program Path of the program to execute.
+      @param[in] Args Program arguments (empty by default)
+      @param[in] Env Execution environment (parent environment by default)
+    */
+    static int system(const std::string& Program, const std::vector<std::string>& Args = {}, 
+                      const Environment& Env = Environment());
+
+    /**
+      Executes a process using the given command configuration and execution environment
+      with default standard i/o (stdout,stderr,stdin). It works as std::system with more options.
+      @param[in] Cmd Command configuration
+      @param[in] Env Execution environment (parent environment by default)
+    */
+    static int system(const Command& Cmd, const Environment& Env = Environment());
+
 };
 
 

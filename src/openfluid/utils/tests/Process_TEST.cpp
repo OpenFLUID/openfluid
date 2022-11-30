@@ -200,5 +200,9 @@ BOOST_AUTO_TEST_CASE(check_static)
   }
 
 #endif
+
+  BOOST_CHECK_EQUAL(openfluid::utils::Process::system(CONFIGTESTS_CMAKE_PROGRAM,{"--version"}),0);
+
+  BOOST_CHECK_NE(openfluid::utils::Process::system(CONFIGTESTS_CMAKE_PROGRAM,{"--option-that-does-not-exist"}),0);
 }
 

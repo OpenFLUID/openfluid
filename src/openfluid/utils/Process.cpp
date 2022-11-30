@@ -250,4 +250,45 @@ int Process::execute(const Command& Cmd, const Environment& Env)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+int Process::system(const std::string& Program, const std::vector<std::string>& Args, const Environment& Env)
+{
+  Command Cmd{.Program=Program, .Args=Args, .OutFile=std::string(), .ErrFile=std::string()};
+
+  return system(Cmd,Env);
+}
+
+
+// =====================================================================
+// =====================================================================
+ 
+
+int Process::system(const Command& Cmd, const Environment& Env)
+{
+  boost::process::environment ProcessEnv;
+  
+  // prepare environment
+  if (Env.Inherits)
+  {
+    for(const auto& InheritedVar : boost::this_process::environment())
+    {
+      ProcessEnv[InheritedVar.get_name()] = InheritedVar.to_string();
+    }
+  }
+
+  for (const auto& Var : Env.Vars)
+  {
+    ProcessEnv[Var.first] = Var.second;
+  }
+
+
+  return boost::process::system(boost::process::exe = Cmd.Program,
+                                boost::process::args = Cmd.Args,
+                                ProcessEnv);
+}
+
+
 } } // namespaces
