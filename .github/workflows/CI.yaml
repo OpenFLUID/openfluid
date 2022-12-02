@@ -113,18 +113,17 @@ jobs:
       - name: Checkout of source code
         uses: actions/checkout@v2
       - name: Preparation
-        shell: msys2 {0}
         run: mkdir ./_build
       - name: Configuration
-        shell: msys2 {0}
         run: cmake .. -G "MSYS Makefiles" -DOFBUILD_ENABLE_DOCS=OFF
         working-directory: ./_build
       - name: Build
-        shell: msys2 {0}
         run: make -j 2
         working-directory: ./_build
       - name: Testing
         run: |
-          export PATH=`pwd`/dist/bin:`pwd`/dist/lib:$PATH
+          export OPENFLUID_INSTALL_PREFIX=`pwd`/dist
+          export PATH=$OPENFLUID_INSTALL_PREFIX/bin:$OPENFLUID_INSTALL_PREFIX/lib:$PATH
+          echo $PATH
           ctest -j 2 --output-on-failure
         working-directory: ./_build
