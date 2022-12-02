@@ -144,28 +144,18 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
       openfluid::tools::FilesystemPath TargetDirectory = openfluid::tools::FilesystemPath(
         {RootPath.toStdString(), DestSubPath.toGeneric()});
 
-      // removing also the reference in .git folder
-      openfluid::tools::FilesystemPath GitSubmoduleTargetDirectory = openfluid::tools::FilesystemPath(
-        {RootPath.toStdString(), ".git", "modules", DestSubPath.toGeneric()});
-      if (GitSubmoduleTargetDirectory.isDirectory())
+      // Git cleanup of failed submodule add through GitProxy removal operation
+      std::pair<bool, QString> GitRmResult = Git.removeSubmodule(RootPath, QString::fromStdString(DestSubPath.toNative()));
+      emit info(GitRmResult.second);
+
+      // Manual removal if git operations were unable to do it
+      if (FragmentDirCreated)
       {
-        GitSubmoduleTargetDirectory.removeDirectory();
-        emit info(tr("Fragment directory removed from .git/modules since import not successful"));
+        TargetDirectory = openfluid::tools::FilesystemPath({RootPath.toStdString(), SrcFragmentsSubPath.toGeneric()});
       }
-      else
+      if (TargetDirectory.exists() && TargetDirectory.removeDirectory())
       {
-        if (FragmentDirCreated)
-        {
-          TargetDirectory = openfluid::tools::FilesystemPath({RootPath.toStdString(), SrcFragmentsSubPath.toGeneric()});
-        }
-        if (TargetDirectory.removeDirectory())
-        {
-          emit info(tr("Fragment directory removed since import not successful"));
-        }
-        else
-        {
-          emit error(tr("Unable to remove the fragments directory after unsuccessful submodule addition."));
-        }
+        emit info(tr("Fragment directory removed since import not successful"));
       }
     }
   }

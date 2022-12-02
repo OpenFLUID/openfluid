@@ -273,6 +273,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
             this, SLOT(onDeleteWareRequested()));
     connect(Explorer, SIGNAL(fileDeleted(const QString&)),
             mp_WidgetsCollection, SLOT(closeEditor(const QString&)));
+    connect(Explorer, SIGNAL(folderDeleted(const QString&, const QString&, const bool)),
+            mp_WidgetsCollection, SLOT(closeEditorsInFolderFromWare(const QString&, const QString&, const bool)));
   }
 
   connect(mp_WidgetsCollection, SIGNAL(currentTabChanged(const QString&)),

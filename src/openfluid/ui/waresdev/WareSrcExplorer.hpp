@@ -86,6 +86,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onNewFragmentAsked();
 
+    void onFragmentRemovalAsked();
+
     void onDeleteFileAsked();
 
     void onGitInitAsked();
@@ -123,6 +125,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
     void deleteWareAsked();
 
     void fileDeleted(const QString& Path);
+
+    void folderDeleted(const QString& WarePath, const QString& FolderPath, const bool Confirm);
 
 
   public:

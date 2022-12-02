@@ -225,6 +225,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void closeEditor(const QString& FilePath);
 
+    void closeEditorsInFolderFromWare(const QString& WarePath, const QString& FolderPath, const bool Confirm);
+
     void updateEditorsSettings();
 
 

@@ -338,37 +338,54 @@ int WareSrcWidget::closeCurrentEditor(bool WithConfirm)
 // =====================================================================
 
 
+int WareSrcWidget::editorCheckChangeClose(WareFileEditor* Editor, bool WithConfirm)
+{
+  // FIXME FRAGMENT REMOVAL CASE: 
+  // check if any open and changed file from the fragment before triggering the removal operation 
+  // to avoid removal if user says "cancel"?
+  int ClosedTabPos = -1;
+  int Choice = QMessageBox::Discard;
+
+  if (WithConfirm && Editor->isModified())
+  {
+    QString FileName = QFileInfo(Editor->getFilePath()).fileName();
+    // TODO Switch active tab to related one to understand which file the dialog is talking about
+    QMessageBox MsgBox;
+    MsgBox.setText(tr("The document %1 has been modified.").arg(FileName));
+    MsgBox.setInformativeText(tr("Do you want to save changes?"));
+    MsgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    MsgBox.setDefaultButton(QMessageBox::Save);
+    Choice = MsgBox.exec();
+  }
+
+  switch (Choice)
+  {
+    case QMessageBox::Save:
+      Editor->saveContent();
+      /* fall through */ // GCC marker comment for fall through
+    case QMessageBox::Discard:
+      ClosedTabPos = closeFileTab(Editor);
+      break;
+    case QMessageBox::Cancel:
+      // FIXME: find a way to transmit that whole operation is cancelled? return -2?
+    default:
+      break;
+  }
+  return ClosedTabPos;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int WareSrcWidget::onCloseFileTabRequested(int Index, bool WithConfirm)
 {
   int ClosedTabPos = -1;
 
   if (WareFileEditor* Editor = dynamic_cast<WareFileEditor*>(ui->WareSrcFileCollection->widget(Index)))
   {
-    int Choice = QMessageBox::Discard;
-
-    if (WithConfirm && Editor->isModified())
-    {
-      QMessageBox MsgBox;
-      MsgBox.setText(tr("The document has been modified."));
-      MsgBox.setInformativeText(tr("Do you want to save changes?"));
-      MsgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-      MsgBox.setDefaultButton(QMessageBox::Save);
-      Choice = MsgBox.exec();
-    }
-
-    switch (Choice)
-    {
-      case QMessageBox::Save:
-        Editor->saveContent();
-        /* fall through */ // GCC marker comment for fall through
-      case QMessageBox::Discard:
-        ClosedTabPos = closeFileTab(Editor);
-        break;
-      case QMessageBox::Cancel:
-      default:
-        break;
-    }
-
+    ClosedTabPos = editorCheckChangeClose(Editor, WithConfirm);
   }
 
   return ClosedTabPos;
@@ -399,6 +416,22 @@ int WareSrcWidget::closeFileTab(WareFileEditor* Editor)
   checkModifiedStatus();
 
   return Index;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::closeFileTabsInFolder(QString FolderPath, bool Confirm)
+{
+  for (const auto& Path : m_WareFilesByPath.keys())
+  {
+    if (Path.startsWith(FolderPath))
+    {
+      editorCheckChangeClose(m_WareFilesByPath[Path], Confirm);
+    }
+  }
 }
 
 

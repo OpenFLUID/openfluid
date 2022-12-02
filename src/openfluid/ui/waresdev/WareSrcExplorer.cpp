@@ -120,7 +120,14 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   Menu.addAction(tr("New file"), this, SLOT(onNewFileAsked()));
   Menu.addAction(tr("New folder"), this, SLOT(onNewFolderAsked()));
-  Menu.addAction(tr("Add fragment"), this, SLOT(onNewFragmentAsked()));
+  if (currentIndex().isValid() && mp_Model->isFragment(currentIndex()))
+  {
+    Menu.addAction(tr("Remove this fragment"), this, SLOT(onFragmentRemovalAsked()));
+  }
+  else
+  {
+    Menu.addAction(tr("Add fragment"), this, SLOT(onNewFragmentAsked()));
+  }
 
   Menu.addSeparator();
 
@@ -425,6 +432,73 @@ void WareSrcExplorer::onNewFragmentAsked()
 
   openfluid::ui::waresdev::FragmentsSrcImportDialog Dialog(this, WarePath, HasWareVersionControl);
   Dialog.exec();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onFragmentRemovalAsked()
+{
+  //TOIMPL: since have effects on global window, redirect all actions to it through a
+  // "fragmentRemovalAsked" signal? (changing action from SLOT to SIGNAL?)
+  // (suivre logique de "deleteWareAsked")
+  QString CurrentPath = mp_Model->filePath(currentIndex());
+  openfluid::ui::waresdev::GitUIProxy Git;
+
+  openfluid::waresdev::WareSrcEnquirer::WarePathInfo WareInfo = 
+    openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString());
+
+  QString WarePath = 
+    QString::fromStdString(
+      WareInfo.AbsoluteWarePath
+    );
+
+  QString FragmentName = QDir(CurrentPath).dirName();
+
+  QString SubPath = 
+    QString::fromStdString(
+      WareInfo.RelativePathToWare
+    );
+  if (QMessageBox::warning(this, tr("Delete fragment"), tr("Are you sure you want to delete the fragment \"%1\"?\n"
+        "Any open file of the fragment will be closed and deleted, even unsaved ones.").arg(FragmentName),
+        QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+  {
+    return;
+  }
+  
+  // TODO add progress bar for delete operations
+  if (Git.status(WarePath).m_IsGitTracked && Git.status(CurrentPath).m_IsGitTracked)
+  {
+    // IF WARE AND FRAGMENT ARE UNDER VERSION CONTROL AND SUBMODULE HAS BEEN USED: Removing through Git proxy
+    openfluid::ui::waresdev::WareGitDialog Dialog;
+    Dialog.setWindowTitle("Remove fragment submodule");
+    std::pair<bool, QString> Result = Git.removeSubmodule(WarePath, SubPath);
+    emit folderDeleted(WarePath, CurrentPath, false);
+    Dialog.setContent(Result.second);
+    Dialog.exec();
+  }
+  else
+  {
+    // IF WARE NOT UNDER VERSION CONTROL: Simply removing the folder
+    if (QDir(CurrentPath).removeRecursively())
+    {
+      emit folderDeleted(WarePath, CurrentPath, false);
+      // TODO check unsaved files beforehand to allow cancelling fragment removal if wanted
+      QMessageBox::information(0, tr("Fragment removal"), tr("Fragment \"%1\" removed.").arg(FragmentName));
+    }
+    else
+    {
+      QMessageBox::critical(0, tr("Error"), tr("Unable to remove the fragment \"%1\"").arg(SubPath));
+    }
+  }
+
+  QDir FragmentsDir(QString::fromStdString(openfluid::tools::FilesystemPath({WareInfo.AbsoluteWarePath, openfluid::config::WARESDEV_SRC_DIR, openfluid::config::WARESDEV_FRAGMENTS_DIR}).toGeneric()));
+  if (FragmentsDir.exists() && FragmentsDir.isEmpty())
+  {
+    FragmentsDir.removeRecursively();
+  }
 }
 
 

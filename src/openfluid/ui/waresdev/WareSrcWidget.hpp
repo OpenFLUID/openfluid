@@ -112,6 +112,12 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     WareSrcToolbar* mp_WareSrcToolBar = nullptr;
 
     void addNewFileTab(int Index, const QString& AbsolutePath, const QString& TabLabel, const QString& TabTooltip = "");
+    
+    /**
+      Check if the file of the editor was changed and close it when conditions are satisfied
+      @return Editor index before it was removed
+    */
+    int editorCheckChangeClose(WareFileEditor* Editor, bool WithConfirm);
 
     /**
       Deletes Editor
@@ -228,6 +234,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     bool isWareProcessRunning() const;
 
     void closeAllFileTabs();
+
+    void closeFileTabsInFolder(QString FolderPath, bool Confirm=true);
 
     WareFileEditor* currentEditor();
 

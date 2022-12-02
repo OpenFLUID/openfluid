@@ -49,9 +49,14 @@
 
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
+
+
+// removal of submodule directory in .git via explicit rm operation
+bool cleanModuleDir(QString RootPath, openfluid::tools::FilesystemPath DestSubPath);
 
 
 class OPENFLUID_API GitUIProxy : public QObject, public openfluid::utils::GitProxy
@@ -115,13 +120,15 @@ class OPENFLUID_API GitUIProxy : public QObject, public openfluid::utils::GitPro
 
     static QString getCurrentOpenFLUIDBranchName();
 
-    bool launchCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
+    bool launchAuthCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
                       const QString& Username = "", const QString& Password = "",
                       bool SslNoVerify = false, const QString& WorkingDirectory = "", bool UsernameViaEnv = false);
 
     bool addSubmodule(const QString& FromUrl, const QString& ToPath, const QString& LocalGitRepoPath,
                const QString& Username = "", const QString& Password = "",
                bool SslNoVerify = false);
+
+    std::pair<bool, QString> removeSubmodule(const QString& Path, const QString& SubmodulePath);
 
     bool clone(const QString& FromUrl, const QString& ToPath,
                const QString& Username = "", const QString& Password = "",

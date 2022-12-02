@@ -33,6 +33,7 @@
   @file GitUIProxy_TEST.cpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -77,6 +78,8 @@ class F
 
     QString NoValidCertUsername = QString::fromStdString(CONFIGTESTS_WARESHUB_USERNAME);
     QString NoValidCertPassword = QString::fromStdString(CONFIGTESTS_WARESHUB_PASSWORD);
+
+    QString FragmentPath = QString::fromStdString(CONFIGTESTS_FRAGMENT_LOCAL_FOLDER);
 
     QString DestPath;
     QDir DestDir;
@@ -605,6 +608,59 @@ BOOST_FIXTURE_TEST_CASE(status_git_deleted,F)
     std::cout << "** Test not run due to empty URL  ** (\"status_git_deleted\")" << std::endl;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(submodule_adding,F)
+{
+  if (!AuthUrl.isEmpty() && !AuthUsername.isEmpty())
+  {
+    std::cout << "URL : " << AuthUrl.toStdString() << std::endl;
+    std::cout << "username : " << AuthUsername.toStdString() << std::endl;
+    std::cout << "password : " << AuthPassword.toStdString() << std::endl;
+
+    QDir().mkpath(DestPath);
+
+    openfluid::ui::waresdev::GitUIProxy Git;
+    BOOST_CHECK(!QDir(DestPath+"/.git").exists());
+    Git.init(DestPath);
+    BOOST_CHECK(QDir(DestPath+"/.git").exists());
+
+    QDir FragmentDir(DestPath+"/"+FragmentPath);
+    BOOST_CHECK(!FragmentDir.exists());
+
+    // ADDING SUBMODULE
+    bool Status = Git.addSubmodule(Url, FragmentPath, DestPath, AuthUsername, AuthPassword, false);
+    BOOST_CHECK(Status);
+    BOOST_CHECK(FragmentDir.exists());
+    BOOST_CHECK(QFile(DestPath+"/.gitmodules").exists());
+    BOOST_CHECK(QFile(DestPath+"/"+FragmentPath+"/a/a1.txt").exists());
+
+    // FAILING READDING SUBMODULE
+    Status = Git.addSubmodule(Url, FragmentPath, DestPath, AuthUsername, AuthPassword, false);
+    BOOST_CHECK(!Status);
+
+    // REMOVING SUBMODULE
+    Git.removeSubmodule(DestPath, FragmentPath);
+    BOOST_CHECK(!FragmentDir.exists());
+    BOOST_CHECK(!QFile(DestPath+"/.gitmodules").exists());
+    BOOST_CHECK(!QFile(DestPath+"/"+FragmentPath+"/a/a1.txt").exists());
+
+    // READDING SUBMODULE
+    Status = Git.addSubmodule(Url, FragmentPath, DestPath, AuthUsername, AuthPassword, false);
+    BOOST_CHECK(Status);
+    BOOST_CHECK(FragmentDir.exists());
+    BOOST_CHECK(QFile(DestPath+"/.gitmodules").exists());
+    BOOST_CHECK(QFile(DestPath+"/"+FragmentPath+"/a/a1.txt").exists());
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL or empty username ** (\"clone_auth_ok\")" << std::endl;
+  }
+}    
 
 
 // =====================================================================

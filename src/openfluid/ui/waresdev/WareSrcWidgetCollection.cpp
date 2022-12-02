@@ -1277,6 +1277,24 @@ void WareSrcWidgetCollection::closeEditor(const QString& FilePath)
 // =====================================================================
 
 
+void WareSrcWidgetCollection::closeEditorsInFolderFromWare(const QString& WarePath, const QString& FolderPath,
+                                                           const bool Confirm)
+{
+  // Can not deduce safely ware path when not based on an explicit file
+
+  QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
+  if (it != m_WareSrcWidgetByPath.end())
+  {
+    // closes all files with a given dir path: iterate through all tabs of a given waresrcwidget
+    it.value()->closeFileTabsInFolder(FolderPath, Confirm);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcWidgetCollection::updateEditorsSettings()
 {
   openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->updateStyles();

@@ -38,6 +38,8 @@
 */
 
 
+#include <fstream>
+
 #include <QDir>
 #include <QTextStream>
 
@@ -129,7 +131,7 @@ void GitUIProxy::processErrorOutputAsInfo()
 // =====================================================================
 
 
-bool GitUIProxy::launchCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
+bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, const QString& ToPath,
                                const QString& Username, const QString& Password,
                                bool SslNoVerify, const QString& WorkingDirectory, bool UsernameViaEnv)
 {
@@ -149,6 +151,10 @@ bool GitUIProxy::launchCommand(QStringList Args, const QString& FromUrl, const Q
     {
       emit error(tr("Can not operate, git lock detected."));
       return false;
+    }
+    else // HACK for debugging purpose, to remove before release
+    {
+      emit info(tr("git lock not detected here:")+QString::fromStdString(WorkingDirectory.toStdString()));
     }
   }
 
@@ -217,7 +223,104 @@ bool GitUIProxy::addSubmodule(const QString& FromUrl, const QString& ToPath, con
                               bool SslNoVerify)
 {
   QStringList Args = {"submodule", "add", "--progress"};
-  return launchCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath, true);
+  return launchAuthCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath, true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool cleanModuleDir(QString RootPath, openfluid::tools::FilesystemPath ModuleSubPath)
+{
+  // returns true if submodule was really deleted
+  openfluid::tools::FilesystemPath GitSubmoduleTargetDirectory = openfluid::tools::FilesystemPath(
+        {RootPath.toStdString(), ".git", "modules", ModuleSubPath.toGeneric()});
+  if (GitSubmoduleTargetDirectory.isDirectory())
+  {
+    return GitSubmoduleTargetDirectory.removeDirectory();
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathString, const QString& SubmodulePathString)
+{
+  QString StandardOutput;
+
+  // Removing a submodule included in git management system
+  // reference: https://git-scm.com/docs/gitsubmodules#_forms
+  /*
+      A submodule can be deleted by running git rm <submodule path> && git commit. 
+      This can be undone using git revert.
+      The deletion removes the superproject’s tracking data, which are both the gitlink entry 
+      and the section in the .gitmodules file. 
+      The submodule’s working directory is removed from the file system, but the Git directory is kept around 
+      as it to make it possible to checkout past commits without requiring fetching from another repository.
+      To completely remove a submodule, manually delete $GIT_DIR/modules/<name>/.
+  */
+
+  int SummaryStatusCode = 0;
+  QString StatusTxt;
+
+  // 1. remove submodule from git tracking
+  QStringList Args;
+  Args << "rm" << "-f" << SubmodulePathString;
+  auto RmReturn = commandHtml(MainPathString, Args);
+  if (RmReturn.first != 0)
+  {
+    SummaryStatusCode = 1;
+    StandardOutput += tr("Git rm command failed with error code %1\n").arg(RmReturn.first);
+  }
+  
+  // 2. remove module folder in .git
+  openfluid::tools::FilesystemPath DestSubPath(SubmodulePathString.toStdString());
+  if (!cleanModuleDir(MainPathString, DestSubPath))
+  {
+    SummaryStatusCode = 1;
+    StandardOutput += "Git manual removal of module failed\n";
+  }
+
+  // 3. remove .gitmodules if empty
+  openfluid::tools::FilesystemPath SubmoduleFile({MainPathString.toStdString(), ".gitmodules"});
+  if (SubmoduleFile.isFile())
+  {
+    std::ifstream SubmoduleFileStream;
+    SubmoduleFileStream.open(SubmoduleFile.toGeneric(), std::ifstream::in);
+    if (SubmoduleFileStream.peek() == std::ifstream::traits_type::eof())
+    {
+      // file empty, can be removed
+      QProcess* Process = new QProcess();
+      Process->setWorkingDirectory(MainPathString);
+      Process->start(QString::fromStdString(m_ExecutablePath),{"rm", "--cached", ".gitmodules"});
+      Process->waitForReadyRead(-1);
+      Process->waitForFinished(-1);
+      int ErrCode = Process->exitCode();
+      if (ErrCode != 0)
+      {
+        SummaryStatusCode = 1;
+        StandardOutput += tr("Git rm command for .gitmodules failed with error code %1\n").arg(ErrCode); //DIRTYCODE: write full error?
+      }
+      delete Process;
+      Process = nullptr;
+      if (!SubmoduleFile.removeFile())
+      {
+        SummaryStatusCode = 1;
+        StandardOutput += tr("Submodule file removal failed\n");
+      }
+    }
+  }
+  
+  StatusTxt = StatusTxt + "\n" + RmReturn.second;
+  if (SummaryStatusCode == 0)
+  {
+    StandardOutput += tr("Submodule successfully removed");
+  }
+  return std::pair(SummaryStatusCode, StandardOutput);
 }
 
 
@@ -234,7 +337,7 @@ bool GitUIProxy::clone(const QString& FromUrl, const QString& ToPath,
   {
     Args << "--depth=1";
   }
-  return launchCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath, true);
+  return launchAuthCommand(Args, FromUrl, ToPath, Username, Password, SslNoVerify, LocalGitRepoPath, true);
 }
 
 

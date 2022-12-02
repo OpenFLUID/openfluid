@@ -41,6 +41,7 @@
 #include <QFont>
 #include <QPainter>
 
+#include <openfluid/config.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
@@ -391,6 +392,12 @@ void WareSrcExplorerModel::onGitDirObjectsChanged(const QString& Path)
 
 // =====================================================================
 // =====================================================================
+
+
+bool WareSrcExplorerModel::isFragment(const QModelIndex& Index)
+{
+  return fileInfo(Index).dir().dirName().toStdString() == openfluid::config::WARESDEV_FRAGMENTS_DIR;
+}
 
 
 } } } // namespaces

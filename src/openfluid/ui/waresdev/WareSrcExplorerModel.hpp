@@ -112,6 +112,8 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
 
     void updateGitStatusInfo(const QString& WarePath);
 
+    bool isFragment(const QModelIndex& Index);
+
 };
 
 
