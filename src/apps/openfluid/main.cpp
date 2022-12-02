@@ -86,13 +86,13 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto InfoCmd = openfluid::utils::CommandLineCommand("info","display information about OpenFLUID");
+  auto InfoCmd = openfluid::utils::CommandLineCommand("info","Display information about OpenFLUID");
   InfoCmd.addOptions({{"format","","output format, argument can be text (default) or json",true}});
   Parser.addCommand(InfoCmd);
 
   // ---
 
-  auto VersionCmd = openfluid::utils::CommandLineCommand("version","display OpenFLUID version");
+  auto VersionCmd = openfluid::utils::CommandLineCommand("version","Display OpenFLUID version");
   VersionCmd.addOptions({{"no-status","s","do not display status part of the version number (if any)"},
                          {"numeric","n","display version number as numeric"}});
   Parser.addCommand(VersionCmd);
@@ -100,17 +100,17 @@ int main(int argc, char **argv)
   // ---
 
 
-  auto CreateDataCmd = openfluid::utils::CommandLineCommand("create-data","create project or dataset");
+  auto CreateDataCmd = openfluid::utils::CommandLineCommand("create-data","Create project or dataset");
   CreateDataCmd.addOptions({{"type","t","type of the data to create (project or dataset)",true},
                             {"name","n","name of the project or dataset to create",true},
                             {"with-sample-data","s","generate sample data"},
-                            {"parent-path","p","Parent path where to create the dataset or project",true}});
+                            {"parent-path","p","parent path where to create the dataset or project",true}});
   Parser.addCommand(CreateDataCmd);  
 
   // ---
 
   auto InstallExamplesCmd = openfluid::utils::CommandLineCommand("install-examples",
-                                                                 "install or reinstall examples in the user directory");
+                                                                 "Install or reinstall examples in the user directory");
   InstallExamplesCmd.addOptions({{"projects-only","p",
                                   "install selected projects only (all projects if argument is * or empty)"},
                                  {"simulators-only","s",
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto RunCmd = openfluid::utils::CommandLineCommand("run","run a simulation");
+  auto RunCmd = openfluid::utils::CommandLineCommand("run","Run a simulation");
   RunCmd.addOptions({{"quiet","q","quiet display during simulation"},
                      {"verbose","v","verbose display during simulation"},
                      {"profiling","k","enable simulation profiling"},
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto ReportCmd = openfluid::utils::CommandLineCommand("report","display report about available wares");
+  auto ReportCmd = openfluid::utils::CommandLineCommand("report","Display report about available wares");
   ReportCmd.addOptions({{"format","","output format, argument can be text (default) or json",true},
                         {"list","l","display as simple list of wares IDs"},
                         {"with-errors","e","report errors if any"}});
@@ -158,13 +158,13 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto PrepWksCmd = openfluid::utils::CommandLineCommand("prepare-workspace","prepare an OpenFLUID workspace");
-  PrepWksCmd.addOptions({{"path","p","Path to the worspace root",true}}); // TOIMPL
+  auto PrepWksCmd = openfluid::utils::CommandLineCommand("prepare-workspace","Prepare an OpenFLUID workspace");
+  PrepWksCmd.addOptions({{"path","p","path to the worspace root",true}}); // TOIMPL
   Parser.addCommand(PrepWksCmd);
 
   // ---
 
-  auto CreateWareCmd = openfluid::utils::CommandLineCommand("create-ware","create ware sources");
+  auto CreateWareCmd = openfluid::utils::CommandLineCommand("create-ware","Create ware sources");
   CreateWareCmd.addOptions({{"type","t","type of the ware sources to create",true},
                             {"id","i","ID of the ware sources to create",true},
                             {"main-class","m","name to use for the main C++ class",true},
@@ -177,70 +177,81 @@ int main(int argc, char **argv)
                                                  "(spatial|model|results|other, default is other)",true},
                             {"bext-mode","","mode of Builder-Extension (modal|modeless|workspace, default is modal)",
                              true},
-                            {"parent-path","p","Parent path where to create the ware sources",true}});
+                            {"parent-path","p","parent path where to create the ware sources",true}});
   Parser.addCommand(CreateWareCmd);
 
   // ---
 
   auto CheckCmd = openfluid::utils::CommandLineCommand("check",""); // TOIMPL
-  CheckCmd.addOptions({{"path","p","Path to the ware sources",true}});
+  CheckCmd.addOptions({{"path","p","path to the ware sources",true}});
   Parser.addCommand(CheckCmd);
 
   // ---
 
-  auto MigrateWareCmd = openfluid::utils::CommandLineCommand("migrate-ware","migrate ware sources to current version "
+  auto MigrateWareCmd = openfluid::utils::CommandLineCommand("migrate-ware","Migrate ware sources to current version "
                                                                             "("+openfluid::config::VERSION_FULL+")"); 
-  MigrateWareCmd.addOptions({{"path","p","Path to the ware sources",true}}); // TOIMPL
+  MigrateWareCmd.addOptions({{"path","p","path to the ware sources",true}}); // TOIMPL
   Parser.addCommand(MigrateWareCmd);
 
   // ---
 
-  auto ConfigureCmd = openfluid::utils::CommandLineCommand("configure","run configure on ware sources"); // TOIMPL
-  ConfigureCmd.addOptions({{"path","p","Path to the ware sources",true}});
+  auto ConfigureCmd = openfluid::utils::CommandLineCommand("configure",
+                                                           "Configure ware sources for build. "
+                                                           "If the build-path option is not provided, an automatic "
+                                                           "build directory is created in the sources tree. "
+                                                           "Arguments can be passed to the configure tool "
+                                                           "after the --- switch.");
+  ConfigureCmd.addOptions({{"src-path","s","path to the ware sources",true},
+                           {"build-path","b","path to the build directory",true},
+                           {"build-type","t","CMake build mode (Debug|Release|..., default is Release)",true},
+                           {"generator","g","CMake generator to use (default is CMake default)",true}});
   Parser.addCommand(ConfigureCmd);
 
   // ---
 
-  auto DocCmd = openfluid::utils::CommandLineCommand("docalyze","build documentation of a ware"); // TOIMPL
-  DocCmd.addOptions({{"path","p","Path to the ware sources",true}});
+  auto DocCmd = openfluid::utils::CommandLineCommand("docalyze","Build documentation of a ware"); // TOIMPL
+  DocCmd.addOptions({{"path","p","path to the ware sources",true}});
   Parser.addCommand(DocCmd);
 
   // ---
 
-  auto BuildCmd = openfluid::utils::CommandLineCommand("build","run build on ware sources"); // TOIMPL
-  BuildCmd.addOptions({{"path","p","Path to the ware sources",true}});
+  auto BuildCmd = openfluid::utils::CommandLineCommand("build",
+                                                       "Build configured ware sources. "
+                                                       "If the build-path option is not provided, it tries to "
+                                                       "automatically detect the build directory in the sources tree "
+                                                       "using the src-path option. "
+                                                       "Arguments can be passed to the build tool "
+                                                       "after the --- switch.");
+  BuildCmd.addOptions({{"build-path","b","path to the build directory",true},
+                       {"src-path","b","path to the sources directory (build directory is deduced)",true},
+                       {"with-install","i","install ware if built is successful (replaces the given target if any)"}, 
+                       {"target","t","target to build (default is empty)",true},
+                       {"jobs","j","number of jobs during build (default is 1)",true}});
   Parser.addCommand(BuildCmd);
 
   // ---
 
-  auto BuildInstallCmd = openfluid::utils::CommandLineCommand("buildinstall","run build and install on ware sources"); 
-  BuildInstallCmd.addOptions({{"path","p","Path to the ware sources",true}}); // TOIMPL
-  Parser.addCommand(BuildInstallCmd);
-
-  // ---
-
   auto PurgeCmd = openfluid::utils::CommandLineCommand("purge","purge build outputs on ware sources"); // TOIMPL
-  PurgeCmd.addOptions({{"path","p","Path to the ware sources",true}});
+  PurgeCmd.addOptions({{"path","p","path to the ware sources",true}});
   Parser.addCommand(PurgeCmd);
 
   // ---
 
-  auto Info2BuildCmd = openfluid::utils::CommandLineCommand("info2build","generate build files frow ware information");
-  Info2BuildCmd.addOptions({{"src-path","s","Source path containing the wareinfo.json file",true}});
-  Info2BuildCmd.addOptions({{"dest-path","d","Destination path where build information will be generated",true}});
+  auto Info2BuildCmd = openfluid::utils::CommandLineCommand("info2build","Generate build files frow ware information");
+  Info2BuildCmd.addOptions({{"src-path","s","source path containing the wareinfo.json file",true}});
+  Info2BuildCmd.addOptions({{"dest-path","d","destination path where build information will be generated",true}});
   Parser.addCommand(Info2BuildCmd);
 
   // ---
 
   auto MigrateGhostCmd = openfluid::utils::CommandLineCommand("migrate-ghostsim",
-                                                              "migrate ghost simulator to current version "
+                                                              "Migrate ghost simulator to current version "
                                                               "("+openfluid::config::VERSION_FULL+")"); 
-  MigrateGhostCmd.addOptions({{"parent-path","p","Parent path to the ghost simulator to migrate",true},
+  MigrateGhostCmd.addOptions({{"parent-path","p","parent path to the ghost simulator to migrate",true},
                               {"id","i","ID of the ghost simulator to migrate",true}});
   Parser.addCommand(MigrateGhostCmd);
 
   // ---
-
 
   Parser.addOption(openfluid::utils::CommandLineOption("version","","display OpenFLUID version"));
 
@@ -298,7 +309,6 @@ int main(int argc, char **argv)
            ActiveCmdStr == "docalyze" ||
            ActiveCmdStr == "configure" ||
            ActiveCmdStr == "build" ||
-           ActiveCmdStr == "buildinstall" ||
            ActiveCmdStr == "purge"  ||
            ActiveCmdStr == "info2build" ||
            ActiveCmdStr == "migrate-ghostsim")  

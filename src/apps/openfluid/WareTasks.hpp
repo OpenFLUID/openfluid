@@ -50,6 +50,10 @@ class WareTasks : public TasksBase
 
     int processCreateWare();
 
+    int processConfigure();
+
+    int processBuild();
+
     int processInfo2Build();
 
 

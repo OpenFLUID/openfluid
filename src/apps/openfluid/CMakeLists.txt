@@ -11,6 +11,7 @@ TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP}
                       openfluid-tools
                       openfluid-waresdev
                       openfluid-fluidx
+                      openfluid-utils
                      )
 
 

@@ -40,6 +40,7 @@
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace utils {
@@ -97,6 +98,17 @@ bool CMakeProxy::isAvailable()
   findCMakeProgram();
 
   return (!m_ExecutablePath.empty() && !m_Version.empty());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string CMakeProxy::getBuildDir(const std::string& BuildType)
+{
+  return "_build-"+openfluid::tools::toLowerCase(BuildType)+"-"
+                  +openfluid::config::VERSION_MAJOR+"."+openfluid::config::VERSION_MINOR;
 }
 
 

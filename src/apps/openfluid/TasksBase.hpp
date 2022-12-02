@@ -55,6 +55,8 @@ class TasksBase
     
     const std::vector<std::string> m_ExtraArgs;
 
+    const std::vector<std::string> m_ThirdPartyArgs;
+
     // TOIMPL should be removed once all tasks are implemented
     static int notImplemented()
     {
@@ -71,7 +73,8 @@ class TasksBase
     TasksBase() = delete;
 
     TasksBase(const openfluid::utils::CommandLineParser& Parser) : 
-      m_Cmd(Parser.command(Parser.getActiveCommand())), m_ExtraArgs(Parser.extraArgs())
+      m_Cmd(Parser.command(Parser.getActiveCommand())),
+      m_ExtraArgs(Parser.extraArgs()), m_ThirdPartyArgs(Parser.thirdPartyArgs())
     { }
 
     virtual ~TasksBase()

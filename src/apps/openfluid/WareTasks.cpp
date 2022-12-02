@@ -43,6 +43,8 @@
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
+#include <openfluid/utils/Process.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
@@ -148,6 +150,122 @@ int WareTasks::processCreateWare()
 // =====================================================================
 
 
+int WareTasks::processConfigure()
+{
+  if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
+    return error("CMake program not found");
+  }
+
+  if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
+  {
+    return error("missing or empty source path");
+  }
+
+  auto SrcFSP = openfluid::tools::Path(m_Cmd.getOptionValue("src-path"));
+
+  std::string BuildType = openfluid::utils::CMakeProxy::DefaultBuildType;
+  if (m_Cmd.isOptionActive("build-type") && !m_Cmd.getOptionValue("build-type").empty())
+  {
+    BuildType = m_Cmd.getOptionValue("build-type");
+  }
+
+  auto BuildFSP = openfluid::tools::Path("");
+  if (m_Cmd.isOptionActive("build-path") && !m_Cmd.getOptionValue("build-path").empty())
+  {
+    BuildFSP = openfluid::tools::Path(m_Cmd.getOptionValue("build-path"));
+  }
+  else 
+  {
+    BuildFSP = openfluid::tools::Path({SrcFSP.toGeneric(),openfluid::utils::CMakeProxy::getBuildDir(BuildType)});
+  }
+
+  std::string Generator = "";
+  if (m_Cmd.isOptionActive("generator") && !m_Cmd.getOptionValue("generator").empty())
+  {
+    Generator = m_Cmd.getOptionValue("generator");
+  }
+
+  if (BuildFSP.isDirectory())
+  {
+    BuildFSP.removeDirectory();
+  }
+  BuildFSP.makeDirectory();
+
+
+  auto CMakeCmd = openfluid::utils::CMakeProxy::getConfigureCommand(BuildFSP.toGeneric(),SrcFSP.toGeneric(),
+                                                                    {},Generator);
+  CMakeCmd.Args << m_ThirdPartyArgs;
+
+  return openfluid::utils::Process::system(CMakeCmd);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int WareTasks::processBuild()
+{
+  if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
+    return error("CMake program not found");
+  }
+
+  auto BuildFSP = openfluid::tools::Path("");
+
+  if (!m_Cmd.isOptionActive("build-path") || m_Cmd.getOptionValue("build-path").empty())
+  {
+    if (m_Cmd.isOptionActive("src-path") && !m_Cmd.getOptionValue("src-path").empty())
+    {
+      BuildFSP = openfluid::tools::Path({m_Cmd.getOptionValue("src-path"),
+                                         openfluid::utils::CMakeProxy::getBuildDir()});
+    }
+    else
+    {
+      return error("missing or empty build path or source path");
+    }
+  }
+  else
+  {
+    BuildFSP = openfluid::tools::Path(m_Cmd.getOptionValue("build-path"));
+  }
+
+  std::string Target = "";
+  if (m_Cmd.isOptionActive("with-install"))
+  {
+    Target = "install";
+  }
+  else if (m_Cmd.isOptionActive("target"))
+  {
+    Target = m_Cmd.getOptionValue("target");
+  }
+
+  unsigned int JobsNbr = 1;
+  if (m_Cmd.isOptionActive("jobs"))
+  {
+    try
+    {
+      JobsNbr = stoi(m_Cmd.getOptionValue("jobs"));
+    }
+    catch (...)
+    {
+      return error("missing or empty jobs number");
+    }
+  }
+
+
+  auto CMakeCmd = openfluid::utils::CMakeProxy::getBuildCommand(BuildFSP.toGeneric(),Target,JobsNbr);
+  CMakeCmd.Args << m_ThirdPartyArgs;
+
+  return openfluid::utils::Process::system(CMakeCmd);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int WareTasks::processInfo2Build()
 {
   if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
@@ -220,15 +338,11 @@ int WareTasks::process()
   }
   else if (m_Cmd.getName() == "configure")
   {
-    return notImplemented(); // TOIMPL
+    return processConfigure();
   }
   else if (m_Cmd.getName() == "build")
   {
-    return notImplemented(); // TOIMPL
-  }
-  else if (m_Cmd.getName() == "buildinstall")
-  {
-    return notImplemented(); // TOIMPL
+    return processBuild();
   }
   else if (m_Cmd.getName() == "purge")
   {

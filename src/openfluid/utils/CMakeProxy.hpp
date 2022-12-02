@@ -39,8 +39,8 @@
 #include <map>
 #include <vector>
 
-#include <openfluid/dllexport.hpp>
 #include <openfluid/utils/ProgramProxy.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 #ifndef __OPENFLUID_UTILS_CMAKEPROXY_HPP__
@@ -59,11 +59,15 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
 
   public:
 
+    inline static const std::string DefaultBuildType = "Release";
+
     CMakeProxy();
 
     virtual ~CMakeProxy();
 
     static bool isAvailable();
+
+    static std::string getBuildDir(const std::string& BuildType = DefaultBuildType);
 
     static Process::Command getConfigureCommand(const std::string& BuildDir, const std::string& SrcDir,
                                                 const std::map<std::string,std::string>& Variables = {},
