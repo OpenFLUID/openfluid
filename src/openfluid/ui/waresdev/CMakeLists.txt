@@ -10,7 +10,7 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
                               NewWareDialog.cpp FindReplaceDialog.cpp WareSrcMsgViewer.cpp
                               SrcImportSequenceManager.cpp
                               HubManager.cpp
-                              WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp FragmentsSrcImportDialog.cpp WaresSrcIOProgressDialog.cpp
+                              WaresSrcExportDialog.cpp WaresSrcImportDialog.cpp FragmentsSrcImportDialog.cpp FragmentCreationDialog.cpp WaresSrcIOProgressDialog.cpp
                               WareSrcActionsCollection.cpp
                               WareGitDialog.cpp WareshubJsonEditor.cpp WareFileEditor.cpp WaresImportFilterWidget.cpp WareshubIssueDialog.cpp
                               WaresDevPackage.cpp 
@@ -34,7 +34,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
                               NewWareDialog.hpp FindReplaceDialog.hpp WareSrcMsgViewer.hpp
                               SrcImportSequenceManager.hpp
                               HubManager.hpp
-                              WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp FragmentsSrcImportDialog.hpp WaresSrcIOProgressDialog.hpp
+                              WaresSrcExportDialog.hpp WaresSrcImportDialog.hpp FragmentsSrcImportDialog.hpp FragmentCreationDialog.hpp WaresSrcIOProgressDialog.hpp
                               WareSrcActionsCollection.hpp
                               WareGitDialog.hpp WareshubJsonEditor.hpp WareFileEditor.hpp WaresImportFilterWidget.hpp WareshubIssueDialog.hpp
                               WaresDevPackage.hpp 
@@ -49,7 +49,7 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
 QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui WareBuildOptionsWidget.ui WareBuildOptionsDialog.ui
                                      EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                                      NewWareDialog.ui FindReplaceDialog.ui
-                                     WaresSrcExportDialog.ui WaresSrcImportDialog.ui FragmentsSrcImportDialog.ui WaresSrcIOProgressDialog.ui
+                                     WaresSrcExportDialog.ui WaresSrcImportDialog.ui FragmentsSrcImportDialog.ui FragmentCreationDialog.ui WaresSrcIOProgressDialog.ui
                                      WaresImportFilterWidget.ui WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
                                      WorkspaceDevProcessDialog.ui
                                      WorkspaceDevDashboardDialog.ui WorkspaceDevWaresWidget.ui WorkspaceDevGitWidget.ui)

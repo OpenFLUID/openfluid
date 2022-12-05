@@ -86,6 +86,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onNewFragmentAsked();
 
+    void onRemoteFragmentAsked();
+
     void onFragmentRemovalAsked();
 
     void onDeleteFileAsked();

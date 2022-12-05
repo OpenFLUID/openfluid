@@ -54,6 +54,7 @@
 #include <openfluid/ui/waresdev/WareGitDialog.hpp>
 #include <openfluid/ui/common/DefaultAction.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/waresdev/FragmentCreationDialog.hpp>
 #include <openfluid/ui/waresdev/FragmentsSrcImportDialog.hpp>
 
 
@@ -120,13 +121,17 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   Menu.addAction(tr("New file"), this, SLOT(onNewFileAsked()));
   Menu.addAction(tr("New folder"), this, SLOT(onNewFolderAsked()));
+  QMenu FragmentMenu;
   if (currentIndex().isValid() && mp_Model->isFragment(currentIndex()))
   {
     Menu.addAction(tr("Remove this fragment"), this, SLOT(onFragmentRemovalAsked()));
   }
   else
   {
-    Menu.addAction(tr("Add fragment"), this, SLOT(onNewFragmentAsked()));
+    FragmentMenu.setTitle("Add fragment");
+    FragmentMenu.addAction("New...", this, SLOT(onNewFragmentAsked()));
+    FragmentMenu.addAction("From remote repository...", this, SLOT(onRemoteFragmentAsked()));
+    Menu.addMenu(&FragmentMenu);
   }
 
   Menu.addSeparator();
@@ -409,6 +414,34 @@ void WareSrcExplorer::onNewFolderAsked()
 
 
 void WareSrcExplorer::onNewFragmentAsked()
+{
+  if (!openfluid::utils::GitProxy::isAvailable())
+  {
+    QMessageBox::warning(this, tr("Import not available"), tr("Git program can not be found."));
+    return;
+  }
+  if (!currentIndex().isValid())
+  {
+    return;
+  }
+
+  QString CurrentPath = mp_Model->filePath(currentIndex());
+
+  QString WarePath = 
+    QString::fromStdString(
+      openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
+    );
+
+  openfluid::ui::waresdev::FragmentCreationDialog Dialog(this, WarePath);
+  Dialog.exec();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onRemoteFragmentAsked()
 {
   if (!openfluid::utils::GitProxy::isAvailable())
   {

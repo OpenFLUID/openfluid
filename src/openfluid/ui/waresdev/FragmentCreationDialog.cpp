@@ -54,14 +54,10 @@ FragmentCreationDialog::FragmentCreationDialog(QWidget* Parent, QString WarePath
 
   setupMessageUi(tr("Create a fragment"));
 
-  connect(ui->FragmentIDLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(check()));
+  connect(ui->FragmentNameLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(check()));
 
-  // FIXME validator logic is hidden, user may not understand why some characters are not written when typed
-  QString NameTooltip;
-  /*ui->FragmentIDLineEdit->setValidator(
-      new vthis));*/
-  ui->FragmentIDLineEdit->setToolTip(tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.'). "
-                        "Must begin by a letter."));
+  ui->FragmentNameLineEdit->setToolTip(tr("Accepts only letters, digits, dashes ('-'), "
+                                          "underscores ('_') and dots ('.'). Must begin by a letter."));
   
   connect(buttonBox(), SIGNAL(accepted()), this, SLOT(createFragment()));
 
@@ -75,7 +71,6 @@ FragmentCreationDialog::FragmentCreationDialog(QWidget* Parent, QString WarePath
 
 QRegExp FragmentCreationDialog::getFragmentNamedRegExp()
 {
-  // TODO see openfluid::tools::isValidWareID() for refactoring
   return QRegExp("[A-Za-z]+[A-Za-z0-9_\\.\\-]*");
 }
 
@@ -86,28 +81,28 @@ QRegExp FragmentCreationDialog::getFragmentNamedRegExp()
 
 bool FragmentCreationDialog::check()
 {
-  if (ui->FragmentIDLineEdit->text().isEmpty())
+  if (ui->FragmentNameLineEdit->text().isEmpty())
   {
     setMessage(tr("Fragment name required"));
     return false;
   } else {
-    QRegExpValidator v(getFragmentNamedRegExp(), 0); //TOIMPL make the expvalidator a class member
-    QString Txt(ui->FragmentIDLineEdit->text());
-    QString L(Txt.front());
+    QRegExpValidator Validator(getFragmentNamedRegExp(), 0);
+    QString FragmentName(ui->FragmentNameLineEdit->text());
+    QString FirstLetter(FragmentName.front());
     int pos = 0;
-    if (v.validate(L, pos) != QValidator::Acceptable)
+    if (Validator.validate(FirstLetter, pos) != QValidator::Acceptable)
     {
       setMessage(tr("Must begin by a letter (without accent)."));
       return false;
     }
-    if (v.validate(Txt, pos) != QValidator::Acceptable)
+    if (Validator.validate(FragmentName, pos) != QValidator::Acceptable)
     {
       setMessage(tr("Accepts letters, digits, dashes, underscores and dots."));
       return false;
     }
   }
-  setMessage();
-  return true;
+    setMessage();
+    return true;
 }
 
 
@@ -117,7 +112,7 @@ bool FragmentCreationDialog::check()
 
 void FragmentCreationDialog::createFragment()
 {
-  std::string FragmentID = ui->FragmentIDLineEdit->text().toStdString();
+  std::string FragmentID = ui->FragmentNameLineEdit->text().toStdString();
   
   // Create directory
   openfluid::tools::FilesystemPath SrcFragmentsSubPath({openfluid::config::WARESDEV_SRC_DIR, 
