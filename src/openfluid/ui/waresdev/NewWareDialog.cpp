@@ -44,6 +44,7 @@
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 
@@ -168,7 +169,7 @@ QRegExp NewWareDialog::getWareIdRegExp(QString& Tooltip)
   // TODO see openfluid::tools::isValidWareID() for refactoring
 
   Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
-  return QRegExp("[A-Za-z0-9]+[A-Za-z0-9_\\.\\-]*");
+  return QRegExp(QString::fromStdString(openfluid::tools::WareIDRuleString));
 }
 
 

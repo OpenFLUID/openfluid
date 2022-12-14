@@ -38,6 +38,7 @@
 
 #include <openfluid/config.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/ui/waresdev/FragmentCreationDialog.hpp>
 #include <openfluid/ui/waresdev/AbstractSrcImportDialog.hpp>
 
@@ -71,7 +72,8 @@ FragmentCreationDialog::FragmentCreationDialog(QWidget* Parent, QString WarePath
 
 QRegExp FragmentCreationDialog::getFragmentNamedRegExp()
 {
-  return QRegExp("[A-Za-z]+[A-Za-z0-9_\\.\\-]*");
+  // TODO see openfluid::tools::isValidWareID() for refactoring
+  return QRegExp(QString::fromStdString(openfluid::tools::FragmentNameRuleString));
 }
 
 

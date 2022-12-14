@@ -145,7 +145,8 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
         {RootPath.toStdString(), DestSubPath.toGeneric()});
 
       // Git cleanup of failed submodule add through GitProxy removal operation
-      std::pair<bool, QString> GitRmResult = Git.removeSubmodule(RootPath, QString::fromStdString(DestSubPath.toNative()));
+      std::pair<bool, QString> GitRmResult = Git.removeSubmodule(RootPath, 
+                                                                 QString::fromStdString(DestSubPath.toNative()));
       emit info(GitRmResult.second);
 
       // Manual removal if git operations were unable to do it

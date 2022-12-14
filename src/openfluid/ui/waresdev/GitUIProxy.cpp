@@ -303,7 +303,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
       if (ErrCode != 0)
       {
         SummaryStatusCode = 1;
-        StandardOutput += tr("Git rm command for .gitmodules failed with error code %1\n").arg(ErrCode); //DIRTYCODE: write full error?
+        StandardOutput += tr("Git rm command for .gitmodules failed with error code %1\n").arg(ErrCode);
       }
       delete Process;
       Process = nullptr;

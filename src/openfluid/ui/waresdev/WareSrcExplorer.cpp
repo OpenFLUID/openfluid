@@ -527,7 +527,8 @@ void WareSrcExplorer::onFragmentRemovalAsked()
     }
   }
 
-  QDir FragmentsDir(QString::fromStdString(openfluid::tools::FilesystemPath({WareInfo.AbsoluteWarePath, openfluid::config::WARESDEV_SRC_DIR, openfluid::config::WARESDEV_FRAGMENTS_DIR}).toGeneric()));
+  QDir FragmentsDir(QString::fromStdString(openfluid::tools::FilesystemPath({WareInfo.AbsoluteWarePath, 
+    openfluid::config::WARESDEV_SRC_DIR, openfluid::config::WARESDEV_FRAGMENTS_DIR}).toGeneric()));
   if (FragmentsDir.exists() && FragmentsDir.isEmpty())
   {
     FragmentsDir.removeRecursively();

@@ -41,6 +41,7 @@
 #define __OPENFLUID_TOOLS_IDHELPERS_HPP__
 
 
+#include <regex>
 #include <string>
 
 #include <openfluid/core/TypeDefs.hpp>
@@ -49,6 +50,15 @@
 
 
 namespace openfluid { namespace tools {
+
+// Const regex used for validation
+
+const std::string DatasetNameRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
+
+const std::string WareIDRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
+
+const std::string FragmentNameRuleString("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
+
 
 /**
   Generates string from class and ID of a spatial unit using the "Class#ID" pattern.

@@ -73,9 +73,8 @@ bool isValidDatasetName(const std::string& Name)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
-  std::regex  Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
-  return std::regex_match(Name,Exp);
+  return std::regex_match(Name,std::regex(DatasetNameRuleString));
 }
 
 
@@ -87,23 +86,8 @@ bool isValidWareID(const openfluid::ware::WareID_t& ID)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
-  std::regex  Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
-  return std::regex_match(ID,Exp);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool isValidFragmentName(const std::string& Name)
-{
-  // authorized chars: a to z, A to Z, 0 to 9, -, ., _
-  // must start by an alphanumeric char
-  std::regex  Exp("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
-
-  return std::regex_match(Name,Exp);
+  return std::regex_match(ID,std::regex(WareIDRuleString));
 }
 
 
