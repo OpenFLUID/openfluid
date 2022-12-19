@@ -72,7 +72,6 @@ FragmentCreationDialog::FragmentCreationDialog(QWidget* Parent, QString WarePath
 
 QRegExp FragmentCreationDialog::getFragmentNamedRegExp()
 {
-  // TODO see openfluid::tools::isValidWareID() for refactoring
   return QRegExp(QString::fromStdString(openfluid::tools::FragmentNameRuleString));
 }
 
@@ -87,7 +86,9 @@ bool FragmentCreationDialog::check()
   {
     setMessage(tr("Fragment name required"));
     return false;
-  } else {
+  }
+  else 
+  {
     QRegExpValidator Validator(getFragmentNamedRegExp(), 0);
     QString FragmentName(ui->FragmentNameLineEdit->text());
     QString FirstLetter(FragmentName.front());
@@ -127,12 +128,8 @@ void FragmentCreationDialog::createFragment()
   // Create file if wanted
   if (ui->createFileCheckBox->isChecked())
   {
-    FragmentsPath.makeFile(FragmentID+".hpp"); //FIXME problematic if fragment has dots as recommended for wares?
+    FragmentsPath.makeFile(FragmentID+".hpp");
   }
-
-  // TOIMPL Opens the file in explorer? otherwise, at least select the file in the index?
-  // (identical problem in existing "createNewFile" ui function, not showing the created file)
-
 }
 
 

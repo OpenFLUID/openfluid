@@ -644,7 +644,9 @@ BOOST_FIXTURE_TEST_CASE(submodule_adding,F)
     BOOST_CHECK(!Status);
 
     // REMOVING SUBMODULE
-    Git.removeSubmodule(DestPath, FragmentPath);
+    auto [GitRmCode, GitRmCodeOutput] = Git.removeSubmodule(DestPath, FragmentPath);
+    BOOST_CHECK(GitRmCode == 0);
+    BOOST_CHECK(GitRmCodeOutput != "");
     BOOST_CHECK(!FragmentDir.exists());
     BOOST_CHECK(!QFile(DestPath+"/.gitmodules").exists());
     BOOST_CHECK(!QFile(DestPath+"/"+FragmentPath+"/a/a1.txt").exists());

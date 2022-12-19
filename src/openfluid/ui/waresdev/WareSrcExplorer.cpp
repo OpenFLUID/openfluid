@@ -474,9 +474,7 @@ void WareSrcExplorer::onRemoteFragmentAsked()
 
 void WareSrcExplorer::onFragmentRemovalAsked()
 {
-  //TOIMPL: since have effects on global window, redirect all actions to it through a
-  // "fragmentRemovalAsked" signal? (changing action from SLOT to SIGNAL?)
-  // (suivre logique de "deleteWareAsked")
+  // TODO several improvements on workflow and display, cf github
   QString CurrentPath = mp_Model->filePath(currentIndex());
   openfluid::ui::waresdev::GitUIProxy Git;
 
@@ -501,15 +499,14 @@ void WareSrcExplorer::onFragmentRemovalAsked()
     return;
   }
   
-  // TODO add progress bar for delete operations
   if (Git.status(WarePath).m_IsGitTracked && Git.status(CurrentPath).m_IsGitTracked)
   {
     // IF WARE AND FRAGMENT ARE UNDER VERSION CONTROL AND SUBMODULE HAS BEEN USED: Removing through Git proxy
     openfluid::ui::waresdev::WareGitDialog Dialog;
     Dialog.setWindowTitle("Remove fragment submodule");
-    std::pair<bool, QString> Result = Git.removeSubmodule(WarePath, SubPath);
+    auto GitRmCodeOutput = Git.removeSubmodule(WarePath, SubPath).second;
     emit folderDeleted(WarePath, CurrentPath, false);
-    Dialog.setContent(Result.second);
+    Dialog.setContent(GitRmCodeOutput);
     Dialog.exec();
   }
   else
@@ -518,8 +515,6 @@ void WareSrcExplorer::onFragmentRemovalAsked()
     if (QDir(CurrentPath).removeRecursively())
     {
       emit folderDeleted(WarePath, CurrentPath, false);
-      // TODO check unsaved files beforehand to allow cancelling fragment removal if wanted
-      QMessageBox::information(0, tr("Fragment removal"), tr("Fragment \"%1\" removed.").arg(FragmentName));
     }
     else
     {

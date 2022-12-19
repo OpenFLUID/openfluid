@@ -34,6 +34,7 @@
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Armel Thöni <armel.thoni@inrae.fr>
 */
 
 
@@ -340,16 +341,12 @@ int WareSrcWidget::closeCurrentEditor(bool WithConfirm)
 
 int WareSrcWidget::editorCheckChangeClose(WareFileEditor* Editor, bool WithConfirm)
 {
-  // FIXME FRAGMENT REMOVAL CASE: 
-  // check if any open and changed file from the fragment before triggering the removal operation 
-  // to avoid removal if user says "cancel"?
   int ClosedTabPos = -1;
   int Choice = QMessageBox::Discard;
 
   if (WithConfirm && Editor->isModified())
   {
     QString FileName = QFileInfo(Editor->getFilePath()).fileName();
-    // TODO Switch active tab to related one to understand which file the dialog is talking about
     QMessageBox MsgBox;
     MsgBox.setText(tr("The document %1 has been modified.").arg(FileName));
     MsgBox.setInformativeText(tr("Do you want to save changes?"));
@@ -362,12 +359,11 @@ int WareSrcWidget::editorCheckChangeClose(WareFileEditor* Editor, bool WithConfi
   {
     case QMessageBox::Save:
       Editor->saveContent();
-      /* fall through */ // GCC marker comment for fall through
+      [[fallthrough]];
     case QMessageBox::Discard:
       ClosedTabPos = closeFileTab(Editor);
       break;
     case QMessageBox::Cancel:
-      // FIXME: find a way to transmit that whole operation is cancelled? return -2?
     default:
       break;
   }

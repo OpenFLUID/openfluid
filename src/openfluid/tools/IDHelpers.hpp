@@ -34,6 +34,7 @@
   @file IDHelpers.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -51,13 +52,15 @@
 
 namespace openfluid { namespace tools {
 
-// Const regex used for validation
+// Const regex used for validation 
+//   auto stands for char[] here
+//   char[] used instead of string since not compatible with constexpr up to C++ 17 (TOWATCH)
 
-const std::string DatasetNameRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
+constexpr auto DatasetNameRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
-const std::string WareIDRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
+constexpr auto WareIDRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
-const std::string FragmentNameRuleString("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
+constexpr auto FragmentNameRuleString("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
 
 
 /**

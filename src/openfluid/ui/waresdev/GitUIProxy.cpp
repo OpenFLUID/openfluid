@@ -263,6 +263,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
       as it to make it possible to checkout past commits without requiring fetching from another repository.
       To completely remove a submodule, manually delete $GIT_DIR/modules/<name>/.
   */
+  // TOWATCH if Git command for submodule removal becomes more comprehensive in the future
 
   int SummaryStatusCode = 0;
   QString StatusTxt;
