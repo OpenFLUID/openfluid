@@ -18,6 +18,7 @@ SET(OPENFLUID_UTILS_CPP GDALHelpers.cpp
 SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMachineListener.hpp
                         GDALHelpers.hpp GDALCompatibility.hpp
                         KillableSingleton.hpp MeyerSingleton.hpp SingletonMacros.hpp
+                        CppLangHelpers.hpp
                         Process.hpp
                         ExternalProgram.hpp
                         ProgramProxy.hpp CMakeProxy.hpp GitProxy.hpp GrassGISProxy.hpp
@@ -50,7 +51,7 @@ INSTALL(TARGETS openfluid-utils
         LIBRARY DESTINATION ${OFBUILD_LIB_INSTALL_PATH}
         ARCHIVE DESTINATION ${OFBUILD_LIB_INSTALL_PATH})
 
-INSTALL(FILES ${OPENFLUID_UTILS_HPP} DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH}/utils-)
+INSTALL(FILES ${OPENFLUID_UTILS_HPP} DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH}/utils)
 
    
 IF(OFBUILD_ENABLE_TESTING)

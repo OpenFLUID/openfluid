@@ -31,9 +31,9 @@
 
 
 /**
- @file WareSrcEnquirer.hpp
+  @file WareSrcEnquirer.hpp
  
- @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+  @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
 */
 
 

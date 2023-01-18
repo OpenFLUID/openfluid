@@ -39,6 +39,7 @@
 #include <map>
 #include <vector>
 
+#include <openfluid/utils/CppLangHelpers.hpp>
 #include <openfluid/utils/ProgramProxy.hpp>
 #include <openfluid/dllexport.hpp>
 
@@ -59,11 +60,9 @@ class OPENFLUID_API CMakeProxy : public ProgramProxy<CMakeProxy>
 
   public:
 
+    CPPCLASS_DELETE_FIVE(CMakeProxy)
+
     inline static const std::string DefaultBuildType = "Release";
-
-    CMakeProxy();
-
-    virtual ~CMakeProxy();
 
     static bool isAvailable();
 

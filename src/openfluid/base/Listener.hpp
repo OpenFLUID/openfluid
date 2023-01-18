@@ -41,13 +41,10 @@
 #define __OPENFLUID_BASE_LISTENER_HPP__
 
 
-#include <openfluid/dllexport.hpp>
-
-
 namespace openfluid { namespace base {
 
 
-class OPENFLUID_API Listener
+class Listener
 {
   public:
 

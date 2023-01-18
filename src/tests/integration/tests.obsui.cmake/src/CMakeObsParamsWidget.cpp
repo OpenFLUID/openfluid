@@ -39,7 +39,6 @@
 
 #include <QMessageBox>
 
-
 #include "CMakeObsParamsWidget.hpp"
 #include "ui_CMakeObsParamsWidget.h"
 

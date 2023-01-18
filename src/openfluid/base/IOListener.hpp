@@ -42,7 +42,6 @@
 
 
 #include <string>
-#include <iostream>
 
 #include <openfluid/base/Listener.hpp>
 

@@ -52,7 +52,8 @@
 
 namespace openfluid { namespace tools {
 
-// Const regex used for validation 
+
+// constant regex used for validation 
 //   auto stands for char[] here
 //   char[] used instead of string since not compatible with constexpr up to C++ 17 (TOWATCH)
 

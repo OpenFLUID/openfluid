@@ -173,7 +173,7 @@ bool SrcImportSequenceManager::onCloneRequest()
     mp_FragmentsImportWorker->setSubmoduleParameter(m_FragmentsAsSubmodule);
 
     std::vector<std::pair<QString, QString>> m_FragmentsAndPath;
-    for (const auto GitUrl : m_SelectedFragmentsUrl)
+    for (const auto& GitUrl : m_SelectedFragmentsUrl)
     {
       m_FragmentsAndPath.push_back(std::make_pair(GitUrl, m_RootPath)); 
     }

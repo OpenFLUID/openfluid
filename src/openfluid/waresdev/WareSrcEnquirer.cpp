@@ -31,11 +31,10 @@
 
 
 /**
- @file WareSrcEnquirer.cpp
-   @brief Implements ...
+  @file WareSrcEnquirer.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
- */
+*/
 
 
 #include <openfluid/base/Environment.hpp>

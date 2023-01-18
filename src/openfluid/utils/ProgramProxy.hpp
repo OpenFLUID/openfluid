@@ -60,7 +60,7 @@ class ProgramProxy
 
 
   public:
-    
+
     static bool isAvailable()
     { 
       return false; 

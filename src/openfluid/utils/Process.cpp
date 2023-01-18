@@ -284,7 +284,6 @@ int Process::system(const Command& Cmd, const Environment& Env)
     ProcessEnv[Var.first] = Var.second;
   }
 
-
   return boost::process::system(boost::process::exe = Cmd.Program,
                                 boost::process::args = Cmd.Args,
                                 ProcessEnv);
