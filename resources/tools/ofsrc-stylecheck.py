@@ -106,8 +106,14 @@ class SourceTreeChecker:
 
         self.ActiveStyles = list()
         self.ErrorsCount = dict()
-        self.ExcludePathsList = ExcludePaths.split(",")
-        DisableChecksList = DisableChecks.split(",")
+        
+        self.ExcludePathsList = list()
+        if len(ExcludePaths) > 0: 
+            self.ExcludePathsList = ExcludePaths.split(",")
+
+        DisableChecksList = list()
+        if len(DisableChecks) > 0: 
+            DisableChecksList = DisableChecks.split(",")
 
         for Style in list(self.CheckStyles.keys()):
             if Style not in DisableChecksList:
@@ -217,6 +223,8 @@ class SourceTreeChecker:
 
 
     def isExcluded(self,Filename):
+        if len(self.ExcludePathsList) == 0:
+            return False
         for Excluded in self.ExcludePathsList : 
           if Filename.startswith(Excluded) :
               return True
