@@ -163,6 +163,19 @@ BOOST_AUTO_TEST_CASE(check_renderstring)
     BOOST_CHECK_EQUAL(RenderedStr,"This is value #1 and value #2. Thats all!");
   }
 
+  {
+    openfluid::tools::TemplateProcessor TplProc("%%","%%");
+    std::string TplStr = "%%#key1%%Enabled if %%key1%% exists and is not empty %%#key3%%%%key3%%";
+    openfluid::tools::TemplateProcessor::Errors Errors;
+ 
+    TplProc.enableAutoComment("#");
+    TplProc.ignoreUnknown(true);
+
+    auto RenderedStr = TplProc.renderString(TplStr,Data,Errors);
+    BOOST_CHECK(Errors.empty());
+    BOOST_CHECK_EQUAL(RenderedStr,"Enabled if value #1 exists and is not empty #");
+  }
+
 }
 
 

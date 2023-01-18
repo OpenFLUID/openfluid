@@ -80,6 +80,12 @@ class OPENFLUID_API TemplateProcessor
 
     std::regex m_RegEx;
 
+    bool m_AutoComment = false;
+
+    std::string m_CommentStr;
+
+    bool m_IgnoreUnknown = false;
+
 
   public:
 
@@ -105,6 +111,19 @@ class OPENFLUID_API TemplateProcessor
     TemplateProcessor(const std::string& Begin, const std::string& End);
 
     virtual ~TemplateProcessor() = default;
+
+    /**
+      Enables automatic comment mode. When enabled, the '\#KEYNAME' pattern is replaced by a comment string 
+      during the rendering process if 'KEYNAME' is empty or does not exist.
+      @param[in] CommentStr The comment string to use
+    */
+    void enableAutoComment(const std::string& CommentStr);
+
+    /**
+      Enables or disables the ignore unknown mode. When enabled, unknown keys are ignored and removed
+      during the rendering process.
+    */
+    void ignoreUnknown(bool Enabled);
 
     /**
       Renders a template string into a string

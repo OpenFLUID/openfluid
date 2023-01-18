@@ -42,6 +42,7 @@
 
 #include <openfluid/tools/TemplateProcessor.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 
 
@@ -49,7 +50,7 @@ namespace openfluid { namespace tools {
 
 
 TemplateProcessor::TemplateProcessor(const std::string& Begin, const std::string& End):
-  m_RegEx(openfluid::tools::escapePattern(Begin)+"\\s*([\\w]+)\\s*"+openfluid::tools::escapePattern(End))
+  m_RegEx(openfluid::tools::escapePattern(Begin)+"\\s*([\\w\\#]+)\\s*"+openfluid::tools::escapePattern(End))
 {
   if (Begin.empty() || End.empty())
   {
@@ -62,30 +63,65 @@ TemplateProcessor::TemplateProcessor(const std::string& Begin, const std::string
 // =====================================================================
 
 
-std::string TemplateProcessor::renderString(const std::string& Str,const Data& D,
-                                            Errors& E)
+void TemplateProcessor::enableAutoComment(const std::string& CommentStr)
+{
+  m_AutoComment = true;
+  m_CommentStr = CommentStr;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void TemplateProcessor::ignoreUnknown(bool Enabled)
+{
+  m_IgnoreUnknown = Enabled;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string TemplateProcessor::renderString(const std::string& Str,const Data& D, Errors& E)
 {
   std::string RenderedStr;
   std::smatch SM;
-  
+
+
   auto Start = Str.begin();
 
   while (std::regex_search(Start, Str.end(),SM,m_RegEx))
   {
     RenderedStr += SM.prefix();  // add the text before the pattern
 
-    const auto Key = SM[1].str();
+    const auto FoundKey = SM[1].str();
 
-    if (D.find(Key) != D.end())
+    if (m_AutoComment && openfluid::tools::startsWith(FoundKey,"#"))
+    {
+      auto CoKey = FoundKey.substr(1); // determine the corresponding key name
+
+      auto it = D.find(CoKey);
+      if (it == D.end() || it->second.empty())
+      {
+        // replace the comment key by the comment str if the corresponding key does not exist or is empty
+        RenderedStr += m_CommentStr;
+      }
+    }
+    else if (D.find(FoundKey) != D.end())
     {
       // data exists : replace the pattern by the corresponding data
-      RenderedStr += D.at(Key);
+      RenderedStr += D.at(FoundKey);
     }
     else
     {
-      // data does not exists : leave the delimited key in the text and add an error
-      RenderedStr += SM[0].str();  
-      E.insert(Key);
+      if (!m_IgnoreUnknown)
+      {
+        // data does not exists : leave the delimited key in the text and add an error
+        RenderedStr += SM[0].str();  
+        E.insert(FoundKey);
+      }
     }
 
     Start = SM[0].second;
