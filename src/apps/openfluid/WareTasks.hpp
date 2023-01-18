@@ -54,6 +54,8 @@ class WareTasks : public TasksBase
 
     int processBuild();
 
+    int processMigrateWare();
+
     int processInfo2Build();
 
 

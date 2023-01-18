@@ -49,6 +49,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/waresdev/WareSrcHelpers.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/config.hpp>
 
@@ -253,22 +254,14 @@ std::string WareSrcContainer::getJsonPath() const
 
 std::map<std::string,std::string> WareSrcContainer::getConfigureVariables() const
 {
-  std::map<std::string,std::string> Vars;
+  std::map<std::string,std::string> Vars = openfluid::waresdev::initializeConfigureVariables();
 
   // build type
   Vars["CMAKE_BUILD_TYPE"] = (m_ConfigMode == ConfigMode::CONFIG_RELEASE ? "Release" : "Debug");
 
-  char* ChOpenFLUIDInstallPrefix = nullptr;
-  ChOpenFLUIDInstallPrefix = std::getenv("OPENFLUID_INSTALL_PREFIX");
-  if (ChOpenFLUIDInstallPrefix != nullptr)
-  {
-    Vars["CMAKE_PREFIX_PATH"] = 
-      openfluid::tools::Filesystem::joinPath({std::string(ChOpenFLUIDInstallPrefix),"lib","cmake"});
-  }
-
   // Adding contextual paths for fragment detection
   Vars["OPENFLUID_CURRENT_WORKSPACE_PATH"] = 
-    openfluid::base::WorkspaceManager::instance()->getWorkspacePath();  // workspace root
+    openfluid::base::WorkspaceManager::instance()->getWorkspacePath();  // current workspace root
 
   return Vars;
 }

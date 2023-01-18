@@ -1,8 +1,9 @@
 
 
-SET(OPENFLUID_WARESDEV_CPP WareSrcEnquirer.cpp 
+SET(OPENFLUID_WARESDEV_CPP WareSrcHelpers.cpp
+                           WareSrcEnquirer.cpp 
                            WareSrcContainer.cpp 
-                           WareSrcFactory.cpp
+                           WareSrcFactory.cpp WareSrcMigrator.cpp
                            SimulatorSignatureSerializer.cpp ObserverSignatureSerializer.cpp BuilderextSignatureSerializer.cpp
                            SimulatorSignatureXMLReader.cpp
                            GhostsHelpers.cpp
@@ -11,7 +12,7 @@ SET(OPENFLUID_WARESDEV_CPP WareSrcEnquirer.cpp
 SET(OPENFLUID_WARESDEV_HPP WareSrcHelpers.hpp
                            WareSrcEnquirer.hpp 
                            WareSrcContainer.hpp WareSrcContainerOps.hpp 
-                           WareSrcFactory.hpp 
+                           WareSrcFactory.hpp WareSrcMigrator.hpp WareSrcMigratorListener.hpp
                            WareBuildOptions.hpp
                            WareSignatureSerializer.hpp
                            SimulatorSignatureSerializer.hpp ObserverSignatureSerializer.hpp BuilderextSignatureSerializer.hpp
@@ -34,6 +35,8 @@ TARGET_LINK_LIBRARIES(openfluid-waresdev
                       openfluid-base
                       openfluid-core
                       openfluid-ware
+                      openfluid-tools
+                      openfluid-utils
                       openfluid-thirdparty-tinyxml2
                      )
 

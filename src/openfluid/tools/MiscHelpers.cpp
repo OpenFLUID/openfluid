@@ -336,6 +336,7 @@ std::string escapeString(const std::string& Str)
       case '\v': EscStr += "\\v"; break;
       case '\f': EscStr += "\\f"; break;
       case '\a': EscStr += "\\a"; break;
+      case '"': EscStr += "\\\""; break;
       default : EscStr += C;
     }
   }

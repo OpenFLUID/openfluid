@@ -33,6 +33,7 @@
   @file WareSrcHelpers.hpp
 
   @author Armel THÖNI <armel.thoni@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
  */
 
 
@@ -41,11 +42,51 @@
 
 
 #include <set>
+#include <vector>
+#include <string>
 
-#include <openfluid/waresdev/WareSrcEnquirer.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace waresdev {
+
+
+// TOIMPL reuse this wherever possible 
+inline static const std::vector<std::string> CppFilesExt = {"cpp","hpp","cc","hh","cxx","hxx","C","H","h"};
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Returns true if the given file path is a C++ source file (based on its extension)
+  @param[in] FileObj The file path
+  @return true if the file extension is a C++ extension
+*/
+bool OPENFLUID_API IsCppFile(const openfluid::tools::FilesystemPath& FileObj);
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Tries to detect the OpenFLUID compatibility version of the sources. Currently, 
+  it tries to distinguish version 2.2.x from versions below.
+  @param[in] PathObj The path to the sources to detect
+  @return The numeric representation of the detected OpenFLUID version (see below), 0 if version cannot be detected.
+          Returned value  | OpenFLUID version
+          --------------- | -----------------
+          202000          | 2.2.0
+          201000          | 2.1.x or below
+*/
+unsigned int OPENFLUID_API tryDetectWareSrcVersion(const openfluid::tools::FilesystemPath& PathObj);
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -55,13 +96,12 @@ namespace openfluid { namespace waresdev {
   @param[in] RWUsers the set of users with read+write access
   @return true if user is allowed to access the corresponding ware
 */
-inline bool hasUserAccess(const std::string& UserName, const std::set<std::string>& ROUsers, 
-                   const std::set<std::string>& RWUsers={})
-{
-  std::set<std::string> Users = ROUsers;
-  Users.insert(RWUsers.begin(), RWUsers.end());
-  return Users.count("*") || Users.count(UserName); 
-}
+bool OPENFLUID_API hasUserAccess(const std::string& UserName, const std::set<std::string>& ROUsers, 
+                                 const std::set<std::string>& RWUsers={});
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
@@ -70,11 +110,21 @@ inline bool hasUserAccess(const std::string& UserName, const std::set<std::strin
   @param[in] WarePath the ware path
   @return true if ware found in workspace
 */
-inline bool isWareInCurrentWorkspace(const std::string& WarePath)
-{
-  return openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(WarePath).IsInCurrentWorkspace;
-}
+bool OPENFLUID_API isWareInCurrentWorkspace(const std::string& WarePath);
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Initializes a map of CMake variables according to the OpenFLUID installation context
+  @return a map of variables
+*/
+std::map<std::string,std::string> OPENFLUID_API initializeConfigureVariables();
+
 
 } } // namespaces
+
 
 #endif /* __OPENFLUID_WARESDEV_WARESRCHELPERS_HPP__ */

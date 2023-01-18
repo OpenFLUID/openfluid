@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 
   auto RunCmd = openfluid::utils::CommandLineCommand("run","Run a simulation");
   RunCmd.addOptions({{"quiet","q","quiet display during simulation"},
-                     {"verbose","v","verbose display during simulation"},
+                     {"verbose","v","enable verbose mode"},
                      {"profiling","k","enable simulation profiling"},
                      {"clean-output-dir","c","clean output directory before simulation"},
                      {"auto-output-dir","a","create automatic output directory"},
@@ -190,7 +190,9 @@ int main(int argc, char **argv)
 
   auto MigrateWareCmd = openfluid::utils::CommandLineCommand("migrate-ware","Migrate ware sources to current version "
                                                                             "("+openfluid::config::VERSION_FULL+")"); 
-  MigrateWareCmd.addOptions({{"path","p","path to the ware sources",true}}); // TOIMPL
+  MigrateWareCmd.addOptions({{"src-path","s","path to the ware sources",true},
+                             {"dest-path","s","destination path of the migrated ware sources",true},
+                             {"verbose","v","enable verbose mode"}});
   Parser.addCommand(MigrateWareCmd);
 
   // ---
@@ -238,7 +240,9 @@ int main(int argc, char **argv)
   // ---
 
   auto Info2BuildCmd = openfluid::utils::CommandLineCommand("info2build","Generate build files frow ware information");
-  Info2BuildCmd.addOptions({{"src-path","s","source path containing the wareinfo.json file",true}});
+  Info2BuildCmd.addOptions({{"src-path","s","source path containing the " +
+                                            openfluid::config::WARESDEV_WAREMETA_FILE +
+                                            " file",true}});
   Info2BuildCmd.addOptions({{"dest-path","d","destination path where build information will be generated",true}});
   Parser.addCommand(Info2BuildCmd);
 

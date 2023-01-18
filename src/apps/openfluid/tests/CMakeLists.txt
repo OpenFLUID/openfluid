@@ -625,6 +625,246 @@ SET_PROPERTY(TEST cmdline-openfluid-BuildBuilderext APPEND PROPERTY SKIP_RETURN_
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulator
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "migrate-ware"
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
+                   PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/sim/tests.cmdline.sim-migration"
+                                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/doc/doc.tex")
+SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulator 
+             APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE}
+             APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedSimulator
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "configure" 
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
+                           "--generator=${CMAKE_GENERATOR}"
+                           "---" 
+                           "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
+                           "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
+                           "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
+                           "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulator)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedSimulator
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
+                           "-t" "install" "-j" "2")
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedSimulator)
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulatorParamsUI
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "migrate-ware"
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
+                           "--dest-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                           "-v"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                   PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/sim/tests.cmdline.sim-ui-migration"
+                                          "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/src/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/doc/main.tex"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/doc/original_main.tex"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/tests/CMakeLists.txt")
+SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulatorParamsUI 
+             APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE}
+             APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedSimulatorParamsUI
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "configure" 
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                           "--generator=${CMAKE_GENERATOR}"
+                           "---" 
+                           "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
+                           "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
+                           "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
+                           "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulatorParamsUI)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedSimulatorParamsUI APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedSimulatorParamsUI
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                           "-t" "install" "-j" "2")
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedSimulatorParamsUI)
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulatorParamsUI APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateObserver
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "migrate-ware" 
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migration"
+                           "--dest-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
+                           "--verbose"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migration"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
+                   PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/obs/tests.cmdline.obs-migration"
+                                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/src/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/doc/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/tests/CMakeLists.txt")
+SET_PROPERTY(TEST cmdline-openfluid-MigrateObserver 
+             APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE}
+             APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedObserver
+COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+        "configure" 
+        "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
+        "--generator=${CMAKE_GENERATOR}"
+        "---" 
+        "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
+        "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
+        "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
+        "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedObserver APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateObserver)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedObserver APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedObserver
+COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+        "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
+        "-t" "install" "-j" "2")
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedObserver APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedObserver)
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedObserver APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateObserverParamsUI
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "migrate-ware" 
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
+                   PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/obs/tests.cmdline.obs-ui-migration"
+                                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/src/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/doc/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/tests/CMakeLists.txt")
+SET_PROPERTY(TEST cmdline-openfluid-MigrateObserverParamsUI 
+             APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE}
+             APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedObserverParamsUI
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "configure" 
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
+                           "--generator=${CMAKE_GENERATOR}"
+                           "---" 
+                           "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
+                           "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
+                           "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
+                           "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedObserverParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateObserverParamsUI)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedObserverParamsUI APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedObserverParamsUI
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
+                           "-t" "install" "-j" "2")
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedObserverParamsUI)
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateBuilderext
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "migrate-ware" 
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
+                           "--verbose"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
+                   PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/bext/tests.cmdline.bext-migration"
+                                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/src/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/doc/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/tests/CMakeLists.txt")
+SET_PROPERTY(TEST cmdline-openfluid-MigrateBuilderext 
+             APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE}
+             APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedBuilderext
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "configure" 
+                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
+                           "--generator=${CMAKE_GENERATOR}"
+                           "---" 
+                           "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
+                           "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
+                           "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
+                           "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateBuilderext)
+SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedBuilderext APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedBuilderext
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
+                           "-t" "install" "-j" "2")
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedBuilderext)
+SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedBuilderext APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateDataHelp
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "create-data" "--help")

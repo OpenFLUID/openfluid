@@ -47,6 +47,7 @@
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
+#include <openfluid/utils/CppLangHelpers.hpp>
 
 
 namespace openfluid { namespace waresdev {
@@ -65,6 +66,8 @@ class OPENFLUID_API WareSrcFactory
         std::string MainClassName = "WareMain";
 
         std::string ParamsUIClassName = "WareUIWidget";
+
+        openfluid::tools::TemplateProcessor::Data ExtraTemplateData;
     };
 
 
@@ -82,10 +85,6 @@ class OPENFLUID_API WareSrcFactory
     static openfluid::tools::TemplateProcessor::Data 
     prepareTemplateData(const openfluid::builderext::BuilderExtensionSignature& Signature,const Configuration& Config);
 
-    static std::string getSignatureInfos(const openfluid::ware::WareSignature* Signature);
-
-    static std::string getSimulatorSignatureData(const openfluid::ware::SimulatorSignature& Signature);
-
     static std::string getSimulatorInitCode(const openfluid::ware::SimulatorSignature& Signature);
 
     static std::string getSimulatorRunCode(const openfluid::ware::SimulatorSignature& Signature);
@@ -95,19 +94,22 @@ class OPENFLUID_API WareSrcFactory
 
   public:
 
-    WareSrcFactory() = delete;
+    CPPCLASS_DELETE_FIVE(WareSrcFactory);
     
     static std::string createSimulator(const openfluid::ware::SimulatorSignature& Signature, 
                                        const Configuration& Config,
-                                       const std::string& ParentPath);
+                                       const std::string& ParentPath,
+                                       bool WithIDSubDir = true);
 
     static std::string createObserver(const openfluid::ware::ObserverSignature& Signature, 
                                       const Configuration& Config,
-                                      const std::string& ParentPath);
+                                      const std::string& ParentPath,
+                                      bool WithIDSubDir = true);
 
     static std::string createBuilderext(const openfluid::builderext::BuilderExtensionSignature& Signature, 
                                         const Configuration& Config,
-                                        const std::string& ParentPath);
+                                        const std::string& ParentPath,
+                                        bool WithIDSubDir = true);
 
 };
 

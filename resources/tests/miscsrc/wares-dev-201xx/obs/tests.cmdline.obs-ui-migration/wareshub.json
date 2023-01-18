@@ -1,0 +1,50 @@
+{
+  "tags": ["test","migration"],
+  "contacts": [
+    "dave@nirvana.org",
+    "tom@ratm.org",
+    "jack at whitestripes.org"
+  ],
+  "status": "beta",
+  "license": "MIT",
+  "external-deps": ["somelib","somefw"],
+  "issues": {
+    "1": {
+      "title": "Issue AAA",
+      "creator": "dave",
+      "date": "2022-12-18",
+      "type": "review",
+      "state": "open",
+      "description": "This is issue AAA",
+      "urgency": "low"
+    },
+    "2": {
+      "title": "Issue DDDD",
+      "creator": "tom",
+      "date": "2022-12-29",
+      "type": "feature",
+      "state": "closed",
+      "description": "This is issue\nDDDD",
+      "urgency": "normal"
+    },
+    "4": {
+      "title": "Issue BB",
+      "creator": "dave",
+      "date": "2023-01-02",
+      "type": "feature",
+      "state": "open",
+      "description": "This is the issue BB\n",
+      "urgency": "high"
+    },
+    "7": {
+      "title": "Issue X",
+      "creator": "jack",
+      "date": "2023-01-12",
+      "type": "bug",
+      "state": "open",
+      "description": "This is issue X",
+      "urgency": "normal"
+    }
+  }
+}
+

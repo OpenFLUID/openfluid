@@ -37,19 +37,25 @@
 */
 
 
+#include <memory>
+
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/waresdev/GhostsHelpers.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
+#include <openfluid/waresdev/WareSrcMigrator.hpp>
+#include <openfluid/waresdev/WareSrcHelpers.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/config.hpp>
 
 #include "WareTasks.hpp"
+#include "DefaultMigrationListener.hpp"
 
 
 int WareTasks::processCreateWare()
@@ -192,9 +198,10 @@ int WareTasks::processConfigure()
   }
   BuildFSP.makeDirectory();
 
+  std::map<std::string,std::string> Vars = openfluid::waresdev::initializeConfigureVariables();
 
   auto CMakeCmd = openfluid::utils::CMakeProxy::getConfigureCommand(BuildFSP.toGeneric(),SrcFSP.toGeneric(),
-                                                                    {},Generator);
+                                                                    Vars,Generator);
   CMakeCmd.Args << m_ThirdPartyArgs;
 
   return openfluid::utils::Process::system(CMakeCmd);
@@ -266,6 +273,40 @@ int WareTasks::processBuild()
 // =====================================================================
 
 
+int WareTasks::processMigrateWare()
+{
+  if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
+  {
+    return error("missing or empty ware sources path");
+  }
+
+  try 
+  {
+    auto Listener = std::make_unique<DefaultMigrationListener>();
+    Listener->setVerbose(m_Cmd.isOptionActive("verbose"));
+
+    auto Migrator = openfluid::waresdev::WareSrcMigrator(m_Cmd.getOptionValue("src-path"),
+                                                         Listener.get(),
+                                                         m_Cmd.getOptionValue("dest-path"));
+    Migrator.performMigration();
+  }
+  catch(const openfluid::base::FrameworkException& E)
+  {
+    return error(E.what());
+  }
+  catch(...)
+  {
+    return error("unknown error");
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int WareTasks::processInfo2Build()
 {
   if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
@@ -278,7 +319,7 @@ int WareTasks::processInfo2Build()
     return error("missing or empty destination path");
   }
 
-  openfluid::tools::Path SrcFilehObj({m_Cmd.getOptionValue("src-path"),"wareinfo.json"});
+  openfluid::tools::Path SrcFilehObj({m_Cmd.getOptionValue("src-path"),openfluid::config::WARESDEV_WAREMETA_FILE});
   openfluid::tools::Path DestDirObj(m_Cmd.getOptionValue("dest-path"));
 
   if (SrcFilehObj.isFile())
@@ -302,12 +343,13 @@ int WareTasks::processInfo2Build()
     }
     else
     {
-      return error("unable to detect ware type in wareinfo.json file");
+      return error("unable to detect ware type in " + 
+                   openfluid::config::WARESDEV_WAREMETA_FILE + " file");
     }
   }
   else
   {
-    return error("wareinfo.json file not found in source directory");
+    return error(openfluid::config::WARESDEV_WAREMETA_FILE + " file not found in source directory");
   }
 
   return 0;
@@ -330,7 +372,7 @@ int WareTasks::process()
   }
   else if (m_Cmd.getName() == "migrate-ware")
   {
-    return notImplemented(); // TOIMPL
+    return processMigrateWare();
   }
   else if (m_Cmd.getName() == "docalyze")
   {

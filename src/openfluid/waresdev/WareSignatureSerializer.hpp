@@ -600,7 +600,7 @@ std::string WareSignatureSerializer<SignatureType>::toWareCPPBase(const Signatur
   {
     std::vector<std::string> IssData;
 
-    IssData.push_back(getQuotedString(I.second.Title));
+    IssData.push_back(getQuotedString(openfluid::tools::escapeString(I.second.Title)));
     IssData.push_back(getQuotedString(openfluid::tools::escapeString(I.second.Description)));
     IssData.push_back(getCPPVectorString(I.second.Tags,true));
     IssData.push_back(getQuotedString(I.second.Creator));
