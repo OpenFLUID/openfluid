@@ -1,10 +1,11 @@
-# external configuration files
+# dot files
 .*
+!.gitkeep
 !.github/
 !.travis.yml
 !.appveyor.yml
 
-# build directories
+# development data (build directories, temporary files, ...)
 _*
 
 # OpenFLUID local configuration files
