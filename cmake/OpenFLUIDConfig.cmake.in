@@ -51,7 +51,8 @@
 # This module uses hints about search locations from variables
 # OpenFLUID_ROOT_DIR
 # $ENV{OPENFLUID_INSTALL_PREFIX}
-# OpenFLUID_EXTRA_SEARCH_DIRS
+# OpenFLUID_EXTRA_SEARCH_PATHS
+# $ENV{OpenFLUID_EXTRA_SEARCH_PATHS}
 #
 #
 # Examples of use:
@@ -81,6 +82,7 @@ SET(_OpenFLUID_SEARCH_DIRS
   /sw # Fink
   /opt/local # DarwinPorts
   ${OpenFLUID_EXTRA_SEARCH_PATHS}
+  $ENV{OpenFLUID_EXTRA_SEARCH_PATHS}
 )
 
 
