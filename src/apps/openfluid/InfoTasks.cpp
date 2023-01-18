@@ -127,7 +127,8 @@ int InfoTasks::processInfo()
   JSON["dependencies"]["boost"]["version"] = openfluid::config::BUILD_LIB_Boost_VERSION;
   JSON["dependencies"]["gdal"]["version"] = openfluid::config::BUILD_LIB_GDAL_VERSION;
   JSON["dependencies"]["qt"]["version"] = openfluid::config::BUILD_LIB_QT_VERSION;
-  
+
+  JSON["paths"]["install_prefix"] = openfluid::base::Environment::getInstallPrefix();
   JSON["paths"]["input"] = openfluid::base::RunContextManager::instance()->getInputDir();
   JSON["paths"]["output"] = openfluid::base::RunContextManager::instance()->getInputDir();
   JSON["paths"]["search"]["simulators"] = openfluid::base::Environment::getSimulatorsDirs();
