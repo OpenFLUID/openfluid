@@ -84,7 +84,8 @@ BOOST_AUTO_TEST_CASE(std_filesystem)
     "/path/to///file.md",
     "C:/path////to/file.md",
     "C:\\path\\\\\\to\\file.md",
-    "////path/to/folder////"
+    "////path/to/folder////",
+    ""
   };
 
   std::cout << "===== std::filesystem::path explorer =====" << std::endl;
@@ -228,7 +229,6 @@ BOOST_AUTO_TEST_CASE(check_names_operations)
 
 BOOST_AUTO_TEST_CASE(check_path_relative)
 {
-
   for (const auto& Test : RelativePaths)
   {
     BOOST_REQUIRE_EQUAL(openfluid::tools::Path(Test.Arguments.first).relativeTo(Test.Arguments.second),Test.Expected);
@@ -360,5 +360,62 @@ BOOST_AUTO_TEST_CASE(check_fromstdpath)
 
   std::cout << "fromStdPath() : " << P.toGeneric() << std::endl;
   BOOST_REQUIRE_EQUAL(P.toGeneric(),FSOutputPath);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_fromthis)
+{
+  auto P = openfluid::tools::FilesystemPath({"/root","to","path"});
+
+  auto P2 = P.fromThis("and/subpath");
+  BOOST_REQUIRE_EQUAL(P2.toGeneric(),"/root/to/path/and/subpath");
+
+  auto P3 = P.fromThis({"and","another","subpath"});
+  BOOST_REQUIRE_EQUAL(P3.toGeneric(),"/root/to/path/and/another/subpath");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_empty_path)
+{
+  auto P = openfluid::tools::FilesystemPath();
+
+  BOOST_CHECK_EQUAL(P.filename(),"");
+  BOOST_CHECK_EQUAL(P.dirname(),"");
+  BOOST_CHECK_EQUAL(P.basename(),"");
+  BOOST_CHECK_EQUAL(P.extension(),"");
+  BOOST_CHECK_EQUAL(P.minimalBasename(),"");
+  BOOST_CHECK_EQUAL(P.completeExtension(),"");
+
+  BOOST_CHECK(P.contains(""));
+  BOOST_CHECK(P.relativeTo("").empty());
+  BOOST_CHECK(P.relativeTo("/a/path").empty());
+
+  BOOST_REQUIRE(!P.makeDirectory());
+  BOOST_REQUIRE(P.makeDirectory("test_emptypath_makeDirectory"));
+  BOOST_REQUIRE(!P.makeFile());
+  BOOST_REQUIRE(P.makeFile("test_emptypath_makeFile.txt"));
+
+  BOOST_REQUIRE(!P.isDirectory());
+  BOOST_REQUIRE(P.isDirectory("test_emptypath_makeDirectory"));
+  BOOST_REQUIRE(!P.isFile());
+  BOOST_REQUIRE(P.isFile("test_emptypath_makeFile.txt"));
+  BOOST_REQUIRE(!P.exists());
+  BOOST_REQUIRE(P.exists("test_emptypath_makeDirectory"));
+  BOOST_REQUIRE(P.exists("test_emptypath_makeFile.txt"));
+
+  BOOST_REQUIRE(!P.remove());
+  BOOST_REQUIRE(P.remove("test_emptypath_makeDirectory"));
+  BOOST_REQUIRE(P.remove("test_emptypath_makeFile.txt"));
+  
+  BOOST_REQUIRE(!P.exists("test_emptypath_makeDirectory"));
+  BOOST_REQUIRE(!P.exists("test_emptypath_makeFile.txt"));
 }
 

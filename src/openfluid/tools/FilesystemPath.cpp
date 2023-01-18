@@ -115,6 +115,36 @@ const std::filesystem::path& FilesystemPath::stdPath() const
 // =====================================================================
 
 
+FilesystemPath FilesystemPath::fromThis(const std::string& PathStr) const
+{
+  return FilesystemPath::fromStdPath(composeWithSubPath(stdPath(),PathStr));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+FilesystemPath FilesystemPath::fromThis(const std::vector<std::string>& PathParts) const
+{
+  return FilesystemPath::fromStdPath(composeWithSubPath(stdPath(),boost::algorithm::join(PathParts,"/")));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool FilesystemPath::empty() const
+{
+  return m_Path.empty();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string FilesystemPath::removeTrailingSeparators(const std::string& Path, char Sep) noexcept
 {
   std::string TmpStr = Path;
@@ -287,6 +317,11 @@ bool FilesystemPath::contains(const std::string& Path) const
 
 std::string FilesystemPath::relativeTo(const std::string& Path) const
 {
+  if (empty())
+  {
+    return "";  // 
+  }
+
   return removeTrailingSeparators(
            std::filesystem::relative(m_Path,FilesystemPath(Path).stdPath()).lexically_normal().generic_string()
          );
@@ -309,8 +344,8 @@ bool FilesystemPath::isDirectory(const std::string& Path) const
 
 bool FilesystemPath::isFile(const std::string& Path) const
 {
-  const auto compPath = composeWithSubPath(m_Path,Path);
-  return (std::filesystem::is_regular_file(compPath) || std::filesystem::is_symlink(compPath));
+  const auto CompPath = composeWithSubPath(m_Path,Path);
+  return (std::filesystem::is_regular_file(CompPath) || std::filesystem::is_symlink(CompPath));
 }
 
 
@@ -330,9 +365,14 @@ bool FilesystemPath::exists(const std::string& Path) const
 
 bool FilesystemPath::makeDirectory(const std::string& Path) const
 {
-  const auto compPath = composeWithSubPath(m_Path,Path);
+  if (m_Path.empty() && Path.empty())
+  {
+    return false;
+  }
+
+  const auto CompPath = composeWithSubPath(m_Path,Path);
   std::error_code TmpErr;
-  return (std::filesystem::is_directory(compPath) || std::filesystem::create_directories(compPath,TmpErr));
+  return (std::filesystem::is_directory(CompPath) || std::filesystem::create_directories(CompPath,TmpErr));
 }
 
 
@@ -342,6 +382,11 @@ bool FilesystemPath::makeDirectory(const std::string& Path) const
 
 bool FilesystemPath::removeDirectory(const std::string& Path) const
 {
+  if (m_Path.empty() && Path.empty())
+  {
+    return false;
+  }
+
   if (isDirectory(Path))
   {  
     const auto CompPath = composeWithSubPath(m_Path,Path);
@@ -356,21 +401,30 @@ bool FilesystemPath::removeDirectory(const std::string& Path) const
 // =====================================================================
 
 
-bool FilesystemPath::makeFile(const std::string& Path) const
+bool FilesystemPath::makeFile(const std::string& Path, const std::string& Content) const
 {
-  const auto compPath = composeWithSubPath(m_Path,Path);
+  if (m_Path.empty() && Path.empty())
+  {
+    return false;
+  }
+
+  const auto CompPath = composeWithSubPath(m_Path,Path);
 
   if (!isFile(Path))
   {
-    std::ofstream EmptyFile(fromStdPath(compPath).toGeneric(),std::ofstream::out);
-    if (EmptyFile.is_open())
+    std::ofstream MadeFile(fromStdPath(CompPath).toGeneric(),std::ofstream::out);
+    if (MadeFile.is_open())
     {
-      EmptyFile.close();
+      if (!Content.empty())
+      {
+        MadeFile << Content;
+      }
+      MadeFile.close();
     }
   }
 
   std::error_code TmpErr;  
-  return (std::filesystem::is_regular_file(compPath) || std::filesystem::is_symlink(compPath));
+  return (std::filesystem::is_regular_file(CompPath) || std::filesystem::is_symlink(CompPath));
 }
 
 
@@ -380,11 +434,16 @@ bool FilesystemPath::makeFile(const std::string& Path) const
 
 bool FilesystemPath::removeFile(const std::string& Path) const
 {
+  if (m_Path.empty() && Path.empty())
+  {
+    return false;
+  }
+
   if (isFile(Path))
   {
-    const auto compPath = composeWithSubPath(m_Path,Path);
+    const auto CompPath = composeWithSubPath(m_Path,Path);
     std::error_code TmpErr;
-    return std::filesystem::remove(compPath,TmpErr);
+    return std::filesystem::remove(CompPath,TmpErr);
   }
   return !exists(Path); 
 }
