@@ -54,6 +54,7 @@ HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = @CMAKE_CURRENT_BINARY_DIR@/layout/header.html
 HTML_FOOTER            = @OFBUILD_DOC_LAYOUT_DIR@/footer.html
 HTML_EXTRA_STYLESHEET  = @OFBUILD_DOC_LAYOUT_DIR@/doxyopenfluid.css
+HTML_COLORSTYLE        = LIGHT
 HTML_OUTPUT            = html
 
 SEARCHENGINE		       = YES
