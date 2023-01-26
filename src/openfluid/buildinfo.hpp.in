@@ -45,6 +45,7 @@
 
 namespace openfluid { namespace config {
 
+
 const std::string BUILD_TYPE = "@OFBUILD_BUILD_TYPE@";
 const std::string BUILD_TIMESTAMP = "@OFBUILD_BUILD_TIMESTAMP@";
 
@@ -60,7 +61,11 @@ const std::string BUILD_LIB_nlohmannjson_VERSION = "@OFBUILD_3RDPARTY_nlohmannjs
 const std::string BUILD_LIB_tinyxml2_VERSION = "@OFBUILD_3RDPARTY_tinyxml2_VERSION@";
 const std::string BUILD_LIB_Boost_VERSION = "@Boost_MAJOR_VERSION@.@Boost_MINOR_VERSION@.@Boost_SUBMINOR_VERSION@";
 const std::string BUILD_LIB_GDAL_VERSION = "@GDAL_VERSION@";
+const std::string BUILD_LIB_CURL_VERSION = "@CURL_VERSION_STRING@";
 const std::string BUILD_LIB_QT_VERSION = "@Qt5Core_VERSION@";
+
+const bool BUILD_OPENFLUID_UI = @OFBUILD_ENABLE_GUI_01@;
+
 
 } }  // namespaces
 

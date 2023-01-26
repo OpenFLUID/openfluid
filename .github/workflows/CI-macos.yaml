@@ -1,0 +1,36 @@
+name: macOS
+
+on: [push, pull_request]
+
+
+jobs:
+
+
+##########################################
+
+
+  ci-macos-release:
+    strategy:
+      matrix:
+        os: [macos-10.15,macos-11,macos-12]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Installation of dependencies
+        run: | 
+          brew install \
+            boost gdal curl qt5 \
+            doxygen gnuplot doxygen
+      - name: Checkout of source code
+        uses: actions/checkout@v3
+      - name: Preparation
+        run: |
+          echo "$(brew --prefix qt5)/bin" >> $GITHUB_PATH
+          mkdir ./_build
+      - name: Configuration
+        run: cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)/lib/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+        working-directory: ./_build
+      - name: Build
+        run: make -j 2
+        working-directory: ./_build
+

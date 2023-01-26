@@ -37,17 +37,18 @@
 */
 
 
-#ifndef __OPENFLUID_UTILSQ_FLUIDHUBAPICLIENT_HPP__
-#define __OPENFLUID_UTILSQ_FLUIDHUBAPICLIENT_HPP__
+#ifndef __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__
+#define __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__
 
 
+#include <string>
+#include <map>
 #include <set>
-
-#include <QString>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/utilsq/RESTClient.hpp>
+#include <openfluid/utils/HTTPClient.hpp>
+#include <openfluid/utils/CppLangHelpers.hpp>
 
 
 namespace openfluid { namespace utils {
@@ -81,45 +82,41 @@ class OPENFLUID_API FluidHubAPIClient
 
   private:
 
-    RESTClient m_RESTClient;
+    HTTPClient m_RESTClient;
 
-    RESTClient::SSLConfiguration m_SSLConfig;
+    std::string m_HubName;
 
-    QString m_HubName;
+    std::string m_HubStatus;
 
-    QString m_HubStatus;
-
-    QString m_HubAPIVersion;
+    std::string m_HubAPIVersion;
 
     bool m_IsV0ofAPI = true;
 
-    QString m_WareCapabilityName = "wareshub";
+    std::string m_WareCapabilityName = "wareshub";
 
-    std::set<QString> m_HubCapabilities;
+    std::set<std::string> m_HubCapabilities;
 
     void reset();
 
-    bool isCapable(const QString& Capacity) const;
+    bool isCapable(const std::string& Capacity) const;
 
-    static QString wareTypeToString(openfluid::ware::WareType Type);
+    static std::string wareTypeToString(openfluid::ware::WareType Type);
 
-    WaresDetailsByID_t getAvailableElementsWithDetails(QString& Path, const QString& Username) const;
+    WaresDetailsByID_t getAvailableElementsWithDetails(std::string& Path, const std::string& Username) const;
 
 
   public:
 
-    FluidHubAPIClient() = default;
-
-    ~FluidHubAPIClient()
-    { }
+    CPPCLASS_DEFAULT_FIVE(FluidHubAPIClient)
 
     /**
       Connects to the FluidHub given by the URL
       @param[in] URL the URL of the FluidHub to connect to
-      @param[in] SSLConfig the SSL configuration for the connection (if needed)
+      @param[in] VerifyCertificate enables/disables SSL certicate verification (default is true)
+      @param[in] AllowedRedirections maximum redirections allowed, -1 for no redirection (default is 2)
       @return true if the connection is OK, false otherwise
     */
-    bool connect(const QString& URL, const RESTClient::SSLConfiguration& SSLConfig = RESTClient::SSLConfiguration());
+    bool connect(const std::string& URL, bool VerifyCertificate = true, bool AllowedRedirections = 2);
 
     /**
       Disconnects from the connected FluidHub
@@ -137,7 +134,7 @@ class OPENFLUID_API FluidHubAPIClient
     */
     bool isConnected() const
     {
-      return !(m_RESTClient.getBaseURL().isEmpty());
+      return !(m_RESTClient.getBaseURL().empty());
     }
 
     /**
@@ -153,7 +150,7 @@ class OPENFLUID_API FluidHubAPIClient
       Returns the URL of the current FluidHub
       @return the FluidHub URL
     */
-    QString getHubURL() const
+    std::string getHubURL() const
     {
       return m_RESTClient.getBaseURL();
     }
@@ -162,7 +159,7 @@ class OPENFLUID_API FluidHubAPIClient
       Returns the API version of the current FluidHub
       @return the FluidHub API version
     */
-    QString getHubAPIVersion() const
+    std::string getHubAPIVersion() const
     {
       return m_HubAPIVersion;
     }
@@ -171,7 +168,7 @@ class OPENFLUID_API FluidHubAPIClient
       Returns the status of the current FluidHub
       @return the FluidHub status
     */
-    QString getHubStatus() const
+    std::string getHubStatus() const
     {
       return m_HubStatus;
     }
@@ -180,7 +177,7 @@ class OPENFLUID_API FluidHubAPIClient
       Returns the name of the current FluidHub
       @return the FluidHub name
     */
-    QString getHubName() const
+    std::string getHubName() const
     {
       return m_HubName;
     }
@@ -189,7 +186,7 @@ class OPENFLUID_API FluidHubAPIClient
       Returns the capabilities list of the current FluidHub ("news","wareshub", ...)
       @return the FluidHub capabilities
     */
-    std::set<QString> getHubCapabilities() const
+    std::set<std::string> getHubCapabilities() const
     {
       return m_HubCapabilities;
     }
@@ -213,21 +210,21 @@ class OPENFLUID_API FluidHubAPIClient
       @return the detailed list of wares of the give type
     */
     WaresDetailsByID_t getAvailableWaresWithDetails(openfluid::ware::WareType Type, 
-                                                    const QString& Username = "") const;
+                                                    const std::string& Username = "") const;
 
     /**
       Returns the detailed list of all available fragments in the current FluidHub
       @param[in] Username Optional username used in returned git URL
       @return the detailed list of fragments
     */
-    WaresDetailsByID_t getAvailableFragmentsWithDetails(const QString& Username = "") const;
+    WaresDetailsByID_t getAvailableFragmentsWithDetails(const std::string& Username = "") const;
 
     /**
       Returns the news as an RSS string content
       @param[in] Lang Optional lang for news content
       @return the RSS content
     */
-    QString getNews(const QString& Lang = "") const;
+    std::string getNews(const std::string& Lang = "") const;
 
 
 };
@@ -236,4 +233,4 @@ class OPENFLUID_API FluidHubAPIClient
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILSQ_FLUIDHUBAPICLIENT_HPP__ */
+#endif /* __OPENFLUID_UTILS_FLUIDHUBAPICLIENT_HPP__ */

@@ -33,14 +33,15 @@
 /**
   @file FluidHubAPIClient.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
   @author Armel THONI <armel.thoni@inrae.fr>
 */
 
 
 #include <openfluid/config.hpp>
 #include <openfluid/thirdparty/JSON.hpp>
-#include <openfluid/utilsq/FluidHubAPIClient.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 
 
 namespace openfluid { namespace utils {
@@ -167,12 +168,9 @@ void JSONObjectToDetailedWares(const openfluid::thirdparty::json& Obj,
 
 void FluidHubAPIClient::reset()
 {
-  m_RESTClient.setBaseURL("");
-  m_RESTClient.setSSLConfiguration(RESTClient::SSLConfiguration());
-  logout();
-  m_RESTClient.resetRawHeaders();
-  m_RESTClient.addRawHeader("Content-Type", "application/json");
-  m_RESTClient.addRawHeader("Accept", "application/x.openfluid.FLUIDhub+json;version=1.0");
+  m_RESTClient = HTTPClient();
+  m_RESTClient.defaultHeaders().add("Content-Type","application/json");
+  m_RESTClient.defaultHeaders().add("Accept", "application/x.openfluid.FLUIDhub+json;version=1.0");
   m_HubAPIVersion.clear();
   m_HubCapabilities.clear();
   m_HubName.clear();
@@ -186,7 +184,7 @@ void FluidHubAPIClient::reset()
 
 void FluidHubAPIClient::logout()
 {
-  m_RESTClient.removeRawHeader("Authorization");
+  m_RESTClient.defaultHeaders().remove("Authorization");
 }
 
 
@@ -194,7 +192,7 @@ void FluidHubAPIClient::logout()
 // =====================================================================
 
 
-bool FluidHubAPIClient::isCapable(const QString& Capacity) const
+bool FluidHubAPIClient::isCapable(const std::string& Capacity) const
 {
   return (m_HubCapabilities.find(Capacity) != m_HubCapabilities.end());
 }
@@ -204,7 +202,7 @@ bool FluidHubAPIClient::isCapable(const QString& Capacity) const
 // =====================================================================
 
 
-QString FluidHubAPIClient::wareTypeToString(openfluid::ware::WareType Type)
+std::string FluidHubAPIClient::wareTypeToString(openfluid::ware::WareType Type)
 {
   if (Type == openfluid::ware::WareType::SIMULATOR)
   {
@@ -227,24 +225,25 @@ QString FluidHubAPIClient::wareTypeToString(openfluid::ware::WareType Type)
 // =====================================================================
 
 
-bool FluidHubAPIClient::connect(const QString& URL,const RESTClient::SSLConfiguration& SSLConfig)
+bool FluidHubAPIClient::connect(const std::string& URL, bool VerifyCertificate,  bool AllowedRedirections)
 {
-  RESTClient::Reply Reply;
+  HTTPClient::Response Resp;
   bool ValidNature = false;
 
   disconnect();
   m_RESTClient.setBaseURL(URL);
-  m_RESTClient.setSSLConfiguration(SSLConfig);
+  m_RESTClient.setCertificateVerify(VerifyCertificate);
+  m_RESTClient.setAllowedRedirections(AllowedRedirections);
 
-  Reply = m_RESTClient.getResource("/");
+  Resp = m_RESTClient.getResource({.Path="/"});
 
-  if (Reply.isOK())
+  if (Resp.isOK())
   {
     openfluid::thirdparty::json JSONDoc;
 
     try
     {
-      JSONDoc = openfluid::thirdparty::json::parse(Reply.getContent().toStdString());
+      JSONDoc = openfluid::thirdparty::json::parse(Resp.Content);
     }
     catch (openfluid::thirdparty::json::parse_error&)
     {
@@ -258,8 +257,8 @@ bool FluidHubAPIClient::connect(const QString& URL,const RESTClient::SSLConfigur
       {
         if ((Key == "api-version" || Key == "api_version") && Val.is_string())
         {
-          m_HubAPIVersion = QString::fromStdString(Val.get<std::string>());
-          m_IsV0ofAPI = m_HubAPIVersion.startsWith("0."); 
+          m_HubAPIVersion = Val.get<std::string>();
+          m_IsV0ofAPI = openfluid::tools::startsWith(m_HubAPIVersion,"0."); 
         }
       }
 
@@ -281,11 +280,11 @@ bool FluidHubAPIClient::connect(const QString& URL,const RESTClient::SSLConfigur
         }
         else if (Key == "name" && Val.is_string())
         {
-          m_HubName = QString::fromStdString(Val.get<std::string>());
+          m_HubName = Val.get<std::string>();
         }
         else if (Key == "status" && Val.is_string())
         {
-          m_HubStatus = QString::fromStdString(Val.get<std::string>());
+          m_HubStatus = Val.get<std::string>();
         }
         else if (Key == "capabilities" && Val.is_array())
         {
@@ -328,15 +327,15 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
 
   if (isConnected() && isCapable(m_WareCapabilityName))
   {
-    RESTClient::Reply Reply = m_RESTClient.getResource("/wares");
+    HTTPClient::Response Resp = m_RESTClient.getResource({.Path="/wares"});
 
-    if (Reply.isOK())
+    if (Resp.isOK())
     {
       openfluid::thirdparty::json JSONDoc;
 
       try
       {
-        JSONDoc = openfluid::thirdparty::json::parse(Reply.getContent().toStdString());
+        JSONDoc = openfluid::thirdparty::json::parse(Resp.Content);
       }
       catch (openfluid::thirdparty::json::parse_error&)
       {
@@ -372,26 +371,26 @@ FluidHubAPIClient::WaresListByType_t FluidHubAPIClient::getAllAvailableWares() c
 // =====================================================================
 
 
-std::string fetchFieldFromEndpoint(const RESTClient& Client, const std::string Method, const std::string Url, 
+std::string fetchFieldFromEndpoint(const HTTPClient& Client, const std::string Method, const std::string EndPoint, 
                                    const std::string& WantedKey, const std::string& RequestData="")
 {
-  RESTClient::Reply Reply;
+  HTTPClient::Response Resp;
   if (Method == "GET")
   {
-    Reply = Client.getResource(QString::fromStdString(Url));
+    Resp = Client.getResource({.Path=EndPoint});
   }
   else if (Method == "POST")
   {
-    Reply = Client.postResource(QString::fromStdString(Url), QString::fromStdString(RequestData));
+    Resp = Client.postResource({.Path=EndPoint,.Body=RequestData});
   }
 
-  if (Reply.isOK())
+  if (Resp.isOK())
   {
     openfluid::thirdparty::json JSONDoc;
 
     try
     {
-      JSONDoc = openfluid::thirdparty::json::parse(Reply.getContent().toStdString());
+      JSONDoc = openfluid::thirdparty::json::parse(Resp.Content);
     }
     catch (openfluid::thirdparty::json::parse_error&)
     {
@@ -426,14 +425,14 @@ std::string FluidHubAPIClient::getUserUnixname(const std::string& Email, const s
 {
   if (!m_IsV0ofAPI && isConnected())
   {
-    if (!m_RESTClient.hasRawHeader("Authorization"))
+    if (!m_RESTClient.defaultHeaders().exists("Authorization"))
     {
       std::string AccessBody = "{\"email\":\""+Email+"\",\"password\":\""+Password+"\"}";
       std::string AccessToken = fetchFieldFromEndpoint(m_RESTClient, "POST", "/auth/token", "access", AccessBody);
       if (AccessToken != "")
       {
-        QString HeaderData = "Bearer " + QString::fromStdString(AccessToken);
-        m_RESTClient.addRawHeader("Authorization", HeaderData.toLocal8Bit()); 
+        std::string HeaderData = "Bearer " + AccessToken;
+        m_RESTClient.defaultHeaders().add("Authorization",HeaderData); 
       }
     }
     std::string unixname = fetchFieldFromEndpoint(m_RESTClient, "GET", "/account", "unixname");
@@ -447,29 +446,29 @@ std::string FluidHubAPIClient::getUserUnixname(const std::string& Email, const s
 // =====================================================================
 
 
-FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableElementsWithDetails(QString& Path, 
-                                                                                         const QString& Username) const
+FluidHubAPIClient::WaresDetailsByID_t 
+FluidHubAPIClient::getAvailableElementsWithDetails(std::string& Path, const std::string& Username) const
 {
   FluidHubAPIClient::WaresDetailsByID_t WaresDesc;
 
-  if (isConnected() && isCapable(m_WareCapabilityName) && !(Path.isEmpty()))
+  if (isConnected() && isCapable(m_WareCapabilityName) && !(Path.empty()))
   {
     Path = "/wares/"+Path;
 
-    if (!Username.isEmpty())
+    if (!Username.empty())
     {
       Path += "?username="+Username;
     }
 
-    RESTClient::Reply Reply = m_RESTClient.getResource(Path);
+    HTTPClient::Response Resp = m_RESTClient.getResource({.Path=Path});
 
-    if (Reply.isOK())
+    if (Resp.isOK())
     {
       openfluid::thirdparty::json JSONDoc;
 
       try
       {
-        JSONDoc = openfluid::thirdparty::json::parse(Reply.getContent().toStdString());
+        JSONDoc = openfluid::thirdparty::json::parse(Resp.Content);
       }
       catch (openfluid::thirdparty::json::parse_error&)
       {
@@ -491,9 +490,10 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableElementsWit
 // =====================================================================
 
 
-FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableFragmentsWithDetails(const QString& Username) const
+FluidHubAPIClient::WaresDetailsByID_t 
+FluidHubAPIClient::getAvailableFragmentsWithDetails(const std::string& Username) const
 {
-  QString Path = QString::fromStdString(openfluid::config::WARESDEV_FRAGMENTS_DIR);
+  std::string Path = openfluid::config::WARESDEV_FRAGMENTS_DIR;
 
   return getAvailableElementsWithDetails(Path, Username);
 }
@@ -504,11 +504,11 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableFragmentsWi
 
 
 FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDetails(openfluid::ware::WareType Type, 
-                                                                                      const QString& Username) const
+                                                                                      const std::string& Username) const
 {
   WaresDetailsByID_t WaresDesc;
 
-  QString Path = wareTypeToString(Type);
+  std::string Path = wareTypeToString(Type);
 
   return getAvailableElementsWithDetails(Path, Username);
 }
@@ -518,24 +518,24 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDe
 // =====================================================================
 
 
-QString FluidHubAPIClient::getNews(const QString& Lang) const
+std::string FluidHubAPIClient::getNews(const std::string& Lang) const
 {
-  QString Content;
+  std::string Content;
 
   if (isConnected() && isCapable("news"))
   {
-    QString Path = "/news";
-
-    if (!Lang.isEmpty())
+    HTTPClient::Request Req;
+    Req.Path = "/news";
+    if (!Lang.empty())
     {
-      Path += "?lang="+Lang;
+      Req.Parameters.add("lang",Lang);
     }
 
-    RESTClient::Reply Reply = m_RESTClient.getResource(Path);
+    HTTPClient::Response Resp = m_RESTClient.getResource(Req);
 
-    if (Reply.isOK())
+    if (Resp.isOK())
     {
-      return Reply.getContent();
+      return Resp.Content;
     }
   }
 

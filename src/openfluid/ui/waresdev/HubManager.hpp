@@ -43,7 +43,7 @@
 #include <QApplication>
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/utilsq/FluidHubAPIClient.hpp>
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {

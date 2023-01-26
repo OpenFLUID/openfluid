@@ -42,7 +42,7 @@
 #include <QTextStream>
 #include <QDateTime>
 
-#include <openfluid/utilsq/FluidHubAPIClient.hpp>
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/config.hpp>
@@ -74,22 +74,20 @@ NewslineDownloadWorker::~NewslineDownloadWorker()
 
 bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const QString& ShortLocale) const
 {
-  openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
-  SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
   openfluid::utils::FluidHubAPIClient FHClient;
 
-  if (FHClient.connect(QString::fromStdString(openfluid::config::URL_OFFICIAL_API),SSLConfig))
+  if (FHClient.connect(openfluid::config::URL_OFFICIAL_API,false))
   {
-    QString Content = FHClient.getNews(ShortLocale);
+    auto Content = FHClient.getNews(ShortLocale.toStdString());
 
-    if (Content.isEmpty())
+    if (Content.empty())
     {
       Content = FHClient.getNews();
     }
 
     FHClient.disconnect();
 
-    if (!Content.isEmpty())
+    if (!Content.empty())
     {
       QFile RSSFile(RSSFilename);
 
@@ -100,10 +98,10 @@ bool NewslineDownloadWorker::donwloadRSSToFile(const QString& RSSFilename, const
 
       QTextStream OutFile(&RSSFile);
 
-      OutFile << QString::fromUtf8(Content.toStdString().c_str());
+      OutFile << QString::fromUtf8(Content.c_str());
     }
 
-    return !Content.isEmpty();
+    return !Content.empty();
   }
 
   return false;

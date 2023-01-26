@@ -48,12 +48,13 @@
 #include <QCoreApplication>
 #include <QString>
 #include <QDir>
+#include <QTextStream>
 
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/ui/waresdev/GitUIProxy.hpp>
-#include <openfluid/utilsq/FluidHubAPIClient.hpp>
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 
 #include "tests-config.hpp"
@@ -65,7 +66,7 @@ class F
 
     std::string TestPath;
 
-    QString NoValidCertUrl = QString::fromStdString(CONFIGTESTS_WARESHUB_URL_HTTPS);
+    std::string NoValidCertUrl = CONFIGTESTS_WARESHUB_URL_HTTPS;
 
   public:
 
@@ -127,7 +128,7 @@ class F
 
     bool checkWareshub(const std::string& TestName)
     {
-      if (F::NoValidCertUrl.isEmpty())
+      if (F::NoValidCertUrl.empty())
       {
         std::cout << "** Test not run due to empty wareshub https url ** (\"" << TestName << "\")" << std::endl;
         return false;
@@ -135,10 +136,7 @@ class F
 
       openfluid::utils::FluidHubAPIClient APICli;
 
-      openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
-      SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
-
-      if (!APICli.connect(F::NoValidCertUrl, SSLConfig))
+      if (!APICli.connect(F::NoValidCertUrl, false))
       {
         std::cout << "** Test not run due to failure of wareshub connection ** (\"" << TestName << "\")" << std::endl;
         return false;
