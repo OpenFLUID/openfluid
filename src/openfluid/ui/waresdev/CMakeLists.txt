@@ -78,11 +78,9 @@ TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       openfluid-ui-common
                       openfluid-waresdev
                       openfluid-utils
-                      openfluid-utilsq
                       openfluid-tools
                       Qt5::Core
                       Qt5::Widgets
-                      Qt5::Network
                      )
 
 

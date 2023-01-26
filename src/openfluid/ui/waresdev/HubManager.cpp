@@ -280,23 +280,18 @@ HubManager::HubConnectWorker::HubConnectWorker(HubManager* Parent) : mp_Parent(P
 
 bool HubManager::HubConnectWorker::run()
 {
-  openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
-  if (openfluid::base::PreferencesManager::instance()->isWaresdevGitSslNoVerify())
-  {
-    SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
-  }
-
-  bool OK = mp_Parent->mp_HubClient->connect(QString::fromStdString(mp_Parent->m_HubUrl), SSLConfig); 
+  bool OK = 
+    mp_Parent->mp_HubClient->connect(mp_Parent->m_HubUrl,
+                                     !openfluid::base::PreferencesManager::instance()->isWaresdevGitSslNoVerify()); 
   // TODO convert hub strings from QString to std
 
   for (const auto& ByType : mp_Parent->mp_HubClient->getAllAvailableWares())
   {
     mp_Parent->m_AvailableWaresDetailsByIDByType[ByType.first] = 
-      mp_Parent->mp_HubClient->getAvailableWaresWithDetails(ByType.first, 
-                                                            QString::fromStdString(mp_Parent->m_Username));
+      mp_Parent->mp_HubClient->getAvailableWaresWithDetails(ByType.first,mp_Parent->m_Username);
   }
   mp_Parent->m_AvailableFragmentsDetails = 
-    mp_Parent->mp_HubClient->getAvailableFragmentsWithDetails(QString::fromStdString(mp_Parent->m_Username));
+    mp_Parent->mp_HubClient->getAvailableFragmentsWithDetails(mp_Parent->m_Username);
 
   if (!OK)
   {

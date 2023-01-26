@@ -163,6 +163,7 @@ QString AboutDialog::generateBuildInfoText()
      { "TinyXML2", openfluid::config::BUILD_LIB_tinyxml2_VERSION },
      { "Boost", openfluid::config::BUILD_LIB_Boost_VERSION },
      { "GDAL", openfluid::config::BUILD_LIB_GDAL_VERSION },
+     { "libcurl", openfluid::config::BUILD_LIB_CURL_VERSION },
      { "Qt", openfluid::config::BUILD_LIB_QT_VERSION }
   };
 

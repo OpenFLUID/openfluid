@@ -10,7 +10,9 @@ See also the LICENSE and AUTHORS files included in the sources.
 
 ## OpenFLUID sources 
 
-[![CI](https://github.com/OpenFLUID/openfluid/actions/workflows/CI.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI.yaml)
+[![Ubuntu](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-ubuntu.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-ubuntu.yaml)
+[![macOs](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-macos.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-macos.yaml)
+[![Windows](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-windows.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-windows.yaml)
 
 
 The OpenFLUID source tree is organized as follows

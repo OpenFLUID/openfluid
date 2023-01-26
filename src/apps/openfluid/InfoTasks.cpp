@@ -91,6 +91,10 @@ void printInfoTxt(const openfluid::thirdparty::json& JSON, const std::string& Pr
       {
         std::cout << Element.value().get<std::string>();
       }
+      if (Element.value().is_boolean())
+      {
+        std::cout << (Element.value().get<bool>() ? "yes" : "no");
+      }
       else if (Element.value().is_array())
       {        
         std::cout << boost::algorithm::join(Element.value().get<std::vector<std::string>>(),",");
@@ -121,12 +125,17 @@ int InfoTasks::processInfo()
   JSON["build"]["compiler"]["id"] = openfluid::config::BUILD_COMPILER_ID;
   JSON["build"]["compiler"]["version"] = openfluid::config::BUILD_COMPILER_VERSION;
   JSON["build"]["compiler"]["flags"] = TmpFlags;
+  JSON["build"]["openfluid"]["ui"] = openfluid::config::BUILD_OPENFLUID_UI;
 
   JSON["dependencies"]["nlohmannjson"]["version"] = openfluid::config::BUILD_LIB_nlohmannjson_VERSION;
   JSON["dependencies"]["tinyxml2"]["version"] = openfluid::config::BUILD_LIB_tinyxml2_VERSION;
   JSON["dependencies"]["boost"]["version"] = openfluid::config::BUILD_LIB_Boost_VERSION;
   JSON["dependencies"]["gdal"]["version"] = openfluid::config::BUILD_LIB_GDAL_VERSION;
-  JSON["dependencies"]["qt"]["version"] = openfluid::config::BUILD_LIB_QT_VERSION;
+  JSON["dependencies"]["libcurl"]["version"] = openfluid::config::BUILD_LIB_CURL_VERSION;
+  if (openfluid::config::BUILD_OPENFLUID_UI)
+  {
+    JSON["dependencies"]["qt"]["version"] = openfluid::config::BUILD_LIB_QT_VERSION;
+  }
 
   JSON["paths"]["install_prefix"] = openfluid::base::Environment::getInstallPrefix();
   JSON["paths"]["input"] = openfluid::base::RunContextManager::instance()->getInputDir();

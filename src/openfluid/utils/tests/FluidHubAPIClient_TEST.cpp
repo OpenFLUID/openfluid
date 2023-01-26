@@ -47,9 +47,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <QCoreApplication>
-
-#include <openfluid/utilsq/FluidHubAPIClient.hpp>
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 
 #include "tests-config.hpp"
 
@@ -59,10 +57,10 @@ void endConnection(openfluid::utils::FluidHubAPIClient FHClient)
   FHClient.disconnect();
 
   BOOST_REQUIRE(!FHClient.isConnected());
-  BOOST_REQUIRE(FHClient.getHubStatus().isEmpty());
-  BOOST_REQUIRE(FHClient.getHubName().isEmpty());
-  BOOST_REQUIRE(FHClient.getHubURL().isEmpty());
-  BOOST_REQUIRE(FHClient.getHubAPIVersion().isEmpty());
+  BOOST_REQUIRE(FHClient.getHubStatus().empty());
+  BOOST_REQUIRE(FHClient.getHubName().empty());
+  BOOST_REQUIRE(FHClient.getHubURL().empty());
+  BOOST_REQUIRE(FHClient.getHubAPIVersion().empty());
   BOOST_REQUIRE(FHClient.getHubCapabilities().empty());
 }
 
@@ -71,20 +69,19 @@ void endConnection(openfluid::utils::FluidHubAPIClient FHClient)
 // =====================================================================
 
 
-void checkConnectionV0(const std::string& URL,
-                     const openfluid::utils::RESTClient::SSLConfiguration& SSLConfig)
+void checkConnectionV0(const std::string& URL)
 {
   openfluid::utils::FluidHubAPIClient FHClient;
-  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(URL),SSLConfig));
+  BOOST_REQUIRE(FHClient.connect(URL));
 
   BOOST_REQUIRE(FHClient.isConnected());
-  BOOST_REQUIRE_EQUAL(FHClient.getHubStatus().toStdString(),"testing");
-  BOOST_REQUIRE_EQUAL(FHClient.getHubName().toStdString(),"fluidhub for testing");
-  BOOST_REQUIRE_EQUAL(FHClient.getHubURL().toStdString(),URL);
-  BOOST_REQUIRE(!FHClient.getHubAPIVersion().isEmpty());
+  BOOST_REQUIRE_EQUAL(FHClient.getHubStatus(),"testing");
+  BOOST_REQUIRE_EQUAL(FHClient.getHubName(),"fluidhub for testing");
+  BOOST_REQUIRE_EQUAL(FHClient.getHubURL(),URL);
+  BOOST_REQUIRE(!FHClient.getHubAPIVersion().empty());
   BOOST_REQUIRE_EQUAL(FHClient.getHubCapabilities().size(),2);
 
-  std::set<QString> Capabilities = FHClient.getHubCapabilities();
+  std::set<std::string> Capabilities = FHClient.getHubCapabilities();
   BOOST_REQUIRE(Capabilities.find("news") != Capabilities.end());
   BOOST_REQUIRE(Capabilities.find("wareshub") != Capabilities. end());
   BOOST_REQUIRE(Capabilities.find("nonsense") == Capabilities.end());
@@ -97,20 +94,19 @@ void checkConnectionV0(const std::string& URL,
 // =====================================================================
 
 
-void checkConnectionV1(const std::string& URL,
-                     const openfluid::utils::RESTClient::SSLConfiguration& SSLConfig)
+void checkConnectionV1(const std::string& URL)
 {
   openfluid::utils::FluidHubAPIClient FHClient;
-  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(URL),SSLConfig));
+  BOOST_REQUIRE(FHClient.connect(URL));
 
   BOOST_REQUIRE(FHClient.isConnected());
-  BOOST_REQUIRE_EQUAL(FHClient.getHubStatus().toStdString(),"testing");
-  BOOST_REQUIRE_EQUAL(FHClient.getHubName().toStdString(),"FLUIDhub_TESTING");
-  BOOST_REQUIRE_EQUAL(FHClient.getHubURL().toStdString(),URL);
-  BOOST_REQUIRE(!FHClient.getHubAPIVersion().isEmpty());
+  BOOST_REQUIRE_EQUAL(FHClient.getHubStatus(),"testing");
+  BOOST_REQUIRE_EQUAL(FHClient.getHubName(),"FLUIDhub_TESTING");
+  BOOST_REQUIRE_EQUAL(FHClient.getHubURL(),URL);
+  BOOST_REQUIRE(!FHClient.getHubAPIVersion().empty());
   BOOST_REQUIRE_EQUAL(FHClient.getHubCapabilities().size(),3);
 
-  std::set<QString> Capabilities = FHClient.getHubCapabilities();
+  std::set<std::string> Capabilities = FHClient.getHubCapabilities();
   BOOST_REQUIRE(Capabilities.find("datasets") != Capabilities. end());
   BOOST_REQUIRE(Capabilities.find("nonsense") == Capabilities.end());
 
@@ -122,13 +118,11 @@ void checkConnectionV1(const std::string& URL,
 // =====================================================================
 
 
-void checkOperations(const std::string& URL,
-                     const openfluid::utils::RESTClient::SSLConfiguration& SSLConfig, 
-                     bool CheckNews=true)
+void checkOperations(const std::string& URL, bool CheckNews=true)
 {
   openfluid::utils::FluidHubAPIClient FHClient;
 
-  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(URL),SSLConfig));
+  BOOST_REQUIRE(FHClient.connect(URL));
   BOOST_REQUIRE(FHClient.isConnected());
 
 {
@@ -329,14 +323,14 @@ void checkOperations(const std::string& URL,
   {
     // News
 
-    QString NewsContent = FHClient.getNews();
-    BOOST_REQUIRE(!NewsContent.isEmpty());
+    std::string NewsContent = FHClient.getNews();
+    BOOST_REQUIRE(!NewsContent.empty());
 
     NewsContent = FHClient.getNews("fr");
-    BOOST_REQUIRE(!NewsContent.isEmpty());
+    BOOST_REQUIRE(!NewsContent.empty());
 
     NewsContent = FHClient.getNews("grd");
-    BOOST_REQUIRE(NewsContent.isEmpty());
+    BOOST_REQUIRE(NewsContent.empty());
 
   }
 
@@ -345,7 +339,7 @@ void checkOperations(const std::string& URL,
   BOOST_REQUIRE(!FHClient.isConnected());
 
 
-  BOOST_REQUIRE(FHClient.connect(QString::fromStdString(URL),SSLConfig));
+  BOOST_REQUIRE(FHClient.connect(URL));
   BOOST_REQUIRE(FHClient.isConnected());
 
 
@@ -384,34 +378,26 @@ void checkClientFromUrl(int version, bool IsHttps=false)
     return;
   }
 
-  openfluid::utils::RESTClient::SSLConfiguration SSLConfig;
-  if (IsHttps)
-  {
-    SSLConfig.setCertificateVerifyMode(QSslSocket::VerifyNone);
-  }
 
   if (!FLUIDHUB_URL.empty())
   {
     std::cout << " ======== " << FLUIDHUB_URL << " ========" << std::endl;
 
-    openfluid::utils::RESTClient Client;
-    Client.setBaseURL(QString::fromStdString(FLUIDHUB_URL));
-    if (IsHttps)
-    {
-      Client.setSSLConfiguration(SSLConfig);
-    }
+    openfluid::utils::HTTPClient Client;
+    Client.setBaseURL(FLUIDHUB_URL);
+    Client.setCertificateVerify(false);
 
-    if (Client.getResource("/").isOK())
+    if (Client.getResource({.Path="/"}).isOK())
     {
       if (version == 0)
       {
-        checkConnectionV0(FLUIDHUB_URL,openfluid::utils::RESTClient::SSLConfiguration());
-        checkOperations(FLUIDHUB_URL,openfluid::utils::RESTClient::SSLConfiguration(), true);
+        checkConnectionV0(FLUIDHUB_URL);
+        checkOperations(FLUIDHUB_URL,true);
       }
       else if (version == 1)
       {
-        checkConnectionV1(FLUIDHUB_URL,openfluid::utils::RESTClient::SSLConfiguration());
-        checkOperations(FLUIDHUB_URL,openfluid::utils::RESTClient::SSLConfiguration(), false);
+        checkConnectionV1(FLUIDHUB_URL);
+        checkOperations(FLUIDHUB_URL,false);
       }
       else
       {
@@ -526,8 +512,6 @@ int main(int argc, char *argv[])
     return CONFIGTESTS_SKIP_CODE;
   }
 
-  QCoreApplication app(argc, argv);
-
   bool ConnectionFound = true;
 
   if (CONFIGTESTS_FLUIDHUB_V0_URL_HTTP.empty())
@@ -543,21 +527,21 @@ int main(int argc, char *argv[])
   }
 
 
-  openfluid::utils::RESTClient ClientV0;
-  ClientV0.setBaseURL(QString::fromStdString(CONFIGTESTS_FLUIDHUB_V0_URL_HTTP));
+  openfluid::utils::HTTPClient ClientV0;
+  ClientV0.setBaseURL(CONFIGTESTS_FLUIDHUB_V0_URL_HTTP);
   std::cout << CONFIGTESTS_FLUIDHUB_V0_URL_HTTP << std::endl;
 
-  if (ConnectionFound && !ClientV0.getResource("/").isOK())
+  if (ConnectionFound && !ClientV0.getResource({.Path="/"}).isOK())
   {
     std::cout << "** Test for V0 not run due to failing connection to remote service **" << std::endl;
     ConnectionFound = false;
   }
 
-  openfluid::utils::RESTClient ClientV1;
-  ClientV1.setBaseURL(QString::fromStdString(CONFIGTESTS_FLUIDHUB_V1_URL_HTTP));
+  openfluid::utils::HTTPClient ClientV1;
+  ClientV1.setBaseURL(CONFIGTESTS_FLUIDHUB_V1_URL_HTTP);
   std::cout << CONFIGTESTS_FLUIDHUB_V1_URL_HTTP << std::endl;
 
-  if (ConnectionFound && !ClientV1.getResource("/").isOK())
+  if (ConnectionFound && !ClientV1.getResource({.Path="/"}).isOK())
   {
     std::cout << "** Test for V1 not run due to failing connection to remote service **" << std::endl;
     ConnectionFound = false;

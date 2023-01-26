@@ -1,4 +1,5 @@
-INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR})
+
+INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR} ${CURL_INCLUDE_DIRS})
 
 # Hack for boost::process on Windows/MinGW only
 IF(MINGW)
@@ -11,6 +12,7 @@ ENDIF()
 
 SET(OPENFLUID_UTILS_CPP GDALHelpers.cpp
                         Process.cpp
+                        HTTPClient.cpp FluidHubAPIClient.cpp
                         ExternalProgram.cpp 
                         CMakeProxy.cpp GitProxy.cpp GrassGISProxy.cpp
                         )
@@ -20,9 +22,11 @@ SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMach
                         KillableSingleton.hpp MeyerSingleton.hpp SingletonMacros.hpp
                         CppLangHelpers.hpp
                         Process.hpp
+                        HTTPClient.hpp FluidHubAPIClient.hpp
                         ExternalProgram.hpp
                         ProgramProxy.hpp CMakeProxy.hpp GitProxy.hpp GrassGISProxy.hpp
-                        CommandLineParser.hpp)
+                        CommandLineParser.hpp
+                        )
 
 
 ADD_LIBRARY(openfluid-utils SHARED ${OPENFLUID_UTILS_CPP} ${OPENFLUID_UTILS_HPP})
@@ -32,7 +36,6 @@ SET_TARGET_PROPERTIES(openfluid-utils PROPERTIES VERSION "${OPENFLUID_VERSION_MA
                                         LIBRARY_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
                                         RUNTIME_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${OFBUILD_DIST_LIB_DIR}"
-                                        AUTOMOC ON
                                         COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
@@ -40,6 +43,7 @@ TARGET_LINK_LIBRARIES(openfluid-utils
                       openfluid-base
                       openfluid-tools
                       ${GDAL_LIBRARIES}
+                      ${CURL_LIBRARIES}
                       Boost::boost 
                       $<$<BOOL:${MINGW}>:Boost::filesystem> $<$<BOOL:${MINGW}>:ws2_32> # MinGW hack
                       )
