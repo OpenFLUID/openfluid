@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __OPENFLUID_UTILSQ_QTHELPERS_HPP__
-#define __OPENFLUID_UTILSQ_QTHELPERS_HPP__
+#ifndef __OPENFLUID_UI_QTHELPERS_HPP__
+#define __OPENFLUID_UI_QTHELPERS_HPP__
 
 
 #include <string>
@@ -59,7 +59,7 @@
 #include <openfluid/core/DateTime.hpp>
 
 
-namespace openfluid { namespace utils {
+namespace openfluid { namespace ui {
 
 
 /**
@@ -404,4 +404,4 @@ inline std::string fromQSize(const QSize& Size)
 } } // namespaces
 
 
-#endif /* __OPENFLUID_UTILSQ_QTHELPERS_HPP__ */
+#endif /* __OPENFLUID_UI_QTHELPERS_HPP__ */

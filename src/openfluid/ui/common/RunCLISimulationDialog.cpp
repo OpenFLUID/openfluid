@@ -47,7 +47,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
 #include "ui_RunCLISimulationDialog.h"
@@ -144,13 +144,13 @@ void RunCLISimulationDialog::showEvent(QShowEvent* event)
   auto ExtraSimPaths = openfluid::base::Environment::getExtraSimulatorsDirs();
   if (!ExtraSimPaths.empty())
   {
-    Args << QString("--simulators-paths=%1").arg(openfluid::utils::toQStringList(ExtraSimPaths).join(PathsSep));
+    Args << QString("--simulators-paths=%1").arg(openfluid::ui::toQStringList(ExtraSimPaths).join(PathsSep));
   }
 
   auto ExtraObsPaths = openfluid::base::Environment::getExtraObserversDirs();
   if (!ExtraObsPaths.empty())
   {
-    Args << QString("--observers-paths=%1").arg(openfluid::utils::toQStringList(ExtraObsPaths).join(PathsSep));
+    Args << QString("--observers-paths=%1").arg(openfluid::ui::toQStringList(ExtraObsPaths).join(PathsSep));
   }
 
 

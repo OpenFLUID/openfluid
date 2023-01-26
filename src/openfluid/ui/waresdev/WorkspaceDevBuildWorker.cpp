@@ -44,7 +44,7 @@
 #include <openfluid/ui/waresdev/WorkspaceDevBuildWorker.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -99,14 +99,14 @@ void WorkspaceDevBuildWorker::run()
       Container.prepareBuildDirectory();
 
       QStringList ExtraOptionsList = 
-        openfluid::utils::convertArgsStringToList(QString::fromStdString(Container.getConfigureExtraOptions()));
+        openfluid::ui::convertArgsStringToList(QString::fromStdString(Container.getConfigureExtraOptions()));
 
       auto ConfigCommand = 
       openfluid::utils::CMakeProxy::getConfigureCommand(Container.getBuildDirPath(),
                                                         Container.getAbsolutePath(),
                                                         Container.getConfigureVariables(),
                                                         Container.getConfigureGenerator(),
-                                                        openfluid::utils::toStdStringVector(ExtraOptionsList));
+                                                        openfluid::ui::toStdStringVector(ExtraOptionsList));
 
       writeMessage();
       writeMessage("====== "+tr("Configuring %1").arg(WItem.ID)+" ======");
@@ -114,7 +114,7 @@ void WorkspaceDevBuildWorker::run()
 
 
       mp_Process->start(QString::fromStdString(ConfigCommand.Program),
-                        openfluid::utils::toQStringList(ConfigCommand.Args));
+                        openfluid::ui::toQStringList(ConfigCommand.Args));
 
       mp_Process->waitForStarted(-1);
       mp_Process->waitForReadyRead(-1);
@@ -141,7 +141,7 @@ void WorkspaceDevBuildWorker::run()
                                                           Container.getBuildJobs());
 
           mp_Process->start(QString::fromStdString(BuildCommand.Program),
-                            openfluid::utils::toQStringList(BuildCommand.Args));
+                            openfluid::ui::toQStringList(BuildCommand.Args));
 
           mp_Process->waitForStarted(-1);
           mp_Process->waitForReadyRead(-1);
@@ -169,7 +169,7 @@ void WorkspaceDevBuildWorker::run()
                                                           Container.getGenerateDocTarget());
 
           mp_Process->start(QString::fromStdString(DocCommand.Program),
-                            openfluid::utils::toQStringList(DocCommand.Args));
+                            openfluid::ui::toQStringList(DocCommand.Args));
 
           mp_Process->waitForStarted(-1);
           mp_Process->waitForReadyRead(-1);

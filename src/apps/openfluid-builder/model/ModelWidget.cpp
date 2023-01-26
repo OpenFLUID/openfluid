@@ -44,7 +44,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/machine/SimulatorRegistry.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "ui_WaresManagementWidget.h"
@@ -304,7 +304,7 @@ void ModelWidget::updateGlobalParams()
 void ModelWidget::addSimulator()
 {
 
-  QStringList SimList = openfluid::utils::toQStringList(m_Model.getOrderedIDs());
+  QStringList SimList = openfluid::ui::toQStringList(m_Model.getOrderedIDs());
 
   AddSimulatorDialog AddSimDlg(SimList,this);
 

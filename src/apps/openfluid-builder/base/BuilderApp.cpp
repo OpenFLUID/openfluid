@@ -48,7 +48,7 @@
 #include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 
 #include "BuilderApp.hpp"
 #include "ExtensionsRegistry.hpp"
@@ -102,19 +102,19 @@ void BuilderApp::initialize()
 
   mp_Splash->setMessage(tr("Initializing wares paths"));
 
-  QStringList ExtraPaths = openfluid::utils::toQStringList(PrefsMgr->getBuilderExtraSimulatorsPaths());
+  QStringList ExtraPaths = openfluid::ui::toQStringList(PrefsMgr->getBuilderExtraSimulatorsPaths());
   for (int i=0;i<ExtraPaths.size(); i++)
   {
     openfluid::base::Environment::addExtraSimulatorsDirs(ExtraPaths[i].toStdString());
   }
 
-  ExtraPaths = openfluid::utils::toQStringList(PrefsMgr->getBuilderExtraObserversPaths());
+  ExtraPaths = openfluid::ui::toQStringList(PrefsMgr->getBuilderExtraObserversPaths());
   for (int i=0;i<ExtraPaths.size(); i++)
   {
     openfluid::base::Environment::addExtraObserversDirs(ExtraPaths[i].toStdString());
   }
 
-  ExtraPaths = openfluid::utils::toQStringList(PrefsMgr->getBuilderExtraExtensionsPaths());
+  ExtraPaths = openfluid::ui::toQStringList(PrefsMgr->getBuilderExtraExtensionsPaths());
   for (int i=0;i<ExtraPaths.size(); i++)
   {
     openfluid::base::Environment::addExtraBuilderextsDirs(ExtraPaths[i].toStdString());

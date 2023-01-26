@@ -55,7 +55,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
 #include "tests-config.hpp"
@@ -366,7 +366,7 @@ BOOST_FIXTURE_TEST_CASE(PkgExport,F)
         OutOfwdpPath.toStdString(),OutOfwdpDir.absoluteFilePath("my_package.ofwdp").toStdString(),"z");
 
   BOOST_CHECK(!QProcess::execute(QString::fromStdString(Command.Program),
-                                 openfluid::utils::toQStringList(Command.Args)));
+                                 openfluid::ui::toQStringList(Command.Args)));
 
   QStringList FilesInPackage = OutOfwdpDir.entryList(QDir::NoDotAndDotDot | QDir::Files);
   BOOST_CHECK(FilesInPackage.contains("ofwdp.conf"));

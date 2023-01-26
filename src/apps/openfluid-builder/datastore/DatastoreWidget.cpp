@@ -46,7 +46,7 @@
 #include <QDir>
 #include <QMessageBox>
 
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/utils/GDALCompatibility.hpp>
@@ -149,7 +149,7 @@ void DatastoreWidget::refresh()
 
 void DatastoreWidget::addItem()
 {
-  AddDatastoreItemDialog AddItemDlg(openfluid::utils::toQStringList(m_Datastore.getItemsIDs()),this);
+  AddDatastoreItemDialog AddItemDlg(openfluid::ui::toQStringList(m_Datastore.getItemsIDs()),this);
 
   if (AddItemDlg.exec() == QDialog::Accepted)
   {

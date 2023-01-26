@@ -45,7 +45,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -124,7 +124,7 @@ void WaresDevPackage::createAndLauchProcess(const openfluid::utils::Process::Com
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
 
-  mp_Process->start(QString::fromStdString(Cmd.Program),openfluid::utils::toQStringList(Cmd.Args));
+  mp_Process->start(QString::fromStdString(Cmd.Program),openfluid::ui::toQStringList(Cmd.Args));
 
   mp_Process->waitForFinished(-1);
   mp_Process->waitForReadyRead(-1);
@@ -297,7 +297,7 @@ void WaresDevExportPackage::compress()
   openfluid::utils::Process::Command Cmd = 
     openfluid::utils::CMakeProxy::getTarCompressCommand(WaresdevPath.toStdString(),
                                                         m_PackageFilePath.toStdString(),
-                                                        openfluid::utils::toStdStringVector(RelativePathsToExport),
+                                                        openfluid::ui::toStdStringVector(RelativePathsToExport),
                                                         "vz");
 
   QDir::setCurrent(WaresdevPath);

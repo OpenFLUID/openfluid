@@ -54,7 +54,7 @@
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/GhostsHelpers.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 
 #include "ProjectModuleWidget.hpp"
@@ -211,8 +211,8 @@ void ProjectModuleWidget::updateWaresWatchersPaths()
 
   if (openfluid::base::PreferencesManager::instance()->isBuilderWaresWatchersActive())
   {
-    Paths << openfluid::utils::toQStringList(openfluid::base::Environment::getSimulatorsDirs())
-          << openfluid::utils::toQStringList(openfluid::base::Environment::getExtraSimulatorsDirs());
+    Paths << openfluid::ui::toQStringList(openfluid::base::Environment::getSimulatorsDirs())
+          << openfluid::ui::toQStringList(openfluid::base::Environment::getExtraSimulatorsDirs());
 
     Paths.removeDuplicates();
 
@@ -238,8 +238,8 @@ void ProjectModuleWidget::updateWaresWatchersPaths()
   if (openfluid::base::PreferencesManager::instance()->isBuilderWaresWatchersActive())
   {
 
-    Paths << openfluid::utils::toQStringList(openfluid::base::Environment::getObserversDirs())
-          << openfluid::utils::toQStringList(openfluid::base::Environment::getExtraObserversDirs());
+    Paths << openfluid::ui::toQStringList(openfluid::base::Environment::getObserversDirs())
+          << openfluid::ui::toQStringList(openfluid::base::Environment::getExtraObserversDirs());
 
     Paths.removeDuplicates();
 

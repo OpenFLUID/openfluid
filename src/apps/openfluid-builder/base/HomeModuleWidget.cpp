@@ -41,7 +41,6 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 

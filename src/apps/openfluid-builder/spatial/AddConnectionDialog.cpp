@@ -39,7 +39,7 @@
 
 #include <QPushButton>
 
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 
 #include "ui_AddConnectionDialog.h"
@@ -63,7 +63,7 @@ AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString&
   ui->ConnectionComboBox->addItem(tr("as parent of"),static_cast<int>(ConnectionCode::BUILDER_CONNCODE_PARENTOF));
   ui->ConnectionComboBox->addItem(tr("as child of"),static_cast<int>(ConnectionCode::BUILDER_CONNCODE_CHILDOF));
 
-  QStringList Classes = openfluid::utils::toQStringList(mp_Domain->getClassNames());
+  QStringList Classes = openfluid::ui::toQStringList(mp_Domain->getClassNames());
 
   for (QString ClassName : Classes)
   {
@@ -124,7 +124,7 @@ void AddConnectionDialog::updateDestIDs()
   QString ClassName = ui->DestClassComboBox->currentText();
   if (m_ClassID[ClassName].isEmpty())
   {
-    m_ClassID[ClassName] = openfluid::utils::toQStringList(mp_Domain->getIDsOfClass(ClassName.toStdString()));
+    m_ClassID[ClassName] = openfluid::ui::toQStringList(mp_Domain->getIDsOfClass(ClassName.toStdString()));
   }
 
   ui->DestIDComboBox->clear();

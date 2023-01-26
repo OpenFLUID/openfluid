@@ -44,7 +44,7 @@
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
@@ -228,7 +228,7 @@ void PreferencesDialog::initialize()
 {
   // Interface language
   QStringList AvailLangCodes = 
-    openfluid::utils::toQStringList(openfluid::base::PreferencesManager::getAvailableUILanguages());
+    openfluid::ui::toQStringList(openfluid::base::PreferencesManager::getAvailableUILanguages());
 
   ui->LangComboBox->addItem(getLanguageAsPrettyString("en_GB"),"default");
   for (auto Code : AvailLangCodes)
@@ -243,7 +243,7 @@ void PreferencesDialog::initialize()
  
 
   // Workspaces paths
-  ui->WorkspacesPathsWidget->setPathsList(openfluid::utils::toQStringList(mp_PrefsMan->getWorkspacesPaths()));
+  ui->WorkspacesPathsWidget->setPathsList(openfluid::ui::toQStringList(mp_PrefsMan->getWorkspacesPaths()));
 
   m_OriginalActiveWorkspace = QString::fromStdString(mp_PrefsMan->getCurrentWorkspacePath());
 
@@ -252,16 +252,16 @@ void PreferencesDialog::initialize()
   {
     // Wares search paths
     ui->SimulatorsSearchPathsWidget->initialize(
-      openfluid::utils::toQStringList(mp_PrefsMan->getBuilderExtraSimulatorsPaths()),
-      openfluid::utils::toQStringList(openfluid::base::Environment::getDefaultSimulatorsDirs())
+      openfluid::ui::toQStringList(mp_PrefsMan->getBuilderExtraSimulatorsPaths()),
+      openfluid::ui::toQStringList(openfluid::base::Environment::getDefaultSimulatorsDirs())
     );
     ui->ObserversSearchPathsWidget->initialize(
-      openfluid::utils::toQStringList(mp_PrefsMan->getBuilderExtraObserversPaths()),
-      openfluid::utils::toQStringList(openfluid::base::Environment::getDefaultObserversDirs())
+      openfluid::ui::toQStringList(mp_PrefsMan->getBuilderExtraObserversPaths()),
+      openfluid::ui::toQStringList(openfluid::base::Environment::getDefaultObserversDirs())
     );
     ui->BuilderextsSearchPathsWidget->initialize(
-      openfluid::utils::toQStringList(mp_PrefsMan->getBuilderExtraExtensionsPaths()),
-      openfluid::utils::toQStringList(openfluid::base::Environment::getDefaultBuilderextsDirs())
+      openfluid::ui::toQStringList(mp_PrefsMan->getBuilderExtraExtensionsPaths()),
+      openfluid::ui::toQStringList(openfluid::base::Environment::getDefaultBuilderextsDirs())
     );
 
     // interface
@@ -576,7 +576,7 @@ void PreferencesDialog::intializeTextEditorSettings()
   for(const auto& R: Rules)
   {
     QString StyleName = QString::fromStdString(R.first);
-    QStringList Decorations = openfluid::utils::toQStringList(R.second.Decoration);
+    QStringList Decorations = openfluid::ui::toQStringList(R.second.Decoration);
     QString ColorName = QString::fromStdString(R.second.Color);
 
     QLabel* Label = new QLabel(StyleName,this);
@@ -711,7 +711,7 @@ void PreferencesDialog::changeSyntaxElementDecoration(int ElementRow)
   mp_PrefsMan->setWaresdevSyntaxHighlightingRules(Rules);
 
   updateSyntaxElementLabel(StyleNameLabel,
-                           openfluid::utils::toQStringList(Decorations),QString::fromStdString(ColorName));
+                           openfluid::ui::toQStringList(Decorations),QString::fromStdString(ColorName));
 
   QToolButton* ColorButton = qobject_cast<QToolButton*>(
       ui->SyntaxGridLayout->itemAtPosition(ElementRow, m_Formats.size() + 1)->widget());
@@ -754,7 +754,7 @@ void PreferencesDialog::changeSyntaxElementColor(int ElementRow)
 void PreferencesDialog::processSimUserPathsUpdate()
 {
   mp_PrefsMan->setBuilderExtraSimulatorsPaths(
-    openfluid::utils::toStdStringVector(ui->SimulatorsSearchPathsWidget->getUserPaths())
+    openfluid::ui::toStdStringVector(ui->SimulatorsSearchPathsWidget->getUserPaths())
   );
   m_SimPathsChanged = true;
 }
@@ -767,7 +767,7 @@ void PreferencesDialog::processSimUserPathsUpdate()
 void PreferencesDialog::processObsUserPathsUpdate()
 {
   mp_PrefsMan->setBuilderExtraObserversPaths(
-    openfluid::utils::toStdStringVector(ui->ObserversSearchPathsWidget->getUserPaths())
+    openfluid::ui::toStdStringVector(ui->ObserversSearchPathsWidget->getUserPaths())
   );
   m_ObsPathsChanged = true;
 }
@@ -780,7 +780,7 @@ void PreferencesDialog::processObsUserPathsUpdate()
 void PreferencesDialog::processBextUserPathsUpdate()
 {
   mp_PrefsMan->setBuilderExtraExtensionsPaths(
-    openfluid::utils::toStdStringVector(ui->BuilderextsSearchPathsWidget->getUserPaths())
+    openfluid::ui::toStdStringVector(ui->BuilderextsSearchPathsWidget->getUserPaths())
   );
 }
 
@@ -791,7 +791,7 @@ void PreferencesDialog::processBextUserPathsUpdate()
 
 void PreferencesDialog::processWorkspacesPathsUpdate()
 {
-  mp_PrefsMan->setWorkspacesPaths(openfluid::utils::toStdStringVector(ui->WorkspacesPathsWidget->getPathsList()));
+  mp_PrefsMan->setWorkspacesPaths(openfluid::ui::toStdStringVector(ui->WorkspacesPathsWidget->getPathsList()));
   updateRestartStatus();
 }
 

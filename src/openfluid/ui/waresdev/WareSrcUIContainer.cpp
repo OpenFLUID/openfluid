@@ -41,7 +41,7 @@
 
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/OStreamMsgStream.hpp>
 
@@ -206,12 +206,12 @@ void WareSrcUIContainer::configure()
   // === build and run command
 
   QStringList ExtraOptionsList = 
-      openfluid::utils::convertArgsStringToList(QString::fromStdString(getConfigureExtraOptions()));
+      openfluid::ui::convertArgsStringToList(QString::fromStdString(getConfigureExtraOptions()));
 
   openfluid::utils::Process::Command Cmd = 
     openfluid::utils::CMakeProxy::getConfigureCommand(m_BuildDirPath,getAbsolutePath(),
                                                       getConfigureVariables(),getConfigureGenerator(),
-                                                      openfluid::utils::toStdStringVector(ExtraOptionsList));
+                                                      openfluid::ui::toStdStringVector(ExtraOptionsList));
 
   runCommand(Cmd, getConfigureEnvironment(), WareSrcProcess::Type::CONFIGURE);
 }
@@ -317,7 +317,7 @@ void WareSrcUIContainer::runCommand(const openfluid::utils::Process::Command& Cm
   mp_Stream->write(CommandMessage);
 
   mp_Process->setProcessEnvironment(Env);
-  mp_Process->start(QString::fromStdString(Cmd.Program),openfluid::utils::toQStringList(Cmd.Args));
+  mp_Process->start(QString::fromStdString(Cmd.Program),openfluid::ui::toQStringList(Cmd.Args));
 }
 
 

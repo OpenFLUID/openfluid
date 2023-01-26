@@ -49,7 +49,7 @@
 #include <openfluid/buildinfo.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
-#include <openfluid/utilsq/QtHelpers.hpp>
+#include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
 
 #include "ui_AboutDialog.h"
@@ -203,7 +203,7 @@ QString AboutDialog::quickndirtyMardown2HTML(const QString& Content)
   
   for (auto& Line : SourceLines)
   {
-    Line = openfluid::utils::escapeXMLEntities(Line);
+    Line = openfluid::ui::escapeXMLEntities(Line);
 
     if (Line.startsWith("### "))
     {
