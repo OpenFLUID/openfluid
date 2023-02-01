@@ -805,7 +805,12 @@ QString WareSrcWidget::saveAs(const QString& TopDirectory)
 
 void WareSrcWidget::newFile()
 {
-  openfluid::ui::common::createNewFile(this,QString::fromStdString(m_Container.getAbsolutePath()));
+  const auto FilePath = openfluid::ui::common::createNewFile(this,
+                                                             QString::fromStdString(m_Container.getAbsolutePath()));
+  if (!FilePath.isEmpty())
+  {
+    openFileTab(openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(FilePath.toStdString()));
+  }
 }
 
 

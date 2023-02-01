@@ -1280,7 +1280,8 @@ void WareSrcWidgetCollection::closeEditor(const QString& FilePath)
 void WareSrcWidgetCollection::closeEditorsInFolderFromWare(const QString& WarePath, const QString& FolderPath,
                                                            const bool Confirm)
 {
-  // Can not deduce safely ware path when not based on an explicit file
+  // Can not deduce safely ware path when not based on an explicit file (true here but not in waresrcexplorer)
+  // FIXME investigate why context not deducted here
 
   QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
   if (it != m_WareSrcWidgetByPath.end())

@@ -47,6 +47,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 
+#include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
@@ -118,14 +119,19 @@ void WareSrcExplorer::configure(const QString& TopDirectoryPath, bool WithContex
 
 void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 {
+  bool IsValid = currentIndex().isValid();
+  bool IsDir = mp_Model->isDir(currentIndex());
+
   QMenu Menu;
 
   Menu.addAction(tr("New file"), this, SLOT(onNewFileAsked()));
   Menu.addAction(tr("New folder"), this, SLOT(onNewFolderAsked()));
   QMenu FragmentMenu;
+  bool IsRemoveFragment = false;
   if (currentIndex().isValid() && mp_Model->isFragment(currentIndex()))
   {
     Menu.addAction(tr("Remove this fragment"), this, SLOT(onFragmentRemovalAsked()));
+    IsRemoveFragment = true;
   }
   else
   {
@@ -137,11 +143,24 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   Menu.addSeparator();
 
-  Menu.addAction(tr("Delete ware"), this, SIGNAL(deleteWareAsked()));
-  QAction* DeleteFileAction = Menu.addAction(tr("Delete file"), this, SLOT(onDeleteFileAsked()));
-  if (currentIndex().isValid() && mp_Model->isDir(currentIndex()))
+  if (IsValid)
   {
-    DeleteFileAction->setEnabled(false);
+    if (IsDir)
+    {
+      if (getCurrentPath().toStdString() == 
+          openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(getCurrentPath().toStdString()).AbsoluteWarePath) 
+      {
+        Menu.addAction(tr("Delete ware"), this, SIGNAL(deleteWareAsked()));
+      }
+      else if (!IsRemoveFragment)  // "delete folder" is hidden when "remove this fragment" already there
+      {
+        Menu.addAction(tr("Delete folder"), this, SLOT(onDeleteFolderAsked()));
+      }
+    }
+    else
+    {
+      Menu.addAction(tr("Delete file"), this, SLOT(onDeleteFileAsked()));
+    }
   }
 
   Menu.addSeparator();
@@ -158,7 +177,7 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   std::list<openfluid::base::PreferencesManager::ExternalTool_t> ExternalTools; 
   openfluid::base::PreferencesManager::ExternalToolContext ExternalToolsCtxt;
 
-  if (currentIndex().isValid() && mp_Model->isDir(currentIndex()))
+  if (IsValid && IsDir)
   {
     ExternalToolsCtxt = openfluid::base::PreferencesManager::ExternalToolContext::WARE;
   }
@@ -379,9 +398,13 @@ void WareSrcExplorer::onNewFileAsked()
   auto PInfo = 
     openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(mp_Model->filePath(currentIndex()).toStdString());
 
-  const auto FilePath = openfluid::ui::common::createNewFile(this,QString::fromStdString(PInfo.AbsoluteWarePath));
+  const auto FilePath = openfluid::ui::common::createNewFile(this,
+                                                             mp_Model->filePath(currentIndex()));
 
-  emit fileOpeningAsked(FilePath);
+  if (!FilePath.isEmpty())
+  {
+    emit fileOpeningAsked(FilePath);
+  }
 }
 
 
@@ -397,16 +420,33 @@ void WareSrcExplorer::onNewFolderAsked()
   }
 
   QString CurrentPath = mp_Model->filePath(currentIndex());
+  QFileInfo CurrentFileInfo(CurrentPath);
+  QString FocusDirPath;
+  if (CurrentFileInfo.isDir())
+  {
+    FocusDirPath = CurrentPath;
+  }
+  else
+  {
+    // Looks for the parent folder if given index is a file
+    FocusDirPath = CurrentFileInfo.absoluteDir().absolutePath();
+  }
 
   QString WarePath = 
     QString::fromStdString(
       openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
     );
 
-  QString NewPath = WareExplorerDialog::getCreateFolderPath(this, WarePath, CurrentPath);
-  if (!NewPath.isEmpty())
+  bool OK;
+  QString NewPath = QInputDialog::getText(this, tr("Add a folder"),
+                                          tr("Folder name:"),
+                                          QLineEdit::Normal,
+                                          "",
+                                          &OK);
+
+  if (OK && !NewPath.isEmpty())
   {
-    QDir(WarePath).mkdir(NewPath);
+    QDir(FocusDirPath).mkdir(NewPath);
     setCurrentPath(NewPath);
   }
 }
@@ -435,7 +475,8 @@ void WareSrcExplorer::onNewFragmentAsked()
       openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
     );
 
-  openfluid::ui::waresdev::FragmentCreationDialog Dialog(this, WarePath);
+  openfluid::ui::waresdev::FragmentCreationDialog Dialog(this, WarePath); 
+  //TOIMPL fix responsibility here: file opening should be done here, not in dialog
 
   connect(&Dialog, SIGNAL(fileOpeningAsked(const QString&)), 
           this, SIGNAL(fileOpeningAsked(const QString&)));
@@ -542,6 +583,51 @@ void WareSrcExplorer::onFragmentRemovalAsked()
 // =====================================================================
 
 
+void WareSrcExplorer::onDeleteFolderAsked()
+{
+  if (!currentIndex().isValid())
+  {
+    return;
+  }
+
+  QString CurrentPath = mp_Model->filePath(currentIndex());
+
+  if (QMessageBox::warning(this, tr("Delete folder"), 
+        tr("Are you sure you want to delete \"%1\"?\n"
+        "Any open file of the folder will be closed and deleted, even unsaved ones.").arg(CurrentPath),
+        QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+  {
+    return;
+  }
+
+
+  openfluid::waresdev::WareSrcEnquirer::WarePathInfo WareInfo = 
+    openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString());
+  QString WarePath = QString::fromStdString(WareInfo.AbsoluteWarePath);
+
+  // Ensure that current path is in the current workspace
+  if (!openfluid::tools::Path(openfluid::base::WorkspaceManager::instance()->getWorkspacePath()).contains(
+        CurrentPath.toStdString()))
+  {
+    QMessageBox::critical(0, 
+      tr("Error"), 
+      tr("Removal of the folder \"%1\" cancelled: the folder is not in the current workspace").arg(CurrentPath));
+    return;
+  }
+
+  emit folderDeleted(WarePath, CurrentPath, false);
+  if (!QDir(CurrentPath).removeRecursively())
+  {
+    // TODO reopen tabs? hard to know which one was open
+    QMessageBox::critical(0, tr("Error"), tr("Unable to remove the folder \"%1\"").arg(CurrentPath));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcExplorer::onDeleteFileAsked()
 {
   if (!currentIndex().isValid())
@@ -557,12 +643,10 @@ void WareSrcExplorer::onDeleteFileAsked()
     return;
   }
 
-  if (QDir().remove(CurrentPath))
+  emit fileDeleted(CurrentPath);
+  if (!QDir().remove(CurrentPath))
   {
-    emit fileDeleted(CurrentPath);
-  }
-  else
-  {
+    // TODO reopen tab?
     QMessageBox::critical(0, tr("Error"), tr("Unable to remove the file \"%1\"").arg(CurrentPath));
   }
 }

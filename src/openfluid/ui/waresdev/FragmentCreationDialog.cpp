@@ -120,18 +120,19 @@ void FragmentCreationDialog::createFragment()
   // Create directory
   openfluid::tools::FilesystemPath SrcFragmentsSubPath({openfluid::config::WARESDEV_SRC_DIR, 
                                                         openfluid::config::WARESDEV_FRAGMENTS_DIR});
-  openfluid::tools::FilesystemPath FragmentsPath({m_WarePath.toStdString(), 
+  openfluid::tools::FilesystemPath NewFragmentPath({m_WarePath.toStdString(), 
                                                   SrcFragmentsSubPath.toNative(), 
                                                   FragmentID});
-  FragmentsPath.makeDirectory();
+  NewFragmentPath.makeDirectory();
   
   // Create file if wanted
   if (ui->createFileCheckBox->isChecked())
   {
-    openfluid::tools::FilesystemPath FragmentFilePath({FragmentsPath.toNative(),
-                                                       FragmentID+".hpp"});
-    FragmentsPath.makeFile(FragmentFilePath.toNative());
-    emit fileOpeningAsked(QString::fromStdString(FragmentFilePath.toNative()));
+    std::string FragmentFilename = FragmentID+".hpp";
+    NewFragmentPath.makeFile(FragmentFilename);
+    openfluid::tools::FilesystemPath FragmentFilePath({NewFragmentPath.toGeneric(),
+                                                       FragmentFilename});
+    emit fileOpeningAsked(QString::fromStdString(FragmentFilePath.toGeneric()));
   }
 }
 

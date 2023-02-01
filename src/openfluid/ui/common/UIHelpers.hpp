@@ -43,6 +43,7 @@
 #include <cmath>
 #include <random>
 
+#include <QInputDialog>
 #include <QColor>
 #include <QRegExp>
 #include <QLineEdit>
@@ -188,27 +189,41 @@ inline QPixmap getImage(const QString& ImageName,const QString& ResourcePath,boo
 // =====================================================================
 
 
-inline QString createNewFile(QWidget* Parent, const QString& Path)
+inline QString createNewFile(QWidget* Parent, const QString& PathString)
 {
-  if (Path.isEmpty())
+  if (PathString.isEmpty())
   {
     return "";
   }
 
-  QString FileToCreate = QFileDialog::getSaveFileName(Parent,
-                                                      QApplication::translate("openfluid::ui::common","Create file"),
-                                                      Path,
-                                                      QApplication::translate("openfluid::ui::common","All files"));
-
+  QString FileToCreate = "";
+  QString FileName = QFileDialog::getSaveFileName(Parent,
+                                              QApplication::translate("openfluid::ui::common","Create file"),
+                                              PathString,
+                                              QApplication::translate("openfluid::ui::common","All files"));
+  if (!FileName.isEmpty() && !FileName.isNull())
+  {
+    FileToCreate = FileName;
+  }
+  
   if (!FileToCreate.isEmpty())
   {
     auto NewFilePath = openfluid::tools::Path(FileToCreate.toStdString());
-    
+
     if (NewFilePath.isDirectory())
     {
       QMessageBox::critical(Parent,QApplication::translate("openfluid::ui::common","Error creating file"),
-                           QApplication::translate("openfluid::ui::common","\"%1\" is an existing directory")
+                            QApplication::translate("openfluid::ui::common","\"%1\" is an existing directory")
                              .arg(QString::fromStdString(NewFilePath.toNative())));
+    }
+    // Checks if new path included in ref path
+    else if (!openfluid::tools::Path(PathString.toStdString()).contains(FileToCreate.toStdString()))
+    {
+      QMessageBox::critical(Parent,QApplication::translate("openfluid::ui::common","Error creating file"),
+                            QApplication::translate("openfluid::ui::common",
+                                                   "\"%1\" is not in the current ware main directory")
+                             .arg(QString::fromStdString(NewFilePath.toNative())));
+      return "";
     }
     else
     {
