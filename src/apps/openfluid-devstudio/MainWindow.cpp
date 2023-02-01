@@ -259,6 +259,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   {
     connect(Explorer, SIGNAL(doubleClicked(const QString&)),
             mp_WidgetsCollection, SLOT(openPath(const QString&)));
+    connect(Explorer, SIGNAL(fileOpeningAsked(const QString&)),
+            mp_WidgetsCollection, SLOT(openPath(const QString&)));
     connect(Explorer, SIGNAL(clicked(const QString&)),
             mp_WidgetsCollection, SLOT(setCurrent(const QString&)));
     connect(Explorer, SIGNAL(openExplorerAsked(const QString&)),

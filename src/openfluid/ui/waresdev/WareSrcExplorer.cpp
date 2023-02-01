@@ -34,6 +34,7 @@
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@gmail.com>
 */
 
 
@@ -378,7 +379,9 @@ void WareSrcExplorer::onNewFileAsked()
   auto PInfo = 
     openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(mp_Model->filePath(currentIndex()).toStdString());
 
-  openfluid::ui::common::createNewFile(this,QString::fromStdString(PInfo.AbsoluteWarePath));
+  const auto FilePath = openfluid::ui::common::createNewFile(this,QString::fromStdString(PInfo.AbsoluteWarePath));
+
+  emit fileOpeningAsked(FilePath);
 }
 
 
@@ -433,6 +436,10 @@ void WareSrcExplorer::onNewFragmentAsked()
     );
 
   openfluid::ui::waresdev::FragmentCreationDialog Dialog(this, WarePath);
+
+  connect(&Dialog, SIGNAL(fileOpeningAsked(const QString&)), 
+          this, SIGNAL(fileOpeningAsked(const QString&)));
+
   Dialog.exec();
 }
 

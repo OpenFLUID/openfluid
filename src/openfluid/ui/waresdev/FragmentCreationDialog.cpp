@@ -128,7 +128,10 @@ void FragmentCreationDialog::createFragment()
   // Create file if wanted
   if (ui->createFileCheckBox->isChecked())
   {
-    FragmentsPath.makeFile(FragmentID+".hpp");
+    openfluid::tools::FilesystemPath FragmentFilePath({FragmentsPath.toNative(),
+                                                       FragmentID+".hpp"});
+    FragmentsPath.makeFile(FragmentFilePath.toNative());
+    emit fileOpeningAsked(QString::fromStdString(FragmentFilePath.toNative()));
   }
 }
 

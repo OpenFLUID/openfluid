@@ -114,6 +114,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void clicked(const QString& FilePath);
 
+    void fileOpeningAsked(const QString& FilePath);
+
     void currentChanged(const QString& FilePath);
 
     void openExplorerAsked(const QString& FilePath);

@@ -188,11 +188,11 @@ inline QPixmap getImage(const QString& ImageName,const QString& ResourcePath,boo
 // =====================================================================
 
 
-inline void createNewFile(QWidget* Parent, const QString& Path)
+inline QString createNewFile(QWidget* Parent, const QString& Path)
 {
   if (Path.isEmpty())
   {
-    return;
+    return "";
   }
 
   QString FileToCreate = QFileDialog::getSaveFileName(Parent,
@@ -214,8 +214,9 @@ inline void createNewFile(QWidget* Parent, const QString& Path)
     {
       NewFilePath.makeFile();
     }
-    
-  }  
+    return FileToCreate;
+  }
+  return "";
 }
 
 
