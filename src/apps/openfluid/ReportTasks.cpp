@@ -45,7 +45,7 @@
 #include "ReportTasks.hpp"
 
 
-int ReportTasks::process()
+int ReportTasks::process() const
 {
 
     std::string Waretype;

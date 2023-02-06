@@ -1,0 +1,16 @@
+{
+  "openfluid-ware": {
+    "id": "tests.cmdline-check.nolicense",
+    "name": "",
+    "description": "",
+    "version": "",
+    "status": "experimental",
+    "authors": [],
+    "contacts": [],
+    "license": "",
+    "tags": [],
+    "links": [],
+    "issues": [],
+    "observer": {}
+  }
+}

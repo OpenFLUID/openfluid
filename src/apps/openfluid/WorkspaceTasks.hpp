@@ -57,7 +57,7 @@ class WorkspaceTasks : public TasksBase
     virtual ~WorkspaceTasks()
     { }
 
-    int process();
+    int process() const;
 };
 
 

@@ -73,16 +73,11 @@ bool OPENFLUID_API IsCppFile(const openfluid::tools::FilesystemPath& FileObj);
 
 
 /**
-  Tries to detect the OpenFLUID compatibility version of the sources. Currently, 
-  it tries to distinguish version 2.2.x from versions below.
-  @param[in] PathObj The path to the sources to detect
-  @return The numeric representation of the detected OpenFLUID version (see below), 0 if version cannot be detected.
-          Returned value  | OpenFLUID version
-          --------------- | -----------------
-          202000          | 2.2.0
-          201000          | 2.1.x or below
+  Returns true if the given file path is a CMake file (based on its name and/or extension)
+  @param[in] FileObj The file path
+  @return true if the file a CMake file
 */
-unsigned int OPENFLUID_API tryDetectWareSrcVersion(const openfluid::tools::FilesystemPath& PathObj);
+bool OPENFLUID_API IsCMakeFile(const openfluid::tools::FilesystemPath& FileObj);
 
 
 // =====================================================================

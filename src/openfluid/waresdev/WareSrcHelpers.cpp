@@ -53,7 +53,8 @@ namespace openfluid { namespace waresdev {
 
 bool IsCppFile(const openfluid::tools::FilesystemPath& FileObj)
 {
-  return (std::find(std::begin(CppFilesExt), std::end(CppFilesExt), FileObj.extension()) != std::end(CppFilesExt));
+  return (FileObj.isFile() && 
+          (std::find(std::begin(CppFilesExt), std::end(CppFilesExt), FileObj.extension()) != std::end(CppFilesExt)));
 }
 
 
@@ -61,21 +62,10 @@ bool IsCppFile(const openfluid::tools::FilesystemPath& FileObj)
 // =====================================================================
 
 
-unsigned int tryDetectWareSrcVersion(const openfluid::tools::FilesystemPath& PathObj)
+bool IsCMakeFile(const openfluid::tools::FilesystemPath& FileObj)
 {
-  // try detect >= 2.2.0
-  if (PathObj.isFile(openfluid::config::WARESDEV_WAREMETA_FILE))
-  {
-    return 202000;
-  } 
-
-  // try detect < 2.2.0
-  if (!PathObj.isFile(openfluid::config::WARESDEV_WAREMETA_FILE))
-  {
-    return 201000;
-  }
-
-  return 0;
+  return (FileObj.isFile() && 
+          (FileObj.filename() == openfluid::config::WARESDEV_SRC_CMAKESTDFILE || FileObj.extension() == "cmake"));
 }
 
 

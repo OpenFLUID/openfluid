@@ -87,7 +87,7 @@ int main(int argc, char **argv)
   // ---
 
   auto InfoCmd = openfluid::utils::CommandLineCommand("info","Display information about OpenFLUID");
-  InfoCmd.addOptions({{"format","","output format, argument can be text (default) or json",true}});
+  InfoCmd.addOptions({{"format","","output format, value can be text (default) or json",true}});
   Parser.addCommand(InfoCmd);
 
   // ---
@@ -144,7 +144,7 @@ int main(int argc, char **argv)
   // ---
 
   auto ReportCmd = openfluid::utils::CommandLineCommand("report","Display report about available wares");
-  ReportCmd.addOptions({{"format","","output format, argument can be text (default) or json",true},
+  ReportCmd.addOptions({{"format","","output format, value can be text (default) or json",true},
                         {"list","l","display as simple list of wares IDs"},
                         {"with-errors","e","report errors if any"}});
 
@@ -168,9 +168,9 @@ int main(int argc, char **argv)
   CreateWareCmd.addOptions({{"type","t","type of the ware sources to create",true},
                             {"id","i","ID of the ware sources to create",true},
                             {"main-class","m","name to use for the main C++ class",true},
-                            {"with-paramsui","w","generate the C++ class of the parameterization UI"
+                            {"with-paramsui","w","generate the C++ class of the parameterization UI "
                                                  "(simulators and observers only)"},
-                            {"paramsui-class","u","name to use for the C++ class of the parameterization UI"
+                            {"paramsui-class","u","name to use for the C++ class of the parameterization UI "
                                                   "(simulators and observers only)",true},
                             {"bext-menutext","","menu text to launch the Builder-Extension",true},
                             {"bext-category","","category the Builder-Extension"
@@ -182,8 +182,14 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto CheckCmd = openfluid::utils::CommandLineCommand("check",""); // TOIMPL
-  CheckCmd.addOptions({{"path","p","path to the ware sources",true}});
+  auto CheckCmd = openfluid::utils::CommandLineCommand("check","Checks ware sources for potential issues"); 
+  CheckCmd.addOptions({{"src-path","s","path to the ware sources",true},
+                       {"warnings-as-failures","w","consider warnings as failures"},
+                       {"ignore","i","ignore checks (comma separated list)"},
+                       {"pedantic","p","check for additional potential issues"},
+                       {"full-report","f","enable full reporting"},
+                       {"format","","output format for report, value can be text (default) or json "
+                                    "(json formats enables full reporting)",true}});
   Parser.addCommand(CheckCmd);
 
   // ---

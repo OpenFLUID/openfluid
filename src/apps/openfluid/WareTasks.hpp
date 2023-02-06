@@ -48,15 +48,17 @@ class WareTasks : public TasksBase
 {
   private:
 
-    int processCreateWare();
+    int processCreate() const;
 
-    int processConfigure();
+    int processConfigure() const;
 
-    int processBuild();
+    int processBuild() const;
 
-    int processMigrateWare();
+    int processMigrate() const;
 
-    int processInfo2Build();
+    int processCheck() const;
+
+    int processInfo2Build() const;
 
 
   public:
@@ -69,7 +71,7 @@ class WareTasks : public TasksBase
     virtual ~WareTasks()
     { }
 
-    int process();
+    int process() const;
 };
 
 

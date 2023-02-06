@@ -43,7 +43,7 @@
 #include "WorkspaceTasks.hpp"
 
 
-int WorkspaceTasks::process()
+int WorkspaceTasks::process() const
 {
   if (m_Cmd.getName() == "prepare-workspace")
   {

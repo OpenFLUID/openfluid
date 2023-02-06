@@ -82,14 +82,14 @@ class TasksBase
 
     inline static const int ErrorCode = -1;
 
-    virtual int process() = 0;
+    virtual int process() const = 0;
 
     static int unknownCommand()
     {
       return error("unknown command");
     }
 
-        static int error(const std::string& Msg = "", const std::string& Cat = "ERROR")
+    static int error(const std::string& Msg = "", const std::string& Cat = "ERROR")
     {
       std::cout << "\n";
 

@@ -189,7 +189,7 @@ void printEnvInfos()
 // =====================================================================
 
 
-int RunTasks::process()
+int RunTasks::process() const
 {
   openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.verbose",false);
   openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.quiet",false);

@@ -56,7 +56,7 @@ class RunTasks : public TasksBase
     virtual ~RunTasks()
     { }
 
-    int process();
+    int process() const;
 };
 
 

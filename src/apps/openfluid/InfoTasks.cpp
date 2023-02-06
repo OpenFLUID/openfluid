@@ -50,7 +50,7 @@
 #include "InfoTasks.hpp"
 
 
-int InfoTasks::processVersion()
+int InfoTasks::processVersion() const
 {
   if (m_Cmd.isOptionActive("numeric"))
   {
@@ -109,7 +109,7 @@ void printInfoTxt(const openfluid::thirdparty::json& JSON, const std::string& Pr
 // =====================================================================
 
 
-int InfoTasks::processInfo()
+int InfoTasks::processInfo() const
 {
   std::string TmpFlags = openfluid::config::BUILD_COMPILATION_FLAGS;
   std::replace(TmpFlags.begin(),TmpFlags.end(),';',' ');
@@ -176,7 +176,7 @@ int InfoTasks::processInfo()
 // =====================================================================
 
 
-int InfoTasks::process()
+int InfoTasks::process() const
 {
   if (m_Cmd.getName() == "version")
   {

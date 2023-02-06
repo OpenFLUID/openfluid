@@ -72,12 +72,16 @@ ENDIF()
 
 FIND_PROGRAM(PYTHON3_EXECUTABLE NAMES python3)
 IF(PYTHON3_EXECUTABLE)
-  # checkstyle tool
+
+  SET(STYLE_EXCLUDE_LIST "share/openfluid/waresdev/templates,resources/tests/miscsrc/cmdline-check")
+# checkstyle tool
   ADD_CUSTOM_TARGET(stylecheck
                     COMMENT "Checking source code style"
                     COMMAND "${PYTHON3_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
-                            "${CMAKE_SOURCE_DIR}" "--disable=UNRT" "--exclude=share/openfluid/waresdev/templates"
+                            "${CMAKE_SOURCE_DIR}" 
+                            "--disable=UNRT" 
+                            "--exclude=${STYLE_EXCLUDE_LIST}"
                    )
 
   # checkstyle tool for releases
@@ -85,7 +89,8 @@ IF(PYTHON3_EXECUTABLE)
                     COMMENT "Checking source code style for release"
                     COMMAND "${PYTHON3_EXECUTABLE}"
                             "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-stylecheck.py"
-                            "${CMAKE_SOURCE_DIR}" "--exclude=share"
+                            "${CMAKE_SOURCE_DIR}" 
+                            "--exclude=${STYLE_EXCLUDE_LIST}"
                    )
 
   # cppcheck tool

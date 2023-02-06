@@ -55,7 +55,7 @@
 #include "DataTasks.hpp"
 
 
-int DataTasks::generateData(const std::string Path, bool WithSample)
+int DataTasks::generateData(const std::string Path, bool WithSample) const
 {
   auto PathObj = openfluid::tools::Path(Path);
 
@@ -189,7 +189,7 @@ int DataTasks::generateData(const std::string Path, bool WithSample)
 // =====================================================================
 
 
-int DataTasks::processCreateData()
+int DataTasks::processCreateData() const
 {
   if (!m_Cmd.isOptionActive("name"))
   {
@@ -241,7 +241,7 @@ int DataTasks::processCreateData()
 // =====================================================================
 
 
-int DataTasks::processInstallExamples()
+int DataTasks::processInstallExamples() const
 {
   std::string ResPath = m_Cmd.getOptionValue("resources-path");
   std::string InstPath = m_Cmd.getOptionValue("install-path");
@@ -300,7 +300,7 @@ int DataTasks::processInstallExamples()
 // =====================================================================
 
 
-int DataTasks::process()
+int DataTasks::process() const
 {
   if (m_Cmd.getName() == "create-data")
   {

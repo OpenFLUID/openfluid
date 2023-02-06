@@ -56,6 +56,7 @@
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
+#include <openfluid/waresdev/WareSrcChecker.hpp>
 #include <openfluid/waresdev/WareSrcHelpers.hpp>
 #include <openfluid/waresdev/WareSrcMigrator.hpp>
 #include <openfluid/thirdparty/JSON.hpp>
@@ -72,43 +73,6 @@ The migration process consists of 3 phases:
 
 
 namespace openfluid { namespace waresdev {
-
-
-std::string getFileContent(const openfluid::tools::Path& FileObj)
-{
-  std::string Content;
-  
-  std::ifstream File(FileObj.toGeneric(),std::ios::in);
-
-  if (File.is_open())
-  {
-
-    std::copy(std::istream_iterator<char>{File >> std::noskipws},{},std::back_inserter(Content));
-    File.close();
-  }
-
-  return Content;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void writeFileContent(const std::string& Content, const openfluid::tools::Path& FileObj)
-{
-  std::ofstream File(FileObj.toGeneric(),std::ios::out);
-
-  if (File.is_open())
-  {
-    File << Content;
-    File.close();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
 
 
 std::vector<std::string> getFileLines(const openfluid::tools::Path& FileObj)
@@ -207,7 +171,7 @@ std::string generateMigrationBlock(const std::string& LineComment, const std::st
 
   Str += LineComment + " [MIGRATION]("+openfluid::core::DateTime::now().getAsISOString()+")>-------\n"; 
   Str += EnclosedContent;
-  Str += "\n" + LineComment + " -------<[MIGRATION]";
+  Str += "\n" + LineComment + " -------<[MIGRATION]"; // TOIMPL [MIGRATION] to variablelize
 
   return Str;
 }
@@ -387,7 +351,7 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
   {
     if (openfluid::waresdev::IsCppFile(FileObj))
     {
-      auto Content = getFileContent(FileObj);
+      auto Content = openfluid::tools::Filesystem::readFile(FileObj);
       if (Info.WareType == openfluid::ware::WareType::UNDEFINED)
       {
         Info.SignatureContent = extractBetweenTags(Content,"BEGIN_SIMULATOR_SIGNATURE","END_SIMULATOR_SIGNATURE",true);
@@ -433,7 +397,7 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
   {
     if (openfluid::waresdev::IsCppFile(FileObj))
     {
-      auto Content = getFileContent(FileObj);
+      auto Content = openfluid::tools::Filesystem::readFile(FileObj);
       auto SignatureContent = extractBetweenTags(Content,"BEGIN_BUILDEREXT_SIGNATURE","END_BUILDEREXT_SIGNATURE",true);
 
       if (!SignatureContent.empty())
@@ -471,7 +435,7 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
     {
       if (Info.DocContent.empty() && openfluid::waresdev::IsCppFile(FileObj))
       {
-        auto Content = getFileContent(FileObj);
+        auto Content = openfluid::tools::Filesystem::readFile(FileObj);
         Info.DocContent = openfluid::tools::trim(extractBetweenTags(Content,"<sim2doc>","</sim2doc>"));
       }
     }
@@ -651,9 +615,9 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
                                                 "// Here was located the former signature of the ware, "
                                                 "this message should be manually cleaned");
 
-    auto SignFileContent = getFileContent(SignFileObj);
+    auto SignFileContent = openfluid::tools::Filesystem::readFile(SignFileObj);
     SignFileContent = openfluid::tools::replace(SignFileContent,Info.SignatureContent,ReplStr);
-    writeFileContent(SignFileContent,SignFileObj);
+    openfluid::tools::Filesystem::writeFile(SignFileContent,SignFileObj);
     
   }
 
@@ -668,9 +632,9 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
                                                 "// Here was located the former signature of the parameterization UI, "
                                                 "this message should be manually cleaned");
 
-    auto UISignFileContent = getFileContent(UISignFileObj);
+    auto UISignFileContent = openfluid::tools::Filesystem::readFile(UISignFileObj);
     UISignFileContent = openfluid::tools::replace(UISignFileContent,Info.UISignatureContent,ReplStr);
-    writeFileContent(UISignFileContent,UISignFileObj);
+    openfluid::tools::Filesystem::writeFile(UISignFileContent,UISignFileObj);
   }
 
   // ==== remove old signature macros in CPP files
@@ -687,12 +651,12 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
     auto CxxFileObj = openfluid::tools::Path::fromStdPath(E.path());
     if (IsCppFile(CxxFileObj))
     {
-      auto CxxFileContent = getFileContent(CxxFileObj);
+      auto CxxFileContent = openfluid::tools::Filesystem::readFile(CxxFileObj);
 
       if (std::regex_search(CxxFileContent,LinkUIDRegex))
       {
         CxxFileContent = std::regex_replace(CxxFileContent,LinkUIDRegex,LinkUIDReplStr);
-        writeFileContent(CxxFileContent,CxxFileObj);
+        openfluid::tools::Filesystem::writeFile(CxxFileContent,CxxFileObj);
       }
     }
   }
@@ -736,7 +700,7 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
 
       if (Modified)
       {
-        writeFileContent(openfluid::tools::join(CxxFileLines,"\n"),CxxFileObj);
+        openfluid::tools::Filesystem::writeFile(openfluid::tools::join(CxxFileLines,"\n"),CxxFileObj);
       }
     }
   }
@@ -774,7 +738,7 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
   if (CMakeFileObj.isFile())
   {
     // search for correct variable name
-    auto CMakeContent = getFileContent(CMakeFileObj);
+    auto CMakeContent = openfluid::tools::Filesystem::readFile(CMakeFileObj);
     if (!CMakeContent.empty())
     {
       // search for default
@@ -967,8 +931,8 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
   
   auto CMakeFileObj = m_DestPathObj.fromThis({openfluid::config::WARESDEV_SRC_DIR,
                                               openfluid::config::WARESDEV_SRC_CMAKESTDFILE});
-  auto NewCMakeContent = getFileContent(CMakeFileObj);
-  writeFileContent(CMakePrepend+NewCMakeContent,CMakeFileObj);
+  auto NewCMakeContent = openfluid::tools::Filesystem::readFile(CMakeFileObj);
+  openfluid::tools::Filesystem::writeFile(CMakePrepend+NewCMakeContent,CMakeFileObj);
 
 
   // ==== clean any C++ files in src directory
@@ -1019,7 +983,7 @@ void WareSrcMigrator::processDoc(const WareSrcMigrator::WareMigrationInfo& Info)
                                                DocWorkPathObj.fromThis("original_main.tex").toGeneric());
     }
 
-    DocWorkPathObj.makeFile("main.tex",Info.DocContent+"\n");
+    openfluid::tools::Filesystem::writeFile(Info.DocContent+"\n",DocWorkPathObj.fromThis("main.tex"));
     mp_Listener->stageMessage("documentation exported in doc/main.tex");
   }
   else
@@ -1060,7 +1024,7 @@ void WareSrcMigrator::performMigration()
 
   mp_Listener->stageMessage("ware sources directory found");
 
-  if (openfluid::waresdev::tryDetectWareSrcVersion(m_SrcPathObj) >= 202000)
+  if (openfluid::waresdev::WareSrcChecker::tryDetectWareSrcVersion(m_SrcPathObj) >= 202000)
   {
     mp_Listener->onPrecheckEnd(openfluid::base::Listener::Status::ERROR_STATUS);
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,

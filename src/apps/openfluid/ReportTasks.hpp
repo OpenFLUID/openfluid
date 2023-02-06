@@ -56,7 +56,7 @@ class ReportTasks : public TasksBase
     virtual ~ReportTasks()
     { }
 
-    int process();
+    int process() const;
 };
 
 

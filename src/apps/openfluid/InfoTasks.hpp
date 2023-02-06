@@ -49,9 +49,9 @@ class InfoTasks : public TasksBase
 
   private:
 
-    int processVersion();
+    int processVersion() const;
 
-    int processInfo();
+    int processInfo() const;
 
   public:
 
@@ -63,7 +63,7 @@ class InfoTasks : public TasksBase
     virtual ~InfoTasks()
     { }
 
-    int process();
+    int process() const;
 };
 
 

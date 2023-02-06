@@ -46,19 +46,22 @@
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
 #include <openfluid/waresdev/WareSrcMigrator.hpp>
+#include <openfluid/waresdev/WareSrcChecker.hpp>
 #include <openfluid/waresdev/WareSrcHelpers.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/thirdparty/JSON.hpp>
 #include <openfluid/config.hpp>
 
 #include "WareTasks.hpp"
 #include "DefaultMigrationListener.hpp"
 
 
-int WareTasks::processCreateWare()
+int WareTasks::processCreate() const
 {
   if (!m_Cmd.isOptionActive("id"))
   {
@@ -156,7 +159,7 @@ int WareTasks::processCreateWare()
 // =====================================================================
 
 
-int WareTasks::processConfigure()
+int WareTasks::processConfigure() const
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
   {
@@ -212,7 +215,7 @@ int WareTasks::processConfigure()
 // =====================================================================
 
 
-int WareTasks::processBuild()
+int WareTasks::processBuild() const
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
   {
@@ -273,7 +276,7 @@ int WareTasks::processBuild()
 // =====================================================================
 
 
-int WareTasks::processMigrateWare()
+int WareTasks::processMigrate() const
 {
   if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
   {
@@ -307,7 +310,135 @@ int WareTasks::processMigrateWare()
 // =====================================================================
 
 
-int WareTasks::processInfo2Build()
+std::string getReportStatusAsString(openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus Status)
+{
+  if (Status == openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::DISABLED)
+  {
+    return "disabled";
+  }
+  if (Status == openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::OK)
+  {
+    return "ok";
+  }
+  else if (Status == openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::WARNING)
+  {
+    return "warning";
+  }
+  else if (Status == openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::ERROR)
+  {
+    return "error";
+  }
+
+  return "unknown";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void printCheckReportAsJSON(const openfluid::waresdev::WareSrcChecker::ReportingData& Data)
+{
+  openfluid::thirdparty::json JSON(openfluid::thirdparty::json::value_t::object);
+
+  for (const auto& Cat : Data.Categories)
+  {
+    for (const auto& Item : Cat.second.Items)
+    {
+      JSON[Cat.first][Item.Message] = getReportStatusAsString(Item.Status);
+    }
+  }
+
+  std::cout << JSON.dump(2)  << std::endl;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void printCheckReportAsText(const openfluid::waresdev::WareSrcChecker::ReportingData& Data, bool FullReport)
+{
+  for (const auto& Cat : Data.Categories)
+  {
+    for (const auto& Item : Cat.second.Items)
+    {
+      if (FullReport || (Item.Status >= openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::WARNING))
+      {
+        std::cout << Cat.first << "/" << Item.Message << " : " << getReportStatusAsString(Item.Status) << std::endl;
+      }
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int WareTasks::processCheck() const
+{
+  if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
+  {
+    return error("missing or empty ware sources path");
+  }
+
+  std::string Format = "text";
+  if (m_Cmd.isOptionActive("format"))
+  {
+    Format = m_Cmd.getOptionValue("format");
+  }
+  if (Format != "text" && Format != "json")
+  {
+    return error("unknown format");
+  }
+
+  openfluid::waresdev::WareSrcChecker::ChecksList Ignored;
+
+  if (m_Cmd.isOptionActive("ignore") && !m_Cmd.getOptionValue("ignore").empty())
+  {
+    Ignored = openfluid::tools::split(m_Cmd.getOptionValue("ignore"),",");
+  }
+
+  try 
+  {
+    auto Checker = openfluid::waresdev::WareSrcChecker(m_Cmd.getOptionValue("src-path"),Ignored);
+    auto Report = Checker.performCheck(m_Cmd.isOptionActive("pedantic"));
+
+    if (Format =="json")
+    {
+      printCheckReportAsJSON(Report);
+    }
+    else
+    {
+      printCheckReportAsText(Report,m_Cmd.isOptionActive("full-report"));
+    }
+
+    bool IsAccepted = 
+      (Report.getStatus() <= (m_Cmd.isOptionActive("warnings-as-failures") ? 
+                              openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::OK : 
+                              openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::WARNING));
+
+    return (IsAccepted ? 0 : error("failed checks"));
+  }
+  catch(const openfluid::base::FrameworkException& E)
+  {
+    return error(E.what());
+  }
+  catch(...)
+  {
+    return error("unknown error");
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int WareTasks::processInfo2Build() const
 {
   if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
   {
@@ -360,19 +491,19 @@ int WareTasks::processInfo2Build()
 // =====================================================================
 
 
-int WareTasks::process()
+int WareTasks::process() const
 {
   if (m_Cmd.getName() == "create-ware")
   {
-    return processCreateWare();
+    return processCreate();
   }
   else if (m_Cmd.getName() == "check")
   {
-    return notImplemented(); // TOIMPL
+    return processCheck();
   }
   else if (m_Cmd.getName() == "migrate-ware")
   {
-    return processMigrateWare();
+    return processMigrate();
   }
   else if (m_Cmd.getName() == "docalyze")
   {

@@ -26,6 +26,7 @@ SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMach
                         ExternalProgram.hpp
                         ProgramProxy.hpp CMakeProxy.hpp GitProxy.hpp GrassGISProxy.hpp
                         CommandLineParser.hpp
+                        ReportingData.hpp
                         )
 
 

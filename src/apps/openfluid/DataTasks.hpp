@@ -48,11 +48,11 @@ class DataTasks : public TasksBase
 {
   private:
 
-    int generateData(const std::string Path, bool WithExample);
+    int generateData(const std::string Path, bool WithExample) const;
 
-    int processCreateData();
+    int processCreateData() const;
 
-    int processInstallExamples();
+    int processInstallExamples() const;
 
 
   public:
@@ -65,7 +65,7 @@ class DataTasks : public TasksBase
     virtual ~DataTasks()
     { }
 
-    int process();
+    int process() const;
 };
 
 
