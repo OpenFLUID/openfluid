@@ -115,4 +115,5 @@ T *KillableSingleton<T>::mp_Instance = nullptr;
 
 } }  //namespaces
 
+
 #endif /* __OPENFLUID_UTILS_KILLABLESINGLETON_HPP__ */
