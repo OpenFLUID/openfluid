@@ -82,10 +82,21 @@ FilesystemPath::FilesystemPath(const std::string& PathStr) :
 // =====================================================================
 
 
-FilesystemPath::FilesystemPath(const std::vector<std::string>& PathParts) :
-  m_Path(boost::algorithm::join(PathParts,"/"),std::filesystem::path::format::generic_format)
+FilesystemPath::FilesystemPath(const char* PathStr) : 
+  FilesystemPath(std::string(PathStr))
 {
-  // NOTE automatically clean path?
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+FilesystemPath::FilesystemPath(const std::vector<std::string>& PathParts) : 
+  FilesystemPath(std::string(boost::algorithm::join(PathParts,"/")))
+{
+
 }
 
 
@@ -401,7 +412,7 @@ bool FilesystemPath::removeDirectory(const std::string& Path) const
 // =====================================================================
 
 
-bool FilesystemPath::makeFile(const std::string& Path, const std::string& Content) const
+bool FilesystemPath::makeFile(const std::string& Path) const
 {
   if (m_Path.empty() && Path.empty())
   {
@@ -415,10 +426,6 @@ bool FilesystemPath::makeFile(const std::string& Path, const std::string& Conten
     std::ofstream MadeFile(fromStdPath(CompPath).toGeneric(),std::ofstream::out);
     if (MadeFile.is_open())
     {
-      if (!Content.empty())
-      {
-        MadeFile << Content;
-      }
       MadeFile.close();
     }
   }

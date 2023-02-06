@@ -44,10 +44,14 @@
 #include <string>
 #include <vector>
 
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace tools {
+
+
+// TOIMPL Refactor for consistent usage of FilesystemPath and std::string
 
 
 class OPENFLUID_API Filesystem
@@ -164,6 +168,20 @@ class OPENFLUID_API Filesystem
       @return the full path of the created unique file
     */
     static std::string makeUniqueFile(const std::string& Path, const std::string& FileName);
+
+    /**
+      Reads the content of a file
+      @param[in] FileObj the given path for the file
+      @return the content of the file
+    */
+    static std::string readFile(const openfluid::tools::FilesystemPath& FileObj);
+
+    /**
+      Writes content into a file
+      @param[in] Content the content to write
+      @param[in] FileObj the given path for the file
+    */
+    static void writeFile(const std::string& Content, const openfluid::tools::FilesystemPath& FileObj);
 
     /**
       Copies a file from source to destination.

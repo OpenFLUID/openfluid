@@ -98,6 +98,12 @@ class OPENFLUID_API FilesystemPath
     FilesystemPath(const std::string& PathStr);
 
     /**
+      Constructs a FilesystemPath object using a C-style string
+      @param[in] PathStr the path as a char*
+    */
+    FilesystemPath(const char* PathStr);
+
+    /**
       Constructs a FilesystemPath object using a vector of strings that will be joined using the path separator
       @param[in] PathParts the path as a string vector
     */
@@ -268,10 +274,9 @@ class OPENFLUID_API FilesystemPath
       Creates an empty file at the path. It creates all parent directories necessary to create the file.
       If the file already exists, it does nothing.
       @param[in] Path a relative path added to the to the base path (optional, none by default)
-      @param[in] Content a content to be written in the file (optional, none by default)
       @return true if the file has been successfully created or if it already exists, false otherwise
     */
-    bool makeFile(const std::string& Path = "", const std::string& Content="") const;
+    bool makeFile(const std::string& Path = "") const;
 
     /**
       Removes the file of the path.

@@ -44,6 +44,7 @@
 #include <openfluid/global.hpp>
 
 #include <filesystem>
+#include <fstream>
 #include <thread>
 #include <regex>
 
@@ -419,6 +420,41 @@ std::string Filesystem::makeUniqueFile(const std::string& Path, const std::strin
   }
 
   return std::string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string Filesystem::readFile(const openfluid::tools::Path& FileObj)
+{
+  std::string Content;
+  std::ifstream File(FileObj.toGeneric(),std::ios::in);
+
+  if (File.is_open())
+  {
+    std::copy(std::istream_iterator<char>{File >> std::noskipws},{},std::back_inserter(Content));
+    File.close();
+  }
+
+  return Content;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Filesystem::writeFile(const std::string& Content, const openfluid::tools::Path& FileObj)
+{
+  std::ofstream File(FileObj.toGeneric(),std::ios::out);
+
+  if (File.is_open())
+  {
+    File << Content;
+    File.close();
+  }
 }
 
 
