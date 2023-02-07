@@ -456,6 +456,32 @@ void WareSrcExplorer::onNewFolderAsked()
 // =====================================================================
 
 
+void WareSrcExplorer::createFragment(std::string WarePath, std::string FragmentID, bool IsFileCreation)
+{
+  // Create directory
+  openfluid::tools::FilesystemPath SrcFragmentsSubPath({openfluid::config::WARESDEV_SRC_DIR, 
+                                                        openfluid::config::WARESDEV_FRAGMENTS_DIR});
+  openfluid::tools::FilesystemPath NewFragmentPath({WarePath, 
+                                                    SrcFragmentsSubPath.toNative(), 
+                                                    FragmentID});
+  NewFragmentPath.makeDirectory();
+  
+  // Create file if wanted
+  if (IsFileCreation)
+  {
+    std::string FragmentFilename = FragmentID+".hpp";
+    NewFragmentPath.makeFile(FragmentFilename);
+    openfluid::tools::FilesystemPath FragmentFilePath({NewFragmentPath.toGeneric(),
+                                                       FragmentFilename});
+    emit fileOpeningAsked(QString::fromStdString(FragmentFilePath.toGeneric()));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcExplorer::onNewFragmentAsked()
 {
   if (!openfluid::utils::GitProxy::isAvailable())
@@ -475,13 +501,12 @@ void WareSrcExplorer::onNewFragmentAsked()
       openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
     );
 
-  openfluid::ui::waresdev::FragmentCreationDialog Dialog(this, WarePath); 
-  //TOIMPL fix responsibility here: file opening should be done here, not in dialog
+  openfluid::ui::waresdev::FragmentCreationDialog Dialog(this); 
 
-  connect(&Dialog, SIGNAL(fileOpeningAsked(const QString&)), 
-          this, SIGNAL(fileOpeningAsked(const QString&)));
-
-  Dialog.exec();
+  if (Dialog.exec() == QDialog::Accepted)
+  {
+    createFragment(WarePath.toStdString(), Dialog.getFragmentName().toStdString(), Dialog.getIsFileCreation());
+  }
 }
 
 

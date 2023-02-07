@@ -59,8 +59,6 @@ class OPENFLUID_API FragmentCreationDialog: public openfluid::ui::common::Messag
 
     bool check();
 
-    void createFragment();
-
     QRegExp getFragmentNamedRegExp();
 
 
@@ -68,17 +66,14 @@ class OPENFLUID_API FragmentCreationDialog: public openfluid::ui::common::Messag
 
     Ui::FragmentCreationDialog* ui;
 
-    QString m_WarePath;
-
-
-  signals:
-
-    void fileOpeningAsked(const QString&);
-
 
   public:
 
-    explicit FragmentCreationDialog(QWidget* Parent, QString WarePath);
+    explicit FragmentCreationDialog(QWidget* Parent);
+
+    QString getFragmentName();
+
+    bool getIsFileCreation();
 
 };
 

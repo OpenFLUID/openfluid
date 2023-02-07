@@ -48,8 +48,8 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-FragmentCreationDialog::FragmentCreationDialog(QWidget* Parent, QString WarePath) :
-    openfluid::ui::common::MessageDialog(Parent), ui(new Ui::FragmentCreationDialog),  m_WarePath(WarePath)
+FragmentCreationDialog::FragmentCreationDialog(QWidget* Parent) :
+    openfluid::ui::common::MessageDialog(Parent), ui(new Ui::FragmentCreationDialog)
 {
   ui->setupUi(this);
 
@@ -104,8 +104,8 @@ bool FragmentCreationDialog::check()
       return false;
     }
   }
-    setMessage();
-    return true;
+  setMessage();
+  return true;
 }
 
 
@@ -113,27 +113,19 @@ bool FragmentCreationDialog::check()
 // =====================================================================
 
 
-void FragmentCreationDialog::createFragment()
+QString FragmentCreationDialog::getFragmentName()
 {
-  std::string FragmentID = ui->FragmentNameLineEdit->text().toStdString();
-  
-  // Create directory
-  openfluid::tools::FilesystemPath SrcFragmentsSubPath({openfluid::config::WARESDEV_SRC_DIR, 
-                                                        openfluid::config::WARESDEV_FRAGMENTS_DIR});
-  openfluid::tools::FilesystemPath NewFragmentPath({m_WarePath.toStdString(), 
-                                                  SrcFragmentsSubPath.toNative(), 
-                                                  FragmentID});
-  NewFragmentPath.makeDirectory();
-  
-  // Create file if wanted
-  if (ui->createFileCheckBox->isChecked())
-  {
-    std::string FragmentFilename = FragmentID+".hpp";
-    NewFragmentPath.makeFile(FragmentFilename);
-    openfluid::tools::FilesystemPath FragmentFilePath({NewFragmentPath.toGeneric(),
-                                                       FragmentFilename});
-    emit fileOpeningAsked(QString::fromStdString(FragmentFilePath.toGeneric()));
-  }
+  return ui->FragmentNameLineEdit->text();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool FragmentCreationDialog::getIsFileCreation()
+{
+  return ui->createFileCheckBox->isChecked();
 }
 
 

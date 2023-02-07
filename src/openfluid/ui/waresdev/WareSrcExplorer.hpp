@@ -66,6 +66,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onCurrentChanged(const QModelIndex& Current);
 
+    void createFragment(std::string WarePath, std::string FragmentID, bool IsFileCreation);
+
     void onOpenExplorerAsked();
 
     void onOpenTerminalAsked();
