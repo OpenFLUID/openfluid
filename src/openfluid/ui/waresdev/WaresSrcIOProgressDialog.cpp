@@ -77,7 +77,17 @@ WaresSrcIOProgressDialog::~WaresSrcIOProgressDialog()
 
 void WaresSrcIOProgressDialog::writeInfo(const QString& Message)
 {
-  write(Message);
+  write(Message, QColor("black"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcIOProgressDialog::writeWarning(const QString& Message)
+{
+  write(Message, QColor("orange"));
 }
 
 

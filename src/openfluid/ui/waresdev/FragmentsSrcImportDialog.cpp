@@ -115,6 +115,10 @@ FragmentsSrcImportDialog::FragmentsSrcImportDialog(QWidget* Parent, QString Ware
 
   connect(ui->FragmentListWidget, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
 
+  ui->CheckoutCurrentVersionCheckBox->setChecked(
+    openfluid::base::PreferencesManager::instance()->isWaresdevCheckoutCurrentVersion()
+  );
+
   connect(buttonBox(), SIGNAL(accepted()), this, SLOT(onImportAsked()));
 
   if(!openfluid::utils::GitProxy::isAvailable())
@@ -377,7 +381,7 @@ void FragmentsSrcImportDialog::onImportAsked()
   bool AsSubmodule = ui->SubmoduleStratRadioButton->isChecked();
 
   openfluid::ui::waresdev::SrcImportSequenceManager* LocalSrcImportSequenceManager = 
-    new openfluid::ui::waresdev::SrcImportSequenceManager();
+    new openfluid::ui::waresdev::SrcImportSequenceManager(ui->CheckoutCurrentVersionCheckBox->isChecked());
   LocalSrcImportSequenceManager->setupFragmentStrategy(m_WarePath, AsSubmodule);
 
   openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Importing fragments sources:"), false, this);

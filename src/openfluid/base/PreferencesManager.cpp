@@ -1841,6 +1841,26 @@ void PreferencesManager::setWaresdevGitSslNoVerify(bool NoVerify)
 // =====================================================================
 
 
+bool PreferencesManager::isWaresdevCheckoutCurrentVersion() const
+{ 
+  return m_Settings->getValue("/waresdev/commands/git/checkout_auto").get<bool>(true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresdevCheckoutCurrentVersion(bool CheckoutCurrentVersion)
+{ 
+  m_Settings->setValue("/waresdev/commands/git","checkout_auto",CheckoutCurrentVersion);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string PreferencesManager::getWaresdevImportHubUrl() const
 { 
   return m_Settings->getValue("/waresdev/ui/import/hub/url").get<std::string>("");

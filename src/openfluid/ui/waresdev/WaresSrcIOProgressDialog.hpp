@@ -68,6 +68,8 @@ class OPENFLUID_API WaresSrcIOProgressDialog: public QDialog
 
     void writeInfo(const QString& Message);
 
+    void writeWarning(const QString& Message);
+
     void writeError(const QString& Message);
 
     void writeSuccess(const QString& Message);

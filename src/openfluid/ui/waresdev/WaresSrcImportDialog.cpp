@@ -128,6 +128,10 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
     ui->HubConnectButton->click();
   }
 
+  ui->CheckoutCurrentVersionCheckBox->setChecked(
+    openfluid::base::PreferencesManager::instance()->isWaresdevCheckoutCurrentVersion()
+  );
+
 
   // Hide login fields
   for (auto& Widget : m_HubLoginWidgetsAndButton)
@@ -372,6 +376,7 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
     {
       Pair.second->showAuthorizationFilterCheckbox(false);
     }
+    ui->CheckoutCurrentVersionCheckBox->setVisible(false);
 
     updatePackageWaresList();
   }
@@ -383,6 +388,8 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
     {
       Pair.second->showAuthorizationFilterCheckbox(true);
     }
+
+    ui->CheckoutCurrentVersionCheckBox->setVisible(true);
 
     updateHubElementsList();
     ui->UsernameLineEdit->setText(
@@ -648,7 +655,8 @@ void WaresSrcImportDialog::onImportAsked()
       return;
     }
 
-    SrcImportSequenceManager* LocalSrcImportSequenceManager = new SrcImportSequenceManager();
+    SrcImportSequenceManager* LocalSrcImportSequenceManager = new SrcImportSequenceManager(
+      ui->CheckoutCurrentVersionCheckBox->isChecked());
     QString Username = QString::fromStdString(m_HubManager.getUsername());
     QString Password = QString::fromStdString(m_HubManager.getPassword());
     LocalSrcImportSequenceManager->setSelectedWaresUrl(getSelectedWaresByType());

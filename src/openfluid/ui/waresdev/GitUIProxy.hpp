@@ -134,9 +134,11 @@ class OPENFLUID_API GitUIProxy : public QObject, public openfluid::utils::GitPro
                const QString& Username = "", const QString& Password = "",
                bool SslNoVerify = false, const QString& LocalGitRepoPath = "", bool WithoutVersioning = false);
 
+    bool checkout(const QString& Path, const QString& BranchName);
+
     TreeStatusInfo status(const QString& Path);
 
-    std::pair<int, QString> commandHtml(const QString& Path, QStringList Args, bool RequiringGit=true);
+    std::pair<int, QString> launchLocalCommand(const QString& Path, QStringList Args, bool RequiringDotGit = true);
 
     QString statusHtml(const QString& Path, bool WithColorCodes);
 

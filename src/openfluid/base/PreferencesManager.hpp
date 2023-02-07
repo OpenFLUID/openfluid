@@ -316,6 +316,10 @@ class OPENFLUID_API PreferencesManager
 
     void setWaresdevGitSslNoVerify(bool NoVerify);
 
+    bool isWaresdevCheckoutCurrentVersion() const;
+
+    void setWaresdevCheckoutCurrentVersion(bool CheckoutCurrentVersion);
+
     std::string getWaresdevImportHubUrl() const;
 
     void setWaresdevImportHubUrl(const std::string& Url);

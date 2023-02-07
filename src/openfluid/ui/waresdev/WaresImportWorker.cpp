@@ -47,7 +47,7 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-WaresImportWorker::WaresImportWorker(bool SslNoVerify) : GitImportWorker(SslNoVerify)
+WaresImportWorker::WaresImportWorker(bool SslNoVerify, bool AutoCheckout) : GitImportWorker(SslNoVerify, AutoCheckout)
 {
 
 }
@@ -74,7 +74,12 @@ bool WaresImportWorker::importElement(const QString& GitUrl, const QString& Ware
   GitUIProxy Git;
   QObject::connect(&Git, SIGNAL(info(const QString&)), this, SIGNAL(info(const QString&)));
   QObject::connect(&Git, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));
-  return Git.clone(GitUrl, DestPath, m_Username, m_Password, m_SslNoVerify);
+  bool Success = Git.clone(GitUrl, DestPath, m_Username, m_Password, m_SslNoVerify);
+  if (Success && m_AutoCheckout)
+  {
+    checkoutCurrentOpenFLUIDBranch(DestPath);
+  }
+  return Success;
 }
 
 

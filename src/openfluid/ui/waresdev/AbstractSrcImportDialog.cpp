@@ -308,6 +308,8 @@ void AbstractSrcImportDialog::setupImportManagerThread(
 
   connect(SrcImportSequenceManager, SIGNAL(info(const QString&)), ProgressDialogPtr, 
           SLOT(writeInfo(const QString&)));
+  connect(SrcImportSequenceManager, SIGNAL(warning(const QString&)), ProgressDialogPtr, 
+          SLOT(writeWarning(const QString&)));
   connect(SrcImportSequenceManager, SIGNAL(error(const QString&)), ProgressDialogPtr, 
           SLOT(writeError(const QString&)));
   connect(SrcImportSequenceManager, SIGNAL(progressed(int)), ProgressDialogPtr, SLOT(progress(int)));

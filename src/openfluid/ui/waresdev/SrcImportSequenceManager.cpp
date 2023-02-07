@@ -47,9 +47,8 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-SrcImportSequenceManager::SrcImportSequenceManager()
+SrcImportSequenceManager::SrcImportSequenceManager(bool AutoCheckout) : m_AutoCheckout(AutoCheckout)
 {
-
 }
 
 
@@ -108,6 +107,8 @@ bool SrcImportSequenceManager::runWorker(GitImportWorker* Worker, std::vector<st
           SIGNAL(finished(bool, const QString&)));
   connect(Worker, SIGNAL(info(const QString&)), this, 
           SIGNAL(info(const QString&)));
+  connect(Worker, SIGNAL(warning(const QString&)), this, 
+          SIGNAL(warning(const QString&)));
   connect(Worker, SIGNAL(error(const QString&)), this, 
           SIGNAL(error(const QString&)));
   connect(Worker, SIGNAL(progressed(int)), this, SIGNAL(progressed(int)));
@@ -148,7 +149,7 @@ bool SrcImportSequenceManager::onCloneRequest()
   if (WaresFound)
   {
     // WARE SEQUENCE
-    WaresImportWorker* mp_WaresImportWorker = new WaresImportWorker(SslNoVerify);
+    WaresImportWorker* mp_WaresImportWorker = new WaresImportWorker(SslNoVerify, m_AutoCheckout);
     mp_WaresImportWorker->setProgressValues(Progress, ProgressRatio);
 
     std::vector<std::pair<QString, QString>> m_WaresAndPath;
@@ -168,7 +169,7 @@ bool SrcImportSequenceManager::onCloneRequest()
   if (FragmentsFound)
   {
     // FRAGMENT SEQUENCE
-    FragmentsImportWorker* mp_FragmentsImportWorker = new FragmentsImportWorker(SslNoVerify);
+    FragmentsImportWorker* mp_FragmentsImportWorker = new FragmentsImportWorker(SslNoVerify, m_AutoCheckout);
     mp_FragmentsImportWorker->setProgressValues(Progress, ProgressRatio);
     mp_FragmentsImportWorker->setSubmoduleParameter(m_FragmentsAsSubmodule);
 

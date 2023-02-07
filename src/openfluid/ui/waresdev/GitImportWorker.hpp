@@ -67,8 +67,11 @@ class OPENFLUID_API GitImportWorker: public QObject
     double m_ProgressRatio = 100;
 
     bool m_SslNoVerify;
+    bool m_AutoCheckout;
 
     std::vector<std::pair<QString, QString>> m_ElementsToImport; // first: Git URL, second: local path
+
+    void checkoutCurrentOpenFLUIDBranch(const QString& Path);
 
 
   protected slots:
@@ -79,6 +82,8 @@ class OPENFLUID_API GitImportWorker: public QObject
   signals:
 
     void info(const QString& Message);
+
+    void warning(const QString& Message);
 
     void error(const QString& Message);
 
@@ -96,7 +101,7 @@ class OPENFLUID_API GitImportWorker: public QObject
 
   public:
 
-    GitImportWorker(bool SslNoVerify = false);
+    GitImportWorker(bool SslNoVerify = false, bool AutoCheckout = false);
 
     ~GitImportWorker();
 

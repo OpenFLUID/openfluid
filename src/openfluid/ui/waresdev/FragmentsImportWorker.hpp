@@ -69,7 +69,7 @@ class OPENFLUID_API FragmentsImportWorker: public GitImportWorker
 
   public:
 
-    FragmentsImportWorker(bool SslNoVerify = false);
+    FragmentsImportWorker(bool SslNoVerify = false, bool AutoCheckout = false);
 
     ~FragmentsImportWorker();
 

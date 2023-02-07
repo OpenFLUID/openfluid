@@ -271,7 +271,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
   // 1. remove submodule from git tracking
   QStringList Args;
   Args << "rm" << "-f" << SubmodulePathString;
-  auto RmReturn = commandHtml(MainPathString, Args);
+  auto RmReturn = launchLocalCommand(MainPathString, Args);
   if (RmReturn.first != 0)
   {
     SummaryStatusCode = 1;
@@ -346,6 +346,21 @@ bool GitUIProxy::clone(const QString& FromUrl, const QString& ToPath,
 // =====================================================================
 
 
+bool GitUIProxy::checkout(const QString& Path, const QString& BranchName)
+{
+  //TOIMPL test this function?
+  QStringList Args = {"checkout", BranchName, "--progress"};
+  launchLocalCommand(Path, Args);
+  QString Out = launchLocalCommand(Path, {"branch", "--show-current"}).second;
+  QString CurrentBranch = Out.section("\n", 0, 0).section(" ", -1);
+  return (CurrentBranch == BranchName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 GitUIProxy::TreeStatusInfo GitUIProxy::status(const QString& Path)
 {
   TreeStatusInfo TreeStatus;
@@ -357,18 +372,10 @@ GitUIProxy::TreeStatusInfo GitUIProxy::status(const QString& Path)
   }
 
   TreeStatus.m_IsGitTracked = true;
-
-  mp_Process = new QProcess();
-  mp_Process->setWorkingDirectory(Path);
-
+  
   QStringList Args = {"status","--porcelain","--ignored","-b"};
 
-  mp_Process->start(QString::fromStdString(m_ExecutablePath),Args);
-
-  mp_Process->waitForReadyRead(-1);
-  mp_Process->waitForFinished(-1);
-
-  QString Out = mp_Process->readAll();
+  QString Out = launchLocalCommand(Path, Args).second;
 
   TreeStatus.m_BranchName = Out.section('\n', 0, 0).section(' ', 1).section("...", 0, 0);
 
@@ -433,28 +440,25 @@ GitUIProxy::TreeStatusInfo GitUIProxy::status(const QString& Path)
 // =====================================================================
 
 
-std::pair<int, QString> GitUIProxy::commandHtml(const QString& Path, QStringList Args, bool RequiringGit)
+std::pair<int, QString> GitUIProxy::launchLocalCommand(const QString& Path, QStringList Args, bool RequiringDotGit)
 {
   QDir PathDir(Path);
 
-  if (RequiringGit && !PathDir.exists(".git"))
+  if (RequiringDotGit && !PathDir.exists(".git"))
   {
     return std::pair(-1, QString());
   }
 
-  mp_Process = new QProcess();
-  mp_Process->setWorkingDirectory(Path);
+  QProcess LocalProcess;
+  LocalProcess.setWorkingDirectory(Path);
 
-  mp_Process->start(QString::fromStdString(m_ExecutablePath),Args);
+  LocalProcess.start(QString::fromStdString(m_ExecutablePath),Args);
 
-  mp_Process->waitForReadyRead(-1);
-  mp_Process->waitForFinished(-1);
+  LocalProcess.waitForReadyRead(-1);
+  LocalProcess.waitForFinished(-1);
 
-  QString Res = QString::fromUtf8(mp_Process->readAll());
-  int ExitCode = mp_Process->exitCode();
-
-  delete mp_Process;
-  mp_Process = nullptr;
+  QString Res = QString::fromUtf8(LocalProcess.readAll());
+  int ExitCode = LocalProcess.exitCode();
 
   return std::pair(ExitCode, Res);
 }
@@ -476,7 +480,7 @@ QString GitUIProxy::statusHtml(const QString& Path, bool WithColorCodes)
 
   Args << "status";
 
-  return commandHtml(Path, Args).second;
+  return launchLocalCommand(Path, Args).second;
 }
 
 
@@ -495,7 +499,7 @@ QString GitUIProxy::logHtml(const QString& Path, bool WithColorCodes)
     Args << "--color";
   }
 
-  return commandHtml(Path, Args).second;
+  return launchLocalCommand(Path, Args).second;
 }
 
 
@@ -507,7 +511,7 @@ QString GitUIProxy::logHtml(const QString& Path, bool WithColorCodes)
 {
   QStringList Args;
   Args << "init";
-  return commandHtml(Path, Args, false).second;
+  return launchLocalCommand(Path, Args, false).second;
 }
 
 

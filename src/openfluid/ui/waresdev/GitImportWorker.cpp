@@ -40,15 +40,17 @@
 #include <QCoreApplication>
 #include <QFileInfo>
 
-#include <openfluid/ui/waresdev/GitImportWorker.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
-#include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/ui/waresdev/GitImportWorker.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-GitImportWorker::GitImportWorker(bool SslNoVerify) : m_SslNoVerify(SslNoVerify)
+GitImportWorker::GitImportWorker(bool SslNoVerify, bool AutoCheckout) : 
+  m_SslNoVerify(SslNoVerify), m_AutoCheckout(AutoCheckout)
 {
 
 }
@@ -97,7 +99,7 @@ bool GitImportWorker::runImports()
     if (!importElement(Pair.first, Pair.second))
     {
       OK = false;
-      break;
+      break; // FIXME advanced handling of failing imports
     }
 
     m_Progress += m_ProgressRatio;
@@ -118,6 +120,24 @@ bool GitImportWorker::runImports()
   }
 
   return OK;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void GitImportWorker::checkoutCurrentOpenFLUIDBranch(const QString& Path)
+{
+  GitUIProxy Git;
+  if (Git.checkout(Path, GitUIProxy::getCurrentOpenFLUIDBranchName()))
+  {
+    emit info(tr("Successful checkout of the current OpenFLUID version branch"));
+  }
+  else
+  {
+    emit warning(tr("Unable to checkout branch corresponding to current OpenFLUID version branch."));
+  }
 }
 
 

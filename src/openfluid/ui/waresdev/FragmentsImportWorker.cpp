@@ -52,7 +52,8 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-FragmentsImportWorker::FragmentsImportWorker(bool SslNoVerify) : GitImportWorker(SslNoVerify)
+FragmentsImportWorker::FragmentsImportWorker(bool SslNoVerify, bool AutoCheckout) : 
+  GitImportWorker(SslNoVerify, AutoCheckout)
 {
 
 }
@@ -132,6 +133,10 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
   QObject::connect(&Git, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));
 
   bool Success;
+  openfluid::tools::FilesystemPath FragmentFullPath = openfluid::tools::FilesystemPath(
+        {RootPath.toStdString(), DestSubPath.toGeneric()});
+
+  
   if (m_AsSubmodule)
   {
     Success = Git.addSubmodule(GitUrl, QString::fromStdString(DestSubPath.toNative()), 
@@ -141,19 +146,18 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
                                                               m_SslNoVerify);
     if (!Success)
     {
-      openfluid::tools::FilesystemPath TargetDirectory = openfluid::tools::FilesystemPath(
-        {RootPath.toStdString(), DestSubPath.toGeneric()});
-
       // Git cleanup of failed submodule add through GitProxy removal operation
       auto GitRmCodeOutput = Git.removeSubmodule(RootPath, QString::fromStdString(DestSubPath.toNative())).second;
       emit info(GitRmCodeOutput);
 
       // Manual removal if git operations were unable to do it
+      openfluid::tools::FilesystemPath DeleteTargetDirectory = FragmentFullPath;
       if (FragmentDirCreated)
       {
-        TargetDirectory = openfluid::tools::FilesystemPath({RootPath.toStdString(), SrcFragmentsSubPath.toGeneric()});
+        DeleteTargetDirectory = openfluid::tools::FilesystemPath({RootPath.toStdString(), 
+                                                                  SrcFragmentsSubPath.toGeneric()});
       }
-      if (TargetDirectory.exists() && TargetDirectory.removeDirectory())
+      if (DeleteTargetDirectory.exists() && DeleteTargetDirectory.removeDirectory())
       {
         emit info(tr("Fragment directory removed since import not successful"));
       }
@@ -167,17 +171,23 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
                                                                m_SslNoVerify, 
                                                                RootPath, 
                                                                true);
-    if (Success)
+  }
+
+  if (Success)
+  {
+    if (m_AutoCheckout)
     {
-      openfluid::tools::FilesystemPath FragmentGitPath = 
+      checkoutCurrentOpenFLUIDBranch(QString::fromStdString(FragmentFullPath.toGeneric()));
+    }
+
+    openfluid::tools::FilesystemPath FragmentGitPath = 
         openfluid::tools::FilesystemPath({RootPath.toStdString(), DestSubPath.toGeneric(), ".git"});
-      if (FragmentGitPath.exists())
+    if (!m_AsSubmodule && FragmentGitPath.exists())
+    {
+      // removing .git/ folder to avoid potential git conflict with parent folder
+      if (!FragmentGitPath.removeDirectory())
       {
-        // removing .git/ folder to avoid potential git conflict with parent folder
-        if (!FragmentGitPath.removeDirectory())
-        {
-          emit error(tr("Unable to remove the git repository of the fragment."));
-        }
+        emit error(tr("Unable to remove the git repository of the fragment."));
       }
     }
   }

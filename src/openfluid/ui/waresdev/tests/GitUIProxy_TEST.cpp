@@ -80,6 +80,10 @@ class F
     QString NoValidCertUsername = QString::fromStdString(CONFIGTESTS_WARESHUB_USERNAME);
     QString NoValidCertPassword = QString::fromStdString(CONFIGTESTS_WARESHUB_PASSWORD);
 
+    QString CurrentBranch = QString::fromStdString(CONFIGTESTS_GITHELPER_CURRENT_BRANCH);
+    QString OtherBranch = QString::fromStdString(CONFIGTESTS_GITHELPER_OTHER_BRANCH);
+    QString MissingBranch = QString::fromStdString(CONFIGTESTS_GITHELPER_UNEXISTING_BRANCH);
+
     QString FragmentPath = QString::fromStdString(CONFIGTESTS_FRAGMENT_LOCAL_FOLDER);
 
     QString DestPath;
@@ -604,6 +608,69 @@ BOOST_FIXTURE_TEST_CASE(status_git_deleted,F)
   else
   {
     std::cout << "** Test not run due to empty URL  ** (\"status_git_deleted\")" << std::endl;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(checkout_existing,F)
+{
+  if (!Url.isEmpty())
+  {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
+    openfluid::ui::waresdev::GitUIProxy Git;
+    Git.clone(Url, DestPath);
+    BOOST_CHECK(Git.checkout(DestPath, OtherBranch));
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"checkout_existing\")" << std::endl;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(checkout_current,F)
+{
+  if (!Url.isEmpty())
+  {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
+    openfluid::ui::waresdev::GitUIProxy Git;
+    Git.clone(Url, DestPath);
+    BOOST_CHECK(Git.checkout(DestPath, CurrentBranch));
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"checkout_current\")" << std::endl;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_FIXTURE_TEST_CASE(checkout_nonexisting,F)
+{
+  if (!Url.isEmpty())
+  {
+    std::cout << "URL : " << Url.toStdString() << std::endl;
+
+    openfluid::ui::waresdev::GitUIProxy Git;
+    Git.clone(Url, DestPath);
+    BOOST_CHECK(!Git.checkout(DestPath, MissingBranch));
+  }
+  else
+  {
+    std::cout << "** Test not run due to empty URL  ** (\"checkout_nonexisting\")" << std::endl;
   }
 }
 

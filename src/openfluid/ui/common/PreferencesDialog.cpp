@@ -167,6 +167,8 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   if(Mode == DisplayMode::DEVSTUDIO || Mode == DisplayMode::FULL)
   {
     connect(ui->SslNoVerifyCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateDevSslNoVerify(bool)));
+    connect(ui->CheckoutCurrentOFCheckBox,SIGNAL(toggled(bool)),
+            this,SLOT(updateDevCheckoutCurrentOpenFLUIDVersion(bool)));
   }
   else
   {
@@ -294,6 +296,7 @@ void PreferencesDialog::initialize()
   ui->BuildPathEnvEdit->setText(QString::fromStdString(mp_PrefsMan->getWaresdevBuildEnv("PATH")));
   ui->ShowPathCheckBox->setChecked(mp_PrefsMan->isWaresdevShowCommandEnv("PATH"));
   ui->SslNoVerifyCheckBox->setChecked(mp_PrefsMan->isWaresdevGitSslNoVerify());
+  ui->CheckoutCurrentOFCheckBox->setChecked(mp_PrefsMan->isWaresdevCheckoutCurrentVersion());
 
   // Code editor
   intializeTextEditorSettings();
@@ -879,6 +882,16 @@ void PreferencesDialog::updateDevShowPATH(bool Enabled)
 void PreferencesDialog::updateDevSslNoVerify(bool NoVerify)
 {
   mp_PrefsMan->setWaresdevGitSslNoVerify(NoVerify);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::updateDevCheckoutCurrentOpenFLUIDVersion(bool CheckoutCurrentVersion)
+{
+  mp_PrefsMan->setWaresdevCheckoutCurrentVersion(CheckoutCurrentVersion);
 }
 
 

@@ -91,7 +91,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="GeneralPage">
        <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -649,6 +649,13 @@
                 <widget class="QCheckBox" name="SslNoVerifyCheckBox">
                  <property name="text">
                   <string>Disable SSL verification</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QCheckBox" name="CheckoutCurrentOFCheckBox">
+                 <property name="text">
+                  <string>Try to checkout branch for current OpenFLUID version in code imports</string>
                  </property>
                 </widget>
                </item>

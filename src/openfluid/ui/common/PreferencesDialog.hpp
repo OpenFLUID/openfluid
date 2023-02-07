@@ -159,6 +159,8 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
 
     void updateDevSslNoVerify(bool NoVerify);
 
+    void updateDevCheckoutCurrentOpenFLUIDVersion(bool CheckoutCurrentVersion);
+
     void detectQtDevToolsMinGW();
 
     void applyTextEditorSettings();

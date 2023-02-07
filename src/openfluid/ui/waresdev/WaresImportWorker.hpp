@@ -66,7 +66,7 @@ class OPENFLUID_API WaresImportWorker: public GitImportWorker
 
   public:
 
-    WaresImportWorker(bool SslNoVerify = false);
+    WaresImportWorker(bool SslNoVerify = false, bool AutoCheckout = false);
 
     ~WaresImportWorker();
 

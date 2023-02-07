@@ -64,6 +64,7 @@ WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
 
   connect(&m_Watcher, SIGNAL(fileChanged(const QString&)), this, SLOT(onGitIndexFileChanged(const QString&)));
   connect(&m_Watcher, SIGNAL(directoryChanged(const QString&)), this, SLOT(onGitDirObjectsChanged(const QString&)));
+  //TOIMPL check if here to disable git refresh during fragment import operation?
 
   setRootPath(Path);
 }

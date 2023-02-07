@@ -64,6 +64,7 @@ class OPENFLUID_API SrcImportSequenceManager: public QObject
     std::map<openfluid::ware::WareType, QStringList> m_SelectedWaresUrlByType;
     QStringList m_SelectedFragmentsUrl;
 
+    bool m_AutoCheckout = false;
     bool m_FragmentsAsSubmodule = true;
 
     bool runWorker(GitImportWorker* Worker, std::vector<std::pair<QString, QString>> Elements);
@@ -72,6 +73,8 @@ class OPENFLUID_API SrcImportSequenceManager: public QObject
   signals:
 
     void info(const QString& Message);
+
+    void warning(const QString& Message);
 
     void error(const QString& Message);
 
@@ -87,7 +90,7 @@ class OPENFLUID_API SrcImportSequenceManager: public QObject
 
   public:
 
-    SrcImportSequenceManager();
+    SrcImportSequenceManager(bool AutoCheckout = false);
 
     ~SrcImportSequenceManager();
 

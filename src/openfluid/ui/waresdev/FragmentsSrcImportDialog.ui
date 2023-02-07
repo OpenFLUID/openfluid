@@ -284,6 +284,16 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="CheckoutCurrentVersionCheckBox">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Try to checkout branch for current OpenFLUID version</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
