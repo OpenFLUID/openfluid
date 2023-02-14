@@ -139,7 +139,7 @@ int InfoTasks::processInfo() const
 
   JSON["paths"]["install_prefix"] = openfluid::base::Environment::getInstallPrefix();
   JSON["paths"]["input"] = openfluid::base::RunContextManager::instance()->getInputDir();
-  JSON["paths"]["output"] = openfluid::base::RunContextManager::instance()->getInputDir();
+  JSON["paths"]["output"] = openfluid::base::RunContextManager::instance()->getOutputDir();
   JSON["paths"]["search"]["simulators"] = openfluid::base::Environment::getSimulatorsDirs();
   JSON["paths"]["search"]["observers"] = openfluid::base::Environment::getObserversDirs();
   JSON["paths"]["temp"] = openfluid::base::Environment::getTempDir();

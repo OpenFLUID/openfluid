@@ -2,7 +2,7 @@ INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 SET(DEVSTUDIO_CPP MainWindow.cpp WorkspaceToolbar.cpp WareBuildStatusWidget.cpp)
 
-SET(DEVSTUDIO_HPP MainWindow.hpp WorkspaceToolbar.hpp WareBuildStatusWidget.cpp)
+SET(DEVSTUDIO_HPP MainWindow.hpp WorkspaceToolbar.hpp WareBuildStatusWidget.hpp)
 
 QT5_WRAP_UI(DEVSTUDIO_UI MainWindow.ui WareBuildStatusWidget.ui)
 
