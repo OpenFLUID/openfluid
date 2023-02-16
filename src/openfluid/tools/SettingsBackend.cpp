@@ -48,8 +48,8 @@
 namespace openfluid { namespace tools {
 
 
-SettingsBackend::SettingsBackend(const std::string& BackendFile, const std::string& Role, bool AutoSave) :
-  m_BackendFile(BackendFile), m_Role(Role), m_AutoSave(AutoSave)
+SettingsBackend::SettingsBackend(const std::string& BackendFile, bool AutoSave) :
+  m_BackendFile(BackendFile), m_AutoSave(AutoSave)
 {
   prepareForData();
 
@@ -74,46 +74,12 @@ SettingsBackend::~SettingsBackend()
 // =====================================================================
 
 
-std::string SettingsBackend::getPointerWithRole(const std::string& Pointer) const
-{
-  std::string Ptr = openfluid::tools::trim(Pointer);
-
-  if (Ptr.empty() || (Ptr == "/"))
-  {
-    Ptr = "/"+m_Role;
-  }
-  else
-  {
-    Ptr = "/"+m_Role+Ptr;
-  }
-  
-  return Ptr;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void SettingsBackend::prepareForData()
 {
   // set up doc as object
   if (!m_Config.is_object())
   {
     m_Config = openfluid::thirdparty::json::object();
-  }
-
-  // check that role key type is object
-  auto itRole = m_Config.find(m_Role);
-  if (itRole!=m_Config.end() && !(*itRole).is_object())
-  {
-    m_Config.erase(itRole);
-  }
-  
-  // set up role key in doc if not exists
-  if (m_Config.find(m_Role) == m_Config.end())
-  {
-    m_Config[m_Role] = openfluid::thirdparty::json::object(); 
   }
 }
 
@@ -203,11 +169,9 @@ void SettingsBackend::writeToStream(std::ostream& OutS) const
 
 const SettingValue SettingsBackend::getValue(const std::string& Pointer) const
 {
-  std::string Ptr = getPointerWithRole(Pointer);
-
   try 
   {
-    const openfluid::thirdparty::json Val = m_Config.at(openfluid::thirdparty::json::json_pointer(Ptr));
+    const openfluid::thirdparty::json Val = m_Config.at(openfluid::thirdparty::json::json_pointer(Pointer));
 
     if (Val.is_string())
     {
@@ -260,18 +224,16 @@ const SettingValue SettingsBackend::getValue(const std::string& Pointer) const
 void SettingsBackend::setValue(const std::string& ParentPointer, const std::string& Key, 
                                const SettingValue& Val, bool AutoCreate)
 {
-  std::string ParentPtr = getPointerWithRole(ParentPointer);
-
   if (!AutoCreate)
   {
     try 
     {
-      m_Config.at(openfluid::thirdparty::json::json_pointer(ParentPtr));
+      m_Config.at(openfluid::thirdparty::json::json_pointer(ParentPointer));
     }
     catch (...)
     {
       throw openfluid::base::FrameworkException(
-        OPENFLUID_CODE_LOCATION,"Path '" + ParentPtr + "' does not exist to create the '" + Key + "' key "
+        OPENFLUID_CODE_LOCATION,"Path '" + ParentPointer + "' does not exist to create the '" + Key + "' key "
       );
     }
   }
@@ -303,7 +265,14 @@ void SettingsBackend::setValue(const std::string& ParentPointer, const std::stri
     JSONValue = Val.JSONValue();
   }
 
-  m_Config[openfluid::thirdparty::json::json_pointer(ParentPtr + "/" + Key)] = JSONValue;
+  
+  auto FullPointer = ParentPointer + "/" + Key;
+  if (ParentPointer.back() == '/')
+  {
+    FullPointer = ParentPointer + Key;
+  }
+
+  m_Config[openfluid::thirdparty::json::json_pointer(FullPointer)] = JSONValue;
 
   autoSave();
 }
@@ -315,11 +284,9 @@ void SettingsBackend::setValue(const std::string& ParentPointer, const std::stri
 
 void SettingsBackend::remove(const std::string& Pointer)
 {
-  std::string Ptr = getPointerWithRole(Pointer);
-
   try
   {
-    const auto JSONptr = openfluid::thirdparty::json::json_pointer(Ptr);
+    const auto JSONptr = openfluid::thirdparty::json::json_pointer(Pointer);
     const std::string Key = JSONptr.back();
     const auto ParentJSONptr = JSONptr.parent_pointer();
 
@@ -339,11 +306,9 @@ void SettingsBackend::remove(const std::string& Pointer)
 
 bool SettingsBackend::exists(const std::string& Pointer) const
 {
-  std::string Ptr = getPointerWithRole(Pointer);
-
   try 
   {
-    auto Val = m_Config.at(openfluid::thirdparty::json::json_pointer(Ptr));
+    auto Val = m_Config.at(openfluid::thirdparty::json::json_pointer(Pointer));
   }
   catch (...)
   {

@@ -41,6 +41,7 @@
 #include <boost/property_tree/ini_parser.hpp>
 
 #include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/core/DateTime.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -53,7 +54,6 @@ namespace openfluid { namespace base {
 OPENFLUID_SINGLETON_INITIALIZATION(RunContextManager)
 
 
-const std::string RunContextManager::m_ProjectRole = "openfluid-project";
 const std::vector<std::string> RunContextManager::m_DeprecatedProjectFiles =
   {"openfluid-project.conf",".openfluid-project.conf"};
 
@@ -147,12 +147,12 @@ void RunContextManager::updateProjectFile(const std::string& ProjectFilePath)
       boost::property_tree::ptree INI;
       boost::property_tree::ini_parser::read_ini(FormerPrjFilePath,INI);
 
-      openfluid::tools::SettingsBackend SB(ProjectFilePath,m_ProjectRole,false);
+      openfluid::tools::SettingsBackend SB(ProjectFilePath,false);
       SB.setValue("/","name","");
       SB.setValue("/","description","");
       SB.setValue("/","authors","");
-      SB.setValue("/","creation_date","");
-      SB.setValue("/","lastmod_date","");
+      SB.setValue("/","created_at","");
+      SB.setValue("/","updated_at","");
       SB.setValue("/","inc_outdir",false);
 
 
@@ -193,11 +193,13 @@ void RunContextManager::updateProjectFile(const std::string& ProjectFilePath)
             }
             else if (openfluid::tools::toLowerCase(Key) == "creationdate")
             {
-              SB.setValue("/","creation_date",Value);
+              SB.setValue("/","created_at",
+                          openfluid::core::DateTime::fromString(Value,"%Y%m%dT%H%M%S").getAsISOString());
             }
             else if (openfluid::tools::toLowerCase(Key) == "lastmoddate")
             {
-              SB.setValue("/","lastmod_date",Value);
+              SB.setValue("/","updated_at",
+                          openfluid::core::DateTime::fromString(Value,"%Y%m%dT%H%M%S").getAsISOString());
             }
             else if (openfluid::tools::toLowerCase(Key) == "incoutput")
             {
@@ -344,13 +346,13 @@ bool RunContextManager::checkProject(const std::string& ProjectPath)
     return false;
   }
 
-  openfluid::tools::SettingsBackend SB(PrjFilePath,m_ProjectRole);
+  openfluid::tools::SettingsBackend SB(PrjFilePath);
 
   bool OK = SB.exists("/name") &&
             SB.exists("/description") &&
             SB.exists("/authors") &&
-            SB.exists("/creation_date") &&
-            SB.exists("/lastmod_date");
+            SB.exists("/created_at") &&
+            SB.exists("/updated_at");
 
   return OK;
 }
@@ -410,13 +412,13 @@ bool RunContextManager::openProject(const std::string& Path)
     m_OutputDir = getOuputDirFromProjectPath(m_ProjectPath);
 
     std::string PrjFilePath = getFilePathFromProjectPath(m_ProjectPath);
-    mp_ProjectFile = new openfluid::tools::SettingsBackend(PrjFilePath,m_ProjectRole);
+    mp_ProjectFile = new openfluid::tools::SettingsBackend(PrjFilePath);
 
     m_ProjectName = mp_ProjectFile->getValue("/name").get<std::string>("");
     m_ProjectDescription = mp_ProjectFile->getValue("/description").get<std::string>("");
     m_ProjectAuthors = mp_ProjectFile->getValue("/authors").get<std::string>("");
-    m_ProjectCreationDate = mp_ProjectFile->getValue("/creation_date").get<std::string>("19700101T000000");
-    m_ProjectLastModDate = mp_ProjectFile->getValue("/lastmod_date").get<std::string>("19700101T000000");
+    m_ProjectCreationDate = mp_ProjectFile->getValue("/created_at").get<std::string>("1970-01-01 00:00:00");
+    m_ProjectLastModDate = mp_ProjectFile->getValue("/updated_at").get<std::string>("1970-01-01 00:00:00");
     m_ProjectIncOutputDir = mp_ProjectFile->getValue("/inc_outdir").get<bool>(false);
 
     updateWaresEnvironment();
@@ -451,7 +453,7 @@ bool RunContextManager::createProject(const std::string& Path,
     m_OutputDir = getOuputDirFromProjectPath(AbsPath);
 
     std::string PrjFilePath = getFilePathFromProjectPath(AbsPath);
-    mp_ProjectFile = new openfluid::tools::SettingsBackend(PrjFilePath,m_ProjectRole);
+    mp_ProjectFile = new openfluid::tools::SettingsBackend(PrjFilePath);
 
     m_ProjectName = Name;
     m_ProjectDescription = Description;
@@ -486,8 +488,8 @@ bool RunContextManager::saveProject()
   mp_ProjectFile->setValue("/","name",m_ProjectName);
   mp_ProjectFile->setValue("/","description",m_ProjectDescription);
   mp_ProjectFile->setValue("/","authors",m_ProjectAuthors);
-  mp_ProjectFile->setValue("/","creation_date",m_ProjectCreationDate);
-  mp_ProjectFile->setValue("/","lastmod_date",m_ProjectLastModDate);
+  mp_ProjectFile->setValue("/","created_at",m_ProjectCreationDate);
+  mp_ProjectFile->setValue("/","updated_at",m_ProjectLastModDate);
   mp_ProjectFile->setValue("/","inc_outdir",m_ProjectIncOutputDir);
 
   return true;
@@ -601,13 +603,13 @@ bool RunContextManager::getProjectInfos(const std::string& Path,
   {
 
     std::string PrjFilePath = getFilePathFromProjectPath(Path);
-    openfluid::tools::SettingsBackend PrjFile(PrjFilePath,m_ProjectRole);
+    openfluid::tools::SettingsBackend PrjFile(PrjFilePath);
 
     Name = PrjFile.getValue("/name").get<std::string>("");
     Description = PrjFile.getValue("/description").get<std::string>("");
     Authors = PrjFile.getValue("/authors").get<std::string>("");
-    CreationDate = PrjFile.getValue("/creation_date").get<std::string>("19700101T000000");
-    LastModDate = PrjFile.getValue("/lastmod_date").get<std::string>("19700101T000000");
+    CreationDate = PrjFile.getValue("/created_at").get<std::string>("1970-01-01 00:00:00");
+    LastModDate = PrjFile.getValue("/updated_at").get<std::string>("1970-01-01 00:00:00");
 
     return true;
   }

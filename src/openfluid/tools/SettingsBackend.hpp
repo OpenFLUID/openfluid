@@ -217,15 +217,9 @@ class OPENFLUID_API SettingsBackend
 
     openfluid::thirdparty::json m_Config;
 
-    const unsigned int m_FormatVersion = 2; // TODO to implement in settings files
-
     std::string m_BackendFile;
 
-    const std::string m_Role;
-
     bool m_AutoSave;
-
-    std::string getPointerWithRole(const std::string& Pointer) const;
 
     void prepareForData();
 
@@ -243,18 +237,9 @@ class OPENFLUID_API SettingsBackend
       @param[in] Role The name of the role given to the settings. Default is "settings"
       @param[in] AutoSave If true, automatically saves settings to file (i any) at each modification. Enabled by default
     */
-    SettingsBackend(const std::string& BackendFile = "", const std::string& Role = "settings", bool AutoSave = true);
+    SettingsBackend(const std::string& BackendFile = "", bool AutoSave = true);
 
     ~SettingsBackend();
-
-    /**
-      Returns the role of the settings
-      @return The role
-    */ 
-    std::string getRole() const
-    {
-      return m_Role;
-    }
 
     /**
       Returns the path of the backend file for persistance

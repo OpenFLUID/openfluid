@@ -69,8 +69,6 @@ class OPENFLUID_API PreferencesManager
 
     std::unique_ptr<openfluid::tools::SettingsBackend> m_Settings;
 
-    static const std::string m_SettingsRole;
-
     PreferencesManager();
 
     ~PreferencesManager()

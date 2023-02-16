@@ -1,17 +1,15 @@
 {
-  "settings": {
-    "string": "Hello world!",
-    "bool": true,
-    "int": 42,
-    "double": 3.1415927,
-    "stringarray": ["hello","world","!"],
-    "object" : {
-      "string": "Goodnight",
-      "bool": false,
-      "int": 47,
-      "double": 1.23456,
-      "stringarray": ["goodmorning","and","goodnight"],
-      "miscarray": ["love",2,"code"]
-    }
+  "string": "Hello world!",
+  "bool": true,
+  "int": 42,
+  "double": 3.1415927,
+  "stringarray": ["hello","world","!"],
+  "object" : {
+    "string": "Goodnight",
+    "bool": false,
+    "int": 47,
+    "double": 1.23456,
+    "stringarray": ["goodmorning","and","goodnight"],
+    "miscarray": ["love",2,"code"]
   }
 }

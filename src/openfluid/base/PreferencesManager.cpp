@@ -72,7 +72,6 @@ OPENFLUID_SINGLETON_INITIALIZATION(PreferencesManager)
 
 
 std::string PreferencesManager::m_SettingsFile = "";
-const std::string PreferencesManager::m_SettingsRole = "openfluid-settings";
 
 
 // =====================================================================
@@ -131,7 +130,7 @@ void PreferencesManager::updateSettingsFile(const std::string& FilePath) const
 
       boost::property_tree::ptree INI;
       boost::property_tree::ini_parser::read_ini(FormerFilePath,INI);
-      openfluid::tools::SettingsBackend SB(FilePath,m_SettingsRole,false);
+      openfluid::tools::SettingsBackend SB(FilePath,false);
 
       struct ExtToolInfo
       {
@@ -529,7 +528,7 @@ void PreferencesManager::loadSettings()
                                               "Cannot create directory for settings file");
   }
 
-  m_Settings = std::make_unique<openfluid::tools::SettingsBackend>(m_SettingsFile,m_SettingsRole);
+  m_Settings = std::make_unique<openfluid::tools::SettingsBackend>(m_SettingsFile);
 
   if (!SettingsF.isFile())
   {

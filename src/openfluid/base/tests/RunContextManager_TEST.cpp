@@ -220,8 +220,8 @@ BOOST_AUTO_TEST_CASE(check_project_fileformat_conversion_simple)
   BOOST_CHECK_EQUAL(CtxtMan->getProjectName(),"Former Test project");
   BOOST_CHECK_EQUAL(CtxtMan->getProjectDescription(),"This is a former project file for tests");
   BOOST_CHECK_EQUAL(CtxtMan->getProjectAuthors(),"Nina Simone, John Coltrane");
-  BOOST_CHECK_EQUAL(CtxtMan->getProjectCreationDate(),"20210610T140435");
-  BOOST_CHECK_EQUAL(CtxtMan->getProjectLastModDate(),"20210610T140436");
+  BOOST_CHECK_EQUAL(CtxtMan->getProjectCreationDate(),"2021-06-10 14:04:35");
+  BOOST_CHECK_EQUAL(CtxtMan->getProjectLastModDate(),"2021-06-10 14:04:36");
   BOOST_CHECK_EQUAL(CtxtMan->isProjectIncrementalOutputDir(),true);
 
   openfluid::base::RunContextManager::instance()->closeProject();
@@ -261,8 +261,8 @@ BOOST_AUTO_TEST_CASE(check_project_fileformat_conversion_complex)
   BOOST_CHECK_EQUAL(CtxtMan->getProjectDescription(),
                     "Example of OpenFLUID Project with bla bla bla. This is bla bla bla...");
   BOOST_CHECK_EQUAL(CtxtMan->getProjectAuthors(),"Alan Turing, Katherine Johnson, Margaret Hamilton");
-  BOOST_CHECK_EQUAL(CtxtMan->getProjectCreationDate(),"20150924T101640");
-  BOOST_CHECK_EQUAL(CtxtMan->getProjectLastModDate(),"20150924T101640");
+  BOOST_CHECK_EQUAL(CtxtMan->getProjectCreationDate(),"2015-09-24 10:16:40");
+  BOOST_CHECK_EQUAL(CtxtMan->getProjectLastModDate(),"2015-09-24 10:16:40");
   BOOST_CHECK_EQUAL(CtxtMan->isProjectIncrementalOutputDir(),false);
   BOOST_CHECK_EQUAL(CtxtMan->getProjectContextValue(
     "/builder/model/graphicalview/positions/examples.apollo.ballistics").get<std::string>(),

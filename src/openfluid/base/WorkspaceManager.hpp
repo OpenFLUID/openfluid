@@ -65,8 +65,6 @@ class OPENFLUID_API WorkspaceManager
 
     bool m_IsOpen = false;
 
-    static const std::string m_SettingsRole;
-
     WorkspaceManager();
 
     ~WorkspaceManager();
