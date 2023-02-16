@@ -55,9 +55,6 @@ namespace openfluid { namespace base {
 OPENFLUID_SINGLETON_INITIALIZATION(WorkspaceManager)
 
 
-const std::string WorkspaceManager::m_SettingsRole = "openfluid-workspace-settings";
-
-
 // =====================================================================
 // =====================================================================
 
@@ -115,7 +112,7 @@ void WorkspaceManager::updateSettingsFile(const std::string& FilePath)
 
       boost::property_tree::ptree INI;
       boost::property_tree::ini_parser::read_ini(FormerFilePath,INI);
-      openfluid::tools::SettingsBackend SB(FilePath,m_SettingsRole,false);
+      openfluid::tools::SettingsBackend SB(FilePath,false);
 
       for(const auto& Section : INI)
       {
@@ -191,7 +188,7 @@ void WorkspaceManager::prepareWorkspace()
 void WorkspaceManager::loadSettings()
 {
   m_Settings = 
-    std::make_unique<openfluid::tools::SettingsBackend>(getSettingsFile(),m_SettingsRole);
+    std::make_unique<openfluid::tools::SettingsBackend>(getSettingsFile());
 
   if (!openfluid::tools::FilesystemPath(getSettingsFile()).isFile())
   {

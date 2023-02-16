@@ -1,0 +1,18 @@
+{
+  "id": "tests.cmdline-check.noreadme",
+  "name": "",
+  "description": "",
+  "version": "",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "GPL-3.0-or-later",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "builderext": {
+    "mode": "modal",
+    "category": "other",
+    "menutext": "NewExtension"
+  }
+}

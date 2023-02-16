@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(read_bad_json)
 
 
   const std::vector<std::string> WrongFiles = {
-    "bad_format.json","bad_noware.json",
+    "bad_format.json",
     "bad_sim_noentry.json",
     "bad_sim_noid.json","bad_sim_emptyid.json",
     "bad_sim_data_noname.json","bad_sim_data_emptyname.json","bad_sim_data_noclass.json"

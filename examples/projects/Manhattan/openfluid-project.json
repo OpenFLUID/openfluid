@@ -1,19 +1,17 @@
 {
-  "openfluid-project": {
-    "name": "Manhattan",
-    "description": "Example project, showing usage of OpenFLUID in car fluxes in Manhattan",
-    "authors": "Michael Rabotin",
-    "creation_date": "20130424T085754",
-    "lastmod_date": "20130424T085754",
-    "inc_outdir": false,
-    "context": {
-      "builder": {
-        "model": {
-          "graphicalview": {
-            "positions": {
-              "traffic.surf.car-transfer": "@Point(17 241)",
-              "traffic.surf.trafficlights-state": "@Point(13 1)"
-            }
+  "name": "Manhattan",
+  "description": "Example project, showing usage of OpenFLUID in car fluxes in Manhattan",
+  "authors": "Michael Rabotin",
+  "created_at": "2013-04-24 08:57:54",
+  "updated_at": "2013-04-24 08:57:54",
+  "inc_outdir": false,
+  "context": {
+    "builder": {
+      "model": {
+        "graphicalview": {
+          "positions": {
+            "traffic.surf.car-transfer": "@Point(17 241)",
+            "traffic.surf.trafficlights-state": "@Point(13 1)"
           }
         }
       }

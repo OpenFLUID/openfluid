@@ -54,6 +54,8 @@ EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
 {
   openfluid::base::RunContextManager* PrjMan = openfluid::base::RunContextManager::instance();
 
+  QString DateFormatTxt = "yyyy-MM-dd hh:mm:ss";
+
   ui->setupUi(this);
 
   setupMessageUi(tr("Edit project properties"));
@@ -63,7 +65,7 @@ EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
   ui->DescriptionTextEdit->setPlainText(QString::fromStdString(PrjMan->getProjectDescription()));
   ui->AuthorsLineEdit->setText(QString::fromStdString(PrjMan->getProjectAuthors()));
 
-  QDateTime DT = QDateTime::fromString(QString::fromStdString(PrjMan->getProjectCreationDate()),"yyyyMMdd'T'hhmmss");
+  QDateTime DT = QDateTime::fromString(QString::fromStdString(PrjMan->getProjectCreationDate()),DateFormatTxt);
   if (DT.isValid())
   {
     ui->CreationDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));
@@ -73,7 +75,7 @@ EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
     ui->CreationDateLabel->setText(tr("unknown"));
   }
 
-  DT = QDateTime::fromString(QString::fromStdString(PrjMan->getProjectLastModDate()),"yyyyMMdd'T'hhmmss");
+  DT = QDateTime::fromString(QString::fromStdString(PrjMan->getProjectLastModDate()),DateFormatTxt);
   if (DT.isValid())
   {
     ui->LastModDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));

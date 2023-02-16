@@ -166,7 +166,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::tools::SettingsBackend SB1;
   BOOST_REQUIRE(SB1.getBackendFilePath().empty());
-  BOOST_REQUIRE_EQUAL(SB1.getRole(),"settings");
 
   SB1.writeToStream(std::cout);
   std::cout << std::endl;
@@ -174,7 +173,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   openfluid::tools::SettingsBackend SB2("test-settings.json","test-settings");
   BOOST_REQUIRE_EQUAL(SB2.getBackendFilePath(),"test-settings.json");
-  BOOST_REQUIRE_EQUAL(SB2.getRole(),"test-settings");
 
   BOOST_REQUIRE_EQUAL(SB2.getValue("/does/not/exist").get<std::string>("hello world!"),"hello world!");
   BOOST_REQUIRE_THROW(SB2.getValue("/does/not/exist").get<std::string>(),openfluid::base::FrameworkException);
@@ -295,7 +293,7 @@ BOOST_AUTO_TEST_CASE(check_write_value)
   // ----------------------------
 
   {
-    BOOST_CHECK_EQUAL(SB.exists("/string"),true);    
+    BOOST_CHECK_EQUAL(SB.exists("/string"),true);
     auto Value = SB.getValue("/string");
     BOOST_CHECK(!Value.isNull());
     BOOST_CHECK(Value.is<std::string>());

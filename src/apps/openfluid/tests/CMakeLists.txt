@@ -797,12 +797,12 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateProject
                               )
 
 
-OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateProjectCheck
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateProjectRun
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "run"
                            "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-data/NewProject"
                   )
-SET_PROPERTY(TEST cmdline-openfluid-CreateProjectCheck APPEND PROPERTY DEPENDS cmdline-openfluid-CreateProject)
+SET_PROPERTY(TEST cmdline-openfluid-CreateProjectRun APPEND PROPERTY DEPENDS cmdline-openfluid-CreateProject)
 
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateEmptyProject

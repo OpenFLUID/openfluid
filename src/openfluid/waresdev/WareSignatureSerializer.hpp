@@ -68,21 +68,17 @@ inline openfluid::ware::WareType detectWareType(const std::string& Path)
   {
     auto Json = openfluid::thirdparty::json::parse(InFile);
   
-    if (Json.contains("openfluid-ware"))
+    if (Json.contains("simulator"))
     {
-      const auto JsonWare = Json["openfluid-ware"];
-      if (JsonWare.contains("simulator"))
-      {
-        return openfluid::ware::WareType::SIMULATOR; 
-      }
-      else if (JsonWare.contains("observer"))
-      {
-        return openfluid::ware::WareType::OBSERVER; 
-      }
-      else if (JsonWare.contains("builderext"))
-      {
-        return openfluid::ware::WareType::BUILDEREXT; 
-      }
+      return openfluid::ware::WareType::SIMULATOR; 
+    }
+    else if (Json.contains("observer"))
+    {
+      return openfluid::ware::WareType::OBSERVER; 
+    }
+    else if (Json.contains("builderext"))
+    {
+      return openfluid::ware::WareType::BUILDEREXT; 
     }
   }
   catch (openfluid::thirdparty::json::exception& E)
@@ -650,7 +646,7 @@ SignatureType WareSignatureSerializer<SignatureType>::readFromJSONFile(const std
   try 
   {
     auto FullJson = openfluid::thirdparty::json::parse(InFile);
-    auto Sign = fromJSON(FullJson["openfluid-ware"]);
+    auto Sign = fromJSON(FullJson);
     return Sign;
   }
   catch (openfluid::thirdparty::json::exception& E)
@@ -669,9 +665,7 @@ template<class SignatureType>
 void WareSignatureSerializer<SignatureType>::writeToJSONFile(const SignatureType& Sign,
                                                              const std::string& FilePath) const
 {
-  openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
-
-  Json["openfluid-ware"] = toJSON(Sign);
+  auto Json = toJSON(Sign);
 
   std::ofstream OutFile(FilePath,std::ofstream::out);
   OutFile << Json.dump(2);

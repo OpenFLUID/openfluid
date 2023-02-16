@@ -97,8 +97,6 @@ class OPENFLUID_API RunContextManager : public Environment
 
     bool m_ProjectIsOpen;
 
-    static const std::string m_ProjectRole;
-
     static const std::vector<std::string> m_DeprecatedProjectFiles;
 
     RunContextManager();

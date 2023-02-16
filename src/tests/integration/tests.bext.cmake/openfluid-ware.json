@@ -1,0 +1,18 @@
+{
+  "id": "tests.bext.cmake",
+  "name": "",
+  "description": "",
+  "version": "",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "builderext": {
+    "mode": "modal",
+    "category": "other",
+    "menutext": "tests.bext.cmake"
+  }
+}
