@@ -1,70 +1,153 @@
-![](resources/graphics/openfluid_official_400.png)  
-  
+<div align="center">
+  <a href="https://www.openfluid-project.org">
+    <img src="resources/graphics/openfluid_official_400.png" alt="Logo" width="400px">
+  </a>
+<br/>
+<br/>
 
-**OpenFLUID is a software environment for modelling and simulation of complex landscape systems**
-
-Further information is available on the [OpenFLUID](https://www.openfluid-project.org/) site at [www.openfluid-project.org](https://www.openfluid-project.org/).
-
-See also the LICENSE and AUTHORS files included in the sources.  
-
-
-## OpenFLUID sources 
-
-[![Ubuntu](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-ubuntu.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-ubuntu.yaml)
-[![macOs](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-macos.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-macos.yaml)
+[![Ubuntu](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-ubuntu.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-ubuntu.yaml) &nbsp;&nbsp;
+[![macOs](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-macos.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-macos.yaml) &nbsp;&nbsp;
 [![Windows](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-windows.yaml/badge.svg)](https://github.com/OpenFLUID/openfluid/actions/workflows/CI-windows.yaml)
+<br/>
+
+<a href="https://github.com/OpenFLUID/openfluid/issues">Report bug or issue</a>
+</div>
+
+<br/>
+
+* [About OpenFLUID](#about-openfluid)
+* [Getting started](#getting-started)
+    * [Installation](#installation)
+    * [Manuals and Trainings](#manuals-and-trainings)
+* [Resources](#resources)
+* [Authors and License](#authors-and-license)
+* [Contact](#contact)
 
 
-The OpenFLUID source tree is organized as follows
-- cmake : CMake files included in main build system 
-- doc: Doxygen and LaTeX sources for users and developers manuals
-- examples : examples of projects and simulators
-- resources : general resources (translations, building, testing and packaging)
-- share : shared resources used at runtime
-- src : sources of the OpenFLUID framework and applications
+# About OpenFLUID
+
+OpenFLUID is a software environment for spatial modelling in landscapes. Based on an explicit representation of spatial objects and their interactions, OpenFLUID is designed for modelling dynamics at different spatial and temporal scales. It provides functionalities for the development and integration of computational codes, model coupling, parameterization and execution of simulations. It is also a collaborative framework for the capitalization and sharing of multi-disciplinary scientific models.  
+OpenFLUID has already been applied in various contexts: hydrology, diffuse pollution, agricultural practices, erosion, land use planning, etc.
+Free, open-source and based on open standards, OpenFLUID is fully commited to open and reproducible science approaches.  
+
+<div align="center">
+  <img src="resources/graphics/builder-map.png" alt="Builder screenshot" >
+</div>
 
 
-### Requirements
+## Features
 
-OpenFLUID is written in C++14. It relies on open-source libraries required to build or use OpenFLUID.
-
-For the OpenFLUID framework libraries:
-  - C++ STL
-  - Boost (headers only, testing libs are required in debug mode)
-  - Qt5 : Core, GUI (optional), Network
-  - GDAL/OGR
-
-For openfluid command line application:
-  - OpenFLUID framework libraries
-  - C++ STL
-  - Qt5 : Core 
-
-For openfluid-builder GUI application:
-  - OpenFLUID framework libraries
-  - C++ STL
-  - Qt5 : Core, GUI, SVG
-  - GDAL/OGR
-
-For openfluid-devstudio GUI application:
-  - OpenFLUID framework libraries
-  - C++ STL
-  - Qt5 : Core, GUI
-
-For unit testing, the Boost unit testing framework is also required 
-(unit_test_framework)
-
-For building Latex documents (optional), required tools and packages are:
-  - pdflatex
-  - latex2html
-  - packages: babel, geometry, ltxtable, pgf/tikz, tabularx, verbatim
-  - fonts: cmbright
-
-OpenFLUID uses CMake version 3.1 or higher for build configuration and GCC 8.0 or higher for compilation.
+* 🚀 Performance oriented simulation engine
+* 👩‍💻 Open architecture to plug your own simulation models
+* 🗂️ Extensible output formats through plugins
+* 🖥️ User friendly software environment for development and integration of models
+* ⌨️ Command line interface
+* 📚 Integrated documentation system for models
+* 🤝 Collaborative system to store and share models source codes
 
 
-### Building from source
+## Built with
 
-Detailed instructions for building OpenFLUID from sources are available on the [OpenFLUID community site](https://community.openfluid-project.org/)
+OpenFLUID relies on several tools and libraries
+
+* C++17
+* [Boost](https://www.boost.org/) for low-level structures
+* [GDAL](https://gdal.org/) for geospatial data I/O and management
+* [JSON](https://github.com/nlohmann/json) for metadata and settings I/O
+* [TinyXML](https://github.com/leethomason/tinyxml2) for datasets I/O
+* [libcurl](https://github.com/curl/curl) for network operations
+* [Qt5](https://www.qt.io/) for UI framework and applications
+* [CMake](https://cmake.org/) for build/test/packaging configuration and management
+* [Doxygen](https://www.doxygen.nl/) for technical documentation
 
 
+# Getting started
+
+## Installation
+
+OpenFLUID is available for Linux, MacOS and Windows. You can download it from the [official web site](https://www.openfluid-project.org/).
+
+Once the installation has been performed using instructions below according to the operating system, open a terminal (Linux, MacOS) or a command prompt (Windows) an type `openfluid version` to check if the installation is successful.  
+The OpenFLUID version is displayed if it is correctly installed.
+
+<div align="center">
+  <img src="resources/graphics/cmdline-version.gif" alt="Command line version" width="600px"> 
+</div>
+
+### Linux
+
+1. Download the package corresponding to the Linux distribution
+1. Open a terminal
+1. Use the dedicated package installer tool
+
+Ubuntu/Debian
+```sh
+sudo apt install /path/to/<openfluidpackagfile>.deb
+```
+
+Fedora
+```sh
+sudo dnf install /path/to/<openfluidpackagfile>.rpm
+```
+
+### MacOS
+
+1. Install Brew if not already present (see also https://brew.sh/)
+```sh
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
+2. Add OpenFLUID tap for Brew
+```sh
+brew tap OpenFLUID/openfluid
+```
+
+3. Install OpenFLUID using Brew (with --no-quarantine option to avoid Gatekeeper restrictions in recent MacOS versions)
+```sh
+brew cask install --no-quarantine openfluid
+```
+
+### Windows
+
+1. Download the OpenFLUID installer
+1. Download the OpenFLUID additional tools installer
+1. Execute the OpenFLUID installer (optional but recommended)
+1. Execute the OpenFLUID additional tools installer (optional but recommended)
+
+Additional information is available on the [OpenFLUID Community site](https://community.openfluid-project.org/start/install/#windows)
+
+
+### From sources
+
+Detailed instructions for build and installation from sources are available on the [OpenFLUID Community site](https://community.openfluid-project.org/coredev/build/).
+
+
+## Manuals and Trainings
+
+The [OpenFLUID manual](https://community.openfluid-project.org/start/manuals/) and the [training sessions docs](https://community.openfluid-project.org/start/trainings/) are available online.  
+_(the training sessions documents are in french 🇫🇷)_
+
+
+# Resources
+
+* [OpenFLUID web site](https://www.openfluid-project.org/)
+* [OpenFLUID Community](https://community.openfluid-project.org/)
+* [GitHub](https://github.com/OpenFLUID) organization: repositories, issues, ...
+* [Overview slideshow](https://bit.ly/OpenFLUID_overviewFR) _(in french 🇫🇷)_
+* OpenFLUID [coding style](https://community.openfluid-project.org/scidev/codestyle/)
+
+
+# Authors and License
+
+OpenFLUID is developed at [LISAH](https://www.umr-lisah.fr/) (Montpellier, France), a research joint unit on interactions between soil, agrosystems and hydrosystems. It is actively supported by the [INRAE](https://www.inrae.fr/en) research institute on agriculture, environment and food.  
+
+See the [AUTHORS.md](AUTHORS.md) file for details about the developers.  
+
+OpenFLUID is distributed as a free and open-source software. See the [LICENSE](LICENSE) file for details.
+
+
+# Contact
+
+To contact us, see the [OpenFLUID team page](https://www.openfluid-project.org/who/).  
+You can also join the OpenFLUID slack workspace. Ask the team for an invitation link.
 
