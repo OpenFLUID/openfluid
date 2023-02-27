@@ -48,6 +48,9 @@
 #include <openfluid/tools/Console.hpp>
 
 
+namespace openfluid { namespace ui { namespace waresdev {
+
+
 class SignalMigrationListener : public QObject, public openfluid::waresdev::WareSrcMigratorListener
 {
   Q_OBJECT;
@@ -244,6 +247,9 @@ class SignalMigrationListener : public QObject, public openfluid::waresdev::Ware
     }
 
 };
+
+
+} } }  // namespaces
 
 
 #endif /* __OPENFLUID_UIWARESDEV_SIGNALMIGRATIONLISTENER_HPP__ */

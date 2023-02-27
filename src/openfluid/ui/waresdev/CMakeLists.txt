@@ -21,7 +21,9 @@ SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
                               WorkspaceDevDashboardDialog.cpp WorkspaceDevWaresWidget.cpp WorkspaceDevGitWidget.cpp WorkspaceDevActionsWidget.cpp
                               WorkspaceDevProcessDialog.cpp
                               CompletionProvider.cpp
-                              MigrationSetupDialog.cpp)
+                              MigrationSetupDialog.cpp
+                              WareDashboardStatusWidget.cpp
+                              GroupStatusMessagesWidget.cpp StatusButtonMessageWidget.cpp)
 
 SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
                               WareSrcMsgStream.hpp 
@@ -47,7 +49,9 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
                               WorkspaceDevProcessDialog.hpp
                               CompletionProvider.hpp
                               SignalMigrationListener.hpp
-                              MigrationSetupDialog.hpp)
+                              MigrationSetupDialog.hpp
+                              WareDashboardStatusWidget.hpp
+                              GroupStatusMessagesWidget.hpp StatusButtonMessageWidget.hpp)
 
 QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui WareBuildOptionsWidget.ui WareBuildOptionsDialog.ui
                                      EmptyPage.ui CppPage.ui CMakeConfigPage.ui
@@ -56,7 +60,8 @@ QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui Ware
                                      WaresImportFilterWidget.ui WareGitDialog.ui WareshubJsonEditor.ui WareshubIssueDialog.ui
                                      WorkspaceDevProcessDialog.ui
                                      WorkspaceDevDashboardDialog.ui WorkspaceDevWaresWidget.ui WorkspaceDevGitWidget.ui
-                                     MigrationSetupDialog.ui)
+                                     MigrationSetupDialog.ui
+                                     WareDashboardStatusWidget.ui GroupStatusMessagesWidget.ui StatusButtonMessageWidget.ui)
                                    
 
 #QT5_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)

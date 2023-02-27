@@ -196,11 +196,23 @@ QToolButton {
           this, SLOT(notifyBuildFinished(openfluid::ware::WareType, const QString&)));
 
 
-  mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(ui->WareSrcMessageWidget);
+  // BOARD TAB
+  mp_Board = new openfluid::ui::waresdev::WareDashboardStatusWidget(this, m_Container.getAbsolutePath());
+  m_TabIndexByName["Board"] = ui->tabWidget->addTab(mp_Board, "Board");
+  
+  connect(mp_Board, SIGNAL(migrationRequested()), this, SLOT(onMigrationRequested()));
+
+  // MESSAGES TAB
+  mp_MessagesWidget = new openfluid::ui::waresdev::WareSrcMsgViewer(this);
+  m_TabIndexByName["Messages"] = ui->tabWidget->addTab(mp_MessagesWidget, "Messages");
+
+  mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(mp_MessagesWidget);
   m_Container.setMsgStream(*mp_TextEditMsgStream);
 
-  connect(ui->WareSrcMessageWidget, SIGNAL(messageClicked(WareSrcMsgParser::WareSrcMsg&)),
+  connect(mp_MessagesWidget, SIGNAL(messageClicked(WareSrcMsgParser::WareSrcMsg&)),
           this, SLOT(onMessageClicked(WareSrcMsgParser::WareSrcMsg&)));
+
+
 }
 
 
@@ -322,6 +334,16 @@ void WareSrcWidget::onOpenExternalToolRequested()
   {
     emit openExternalToolRequested(Sender->data().toString(), "");
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::onMigrationRequested()
+{
+  emit migrationRequestedOnWare(QString::fromStdString(m_Container.getAbsolutePath()));
 }
 
 
@@ -615,6 +637,8 @@ void WareSrcWidget::setBuildJobs(unsigned int Jobs)
 void WareSrcWidget::configure()
 
 {
+  ui->tabWidget->setCurrentIndex(m_TabIndexByName["Messages"]);
+
   loadWareOptions();
   clearEditorsMessages();
 
@@ -636,6 +660,8 @@ void WareSrcWidget::configure()
 void WareSrcWidget::build()
 
 {
+  ui->tabWidget->setCurrentIndex(m_TabIndexByName["Messages"]);
+
   loadWareOptions();
   clearEditorsMessages();
 
@@ -656,6 +682,8 @@ void WareSrcWidget::build()
 
 void WareSrcWidget::generateDoc()
 {
+  ui->tabWidget->setCurrentIndex(m_TabIndexByName["Messages"]);
+
   clearEditorsMessages();
 
   try
@@ -744,6 +772,9 @@ void WareSrcWidget::saveCurrentEditor()
   if (WareFileEditor* Editor = currentEditor())
   {
     Editor->saveContent();
+
+    ui->tabWidget->setCurrentIndex(m_TabIndexByName["Board"]);
+    mp_Board->refresh();
   }
 }
 

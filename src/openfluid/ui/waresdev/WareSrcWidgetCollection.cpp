@@ -62,6 +62,7 @@
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
+#include <openfluid/ui/waresdev/StatusButtonMessageWidget.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -71,6 +72,8 @@ WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsS
     mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::base::WorkspaceManager::instance()),
     mp_FindReplaceDialog(0)
 {
+  StatusButtonMessageWidget::populateReportItemLabels();
+  
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
   connect(mp_TabWidget, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
 }

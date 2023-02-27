@@ -43,8 +43,10 @@
 #include <QWidget>
 
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
+#include <openfluid/ui/waresdev/WareDashboardStatusWidget.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcActionsCollection.hpp>
+#include <openfluid/ui/waresdev/WareSrcMsgViewer.hpp>
 
 #include <openfluid/dllexport.hpp>
 
@@ -95,6 +97,12 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     Ui::WareSrcWidget* ui;
 
     openfluid::ui::waresdev::WareSrcUIContainer m_Container;
+
+    std::map<std::string, int> m_TabIndexByName;
+
+    openfluid::ui::waresdev::WareDashboardStatusWidget* mp_Board;
+
+    openfluid::ui::waresdev::WareSrcMsgViewer* mp_MessagesWidget;
 
     openfluid::ui::waresdev::WareSrcActionsCollection* mp_ActionsCollection;
 
@@ -160,6 +168,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void buildLaunched(openfluid::ware::WareType Type, const QString& ID);
 
     void buildFinished(openfluid::ware::WareType Type, const QString& ID);
+    
+    void migrationRequestedOnWare(const QString& WarePath);
 
 
   public slots:
@@ -185,6 +195,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     int onCloseFileTabRequested(int Index, bool WithConfirm = true);
 
     void onOpenExternalToolRequested();
+
+    void onMigrationRequested();
 
     void newFile();
 
