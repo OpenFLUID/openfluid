@@ -175,12 +175,13 @@ std::vector<std::string> WareSrcContainer::getDefaultFilesPaths()
   }
   else
   {
-    auto FoundFiles = openfluid::tools::Filesystem::findFilesByExtension(m_AbsolutePath+"/src","cpp",false);
+    std::string SrcDirPath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath, "src"});
+    auto FoundFiles = openfluid::tools::Filesystem::findFilesByExtension(SrcDirPath, "cpp", false);
 
     if (!FoundFiles.empty())
     {
       std::sort(FoundFiles.begin(),FoundFiles.end());
-      L.push_back(FoundFiles[0]);
+      L.push_back(openfluid::tools::Filesystem::joinPath({SrcDirPath, FoundFiles[0]}));
     }
   }
 

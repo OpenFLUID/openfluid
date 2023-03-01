@@ -197,7 +197,7 @@ int main(int argc, char **argv)
   auto MigrateWareCmd = openfluid::utils::CommandLineCommand("migrate-ware","Migrate ware sources to current version "
                                                                             "("+openfluid::config::VERSION_FULL+")"); 
   MigrateWareCmd.addOptions({{"src-path","s","path to the ware sources",true},
-                             {"dest-path","s","destination path of the migrated ware sources",true},
+                             {"dest-path","d","destination path of the migrated ware sources",true},
                              {"verbose","v","enable verbose mode"}});
   Parser.addCommand(MigrateWareCmd);
 

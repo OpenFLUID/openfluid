@@ -548,7 +548,7 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulatorParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "migrate-ware"
-                             "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
+                             "-s" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
                              "--dest-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
                              "-v"
                      PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
