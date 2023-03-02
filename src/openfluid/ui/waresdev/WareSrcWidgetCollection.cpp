@@ -45,6 +45,7 @@
 #include <QApplication>
 #include <QProcess>
 #include <QMessageBox>
+#include <QThread>
 
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -57,7 +58,9 @@
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
+#include <openfluid/ui/waresdev/MigrationSetupDialog.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
+#include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
 
 
@@ -154,6 +157,9 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
 
       connect(Widget, SIGNAL(buildFinished(openfluid::ware::WareType, const QString&)),
               this, SLOT(notifyBuildFinished(openfluid::ware::WareType, const QString&)));
+
+      connect(Widget, SIGNAL(migrationRequestedOnWare(const QString&)),
+              this, SLOT(onMigrationRequestedOnWare(const QString&)));
     }
 
     if (Info.IsWareFile)
@@ -176,42 +182,140 @@ void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
 {
   if (WareSrcWidget* Ware = qobject_cast<WareSrcWidget*>(mp_TabWidget->widget(Index)))
   {
-    // check if a process is not running
-    if (Ware->isWareProcessRunning())
-    {
-      QMessageBox::warning(Ware,tr("Process running"),
-                           tr("Closing tab is not allowed while a configure or build process is running."),
-                           QMessageBox::Close,QMessageBox::Close);
-      return;
-    }
-
-
-    int Choice = QMessageBox::Discard;
-
-    if (Ware->isWareModified())
-    {
-      Choice = QMessageBox::information(Ware,tr("Modified documents"),
-                                        tr("Documents have been modified.\n\n"
-                                           "Do you want to save changes?"),
-                                        QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel,
-                                        QMessageBox::SaveAll);
-    }
-
-    switch (Choice)
-    {
-      case QMessageBox::SaveAll:
-        Ware->saveAllFileTabs();
-        /* fall through */
-      case QMessageBox::Discard:
-        Ware->closeAllFileTabs();
-        closeWareTab(Ware);
-        break;
-      case QMessageBox::Cancel:
-        /* fall through */
-      default:
-        break;
-    }
+    requestWareTabClosing(Ware);
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidgetCollection::requestWareTabClosing(WareSrcWidget* Ware)
+{
+  // check if a process is not running
+  if (Ware->isWareProcessRunning())
+  {
+    QMessageBox::warning(Ware,
+                         tr("Process running"),
+                         tr("Closing tab is not allowed while a configure or build process is running."),
+                         QMessageBox::Close,QMessageBox::Close);
+    return false;
+  }
+
+
+  int Choice = QMessageBox::Discard;
+
+  if (Ware->isWareModified())
+  {
+    Choice = QMessageBox::information(Ware, 
+                                      tr("Modified documents"),
+                                      tr("Documents have been modified.\n\n"
+                                          "Do you want to save changes?"),
+                                      QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel,
+                                      QMessageBox::SaveAll);
+  }
+
+  bool IsClosed = false;
+  switch (Choice)
+  {
+    case QMessageBox::SaveAll:
+      Ware->saveAllFileTabs();
+      /* fall through */
+    case QMessageBox::Discard:
+      Ware->closeAllFileTabs();
+      closeWareTab(Ware);
+      IsClosed = true;
+      break;
+    case QMessageBox::Cancel:
+      /* fall through */
+    default:
+      break;
+  }
+  return IsClosed;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::onMigrationRequestedOnWare(const QString& WarePath)
+{
+  QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
+  if (it == m_WareSrcWidgetByPath.end())
+  {
+    // TOIMPL add message if not found
+
+    QMessageBox::warning(nullptr,
+                         tr("Migration failure"),
+                         tr("Ware requested not found"),
+                         QMessageBox::Close,QMessageBox::Close);
+    return;
+  }
+
+  MigrationSetupDialog MigrationSetup;
+  bool Proceed = true;
+  if (!MigrationSetup.exec())
+  {
+    Proceed = false;
+  }
+
+  // try to close ware tab before migration
+  if (Proceed && !requestWareTabClosing(it.value()))
+  {
+    Proceed = false;
+  }
+
+  if (!Proceed)
+  {
+
+    QMessageBox::warning(it.value(),
+                         tr("Migration failure"),
+                         tr("Migration cancelled by user."),
+                         QMessageBox::Close,QMessageBox::Close);
+    return;
+  }
+  
+  
+  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Ware migration"), false, mp_TabWidget);
+  
+  MigrationWorker* MWorker = new MigrationWorker(WarePath, MigrationSetup.isVerbose(), MigrationSetup.isNewBranchChecked());
+
+  try
+  {
+
+    QThread* Thread = new QThread();
+
+    MWorker->moveToThread(Thread);
+
+    connect(Thread, SIGNAL(started()), MWorker, SLOT(run()));
+    connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
+    connect(MWorker, SIGNAL(finished(bool, const QString&)), MWorker, SLOT(deleteLater()));
+    connect(MWorker, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+    
+    connect(MWorker, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
+            SLOT(finish(bool, const QString&)));
+    connect(MWorker, SIGNAL(info(const QString&)), &ProgressDialog,
+            SLOT(writeInfo(const QString&)));
+    connect(MWorker, SIGNAL(error(const QString&)), &ProgressDialog,
+            SLOT(writeError(const QString&)));
+    connect(MWorker, SIGNAL(progressed(const int)), &ProgressDialog,
+            SLOT(progress(const int)));
+
+    Thread->start();
+
+  }
+  catch (std::exception& e)
+  {
+    ProgressDialog.writeError(e.what());
+  }
+
+  ProgressDialog.exec();
+
+  // reopen ware
+  openPath(WarePath);
+
 }
 
 

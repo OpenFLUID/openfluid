@@ -51,8 +51,11 @@
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/waresdev/WareBuildOptions.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
+#include <openfluid/ui/waresdev/GitUIProxy.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
+#include <openfluid/waresdev/WareSrcMigrator.hpp>
 
+#include "SignalMigrationListener.hpp"
 
 class QTabWidget;
 
@@ -68,6 +71,85 @@ namespace ui { namespace waresdev {
 
 class WareSrcWidget;
 class FindReplaceDialog;
+
+
+class MigrationWorker : public QObject
+{
+  Q_OBJECT
+
+  private:
+
+    QString m_WarePath;
+
+    bool m_Verbose;
+
+    bool m_CheckoutNew;
+
+
+  signals:
+
+    void finished(bool Ok, const QString& Message);
+
+    void info(const QString& Message);
+
+    void error(const QString& Message);
+
+    void progressed(int Value);
+
+  public slots :
+    
+    void run()
+    {
+      auto Listener = std::make_unique<SignalMigrationListener>();
+
+      Listener->setVerbose(m_Verbose);
+
+      connect(Listener.get(), SIGNAL(info(const QString&)), this,
+          SIGNAL(info(const QString&)));
+      connect(Listener.get(), SIGNAL(error(const QString&)), this,
+          SIGNAL(error(const QString&)));
+      connect(Listener.get(), SIGNAL(progressed(int)), this,
+          SIGNAL(progressed(int)));
+
+      auto Migrator = openfluid::waresdev::WareSrcMigrator(m_WarePath.toStdString(),
+                                                           Listener.get());
+      
+      try
+      {
+        Migrator.performMigration();
+
+        // no thrown exception means that migration is successful
+        if (m_CheckoutNew)
+        {
+          GitUIProxy Git;
+          if (Git.checkout(m_WarePath, GitUIProxy::getCurrentOpenFLUIDBranchName(), true))
+          {
+            emit info(tr("Successful checkout of the current OpenFLUID version branch"));
+          }
+          else
+          {
+            emit error(tr("Unable to checkout branch corresponding to current OpenFLUID version branch."));
+          }
+        }
+
+        emit finished(true, "Migration performed");
+        
+      }
+      catch (std::exception& e)
+      {
+        emit finished(false, e.what());
+      }
+    }
+
+
+  public:
+
+    explicit MigrationWorker(const QString& WarePath, bool Verbose=false, bool CheckoutNew=false): 
+      m_WarePath(WarePath), m_Verbose(Verbose), m_CheckoutNew(CheckoutNew)
+    {
+    }
+
+};
 
 
 class OPENFLUID_API WareSrcWidgetCollection: public QObject
@@ -95,6 +177,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void notifyBuildLaunched(openfluid::ware::WareType Type, const QString& ID);
 
     void notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID);
+
+    void onMigrationRequestedOnWare(const QString& WarePath);
 
 
   private:
@@ -129,6 +213,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void openWare(openfluid::ware::WareType Type, const QString& Title);
 
     void newWare(openfluid::ware::WareType Type);
+
+    bool requestWareTabClosing(WareSrcWidget* Ware);
 
 
   signals:

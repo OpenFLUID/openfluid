@@ -346,11 +346,20 @@ bool GitUIProxy::clone(const QString& FromUrl, const QString& ToPath,
 // =====================================================================
 
 
-bool GitUIProxy::checkout(const QString& Path, const QString& BranchName)
+bool GitUIProxy::checkout(const QString& Path, const QString& BranchName, bool New)
 {
   //TOIMPL test this function?
-  QStringList Args = {"checkout", BranchName, "--progress"};
-  launchLocalCommand(Path, Args);
+  
+  if (New)
+  {
+    QStringList Args = {"checkout", "-b", BranchName, "--progress"};
+    launchLocalCommand(Path, Args);
+  }
+  else
+  {
+    QStringList Args = {"checkout", BranchName, "--progress"};
+    launchLocalCommand(Path, Args);
+  }
   QString Out = launchLocalCommand(Path, {"branch", "--show-current"}).second;
   QString CurrentBranch = Out.section("\n", 0, 0).section(" ", -1);
   return (CurrentBranch == BranchName);
