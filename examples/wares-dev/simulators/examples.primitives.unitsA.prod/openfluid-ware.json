@@ -1,0 +1,86 @@
+{
+  "id": "examples.primitives.unitsA.prod",
+  "name": "Example of data production on units of class A",
+  "description": "",
+  "version": "2.2.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "Jean-Christophe Fabre",
+      "email": "jean-christophe.fabre@inra.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "examples",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [
+          {
+            "name": "inivar1",
+            "unitsclass": "unitsA",
+            "description": "the attribute inivar1",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "var1",
+            "unitsclass": "unitsA",
+            "description": "the variable 1",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "var2",
+            "unitsclass": "unitsA",
+            "description": "the variable 2",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "required": [
+          {
+            "name": "var3",
+            "unitsclass": "unitsA",
+            "description": "the variable 3",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

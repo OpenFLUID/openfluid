@@ -1,0 +1,14 @@
+{
+  "id": "tests.empty",
+  "name": "empty observer for tests",
+  "description": "This observer is empty and do nothing at all.",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "observer": {}
+}

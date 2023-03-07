@@ -95,5 +95,3 @@ void CMakeSimParamsWidget::showMessage()
 
 
 DEFINE_BUILDEREXT_CLASS(CMakeSimParamsWidget)
-
-DEFINE_WARE_LINKUID(WARE_LINKUID)

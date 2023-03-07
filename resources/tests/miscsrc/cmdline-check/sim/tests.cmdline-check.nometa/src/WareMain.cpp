@@ -116,5 +116,3 @@ class WareMain : public openfluid::ware::PluggableSimulator
 
 DEFINE_SIMULATOR_CLASS(WareMain);
 
-DEFINE_WARE_LINKUID(WARE_LINKUID)
-

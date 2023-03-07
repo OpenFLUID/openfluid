@@ -1,0 +1,61 @@
+% Definition des noms de la fonction
+\newcommand{\frenchname}{Transfert d'eau dans le réseau hydrographique selon la méthode de propagation d'Hayami}
+\newcommand{\englishname}{Water transfer on ditch network using hayami propagation method}
+
+% Definition FileID
+\newcommand{\FileID}{water.surf.transfer-rs.hayami}
+
+% Definition variables produites
+\newcommand{\VarProdA}{water.surf.Q.downstream-rs}
+\newcommand{\VarProdB}{water.surf.H.level-rs}
+
+% Used variables (if necessary)
+\newcommand{\VarUsedA}{water.surf.Q.downstream-su}
+\newcommand{\VarUsedB}{water.sz-surf.Q.baseflow}
+\newcommand{\VarUsedC}{water.uz.Q.interflow}
+
+% Definition parametres
+\newcommand{\ParamA}{maxsteps}
+\newcommand{\ParamB}{meancel}
+\newcommand{\ParamC}{meansigma}
+\newcommand{\ParamD}{calibstep}
+\newcommand{\ParamE}{rsbuffer}
+
+%Definition des proprietes distribuees
+\newcommand{\PropDisA}{nmanning}
+\newcommand{\PropDisB}{length}
+\newcommand{\PropDisC}{width}
+\newcommand{\PropDisD}{height}
+\newcommand{\PropDisE}{slope}
+
+% Main file for function description and utilisation
+
+
+\selectlanguage{english}
+
+\begin{abstract}
+\input{./doc/english/HayamiRS_abstract.tex}
+\end{abstract}
+
+%******************************
+% Scientific concepts
+\section{Scientific concepts}
+\input{./doc/english/HayamiRS_scientific_concept.tex}
+
+
+%******************************
+% Functional description
+\section{Functional description}
+\input{./doc/english/HayamiRS_functional_description.tex}
+
+%******************************
+% References
+\bibliography{./doc/common/water.surf.transfer-rs.hayami.bib}
+
+%******************************
+% Appendices
+\end{multicols}
+
+%\clearpage
+
+\begin{multicols}{2}

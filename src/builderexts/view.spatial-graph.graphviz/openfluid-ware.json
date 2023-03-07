@@ -1,0 +1,18 @@
+{
+  "id": "view.spatial-graph.graphviz",
+  "name": "",
+  "description": "",
+  "version": "",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "builderext": {
+    "mode": "workspace",
+    "category": "spatial",
+    "menutext": "Spatial graph viewer (GraphViz)"
+  }
+}

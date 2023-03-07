@@ -1,0 +1,171 @@
+{
+  "id": "water.surf.transfer-rs.hayami",
+  "name": "Water transfer on reach segments using hayami propagation method",
+  "description": "Calculation of discharge routing through the ditch network using diffusive wave equation resolved with Hayami method and discharge convertion to water height",
+  "version": "19.06",
+  "status": "stable",
+  "authors": [
+    {
+      "name": "Moussa R.",
+      "email": "moussa@supagro.inra.fr"
+    },
+    {
+      "name": "Fabre J.-C.",
+      "email": "fabrejc@supagro.inra.fr"
+    },
+    {
+      "name": "Louchart X.",
+      "email": "louchart@supagro.inra.fr"
+    },
+    {
+      "name": "Lalauze S.",
+      "email": "lalauze@supagro.inra.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "hydrology",
+    "transfer",
+    "Hayami"
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": [
+          {
+            "name": "maxsteps",
+            "description": "maximum hayami kernel steps",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "meancel",
+            "description": "wave mean celerity on RSs",
+            "siunit": "m/s",
+            "type": ""
+          },
+          {
+            "name": "meansigma",
+            "description": "mean diffusivity on RSs",
+            "siunit": "m2/s",
+            "type": ""
+          },
+          {
+            "name": "calibstep",
+            "description": "calibration step for height-discharge relation",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "rsbuffer",
+            "description": "buffer upon reach for water height over reach height",
+            "siunit": "m",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [
+          {
+            "name": "nmanning",
+            "unitsclass": "RS",
+            "description": "Manning roughness coefficient of the RS",
+            "siunit": "s/m(-1/3)",
+            "type": ""
+          },
+          {
+            "name": "length",
+            "unitsclass": "RS",
+            "description": "lenght of the RS",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "width",
+            "unitsclass": "RS",
+            "description": "width of the RS",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "height",
+            "unitsclass": "RS",
+            "description": "height of the RS",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "slope",
+            "unitsclass": "RS",
+            "description": "mean slope of the RS",
+            "siunit": "m/m",
+            "type": ""
+          }
+        ],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "water.surf.Q.downstream-rs",
+            "unitsclass": "RS",
+            "description": "output volume at the outlet of the RS",
+            "siunit": "m3/s",
+            "type": ""
+          },
+          {
+            "name": "water.surf.H.level-rs",
+            "unitsclass": "RS",
+            "description": "water height at the outlet of the RS",
+            "siunit": "m",
+            "type": ""
+          }
+        ],
+        "required": [],
+        "used": [
+          {
+            "name": "water.surf.Q.downstream-su",
+            "unitsclass": "SU",
+            "description": "output volume at the outlet of the SU",
+            "siunit": "m3/s",
+            "type": ""
+          },
+          {
+            "name": "water.sz-surf.Q.baseflow",
+            "unitsclass": "GU",
+            "description": "drainage output volume from GU to connected RS",
+            "siunit": "m3/s",
+            "type": ""
+          },
+          {
+            "name": "water.uz.Q.interflow",
+            "unitsclass": "SU",
+            "description": "interflow output volume at the outlet of the SU soil reservoir",
+            "siunit": "m3/s",
+            "type": ""
+          }
+        ],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

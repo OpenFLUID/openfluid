@@ -1,0 +1,175 @@
+{
+  "id": "water.surf-uz.runoff-infiltration.mseytoux",
+  "name": "Morel-Seytoux production function on surface units",
+  "description": "Production function computing infiltration and runoff at the top of surface unit using the Morel-Seytoux method, based on the Green and Ampt assumptions.",
+  "version": "19.06",
+  "status": "stable",
+  "authors": [
+    {
+      "name": "Moussa R.",
+      "email": "moussa@supagro.inra.fr"
+    },
+    {
+      "name": "Fabre J.-C.",
+      "email": "fabrejc@supagro.inra.fr"
+    },
+    {
+      "name": "Lalauze S.",
+      "email": "lalauze@supagro.inra.fr"
+    },
+    {
+      "name": "Louchart X.",
+      "email": "louchart@supagro.inra.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "hydrology",
+    "runoff / infiltration partition",
+    "Morel-Seytoux"
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": [
+          {
+            "name": "resstep",
+            "description": "numerical resolution step for cumulative infiltration height",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "CoeffMultiKs",
+            "description": "global coefficient for multiplying ks parameter (default value is 1)",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "CoeffMultiThetaIni",
+            "description": "Multiplication coefficient of soil moisture initial condition at the surface",
+            "siunit": "-",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [
+          {
+            "name": "thetares",
+            "unitsclass": "SU",
+            "description": "residual soil water content",
+            "siunit": "m3/m3",
+            "type": ""
+          },
+          {
+            "name": "thetasat",
+            "unitsclass": "SU",
+            "description": "saturated soil water content",
+            "siunit": "m3/m3",
+            "type": ""
+          },
+          {
+            "name": "betaMS",
+            "unitsclass": "SU",
+            "description": "viscous correction parameter",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "Hc",
+            "unitsclass": "SU",
+            "description": "capillary suction height",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "area",
+            "unitsclass": "SU",
+            "description": "area of the SU",
+            "siunit": "m2",
+            "type": ""
+          },
+          {
+            "name": "thetaini",
+            "unitsclass": "SU",
+            "description": "initial soil surface water content",
+            "siunit": "m3/m3",
+            "type": ""
+          }
+        ],
+        "used": [
+          {
+            "name": "Ks",
+            "unitsclass": "SU",
+            "description": "saturated hydraulic conductivity",
+            "siunit": "m/s",
+            "type": ""
+          }
+        ],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "water.surf.H.runoff",
+            "unitsclass": "SU",
+            "description": "water runoff height on surface of SU",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "water.surf.H.infiltration",
+            "unitsclass": "SU",
+            "description": "water infiltration height through the surface of SU",
+            "siunit": "m",
+            "type": ""
+          }
+        ],
+        "required": [
+          {
+            "name": "water.atm-surf.H.rain",
+            "unitsclass": "SU",
+            "description": "rainfall height on the SU",
+            "siunit": "m",
+            "type": ""
+          }
+        ],
+        "used": [
+          {
+            "name": "water.surf.Q.downstream-su",
+            "unitsclass": "SU",
+            "description": "output volume at the outlet of the upstream SUs",
+            "siunit": "m3/s",
+            "type": ""
+          },
+          {
+            "name": "soil.surf.hydraulic-conductivity-Ks",
+            "unitsclass": "SU",
+            "description": "saturated hydraulic conductivity (Ks) of the plot",
+            "siunit": "m/s",
+            "type": ""
+          }
+        ],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

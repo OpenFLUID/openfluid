@@ -1,0 +1,84 @@
+{
+  "id": "tests.dotobs",
+  "name": "",
+  "description": "",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "varint",
+            "unitsclass": "TU",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "vardbl",
+            "unitsclass": "TU",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "varmap",
+            "unitsclass": "PU",
+            "description": "",
+            "siunit": "",
+            "type": "map"
+          },
+          {
+            "name": "varvect",
+            "unitsclass": "PU",
+            "description": "",
+            "siunit": "",
+            "type": "vector"
+          }
+        ],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

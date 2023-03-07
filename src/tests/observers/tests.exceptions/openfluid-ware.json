@@ -1,0 +1,14 @@
+{
+  "id": "tests.exceptions",
+  "name": "test observer for exceptions",
+  "description": "",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "observer": {}
+}

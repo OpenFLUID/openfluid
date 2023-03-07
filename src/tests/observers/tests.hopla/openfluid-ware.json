@@ -1,0 +1,14 @@
+{
+  "id": "tests.hopla",
+  "name": "hopla observer for tests",
+  "description": "This observer says hopla.",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "observer": {}
+}

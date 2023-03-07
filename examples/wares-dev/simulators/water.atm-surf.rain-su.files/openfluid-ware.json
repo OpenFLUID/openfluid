@@ -1,0 +1,79 @@
+{
+  "id": "water.atm-surf.rain-su.files",
+  "name": "Distribution of rainfall on SU",
+  "description": "Linear interpolation of rainfall from rain gauge data source files and spatial distribution on SU.",
+  "version": "19.03",
+  "status": "stable",
+  "authors": [
+    {
+      "name": "Jean-Christophe Fabre",
+      "email": "fabrejc@supagro.inra.fr"
+    },
+    {
+      "name": "Simon Lalauze",
+      "email": "lalauze@supagro.inra.fr"
+    },
+    {
+      "name": "Xavier Louchart",
+      "email": "louchart@supagro.inra.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "meteo"
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": [
+          {
+            "name": "threshold",
+            "description": "rainfall height lower than or equal to this value are replaced by zero",
+            "siunit": "m",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "water.atm-surf.H.rain",
+            "unitsclass": "SU",
+            "description": "rainfall height on SU",
+            "siunit": "m",
+            "type": ""
+          }
+        ],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [
+          "SUraindistri.dat",
+          "rainsources.xml"
+        ],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

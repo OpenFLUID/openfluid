@@ -1,0 +1,129 @@
+{
+  "id": "tests.primitives.simparams",
+  "name": "test simulator for simulator parameters primitives",
+  "description": "",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [
+          {
+            "name": "doubleparam",
+            "description": "=0.1",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "longparam",
+            "description": "=10",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "boolparam",
+            "description": "=true",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "strarrayparam",
+            "description": "=strvalue1;strvalue2;strvalue3",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "doublearrayparam",
+            "description": "=1.1;1.3;1.3;1.4",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "longarrayparam",
+            "description": "=11;12;13;14;15",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "matrixparam",
+            "description": "=1.1;1.2|2.1;2.2|3.1;3.2",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "inpath",
+            "description": "",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "outpath",
+            "description": "",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "temppath",
+            "description": "",
+            "siunit": "-",
+            "type": ""
+          }
+        ],
+        "used": [
+          {
+            "name": "strparam",
+            "description": "=strvalue",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "mapparam",
+            "description": "={key1=1.1,key2='a string',key3=true}",
+            "siunit": "-",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

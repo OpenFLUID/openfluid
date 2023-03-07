@@ -1,0 +1,62 @@
+{
+  "id": "tests.generators.cycle.use",
+  "name": "",
+  "description": "",
+  "version": "",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "var.indirect",
+            "unitsclass": "TU",
+            "description": "second hand variable",
+            "siunit": "SI unit",
+            "type": "double"
+          }
+        ],
+        "required": [
+          {
+            "name": "var.rand.prod",
+            "unitsclass": "TU",
+            "description": "randomly generated floating value",
+            "siunit": "SI unit",
+            "type": "double"
+          }
+        ],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

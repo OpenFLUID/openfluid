@@ -200,8 +200,8 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorsSelection
                            "install-examples" "--simulators-only=fire.surf.prod-spread,water.atm-surf.rain-su.files"
                            "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel" "-f"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel/wares-dev/simulators/fire.surf.prod-spread/FireProdSpreadSim.cpp"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel/wares-dev/simulators/water.atm-surf.rain-su.files/CMake.in.cmake"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel/wares-dev/simulators/fire.surf.prod-spread/src/WareMain.cpp"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel/wares-dev/simulators/water.atm-surf.rain-su.files/CMakeLists.txt"
                   )
 
 
@@ -210,7 +210,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorsAll
                            "install-examples" "--simulators-only"
                            "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall" "-f"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall/wares-dev/simulators/examples.primitives.unitsA.prod/ExampleUnitsAProd.cpp"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall/wares-dev/simulators/examples.primitives.unitsA.prod/src/WareMain.cpp"
                   )
 
 

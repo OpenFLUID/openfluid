@@ -1,0 +1,14 @@
+{
+  "id": "export.vars.files.kml-plot",
+  "name": "Exports simulation variables to kml files with charts in balloons",
+  "description": "",
+  "version": "2.2.0",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "observer": {}
+}

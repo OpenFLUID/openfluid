@@ -1,0 +1,126 @@
+{
+  "id": "tests.generators",
+  "name": "test simulator for generators",
+  "description": "",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [],
+        "required": [
+          {
+            "name": "tests.fixed",
+            "unitsclass": "TestUnits",
+            "description": "fixed value from generators for tests",
+            "siunit": "",
+            "type": "double"
+          },
+          {
+            "name": "tests.fixed-vector",
+            "unitsclass": "TestUnits",
+            "description": "fixed value from generators for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.random",
+            "unitsclass": "TestUnits",
+            "description": "random value from generators for tests",
+            "siunit": "",
+            "type": "double"
+          },
+          {
+            "name": "tests.random-vector",
+            "unitsclass": "TestUnits",
+            "description": "random value from generators for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.interp",
+            "unitsclass": "TestUnits",
+            "description": "interpolated value from generators for tests",
+            "siunit": "",
+            "type": "double"
+          },
+          {
+            "name": "tests.interp-vector",
+            "unitsclass": "TestUnits",
+            "description": "interpolated value from generators for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.inject",
+            "unitsclass": "TestUnits",
+            "description": "injected value from generators for tests",
+            "siunit": "",
+            "type": "double"
+          },
+          {
+            "name": "tests.injectasync",
+            "unitsclass": "TestUnits",
+            "description": "injected value from generators for tests",
+            "siunit": "",
+            "type": "double"
+          },
+          {
+            "name": "tests.injectasync-vector",
+            "unitsclass": "TestUnits",
+            "description": "injected value from generators for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.fixedprev-vector",
+            "unitsclass": "TestUnits",
+            "description": "fixed value from generators at a previous time step for tests",
+            "siunit": "",
+            "type": "vector"
+          }
+        ],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

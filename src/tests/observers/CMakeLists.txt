@@ -3,13 +3,13 @@
 INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 
 
-OFBUILD_ADD_OBSERVER(tests.empty ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_OBSERVER(tests.primitives.time ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_OBSERVER(tests.empty)
+OFBUILD_ADD_TEST_OBSERVER(tests.primitives.time)
 
 ###########################################################################
 
 
-OFBUILD_ADD_OBSERVER(tests.hopla ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_OBSERVER(tests.hopla)
 OPENFLUID_ADD_TEST(NAME observers-Hopla 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                                  "run"
@@ -24,7 +24,7 @@ OPENFLUID_ADD_TEST(NAME observers-Hopla
 ###########################################################################
 
 
-OFBUILD_ADD_OBSERVER(tests.exceptions ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_OBSERVER(tests.exceptions)
 OPENFLUID_ADD_TEST(NAME observers-Exceptions 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"

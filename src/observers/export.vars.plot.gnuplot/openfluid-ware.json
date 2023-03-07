@@ -1,0 +1,14 @@
+{
+  "id": "export.vars.plot.gnuplot",
+  "name": "Plots simulation variables using GNUplot",
+  "description": "This observer plots simulation variables using GNUplot formalism and tools\nIt uses series of values (simulated or from existing data files) that can be combined into one or many graphs.\nPlotted variables can only be scalar variables (boolean, integer, double)\nParameters for declaring series can be:\n  serie.<seriename>.var : the name of the variable to plot (e.g. var.foo)\n  serie.<seriename>.unitsclass : the unit class (e.g. TU)\n  serie.<seriename>.unitid : the unit id (e.g. 17)\n  serie.<seriename>.sourcefile : the file to plot (e.g. measured_data.dat), if this serie is not based on simulation variables\n  serie.<seriename>.style : the GNUplot style to use to plot this serie (e.g. linespoint)\n  serie.<seriename>.label : the label to use for this serie (e.g. foo) instead of the automatic label\nParameters for declaring graphs can be:\n  graph.<graphname>.series : a semicolon seprated list of <seriename> (e.g. serie1;serie2)\n  graph.<graphname>.title : the title to use for this graph (e.g. my graph) instead of the automatic title\n  graph.<graphname>.key : the mode for key display\n  graph.<graphname>.ylabel : the ylabel for the graph\nGlobal parameters are:\n  terminal : the terminal mode to replace the default wxt mode (e.g. pdfcairo size 11.7,8.3)\n  output : the output file name when terminal exports graphs to file (e.g. mygraph.pdf)\n  tryopengnuplot : set to 1 to run GNUplot after simulation ends\n  persistent : set to 1 to set GNUplot persistent if run after simulation ends\n",
+  "version": "2.2.0",
+  "status": "stable",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "observer": {}
+}

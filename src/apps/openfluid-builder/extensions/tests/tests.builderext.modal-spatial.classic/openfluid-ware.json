@@ -1,0 +1,18 @@
+{
+  "id": "tests.builderext.modal-spatial.classic",
+  "name": "",
+  "description": "",
+  "version": "",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "builderext": {
+    "mode": "modal",
+    "category": "spatial",
+    "menutext": "Spatial classic"
+  }
+}

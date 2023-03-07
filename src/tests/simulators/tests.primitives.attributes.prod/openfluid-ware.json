@@ -1,0 +1,168 @@
+{
+  "id": "tests.primitives.attributes.prod",
+  "name": "test simulator for attributes primitives",
+  "description": "",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": [
+          {
+            "name": "indataDouble2",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataDouble3",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataLong2",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataLong3",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataBool2",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataBool3",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataString2",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataString3",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataVector2",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataVector3",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataMatrix2",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataMatrix3",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataMap2",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataMap3",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataNull2",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "indataNull3",
+            "unitsclass": "TestUnits",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          }
+        ]
+      },
+      "variables": {
+        "produced": [],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

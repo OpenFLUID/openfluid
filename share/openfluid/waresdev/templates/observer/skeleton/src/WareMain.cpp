@@ -88,5 +88,3 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableObserver
 
 DEFINE_OBSERVER_CLASS(%%CLASSNAME%%)
 
-DEFINE_WARE_LINKUID(WARE_LINKUID)
-

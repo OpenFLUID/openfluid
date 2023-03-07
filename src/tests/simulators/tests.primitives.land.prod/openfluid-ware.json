@@ -1,0 +1,78 @@
+{
+  "id": "tests.primitives.land.prod",
+  "name": "",
+  "description": "",
+  "version": "10.07",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": [
+          {
+            "name": "attr1",
+            "unitsclass": "TU",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          }
+        ]
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "tests.var1",
+            "unitsclass": "TU",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.var2",
+            "unitsclass": "MU",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

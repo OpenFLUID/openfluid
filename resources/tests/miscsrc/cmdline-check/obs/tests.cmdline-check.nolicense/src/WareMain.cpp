@@ -89,5 +89,3 @@ class WareMain : public openfluid::ware::PluggableObserver
 
 DEFINE_OBSERVER_CLASS(WareMain)
 
-DEFINE_WARE_LINKUID(WARE_LINKUID)
-

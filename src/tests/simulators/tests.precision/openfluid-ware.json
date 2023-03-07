@@ -1,0 +1,61 @@
+{
+  "id": "tests.precision",
+  "name": "test simulator to check precision on various numbers and settings",
+  "description": "",
+  "version": "1.0",
+  "status": "stable",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "prec.bigger",
+            "unitsclass": "TU",
+            "description": "Basic variable with growing value",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "prec.smaller",
+            "unitsclass": "TU",
+            "description": "Basic variable with decreasing value",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

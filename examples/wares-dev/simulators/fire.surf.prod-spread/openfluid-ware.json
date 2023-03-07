@@ -1,0 +1,100 @@
+{
+  "id": "fire.surf.prod-spread",
+  "name": "Example simulator for production and spreading of fire over land units",
+  "description": "This simulator simulate the dynamics of fuel stock decreasing during fire, based on wind speed and stock type.It also performs the propagation of the head of the fire using landscapes connections",
+  "version": "1.0",
+  "status": "beta",
+  "authors": [
+    {
+      "name": "Jean-Christophe Fabre",
+      "email": "jean-christophe.fabre@inra.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "fire",
+    "production, spreading",
+    "wind coefficient, stock quantity and type"
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": [
+          {
+            "name": "ignitionunits",
+            "description": "semicolon separated list of land units IDs where the fire ignites",
+            "siunit": "-",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [
+          {
+            "name": "stockini",
+            "unitsclass": "LU",
+            "description": "Initial stock quantity available on the land unit",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "landcover",
+            "unitsclass": "LU",
+            "description": "Land cover code for the land unit",
+            "siunit": "-",
+            "type": ""
+          }
+        ],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "fire.surf.Q.stocklevel",
+            "unitsclass": "LU",
+            "description": "Quantity of stock remaining on the land unit",
+            "siunit": "-",
+            "type": "integer"
+          },
+          {
+            "name": "fire.surf.Q.stockratio",
+            "unitsclass": "LU",
+            "description": "Ratio of stock remaining on the land unit",
+            "siunit": "-",
+            "type": "double"
+          }
+        ],
+        "required": [
+          {
+            "name": "gas.atm.V.windspeed",
+            "unitsclass": "AU",
+            "description": "Wind speed",
+            "siunit": "m/s",
+            "type": ""
+          }
+        ],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

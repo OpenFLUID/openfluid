@@ -1,0 +1,77 @@
+{
+  "id": "tests.wrongprod",
+  "name": "test simulator for wrong production",
+  "description": "",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "tests.wrongvector",
+            "unitsclass": "TestUnits",
+            "description": "wrong vector for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.wrongscalar",
+            "unitsclass": "TestUnits",
+            "description": "wrong scalar for tests",
+            "siunit": "",
+            "type": "double"
+          },
+          {
+            "name": "tests.scalarok",
+            "unitsclass": "TestUnits",
+            "description": "scalar OK for tests",
+            "siunit": "",
+            "type": "double"
+          }
+        ],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "tests.na.end",
+  "name": "test simulator for missing value check when generation only at begin and end",
+  "description": "",
+  "version": "1.0",
+  "status": "stable",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "na.beginend",
+            "unitsclass": "OTU",
+            "description": "Saved variable only at begin and end",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

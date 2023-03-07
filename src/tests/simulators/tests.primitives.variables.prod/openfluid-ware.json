@@ -1,0 +1,217 @@
+{
+  "id": "tests.primitives.variables.prod",
+  "name": "test simulator for variables primitives",
+  "description": "",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "tests.double",
+            "unitsclass": "TestUnits",
+            "description": "double for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.integer",
+            "unitsclass": "TestUnits",
+            "description": "integer for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.bool",
+            "unitsclass": "TestUnits",
+            "description": "boolean for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.string",
+            "unitsclass": "TestUnits",
+            "description": "string for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.doubleval",
+            "unitsclass": "TestUnits",
+            "description": "double value for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.integerval",
+            "unitsclass": "TestUnits",
+            "description": "integer value for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.boolval",
+            "unitsclass": "TestUnits",
+            "description": "boolean value for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.stringval",
+            "unitsclass": "TestUnits",
+            "description": "string value for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.null",
+            "unitsclass": "TestUnits",
+            "description": "null for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.vector",
+            "unitsclass": "TestUnits",
+            "description": "vector for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.matrix",
+            "unitsclass": "TestUnits",
+            "description": "matrix for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.map",
+            "unitsclass": "TestUnits",
+            "description": "map for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.tree",
+            "unitsclass": "TestUnits",
+            "description": "tree for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.typed.none",
+            "unitsclass": "TestUnits",
+            "description": "untyped for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.typed.double",
+            "unitsclass": "TestUnits",
+            "description": "double for tests",
+            "siunit": "",
+            "type": "double"
+          },
+          {
+            "name": "tests.typed.integer",
+            "unitsclass": "TestUnits",
+            "description": "integer for tests",
+            "siunit": "",
+            "type": "integer"
+          },
+          {
+            "name": "tests.typed.bool",
+            "unitsclass": "TestUnits",
+            "description": "boolean for tests",
+            "siunit": "",
+            "type": "boolean"
+          },
+          {
+            "name": "tests.typed.string",
+            "unitsclass": "TestUnits",
+            "description": "string for tests",
+            "siunit": "",
+            "type": "string"
+          },
+          {
+            "name": "tests.typed.vector",
+            "unitsclass": "TestUnits",
+            "description": "vector for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.typed.oldvector",
+            "unitsclass": "TestUnits",
+            "description": "old style vector for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.typed.matrix",
+            "unitsclass": "TestUnits",
+            "description": "matrix for tests",
+            "siunit": "",
+            "type": "matrix"
+          },
+          {
+            "name": "tests.typed.map",
+            "unitsclass": "TestUnits",
+            "description": "map for tests",
+            "siunit": "",
+            "type": "map"
+          },
+          {
+            "name": "tests.typed.tree",
+            "unitsclass": "TestUnits",
+            "description": "tree for tests",
+            "siunit": "",
+            "type": "tree"
+          }
+        ],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

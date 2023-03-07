@@ -160,13 +160,6 @@ void SimulatorWidget::refresh()
     ui->DocButton->setVisible(!m_DocFilePath.empty());
 
     m_Ghost = Container.isGhost();
-
-    if (!m_IsTranslated)
-    {
-      WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Container.getPath()));
-      m_IsTranslated = true;
-    }
-
     if (!m_Ghost)
     {
       QString BuildType = QString::fromStdString(Container.signature()->BuildInfo.BuildType);
@@ -191,6 +184,15 @@ void SimulatorWidget::refresh()
 
     if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Container.getLinkUID()))
     {
+      if (!m_IsTranslated)
+      {
+        auto ParamsUIWarePath = QString::fromStdString(
+          ExtensionsRegistry::instance()->getParameterizationExtensionPath(Container.getLinkUID())
+        );
+        WaresTranslationsRegistry::instance()->tryLoadWareTranslation(ParamsUIWarePath);
+        m_IsTranslated = true;
+      }
+
       mp_ParamsWidget = static_cast<openfluid::ui::builderext::PluggableParameterizationExtension*>(
           ExtensionsRegistry::instance()->instanciateParameterizationExtension(Container.getLinkUID()));
       mp_ParamsWidget->setParent(this);

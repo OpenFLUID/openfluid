@@ -1,0 +1,14 @@
+{
+  "id": "export.vars.files.csv",
+  "name": "Exports simulation variables to CSV files",
+  "description": "This observer exports variables to CSV files\nParameters can be\n  format.<formatname>.date : the date format using the standard C date format\n  format.<formatname>.commentchar : the character for comment lines\n  format.<formatname>.header : the header type\n  format.<formatname>.precision : the precision for real values\n  format.<formatname>.float-format : the formatting for decimal numbers\n  set.<setname>.unitsclass : the unit class of the set\n  set.<setname>.unitsIDs : the unit IDs included in the set. Use * to include all units of the class\n  set.<setname>.vars : the variable included in the set, separated by semicolons. Use * to include all variables\n  set.<setname>.format : the <formatname> used, must be defined by a format parameter",
+  "version": "2.2.0",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "observer": {}
+}

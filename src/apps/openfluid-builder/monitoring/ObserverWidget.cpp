@@ -85,12 +85,6 @@ void ObserverWidget::refresh()
 
   if (Container.isValid() && Container.hasSignature())
   {
-    if (!m_IsTranslated)
-    {
-      WaresTranslationsRegistry::instance()->tryLoadWareTranslation(QString::fromStdString(Container.getPath()));
-      m_IsTranslated = true;
-    }
-
     QString BuildType = QString::fromStdString(Container.signature()->BuildInfo.BuildType);
     updateBuildInfoIcons(BuildType.contains("DEB"),BuildType == "RELEASE" || BuildType == "RELWITHDEBINFO");
 
@@ -106,6 +100,16 @@ void ObserverWidget::refresh()
 
     if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Container.getLinkUID()))
     {
+      
+      if (!m_IsTranslated)
+      {
+        auto ParamsUIWarePath = QString::fromStdString(
+          ExtensionsRegistry::instance()->getParameterizationExtensionPath(Container.getLinkUID())
+        );
+        WaresTranslationsRegistry::instance()->tryLoadWareTranslation(ParamsUIWarePath);
+        m_IsTranslated = true;
+      }
+
       mp_ParamsWidget = static_cast<openfluid::ui::builderext::PluggableParameterizationExtension*>(
           ExtensionsRegistry::instance()->instanciateParameterizationExtension(Container.getLinkUID()));
       mp_ParamsWidget->setParent(this);

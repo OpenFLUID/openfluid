@@ -1,0 +1,18 @@
+{
+  "id": "tests.builderext.workspace-other.simple",
+  "name": "",
+  "description": "",
+  "version": "",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "builderext": {
+    "mode": "workspace",
+    "category": "other",
+    "menutext": "Other simple (Workspace)"
+  }
+}

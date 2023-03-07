@@ -1,0 +1,14 @@
+{
+  "id": "export.vars.files.csv-multicols",
+  "name": "Exports simulation variables to multi-column CSV files",
+  "description": "This observer exports variables to CSV files\nParameters can be\n  naemptylinekeep : boolean, set to true to keep lines containing NA for every column\n  format.<formatname>.date : the date format using the standard C date format\n  format.<formatname>.commentchar : the character for comment lines\n  format.<formatname>.header : the header type\n  format.<formatname>.missingvalue : the string used when data not available\n  format.<formatname>.precision : the precision for real values\n  format.<formatname>.float-format : the floating point system used for real values (auto/fixed/scientific)\n  set.<setname>.format : the <formatname> used, must be defined by a format parameter.\n  set.<setname>.selection : the wanted variables, following the pattern: \n    <UnitsClass1>#<UnitNumber1>:<VarName1>%<digitsPrecision1>;<UnitsClass2>#...\n    Float format can be adjusted at column level by adding e (for scientific) or f (for fixed) after thre precision value.\n      Example: U#1:myVar%3f;U#1:myOtherVar%4e",
+  "version": "2.2.0",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "observer": {}
+}

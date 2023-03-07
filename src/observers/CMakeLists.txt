@@ -1,27 +1,15 @@
 
 
-INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
-INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIRS})
+#INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src") # DIRTYCOE 
+#INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIRS}) # DIRTYCOE 
 
-SET(OBS_PARAMSUI_ENABLED ${OFBUILD_ENABLE_GUI})
+OFBUILD_ADD_OBSERVER(export.vars.files.csv)
+OFBUILD_ADD_OBSERVER(export.vars.files.csv-multicols)
+OFBUILD_ADD_OBSERVER(export.vars.files.kml-anim)
+OFBUILD_ADD_OBSERVER(export.vars.files.kml-plot)
+OFBUILD_ADD_OBSERVER(export.vars.files.geovector)
+OFBUILD_ADD_OBSERVER(export.vars.plot.gnuplot)
+OFBUILD_ADD_OBSERVER(export.spatial-graph.files.dot)
 
-
-OFBUILD_ADD_OBSERVER(export.vars.files.csv ${OFBUILD_DIST_OBSERVERS_DIR})
-
-
-OFBUILD_ADD_OBSERVER(export.vars.files.csv-multicols ${OFBUILD_DIST_OBSERVERS_DIR})
-
-
-OFBUILD_ADD_OBSERVER(export.vars.files.kml-anim ${OFBUILD_DIST_OBSERVERS_DIR})
-
-                      
-OFBUILD_ADD_OBSERVER(export.vars.files.kml-plot ${OFBUILD_DIST_OBSERVERS_DIR})
-
-
-OFBUILD_ADD_OBSERVER(export.vars.files.geovector ${OFBUILD_DIST_OBSERVERS_DIR})
-
-                      
-OFBUILD_ADD_OBSERVER(export.vars.plot.gnuplot ${OFBUILD_DIST_OBSERVERS_DIR})
-
-                      
-OFBUILD_ADD_OBSERVER(export.spatial-graph.files.dot ${OFBUILD_DIST_OBSERVERS_DIR})
+INSTALL(DIRECTORY "${OFBUILD_DIST_OBSERVERS_DIR}/"
+        DESTINATION "${OPENFLUID_OBSERVERS_INSTALL_PATH}")

@@ -5,16 +5,16 @@ INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.coupling.A ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.coupling.B ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.coupling.C ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.coupling.D ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.coupling.E ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.coupling.A ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.coupling.B ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.coupling.C ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.coupling.D ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.coupling.E ${OFBUILD_TESTS_BINARY_DIR})
 
-OFBUILD_ADD_SIMULATOR(tests.dotobs ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.dotobs ${OFBUILD_TESTS_BINARY_DIR})
 
-OFBUILD_ADD_SIMULATOR(tests.generators.cycle.prod ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.generators.cycle.use ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.generators.cycle.prod ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.generators.cycle.use ${OFBUILD_TESTS_BINARY_DIR})
                                                    
 
 ###########################################################################
@@ -23,7 +23,7 @@ OFBUILD_ADD_SIMULATOR(tests.generators.cycle.use ${OFBUILD_TESTS_BINARY_DIR})
 IF(OFBUILD_TESTS_ENABLE_FORTRAN)
   ENABLE_LANGUAGE(Fortran)
 
-  OFBUILD_ADD_SIMULATOR(tests.fortran ${OFBUILD_TESTS_BINARY_DIR})
+  OFBUILD_ADD_TEST_SIMULATOR(tests.fortran ${OFBUILD_TESTS_BINARY_DIR})
   OPENFLUID_ADD_TEST(NAME simulators-Fortran
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                         "run"
@@ -32,7 +32,7 @@ IF(OFBUILD_TESTS_ENABLE_FORTRAN)
                         "-p" "${OFBUILD_TESTS_BINARY_DIR}"
                      PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Fortran")
                      
-  OFBUILD_ADD_SIMULATOR(tests.fortran90 ${OFBUILD_TESTS_BINARY_DIR})
+  OFBUILD_ADD_TEST_SIMULATOR(tests.fortran90 ${OFBUILD_TESTS_BINARY_DIR})
   OPENFLUID_ADD_TEST(NAME simulators-Fortran90
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -47,7 +47,7 @@ ENDIF()
 
 
 IF(OFBUILD_TESTS_ENABLE_EMBEDDING_R)
-  OFBUILD_ADD_SIMULATOR(tests.embedding.R ${OFBUILD_TESTS_BINARY_DIR})
+  OFBUILD_ADD_TEST_SIMULATOR(tests.embedding.R ${OFBUILD_TESTS_BINARY_DIR})
   OPENFLUID_ADD_TEST(NAME simulators-Embedding-R
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                              "run"
@@ -60,7 +60,7 @@ ENDIF()
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.exceptions ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.exceptions ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Exceptions 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "run" 
@@ -77,7 +77,7 @@ SET_TESTS_PROPERTIES(simulators-Exceptions PROPERTIES WILL_FAIL TRUE)
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.primitives.runenv ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.runenv ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesRunEnv 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "run" 
@@ -93,7 +93,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesRunEnv
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.primitives.time ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.time ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesTime 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -109,7 +109,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesTime
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.primitives.simparams ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.simparams ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesSimParams 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -125,8 +125,8 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesSimParams
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.primitives.attributes.prod ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.primitives.attributes.use ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.attributes.prod ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.attributes.use ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAttributes 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -142,7 +142,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAttributes
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.primitives.events ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.events ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesEvents 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -158,8 +158,8 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesEvents
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.primitives.variables.prod ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.primitives.variables.use ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.variables.prod ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.variables.use ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesVariables 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -175,21 +175,21 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesVariables
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.na.deltat ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.na.alternate ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.na.end ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.na.randomtime ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.na.noupdate ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.na.deltat ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.na.alternate ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.na.end ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.na.randomtime ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.na.noupdate ${OFBUILD_TESTS_BINARY_DIR})
 
-OFBUILD_ADD_SIMULATOR(tests.precision ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.precision ${OFBUILD_TESTS_BINARY_DIR})
 
 
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.primitives.land ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.primitives.land.prod ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.primitives.land.use ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.land ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.land.prod ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.land.use ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesLand 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -217,7 +217,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAll
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.primitives.benchmarking ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.primitives.benchmarking ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesBenchmarking
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -245,8 +245,8 @@ SET_TESTS_PROPERTIES(simulators-PrimitivesWithGhosts PROPERTIES WILL_FAIL TRUE)
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.deltaTtime.prod ${OFBUILD_TESTS_BINARY_DIR})
-OFBUILD_ADD_SIMULATOR(tests.variabletime.prod ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.deltaTtime.prod ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.variabletime.prod ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-VariableTimeProd
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -259,7 +259,7 @@ OPENFLUID_ADD_TEST(NAME simulators-VariableTimeProd
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.variable.memorylimit.use ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.variable.memorylimit.use ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-MemoryRange
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -274,7 +274,7 @@ SET_TESTS_PROPERTIES(simulators-MemoryRange PROPERTIES PASS_REGULAR_EXPRESSION "
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.loops ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.loops ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Loops
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -286,7 +286,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Loops
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.threadedloops ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.threadedloops ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoopsDefault
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -381,7 +381,7 @@ SET_TESTS_PROPERTIES(simulators-WithSmallBuffer PROPERTIES PASS_REGULAR_EXPRESSI
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.messages ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.messages ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Messages
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                          "run"
@@ -399,7 +399,7 @@ OPENFLUID_ADD_TEST(NAME simulators-ManyMessages
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.parseunits ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.parseunits ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-ManyUnits
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                            "run"
@@ -411,7 +411,7 @@ OPENFLUID_ADD_TEST(NAME simulators-ManyUnits
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.tools ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.tools ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Tools
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -423,13 +423,13 @@ OPENFLUID_ADD_TEST(NAME simulators-Tools
 ###########################################################################
 
                                      
-OFBUILD_ADD_SIMULATOR(tests.fakesimulator ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.fakesimulator ${OFBUILD_TESTS_BINARY_DIR})
 
 
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.wrongprod ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.wrongprod ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-WrongProduction
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -442,7 +442,7 @@ SET_TESTS_PROPERTIES(simulators-WrongProduction PROPERTIES WILL_FAIL TRUE)
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.globalparams ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.globalparams ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-GlobalParams
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -454,7 +454,7 @@ OPENFLUID_ADD_TEST(NAME simulators-GlobalParams
 ###########################################################################
 
         
-OFBUILD_ADD_SIMULATOR(tests.generators ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.generators ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Generators
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -466,7 +466,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Generators
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.logger ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.logger ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Logger
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -479,7 +479,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Logger
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.debug ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.debug ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-Debug
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                         "run"
@@ -496,18 +496,7 @@ ENDIF()
 ###########################################################################
 
 
-OFBUILD_ADD_SIMULATOR(tests.wrongid ${OFBUILD_TESTS_BINARY_DIR})
-OPENFLUID_ADD_TEST(NAME simulators-WrongID 
-                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
-                                  "report" "simulators" "--list"
-                                  "-p" "${OFBUILD_TESTS_BINARY_DIR}")
-SET_TESTS_PROPERTIES(simulators-WrongID PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongid")
-
-
-###########################################################################
-
-
-OFBUILD_ADD_SIMULATOR(tests.wrongversion ${OFBUILD_TESTS_BINARY_DIR})
+OFBUILD_ADD_TEST_SIMULATOR(tests.wrongversion ${OFBUILD_TESTS_BINARY_DIR})
 OPENFLUID_ADD_TEST(NAME simulators-WrongVersion 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                                   "report" "simulators" "--list"

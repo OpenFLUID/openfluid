@@ -1,0 +1,3 @@
+# tests.globalparams simulator
+
+tttt

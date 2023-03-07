@@ -140,5 +140,3 @@ class CMakeSimulatorParamsUI : public openfluid::ware::PluggableSimulator
 
 
 DEFINE_SIMULATOR_CLASS(CMakeSimulatorParamsUI)
-
-DEFINE_WARE_LINKUID(WARE_LINKUID)

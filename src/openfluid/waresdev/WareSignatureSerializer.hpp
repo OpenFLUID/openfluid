@@ -101,6 +101,8 @@ class OPENFLUID_API WareSignatureSerializer
 
     const std::string m_LinkUID;
 
+    // TOIMPL review and refactor methods names, responsibilities and organization for better consistency
+
     static std::string getHead(const std::string CommentChar);
 
     static std::string getCPPHead(const std::string& WareIncludeStr, const std::string& WareTypeStr);
@@ -117,6 +119,8 @@ class OPENFLUID_API WareSignatureSerializer
 
     static std::string getCPPMethod(const std::string& Member, const std::string& Method, 
                                     const std::vector<std::string>& Args, const std::string& Access = ".");
+
+    std::string getCPPLinkUIDProc() const;
 
     static std::string getCPPTail();
 
@@ -186,7 +190,7 @@ std::string WareSignatureSerializer<SignatureType>::getHead(const std::string Co
 
 template<class SignatureType>
 std::string WareSignatureSerializer<SignatureType>::getCPPHead(const std::string& WareIncludeStr,
-                                                                   const std::string& WareTypeStr)
+                                                               const std::string& WareTypeStr)
 {
   std::string Head = getHead("//");
   
@@ -198,6 +202,24 @@ std::string WareSignatureSerializer<SignatureType>::getCPPHead(const std::string
     +WareTypeStr+"* Signature = new "+WareTypeStr+"();\n\n"; 
 
   return Head;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<class SignatureType>
+std::string WareSignatureSerializer<SignatureType>::getCPPLinkUIDProc() const
+{
+  std::string Str =
+    "extern \"C\" {\n"
+    "OPENFLUID_PLUGIN const std::string* "+std::string(WARELINKUID_PROC_NAME)+"()\n"
+    "{\n"
+    "return new std::string(\""+m_LinkUID+"\");\n"
+    "}\n"
+    "}"; 
+  return Str;
 }
 
 
@@ -684,6 +706,8 @@ void WareSignatureSerializer<SignatureType>::writeToWareCPPFile(const SignatureT
 
   OutFile << toWareCPP(Sign);
   OutFile << "\n\n";
+  OutFile << getCPPLinkUIDProc();
+  OutFile << "\n\n";
 }
 
 
@@ -710,6 +734,8 @@ void WareSignatureSerializer<SignatureType>::writeToParamsUICPPFile(const Signat
 
   OutFile <<  getCPPTail();
 
+  OutFile << "\n\n";
+  OutFile << getCPPLinkUIDProc();
   OutFile << "\n\n";
 }
 

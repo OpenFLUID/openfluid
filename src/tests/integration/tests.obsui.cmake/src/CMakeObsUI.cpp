@@ -124,5 +124,3 @@ class CMakeObserverParamsUI : public openfluid::ware::PluggableObserver
 
 
 DEFINE_OBSERVER_CLASS(CMakeObserverParamsUI)
-
-DEFINE_WARE_LINKUID(WARE_LINKUID)

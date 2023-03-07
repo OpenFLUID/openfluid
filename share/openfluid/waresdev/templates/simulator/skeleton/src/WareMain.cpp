@@ -116,5 +116,3 @@ class %%CLASSNAME%% : public openfluid::ware::PluggableSimulator
 
 DEFINE_SIMULATOR_CLASS(%%CLASSNAME%%);
 
-DEFINE_WARE_LINKUID(WARE_LINKUID)
-

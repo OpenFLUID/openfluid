@@ -1,0 +1,91 @@
+##
+#
+#  This file is part of OpenFLUID software
+#  Copyright(c) 2007, INRA - Montpellier SupAgro
+#
+#
+# == GNU General Public License Usage ==
+#
+#  OpenFLUID is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  OpenFLUID is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+#
+#
+# == Other Usage ==
+#
+#  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+#  license, and requires a written agreement between You and INRA.
+#  Licensees for Other Usage of OpenFLUID may use this file in accordance
+#  with the terms contained in the written agreement between You and INRA.
+#
+##
+
+
+IF(NOT WARE_SOURCE_DIR)
+  MESSAGE(FATAL_ERROR "Missing WARE_SOURCE_DIR")
+ENDIF()
+
+IF(NOT WARE_BUILD_DIR)
+  MESSAGE(FATAL_ERROR "Missing WARE_BUILD_DIR")
+ENDIF()
+
+SET(_INSTALL_PARAMS)
+IF(WARE_INSTALL_PATH)
+  SET(_INSTALL_PARAMS "-DWARE_INSTALL_PATH=${WARE_INSTALL_PATH}")
+ELSEIF(WARES_PREFIX_INSTALL_PATH)
+  SET(_INSTALL_PARAMS "-DWARES_PREFIX_INSTALL_PATH=${WARES_PREFIX_INSTALL_PATH}")
+ENDIF()
+
+
+## Prepare woark directory
+
+FILE(REMOVE_RECURSE ${WARE_BUILD_DIR})
+FILE(MAKE_DIRECTORY ${WARE_BUILD_DIR})
+
+
+## Configure ware
+
+EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}"
+                        -S ${WARE_SOURCE_DIR} -B ${WARE_BUILD_DIR}
+                        -G "@CMAKE_GENERATOR@"
+                        -DOpenFLUID_DIR=@OFBUILD_DIST_CMAKE_MODULES_DIR@
+                        -DOpenFLUID_ROOT_DIR=@OFBUILD_DIST_DIR@
+                        -DOpenFLUID_EXTRA_SEARCH_PATHS=@CMAKE_BINARY_DIR@/src
+                        -DWARE_INCLUDE_DIRS=@CMAKE_SOURCE_DIR@/src
+                        -DWARE_WITH_PARAMSUI=@OFBUILD_ENABLE_GUI@
+                        -DCMAKE_BUILD_TYPE=@CMAKE_BUILD_TYPE@
+                        ${_INSTALL_PARAMS}
+                WORKING_DIRECTORY ${WARE_BUILD_DIR}
+                RESULT_VARIABLE CONFIGURE_RESULT
+                )
+
+IF(CONFIGURE_RESULT)
+  MESSAGE(FATAL_ERROR "Configure error")
+ENDIF()
+
+
+## Build ware
+
+EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}"
+                        --build ${WARE_BUILD_DIR}
+                        --target install
+                WORKING_DIRECTORY ${WARE_BUILD_DIR}
+                RESULT_VARIABLE BUILD_RESULT
+                )
+
+IF(BUILD_RESULT)
+  MESSAGE(FATAL_ERROR "Build error")
+ENDIF()
+
+
+
+

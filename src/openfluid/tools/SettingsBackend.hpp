@@ -234,7 +234,6 @@ class OPENFLUID_API SettingsBackend
       Constructor of for a settings backend.
       If no BackendFile is given, the settings are not persistent and will be lost when the object is destroyed.
       @param[in] BackendFile Path to file where settings are stored. Default is empty (no persistent storage)
-      @param[in] Role The name of the role given to the settings. Default is "settings"
       @param[in] AutoSave If true, automatically saves settings to file (i any) at each modification. Enabled by default
     */
     SettingsBackend(const std::string& BackendFile = "", bool AutoSave = true);

@@ -108,6 +108,8 @@ class ExtensionsRegistry
 
     bool isParameterizationExtensionRegistered(const openfluid::machine::UUID_t& UUID) const;
 
+    std::string getParameterizationExtensionPath(const openfluid::machine::UUID_t& UUID) const;
+
     openfluid::builderext::ExtensionMode getExtensionMode(const openfluid::ware::WareID_t& ID) const;
 };
 

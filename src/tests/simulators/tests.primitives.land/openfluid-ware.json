@@ -1,0 +1,72 @@
+{
+  "id": "tests.primitives.land",
+  "name": "",
+  "description": "",
+  "version": "10.07",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "Created units graph from scratch",
+      "details": [
+        {
+          "unitsclass": "VU",
+          "description": "Units class for virtual units, parents of OU and TU units"
+        },
+        {
+          "unitsclass": "TU",
+          "description": "Test Units class"
+        },
+        {
+          "unitsclass": "OU",
+          "description": "Other Units class"
+        },
+        {
+          "unitsclass": "MU",
+          "description": "Matrix Units class"
+        }
+      ]
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

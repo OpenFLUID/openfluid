@@ -1,0 +1,58 @@
+% Definition des noms de la fonction
+\newcommand{\frenchname}{Transfert d'eau sur les unités de surface selon la méthode de propagation d'Hayami}
+\newcommand{\englishname}{Water transfer on surface units using Hayami propagation method}
+
+% Definition FileID
+\newcommand{\FileID}{water.surf.transfer-su.hayami}
+
+% Definition variables produites
+\newcommand{\VarProdA}{water.surf.Q.downstream-su}
+
+% Required variables
+\newcommand{\VarRequiredA}{water.surf.H.runoff}
+\newcommand{\VarUsedA}{water.uz-surf.Q.exfiltration}
+\newcommand{\VarUsedB}{water.uz-surf.H.exfiltration}
+\newcommand{\VarUsedC}{water.sz-surf.H.exfiltration}
+
+% Definition parametres
+\newcommand{\ParamA}{maxsteps}
+\newcommand{\ParamB}{meancel}
+\newcommand{\ParamC}{meansigma}
+
+% Definition des proprietes distribuees
+\newcommand{\PropDisA}{nmanning}
+\newcommand{\PropDisB}{area}
+\newcommand{\PropDisC}{slope}
+\newcommand{\PropDisD}{flowdist}
+
+% Main file for function description and utilisation
+
+
+\selectlanguage{english}
+
+\begin{abstract}
+\input{./doc/english/HayamiSU_abstract.tex}
+\end{abstract}
+
+%******************************
+% Scientific concepts
+\section{Scientific concepts}
+\input{./doc/english/HayamiSU_scientific_concept.tex}
+
+
+%******************************
+% Functional description
+\section{Functional description}
+\input{./doc/english/HayamiSU_functional_description.tex}
+
+%******************************
+% References
+\bibliography{./doc/common/water.surf.transfer-su.hayami.bib}
+
+%******************************
+% Appendices
+\end{multicols}
+
+%\clearpage
+
+\begin{multicols}{2}

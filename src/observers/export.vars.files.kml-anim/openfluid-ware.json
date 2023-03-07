@@ -1,0 +1,14 @@
+{
+  "id": "export.vars.files.kml-anim",
+  "name": "Exports simulation variables to time indexed kml files for animation",
+  "description": "",
+  "version": "2.2.0",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "observer": {}
+}

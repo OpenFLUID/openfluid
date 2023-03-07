@@ -1,0 +1,100 @@
+{
+  "id": "examples.primitives.unitsA.up",
+  "name": "Example of data update on units of class A",
+  "description": "",
+  "version": "2.2.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "Jean-Christophe Fabre",
+      "email": "jean-christophe.fabre@inra.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "examples",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": [
+          {
+            "name": "gmult",
+            "description": "multiply coefficient",
+            "siunit": "",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "var3",
+            "unitsclass": "unitsA",
+            "description": "the variable 3",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "required": [
+          {
+            "name": "var1",
+            "unitsclass": "unitsA",
+            "description": "the variable 1",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "var10",
+            "unitsclass": "unitsA",
+            "description": "the variable 1",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "var11",
+            "unitsclass": "unitsA",
+            "description": "the variable 1",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "used": [],
+        "updated": [
+          {
+            "name": "var2",
+            "unitsclass": "unitsA",
+            "description": "the variable 2",
+            "siunit": "",
+            "type": ""
+          }
+        ]
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

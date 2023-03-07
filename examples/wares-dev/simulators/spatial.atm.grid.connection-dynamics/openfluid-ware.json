@@ -1,0 +1,133 @@
+{
+  "id": "spatial.atm.grid.connection-dynamics",
+  "name": "Example simulator for computing dynamic connections between land units according to wind direction",
+  "description": "This simulator computes the landscape units connections according to the corrected wind direction given by the parent atmospheric units.The corrected wind direction is computed by applying a random value to the main wind direction",
+  "version": "1.0",
+  "status": "beta",
+  "authors": [
+    {
+      "name": "Jean-Christophe Fabre",
+      "email": "jean-christophe.fabre@inra.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "fire",
+    "spatial connections",
+    "wind direction"
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [
+          {
+            "name": "N",
+            "unitsclass": "LU",
+            "description": "North cell ID, -1 if none",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "NE",
+            "unitsclass": "LU",
+            "description": "Northeast cell ID, -1 if none",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "E",
+            "unitsclass": "LU",
+            "description": "East cell ID, -1 if none",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "SE",
+            "unitsclass": "LU",
+            "description": "Southeast cell ID, -1 if none",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "S",
+            "unitsclass": "LU",
+            "description": "South cell ID, -1 if none",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "SW",
+            "unitsclass": "LU",
+            "description": "Southwest cell ID, -1 if none",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "W",
+            "unitsclass": "LU",
+            "description": "West cell ID, -1 if none",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "NW",
+            "unitsclass": "LU",
+            "description": "Northwest cell ID, -1 if none",
+            "siunit": "-",
+            "type": ""
+          }
+        ],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "gas.atm.degree.winddir",
+            "unitsclass": "AU",
+            "description": "Corrected wind direction in degrees in the athmospheric unit, computed using main wind direction and a random variation",
+            "siunit": "degree",
+            "type": ""
+          }
+        ],
+        "required": [
+          {
+            "name": "gas.atm.degree.mainwinddir",
+            "unitsclass": "AU",
+            "description": "Main wind direction in degrees in the athmospheric unit",
+            "siunit": "degree",
+            "type": ""
+          }
+        ],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "The spatial graph of LU is modified according to wind directions at each time step",
+      "details": [
+        {
+          "unitsclass": "LU",
+          "description": "The LU connections are modified according to wind directions, using the neighbours cells attributes N, NE, E, SE, S, SW, W, NW."
+        }
+      ]
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

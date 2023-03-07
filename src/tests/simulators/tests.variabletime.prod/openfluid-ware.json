@@ -1,0 +1,91 @@
+{
+  "id": "tests.variabletime.prod",
+  "name": "test simulator for variable time production",
+  "description": "",
+  "version": "1.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "",
+      "email": ""
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "tests.double",
+            "unitsclass": "TestUnits",
+            "description": "double for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.string",
+            "unitsclass": "TestUnits",
+            "description": "string for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.null",
+            "unitsclass": "TestUnits",
+            "description": "null for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.vector",
+            "unitsclass": "TestUnits",
+            "description": "vector for tests",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "tests.matrix",
+            "unitsclass": "TestUnits",
+            "description": "matrix for tests",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "required": [],
+        "used": [],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

@@ -88,5 +88,3 @@ void CMakeObsParamsWidget::showMessage()
 
 
 DEFINE_BUILDEREXT_CLASS(CMakeObsParamsWidget)
-
-DEFINE_WARE_LINKUID(WARE_LINKUID)

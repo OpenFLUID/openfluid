@@ -1,8 +1,7 @@
 
 
-FILE(GLOB TESTS_BUILDEREXTENSIONS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} tests.builderext.*)
-
-FOREACH(TEST_BEXT ${TESTS_BUILDEREXTENSIONS})
-  OFBUILD_ADD_BUILDER_EXTENSION(${TEST_BEXT} ${OFBUILD_TESTS_BINARY_DIR})
-ENDFOREACH()
+OFBUILD_ADD_TEST_BUILDEREXT(tests.builderext.modal-spatial.classic)
+OFBUILD_ADD_TEST_BUILDEREXT(tests.builderext.modal-spatial.simple)
+OFBUILD_ADD_TEST_BUILDEREXT(tests.builderext.modeless-other.simple)
+OFBUILD_ADD_TEST_BUILDEREXT(tests.builderext.workspace-other.simple)
 

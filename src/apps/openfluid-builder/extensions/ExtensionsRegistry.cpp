@@ -208,6 +208,23 @@ bool ExtensionsRegistry::isParameterizationExtensionRegistered(const openfluid::
 // =====================================================================
 
 
+std::string ExtensionsRegistry::getParameterizationExtensionPath(const openfluid::machine::UUID_t& UUID) const
+{
+  std::string Path;
+
+  if (isParameterizationExtensionRegistered(UUID))
+  {
+    Path = m_ParameterizationExtensions.at(UUID).Container.getPath();
+  }
+
+  return Path;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::builderext::ExtensionMode ExtensionsRegistry::getExtensionMode(const openfluid::ware::WareID_t& ID) const
 {
   if (isFeatureExtensionRegistered(ID))

@@ -1,0 +1,93 @@
+{
+  "id": "traffic.surf.car-transfer",
+  "name": "Road Unit (RU) function transfert and stockage for cars",
+  "description": "",
+  "version": "2.2.0",
+  "status": "experimental",
+  "authors": [
+    {
+      "name": "Michael Rabotin",
+      "email": "rabotin@supagro.inra.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [
+    "examples",
+    "",
+    ""
+  ],
+  "links": [],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": [
+          {
+            "name": "MultiCapacity",
+            "description": "Multiplying factor for capacity",
+            "siunit": "-",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [],
+        "used": [
+          {
+            "name": "stockini",
+            "unitsclass": "RU",
+            "description": "",
+            "siunit": "-",
+            "type": ""
+          },
+          {
+            "name": "capacity",
+            "unitsclass": "RU",
+            "description": "",
+            "siunit": "car/min",
+            "type": ""
+          }
+        ],
+        "produced": []
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "examples.RU.S.stock",
+            "unitsclass": "RU",
+            "description": "number of cars stocked on RU",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "required": [],
+        "used": [
+          {
+            "name": "examples.TLU.S.state",
+            "unitsclass": "TLU",
+            "description": "traffic light unit state",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "updated": []
+      },
+      "events": [],
+      "extrafiles": {
+        "required": [],
+        "used": []
+      }
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

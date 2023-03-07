@@ -1,0 +1,65 @@
+% Definition des noms de la fonction
+\newcommand{\frenchname}{Fonction de production de Morel-Seytoux}
+\newcommand{\englishname}{Morel-Seytoux production function}
+\newcommand{\VersionNumber}{11.5}
+
+% FileID
+\newcommand{\FileID}{water.surf-uz.runoff-infiltration.mseytoux}
+
+% Produced variables
+\newcommand{\VarProdA}{water.surf.H.runoff}
+\newcommand{\VarProdB}{water.surf.H.infiltration}
+
+% Used variables (if necessary)
+\newcommand{\VarUsedA}{water.surf.Q.downstream-su}
+\newcommand{\VarUsedB}{soil.surf.hydraulic-conductivity-Ks}
+
+% Required variables
+\newcommand{\VarRequirA}{water.atm-surf.H.rain}
+
+% Initial conditions
+\newcommand{\InitA}{thetaini}
+
+% Parameters
+\newcommand{\ParamA}{resstep}
+\newcommand{\ParamB}{CoeffMultiKs}
+\newcommand{\ParamC}{CoeffMultiThetaIni}
+
+
+% Attributes
+\newcommand{\PropDisB}{thetares}
+\newcommand{\PropDisC}{thetasat}
+\newcommand{\PropDisD}{betaMS}
+\newcommand{\PropDisE}{Hc}
+\newcommand{\PropDisF}{area}
+\newcommand{\PropDisA}{ks}
+
+% Main file for function description and utilisation
+%\selectlanguage{english}
+
+\begin{abstract}
+\input{./doc/english/InfiltrationMSeytoux_abstract.tex}
+\end{abstract}
+
+%******************************
+% Scientific concepts
+\section{Scientific concepts}
+\input{./doc/english/InfiltrationMSeytoux_scientific_concept.tex}
+
+
+%******************************
+% Functional description
+\section{Functional description}
+\input{./doc/english/InfiltrationMSeytoux_functional_description.tex}
+
+%******************************
+% References
+\bibliography{./doc/common/water.surf-uz.runoff-infiltration.mseytoux.bib}
+
+%******************************
+% Appendices
+\end{multicols}
+
+%\clearpage
+
+\begin{multicols}{2}
