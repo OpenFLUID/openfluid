@@ -44,18 +44,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationInspectorWare.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
-#include <openfluid/ware/ObserverSignatureMacros.hpp>
 #include <openfluid/ware/LoopMacros.hpp>
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-  @deprecated This declaration is not needed anymore since version 2.1.0
-*/
-#define DECLARE_OBSERVER_PLUGIN
 
 
 // =====================================================================

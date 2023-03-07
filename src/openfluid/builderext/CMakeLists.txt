@@ -1,6 +1,6 @@
 
 
-SET(OPENFLUID_BUILDEREXT_HPP BuilderExtensionSignature.hpp BuilderExtensionSignatureMacros.hpp
+SET(OPENFLUID_BUILDEREXT_HPP BuilderExtensionSignature.hpp
                              PluggableBuilderExtension.hpp
                              )
 

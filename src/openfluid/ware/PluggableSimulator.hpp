@@ -45,7 +45,6 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
-#include <openfluid/ware/SimulatorSignatureMacros.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/SchedulingRequest.hpp>
 #include <openfluid/ware/LoopMacros.hpp>

@@ -41,44 +41,6 @@
 // OpenFLUID:stylecheck:!llen
 
 
-// extracted from builderext/PluggableFeatureExtension.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::BUILDEREXT,
-    {
-      CompletionProvider::tr("Signature")
-    },
-    CompletionProvider::tr("Insert signature block"),
-    "BEGIN_BUILDEREXT_SIGNATURE(\"%%SEL_START%%bext.id%%SEL_END%%\",exttype)\n\nEND_BUILDEREXT_SIGNATURE"
-  )
-);
-
-// extracted from builderext/PluggableFeatureExtension.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::BUILDEREXT,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Menu context")
-    },
-    CompletionProvider::tr("Declare menu category"),
-    "DECLARE_CATEGORY(%%SEL_START%%category%%SEL_END%%)"
-  )
-);
-
-// extracted from builderext/PluggableFeatureExtension.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::BUILDEREXT,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Menu context")
-    },
-    CompletionProvider::tr("Declare menu text"),
-    "DECLARE_MENUTEXT(\"%%SEL_START%%menu text%%SEL_END%%\")"
-  )
-);
-
 // extracted from core/BooleanValue.hpp
 addRule(
   Rule(
@@ -884,6 +846,44 @@ addRule(
   )
 );
 
+// extracted from ui/builderext/PluggableFeatureExtension.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ContextFlags::BUILDEREXT,
+    {
+      CompletionProvider::tr("Signature")
+    },
+    CompletionProvider::tr("Insert signature block"),
+    "BEGIN_BUILDEREXT_SIGNATURE(\"%%SEL_START%%bext.id%%SEL_END%%\",exttype)\n\nEND_BUILDEREXT_SIGNATURE"
+  )
+);
+
+// extracted from ui/builderext/PluggableFeatureExtension.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ContextFlags::BUILDEREXT,
+    {
+      CompletionProvider::tr("Signature"),
+      CompletionProvider::tr("Menu context")
+    },
+    CompletionProvider::tr("Declare menu category"),
+    "DECLARE_CATEGORY(%%SEL_START%%category%%SEL_END%%)"
+  )
+);
+
+// extracted from ui/builderext/PluggableFeatureExtension.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ContextFlags::BUILDEREXT,
+    {
+      CompletionProvider::tr("Signature"),
+      CompletionProvider::tr("Menu context")
+    },
+    CompletionProvider::tr("Declare menu text"),
+    "DECLARE_MENUTEXT(\"%%SEL_START%%menu text%%SEL_END%%\")"
+  )
+);
+
 // extracted from ware/LoopMacros.hpp
 addRule(
   Rule(
@@ -933,18 +933,6 @@ addRule(
     },
     CompletionProvider::tr("Loop on an events collection"),
     "OPENFLUID_EVENT_COLLECTION_LOOP(%%SEL_START%%EvList%%SEL_END%%,Ev)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
-  )
-);
-
-// extracted from ware/ObserverSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::OBSERVER,
-    {
-      CompletionProvider::tr("Signature")
-    },
-    CompletionProvider::tr("Insert signature block"),
-    "BEGIN_OBSERVER_SIGNATURE(\"%%SEL_START%%sim.id%%SEL_END%%\")\n\nEND_OBSERVER_SIGNATURE"
   )
 );
 
@@ -2040,291 +2028,6 @@ addRule(
   )
 );
 
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature")
-    },
-    CompletionProvider::tr("Insert signature block"),
-    "BEGIN_SIMULATOR_SIGNATURE(\"%%SEL_START%%sim.id%%SEL_END%%\")\n\nEND_SIMULATOR_SIGNATURE"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Scientific context")
-    },
-    CompletionProvider::tr("Declare application domain"),
-    "DECLARE_DOMAIN(\"%%SEL_START%%description%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Scientific context")
-    },
-    CompletionProvider::tr("Declare modeled process(es)"),
-    "DECLARE_PROCESS(\"%%SEL_START%%description%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Scientific context")
-    },
-    CompletionProvider::tr("Declare modeling method"),
-    "DECLARE_METHOD(\"%%SEL_START%%description%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Parameters")
-    },
-    CompletionProvider::tr("Declare used parameter"),
-    "DECLARE_USED_PARAMETER(\"%%SEL_START%%paramname%%SEL_END%%\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Parameters")
-    },
-    CompletionProvider::tr("Declare required parameter"),
-    "DECLARE_REQUIRED_PARAMETER(\"%%SEL_START%%paramname%%SEL_END%%\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Variables")
-    },
-    CompletionProvider::tr("Declare produced variable"),
-    "DECLARE_PRODUCED_VARIABLE(\"%%SEL_START%%var.name%%SEL_END%%\",\"unitsclass\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Variables")
-    },
-    CompletionProvider::tr("Declare updated variable"),
-    "DECLARE_UPDATED_VARIABLE(\"%%SEL_START%%var.name%%SEL_END%%\",\"unitsclass\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Variables")
-    },
-    CompletionProvider::tr("Declare required variable"),
-    "DECLARE_REQUIRED_VARIABLE(\"%%SEL_START%%var.name%%SEL_END%%\",\"unitsclass\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Variables")
-    },
-    CompletionProvider::tr("Declare used variable"),
-    "DECLARE_USED_VARIABLE(\"%%SEL_START%%var.name%%SEL_END%%\",\"unitsclass\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Attributes")
-    },
-    CompletionProvider::tr("Declare produced attribute"),
-    "DECLARE_PRODUCED_ATTRIBUTE(\"%%SEL_START%%name%%SEL_END%%\",\"unitsclass\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Attributes")
-    },
-    CompletionProvider::tr("Declare required attribute"),
-    "DECLARE_REQUIRED_ATTRIBUTE(\"%%SEL_START%%name%%SEL_END%%\",\"unitsclass\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Attributes")
-    },
-    CompletionProvider::tr("Declare used attribute"),
-    "DECLARE_USED_ATTRIBUTE(\"%%SEL_START%%name%%SEL_END%%\",\"unitsclass\",\"description\",\"SI unit\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Events")
-    },
-    CompletionProvider::tr("Declare used events"),
-    "DECLARE_USED_EVENTS(\"%%SEL_START%%unitsclass%%SEL_END%%\",\"description\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Spatial structure")
-    },
-    CompletionProvider::tr("Declare updated units graph"),
-    "DECLARE_UPDATED_UNITSGRAPH(\"%%SEL_START%%description%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Spatial structure")
-    },
-    CompletionProvider::tr("Declare updated units class"),
-    "DECLARE_UPDATED_UNITSCLASS(\"%%SEL_START%%unitsclass%%SEL_END%%\",\"description\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Extra files")
-    },
-    CompletionProvider::tr("Declare required extra file"),
-    "DECLARE_REQUIRED_EXTRAFILE(\"%%SEL_START%%filename%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Extra files")
-    },
-    CompletionProvider::tr("Declare used extra file"),
-    "DECLARE_USED_EXTRAFILE(\"%%SEL_START%%filename%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Scheduling")
-    },
-    CompletionProvider::tr("Declare undefined scheduling"),
-    "DECLARE_SCHEDULING_UNDEFINED"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Scheduling")
-    },
-    CompletionProvider::tr("Declare default deltaT scheduling"),
-    "DECLARE_SCHEDULING_DEFAULT"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Scheduling")
-    },
-    CompletionProvider::tr("Declare fixed scheduling"),
-    "DECLARE_SCHEDULING_FIXED(%%SEL_START%%duration%%SEL_END%%)"
-  )
-);
-
-// extracted from ware/SimulatorSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Scheduling")
-    },
-    CompletionProvider::tr("Declare scheduling in range"),
-    "DECLARE_SCHEDULING_RANGE(%%SEL_START%%min%%SEL_END%%,max)"
-  )
-);
-
 // extracted from ware/ThreadedLoopMacros.hpp
 addRule(
   Rule(
@@ -2361,97 +2064,6 @@ addRule(
     },
     CompletionProvider::tr("Threaded ordered loop on all spatial units"),
     "APPLY_ALLUNITS_ORDERED_LOOP_THREADED(%%SEL_START%%FuncPtr%%SEL_END%%)"
-  )
-);
-
-// extracted from ware/WareSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("General")
-    },
-    CompletionProvider::tr("Declare name"),
-    "DECLARE_NAME(\"%%SEL_START%%name%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/WareSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("General")
-    },
-    CompletionProvider::tr("Declare description"),
-    "DECLARE_DESCRIPTION(\"%%SEL_START%%desc%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/WareSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("General")
-    },
-    CompletionProvider::tr("Declare author"),
-    "DECLARE_AUTHOR(\"%%SEL_START%%firstname lastname%%SEL_END%%\",\"email\")"
-  )
-);
-
-// extracted from ware/WareSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("General")
-    },
-    CompletionProvider::tr("Declare version"),
-    "DECLARE_VERSION(\"%%SEL_START%%1.0%%SEL_END%%\")"
-  )
-);
-
-// extracted from ware/WareSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Status")
-    },
-    CompletionProvider::tr("Declare status as experimental"),
-    "DECLARE_STATUS(openfluid::ware::EXPERIMENTAL)"
-  )
-);
-
-// extracted from ware/WareSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Status")
-    },
-    CompletionProvider::tr("Declare status as beta"),
-    "DECLARE_STATUS(openfluid::ware::BETA)"
-  )
-);
-
-// extracted from ware/WareSignatureMacros.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
-    {
-      CompletionProvider::tr("Signature"),
-      CompletionProvider::tr("Status")
-    },
-    CompletionProvider::tr("Declare status as stable"),
-    "DECLARE_STATUS(openfluid::ware::STABLE)"
   )
 );
 

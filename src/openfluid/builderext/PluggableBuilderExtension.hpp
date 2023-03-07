@@ -44,8 +44,34 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
-#include <openfluid/builderext/BuilderExtensionSignatureMacros.hpp>
 #include <openfluid/dllexport.hpp>
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Macro for definition of builder extension class hook
+  @param[in] pluginclassname The name of the class to instantiate
+*/
+#define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
+  extern "C" \
+  { \
+    OPENFLUID_PLUGIN const std::string* WAREABIVERSION_PROC_DECL() \
+    { \
+      return new std::string(openfluid::config::VERSION_FULL); \
+    } \
+    \
+    OPENFLUID_PLUGIN openfluid::builderext::PluggableBuilderExtension* WAREBODY_PROC_DECL() \
+    { \
+      return new pluginclassname(); \
+    } \
+  }
+
+
+// =====================================================================
+// =====================================================================
 
 
 namespace openfluid { namespace builderext {
