@@ -499,7 +499,9 @@ BOOST_AUTO_TEST_CASE(check_conversion)
 
 BOOST_AUTO_TEST_CASE(check_other)
 {
-  { // available langs
+  // available langs    
+  if (CONFIGTESTS_GUI_ENABLED)
+  {
     auto Langs = openfluid::base::PreferencesManager::getAvailableUILanguages();
     BOOST_REQUIRE_EQUAL(Langs.size(),1);
     BOOST_CHECK_EQUAL(Langs[0],"fr_FR");
