@@ -63,7 +63,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Attributes"],
+        "menupath" : ["Attributes"],
         "title" : "Set attribute value",
         "text" : "OPENFLUID_SetAttribute(%%SEL_START%%UnitPtr%%SEL_END%%,\"attrname\",Val)"
       }
@@ -133,7 +133,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Variables"],
+        "menupath" : ["Variables"],
         "title" : "Initialize variable with value",
         "text" : "OPENFLUID_InitializeVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
       }
@@ -195,7 +195,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Variables"],
+        "menupath" : ["Variables"],
         "title" : "Append value to a variable",
         "text" : "OPENFLUID_AppendVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
       }
@@ -272,7 +272,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Variables"],
+        "menupath" : ["Variables"],
         "title" : "Update current value of a variable",
         "text" : "OPENFLUID_SetVariable(%%SEL_START%%UnitPtr%%SEL_END%%,\"varname\",Val)"
       }
@@ -330,7 +330,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Events"],
+        "menupath" : ["Events"],
         "title" : "Append an event",
         "text" : "OPENFLUID_AppendEvent(%%SEL_START%%UnitPtr%%SEL_END%%,Event)"
       }
@@ -349,7 +349,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Add a spatial unit to the spatial graph",
         "text" : "OPENFLUID_AddUnit(%%SEL_START%%ClassName%%SEL_END%%,UnitID,PcsOrder)"
       }
@@ -367,7 +367,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Delete a spatial unit of the spatial graph",
         "text" : "OPENFLUID_DeleteUnit(%%SEL_START%%ClassName%%SEL_END%%,ID)"
       }
@@ -388,7 +388,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Add a From-To connection using classes names and IDs",
         "text" : "OPENFLUID_AddFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,UnitIDFrom,ClassNameTo,UnitIDTo)"
       }
@@ -408,7 +408,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Add a From-To connection using pointers to spatial units",
         "text" : "OPENFLUID_AddFromToConnection(%%SEL_START%%FromUnitPtr%%SEL_END%%,ToUnitPtr)"
       }
@@ -428,7 +428,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Remove a From-To connection using classes names and IDs",
         "text" : ["OPENFLUID_RemoveFromToConnection(%%SEL_START%%ClassNameFrom%%SEL_END%%,",
                   "UnitIDFrom,ClassNameTo,UnitIDTo)"]
@@ -449,7 +449,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Remove a From-To connection using spatial units pointers",
         "text" : "OPENFLUID_RemoveFromToConnection(%%SEL_START%%FromUnitPtr%%SEL_END%%,ToUnitPtr)"
       }
@@ -470,7 +470,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Add a Child-parent connection using classes names and IDs",
         "text" : ["OPENFLUID_AddChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,",
                   "UnitIDChild,ClassNameParent,UnitIDParent)"]
@@ -491,7 +491,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Add a Child-parent connection using pointers to spatial units",
         "text" : "OPENFLUID_AddChildParentConnection(%%SEL_START%%ChildUnitPtr%%SEL_END%%,ParentUnitPtr)"
       }
@@ -512,7 +512,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Remove a Child-parent connection using classes names and IDs",
         "text" : ["OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ClassNameChild%%SEL_END%%,",
                   "UnitIDChild,ClassNameParent,UnitIDParent)"]
@@ -533,7 +533,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Remove a Child-parent connection using pointers to spatial units",
         "text" : "OPENFLUID_RemoveChildParentConnection(%%SEL_START%%ChildUnitPtr%%SEL_END%%,ParentUnitPtr)"
       }
@@ -551,7 +551,7 @@ class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Spatial structure"],
+        "menupath" : ["Spatial structure"],
         "title" : "Build a matrix of spatial units",
         "text" : "OPENFLUID_BuildUnitsMatrix(%%SEL_START%%ClassName%%SEL_END%%,ColsNbr,RowsNbr)"
       }

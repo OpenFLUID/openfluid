@@ -59,7 +59,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration"],
+    "menupath" : ["Fortran integration"],
     "title" : "Include FortranCPP header",
     "text" : "#include <openfluid/tools/FortranCPP.hpp>"
   }
@@ -74,7 +74,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Declaration of external code"],
+    "menupath" : ["Fortran integration", "Declaration of external code"],
     "title" : "Declaration block",
     "text" : "BEGIN_EXTERN_FORTRAN\n%%CURSOR%%\nEND_EXTERN_FORTRAN"
   }
@@ -83,7 +83,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Declaration of external code"],
+    "menupath" : ["Fortran integration", "Declaration of external code"],
     "title" : "Beginning of declaration block",
     "text" : "BEGIN_EXTERN_FORTRAN"
   }
@@ -92,7 +92,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Declaration of external code"],
+    "menupath" : ["Fortran integration", "Declaration of external code"],
     "title" : "End of declaration block",
     "text" : "END_EXTERN_FORTRAN"
   }
@@ -122,7 +122,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Declaration of external code", "Fortran"],
+    "menupath" : ["Fortran integration", "Declaration of external code", "Fortran"],
     "title" : "Declare function",
     "text" : "EXTERN_FFUNCTION(%%SEL_START%%Name%%SEL_END%%)(%%CMT_START%%parameters%%CMT_END%%)"
   }
@@ -137,7 +137,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Call of external code", "Fortran"],
+    "menupath" : ["Fortran integration", "Call of external code", "Fortran"],
     "title" : "Call function",
     "text" : "CALL_FFUNCTION(%%SEL_START%%Name%%SEL_END%%)(parameters)"
   }
@@ -152,7 +152,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Declaration of external code", "Fortran"],
+    "menupath" : ["Fortran integration", "Declaration of external code", "Fortran"],
     "title" : "Declare subroutine",
     "text" : "EXTERN_FSUBROUTINE(%%SEL_START%%Name%%SEL_END%%)(parameters)"
   }
@@ -168,7 +168,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Call of external code", "Fortran"],
+    "menupath" : ["Fortran integration", "Call of external code", "Fortran"],
     "title" : "Call subroutine",
     "text" : "CALL_FSUBROUTINE(%%SEL_START%%Name%%SEL_END%%)(parameters)"
   }
@@ -189,7 +189,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Declaration of external code", "Fortran90"],
+    "menupath" : ["Fortran integration", "Declaration of external code", "Fortran90"],
     "title" : "Declare function in module",
     "text" : "EXTERN_FMODFUNCTION(%%SEL_START%%Module%%SEL_END%%,Name)(parameters)"
   }
@@ -205,7 +205,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Call of external code", "Fortran90"],
+    "menupath" : ["Fortran integration", "Call of external code", "Fortran90"],
     "title" : "Call function in module",
     "text" : "CALL_FMODFUNCTION(%%SEL_START%%Module%%SEL_END%%,Name)(parameters)"
   }
@@ -221,7 +221,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Declaration of external code", "Fortran90"],
+    "menupath" : ["Fortran integration", "Declaration of external code", "Fortran90"],
     "title" : "Declare subroutine in module",
     "text" : "EXTERN_FMODSUBROUTINE(%%SEL_START%%Module%%SEL_END%%,Name)(parameters)"
   }
@@ -237,7 +237,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Call of external code", "Fortran90"],
+    "menupath" : ["Fortran integration", "Call of external code", "Fortran90"],
     "title" : "Call subroutine in module",
     "text" : "CALL_FMODSUBROUTINE(%%SEL_START%%Module%%SEL_END%%,Name)(parameters)"
   }
@@ -258,7 +258,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Single precision float",
     "text" : "FREAL %%SEL_START%%Val%%SEL_END%%"
   }
@@ -272,7 +272,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Double precision float",
     "text" : "FREAL8 %%SEL_START%%Val%%SEL_END%%"
   }
@@ -284,7 +284,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Double double precision float",
     "text" : "FREAL16 %%SEL_START%%Val%%SEL_END%%"
   }
@@ -298,7 +298,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Integer",
     "text" : "FINT %%SEL_START%%Val%%SEL_END%%"
   }
@@ -312,7 +312,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Short integer",
     "text" : "FINT2 %%SEL_START%%Val%%SEL_END%%"
   }
@@ -326,7 +326,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Long integer",
     "text" : "FINT8 %%SEL_START%%Val%%SEL_END%%"
   }
@@ -339,7 +339,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Logical",
     "text" : "FLOGICAL %%SEL_START%%Val%%SEL_END%%"
   }
@@ -351,7 +351,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Logical (boolean)",
     "text" : "FLOGICAL1 %%SEL_START%%Val%%SEL_END%%"
   }
@@ -370,7 +370,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "Character",
     "text" : "FCHARACTER %%SEL_START%%Val%%SEL_END%%"
   }
@@ -382,7 +382,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "String",
     "text" : "FSTRING %%SEL_START%%Val%%SEL_END%%"
   }
@@ -394,7 +394,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Types"],
+    "menupath" : ["Fortran integration", "Types"],
     "title" : "String length",
     "text" : "FSTRINGLEN %%SEL_START%%Val%%SEL_END%%"
   }
@@ -413,7 +413,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Functions"],
+    "menupath" : ["Fortran integration", "Functions"],
     "title" : "Convert std::string to Fortran string content",
     "text" : "STD2FSTRING(%%SEL_START%%str%%SEL_END%%)"
   }
@@ -425,7 +425,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Functions"],
+    "menupath" : ["Fortran integration", "Functions"],
     "title" : "Convert std::string to Fortran string length",
     "text" : "STD2FSTRINGLEN(%%SEL_START%%str%%SEL_END%%)"
   }
@@ -437,7 +437,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration", "Functions"],
+    "menupath" : ["Fortran integration", "Functions"],
     "title" : "Convert std::string to Fortran string content and length",
     "text" : "STD2FSTRINGFULL(%%SEL_START%%str%%SEL_END%%)"
   }

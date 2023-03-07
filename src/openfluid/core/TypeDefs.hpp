@@ -61,7 +61,7 @@ namespace openfluid { namespace core {
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Types", "Spatial domain"],
     "title" : "Unit ID",
     "text" : "openfluid::core::UnitID_t %%SEL_START%%UnitID%%SEL_END%%"
   }
@@ -75,7 +75,7 @@ typedef unsigned int UnitID_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Types", "Spatial domain"],
     "title" : "Process order",
     "text" : "openfluid::core::PcsOrd_t %%SEL_START%%PcsOrd%%SEL_END%%"
   }
@@ -89,7 +89,7 @@ typedef int PcsOrd_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Types", "Spatial domain"],
     "title" : "Units class name",
     "text" : "openfluid::core::UnitsClass_t %%SEL_START%%ClassName%%SEL_END%%"
   }
@@ -108,7 +108,7 @@ typedef std::string UnitsClass_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Attributes"],
+    "menupath" : ["Types", "Attributes"],
     "title" : "Attribute name",
     "text" : "openfluid::core::AttributeName_t %%SEL_START%%AttrName%%SEL_END%%"
   }
@@ -122,7 +122,7 @@ typedef std::string AttributeName_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Variables"],
+    "menupath" : ["Types", "Variables"],
     "title" : "Variable name",
     "text" : "openfluid::core::VariableName_t %%SEL_START%%VarName%%SEL_END%%"
   }
@@ -177,7 +177,7 @@ struct IDMap
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "menupath" : ["Types", "ID..Map"],
     "title" : "ID to single precision (signed)",
     "text" : "openfluid::core::IDFloatMap %%SEL_START%%ValMap%%SEL_END%%"
   }
@@ -191,7 +191,7 @@ typedef IDMap<float>::Type IDFloatMap;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "menupath" : ["Types", "ID..Map"],
     "title" : "ID to double precision (signed)",
     "text" : "openfluid::core::IDDoubleMap %%SEL_START%%ValMap%%SEL_END%%"
   }
@@ -205,7 +205,7 @@ typedef IDMap<double>::Type IDDoubleMap;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "menupath" : ["Types", "ID..Map"],
     "title" : "ID to DoubleValue",
     "text" : "openfluid::core::IDDoubleValueMap %%SEL_START%%ValMap%%SEL_END%%"
   }
@@ -219,7 +219,7 @@ typedef IDMap<DoubleValue>::Type IDDoubleValueMap;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "menupath" : ["Types", "ID..Map"],
     "title" : "ID to integer (signed)",
     "text" : "openfluid::core::IDIntMap %%SEL_START%%ValMap%%SEL_END%%"
   }
@@ -233,7 +233,7 @@ typedef IDMap<int>::Type IDIntMap;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "menupath" : ["Types", "ID..Map"],
     "title" : "ID to boolean",
     "text" : "openfluid::core::IDBoolMap %%SEL_START%%ValMap%%SEL_END%%"
   }
@@ -247,7 +247,7 @@ typedef IDMap<bool>::Type IDBoolMap;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "menupath" : ["Types", "ID..Map"],
     "title" : "ID to VectorValue",
     "text" : "openfluid::core::IDVectorValueMap %%SEL_START%%ValMap%%SEL_END%%"
   }
@@ -261,7 +261,7 @@ typedef IDMap<VectorValue>::Type IDVectorValueMap;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "ID..Map"],
+    "menupath" : ["Types", "ID..Map"],
     "title" : "ID to pointer to VectorValue",
     "text" : "openfluid::core::IDVectorValuePtrMap %%SEL_START%%ValMap%%SEL_END%%"
   }
@@ -289,7 +289,7 @@ typedef std::uint64_t RawTime_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Time"],
+    "menupath" : ["Types", "Time"],
     "title" : "Time index",
     "text" : "openfluid::core::TimeIndex_t %%SEL_START%%TimeIndex%%SEL_END%%"
   }
@@ -303,7 +303,7 @@ typedef std::uint64_t TimeIndex_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Time"],
+    "menupath" : ["Types", "Time"],
     "title" : "Duration",
     "text" : "openfluid::core::Duration_t %%SEL_START%%Duration%%SEL_END%%"
   }

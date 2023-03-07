@@ -101,7 +101,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Log warning message",
     "text" : "OPENFLUID_LogWarning(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -119,7 +119,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Display warning message",
     "text" : "OPENFLUID_DisplayWarning(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -137,7 +137,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Log and warning debug message",
     "text" : "OPENFLUID_LogAndDisplayWarning(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -159,7 +159,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Log information message",
     "text" : "OPENFLUID_LogInfo(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -177,7 +177,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Display information message",
     "text" : "OPENFLUID_DisplayInfo(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -195,7 +195,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Log and display information message",
     "text" : "OPENFLUID_LogAndDisplayInfo(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -218,7 +218,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Log debug message",
     "text" : "OPENFLUID_LogDebug(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -235,7 +235,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Display debug message",
     "text" : "OPENFLUID_DisplayDebug(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -251,7 +251,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Messages"],
+    "menupath" : ["Messages"],
     "title" : "Log and display debug message",
     "text" : "OPENFLUID_LogAndDisplayDebug(%%SEL_START%%\"message\"%%SEL_END%%)"
   }
@@ -324,7 +324,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get begin date of simulation",
         "text" : "OPENFLUID_GetBeginDate()"
       }
@@ -339,7 +339,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get end date of simulation",
         "text" : "OPENFLUID_GetEndDate()"
       }
@@ -354,7 +354,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get begin current date of simulation",
         "text" : "OPENFLUID_GetCurrentDate()"
       }
@@ -369,7 +369,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get total simulation duration",
         "text" : "OPENFLUID_GetSimulationDuration()"
       }
@@ -384,7 +384,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get default deltaT",
         "text" : "OPENFLUID_GetDefaultDeltaT()"
       }
@@ -400,7 +400,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get current time index",
         "text" : "OPENFLUID_GetCurrentTimeIndex()"
       }
@@ -415,7 +415,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get time index of the previous ware run",
         "text" : "OPENFLUID_GetPreviousRunTimeIndex()"
       }
@@ -430,7 +430,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get current simulation stage",
         "text" : "OPENFLUID_GetCurrentStage()"
       }
@@ -445,7 +445,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get current simulation stage as a string",
         "text" : "OPENFLUID_GetCurrentStageAsString()"
       }
@@ -460,7 +460,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Time"],
+        "menupath" : ["Time"],
         "title" : "Get scheduling constraint mode",
         "text" : "OPENFLUID_GetSchedulingConstraint()"
       }
@@ -492,7 +492,7 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR", "OBSERVER"],
-        "menupath" : ["Compute code", "Messages"],
+        "menupath" : ["Messages"],
         "title" : "Raise fatal error",
         "text" : "OPENFLUID_RaiseError(%%SEL_START%%\"message\"%%SEL_END%%)"
       }

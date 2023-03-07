@@ -155,7 +155,7 @@ class OPENFLUID_API PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["ANYWARE"],
-        "menupath" : ["Compute code", "Run environment"],
+        "menupath" : ["Run environment"],
         "title" : "Get information about run environment",
         "text" : "OPENFLUID_GetRunEnvironment(%%SEL_START%%\"key\"%%SEL_END%%,Value)"
       }
@@ -164,7 +164,7 @@ class OPENFLUID_API PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["ANYWARE"],
-        "menupath" : ["Compute code", "Run environment"],
+        "menupath" : ["Run environment"],
         "title" : "Get current input dataset directory",
         "text" : "OPENFLUID_GetRunEnvironment(\"dir.input\",%%SEL_START%%Value%%SEL_END%%)"
       }
@@ -173,7 +173,7 @@ class OPENFLUID_API PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["ANYWARE"],
-        "menupath" : ["Compute code", "Run environment"],
+        "menupath" : ["Run environment"],
         "title" : "Get current output results directory",
         "text" : "OPENFLUID_GetRunEnvironment(\"dir.output\",%%SEL_START%%Value%%SEL_END%%)"
       }
@@ -182,7 +182,7 @@ class OPENFLUID_API PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["ANYWARE"],
-        "menupath" : ["Compute code", "Run environment"],
+        "menupath" : ["Run environment"],
         "title" : "Get current directory for temporary data",
         "text" : "OPENFLUID_GetRunEnvironment(\"dir.temp\",%%SEL_START%%Value%%SEL_END%%)"
       }
@@ -197,7 +197,7 @@ class OPENFLUID_API PluggableWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["ANYWARE"],
-        "menupath" : ["Compute code", "Run environment"],
+        "menupath" : ["Run environment"],
         "title" : "Get current ware ID",
         "text" : "OPENFLUID_GetWareID()"
       }

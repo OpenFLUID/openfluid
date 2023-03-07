@@ -76,7 +76,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Loops"],
+    "menupath" : ["Loops"],
     "title" : "Ordered loop on spatial units of a class",
     "text" : ["OPENFLUID_UNITS_ORDERED_LOOP(\"%%SEL_START%%unitsclass%%SEL_END%%\",UnitPtr)\n",
               "%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
@@ -101,7 +101,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Loops"],
+    "menupath" : ["Loops"],
     "title" : "Ordered loop on all spatial units",
     "text" : ["OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtrList%%SEL_END%%)\n",
               "%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
@@ -127,7 +127,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Loops"],
+    "menupath" : ["Loops"],
     "title" : "Loop on a spatial units list",
     "text" : ["OPENFLUID_UNITSLIST_LOOP(%%SEL_START%%UnitsList%%SEL_END%%,UnitPtr)\n",
               "%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
@@ -151,7 +151,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Loops"],
+    "menupath" : ["Loops"],
     "title" : "Loop on an events collection",
     "text" : ["OPENFLUID_EVENT_COLLECTION_LOOP(%%SEL_START%%EvList%%SEL_END%%,Ev)",
               "\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]

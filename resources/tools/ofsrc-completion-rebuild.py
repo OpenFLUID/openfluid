@@ -42,7 +42,7 @@
 #  @cond OpenFLUID:completion
 #  {
 #    "contexts" : ["SIMULATOR"],
-#    "menupath" : ["Compute code", "Parameters"],
+#    "menupath" : ["Parameters"],
 #    "title" : "Get simulator parameter",
 #    "text" : "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
 #  }
@@ -51,7 +51,7 @@
 #  @cond OpenFLUID:completion
 #  {
 #    "contexts" : ["ANYWARE"],
-#    "menupath" : ["Compute code", "Loops"],
+#    "menupath" : ["Loops"],
 #    "title" : "Loop on an events collection",
 #    "text" : ["OPENFLUID_EVENT_COLLECTION_LOOP(%%SEL_START%%EvList%%SEL_END%%,Event)",
 #              "\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]

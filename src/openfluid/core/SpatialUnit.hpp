@@ -68,7 +68,7 @@ typedef std::map<UnitsClass_t,UnitsCollection> UnitsListByClassMap_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Types", "Spatial domain"],
     "title" : "List of pointers to spatial units",
     "text" : "openfluid::core::UnitsPtrList_t %%SEL_START%%UnitsPtrList%%SEL_END%%"
   }
@@ -92,7 +92,7 @@ typedef std::map<UnitsClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Types", "Spatial domain"],
     "title" : "Spatial unit",
     "text" : "openfluid::core::SpatialUnit %%SEL_START%%Unit%%SEL_END%%"
   }
@@ -101,7 +101,7 @@ typedef std::map<UnitsClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Spatial domain"],
+    "menupath" : ["Types", "Spatial domain"],
     "title" : "Pointer to spatial unit",
     "text" : "openfluid::core::SpatialUnit* %%SEL_START%%UnitPtr%%SEL_END%%"
   }

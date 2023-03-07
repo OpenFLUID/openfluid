@@ -61,7 +61,7 @@ typedef std::list<Event> EventsList_t;
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Events"],
+    "menupath" : ["Types", "Events"],
     "title" : "Events collection",
     "text" : "openfluid::core::EventsCollection %%SEL_START%%EvColl%%SEL_END%%"
   }

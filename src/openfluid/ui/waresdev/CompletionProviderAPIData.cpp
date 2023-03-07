@@ -46,7 +46,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -60,7 +59,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Time")
     },
@@ -74,7 +72,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -88,7 +85,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Events")
     },
@@ -102,7 +98,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Events")
     },
@@ -116,7 +111,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -130,7 +124,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -144,7 +137,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -158,7 +150,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -172,7 +163,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -186,7 +176,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -200,7 +189,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Spatial domain")
     },
@@ -214,7 +202,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Spatial domain")
     },
@@ -228,7 +215,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Spatial domain")
     },
@@ -242,7 +228,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -256,7 +241,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -270,7 +254,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Spatial domain")
     },
@@ -284,7 +267,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Spatial domain")
     },
@@ -298,7 +280,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Spatial domain")
     },
@@ -312,7 +293,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Attributes")
     },
@@ -326,7 +306,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Variables")
     },
@@ -340,7 +319,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("ID..Map")
     },
@@ -354,7 +332,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("ID..Map")
     },
@@ -368,7 +345,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("ID..Map")
     },
@@ -382,7 +358,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("ID..Map")
     },
@@ -396,7 +371,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("ID..Map")
     },
@@ -410,7 +384,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("ID..Map")
     },
@@ -424,7 +397,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("ID..Map")
     },
@@ -438,7 +410,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Time")
     },
@@ -452,7 +423,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Time")
     },
@@ -466,7 +436,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Types"),
       CompletionProvider::tr("Values")
     },
@@ -480,7 +449,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration")
     },
     CompletionProvider::tr("Include FortranCPP header"),
@@ -493,7 +461,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Declaration of external code")
     },
@@ -507,7 +474,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Declaration of external code")
     },
@@ -521,7 +487,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Declaration of external code")
     },
@@ -535,7 +500,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Declaration of external code"),
       CompletionProvider::tr("Fortran")
@@ -550,7 +514,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Call of external code"),
       CompletionProvider::tr("Fortran")
@@ -565,7 +528,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Declaration of external code"),
       CompletionProvider::tr("Fortran")
@@ -580,7 +542,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Call of external code"),
       CompletionProvider::tr("Fortran")
@@ -595,7 +556,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Declaration of external code"),
       CompletionProvider::tr("Fortran90")
@@ -610,7 +570,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Call of external code"),
       CompletionProvider::tr("Fortran90")
@@ -625,7 +584,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Declaration of external code"),
       CompletionProvider::tr("Fortran90")
@@ -640,7 +598,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Call of external code"),
       CompletionProvider::tr("Fortran90")
@@ -655,7 +612,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -669,7 +625,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -683,7 +638,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -697,7 +651,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -711,7 +664,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -725,7 +677,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -739,7 +690,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -753,7 +703,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -767,7 +716,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -781,7 +729,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -795,7 +742,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Types")
     },
@@ -809,7 +755,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Functions")
     },
@@ -823,7 +768,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Functions")
     },
@@ -837,7 +781,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration"),
       CompletionProvider::tr("Functions")
     },
@@ -889,7 +832,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Ordered loop on spatial units of a class"),
@@ -902,7 +844,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Ordered loop on all spatial units"),
@@ -915,7 +856,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Loop on a spatial units list"),
@@ -928,7 +868,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Loop on an events collection"),
@@ -941,7 +880,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Parameters")
     },
     CompletionProvider::tr("Test if a simulator parameter exists"),
@@ -954,7 +892,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Parameters")
     },
     CompletionProvider::tr("Get simulator parameter (by return)"),
@@ -967,7 +904,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Parameters")
     },
     CompletionProvider::tr("Get simulator parameter"),
@@ -980,7 +916,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Threading")
     },
     CompletionProvider::tr("Get maximum number of threads"),
@@ -993,7 +928,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Threading")
     },
     CompletionProvider::tr("Set maximum number of threads"),
@@ -1006,7 +940,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Sheduling")
     },
     CompletionProvider::tr("Run once at the end"),
@@ -1019,7 +952,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Sheduling")
     },
     CompletionProvider::tr("Never run again"),
@@ -1032,7 +964,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Sheduling")
     },
     CompletionProvider::tr("Run in default deltaT"),
@@ -1045,7 +976,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Sheduling")
     },
     CompletionProvider::tr("Run in X default deltaT"),
@@ -1058,7 +988,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Sheduling")
     },
     CompletionProvider::tr("Run in a duration in seconds"),
@@ -1084,7 +1013,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Run environment")
     },
     CompletionProvider::tr("Get information about run environment"),
@@ -1097,7 +1025,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Run environment")
     },
     CompletionProvider::tr("Get current input dataset directory"),
@@ -1110,7 +1037,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Run environment")
     },
     CompletionProvider::tr("Get current output results directory"),
@@ -1123,7 +1049,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Run environment")
     },
     CompletionProvider::tr("Get current directory for temporary data"),
@@ -1136,7 +1061,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::ANYWARE,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Run environment")
     },
     CompletionProvider::tr("Get current ware ID"),
@@ -1149,7 +1073,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Attributes")
     },
     CompletionProvider::tr("Set attribute value"),
@@ -1162,7 +1085,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Initialize variable with value"),
@@ -1175,7 +1097,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Append value to a variable"),
@@ -1188,7 +1109,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Update current value of a variable"),
@@ -1201,7 +1121,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Events")
     },
     CompletionProvider::tr("Append an event"),
@@ -1214,7 +1133,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Add a spatial unit to the spatial graph"),
@@ -1227,7 +1145,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Delete a spatial unit of the spatial graph"),
@@ -1240,7 +1157,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Add a From-To connection using classes names and IDs"),
@@ -1253,7 +1169,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Add a From-To connection using pointers to spatial units"),
@@ -1266,7 +1181,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Remove a From-To connection using classes names and IDs"),
@@ -1279,7 +1193,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Remove a From-To connection using spatial units pointers"),
@@ -1292,7 +1205,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Add a Child-parent connection using classes names and IDs"),
@@ -1305,7 +1217,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Add a Child-parent connection using pointers to spatial units"),
@@ -1318,7 +1229,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Remove a Child-parent connection using classes names and IDs"),
@@ -1331,7 +1241,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Remove a Child-parent connection using pointers to spatial units"),
@@ -1344,7 +1253,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Build a matrix of spatial units"),
@@ -1357,7 +1265,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Log warning message"),
@@ -1370,7 +1277,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Display warning message"),
@@ -1383,7 +1289,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Log and warning debug message"),
@@ -1396,7 +1301,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Log information message"),
@@ -1409,7 +1313,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Display information message"),
@@ -1422,7 +1325,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Log and display information message"),
@@ -1435,7 +1337,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Log debug message"),
@@ -1448,7 +1349,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Display debug message"),
@@ -1461,7 +1361,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Log and display debug message"),
@@ -1474,7 +1373,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get begin date of simulation"),
@@ -1487,7 +1385,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get end date of simulation"),
@@ -1500,7 +1397,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get begin current date of simulation"),
@@ -1513,7 +1409,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get total simulation duration"),
@@ -1526,7 +1421,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get default deltaT"),
@@ -1539,7 +1433,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get current time index"),
@@ -1552,7 +1445,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get time index of the previous ware run"),
@@ -1565,7 +1457,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get current simulation stage"),
@@ -1578,7 +1469,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get current simulation stage as a string"),
@@ -1591,7 +1481,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Time")
     },
     CompletionProvider::tr("Get scheduling constraint mode"),
@@ -1604,7 +1493,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Messages")
     },
     CompletionProvider::tr("Raise fatal error"),
@@ -1617,7 +1505,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Attributes")
     },
     CompletionProvider::tr("Test if an attribute exists"),
@@ -1630,7 +1517,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Attributes")
     },
     CompletionProvider::tr("Get attribute value"),
@@ -1643,7 +1529,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Attributes")
     },
     CompletionProvider::tr("Get attribute value (by return)"),
@@ -1656,7 +1541,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists"),
@@ -1669,7 +1553,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists and has a value on given time index"),
@@ -1682,7 +1565,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists and has a value of given type on given time index"),
@@ -1695,7 +1577,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists with given type"),
@@ -1708,7 +1589,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Test if a variable exists with given type and has a value on given time index"),
@@ -1721,7 +1601,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable value on given time index"),
@@ -1734,7 +1613,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable value on given time index (by return)"),
@@ -1747,7 +1625,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable value on current time index"),
@@ -1760,7 +1637,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable value on current time index (by return)"),
@@ -1773,7 +1649,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get latest available variable value"),
@@ -1786,7 +1661,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get latest available variable value (by return)"),
@@ -1799,7 +1673,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get latest available variable values since a time index"),
@@ -1812,7 +1685,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get latest available variable values since a time index (by return)"),
@@ -1825,7 +1697,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable values on given period"),
@@ -1838,7 +1709,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Variables")
     },
     CompletionProvider::tr("Get variable values on given period (by return)"),
@@ -1851,7 +1721,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Events")
     },
     CompletionProvider::tr("Get events on a given period"),
@@ -1864,7 +1733,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Events")
     },
     CompletionProvider::tr("Get events on a given period (by return)"),
@@ -1877,7 +1745,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial units class exists"),
@@ -1890,7 +1757,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit exists in a given units class"),
@@ -1903,7 +1769,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Get the number of spatial units in the spatial graph"),
@@ -1916,7 +1781,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Get the number of spatial units in the spatial graph (by return)"),
@@ -1929,7 +1793,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Get the number of spatial units of a given class"),
@@ -1942,7 +1805,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Get the number of spatial units of a given class (by return)"),
@@ -1955,7 +1817,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Get a pointer to a spatial unit of a given units class"),
@@ -1968,7 +1829,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Get a list of pointers to spatial units of a given units class"),
@@ -1981,7 +1841,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit is connected to another spatial unit"),
@@ -1994,7 +1853,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit is connected from another spatial unit"),
@@ -2007,7 +1865,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit is a child of another spatial unit"),
@@ -2020,7 +1877,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Spatial structure")
     },
     CompletionProvider::tr("Test if a spatial unit is a parent of another spatial unit"),
@@ -2033,7 +1889,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Fortran integration")
     },
     CompletionProvider::tr("Include ThreadedLoopMacros header"),
@@ -2046,7 +1901,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Threaded ordered loop on spatial units of a class"),
@@ -2059,7 +1913,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
     {
-      CompletionProvider::tr("Compute code"),
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Threaded ordered loop on all spatial units"),

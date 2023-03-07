@@ -78,7 +78,7 @@ namespace openfluid { namespace core {
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Time"],
+    "menupath" : ["Types", "Time"],
     "title" : "Date and time",
     "text" : "openfluid::core::DateTime %%SEL_START%%DT%%SEL_END%%"
   }

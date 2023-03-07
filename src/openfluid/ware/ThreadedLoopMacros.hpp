@@ -38,7 +38,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Fortran integration"],
+    "menupath" : ["Fortran integration"],
     "title" : "Include ThreadedLoopMacros header",
     "text" : "#include <openfluid/ware/ThreadedLoopMacros.hpp>"
   }
@@ -120,7 +120,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Loops"],
+    "menupath" : ["Loops"],
     "title" : "Threaded ordered loop on spatial units of a class",
     "text" : "APPLY_UNITS_ORDERED_LOOP_THREADED(\"%%SEL_START%%UnitsClass%%SEL_END%%\",FuncPtr)"
   }
@@ -183,7 +183,7 @@
   @cond OpenFLUID:completion
   {
     "contexts" : ["SIMULATOR", "OBSERVER"],
-    "menupath" : ["Compute code", "Loops"],
+    "menupath" : ["Loops"],
     "title" : "Threaded ordered loop on all spatial units",
     "text" : "APPLY_ALLUNITS_ORDERED_LOOP_THREADED(%%SEL_START%%FuncPtr%%SEL_END%%)"
   }

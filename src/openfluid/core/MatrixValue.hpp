@@ -75,7 +75,7 @@ namespace openfluid { namespace core {
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Values"],
+    "menupath" : ["Types", "Values"],
     "title" : "MatrixValue",
     "text" : "openfluid::core::MatrixValue %%SEL_START%%Val%%SEL_END%%"
   }

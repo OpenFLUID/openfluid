@@ -54,7 +54,7 @@ namespace openfluid { namespace core {
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Values"],
+    "menupath" : ["Types", "Values"],
     "title" : "IndexedValue",
     "text" : "openfluid::core::IndexedValue %%SEL_START%%IndexedVal%%SEL_END%%"
   }
@@ -173,7 +173,7 @@ class IndexedValue
   @cond OpenFLUID:completion
   {
     "contexts" : ["ANYWARE"],
-    "menupath" : ["Compute code", "Types", "Values"],
+    "menupath" : ["Types", "Values"],
     "title" : "List of IndexedValue",
     "text" : "openfluid::core::IndexedValueList %%SEL_START%%IndexedValList%%SEL_END%%"
   }

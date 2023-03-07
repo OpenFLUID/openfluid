@@ -127,7 +127,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Parameters"],
+        "menupath" : ["Parameters"],
         "title" : "Test if a simulator parameter exists",
         "text" : "OPENFLUID_IsSimulatorParameterExist(Params,%%SEL_START%%ParamName%%SEL_END%%)"
       }
@@ -145,7 +145,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Parameters"],
+        "menupath" : ["Parameters"],
         "title" : "Get simulator parameter (by return)",
         "text" : "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%)"
       }
@@ -165,7 +165,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Parameters"],
+        "menupath" : ["Parameters"],
         "title" : "Get simulator parameter",
         "text" : "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
       }
@@ -314,7 +314,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Threading"],
+        "menupath" : ["Threading"],
         "title" : "Get maximum number of threads",
         "text" : "OPENFLUID_GetSimulatorMaxThreads()"
       }
@@ -332,7 +332,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Threading"],
+        "menupath" : ["Threading"],
         "title" : "Set maximum number of threads",
         "text" : "OPENFLUID_SetSimulatorMaxThreads(%%SEL_START%%Number%%SEL_END%%)"
       }
@@ -347,7 +347,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Sheduling"],
+        "menupath" : ["Sheduling"],
         "title" : "Run once at the end",
         "text" : "AtTheEnd()"
       }
@@ -365,7 +365,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Sheduling"],
+        "menupath" : ["Sheduling"],
         "title" : "Never run again",
         "text" : "Never()"
       }
@@ -383,7 +383,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Sheduling"],
+        "menupath" : ["Sheduling"],
         "title" : "Run in default deltaT",
         "text" : "DefaultDeltaT()"
       }
@@ -402,7 +402,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Sheduling"],
+        "menupath" : ["Sheduling"],
         "title" : "Run in X default deltaT",
         "text" : "MultipliedDefaultDeltaT(%%SEL_START%%X%%SEL_END%%)"
       }
@@ -421,7 +421,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @cond OpenFLUID:completion
       {
         "contexts" : ["SIMULATOR"],
-        "menupath" : ["Compute code", "Sheduling"],
+        "menupath" : ["Sheduling"],
         "title" : "Run in a duration in seconds",
         "text" : "Duration(%%SEL_START%%Seconds%%SEL_END%%)"
       }
