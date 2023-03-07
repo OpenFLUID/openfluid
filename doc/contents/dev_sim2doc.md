@@ -28,7 +28,7 @@ LaTeX
 
 
 _Example of a part of source code including sim2doc informations:_
-@snippet help.snippets.sim2doc/Sim2DocSim.cpp sim2doc
+**TOIMPL**
 
 
 <br/>

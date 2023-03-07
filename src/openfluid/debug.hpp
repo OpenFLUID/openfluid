@@ -36,7 +36,7 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 
   Example of use:
-  @snippet help.snippets.debug/DebugSim.cpp debug
+  @snippet wares/DebugSim.cpp debug
 
 */
 

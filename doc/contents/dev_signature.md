@@ -2,8 +2,8 @@
 
 [TOC]
 
-The signature has to be defined between the @if DocIsLaTeX **BEGIN_SIMULATOR_SIGNATURE** @else #BEGIN_SIMULATOR_SIGNATURE @endif
- and the @if DocIsLaTeX **END_SIMULATOR_SIGNATURE** @else #END_SIMULATOR_SIGNATURE @endif 
+The signature has to be defined between the @if DocIsLaTeX **BEGIN_SIMULATOR_SIGNATURE** @else BEGIN_SIMULATOR_SIGNATURE @endif
+ and the @if DocIsLaTeX **END_SIMULATOR_SIGNATURE** @else END_SIMULATOR_SIGNATURE @endif 
  instructions.  
 The signature is usually placed in the upper part of the simulator main source file, before the C++ class of the simulator.
 
@@ -12,23 +12,23 @@ The signature is usually placed in the upper part of the simulator main source f
 
 The identification part of the signature must contain at least the ID of the simulator. 
 This ID will be used by the framework to load simulators. It is declared in 
-the signature as an argument of the @if DocIsLaTeX **BEGIN_SIMULATOR_SIGNATURE** @else #BEGIN_SIMULATOR_SIGNATURE @endif
+the signature as an argument of the @if DocIsLaTeX **BEGIN_SIMULATOR_SIGNATURE** @else BEGIN_SIMULATOR_SIGNATURE @endif
  instruction.   
 Other optional informations can be included for better description of the simulator:
 
-* the simulator name, declared through the @if DocIsLaTeX **DECLARE_NAME** @else #DECLARE_NAME @endif
+* the simulator name, declared through the @if DocIsLaTeX **DECLARE_NAME** @else DECLARE_NAME @endif
  instruction,
 allowing to assign a long name to the simulator
-* the simulator description, declared through the @if DocIsLaTeX **DECLARE_DESCRIPTION** @else #DECLARE_DESCRIPTION @endif
+* the simulator description, declared through the @if DocIsLaTeX **DECLARE_DESCRIPTION** @else DECLARE_DESCRIPTION @endif
  instruction,
 allowing to provide a detailed description of what the simulator actually does 
-* the name(s) of the author(s) and corresponding email address(es), declared through the @if DocIsLaTeX **DECLARE_AUTHOR** @else #DECLARE_AUTHOR @endif
+* the name(s) of the author(s) and corresponding email address(es), declared through the @if DocIsLaTeX **DECLARE_AUTHOR** @else DECLARE_AUTHOR @endif
  instruction.
-There may be multiple @if DocIsLaTeX **DECLARE_AUTHOR** @else #DECLARE_AUTHOR @endif
+There may be multiple @if DocIsLaTeX **DECLARE_AUTHOR** @else DECLARE_AUTHOR @endif
  instructions in the signature in case of multiple authors
-* the software version of the simulator, declared through the @if DocIsLaTeX **DECLARE_VERSION** @else #DECLARE_VERSION @endif
+* the software version of the simulator, declared through the @if DocIsLaTeX **DECLARE_VERSION** @else DECLARE_VERSION @endif
  instruction
-* the software status of the simulator, declared through the @if DocIsLaTeX **DECLARE_STATUS** @else #DECLARE_STATUS @endif
+* the software status of the simulator, declared through the @if DocIsLaTeX **DECLARE_STATUS** @else DECLARE_STATUS @endif
  instruction. The value can be
 _openfluid::ware::EXPERIMENTAL_, _openfluid::ware::BETA_ or _openfluid::ware::STABLE_
 
@@ -42,11 +42,11 @@ The informations about scientific applications are only indicative.
 It has no effects on simulator consistency or computational code.
 These informations can be :
 
-* the domain in which the simulator can be applied, declared through the @if DocIsLaTeX **DECLARE_DOMAIN** @else #DECLARE_DOMAIN @endif
+* the domain in which the simulator can be applied, declared through the @if DocIsLaTeX **DECLARE_DOMAIN** @else DECLARE_DOMAIN @endif
  instruction
-* the processes simulated by the simulator, declared through the @if DocIsLaTeX **DECLARE_PROCESS** @else #DECLARE_PROCESS @endif
+* the processes simulated by the simulator, declared through the @if DocIsLaTeX **DECLARE_PROCESS** @else DECLARE_PROCESS @endif
  instruction
-* the numerical methods used by the simulator, declared through the @if DocIsLaTeX **DECLARE_METHOD** @else #DECLARE_METHOD @endif
+* the numerical methods used by the simulator, declared through the @if DocIsLaTeX **DECLARE_METHOD** @else DECLARE_METHOD @endif
  instruction
 
 
@@ -77,7 +77,7 @@ The declarations of spatial data access include constraint levels:
 
 Simulator parameters are values provided to each simulator, 
 and are declared using the @if DocIsLaTeX **DECLARE_REQUIRED_PARAMETER** or **DECLARE_USED_PARAMETER**
-@else #DECLARE_REQUIRED_PARAMETER or #DECLARE_USED_PARAMETER @endif
+@else DECLARE_REQUIRED_PARAMETER or DECLARE_USED_PARAMETER @endif
  instructions.
 These instructions takes 3 arguments
 
@@ -87,7 +87,7 @@ These instructions takes 3 arguments
 
 
 _Example of a declaration of a required simulator parameter:_
-@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_params
+**TOIMPL**
 
 
 ### Spatial attributes {#dev_signature_data_attrs}
@@ -95,7 +95,7 @@ _Example of a declaration of a required simulator parameter:_
 Spatial attributes are constant properties attached to each spatial units, 
 and are declared using @if DocIsLaTeX **DECLARE_REQUIRED_ATTRIBUTE**, **DECLARE_USED_ATTRIBUTE** 
 or **DECLARE_PRODUCED_ATTRIBUTE**
-@else #DECLARE_REQUIRED_ATTRIBUTE, #DECLARE_USED_ATTRIBUTE or #DECLARE_PRODUCED_ATTRIBUTE @endif
+@else DECLARE_REQUIRED_ATTRIBUTE, DECLARE_USED_ATTRIBUTE or DECLARE_PRODUCED_ATTRIBUTE @endif
  instructions
 
 These instructions take 4 arguments:
@@ -106,22 +106,18 @@ These instructions take 4 arguments:
 * the SI unit of the attribute (may be empty)
 
 
-_Example of attributes declaration:_
-@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_attributes
-
-
 ### Simulation variables {#dev_signature_data_vars}
 
 Simulation variables are attached to spatial units. They are produced, accessed and modified
 by simulators during simulations.  
 Accessed variables are declared using @if DocIsLaTeX **DECLARE_REQUIRED_VARIABLE** or **DECLARE_USED_VARIABLE**
-@else #DECLARE_REQUIRED_VARIABLE or #DECLARE_USED_VARIABLE @endif
+@else DECLARE_REQUIRED_VARIABLE or DECLARE_USED_VARIABLE @endif
  instructions,
 produced variables are declared using @if DocIsLaTeX **DECLARE_PRODUCED_VARIABLE**
-@else #DECLARE_PRODUCED_VARIABLE @endif
+@else DECLARE_PRODUCED_VARIABLE @endif
  instruction, 
 updated variables are declared using @if DocIsLaTeX **DECLARE_UPDATED_VARIABLE**
-@else #DECLARE_UPDATED_VARIABLE @endif
+@else DECLARE_UPDATED_VARIABLE @endif
  instruction.
 
 These instructions take 4 arguments:
@@ -170,20 +166,20 @@ simulator B requires/uses/updates a _typed_ variable _var1_ of type `matrix`
 
 
 _Example of variable declarations:_
-@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_variables
+**TOIMPL**
 
 
 ### Discrete events {#dev_signature_data_events}
 
 Discrete events are attached to spatial units, They are accessed or appended by simulators during simulations,
 and are declared using the @if DocIsLaTeX **DECLARE_USED_EVENTS**
-@else #DECLARE_USED_EVENTS @endif
+@else DECLARE_USED_EVENTS @endif
  instruction.  
 
 The declaration instruction takes 1 argument: the units class.
 
 _Example of events declaration:_
-@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_events
+**TOIMPL**
 
 
 ### Extra files {#dev_signature_data_extrafiles}
@@ -191,15 +187,15 @@ _Example of events declaration:_
 Simulators can declare files that they load and manage. This helps users to provide the needed files, and also  
 notifies the OpenFLUID framework to check the presence of the file if it is required.   
 These files are declared using the @if DocIsLaTeX **DECLARE_USED_EXTRAFILE**
-@else #DECLARE_USED_EXTRAFILE @endif
+@else DECLARE_USED_EXTRAFILE @endif
  or @if DocIsLaTeX **DECLARE_REQUIRED_EXTRAFILE**
-@else #DECLARE_REQUIRED_EXTRAFILE @endif
+@else DECLARE_REQUIRED_EXTRAFILE @endif
  instructions. 
 
 The declaration instruction takes 1 argument: the file name with relative path to the dataset path.
 
 _Example of extra file declarations:_
-@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_extrafiles
+**TOIMPL**
 
 
 ### Spatial units graph {#dev_signature_data_spatial}
@@ -208,7 +204,7 @@ The spatial units graph representing the landscape can be modified by simulators
 These modifications are declared in the signature function using two instructions.  
  
 The @if DocIsLaTeX **DECLARE_UPDATED_UNITSGRAPH**
-@else #DECLARE_UPDATED_UNITSGRAPH @endif
+@else DECLARE_UPDATED_UNITSGRAPH @endif
  instruction is used for declaration of the global units graph modification
 that will occur during simulation. 
 It is for information purpose only, and takes a description as a single argument.  
@@ -223,11 +219,11 @@ It takes two arguments:
    
 
 _Example of declarations for spatial units graph:_
-@snippet help.snippets.signature-parts/SignaturePartsSim.cpp signature_spatial
+**TOIMPL**
 
 
 ## Complete signature example {#dev_signature_exmpl}
 
 The signature code below shows an example of a possible signature for a simulator.  
   
-@snippet help.snippets.signature/SignatureSim.cpp signature_full
+**TOIMPL**

@@ -53,14 +53,14 @@ including source code and build configuration using the OpenFLUID CMake module.
 
 ### File ExampleSimulator.cpp containing the simulator source code {#dev_createsim_exmpl_cpp}
 
-@snippet help.snippets.example/ExampleSimulator.cpp example_full
+@snippet wares/ExampleSimulator.cpp example_full
 
 
 ### File CMake.in.config containing the build configuration {#dev_createsim_exmpl_config}
 
-@include help.snippets.example/CMake.in.cmake.snippet
+@include wares/CMake.in.cmake.snippet
 
 
 ### File CMakeLists.txt defining the build process {#dev_createsim_exmpl_cmakelists}
  
-@include help.snippets.example/CMakeLists.txt.snippet
+@include wares/CMakeLists.txt.snippet

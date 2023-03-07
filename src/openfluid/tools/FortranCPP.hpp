@@ -45,15 +45,15 @@
 
 
   Fortran source code:
-  @include help.snippets.fortran-more/FortranMoreSubr.f90
+  @include wares/FortranMoreSubr.f90
 
 
   Declaration of Fortran subroutines to call (In C++ code):
-  @snippet help.snippets.fortran-more/FortranMoreSim.cpp fortran_decl
+  @snippet wares/FortranMoreSim.cpp fortran_decl
 
 
   Use of Fortran subroutines tFrom C++ code:
-  @snippet help.snippets.fortran-more/FortranMoreSim.cpp fortran_use
+  @snippet wares/FortranMoreSim.cpp fortran_use
 
 
   @cond OpenFLUID:completion

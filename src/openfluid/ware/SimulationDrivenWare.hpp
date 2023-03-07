@@ -96,7 +96,7 @@
   Adds a warning message to simulation log file
 
   Exemple:
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logwarning
+  @snippet wares/InfosDebugSim.cpp macro_logwarning
 
   @cond OpenFLUID:completion
   {
@@ -114,7 +114,7 @@
   Displays a warning message to stdout (on screen by default)
 
   Exemple:
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displaywarning
+  @snippet wares/InfosDebugSim.cpp macro_displaywarning
 
   @cond OpenFLUID:completion
   {
@@ -132,7 +132,7 @@
   Adds a warning message to simulation log file and displays it to stdout (on screen by default)
 
   Exemple:
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplaywarning
+  @snippet wares/InfosDebugSim.cpp macro_logdisplaywarning
 
   @cond OpenFLUID:completion
   {
@@ -154,7 +154,7 @@
   Adds an information message to simulation log file
 
   Exemple:
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_loginfo
+  @snippet wares/InfosDebugSim.cpp macro_loginfo
 
   @cond OpenFLUID:completion
   {
@@ -172,7 +172,7 @@
   Displays an information message to stdout (on screen by default)
 
   Exemple:
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displayinfo
+  @snippet wares/InfosDebugSim.cpp macro_displayinfo
 
   @cond OpenFLUID:completion
   {
@@ -190,7 +190,7 @@
   Adds an information message to simulation log file and displays it to stdout (on screen by default)
 
   Exemple:
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplayinfo
+  @snippet wares/InfosDebugSim.cpp macro_logdisplayinfo
 
   @cond OpenFLUID:completion
   {
@@ -213,7 +213,7 @@
   Adds a debug message to simulation log file
 
   Exemple:
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdebug
+  @snippet wares/InfosDebugSim.cpp macro_logdebug
 
   @cond OpenFLUID:completion
   {
@@ -230,7 +230,7 @@
   Displays a debug message to stdout (on screen by default)
 
   Exemple:
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_displaydebug
+  @snippet wares/InfosDebugSim.cpp macro_displaydebug
 
   @cond OpenFLUID:completion
   {
@@ -246,7 +246,7 @@
   @def OPENFLUID_LogAndDisplayDebug
   Adds a debug message to simulation log file and displays it to stdout (on screen by default)
 
-  @snippet help.snippets.infos-debug/InfosDebugSim.cpp macro_logdisplaydebug
+  @snippet wares/InfosDebugSim.cpp macro_logdisplaydebug
 
   @cond OpenFLUID:completion
   {

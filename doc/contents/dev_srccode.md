@@ -48,10 +48,10 @@ to never be executed again
 
 
 _Example for a fixed time step simulator, with a time step equal to the default DeltaT value given in the input dataset:_
-@snippet help.snippets.sched-fixed/SchedFixedSim.cpp scheduling_fixed
+@snippet wares/SchedFixedSim.cpp scheduling_fixed
 
 _Example for a variable time step simulator, based on the internal computation of the simulator:_
-@snippet help.snippets.sched-variable/SchedVariableSim.cpp scheduling_variable
+@snippet wares/SchedVariableSim.cpp scheduling_variable
 
 
 
@@ -146,7 +146,7 @@ The source code below shows examples of spatial graph parsing.
 The first part of the source code shows how to browse all units of the SU units class, 
 and how to browse the "From" units for each SU unit.
 The second part of the source code shows how to browse all units of the spatial domain. 
-@snippet help.snippets.spatial-parsing-seq/SpatialParsingSeqSim.cpp spatial_parsing_seq
+@snippet wares/SpatialParsingSeqSim.cpp spatial_parsing_seq
 
 
 #### Parallel processing using multithreading {#dev_srccode_space_parse_par}
@@ -167,10 +167,10 @@ a pointer to an @if DocIsLaTeX **openfluid::core::SpatialUnit** @endif
 <br/>
 In order to enable the parallel processing in the spatial graph, 
 the following inclusion must be added at the top of the simulator source code:
-@snippet help.snippets.spatial-parsing-parallel/SpatialParsingParallelSim.cpp spatial_parsing_parallel_include
+@snippet wares/SpatialParsingParallelSim.cpp spatial_parsing_parallel_include
 
 The code below shows how to apply a method in parallel over the spatial graph:
-@snippet help.snippets.spatial-parsing-parallel/SpatialParsingParallelSim.cpp spatial_parsing_parallel
+@snippet wares/SpatialParsingParallelSim.cpp spatial_parsing_parallel
 
 
 @note 
@@ -267,7 +267,7 @@ In order to add and remove connections, you can use the following methods, whene
 
 
 _Example:_
-@snippet help.snippets.spatial-connect/SpatialConnectSim.cpp spatial_connect
+@snippet wares/SpatialConnectSim.cpp spatial_connect
 
 
 #### Generating spatial domain graphs automatically {#dev_srccode_space_mod_gen}
@@ -340,7 +340,7 @@ and is available from the runStep() and finalizeRun() methods of the simulator
 
 
 _Example of code:_
-@snippet help.snippets.params-env-time/ParamsEnvTimeSim.cpp time
+@snippet wares/ParamsEnvTimeSim.cpp time
 
 
 ## Simulator parameters {#dev_srccode_simparams}
@@ -364,7 +364,7 @@ and used in the model.fluidx file (see @ref user_fluidx_sections_model of the si
 <br/>
 
 _Example of initParams method:_
-@snippet help.snippets.params-env-time/ParamsEnvTimeSim.cpp params
+@snippet wares/ParamsEnvTimeSim.cpp params
 
 
 To be used in other part of the simulator, 
@@ -406,7 +406,7 @@ The names of the attributes must match the names in the input dataset (see @ref 
 or the name of an attribute created by a simulator.
 
 _Example of use:_
-@snippet help.snippets.attributes/AttributesSim.cpp attributes
+@snippet wares/AttributesSim.cpp attributes
 
 
 ## Simulation variables {#dev_srccode_vars}
@@ -466,7 +466,7 @@ and finalizeRun() parts of the simulator.
 
 
 _Example:_
-@snippet help.snippets.variables/VariablesSim.cpp variables
+@snippet wares/VariablesSim.cpp variables
 
 
 ## Events {#dev_srccode_events}
@@ -508,7 +508,7 @@ An event can be added on a specific spatial unit at a given date using:
 <br/>
 
 _Example of process of events occurring on the current time step:_
-@snippet help.snippets.events/EventsSim.cpp events
+@snippet wares/EventsSim.cpp events
 
 
 
@@ -569,11 +569,11 @@ openfluid::core::IDSerieOfDoubleValuePtrMap
 
 
 _Example of declaration of ID-map structures in private members of the simulator class:_
-@snippet help.snippets.internal-state/InternalStateSim.cpp internal_state_decl
+@snippet wares/InternalStateSim.cpp internal_state_decl
 
 
 _Example of usage of the ID-map structures:_
-@snippet help.snippets.internal-state/InternalStateSim.cpp internal_state_impl
+@snippet wares/InternalStateSim.cpp internal_state_impl
 
 
 ## Runtime environment {#dev_srccode_runenv}
@@ -591,7 +591,7 @@ They are accessible from simulators using:
 
 
 _Example:_
-@snippet help.snippets.params-env-time/ParamsEnvTimeSim.cpp env
+@snippet wares/ParamsEnvTimeSim.cpp env
 
 
 The keys for requesting runtime environment information are:
@@ -656,7 +656,7 @@ Using these methods is the recommended way to log and display messages. Please a
 or similar C++ facilities in production or released simulators.
 
 _Example:_
-@snippet help.snippets.infos-debug/InfosDebugSim.cpp infowarning
+@snippet wares/InfosDebugSim.cpp infowarning
 
 The messages logged to file are put in the `openfluid-messages.log` file
 placed in the simulation output directory. 
@@ -676,7 +676,7 @@ Errors can be raised using
 @endif
 
 _Example:_
-@snippet help.snippets.infos-debug/InfosDebugSim.cpp error 
+@snippet wares/InfosDebugSim.cpp error 
 
 
 ## Debugging {#dev_srccode_debug}
@@ -721,7 +721,7 @@ to log and display debug messages simultaneously
 
 
 _Example:_
-@snippet help.snippets.infos-debug/InfosDebugSim.cpp debug
+@snippet wares/InfosDebugSim.cpp debug
 
 
 Additional instructions are available for debugging, see file debug.hpp:
@@ -742,21 +742,21 @@ You are invited to read the FortranCPP.hpp file to get more information about th
 
 
 In order to enable the call of Fortran code, the following inclusion must be added at the top of the simulator source code: 
-@snippet help.snippets.fortran/FortranSim.cpp fortran_include
+@snippet wares/FortranSim.cpp fortran_include
 
 
 
 _Example of Fortran source code (e.g. FortranSubr.f90):_
-@include help.snippets.fortran/FortranSubr.f90
+@include wares/FortranSubr.f90
 
 
 _Example of declaration block int the .cpp file (e.g. FortranSim.cpp):_
-@snippet help.snippets.fortran/FortranSim.cpp fortran_decl
+@snippet wares/FortranSim.cpp fortran_decl
 
 
 
 _Example of call of the fortran subroutine from the initializeRun method (e.g. FortranSim.cpp):_
-@snippet help.snippets.fortran/FortranSim.cpp fortran_use
+@snippet wares/FortranSim.cpp fortran_use
 
 
 
@@ -776,14 +776,14 @@ It also relies on the [Rcpp package](http://dirk.eddelbuettel.com/code/rcpp.html
 for handling data from and to the [R environment](https://www.r-project.org/).
 
 In order to embed R code using RInside, the following inclusion must be added at the top of the simulator source code:
-@snippet help.snippets.R/RSim.cpp R_include
+@snippet wares/RSim.cpp R_include
 
 A unique RInside variable is used to run R code, it should be declared as a member of the simulator class (named `m_R` in this example).
-@snippet help.snippets.R/RSim.cpp R_decl
+@snippet wares/RSim.cpp R_decl
 
 The R environment can be acessed through the RInside variable
 and R commands can be run using its `parseEvalQ()` method.
-@snippet help.snippets.R/RSim.cpp R_use
+@snippet wares/RSim.cpp R_use
 
 In this short example, simple variables and commands are used. 
 It is possible to perform complex operations involving external R packages, 
@@ -794,7 +794,7 @@ See the [RInside package](http://dirk.eddelbuettel.com/code/rinside.html) docume
 To help configuring the simulator which is using the RInside package, a CMake module is provided with OpenFLUID 
 to setup the configuration variables when building the simulator.
 It should be used in the `CMake.in.cmake` file of the simulator.
-@include help.snippets.R/CMake.in.cmake
+@include wares/CMake.in.cmake.snippet
 
 An adjustment of the CMake module path prefix may be required to find the provided R module for CMake
 ```
