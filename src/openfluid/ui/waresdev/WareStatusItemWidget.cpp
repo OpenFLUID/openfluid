@@ -31,7 +31,7 @@
 
 
 /**
-  @file StatusButtonMessageWidget.cpp
+  @file WareStatusItemWidget.cpp
 
   @author Armel THÖNI <armel.thoni@inrae.fr>
 */
@@ -39,39 +39,62 @@
 
 #include <iostream>
 
-#include "ui_StatusButtonMessageWidget.h"
-#include "StatusButtonMessageWidget.hpp"
+#include "ui_WareStatusItemWidget.h"
+#include "WareStatusItemWidget.hpp"
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-typedef openfluid::waresdev::WareSrcChecker::ReportingData ReportingData; // DIRTYCODE redundant
+using ReportingData = openfluid::waresdev::WareSrcChecker::ReportingData;
+
 
 std::map<std::pair<std::string, ReportingData::ReportingStatus>, 
-             QString>  StatusButtonMessageWidget::s_LabelForReportItem;
+             QString>  WareStatusItemWidget::ms_LabelForReportItem;
 std::map<std::pair<std::string, ReportingData::ReportingStatus>, 
-             std::pair<QString, QString>> StatusButtonMessageWidget::s_ActionForReportItem;
+             std::pair<QString, QString>> WareStatusItemWidget::ms_ActionForReportItem;
 
 
 // =====================================================================
 // =====================================================================
 
 
-void StatusButtonMessageWidget::populateReportItemLabels() // FIXME: check if tr works with static functions
+void WareStatusItemWidget::populateReportItemLabels()
 {
-  s_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "version_iscorrect", ReportingData::ReportingStatus::ERROR)] = \
-      tr("Ware version is below current OpenFLUID version");
-  s_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "cmakelists_exists", ReportingData::ReportingStatus::ERROR)] = \
+      tr("'CMakeLists.txt' file does not exist.");
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "readme_exists", ReportingData::ReportingStatus::WARNING)] = \
+      tr("Readme file does not exist");
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "srcdir_exists", ReportingData::ReportingStatus::WARNING)] = \
+      tr("'src' directory does not exist");
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "docdir_exists", ReportingData::ReportingStatus::WARNING)] = \
+      tr("'doc' directory does not exist");
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "testsdir_exists", ReportingData::ReportingStatus::WARNING)] = \
+      tr("'tests' directory does not exist");
+
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "file_iscorrect", ReportingData::ReportingStatus::ERROR)] = \
+      tr("Metadata can not be read");
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "migration_isclean", ReportingData::ReportingStatus::WARNING)] = \
       tr("Comments from migration remain in code");
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "rootdir_exists", ReportingData::ReportingStatus::ERROR)] = \
+      tr("");
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "version_iscorrect", ReportingData::ReportingStatus::ERROR)] = \
+      tr("Ware version is below current OpenFLUID version");
 
 
-  s_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "version_iscorrect", ReportingData::ReportingStatus::ERROR)] = \
       std::pair<QString, QString>("migration", tr("Try to migrate the ware"));
-  s_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "migration_isclean", ReportingData::ReportingStatus::WARNING)] = \
       std::pair<QString, QString>("", tr("Look for '[MIGRATION]' comments in CMakeLists.txt and main cpp file."));
 }
@@ -81,8 +104,8 @@ void StatusButtonMessageWidget::populateReportItemLabels() // FIXME: check if tr
 // =====================================================================
 
 
-StatusButtonMessageWidget::StatusButtonMessageWidget(const ReportingData::ReportingItem& Item, QWidget* Parent) :
-  QWidget(Parent), ui(new Ui::StatusButtonMessageWidget)
+WareStatusItemWidget::WareStatusItemWidget(const ReportingData::ReportingItem& Item, QWidget* Parent) :
+  QWidget(Parent), ui(new Ui::WareStatusItemWidget)
 {
   ui->setupUi(this);
   
@@ -106,15 +129,19 @@ StatusButtonMessageWidget::StatusButtonMessageWidget(const ReportingData::Report
   if (m_ActionCode.isEmpty())
   {
     ui->FixButton->setVisible(false);
-    if (!ActionLabel.isEmpty())
+    if (ActionLabel.isEmpty())
+    {
+      ui->HelpLabel->setVisible(false);
+    }
+    else
     {
       ui->HelpLabel->setText(ActionLabel);
     }
   }
   else
   {
-    ui->HelpLabel->setVisible(false);
     ui->FixButton->setText(ActionLabel);
+    ui->HelpLabel->setVisible(false);
     connect(ui->FixButton, SIGNAL(pressed()), this, SLOT(onButtonPressed()));
   }
 }
@@ -124,7 +151,7 @@ StatusButtonMessageWidget::StatusButtonMessageWidget(const ReportingData::Report
 // =====================================================================
 
 
-void StatusButtonMessageWidget::onButtonPressed()
+void WareStatusItemWidget::onButtonPressed()
 {
   emit actionTriggered(m_ActionCode);
 }
@@ -134,7 +161,7 @@ void StatusButtonMessageWidget::onButtonPressed()
 // =====================================================================
 
 
-StatusButtonMessageWidget::~StatusButtonMessageWidget()
+WareStatusItemWidget::~WareStatusItemWidget()
 {
   delete ui;
 }
@@ -144,7 +171,7 @@ StatusButtonMessageWidget::~StatusButtonMessageWidget()
 // =====================================================================
 
 
-void StatusButtonMessageWidget::setStatusLevel(const ReportingData::ReportingStatus Level)
+void WareStatusItemWidget::setStatusLevel(const ReportingData::ReportingStatus Level)
 {
   if (Level == ReportingData::ReportingStatus::WARNING)
   {
@@ -165,10 +192,10 @@ void StatusButtonMessageWidget::setStatusLevel(const ReportingData::ReportingSta
 // =====================================================================
 
 
-QString StatusButtonMessageWidget::getLabelForItem(const ReportingData::ReportingItem& Item)
+QString WareStatusItemWidget::getLabelForItem(const ReportingData::ReportingItem& Item)
 {
   QString Label = "";
-  for (auto KeyValue : s_LabelForReportItem)
+  for (auto KeyValue : ms_LabelForReportItem)
   {
     if (KeyValue.first.first == Item.Message && KeyValue.first.second == Item.Status)
     {
@@ -183,11 +210,11 @@ QString StatusButtonMessageWidget::getLabelForItem(const ReportingData::Reportin
 // =====================================================================
 
 
-std::optional<std::pair<QString, QString>> StatusButtonMessageWidget::getActionForItem(const
+std::optional<std::pair<QString, QString>> WareStatusItemWidget::getActionForItem(const
                                                                         ReportingData::ReportingItem& Item)
 {
   QString Label = "";
-  for (auto KeyValue : s_ActionForReportItem)
+  for (auto KeyValue : ms_ActionForReportItem)
   {
     if (KeyValue.first.first == Item.Message && KeyValue.first.second == Item.Status)
     {

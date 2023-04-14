@@ -404,6 +404,12 @@ void WareSrcExplorer::onNewFileAsked()
   if (!FilePath.isEmpty())
   {
     emit fileOpeningAsked(FilePath);
+
+    QString WarePath = 
+      QString::fromStdString(
+        openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(FilePath.toStdString()).AbsoluteWarePath
+      );
+    emit wareChanged(WarePath);
   }
 }
 
@@ -448,6 +454,7 @@ void WareSrcExplorer::onNewFolderAsked()
   {
     QDir(FocusDirPath).mkdir(NewPath);
     setCurrentPath(NewPath);
+    emit wareChanged(WarePath);
   }
 }
 
@@ -641,7 +648,11 @@ void WareSrcExplorer::onDeleteFolderAsked()
   }
 
   emit folderDeleted(WarePath, CurrentPath, false);
-  if (!QDir(CurrentPath).removeRecursively())
+  if (QDir(CurrentPath).removeRecursively())
+  {
+    emit wareChanged(WarePath);
+  }
+  else
   {
     // TODO reopen tabs? hard to know which one was open
     QMessageBox::critical(0, tr("Error"), tr("Unable to remove the folder \"%1\"").arg(CurrentPath));
@@ -669,7 +680,17 @@ void WareSrcExplorer::onDeleteFileAsked()
   }
 
   emit fileDeleted(CurrentPath);
-  if (!QDir().remove(CurrentPath))
+
+  if (QDir().remove(CurrentPath))
+  {
+    QString WarePath = 
+      QString::fromStdString(
+        openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
+      );
+
+    emit wareChanged(WarePath);
+  }
+  else
   {
     // TODO reopen tab?
     QMessageBox::critical(0, tr("Error"), tr("Unable to remove the file \"%1\"").arg(CurrentPath));

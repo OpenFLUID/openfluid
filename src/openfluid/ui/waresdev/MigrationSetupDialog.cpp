@@ -38,7 +38,7 @@
 
 
 #include <openfluid/ui/waresdev/MigrationSetupDialog.hpp>
-#include <openfluid/ui/waresdev/StatusButtonMessageWidget.hpp>
+#include <openfluid/ui/waresdev/WareStatusItemWidget.hpp>
 
 #include "ui_MigrationSetupDialog.h"
 
@@ -67,7 +67,7 @@ MigrationSetupDialog::~MigrationSetupDialog()
 // =====================================================================
 
 
-bool MigrationSetupDialog::isNewBranchChecked() // TOIMPL use this data for checkout
+bool MigrationSetupDialog::isNewBranchChecked()
 {
   return ui->checkoutCheckbox->isChecked();
 }

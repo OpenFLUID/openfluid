@@ -34,6 +34,7 @@
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__
@@ -43,7 +44,7 @@
 #include <QWidget>
 
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
-#include <openfluid/ui/waresdev/WareDashboardStatusWidget.hpp>
+#include <openfluid/ui/waresdev/WareStatusDashboardWidget.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcActionsCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcMsgViewer.hpp>
@@ -100,7 +101,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     std::map<std::string, int> m_TabIndexByName;
 
-    openfluid::ui::waresdev::WareDashboardStatusWidget* mp_Board;
+    openfluid::ui::waresdev::WareStatusDashboardWidget* mp_Board;
 
     openfluid::ui::waresdev::WareSrcMsgViewer* mp_MessagesWidget;
 
@@ -169,7 +170,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void buildFinished(openfluid::ware::WareType Type, const QString& ID);
     
-    void migrationRequestedOnWare(const QString& WarePath);
+    void operationRequestedOnWare(const QString& OperationCode, const QString& WarePath);
 
 
   public slots:
@@ -196,13 +197,15 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void onOpenExternalToolRequested();
 
-    void onMigrationRequested();
+    void onOperationRequested(const QString& ActionCode);
 
     void newFile();
 
     void deleteCurrentFile();
 
     void openFile();
+
+    void onWareChange();
 
     /**
       @param TopDirectory The path to the topmost directory where may be saved the file,

@@ -62,7 +62,7 @@
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/ui/waresdev/WaresSrcIOProgressDialog.hpp>
 #include <openfluid/ui/waresdev/WareFileEditor.hpp>
-#include <openfluid/ui/waresdev/StatusButtonMessageWidget.hpp>
+#include <openfluid/ui/waresdev/WareStatusItemWidget.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -72,7 +72,7 @@ WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget, bool IsS
     mp_TabWidget(TabWidget), m_IsStandalone(IsStandalone), mp_Manager(openfluid::base::WorkspaceManager::instance()),
     mp_FindReplaceDialog(0)
 {
-  StatusButtonMessageWidget::populateReportItemLabels();
+  WareStatusItemWidget::populateReportItemLabels();
   
   connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseWareTabRequested(int)));
   connect(mp_TabWidget, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
@@ -161,8 +161,8 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(buildFinished(openfluid::ware::WareType, const QString&)),
               this, SLOT(notifyBuildFinished(openfluid::ware::WareType, const QString&)));
 
-      connect(Widget, SIGNAL(migrationRequestedOnWare(const QString&)),
-              this, SLOT(onMigrationRequestedOnWare(const QString&)));
+      connect(Widget, SIGNAL(operationRequestedOnWare(const QString&, const QString&)),
+              this, SLOT(onOperationRequestedOnWare(const QString&, const QString&)));
     }
 
     if (Info.IsWareFile)
@@ -243,81 +243,89 @@ bool WareSrcWidgetCollection::requestWareTabClosing(WareSrcWidget* Ware)
 // =====================================================================
 
 
-void WareSrcWidgetCollection::onMigrationRequestedOnWare(const QString& WarePath)
+void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& OperationCode, const QString& WarePath)
 {
-  QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
-  if (it == m_WareSrcWidgetByPath.end())
+  if (OperationCode == "migration")
   {
-    // TOIMPL add message if not found
+    QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
+    if (it == m_WareSrcWidgetByPath.end())
+    {
+      QMessageBox::warning(nullptr,
+                          tr("Migration failure"),
+                          tr("Ware requested not found"),
+                          QMessageBox::Close,QMessageBox::Close);
+      return;
+    }
 
-    QMessageBox::warning(nullptr,
-                         tr("Migration failure"),
-                         tr("Ware requested not found"),
-                         QMessageBox::Close,QMessageBox::Close);
-    return;
-  }
+    MigrationSetupDialog MigrationSetup;
+    bool Proceed = true;
+    if (!MigrationSetup.exec())
+    {
+      Proceed = false;
+    }
 
-  MigrationSetupDialog MigrationSetup;
-  bool Proceed = true;
-  if (!MigrationSetup.exec())
-  {
-    Proceed = false;
-  }
+    // try to close ware tab before migration
+    if (Proceed && !requestWareTabClosing(it.value()))
+    {
+      Proceed = false;
+    }
 
-  // try to close ware tab before migration
-  if (Proceed && !requestWareTabClosing(it.value()))
-  {
-    Proceed = false;
-  }
-
-  if (!Proceed)
-  {
-
-    QMessageBox::warning(it.value(),
-                         tr("Migration failure"),
-                         tr("Migration cancelled by user."),
-                         QMessageBox::Close,QMessageBox::Close);
-    return;
-  }
-  
-  
-  openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Ware migration"), false, mp_TabWidget);
-  
-  MigrationWorker* MWorker = new MigrationWorker(WarePath, MigrationSetup.isVerbose(), MigrationSetup.isNewBranchChecked());
-
-  try
-  {
-
-    QThread* Thread = new QThread();
-
-    MWorker->moveToThread(Thread);
-
-    connect(Thread, SIGNAL(started()), MWorker, SLOT(run()));
-    connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
-    connect(MWorker, SIGNAL(finished(bool, const QString&)), MWorker, SLOT(deleteLater()));
-    connect(MWorker, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+    if (!Proceed)
+    {
+      QMessageBox::warning(it.value(),
+                          tr("Migration failure"),
+                          tr("Migration cancelled by user."),
+                          QMessageBox::Close,QMessageBox::Close);
+      return;
+    }
     
-    connect(MWorker, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
-            SLOT(finish(bool, const QString&)));
-    connect(MWorker, SIGNAL(info(const QString&)), &ProgressDialog,
-            SLOT(writeInfo(const QString&)));
-    connect(MWorker, SIGNAL(error(const QString&)), &ProgressDialog,
-            SLOT(writeError(const QString&)));
-    connect(MWorker, SIGNAL(progressed(const int)), &ProgressDialog,
-            SLOT(progress(const int)));
+    
+    openfluid::ui::waresdev::WaresSrcIOProgressDialog ProgressDialog(tr("Ware migration"), false, mp_TabWidget);
+    
+    MigrationWorker* MWorker = new MigrationWorker(WarePath, 
+                                                  MigrationSetup.isVerbose(), 
+                                                  MigrationSetup.isNewBranchChecked());
 
-    Thread->start();
+    try
+    {
 
+      QThread* Thread = new QThread();
+
+      MWorker->moveToThread(Thread);
+
+      connect(Thread, SIGNAL(started()), MWorker, SLOT(run()));
+      connect(Thread, SIGNAL(finished()), Thread, SLOT(deleteLater()));
+      connect(MWorker, SIGNAL(finished(bool, const QString&)), MWorker, SLOT(deleteLater()));
+      connect(MWorker, SIGNAL(finished(bool, const QString&)), Thread, SLOT(quit()));
+      
+      connect(MWorker, SIGNAL(finished(bool, const QString&)), &ProgressDialog,
+              SLOT(finish(bool, const QString&)));
+      connect(MWorker, SIGNAL(info(const QString&)), &ProgressDialog,
+              SLOT(writeInfo(const QString&)));
+      connect(MWorker, SIGNAL(warning(const QString&)), &ProgressDialog,
+              SLOT(writeWarning(const QString&)));
+      connect(MWorker, SIGNAL(error(const QString&)), &ProgressDialog,
+              SLOT(writeError(const QString&)));
+      connect(MWorker, SIGNAL(progressed(const int)), &ProgressDialog,
+              SLOT(progress(const int)));
+
+      Thread->start();
+
+    }
+    catch (std::exception& e)
+    {
+      ProgressDialog.writeError(e.what());
+    }
+
+    ProgressDialog.exec();
+
+    // reopen ware
+    openPath(WarePath);
   }
-  catch (std::exception& e)
+  else
   {
-    ProgressDialog.writeError(e.what());
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Custom action not recognized");
   }
-
-  ProgressDialog.exec();
-
-  // reopen ware
-  openPath(WarePath);
 
 }
 
@@ -1409,6 +1417,20 @@ void WareSrcWidgetCollection::updateEditorsSettings()
   for (WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
   {
     Ware->updateEditorsSettings();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::onWareChange(const QString& WarePath)
+{
+  openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->updateStyles();
+  for (WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())
+  {
+    Ware->onWareChange();  // can not be set as signal/slot connexion because of asymetrical relationship
   }
 }
 

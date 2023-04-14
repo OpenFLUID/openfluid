@@ -197,10 +197,10 @@ QToolButton {
 
 
   // BOARD TAB
-  mp_Board = new openfluid::ui::waresdev::WareDashboardStatusWidget(this, m_Container.getAbsolutePath());
+  mp_Board = new openfluid::ui::waresdev::WareStatusDashboardWidget(this, m_Container.getAbsolutePath());
   m_TabIndexByName["Board"] = ui->tabWidget->addTab(mp_Board, "Board");
   
-  connect(mp_Board, SIGNAL(migrationRequested()), this, SLOT(onMigrationRequested()));
+  connect(mp_Board, SIGNAL(operationRequested(const QString&)), this, SLOT(onOperationRequested(const QString&)));
 
   // MESSAGES TAB
   mp_MessagesWidget = new openfluid::ui::waresdev::WareSrcMsgViewer(this);
@@ -341,9 +341,9 @@ void WareSrcWidget::onOpenExternalToolRequested()
 // =====================================================================
 
 
-void WareSrcWidget::onMigrationRequested()
+void WareSrcWidget::onOperationRequested(const QString& OperationCode)
 {
-  emit migrationRequestedOnWare(QString::fromStdString(m_Container.getAbsolutePath()));
+  emit operationRequestedOnWare(OperationCode, QString::fromStdString(m_Container.getAbsolutePath()));
 }
 
 
@@ -767,6 +767,16 @@ bool WareSrcWidget::isWareProcessRunning() const
 // =====================================================================
 
 
+void WareSrcWidget::onWareChange()
+{
+  mp_Board->refresh();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcWidget::saveCurrentEditor()
 {
   if (WareFileEditor* Editor = currentEditor())
@@ -774,7 +784,9 @@ void WareSrcWidget::saveCurrentEditor()
     Editor->saveContent();
 
     ui->tabWidget->setCurrentIndex(m_TabIndexByName["Board"]);
-    mp_Board->refresh();
+    
+    onWareChange();
+  // TOIMPL emit wareChanged for other ware changes through watcher
   }
 }
 

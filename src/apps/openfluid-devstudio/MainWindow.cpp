@@ -277,6 +277,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
             mp_WidgetsCollection, SLOT(closeEditor(const QString&)));
     connect(Explorer, SIGNAL(folderDeleted(const QString&, const QString&, const bool)),
             mp_WidgetsCollection, SLOT(closeEditorsInFolderFromWare(const QString&, const QString&, const bool)));
+    connect(Explorer, SIGNAL(wareChanged(const QString&)),
+            mp_WidgetsCollection, SLOT(onWareChange(const QString&)));
   }
 
   connect(mp_WidgetsCollection, SIGNAL(currentTabChanged(const QString&)),

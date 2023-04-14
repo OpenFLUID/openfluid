@@ -31,14 +31,14 @@
 
 
 /**
-  @file StatusButtonMessageWidget.hpp
+  @file WareStatusItemWidget.hpp
 
   @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_STATUSBUTTONMESSAGEWIDGET_HPP__
-#define __OPENFLUID_UIWARESDEV_STATUSBUTTONMESSAGEWIDGET_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESTATUSITEMWIDGET_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESTATUSITEMWIDGET_HPP__
 
 
 #include <optional>
@@ -50,13 +50,13 @@
 
 namespace Ui
 {
-  class StatusButtonMessageWidget;
+  class WareStatusItemWidget;
 }
 
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-class StatusButtonMessageWidget : public QWidget
+class WareStatusItemWidget : public QWidget
 {
   Q_OBJECT;
 
@@ -65,11 +65,11 @@ class StatusButtonMessageWidget : public QWidget
     typedef openfluid::waresdev::WareSrcChecker::ReportingData ReportingData;
 
     static std::map<std::pair<std::string, ReportingData::ReportingStatus>, 
-             QString> s_LabelForReportItem; // translatable text for each report item
+             QString> ms_LabelForReportItem; // translatable text for each report item
     static std::map<std::pair<std::string, ReportingData::ReportingStatus>, 
-             std::pair<QString, QString>> s_ActionForReportItem; // action code and translatable button message
+             std::pair<QString, QString>> ms_ActionForReportItem; // action code and translatable button message
 
-    Ui::StatusButtonMessageWidget* ui;
+    Ui::WareStatusItemWidget* ui;
 
     QString m_ActionCode;
 
@@ -94,10 +94,10 @@ class StatusButtonMessageWidget : public QWidget
   
     static void populateReportItemLabels();
 
-    StatusButtonMessageWidget(const ReportingData::ReportingItem& Item, 
+    WareStatusItemWidget(const ReportingData::ReportingItem& Item, 
                               QWidget* Parent = nullptr);
 
-    ~StatusButtonMessageWidget();
+    ~WareStatusItemWidget();
 
 
 };
@@ -105,4 +105,4 @@ class StatusButtonMessageWidget : public QWidget
 
 } } }  // namespaces
 
-#endif /* __OPENFLUID_UIWARESDEV_STATUSBUTTONMESSAGEWIDGET_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESTATUSITEMWIDGET_HPP__ */

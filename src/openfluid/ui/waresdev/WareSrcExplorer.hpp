@@ -136,6 +136,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void folderDeleted(const QString& WarePath, const QString& FolderPath, const bool Confirm);
 
+    void wareChanged(const QString& WarePath);
+
 
   public:
 

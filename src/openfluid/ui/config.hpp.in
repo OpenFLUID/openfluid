@@ -33,6 +33,7 @@
   @file config.hpp
  
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -62,6 +63,11 @@ const char* const PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::confi
 
 const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
 const QString LINEMARKER_WARNCOLOR = "#FFD6A3";
+
+const QString STATUS_ERRCOLOR = "#B31717";
+const QString STATUS_WARNCOLOR = "#E3A740";
+const QString STATUS_OKCOLOR = "#55B332";
+const QString STATUS_DISABLEDCOLOR = "#757575";
 
 const int EXIT_CODE_FOR_RESTART = -8121186;
 

@@ -31,48 +31,52 @@
 
 
 /**
-  @file WareDashboardStatusWidget.hpp
+  @file WareStatusDashboardWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_DSDASHBOARDSTATUSWIDGET_HPP__
-#define __OPENFLUID_UIWARESDEV_DSDASHBOARDSTATUSWIDGET_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESTATUSDASHBOARDWIDGET_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESTATUSDASHBOARDWIDGET_HPP__
 
 
 #include <QPixmap>
 #include <QPushButton>
 
 #include <openfluid/waresdev/WareSrcChecker.hpp>
-#include <openfluid/ui/waresdev/GroupStatusMessagesWidget.hpp>
 
 
 namespace Ui
 {
-  class WareDashboardStatusWidget;
+  class WareStatusDashboardWidget;
 }
 
 
 namespace openfluid { namespace ui { namespace waresdev {
-class WareDashboardStatusWidget : public QWidget
+class WareStatusDashboardWidget : public QWidget
 {
   Q_OBJECT;
 
   private:
 
-    Ui::WareDashboardStatusWidget* ui;
+    Ui::WareStatusDashboardWidget* ui;
 
     std::string m_WarePath;
 
     QString m_TitleColor;
 
-    std::map<std::string,GroupStatusMessagesWidget*> mp_MessagesWidgets;
+    QWidget* mp_MessageContainer;
 
     void setLevel(const openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus Level);
 
     void applyStyleSheet();
+
+    void addMessage(openfluid::waresdev::WareSrcChecker::ReportingData::ReportingItem Item);
+
+    void clear();
+
 
   public slots:
 
@@ -80,18 +84,20 @@ class WareDashboardStatusWidget : public QWidget
 
     void onActionTriggered(const QString& ActionCode);
 
+
   signals:
   
-    void migrationRequested();
+    void operationRequested(const QString& ActionCode);
+
 
   public:
 
-    WareDashboardStatusWidget(QWidget* Parent, const std::string& WarePath);
+    WareStatusDashboardWidget(QWidget* Parent, const std::string& WarePath);
 
-    ~WareDashboardStatusWidget();
+    ~WareStatusDashboardWidget();
 
 };
 
 } } }  // namespaces
 
-#endif /* __OPENFLUID_UIWARESDEV_DSDASHBOARDSTATUSWIDGET_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESTATUSDASHBOARDWIDGET_HPP__ */

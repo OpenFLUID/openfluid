@@ -35,6 +35,7 @@
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -53,9 +54,8 @@
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/ui/waresdev/GitUIProxy.hpp>
 #include <openfluid/ui/waresdev/FindReplaceDialog.hpp>
+#include <openfluid/ui/waresdev/WareMigrationListener.hpp>
 #include <openfluid/waresdev/WareSrcMigrator.hpp>
-
-#include "SignalMigrationListener.hpp"
 
 
 class QTabWidget;
@@ -93,6 +93,8 @@ class MigrationWorker : public QObject
 
     void info(const QString& Message);
 
+    void warning(const QString& Message);
+
     void error(const QString& Message);
 
     void progressed(int Value);
@@ -101,12 +103,14 @@ class MigrationWorker : public QObject
     
     void run()
     {
-      auto Listener = std::make_unique<SignalMigrationListener>();
+      auto Listener = std::make_unique<WareMigrationListener>();
 
       Listener->setVerbose(m_Verbose);
 
       connect(Listener.get(), SIGNAL(info(const QString&)), this,
           SIGNAL(info(const QString&)));
+      connect(Listener.get(), SIGNAL(warning(const QString&)), this,
+          SIGNAL(warning(const QString&)));
       connect(Listener.get(), SIGNAL(error(const QString&)), this,
           SIGNAL(error(const QString&)));
       connect(Listener.get(), SIGNAL(progressed(int)), this,
@@ -132,13 +136,12 @@ class MigrationWorker : public QObject
             emit error(tr("Unable to checkout branch corresponding to current OpenFLUID version branch."));
           }
         }
-
-        emit finished(true, "Migration performed");
-        
+        emit finished(true, "Migration succeeded");
       }
       catch (std::exception& e)
       {
-        emit finished(false, e.what());
+        emit error(e.what());
+        emit finished(false, "Migration failed");
       }
     }
 
@@ -179,7 +182,7 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void notifyBuildFinished(openfluid::ware::WareType Type, const QString& ID);
 
-    void onMigrationRequestedOnWare(const QString& WarePath);
+    void onOperationRequestedOnWare(const QString& OperationCode, const QString& WarePath);
 
 
   private:
@@ -315,6 +318,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void closeEditorsInFolderFromWare(const QString& WarePath, const QString& FolderPath, const bool Confirm);
 
     void updateEditorsSettings();
+
+    void onWareChange(const QString& WarePath);
 
 
   public:
