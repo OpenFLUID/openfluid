@@ -5,6 +5,8 @@ SET(MISC_CPP main.cpp
 
 ADD_EXECUTABLE(snippets_misc ${MISC_CPP})
 
+TARGET_COMPILE_OPTIONS(snippets_misc PRIVATE "-Wno-unused-variable")
+
 TARGET_LINK_LIBRARIES(snippets_misc
                       openfluid-core
                       openfluid-base

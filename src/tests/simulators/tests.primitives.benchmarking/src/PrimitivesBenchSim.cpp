@@ -111,7 +111,7 @@ class PrimitivesBenchmarkingSimulator : public openfluid::ware::PluggableSimulat
     openfluid::base::SchedulingRequest runStep()
     {
       openfluid::core::SpatialUnit* TU;
-      double XVal;
+      [[maybe_unused]] double XVal;
       double VarDouble = 0.0;
       openfluid::core::DoubleValue VarDoubleVal;
       openfluid::core::IndexedValue IndVal;

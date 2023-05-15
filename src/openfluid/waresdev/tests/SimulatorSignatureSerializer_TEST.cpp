@@ -201,7 +201,8 @@ BOOST_AUTO_TEST_CASE(write_json)
 {
   auto Sign = getRefSignature();
 
-  openfluid::waresdev::SimulatorSignatureSerializer().writeToJSONFile(Sign,WorkPath.toGeneric()+"/wareinfo.json");
+  openfluid::waresdev::SimulatorSignatureSerializer()
+                       .writeToJSONFile(Sign,WorkPath.fromThis("openfluid-ware.json").toGeneric());
 }
 
 
@@ -213,7 +214,8 @@ BOOST_AUTO_TEST_CASE(write_cpp)
 {
   auto Sign = getRefSignature();
 
-  openfluid::waresdev::SimulatorSignatureSerializer().writeToWareCPPFile(Sign,WorkPath.toGeneric()+"/signature.cpp");
+  openfluid::waresdev::SimulatorSignatureSerializer()
+                       .writeToWareCPPFile(Sign,WorkPath.fromThis("signature.cpp").toGeneric());
 }
 
 
@@ -225,7 +227,8 @@ BOOST_AUTO_TEST_CASE(read_json)
 {
   auto SignRef = getRefSignature();
   auto Sign = 
-    openfluid::waresdev::SimulatorSignatureSerializer().readFromJSONFile(WorkPath.toGeneric()+"/wareinfo.json");
+    openfluid::waresdev::SimulatorSignatureSerializer()
+                         .readFromJSONFile(WorkPath.fromThis("openfluid-ware.json").toGeneric());
 
   compareSignatures(Sign,SignRef,"read_json");
 }

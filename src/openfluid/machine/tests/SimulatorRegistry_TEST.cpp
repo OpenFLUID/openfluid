@@ -86,10 +86,8 @@ BOOST_AUTO_TEST_CASE(test_signature)
   auto Reg = openfluid::machine::SimulatorRegistry::instance();
   Reg->discoverWares();
 
-  const auto& Cont = Reg->wareContainer("examples.primitives.unitsA.prod");
-
-  // HACK to enable again once examples build is refactored
-  // BOOST_CHECK_EQUAL(Cont.signature()->ID, "examples.primitives.unitsA.prod"); // HACK
+  const auto& Cont = Reg->wareContainer("examples.primitives.unitsA.prod"); 
+  BOOST_CHECK_EQUAL(Cont.signature()->ID, "examples.primitives.unitsA.prod");
 }
 
 
