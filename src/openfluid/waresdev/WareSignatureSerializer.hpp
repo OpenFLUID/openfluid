@@ -59,6 +59,7 @@
 
 namespace openfluid { namespace waresdev {
 
+
 // TOIMPL move into WareSignatureSerializer class? or elsewhere?
 inline openfluid::ware::WareType detectWareType(const std::string& Path)
 {
@@ -87,6 +88,50 @@ inline openfluid::ware::WareType detectWareType(const std::string& Path)
   }  
 
   return openfluid::ware::WareType::UNDEFINED;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+// TOIMPL move into WareSignatureSerializer class? or elsewhere?
+inline std::pair<openfluid::ware::WareType,openfluid::ware::WareID_t> detectWareTypeAndID(const std::string& Path)
+{
+  openfluid::ware::WareType Type = openfluid::ware::WareType::UNDEFINED;
+  openfluid::ware::WareID_t ID;
+
+  std::ifstream InFile(Path,std::ifstream::in);
+
+  try 
+  {
+    auto Json = openfluid::thirdparty::json::parse(InFile);
+  
+    if (Json.contains("simulator"))
+    {
+      Type = openfluid::ware::WareType::SIMULATOR; 
+    }
+    else if (Json.contains("observer"))
+    {
+      Type = openfluid::ware::WareType::OBSERVER; 
+    }
+    else if (Json.contains("builderext"))
+    {
+      Type = openfluid::ware::WareType::BUILDEREXT; 
+    }
+
+    const std::string TmpID = Json.value("id","");
+    if (openfluid::tools::isValidWareID(TmpID))
+    {
+      ID = TmpID;
+    }
+  }
+  catch (openfluid::thirdparty::json::exception& E)
+  {
+    Type = openfluid::ware::WareType::UNDEFINED;
+  }  
+
+  return {Type,ID};
 }
 
 
@@ -126,10 +171,6 @@ class OPENFLUID_API WareSignatureSerializer
 
     static std::string getCMakeHead();
 
-    SignatureType fromJSONBase(const openfluid::thirdparty::json& Json) const;
-
-    openfluid::thirdparty::json toJSONBase(const SignatureType& Sign) const;
-
     std::string toWareCPPBase(const SignatureType& Sign) const;
 
     std::string toWareCMakeBase(const SignatureType& Sign) const;
@@ -151,6 +192,10 @@ class OPENFLUID_API WareSignatureSerializer
     virtual std::string toWareCPP(const SignatureType& Sign) const = 0;
 
     virtual std::string toWareCMake(const SignatureType& Sign) const = 0;
+
+    static SignatureType fromJSONBase(const openfluid::thirdparty::json& Json);
+
+    static openfluid::thirdparty::json toJSONBase(const SignatureType& Sign);
 
     SignatureType readFromJSONFile(const std::string& FilePath) const;
 
@@ -239,7 +284,7 @@ std::string WareSignatureSerializer<SignatureType>::getCPPTail()
 
 
 template<class SignatureType>
-SignatureType WareSignatureSerializer<SignatureType>::fromJSONBase(const openfluid::thirdparty::json& Json) const
+SignatureType WareSignatureSerializer<SignatureType>::fromJSONBase(const openfluid::thirdparty::json& Json)
 {
   SignatureType Sign;
 
@@ -356,7 +401,7 @@ SignatureType WareSignatureSerializer<SignatureType>::fromJSONBase(const openflu
 
 
 template<class SignatureType>
-openfluid::thirdparty::json WareSignatureSerializer<SignatureType>::toJSONBase(const SignatureType& Sign) const
+openfluid::thirdparty::json WareSignatureSerializer<SignatureType>::toJSONBase(const SignatureType& Sign)
 {
   openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
 

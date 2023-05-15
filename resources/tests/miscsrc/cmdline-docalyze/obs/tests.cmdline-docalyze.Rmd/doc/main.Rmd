@@ -1,0 +1,47 @@
+---
+bibliography: references.bib
+---
+
+This is a R Markdown formatted documentation.
+
+# Part 1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet nisi ut nulla consectetur condimentum quis a lacus. 
+Donec viverra vitae diam ac cursus. Fusce mattis placerat eleifend. Sed eros est, varius tincidunt sodales sed, placerat a libero. 
+Duis bibendum vulputate finibus. Ut tortor leo, sodales ut lacinia quis, lobortis suscipit risus. Duis facilisis urna non aliquet viverra. 
+Integer tellus urna, commodo vel blandit at, fermentum id nunc. Pellentesque eget nisi vitae neque tempus scelerisque. 
+Vivamus et accumsan turpis, convallis vestibulum ante. 
+
+
+The OpenFLUID software platform for spatial modelling in landscapes [@Fabre2013]
+
+
+# Part 2
+
+To work with R Markdown:
+
+* Install [R](http://www.r-project.org/)
+* Install `knitr` and `rmarkdown` packages
+
+R Mardown guide is available at [https://bookdown.org/yihui/rmarkdown/](https://bookdown.org/yihui/rmarkdown/)
+
+
+## Simple example
+
+```{r }
+a <- c(1, 3, 4, 6)
+b <- c(5.2, 7.3, 15.1, 20.7)
+dataset <- data.frame(a, b)
+print(dataset)
+
+```
+
+## Example with plot
+
+Render plot using data from previous example
+```{r plotdata, fig.cap = "Testing plot in R Markdown", fig.width = 3, fig.height = 2.5, dpi = 96}
+plot(dataset)
+```
+
+# References
+

@@ -47,6 +47,7 @@
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
 #include <openfluid/waresdev/WareSrcMigrator.hpp>
 #include <openfluid/waresdev/WareSrcChecker.hpp>
+#include <openfluid/waresdev/WareSrcDocalyzer.hpp>
 #include <openfluid/waresdev/WareSrcHelpers.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
@@ -59,6 +60,7 @@
 
 #include "WareTasks.hpp"
 #include "DefaultMigrationListener.hpp"
+#include "DefaultDocalyzeListener.hpp"
 
 
 int WareTasks::processCreate() const
@@ -438,6 +440,65 @@ int WareTasks::processCheck() const
 // =====================================================================
 
 
+int WareTasks::processDocalyze() const
+{
+  if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
+  {
+    return error("missing or empty ware sources path");
+  }
+
+  std::vector<std::string> InputFormats = {};
+  if (m_Cmd.isOptionActive("input-format"))
+  {
+    InputFormats.push_back(m_Cmd.getOptionValue("input-format"));
+  }
+  if (!InputFormats.empty() && InputFormats.front() != "tex" && InputFormats.front() != "rmd" && 
+      InputFormats.front() != "md" && InputFormats.front() != "readme")
+  {
+    return error("unknown input format for documentation sources");
+  }
+
+  std::string OutputFormat = "";
+  if (m_Cmd.isOptionActive("output-format"))
+  {
+    OutputFormat = m_Cmd.getOptionValue("output-format");
+  }
+  if (!OutputFormat.empty() && OutputFormat != "pdf")
+  {
+    return error("unknown output format for built documentation");
+  }
+
+  std::string OutputPath = "";
+  if (m_Cmd.isOptionActive("output-path"))
+  {
+    OutputPath = m_Cmd.getOptionValue("output-path");
+  }
+
+  try 
+  {
+    auto Listener = std::make_unique<DefaultDocalyzeListener>();
+    Listener->setVerbose(true); // TODO manage this consistently with ware migration command line
+    auto Docalyzer = openfluid::waresdev::WareSrcDocalyzer(m_Cmd.getOptionValue("src-path"),OutputPath,Listener.get(),
+                                                           InputFormats,OutputFormat);
+    Docalyzer.performDocalyze(m_Cmd.isOptionActive("keep-data"),m_Cmd.isOptionActive("include-empty-fields"));
+  }
+  catch(const openfluid::base::FrameworkException& E)
+  {
+    return error(E.what());
+  }
+  catch(...)
+  {
+    return error("unknown error");
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int WareTasks::processInfo2Build() const
 {
   if (!m_Cmd.isOptionActive("src-path") || m_Cmd.getOptionValue("src-path").empty())
@@ -507,7 +568,7 @@ int WareTasks::process() const
   }
   else if (m_Cmd.getName() == "docalyze")
   {
-    return notImplemented(); // TOIMPL
+    return processDocalyze();
   }
   else if (m_Cmd.getName() == "configure")
   {

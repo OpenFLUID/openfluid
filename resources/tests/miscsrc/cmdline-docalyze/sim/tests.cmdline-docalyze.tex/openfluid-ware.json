@@ -1,0 +1,178 @@
+{
+  "id": "tests.cmdline-docalyze.tex",
+  "name": "Simulator for docalyzer tests (LaTeX)",
+  "description": "This simulator is only for testing automatic generation of documentation from LaTeX",
+  "version": "23.04",
+  "status": "experimental",
+  "authors": [
+    {
+      "name" : "Writer 1",
+      "email" : "writer1@docalyzer.org"
+    },
+    {
+      "name" : "Writer 2",
+      "email" : "writer2@docalyzer.org"
+    }
+  ],
+  "contacts": [
+    {
+      "name" : "OpenFLUID team",
+      "email" : "contact@openfluid-project.org"
+    }
+  ],
+  "license": "MIT",
+  "tags": ["tex","docalyze","test"],
+  "links": [
+    {
+      "label": "Web site",
+      "url": "https://www.openfluid-project.org/"
+    },
+    {
+      "label": "Community site",
+      "url": "https://community.openfluid-project.org/"
+    }
+  ],
+  "issues": [],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [
+          {
+            "name": "param1",
+            "description": "a required parameter",
+            "siunit": "m/s",
+            "type": "double"
+          },
+          {
+            "name": "param2",
+            "description": "another required parameter",
+            "siunit": "n/m^2",
+            "type": "matrix"
+          }
+        ],
+        "used": [
+          {
+            "name": "param3",
+            "description": "a used parameter",
+            "siunit": "",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [
+          {
+            "name": "attrA",
+            "unitsclass": "ZU",
+            "description": "",
+            "siunit": "m^2",
+            "type": "double"
+          }
+        ],
+        "used": [
+          {
+            "name": "attrB",
+            "unitsclass": "YU",
+            "description": "a used attribute",
+            "siunit": "",
+            "type": "integer"
+          },
+          {
+            "name": "attrC",
+            "unitsclass": "YU",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "produced": [
+          {
+            "name": "attrX",
+            "unitsclass": "ZU",
+            "description": "a produced attribute",
+            "siunit": "m^2",
+            "type": "double"
+          }
+        ]
+      },
+      "variables": {
+        "produced": [
+          {
+            "name": "test.docalyzer.var1",
+            "unitsclass": "YU",
+            "description": "a variable",
+            "siunit": "dB",
+            "type": "vector"
+          },
+          {
+            "name": "test.docalyzer.var2",
+            "unitsclass": "YU",
+            "description": "",
+            "siunit": "lm",
+            "type": "map"
+          }
+        ],
+        "required": [
+          {
+            "name": "test.docalyzer.var7",
+            "unitsclass": "ZU",
+            "description": "another variable",
+            "siunit": "W",
+            "type": "integer"
+          }
+        ],
+        "used": [
+          {
+            "name": "test.docalyzer.var9",
+            "unitsclass": "ZU",
+            "description": "the mojo",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "updated": [
+          {
+            "name": "test.docalyzer.var76",
+            "unitsclass": "ZU",
+            "description": "the best variable",
+            "siunit": "K",
+            "type": "double"
+          }
+        ]
+      },
+      "events": [
+        "ZU",
+        "YU"
+      ],
+      "extrafiles": {
+        "required": [
+          "forced_data1.csv",
+          "forced_data2.csv"
+        ],
+        "used": [
+          "observed.csv",
+          "simulated.csv",
+          "randomized.csv"
+        ]
+      }
+    },
+    "spatial_graph": {
+      "description": "Spatial graph is modified by $this #simulator",
+      "details": [
+        {
+          "unitsclass": "XU",
+          "description": "XU units are created"
+        },
+        {
+          "unitsclass": "YU",
+          "description": "YU units connections to XU units are updated"
+        }
+      ]
+    },
+    "scheduling": {
+      "type": "range",
+      "min": 300,
+      "max": 600
+    }
+  }
+}

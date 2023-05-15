@@ -41,14 +41,13 @@
 #define __OPENFLUID_WARESDEV_WARESRCMIGRATORLISTENER_HPP__
 
 
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/utils/CppLangHelpers.hpp>
+#include <openfluid/waresdev/WareSrcOpsListener.hpp>
 
 
 namespace openfluid { namespace waresdev {
 
 
-class WareSrcMigratorListener : public openfluid::base::Listener
+class WareSrcMigratorListener : virtual public WareSrcOpsListener
 {
   public:
 
@@ -100,9 +99,6 @@ class WareSrcMigratorListener : public openfluid::base::Listener
     { }
 
     virtual void onDocEnd(openfluid::base::Listener::Status /*Status*/)
-    { }
-
-    virtual void stageMessage(const std::string& /*Msg*/)
     { }
 
 };

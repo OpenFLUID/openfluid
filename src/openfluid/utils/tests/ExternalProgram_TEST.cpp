@@ -98,6 +98,21 @@ BOOST_AUTO_TEST_CASE(check_registered)
       openfluid::utils::ExternalProgram::getRegisteredProgram(
         openfluid::utils::ExternalProgram::RegisteredPrograms::GrassGis);
   std::cout << "Looking for GRASS GIS: " << ExtProg.getFullProgramPath() << std::endl;
+
+  ExtProg =
+      openfluid::utils::ExternalProgram::getRegisteredProgram(
+        openfluid::utils::ExternalProgram::RegisteredPrograms::Pandoc);
+  std::cout << "Looking for pandoc: " << ExtProg.getFullProgramPath() << std::endl;
+
+  ExtProg =
+      openfluid::utils::ExternalProgram::getRegisteredProgram(
+        openfluid::utils::ExternalProgram::RegisteredPrograms::R);
+  std::cout << "Looking for R: " << ExtProg.getFullProgramPath() << std::endl;
+
+  ExtProg =
+      openfluid::utils::ExternalProgram::getRegisteredProgram(
+        openfluid::utils::ExternalProgram::RegisteredPrograms::Rscript);
+  std::cout << "Looking for Rscript: " << ExtProg.getFullProgramPath() << std::endl;
 }
 
 

@@ -257,16 +257,16 @@ SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS c
 ###########################################################################
 
 
-# HACK to enable again once examples build is refactored
-# OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesRunPrimitives
-#                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-#                            "run"
-#                            "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives"
-#                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/openfluid-messages.log"
-#                               CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/fullA_unitsA1_var1.csv"
-#                               CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/fullB_unitsB2_var5.csv"
-#                    )
-# SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesRunPrimitives APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesAll)
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesRunPrimitives
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "run"
+                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives"
+                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT"
+                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/fullA_unitsA1_var1.csv"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all/projects/Primitives/OUT/fullB_unitsB2_var5.csv"
+                   )
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesRunPrimitives APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesAll)
 
 
 ###########################################################################
@@ -293,6 +293,9 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareHelp
                   )
 
 
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "create-ware" "--type=simulator" "--id=tests.cmdline.sim"
@@ -301,20 +304,10 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareSimulator
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim/CMakeLists.txt")
 
 
-###########################################################################
-
-
 ADD_TEST(NAME cmdline-openfluid-CheckSimulator
         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                 "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim" "-w")
 SET_PROPERTY(TEST cmdline-openfluid-CheckSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
-
-
-ADD_TEST(NAME cmdline-openfluid-DocalyzeSimulator
-        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                "docalyze" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim") # TOIMPL
-SET_PROPERTY(TEST cmdline-openfluid-DocalyzeSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
-SET_PROPERTY(TEST cmdline-openfluid-DocalyzeSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
 
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureSimulator
@@ -336,6 +329,16 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildSimulator
                            "build" "--build-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/build/sim/tests.cmdline.sim"
                            "-t" "install" "-j" "2")
 SET_PROPERTY(TEST cmdline-openfluid-BuildSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureSimulator)
+
+
+IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
+  ADD_TEST(NAME cmdline-openfluid-DocalyzeSimulator
+          COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                  "docalyze"
+                  "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim"
+                  "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim")
+  SET_PROPERTY(TEST cmdline-openfluid-DocalyzeSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
+ENDIF()
 
 
 ADD_TEST(NAME cmdline-openfluid-PurgeSimulator
@@ -395,7 +398,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareObserver
 ADD_TEST(NAME cmdline-openfluid-CheckObserver
          COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                  "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs" "-w" "-f")
-SET_PROPERTY(TEST cmdline-openfluid-CheckObserver 
+SET_PROPERTY(TEST cmdline-openfluid-CheckObserver
              APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareObserver
              APPEND PROPERTY FAIL_REGULAR_EXPRESSION "warning")
 
@@ -454,6 +457,7 @@ IF(OFBUILD_ENABLE_GUI)
                              "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs-ui"
                      PRE_TEST CHECK_DIRECTORY_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs-ui/_build-release-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}")
   SET_PROPERTY(TEST cmdline-openfluid-BuildObserverParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureObserverParamsUI)
+
 ENDIF()
 
 ###########################################################################
@@ -494,6 +498,15 @@ IF(OFBUILD_ENABLE_GUI)
                     "build"
                     "--build-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/build/bext/tests.cmdline.bext")
   SET_PROPERTY(TEST cmdline-openfluid-BuildBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureBuilderext)
+
+  IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
+    ADD_TEST(NAME cmdline-openfluid-DocalyzeBuilderext
+    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+            "docalyze"
+            "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext/tests.cmdline.bext"
+            "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext")
+    SET_PROPERTY(TEST cmdline-openfluid-DocalyzeBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareBuilderext)
+  ENDIF()
 ENDIF()
 
 
@@ -516,7 +529,7 @@ SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulator
 ADD_TEST(NAME cmdline-openfluid-CheckMigratedSimulator
 COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
         "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration" "--format=json")
-SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulator 
+SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulator
             APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulator
             APPEND PROPERTY PASS_REGULAR_EXPRESSION "\"migration_isclean\"\: \"warning\"")
 
@@ -566,10 +579,9 @@ IF(OFBUILD_ENABLE_GUI)
   ADD_TEST(NAME cmdline-openfluid-CheckMigratedSimulatorParamsUI
   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
           "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated")
-  SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulatorParamsUI 
+  SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulatorParamsUI
                APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulatorParamsUI
                APPEND PROPERTY PASS_REGULAR_EXPRESSION "code/migration_isclean \: warning")
-
 
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedSimulatorParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
@@ -589,6 +601,15 @@ IF(OFBUILD_ENABLE_GUI)
                              "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
                              "-t" "install" "-j" "2")
   SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedSimulatorParamsUI)
+
+  IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
+    ADD_TEST(NAME cmdline-openfluid-DocalyzeMigratedSimulatorParamsUI
+             COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                     "docalyze"
+                     "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                     "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim")
+    SET_PROPERTY(TEST cmdline-openfluid-DocalyzeMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulatorParamsUI)
+  ENDIF()
 ENDIF()
 
 
@@ -708,7 +729,7 @@ IF(OFBUILD_ENABLE_GUI)
   ADD_TEST(NAME cmdline-openfluid-CheckMigratedBuilderext
   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
           "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration" "--ignore=migration_isclean,docdir_exists," "-f")
-  SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedBuilderext 
+  SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedBuilderext
                APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateBuilderext
                APPEND PROPERTY FAIL_REGULAR_EXPRESSION "warning"
                APPEND PROPERTY PASS_REGULAR_EXPRESSION "code/migration_isclean \: disabled"
@@ -760,8 +781,76 @@ SET_PROPERTY(TEST cmdline-openfluid-CheckWrongOldSimulator APPEND PROPERTY WILL_
 ###########################################################################
 
 
+IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
+  OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatLatex
+                     COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
+                             "--src-path=${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/cmdline-docalyze/sim/tests.cmdline-docalyze.tex"
+                             "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim" "-k" "-e"
+                     PRE_TEST REMOVE_FILE "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim/tests.cmdline-docalyze.tex.pdf"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim/tests.cmdline-docalyze.tex.pdf")
+  
+
+  FIND_PROGRAM(_DOCALYZER_RMARKDOWN NAMES Rscript Rscript.exe) # check required Rscript tool
+  IF(_DOCALYZER_RMARKDOWN)
+    OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatRmarkdown
+                       COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
+                               "--src-path=${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/cmdline-docalyze/obs/tests.cmdline-docalyze.Rmd"
+                               "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/obs" "-k" "-e"
+                       PRE_TEST REMOVE_FILE "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/obs/tests.cmdline-docalyze.Rmd.pdf"
+                       POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/obs/tests.cmdline-docalyze.Rmd.pdf")
+  ENDIF()
+
+
+  OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatMarkdown
+                     COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
+                             "--src-path=${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/cmdline-docalyze/sim/tests.cmdline-docalyze.md"
+                             "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim" "-k"
+                     PRE_TEST REMOVE_FILE "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim/tests.cmdline-docalyze.md.pdf"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim/tests.cmdline-docalyze.md.pdf")
+  
+  
+  OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatReadme
+           COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
+                   "--src-path=${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/cmdline-docalyze/bext/tests.cmdline-docalyze.readme"
+                   "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/bext" "-k"
+           PRE_TEST REMOVE_FILE "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/bext/tests.cmdline-docalyze.readme.pdf"
+           POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/bext/tests.cmdline-docalyze.readme.pdf")
+  
+  
+  OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatLatexCustom
+           COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
+                    "--src-path=${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/cmdline-docalyze/sim/tests.cmdline-docalyze-custom.tex"
+                    "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim" "-k"
+           PRE_TEST REMOVE_FILE "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim/tests.cmdline-docalyze-custom.tex.pdf"
+           POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim/tests.cmdline-docalyze-custom.tex.pdf")
+  
+  
+  ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatNoDoc
+           COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
+                   "--src-path=${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/cmdline-docalyze/obs/tests.cmdline-docalyze.nodoc"
+                   "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/obs"
+                   "--input-format=md")
+  SET_TESTS_PROPERTIES(cmdline-openfluid-DocalyzeFormatNoDoc PROPERTIES
+                       FAIL_REGULAR_EXPRESSION "cannot find main documentation file"
+                       WILL_FAIL TRUE)
+  
+  
+  ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatNoMarkdown
+           COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
+                   "--src-path=${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/cmdline-docalyze/sim/tests.cmdline-docalyze.tex"
+                   "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim"
+                   "--input-format=md")
+  SET_TESTS_PROPERTIES(cmdline-openfluid-DocalyzeFormatNoMarkdown PROPERTIES
+                       FAIL_REGULAR_EXPRESSION "cannot find main documentation file"
+                       WILL_FAIL TRUE)
+ENDIF()
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateDataHelp
-                     COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "create-data" "--help")
 
 

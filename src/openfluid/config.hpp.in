@@ -163,6 +163,7 @@ const std::string WARESDEV_FRAGMENTS_DIR = "@OPENFLUID_FRAGMENTS_PATH@";
 const std::string WARESDEV_SRC_DIR = "@OPENFLUID_WARESDEV_SRC_DIR@";
 const std::string WARESDEV_TESTS_DIR = "@OPENFLUID_WARESDEV_TESTS_DIR@";
 const std::string WARESDEV_DOC_DIR = "@OPENFLUID_WARESDEV_DOC_DIR@";
+const std::string WARESDEV_DOC_MAIN_FILEROOT = "@OPENFLUID_WARESDEV_DOC_MAIN_FILEROOT@";
 const std::vector<std::string> WARESDEV_README_FILES = {"@OPENFLUID_WARESDEV_README_FILEROOT@.md",
                                                         "@OPENFLUID_WARESDEV_README_FILEROOT@",
                                                         "@OPENFLUID_WARESDEV_README_FILEROOT@.txt"};
@@ -176,6 +177,7 @@ const std::string WARESDEV_PACKAGE_CONFFILE = "ofwdp.conf";
 const std::string WARESDEV_WARESHUB_FILE = "wareshub.json";
 const std::string WARESDEV_MIGRATION_WORK_DIR = "_migration";
 const std::string WARESDEV_MIGRATION_ORIGINAL_DIR = "_original";
+const std::string WARESDEV_DOCALYZER_WORK_DIRROOT = "_docalyzer";
 
 
 // Project

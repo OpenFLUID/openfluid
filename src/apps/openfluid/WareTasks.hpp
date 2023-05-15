@@ -58,6 +58,8 @@ class WareTasks : public TasksBase
 
     int processCheck() const;
 
+    int processDocalyze() const;
+
     int processInfo2Build() const;
 
 

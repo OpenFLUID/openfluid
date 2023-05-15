@@ -1,0 +1,37 @@
+{
+  "id": "tests.cmdline-docalyze.Rmd",
+  "name": "Observer for docalyzer tests (RMarkdown)",
+  "description": "This observer is only for testing automatic generation of documentation from R Markdown",
+  "version": "23.04",
+  "status": "experimental",
+  "authors": [
+    {
+      "name" : "Writer 1",
+      "email" : "writer1@docalyzer.org"
+    },
+    {
+      "name" : "Writer 2",
+      "email" : "writer2@docalyzer.org"
+    }
+  ],
+  "contacts": [
+    {
+      "name" : "OpenFLUID team",
+      "email" : "contact@openfluid-project.org"
+    }
+  ],
+  "license": "MIT",
+  "tags": ["Rmd","docalyze","test"],
+  "links": [
+    {
+      "label": "Web site",
+      "url": "https://www.openfluid-project.org/"
+    },
+    {
+      "label": "Community site",
+      "url": "https://community.openfluid-project.org/"
+    }
+  ],
+  "issues": [],
+  "observer": {}
+}

@@ -381,8 +381,8 @@ unsigned int WareSrcContainer::getBuildJobs() const
 
 std::string WareSrcContainer::getGenerateDocTarget() const
 {
-  // TOIMPL
-  return std::string();
+  // doc target is "docalyze-install" if current build mode is BUILD_WITHINSTALL, "docalyze" in other cases
+  return (m_BuildMode == BuildMode::BUILD_WITHINSTALL ? "docalyze-install" : "docalyze");
 }
 
 

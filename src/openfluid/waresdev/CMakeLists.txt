@@ -3,16 +3,16 @@
 SET(OPENFLUID_WARESDEV_CPP WareSrcHelpers.cpp
                            WareSrcEnquirer.cpp 
                            WareSrcContainer.cpp 
-                           WareSrcFactory.cpp WareSrcMigrator.cpp WareSrcChecker.cpp
+                           WareSrcFactory.cpp WareSrcMigrator.cpp WareSrcChecker.cpp WareSrcDocalyzer.cpp
                            SimulatorSignatureSerializer.cpp ObserverSignatureSerializer.cpp BuilderextSignatureSerializer.cpp
                            SimulatorSignatureXMLReader.cpp
                            GhostsHelpers.cpp
                            )
 
-SET(OPENFLUID_WARESDEV_HPP WareSrcHelpers.hpp
+SET(OPENFLUID_WARESDEV_HPP WareSrcHelpers.hpp WareSrcOpsListener.hpp
                            WareSrcEnquirer.hpp 
                            WareSrcContainer.hpp WareSrcContainerOps.hpp 
-                           WareSrcFactory.hpp WareSrcMigrator.hpp WareSrcMigratorListener.hpp WareSrcChecker.hpp
+                           WareSrcFactory.hpp WareSrcMigrator.hpp WareSrcMigratorListener.hpp WareSrcChecker.hpp WareSrcDocalyzer.hpp WareSrcDocalyzerListener.hpp
                            WareBuildOptions.hpp
                            WareSignatureSerializer.hpp
                            SimulatorSignatureSerializer.hpp ObserverSignatureSerializer.hpp BuilderextSignatureSerializer.hpp

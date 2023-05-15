@@ -1,0 +1,41 @@
+{
+  "id": "tests.cmdline-docalyze.readme",
+  "name": "Builder extension for docalyzer tests (README.md)",
+  "description": "This Builder extension is only for testing automatic generation of documentation from README file, with special characters such as $ or { % }",
+  "version": "23.04",
+  "status": "experimental",
+  "authors": [
+    {
+      "name" : "Writer 1",
+      "email" : "writer1@docalyzer.org"
+    },
+    {
+      "name" : "Writer 2",
+      "email" : "writer2@docalyzer.org"
+    }
+  ],
+  "contacts": [
+    {
+      "name" : "OpenFLUID team",
+      "email" : "contact@openfluid-project.org"
+    }
+  ],
+  "license": "MIT",
+  "tags": ["readme","docalyze","test"],
+  "links": [
+    {
+      "label": "Web site",
+      "url": "https://www.openfluid-project.org/"
+    },
+    {
+      "label": "Community site",
+      "url": "https://community.openfluid-project.org/"
+    }
+  ],
+  "issues": [],
+  "builderext": {
+    "mode": "workspace",
+    "category": "spatial",
+    "menutext": "Test extension"
+  }
+}

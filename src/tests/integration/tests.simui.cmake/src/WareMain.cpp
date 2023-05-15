@@ -37,13 +37,6 @@
 */
 
 
-/*
-<sim2doc>
-
-</sim2doc>
-*/
-
-
 #include <openfluid/ware/PluggableSimulator.hpp>
 
 

@@ -204,6 +204,36 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "grass";
 #endif
   }
+  else if (Prog == RegisteredPrograms::Pandoc)
+  {
+#if defined(OPENFLUID_OS_UNIX)
+    ProgNames << "pandoc";
+#endif
+
+#if defined(OPENFLUID_OS_WINDOWS)
+    ProgNames << "pandoc.exe";
+#endif
+  }
+  else if (Prog == RegisteredPrograms::R)
+  {
+#if defined(OPENFLUID_OS_UNIX)
+    ProgNames << "R";
+#endif
+
+#if defined(OPENFLUID_OS_WINDOWS)
+    ProgNames << "R.exe";
+#endif
+  }
+  else if (Prog == RegisteredPrograms::Rscript)
+  {
+#if defined(OPENFLUID_OS_UNIX)
+    ProgNames << "Rscript";
+#endif
+
+#if defined(OPENFLUID_OS_WINDOWS)
+    ProgNames << "Rscript.exe";
+#endif
+  }
 
   return ExternalProgram(ProgNames,ModSearchPaths,UsePathEnv);
 }

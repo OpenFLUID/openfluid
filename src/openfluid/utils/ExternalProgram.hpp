@@ -72,8 +72,8 @@ class OPENFLUID_API ExternalProgram
     */
     enum class RegisteredPrograms { CMake, Zip, SevenZip,
                                     Gnuplot, GoogleEarth, Gcc,
-                                    PdfLatex, BibTex, Latex2HTML,
-                                    Git, GrassGis };
+                                    Pandoc, PdfLatex, BibTex, Latex2HTML,
+                                    Git, GrassGis, R, Rscript };
 
     ExternalProgram() = delete;
 

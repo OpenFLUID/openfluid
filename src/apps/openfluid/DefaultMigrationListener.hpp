@@ -47,56 +47,11 @@
 #include <openfluid/waresdev/WareSrcMigratorListener.hpp>
 #include <openfluid/tools/Console.hpp>
 
+#include "DefaultWareSrcOpsListener.hpp"
 
-class DefaultMigrationListener : public openfluid::waresdev::WareSrcMigratorListener
+
+class DefaultMigrationListener : public openfluid::waresdev::WareSrcMigratorListener, public DefaultWareSrcOpsListener
 {
-  private:
-
-    bool m_Verbose = false;
-
-    bool m_IsFirstStageMsg = true;
-
-
-    void displayStatus(const openfluid::base::Listener::Status& Status)
-    {
-      std::cout << " ";   
-
-      switch (Status)
-      {
-        case openfluid::base::Listener::Status::ERROR_STATUS :
-          openfluid::tools::Console::setErrorColor();
-          std::cout << "[Error]";
-          openfluid::tools::Console::resetAttributes();
-          break;
-        case openfluid::base::Listener::Status::OK_STATUS :
-          openfluid::tools::Console::setOKColor();
-          std::cout << "[OK]";
-          openfluid::tools::Console::resetAttributes();
-          break;
-        case openfluid::base::Listener::Status::WARNING_STATUS :
-          openfluid::tools::Console::setWarningColor();
-          std::cout << "[Warning]";
-          openfluid::tools::Console::resetAttributes();
-          break;
-      }
-
-      std::cout << std::endl;
-      std::cout.flush();
-
-    };
-
-    void displayStartMsg(const std::string& Msg)
-    {    
-      std::cout << "-- " << Msg;
-      if (m_Verbose)
-      {
-        std::cout << " :";
-      }
-      std::cout.flush();
-
-      m_IsFirstStageMsg = true;
-    }
-
 
   public:
 
@@ -185,20 +140,6 @@ class DefaultMigrationListener : public openfluid::waresdev::WareSrcMigratorList
     void onDocEnd(openfluid::base::Listener::Status Status)
     { 
       displayStatus(Status);
-    }
-
-    void stageMessage(const std::string& Msg)
-    {
-      if (m_Verbose)
-      {
-        if (!m_IsFirstStageMsg)
-        {
-          std::cout << ",";
-        }
-        std::cout << " " << Msg;
-        std::cout.flush();
-      }
-      m_IsFirstStageMsg = false;
     }
 
 };

@@ -87,7 +87,7 @@ int main(int argc, char **argv)
   // ---
 
   auto InfoCmd = openfluid::utils::CommandLineCommand("info","Display information about OpenFLUID");
-  InfoCmd.addOptions({{"format","","output format, value can be text (default) or json",true}});
+  InfoCmd.addOptions({{"format","","output format (text|json, text is default)",true}});
   Parser.addCommand(InfoCmd);
 
   // ---
@@ -98,7 +98,6 @@ int main(int argc, char **argv)
   Parser.addCommand(VersionCmd);
   
   // ---
-
 
   auto CreateDataCmd = openfluid::utils::CommandLineCommand("create-data","Create project or dataset");
   CreateDataCmd.addOptions({{"type","t","type of the data to create (project or dataset)",true},
@@ -144,7 +143,7 @@ int main(int argc, char **argv)
   // ---
 
   auto ReportCmd = openfluid::utils::CommandLineCommand("report","Display report about available wares");
-  ReportCmd.addOptions({{"format","","output format, value can be text (default) or json",true},
+  ReportCmd.addOptions({{"format","","output format (text|json, default is text)",true},
                         {"list","l","display as simple list of wares IDs"},
                         {"with-errors","e","report errors if any"}});
 
@@ -154,7 +153,6 @@ int main(int argc, char **argv)
   } 
 
   Parser.addCommand(ReportCmd);
-
 
   // ---
 
@@ -188,8 +186,8 @@ int main(int argc, char **argv)
                        {"ignore","i","ignore checks (comma separated list)"},
                        {"pedantic","p","check for additional potential issues"},
                        {"full-report","f","enable full reporting"},
-                       {"format","","output format for report, value can be text (default) or json "
-                                    "(json formats enables full reporting)",true}});
+                       {"format","","output format for report "
+                                    "(text|json, text is default, json formats enables full reporting)",true}});
   Parser.addCommand(CheckCmd);
 
   // ---
@@ -218,7 +216,14 @@ int main(int argc, char **argv)
   // ---
 
   auto DocCmd = openfluid::utils::CommandLineCommand("docalyze","Build documentation of a ware"); // TOIMPL
-  DocCmd.addOptions({{"path","p","path to the ware sources",true}});
+  DocCmd.addOptions({{"src-path","s","path to the ware sources",true}});
+  DocCmd.addOptions({{"input-format","s","input format of documentation sources "
+                                         "(tex|Rmd|md|readme|auto, auto is default)",true}});
+  DocCmd.addOptions({{"output-format","b","output format of built documentation "
+                                          "(pdf, pdf is default)",true}});
+  DocCmd.addOptions({{"output-path","d","path where is put the built documentation",true}});
+  DocCmd.addOptions({{"include-empty-fields","e","include empty fields of the signature in the built documentation"}});
+  DocCmd.addOptions({{"keep-data","k","keep docalyze data once finished (default is disabled)"}});
   Parser.addCommand(DocCmd);
 
   // ---
