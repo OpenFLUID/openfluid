@@ -160,6 +160,7 @@ bool Process::run()
 
     boost::process::child BPC(boost::process::exe = m_Cmd.Program,
                               boost::process::args = m_Cmd.Args,
+                              boost::process::start_dir = m_Cmd.WorkDir,
                               boost::process::std_out > StdOutStr, boost::process::std_err > StdErrStr,
                               ProcessEnv);
 
@@ -286,6 +287,7 @@ int Process::system(const Command& Cmd, const Environment& Env)
 
   return boost::process::system(boost::process::exe = Cmd.Program,
                                 boost::process::args = Cmd.Args,
+                                boost::process::start_dir = Cmd.WorkDir,
                                 ProcessEnv);
 }
 

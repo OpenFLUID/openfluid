@@ -114,6 +114,12 @@ class OPENFLUID_API Process
       std::string ErrFile;
 
       /**
+        Path to work directory where the process is launched.
+        No workdir is set if empty.
+      */
+      std::string WorkDir;
+
+      /**
         Joins program and arguments as a single string
         @param[in] Sep The separator to use for joining
         @return The string after joining 
