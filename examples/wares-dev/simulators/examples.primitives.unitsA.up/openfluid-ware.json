@@ -2,20 +2,18 @@
   "id": "examples.primitives.unitsA.up",
   "name": "Example of data update on units of class A",
   "description": "",
-  "version": "2.2.0",
+  "version": "",
   "status": "experimental",
   "authors": [
     {
       "name": "Jean-Christophe Fabre",
-      "email": "jean-christophe.fabre@inra.fr"
+      "email": "jean-christophe.fabre@inrae.fr"
     }
   ],
   "contacts": [],
   "license": "",
   "tags": [
-    "examples",
-    "",
-    ""
+    "examples"
   ],
   "links": [],
   "issues": [],

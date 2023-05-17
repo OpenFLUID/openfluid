@@ -1,9 +1,9 @@
 {
   "id": "view.spatial-graph.graphviz",
-  "name": "",
+  "name": "Spatial graph viewer (GraphViz)",
   "description": "",
   "version": "",
-  "status": "experimental",
+  "status": "stable",
   "authors": [],
   "contacts": [],
   "license": "",

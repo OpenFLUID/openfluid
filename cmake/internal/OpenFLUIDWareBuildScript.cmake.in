@@ -46,7 +46,7 @@ ELSEIF(WARES_PREFIX_INSTALL_PATH)
 ENDIF()
 
 
-## Prepare woark directory
+## Prepare work directory
 
 FILE(REMOVE_RECURSE ${WARE_BUILD_DIR})
 FILE(MAKE_DIRECTORY ${WARE_BUILD_DIR})
@@ -73,11 +73,18 @@ IF(CONFIGURE_RESULT)
 ENDIF()
 
 
-## Build ware
+## Build and docalyze ware
+
+SET(ENV{OPENFLUID_INSTALL_PREFIX} @CMAKE_SOURCE_DIR@) # Force docalyzer to use resources files located in sources tree
+
+
+IF (WARE_WITH_DOCALYZE)
+  SET(DOCALYZE_TARGET docalyze-install)
+ENDIF()
 
 EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}"
                         --build ${WARE_BUILD_DIR}
-                        --target install
+                        --target install ${DOCALYZE_TARGET}
                 WORKING_DIRECTORY ${WARE_BUILD_DIR}
                 RESULT_VARIABLE BUILD_RESULT
                 )

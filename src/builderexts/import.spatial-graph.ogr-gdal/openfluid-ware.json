@@ -1,9 +1,9 @@
 {
   "id": "import.spatial-graph.ogr-gdal",
-  "name": "",
+  "name": "Spatial data import (OGR/GDAL)",
   "description": "",
   "version": "",
-  "status": "experimental",
+  "status": "stable",
   "authors": [],
   "contacts": [],
   "license": "",

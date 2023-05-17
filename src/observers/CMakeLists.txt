@@ -1,8 +1,5 @@
 
 
-#INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src") # DIRTYCOE 
-#INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIRS}) # DIRTYCOE 
-
 OFBUILD_ADD_OBSERVER(export.vars.files.csv)
 OFBUILD_ADD_OBSERVER(export.vars.files.csv-multicols)
 OFBUILD_ADD_OBSERVER(export.vars.files.kml-anim)

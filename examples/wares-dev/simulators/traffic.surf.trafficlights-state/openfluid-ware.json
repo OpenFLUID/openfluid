@@ -2,20 +2,20 @@
   "id": "traffic.surf.trafficlights-state",
   "name": "Traffic Light Unit (TLU) function state",
   "description": "",
-  "version": "2.2.0",
+  "version": "1.0",
   "status": "experimental",
   "authors": [
     {
       "name": "Michael Rabotin",
-      "email": "rabotin@supagro.inra.fr"
+      "email": "michael.rabotin@inrae.fr"
     }
   ],
   "contacts": [],
   "license": "",
   "tags": [
     "examples",
-    "",
-    ""
+    "traffic",
+    "urban"
   ],
   "links": [],
   "issues": [],

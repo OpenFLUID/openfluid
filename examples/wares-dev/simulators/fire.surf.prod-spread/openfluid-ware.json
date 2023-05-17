@@ -7,15 +7,17 @@
   "authors": [
     {
       "name": "Jean-Christophe Fabre",
-      "email": "jean-christophe.fabre@inra.fr"
+      "email": "jean-christophe.fabre@inrae.fr"
     }
   ],
   "contacts": [],
   "license": "",
   "tags": [
     "fire",
-    "production, spreading",
-    "wind coefficient, stock quantity and type"
+    "production",
+    "spreading",
+    "wind",
+    "stock"
   ],
   "links": [],
   "issues": [],

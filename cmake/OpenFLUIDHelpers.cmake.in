@@ -373,6 +373,36 @@ FUNCTION(_OPENFLUID_WAREPLUGIN_BUILD)
 
 
   # ================
+  # docalyzer
+  # ================
+
+  IF (NOT _FORCE_PARAMSUI)
+    # TODO manage --format and --keep-data options 
+
+    MESSAGE(STATUS "Adding docalyze target")
+
+    FILE(GLOB_RECURSE _DOCFILES_DEPENDS "${CMAKE_SOURCE_DIR}/@OPENFLUID_WARESDEV_DOC_DIR@/*")
+
+    ADD_CUSTOM_COMMAND(COMMAND "${OpenFLUID_CMD_PROGRAM}" "docalyze"
+                       ARGS "--src-path=${CMAKE_SOURCE_DIR}" "--output-path=${CMAKE_BINARY_DIR}"
+                       DEPENDS ${_DOCFILES_DEPENDS}
+                       OUTPUT "${CMAKE_BINARY_DIR}/${WARE_ID}.pdf")
+
+    ADD_CUSTOM_TARGET(docalyze
+                      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                      DEPENDS "${CMAKE_BINARY_DIR}/${WARE_ID}.pdf"
+                      COMMENT "Docalyzing...")
+
+    ADD_CUSTOM_TARGET(docalyze-install
+                      COMMAND "${CMAKE_COMMAND}" "-E" "copy" 
+                              "${CMAKE_BINARY_DIR}/${WARE_ID}.pdf" "${_OPNFLD_INSTALL_PATH}/${WARE_ID}.pdf"
+                      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                      DEPENDS "${CMAKE_BINARY_DIR}/${WARE_ID}.pdf"
+                      COMMENT "Docalyzing and installing...")
+  ENDIF()
+
+
+  # ================
   # i18n
   # ================
 
@@ -535,18 +565,3 @@ FUNCTION(OPENFLUID_ADD_WARETESTS)
   ENDFOREACH()
 
 ENDFUNCTION()
-
-
-###########################################################################
-
-
-# TOIMPL write doc
-FUNCTION(OPENFLUID_ADD_WAREDOC)
-  SET(_ARGS_OPTIONS)
-  SET(_ARGS_ONEVAL)
-  SET(_ARGS_MULTIVAL)
-  CMAKE_PARSE_ARGUMENTS(_DOCARGS "${_ARGS_OPTIONS}" "${_ARGS_ONEVAL}" "${_ARGS_MULTIVAL}" ${ARGN})
-
-  MESSAGE(WARNING "not implemented") # TOIMPL
-ENDFUNCTION()
-

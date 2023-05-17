@@ -210,6 +210,16 @@ SET_PROPERTY(TEST integration-CMakeModuleSimulatorTest APPEND PROPERTY DEPENDS i
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorDoc
+                   COMMAND "${CMAKE_COMMAND}"
+                           "-E" "chdir" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.sim.cmake"
+                           "${CMAKE_COMMAND}" "--build" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.sim.cmake"
+                           "--target" "docalyze-install")
+
+
+###########################################################################
+
+
 IF(OFBUILD_ENABLE_GUI)
   FILE(MAKE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/tests.simui.cmake")
 

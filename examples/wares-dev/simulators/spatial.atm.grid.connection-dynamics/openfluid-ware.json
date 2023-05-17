@@ -7,15 +7,16 @@
   "authors": [
     {
       "name": "Jean-Christophe Fabre",
-      "email": "jean-christophe.fabre@inra.fr"
+      "email": "jean-christophe.fabre@inrae.fr"
     }
   ],
   "contacts": [],
   "license": "",
   "tags": [
     "fire",
-    "spatial connections",
-    "wind direction"
+    "spatial",
+    "connections",
+    "wind"
   ],
   "links": [],
   "issues": [],
