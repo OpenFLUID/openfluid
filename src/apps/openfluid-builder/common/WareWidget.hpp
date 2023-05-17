@@ -78,6 +78,8 @@ class WareWidget : public QWidget
 
     virtual void removeParameterFromList(const QString& Name);
 
+    void openDocFile();
+
     void switchParameterizationMode();
 
     void notifyChangedFromParameterizationWidget();
@@ -97,6 +99,8 @@ class WareWidget : public QWidget
 
     bool m_Enabled;
 
+    std::string m_DocFilePath;
+
     int m_CurrentIndex;
 
     bool m_ParamsExpanded;
@@ -109,6 +113,8 @@ class WareWidget : public QWidget
     virtual void updateWidgetBackground();
 
     void updateBuildInfoIcons(bool Debug,bool Speed);
+
+    void findDocFile(const std::string& WarePath, const openfluid::ware::WareID_t& WareID);
 
     bool addParameterWidget(const QString& Name, const QString& Value);
 

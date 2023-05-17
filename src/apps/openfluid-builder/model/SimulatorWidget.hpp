@@ -52,17 +52,12 @@ class SimulatorWidget : public ModelItemWidget
 
   private:
 
-
     bool m_IsTranslated;
-
-    std::string m_DocFilePath;
     
     void updateParametersList();
 
     void updateParametersListWithSignature(const openfluid::ware::SimulatorSignature* Signature);
 
-    void findDocFile(const openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature>& Container);
-    
     bool isClickable() 
     {
       return true;
@@ -76,8 +71,6 @@ class SimulatorWidget : public ModelItemWidget
     void removeParameterFromList(const QString& Name);
 
     void notifySrcGenerateAsked();
-
-    void openDocFile();
 
 
   signals:

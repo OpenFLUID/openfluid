@@ -85,6 +85,9 @@ void ObserverWidget::refresh()
 
   if (Container.isValid() && Container.hasSignature())
   {
+    findDocFile(Container.getPath(),Container.signature()->ID);
+    ui->DocButton->setVisible(!m_DocFilePath.empty());
+
     QString BuildType = QString::fromStdString(Container.signature()->BuildInfo.BuildType);
     updateBuildInfoIcons(BuildType.contains("DEB"),BuildType == "RELEASE" || BuildType == "RELWITHDEBINFO");
 

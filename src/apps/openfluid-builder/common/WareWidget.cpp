@@ -38,8 +38,11 @@
 
 
 #include <QMessageBox>
+#include <QDesktopServices>
 
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 
 #include "builderconfig.hpp"
@@ -74,6 +77,9 @@ WareWidget::WareWidget(QWidget* Parent,
 
 
   ui->DocButton->setVisible(false);
+  ui->DocButton->setText("");
+  ui->DocButton->setIcon(openfluid::ui::common::getIcon("view-doc","/builder"));
+  ui->DocButton->setIconSize(QSize(16,16));
 
   ui->UpButton->setText("");
   ui->UpButton->setIcon(openfluid::ui::common::getIcon("go-up","/ui/common"));
@@ -110,6 +116,8 @@ WareWidget::WareWidget(QWidget* Parent,
 
   connect(ui->ShowHideParamsLabel,SIGNAL(clicked()),this,SLOT(updateShowHideParams()));
   connect(ui->EnabledCheckBox,SIGNAL(toggled(bool)),this,SLOT(setEnabledWare(bool)));
+
+  connect(ui->DocButton,SIGNAL(clicked()),this,SLOT(openDocFile()));
 
   connect(ui->UpButton,SIGNAL(clicked()),this,SLOT(notifyUpClicked()));
   connect(ui->DownButton,SIGNAL(clicked()),this,SLOT(notifyDownClicked()));
@@ -203,6 +211,24 @@ void WareWidget::updateBuildInfoIcons(bool Debug,bool Speed)
   ui->DebugIconLabel->setToolTip(QString("Built with debug information : %1").arg(Debug ? "yes" : "no"));
   ui->SpeedIconLabel->setEnabled(Speed);
   ui->SpeedIconLabel->setToolTip(QString("Optimized for speed : %1").arg(Speed ? "yes" : "no"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::findDocFile(const std::string& WarePath, const openfluid::ware::WareID_t& WareID)
+{
+  m_DocFilePath.clear();
+
+  std::string BasePath = openfluid::tools::FilesystemPath(WarePath).dirname();
+  std::string ExpectedFilePath = openfluid::tools::Filesystem::joinPath({BasePath,WareID+".pdf"});
+
+  if (openfluid::tools::FilesystemPath(ExpectedFilePath).isFile())
+  {
+    m_DocFilePath = ExpectedFilePath;
+  }
 }
 
 
@@ -423,6 +449,21 @@ void WareWidget::prepareWareUpdate()
 void WareWidget::updateWare()
 {
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::openDocFile()
+{
+  if (!m_DocFilePath.empty())
+  {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(m_DocFilePath)));
+    QApplication::restoreOverrideCursor();
+  }
 }
 
 
