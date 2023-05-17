@@ -271,8 +271,45 @@ void WareSrcUIContainer::build()
 
 void WareSrcUIContainer::generateDoc()
 {
-  // TOIMPL
-  QMessageBox::critical(nullptr,"Generate doc","not implemented",QMessageBox::Close);
+  if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "CMake program not available");
+  }
+
+
+  mp_Stream->clear();
+  m_Messages.clear();
+
+
+  // run configure if build dir does not exist
+  if (!openfluid::tools::FilesystemPath(m_BuildDirPath).exists())
+  {
+    configure();
+
+    while (!mp_Process->waitForFinished(200))  // TODO better to replace this by a threaded process
+    {
+      qApp->processEvents();
+    }
+
+    mp_Stream->write(
+      WareSrcMsgParser::WareSrcMsg(
+        "\n================================================================================\n\n\n",
+        WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND
+      )
+    );
+  }
+
+  delete mp_CurrentParser;
+  mp_CurrentParser = new WareSrcMsgParserGcc();
+
+
+  // === build and run command
+
+  openfluid::utils::Process::Command Cmd =
+    openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,getGenerateDocTarget());
+
+  runCommand(Cmd, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
 }
 
 
