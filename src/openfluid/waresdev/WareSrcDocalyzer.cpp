@@ -738,12 +738,63 @@ void WareSrcDocalyzer::processReadmeContent()
 // =====================================================================
 
 
-void WareSrcDocalyzer::integrateDocument() const
+void WareSrcDocalyzer::processContent(const std::string& Format)
+{
+  if (Format == "tex")
+  {
+    mp_Listener->stageMessage("Processing LaTeX content");
+    processLatexContent();
+  }
+  else if (Format == "Rmd")
+  {
+    mp_Listener->stageMessage("Processing R Markdown content");
+    processRmarkdownContent();
+  }
+  else if (Format == "md")
+  {
+    mp_Listener->stageMessage("Processing Markdown content");
+    processMarkdownContent();
+  }
+  else if (Format == "readme")
+  {
+    mp_Listener->stageMessage("Processing README.md content");
+    processReadmeContent();
+  }
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"unknown content format");
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcDocalyzer::integrateDocument(const std::string& Format) const
 {
   // Merge signature and content in a unique LaTeX doc
 
-
+  std::string DocSource = "undefined source";
   std::string DocalyzerStr = "openfluid-docalyzer"; // root file name for layout and style files
+
+
+  if (Format == "tex")
+  {
+    DocSource = "\\LaTeX\\ doc";
+  }
+  else if (Format == "Rmd")
+  {
+    DocSource = "R Markdown doc";
+  }
+  else if (Format == "md")
+  {
+    DocSource = "Markdown doc";
+  }
+  else if (Format == "readme")
+  {
+    DocSource = "README.md file";
+  }
 
   // Manage standard or custom layout
   if (!m_WorkPathObj.fromThis({openfluid::config::WARESDEV_DOC_DIR,DocalyzerStr+".tex"}).isFile())
@@ -761,14 +812,14 @@ void WareSrcDocalyzer::integrateDocument() const
                                                                    DocalyzerStr+".cls"}).toGeneric());
   }
 
-
   // Render integrated document using template
   openfluid::tools::TemplateProcessor::Data TplData = {
     {"docstyle",DocalyzerStr},
     {"wareid",TexSignature::toFriendly(m_DocData.ID)},
     {"waretype",TexSignature::toFriendly(m_DocData.getTypeAsText())},
     {"signature",m_DocData.Signature},
-    {"content",m_DocData.Content}
+    {"content",m_DocData.Content},
+    {"source",DocSource}
   };
 
   openfluid::tools::TemplateProcessor::Errors TplErrors;
@@ -948,29 +999,10 @@ void WareSrcDocalyzer::performDocalyze(bool KeepWorkData, bool IncludeEmptyField
     mp_Listener->stageMessage("Processing signature");
     processSignature(IncludeEmptyFields);
 
-    if (Format == "tex")
-    {
-      mp_Listener->stageMessage("Processing LaTeX content");
-      processLatexContent();
-    }
-    else if (Format == "Rmd")
-    {
-      mp_Listener->stageMessage("Processing R Markdown content");
-      processRmarkdownContent();
-    }
-    else if (Format == "md")
-    {
-      mp_Listener->stageMessage("Processing Markdown content");
-      processMarkdownContent();
-    }
-    else if (Format == "readme")
-    {
-      mp_Listener->stageMessage("Processing README.md content");
-      processReadmeContent();
-    }
+    processContent(Format);
     
     mp_Listener->stageMessage("Integrating full document");
-    integrateDocument();
+    integrateDocument(Format);
 
     buildDocument();
   }

@@ -117,7 +117,9 @@ class OPENFLUID_API WareSrcDocalyzer
 
     void processReadmeContent();
 
-    void integrateDocument() const;
+    void processContent(const std::string& Format);
+
+    void integrateDocument(const std::string& Format) const;
 
     void buildDocument() const;
  

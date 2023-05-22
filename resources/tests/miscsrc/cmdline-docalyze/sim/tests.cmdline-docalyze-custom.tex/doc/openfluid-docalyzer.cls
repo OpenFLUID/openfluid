@@ -6,14 +6,18 @@
 \LoadClass[a4paper,10pt]{article}
 
 % packages
+\RequirePackage[utf8x]{inputenc}
+\RequirePackage[T1]{fontenc}
 \RequirePackage[english]{babel}
 \RequirePackage{tabularx}
 \RequirePackage{hyperref}
 \RequirePackage[margin=2cm]{geometry}
 \RequirePackage{ucs}
-\RequirePackage[utf8x]{inputenc}
 \RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{cmbright} 
 \RequirePackage{enumitem}
+\RequirePackage{framed}
 
 \hypersetup{
   colorlinks=true,
