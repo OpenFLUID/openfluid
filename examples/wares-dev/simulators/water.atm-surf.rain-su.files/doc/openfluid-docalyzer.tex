@@ -1,0 +1,45 @@
+
+\documentclass{##docstyle##}
+
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{floatflt}
+%\usepackage{tikz}
+
+\setlength{\columnsep}{0.7cm}
+
+\bibliographystyle{plain}
+
+\definecolor{forestgreen}{rgb}{0.13,0.54,0.13}
+
+\begin{document}
+
+\begin{center}
+  {##waretype##}\\
+  \vspace{0.8em}
+  {\huge \bfseries ##wareid##}\\
+\end{center}\\
+\vspace{1.5em}
+
+##signature##
+
+\vspace{1.5em}
+
+\begin{multicols}{2}
+
+##content##
+
+\end{multicols}
+
+\vspace{3em}
+
+\begin{small}
+\begin{flushright}Rendered from ##source##\\
+using OpenFLUID docalyzer\\
+\textit{\today}
+\end{flushright}
+\end{small}
+
+\end{document}
