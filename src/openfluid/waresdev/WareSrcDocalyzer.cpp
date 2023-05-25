@@ -824,6 +824,7 @@ void WareSrcDocalyzer::integrateDocument(const std::string& Format) const
 
   openfluid::tools::TemplateProcessor::Errors TplErrors;
   openfluid::tools::TemplateProcessor TplProc("##","##");
+  TplProc.ignoreUnknown(true); // ignore unknown template patterns found in doc
   TplProc.renderFile(m_WorkPathObj.fromThis({openfluid::config::WARESDEV_DOC_DIR,DocalyzerStr+".tex"}).toGeneric(),
                      getGeneratedFilePath("integrated").toGeneric(),TplData,TplErrors);
 

@@ -217,7 +217,7 @@ int main(int argc, char **argv)
 
   auto DocCmd = openfluid::utils::CommandLineCommand("docalyze","Build documentation of a ware"); // TOIMPL
   DocCmd.addOptions({{"src-path","s","path to the ware sources",true}});
-  DocCmd.addOptions({{"input-format","s","input format of documentation sources "
+  DocCmd.addOptions({{"input-format","i","input format of documentation sources "
                                          "(tex|Rmd|md|readme|auto, auto is default)",true}});
   DocCmd.addOptions({{"output-format","b","output format of built documentation "
                                           "(pdf, pdf is default)",true}});
