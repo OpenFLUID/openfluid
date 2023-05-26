@@ -76,6 +76,18 @@ std::string OPENFLUID_API replaceEmptyString(std::string SourceStr,
 
 
 /**
+  Compares two OpenFLUID software versions. Only numeric numbers are accepted (no alphabetic character)
+  @param[in] VersionA the first version number
+  @param[in] VersionB the second version number
+  @return 1 if VersionA is greater than VersionB,
+          -1 if VersionB is greater than VersionA,
+          0 if versions are equals,
+          -2 if a version format is not well-formed
+*/
+int OPENFLUID_API compareVersions(const std::string& VersionA, const std::string& VersionB);
+
+
+/**
   Compares two OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
   @param[in] VersionA the first version number
   @param[in] VersionB the second version number
@@ -85,7 +97,8 @@ std::string OPENFLUID_API replaceEmptyString(std::string SourceStr,
           0 if versions are equals,
           -2 if a version format is not well-formed
 */
-int OPENFLUID_API compareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
+int OPENFLUID_API compareOpenFLUIDVersions(const std::string& VersionA, const std::string& VersionB, 
+                                           bool Strict = true);
 
 
 /**

@@ -75,20 +75,34 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.1"),0);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.1",false),0);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~alpha8","1.6.1"),-1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~alpha8","1.6.1~alpha1"),1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~alpha8","1.6.1~alpha1", false),0);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~alpha8","1.6.1~rc1"),-1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~alpha8","1.6.1~rc1",false),0);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~rc1","1.6.1~alpha8"),1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~rc1","1.6.1~alpha8",false),0);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.11","1.6.3"),1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.0.0","1.6.3"),-1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.7.0","1.6.3"),1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.a.0","1.6.3"),-2);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~rc1","1.6.1~RC1"),0);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1~rc1","1.6.1+18"),-2);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.2"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.2","1.6.1"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("3.1.2","2.1.11"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.a"),-2);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("a","1.6"),-2);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("","1.6"),-2);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("",""),-2);
+
+
+  // ---------------------------------------------------------------------
+
+
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1","1.6.1"),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1","1.6.1",false),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~alpha8","1.6.1"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~alpha8","1.6.1~alpha1"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~alpha8","1.6.1~alpha1", false),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~alpha8","1.6.1~rc1"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~alpha8","1.6.1~rc1",false),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~rc1","1.6.1~alpha8"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~rc1","1.6.1~alpha8",false),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.11","1.6.3"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.0.0","1.6.3"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.7.0","1.6.3"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.a.0","1.6.3"),-2);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~rc1","1.6.1~RC1"),0);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareOpenFLUIDVersions("1.6.1~rc1","1.6.1+18"),-2);
 
 
   // ---------------------------------------------------------------------

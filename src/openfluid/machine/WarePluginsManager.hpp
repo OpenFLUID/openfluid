@@ -145,7 +145,8 @@ class OPENFLUID_API WarePluginsManager
             {
               std::unique_ptr<std::string> ABIPtr(ABIVersionProc());
               Verified = 
-                (openfluid::tools::compareVersions(openfluid::config::VERSION_FULL,*ABIPtr,StrictABICheck) == 0);
+                (openfluid::tools::compareOpenFLUIDVersions(openfluid::config::VERSION_FULL,*ABIPtr,
+                                                            StrictABICheck) == 0);
             }
 
             if (Verified)

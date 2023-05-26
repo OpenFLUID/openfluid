@@ -37,6 +37,7 @@
 */
 
 
+#include <algorithm>
 #include <utility>
 #include <thread>
 #include <chrono>
@@ -131,7 +132,71 @@ std::string replaceEmptyString(std::string SourceStr,
 // =====================================================================
 
 
-int compareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict)
+int compareVersions(const std::string& VersionA, const std::string& VersionB)
+{
+  std::string LowCaseA = toLowerCase(trim(VersionA));
+  std::string LowCaseB = toLowerCase(trim(VersionB));
+
+
+  if (LowCaseA.empty())
+  {
+    return -2;
+  }
+  if (LowCaseB.empty())
+  {
+    return -2;
+  }
+  if (LowCaseA == LowCaseB)
+  {
+    return 0;
+  }
+
+
+  auto SplittedA = split(LowCaseA,".",false);
+  auto SplittedB = split(LowCaseB,".",false);
+
+  unsigned int MaxLen = std::max(SplittedA.size(),SplittedB.size());
+  std::vector<unsigned int> NumVectA(MaxLen,0);
+  std::vector<unsigned int> NumVectB(MaxLen,0);
+
+  
+  for (unsigned int i=0; i < SplittedA.size(); i++)
+  {
+    if (!toNumeric(SplittedA[i],NumVectA[i]))
+    {
+      return -2;
+    }
+  }
+
+  for (unsigned int i=0; i < SplittedB.size(); i++)
+  {
+    if (!toNumeric(SplittedB[i],NumVectB[i]))
+    {
+      return -2;
+    }
+  }
+
+  for (unsigned int i=0; i<MaxLen; i++)  // compares number to number
+  {
+    if (NumVectA[i] > NumVectB[i])
+    {
+      return -1;
+    }
+    else if (NumVectA[i] < NumVectB[i])
+    {
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int compareOpenFLUIDVersions(const std::string& VersionA, const std::string& VersionB, bool Strict)
 {
   std::string LowCaseA = boost::to_lower_copy(VersionA);
   std::string LowCaseB = boost::to_lower_copy(VersionB);
