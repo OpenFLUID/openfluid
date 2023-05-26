@@ -225,12 +225,12 @@ std::string WareSrcDocalyzer::DocData::getTypeAsText() const
 
 WareSrcDocalyzer::WareSrcDocalyzer(const std::string& SrcPath, const std::string& OutputPath, 
                                    WareSrcDocalyzerListener* Listener,
-                                   std::vector<std::string> InputFormats, const std::string& OutputFormat) : 
+                                   std::vector<std::string> InputFormats) : 
   m_SrcPathObj(SrcPath), m_OutPathObj(OutputPath), 
   m_DocalyzerSharePathObj({openfluid::base::Environment::getInstallPrefix(),openfluid::config::INSTALL_SHARE_PATH,
                            "openfluid","docalyzer"}),
   mp_Listener(Listener),
-  m_InputFormats(InputFormats), m_OutputFormat(OutputFormat)
+  m_InputFormats(InputFormats)
 {
   if (m_InputFormats.empty())
   {

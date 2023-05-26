@@ -68,8 +68,6 @@ class OPENFLUID_API WareSrcDocalyzer
     WareSrcDocalyzerListener* mp_Listener;
 
     std::vector<std::string> m_InputFormats;
-    
-    const std::string m_OutputFormat;
 
     openfluid::tools::FilesystemPath m_WorkPathObj;
 
@@ -132,10 +130,13 @@ class OPENFLUID_API WareSrcDocalyzer
 
     /**
       Constructs a docalyzer
-      @param[in] SrcPath The path to the sources to dacalyze
+      @param[in] SrcPath The path to the sources to docalyze
+      @param[in] OutputPath The path where to put the built documentation
+      @param Listener The Listener for Docalyzer actions
+      @param[in] InputFormats The doc format searched by the docalyzer (searches for all possible formats if empty)
     */
     WareSrcDocalyzer(const std::string& SrcPath, const std::string& OutputPath, WareSrcDocalyzerListener* Listener,
-                     std::vector<std::string> InputFormats, const std::string& OutputFormat);
+                     std::vector<std::string> InputFormats);
 
     void performDocalyze(bool KeepWorkData = false, bool IncludeEmptyFields = false);
 

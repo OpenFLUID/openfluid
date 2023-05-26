@@ -219,8 +219,6 @@ int main(int argc, char **argv)
   DocCmd.addOptions({{"src-path","s","path to the ware sources",true}});
   DocCmd.addOptions({{"input-format","i","input format of documentation sources "
                                          "(tex|Rmd|md|readme|auto, auto is default)",true}});
-  DocCmd.addOptions({{"output-format","b","output format of built documentation "
-                                          "(pdf, pdf is default)",true}});
   DocCmd.addOptions({{"output-path","d","path where is put the built documentation",true}});
   DocCmd.addOptions({{"include-empty-fields","e","include empty fields of the signature in the built documentation"}});
   DocCmd.addOptions({{"keep-data","k","keep docalyze data once finished (default is disabled)"}});

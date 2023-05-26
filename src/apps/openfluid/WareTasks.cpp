@@ -458,16 +458,6 @@ int WareTasks::processDocalyze() const
     return error("unknown input format for documentation sources");
   }
 
-  std::string OutputFormat = "";
-  if (m_Cmd.isOptionActive("output-format"))
-  {
-    OutputFormat = m_Cmd.getOptionValue("output-format");
-  }
-  if (!OutputFormat.empty() && OutputFormat != "pdf")
-  {
-    return error("unknown output format for built documentation");
-  }
-
   std::string OutputPath = "";
   if (m_Cmd.isOptionActive("output-path"))
   {
@@ -479,7 +469,7 @@ int WareTasks::processDocalyze() const
     auto Listener = std::make_unique<DefaultDocalyzeListener>();
     Listener->setVerbose(true); // TODO manage this consistently with ware migration command line
     auto Docalyzer = openfluid::waresdev::WareSrcDocalyzer(m_Cmd.getOptionValue("src-path"),OutputPath,Listener.get(),
-                                                           InputFormats,OutputFormat);
+                                                           InputFormats);
     Docalyzer.performDocalyze(m_Cmd.isOptionActive("keep-data"),m_Cmd.isOptionActive("include-empty-fields"));
   }
   catch(const openfluid::base::FrameworkException& E)
