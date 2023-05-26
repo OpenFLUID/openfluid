@@ -14,7 +14,7 @@ if (file.exists(args[2])) {
   # with the "--citeproc" option to manage bibliography
   rmarkdown::pandoc_convert(args[2], to = "latex",
                             output = args[3],
-                            options = "--citeproc")
+                            citeproc = TRUE)
   quit(status = (!file.exists(args[3])))
 
 } else {

@@ -50,6 +50,7 @@
 #include <openfluid/tools/TemplateProcessor.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/PandocProxy.hpp>
 #include <openfluid/thirdparty/JSON.hpp>
 #include <openfluid/waresdev/WareSignatureSerializer.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
@@ -663,25 +664,19 @@ void WareSrcDocalyzer::processMarkdownContent()
 {
   // Render content in LaTeX
 
-  auto ExtProg =
-      openfluid::utils::ExternalProgram::getRegisteredProgram(
-        openfluid::utils::ExternalProgram::RegisteredPrograms::Pandoc);
-
-  if (!ExtProg.isFound())
+  if (!openfluid::utils::PandocProxy::isAvailable())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "pandoc program is required but not found in PATH");
   }
 
-  openfluid::utils::Process::Command Cmd = 
-  {
-    .Program = ExtProg.getFullProgramPath(), 
-    .Args = {"--from","markdown","--to","latex",
-             "--citeproc",
-             m_WorkPathObj.fromThis(getMainFileRelativePath("md")).toGeneric(),
-             "-o",getGeneratedFilePath("content").toGeneric()},
-    .WorkDir = m_WorkPathObj.fromThis(openfluid::config::WARESDEV_DOC_DIR).toGeneric()
-  };
+  openfluid::utils::Process::Command Cmd =
+    openfluid::utils::PandocProxy::getCommand("markdown",
+                                              m_WorkPathObj.fromThis(getMainFileRelativePath("md")).toGeneric(),
+                                              "latex",
+                                              getGeneratedFilePath("content").toGeneric(),
+                                              true);
+  Cmd.WorkDir = m_WorkPathObj.fromThis(openfluid::config::WARESDEV_DOC_DIR).toGeneric();
   Cmd.setOutErrFiles(m_WorkPathObj.toGeneric(),"process-content");
 
   if (openfluid::utils::Process::execute(Cmd) != 0)
@@ -703,25 +698,19 @@ void WareSrcDocalyzer::processReadmeContent()
 
   m_WorkPathObj.makeDirectory(openfluid::config::WARESDEV_DOC_DIR);
 
-  auto ExtProg =
-      openfluid::utils::ExternalProgram::getRegisteredProgram(
-        openfluid::utils::ExternalProgram::RegisteredPrograms::Pandoc);
-
-  if (!ExtProg.isFound())
+  if (!openfluid::utils::PandocProxy::isAvailable())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "pandoc program is required but not found in PATH");
   }
 
   openfluid::utils::Process::Command Cmd = 
-  {
-    .Program = ExtProg.getFullProgramPath(), 
-    .Args = {m_WorkPathObj.fromThis(getMainFileRelativePath("readme")).toGeneric(),
-             "-o",getGeneratedFilePath("content").toGeneric(),
-             "--from","markdown","--to","latex",
-             "--citeproc"},
-    .WorkDir = m_WorkPathObj.fromThis(openfluid::config::WARESDEV_DOC_DIR).toGeneric()
-  };
+    openfluid::utils::PandocProxy::getCommand("markdown",
+                                              m_WorkPathObj.fromThis(getMainFileRelativePath("readme")).toGeneric(),
+                                              "latex",
+                                              getGeneratedFilePath("content").toGeneric(),
+                                              true);
+  Cmd.WorkDir = m_WorkPathObj.fromThis(openfluid::config::WARESDEV_DOC_DIR).toGeneric();
   Cmd.setOutErrFiles(m_WorkPathObj.toGeneric(),"process-content");
 
   if (openfluid::utils::Process::execute(Cmd) != 0)

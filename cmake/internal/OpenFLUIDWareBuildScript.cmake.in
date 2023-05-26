@@ -77,8 +77,9 @@ ENDIF()
 
 SET(ENV{OPENFLUID_INSTALL_PREFIX} @CMAKE_SOURCE_DIR@) # Force docalyzer to use resources files located in sources tree
 
+SET(_DOCALIZE_IS_ENABLED @OFBUILD_ENABLE_DOCALYZER@)
 
-IF (WARE_WITH_DOCALYZE)
+IF (WARE_WITH_DOCALYZE AND _DOCALIZE_IS_ENABLED)
   # check pdflatex/bibtex/pandoc are installed
   FIND_PROGRAM(_DOCALYZER_PANDOC NAMES pandoc pandoc.exe)
   FIND_PROGRAM(_DOCALYZER_PDFLATEX NAMES pdflatex pdflatex.exe)
