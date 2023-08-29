@@ -34,6 +34,7 @@
   @file WareIssues.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -43,21 +44,20 @@
 namespace openfluid { namespace ware {
 
 
+// =====================================================================
+// =====================================================================
+
+
 void WareIssues::add(const WareIssue& Issue)
 {
-  unsigned int ID = 0;
-
-  for (const auto& Iss : m_Issues)
+  if (m_Issues.find(Issue.ID) == m_Issues.end()) 
   {
-    if (Iss.first > ID)
-    {
-      ID = Iss.first;
-    }
+    m_Issues[Issue.ID] = Issue;
   }
-
-  ID++;
-
-  m_Issues[ID] = Issue;
+  else
+  {
+    throw openfluid::base::FrameworkException("Issue ID already in list");
+  }
 }
 
 
@@ -75,9 +75,16 @@ void WareIssues::insert(const WareIssue& Issue, unsigned int ID)
 // =====================================================================
 
 
-void WareIssues::remove(int /*ID*/)
+void WareIssues::remove(unsigned int ID)
 {
-  throw openfluid::base::FrameworkException("not implemented"); // TOIMPL
+  if (m_Issues.find(ID) == m_Issues.end()) 
+  {
+    throw openfluid::base::FrameworkException("ID not in Ware Issues");
+  }
+  else
+  {
+    m_Issues.erase(ID);
+  }
 }
 
 
@@ -85,9 +92,17 @@ void WareIssues::remove(int /*ID*/)
 // =====================================================================
 
 
-const WareIssue& WareIssues::get(int /*ID*/) const
+const WareIssue& WareIssues::get(unsigned int ID) const
 {
-  throw openfluid::base::FrameworkException("not implemented"); // TOIMPL
+  const auto& IssueIt = m_Issues.find(ID);
+  if (IssueIt == m_Issues.end())
+  {
+    throw openfluid::base::FrameworkException("ID not in Ware Issues");
+  }
+  else
+  {
+    return IssueIt->second;
+  }
 }
 
 

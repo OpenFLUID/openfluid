@@ -58,7 +58,7 @@
 const auto WorkPath = openfluid::tools::Path({CONFIGTESTS_OUTPUT_DATA_DIR,"SignatureSerializer","builderext"});
 
 
-openfluid::builderext::BuilderExtensionSignature getRefSignature()
+openfluid::builderext::BuilderExtensionSignature getBuilderextRefSignature()
 {
   openfluid::builderext::BuilderExtensionSignature Sign;
 
@@ -82,7 +82,7 @@ openfluid::builderext::BuilderExtensionSignature getRefSignature()
     {"OpenFLUID community","community.openfluid-project.org"}
   };
 
-  Sign.Issues.add({"Issue Z","This is the issue Z",{"bug","UI"},"Jack",
+  Sign.Issues.add({100,"Issue Z","This is the issue Z",{"bug","UI"},"Jack",
                    openfluid::core::DateTime(1985,10,21,19,47,11),
                    openfluid::core::DateTime::now(),true});
 
@@ -121,7 +121,7 @@ void compareSignatures(const openfluid::builderext::BuilderExtensionSignature& S
 
 BOOST_AUTO_TEST_CASE(write_json)
 {
-  auto Sign = getRefSignature();
+  auto Sign = getBuilderextRefSignature();
 
   openfluid::waresdev::BuilderextSignatureSerializer()
                        .writeToJSONFile(Sign,WorkPath.fromThis("openfluid-ware.json").toGeneric());
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(write_json)
 
 BOOST_AUTO_TEST_CASE(write_cpp)
 {
-  auto Sign = getRefSignature();
+  auto Sign = getBuilderextRefSignature();
 
   openfluid::waresdev::BuilderextSignatureSerializer()
                        .writeToWareCPPFile(Sign,WorkPath.fromThis("signature.cpp").toGeneric());
@@ -147,7 +147,8 @@ BOOST_AUTO_TEST_CASE(write_cpp)
 
 BOOST_AUTO_TEST_CASE(read_json)
 {
-  auto SignRef = getRefSignature();
+  auto SignRef = getBuilderextRefSignature();
+  BOOST_REQUIRE_NO_THROW(SignRef.Issues.get(100));
   auto Sign = 
     openfluid::waresdev::BuilderextSignatureSerializer()
                          .readFromJSONFile(WorkPath.fromThis("openfluid-ware.json").toGeneric());

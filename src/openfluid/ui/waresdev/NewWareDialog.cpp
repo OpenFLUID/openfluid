@@ -324,4 +324,14 @@ QString NewWareDialog::getBuilderextMenuText() const
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+bool NewWareDialog::openSignature() const
+{
+  return ui->SignatureCheckBox->isChecked();
+}
+
+
 } } }  // namespaces

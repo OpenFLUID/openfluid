@@ -115,6 +115,7 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
 
   if (Info.IsWareDirectory || Info.IsWareFile)
   {
+
     openfluid::ui::waresdev::WareSrcWidget* Widget = 
       m_WareSrcWidgetByPath.value(QString::fromStdString(Info.AbsoluteWarePath), 0);
 
@@ -165,15 +166,33 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
               this, SLOT(onOperationRequestedOnWare(const QString&, const QString&)));
     }
 
-    if (Info.IsWareFile)
+
+    if (Info.IsWareFile) 
     {
       Widget->openFileTab(Info);
     }
-
     mp_TabWidget->setCurrentWidget(Widget);
   }
   return true;
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openWarePath(const std::string& WarePath, bool EditSignature)
+{
+  const auto QWarePath = QString::fromStdString(WarePath);
+  openPath(QWarePath);
+  // check if open signature dialog requested
+  if (EditSignature)
+  {
+    openfluid::ui::waresdev::WareSrcWidget* Widget = 
+      m_WareSrcWidgetByPath.value(QWarePath, 0);
+    Widget->editSignature();
+  }
 }
 
 
@@ -1093,7 +1112,7 @@ void WareSrcWidgetCollection::newSimulatorFromGhost(const openfluid::ware::Simul
 
     if (!WarePath.empty())
     {
-      openPath(QString::fromStdString(WarePath));
+      openWarePath(WarePath, Dialog.openSignature());
     }
     else
     {
@@ -1172,7 +1191,7 @@ void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
 
       if (!WarePath.empty())
       {
-        openPath(QString::fromStdString(WarePath));
+        openWarePath(WarePath, Dialog.openSignature());
       }
       else
       {
@@ -1195,7 +1214,7 @@ void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
 
       if (!WarePath.empty())
       {
-        openPath(QString::fromStdString(WarePath));
+        openWarePath(WarePath, Dialog.openSignature());
       }
       else
       {
@@ -1220,7 +1239,7 @@ void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
 
       if (!WarePath.empty())
       {
-        openPath(QString::fromStdString(WarePath));
+        openWarePath(WarePath, Dialog.openSignature());
       }
       else
       {
@@ -1263,6 +1282,19 @@ void WareSrcWidgetCollection::showFindReplaceDialog()
   }
 
   mp_FindReplaceDialog->show(SelectedText);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::editSignatureRequested(const QString& Path)
+{
+  if (WareSrcWidget* Ware = currentWareWidget())
+  {
+    Ware->editSignature(Path);
+  }
 }
 
 

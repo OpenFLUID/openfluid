@@ -240,7 +240,12 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
   public slots:
 
+    void editSignatureRequested(const QString& Path="");
+    
     bool openPath(const QString& Path);
+
+    // generates ware widget and opens signature dialog if asked
+    void openWarePath(const std::string& WarePath, bool EditSignature);
 
     void setCurrent(const QString& Path);
 

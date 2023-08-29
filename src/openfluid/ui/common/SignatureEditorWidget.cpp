@@ -34,13 +34,18 @@
   @file SignatureEditorWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
-#include <openfluid/ui/common/SignatureEditorWidget.hpp>
-#include <openfluid/ui/config.hpp>
-#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/ui/common/SignatureEditorWidget.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/config.hpp>
+#include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
+#include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
+#include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
+#include <openfluid/builderext/BuilderExtensionSignature.hpp>
 
 #include "ui_SignatureEditorWidget.h"
 
@@ -52,6 +57,8 @@ SignatureEditorWidget::SignatureEditorWidget(QWidget* Parent):
   QTabWidget(Parent), ui(new Ui::SignatureEditorWidget), m_StaticID(false)
 {
   ui->setupUi(this);
+
+  mp_IssuesManager = ui->IssuesManagerWidget;
 
   setCurrentIndex(0);
   ui->IDLabel->setVisible(false);
@@ -146,6 +153,11 @@ void SignatureEditorWidget::initializeCommon(const openfluid::ware::WareSignatur
   }
 
   ui->StatusComboBox->setCurrentIndex(Signature->Status);
+
+  ui->TagsEdit->setText(QString::fromStdString(openfluid::tools::join(Signature->Tags, ";")));
+
+  mp_IssuesManager->loadContent(Signature->Issues);
+
 }
 
 
@@ -452,12 +464,6 @@ void SignatureEditorWidget::initialize(const openfluid::ware::SimulatorSignature
 {
   initializeCommon(&Signature);
 
-
-  ui->DomainEdit->setText(QString::fromStdString(Signature.Domain));
-  ui->ProcessEdit->setText(QString::fromStdString(Signature.Process));
-  ui->MethodEdit->setText(QString::fromStdString(Signature.Method));
-
-
   initializeParametersUIFromSignature(Signature);
 
   initializeExtrafilesUIFromSignature(Signature);
@@ -470,6 +476,46 @@ void SignatureEditorWidget::initialize(const openfluid::ware::SimulatorSignature
 
   initializeDynamicsUIFromSignature(Signature);
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureEditorWidget::initialize(const QString& SignaturePath)
+{
+  openfluid::ware::WareType Type = openfluid::waresdev::detectWareType(SignaturePath.toStdString());
+  
+
+  if (Type == openfluid::ware::WareType::SIMULATOR)
+  {
+    auto Signature = openfluid::waresdev::SimulatorSignatureSerializer().readFromJSONFile(SignaturePath.toStdString());
+
+    initialize(Signature);
+  }
+  else 
+  {
+    removeTab(1);//ParametersTab
+    removeTab(1);//AttributesTab
+    removeTab(1);//VariablesTab
+    removeTab(1);//DynamicsTab
+    if (Type == openfluid::ware::WareType::OBSERVER)
+    {
+      auto Signature = openfluid::waresdev::ObserverSignatureSerializer().readFromJSONFile(SignaturePath.toStdString());
+
+      initializeCommon(&Signature);
+    }
+    else if (Type == openfluid::ware::WareType::BUILDEREXT)
+    {
+      auto Signature = openfluid::waresdev::BuilderextSignatureSerializer().readFromJSONFile(
+        SignaturePath.toStdString());
+
+      initializeCommon(&Signature);
+
+      //TODO add custom tab for builderext type
+    }
+  }
 }
 
 
@@ -739,10 +785,8 @@ void SignatureEditorWidget::updateSignatureFromDynamicsUI(openfluid::ware::Simul
 // =====================================================================
 
 
-openfluid::ware::SimulatorSignature SignatureEditorWidget::getSignature() const
+void SignatureEditorWidget::updateSignatureFromCommonsUI(openfluid::ware::WareSignature& Signature) const
 {
-  openfluid::ware::SimulatorSignature Signature;
-
   if (m_StaticID)
   {
     Signature.ID = ui->IDLabel->text().toStdString();
@@ -772,11 +816,22 @@ openfluid::ware::SimulatorSignature SignatureEditorWidget::getSignature() const
     Signature.Status = openfluid::ware::STABLE;
   }  
 
+  Signature.Tags = openfluid::tools::split(ui->TagsEdit->text().toStdString(), ';');  // TOIMPL make split char generic
+  
+  Signature.Issues = mp_IssuesManager->getIssues();
+}
 
-  Signature.Domain = ui->DomainEdit->text().toStdString();
-  Signature.Process = ui->ProcessEdit->text().toStdString();
-  Signature.Method = ui->MethodEdit->text().toStdString();
 
+// =====================================================================
+// =====================================================================
+
+
+openfluid::ware::SimulatorSignature SignatureEditorWidget::getSignature() const
+{
+
+  openfluid::ware::SimulatorSignature Signature;
+
+  updateSignatureFromCommonsUI(Signature);
 
   updateSignatureFromParametersUI(Signature);
 
@@ -790,8 +845,40 @@ openfluid::ware::SimulatorSignature SignatureEditorWidget::getSignature() const
 
   updateSignatureFromDynamicsUI(Signature);
 
-
   return Signature;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool SignatureEditorWidget::exportSignature(const QString& SignaturePath) const
+{
+  openfluid::ware::WareType Type = openfluid::waresdev::detectWareType(SignaturePath.toStdString());
+ 
+  if (Type == openfluid::ware::WareType::SIMULATOR)
+  {
+    auto Signature = getSignature();
+    openfluid::waresdev::SimulatorSignatureSerializer().writeToJSONFile(Signature,SignaturePath.toStdString());
+    return true;
+  }
+  else if (Type == openfluid::ware::WareType::OBSERVER)
+  {
+    openfluid::ware::ObserverSignature Signature;
+    updateSignatureFromCommonsUI(Signature);
+    openfluid::waresdev::ObserverSignatureSerializer().writeToJSONFile(Signature,SignaturePath.toStdString());
+    return true;
+  }
+  else if (Type == openfluid::ware::WareType::BUILDEREXT)
+  {
+    openfluid::builderext::BuilderExtensionSignature Signature;
+    updateSignatureFromCommonsUI(Signature);
+    //TODO add specific fields for builderext
+    openfluid::waresdev::BuilderextSignatureSerializer().writeToJSONFile(Signature,SignaturePath.toStdString());
+    return true;
+  }
+  return false;
 }
 
 

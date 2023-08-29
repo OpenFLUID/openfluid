@@ -61,6 +61,7 @@
         <widget class="QLabel" name="label">
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -332,14 +333,15 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="JsonCheckBox">
+      <widget class="QCheckBox" name="SignatureCheckBox">
        <property name="font">
         <font>
+         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
        <property name="text">
-        <string>Create wareshub.json file</string>
+        <string>Open signature editor</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -384,7 +386,7 @@
   <tabstop>BextTypeComboBox</tabstop>
   <tabstop>BextCategoryComboBox</tabstop>
   <tabstop>BextMenutextEdit</tabstop>
-  <tabstop>JsonCheckBox</tabstop>
+  <tabstop>SignatureCheckBox</tabstop>
  </tabstops>
  <resources/>
  <connections/>

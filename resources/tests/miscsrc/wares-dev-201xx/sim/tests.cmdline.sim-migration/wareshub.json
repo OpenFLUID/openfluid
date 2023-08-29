@@ -4,8 +4,9 @@
   "status": "experimental",
   "license": "Apache-2.0",
   "external-deps": [],
-  "issues": {
-    "19" : {
+  "issues": [
+    {
+      "id":19,
       "title": "An issue",
       "creator": "john",
       "date": "2023-01-13",
@@ -14,5 +15,5 @@
       "description": "This is an issue",
       "urgency": "normal"
     }
-  }
+  ]
 }

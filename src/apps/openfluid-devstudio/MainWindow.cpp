@@ -225,6 +225,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(mp_ActionsCollection->action("Paste"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(pasteText()));
   connect(mp_ActionsCollection->action("FindReplace"), SIGNAL(triggered()), 
           mp_WidgetsCollection, SLOT(showFindReplaceDialog()));
+  connect(mp_ActionsCollection->action("EditSignature"), SIGNAL(triggered()), 
+          mp_WidgetsCollection, SLOT(editSignatureRequested()));
   connect(mp_ActionsCollection->action("GoToLine"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(goToLine()));
 
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(configure()));

@@ -136,6 +136,10 @@ void WareSrcActionsCollection::createActions()
     m_Actions["FindReplace"]->setShortcuts(QKeySequence::Find);
   }
 
+  m_Actions["EditSignature"] = new openfluid::ui::common::DefaultAction(
+                                   openfluid::ui::common::getIcon("edit-plugin","/ui/common",false),tr("Edit signature"),
+                                   this);
+
   m_Actions["GoToLine"] = new openfluid::ui::common::DefaultAction(tr("Go to line..."), this);
   if (m_WithShortcuts)
   {

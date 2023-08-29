@@ -39,43 +39,36 @@
 
 
 #include <QPushButton>
-#include <openfluid/ui/waresdev/WareshubIssueDialog.hpp>
+#include <openfluid/ui/common/WareshubIssueDialog.hpp>
 #include <openfluid/ui/config.hpp>
 
 #include "ui_WareshubIssueDialog.h"
 
 
-namespace openfluid { namespace ui { namespace waresdev {
+namespace openfluid { namespace ui { namespace common {
 
 
 // =====================================================================
 // =====================================================================
 
 
-WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent, const Issue& I) :
+WareshubIssueDialog::WareshubIssueDialog(const QList<unsigned int>& IDs, QWidget* Parent, const Issue& I) :
     openfluid::ui::common::MessageDialog(Parent),
     ui(new Ui::WareshubIssueDialog), m_IDs(IDs)
 {
   ui->setupUi(this);
 
-  ui->TypeComboBox->addItems(m_Types);
+  //ui->TypeComboBox->addItems(m_Types); //TODO enable this when type data rebuilt
   ui->StateComboBox->addItems(m_Statuses);
-  ui->UrgencyComboBox->addItems(m_Urgencies);
 
-
-  if (I.m_ID.isEmpty())
+  if (I.m_ID == 0)
   {
     setupMessageUi(tr("New issue"));
 
-    QList<int> SortedIntIDs;
-    bool Ok;
+    QList<unsigned int> SortedIntIDs;
     for (const auto& ID : IDs)
     {
-      int IntID = ID.toInt(&Ok);
-      if (Ok)
-      {
-        SortedIntIDs << IntID;
-      }
+      SortedIntIDs << ID;
     }
     if (SortedIntIDs.isEmpty())
     {
@@ -83,7 +76,7 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
     }
     else
     {
-      int Max = *std::max_element(SortedIntIDs.begin(), SortedIntIDs.end());
+      unsigned int Max = *std::max_element(SortedIntIDs.begin(), SortedIntIDs.end());
       ui->IDLineEdit->setText(QString("%1").arg(Max + 1));
     }
   }
@@ -91,21 +84,16 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
   {
     setupMessageUi(tr("Edit issue"));
     m_IDs.removeAll(I.m_ID);
-    ui->IDLineEdit->setText(I.m_ID);
+    ui->IDLineEdit->setText(QString::number(I.m_ID));
   }
   ui->IDLineEdit->setValidator(new QRegExpValidator(QRegExp("^[0-9a-zA-Z_-]*$"), this));
 
   ui->TitleLineEdit->setText(I.m_Title);
+  ui->TagsLineEdit->setText(I.m_Tags);
   ui->CreatorLineEdit->setText(I.m_Creator);
-  ui->DateDateEdit->setDate(I.m_Date);
+  ui->DateDateTimeEdit->setDateTime(I.m_DateCreation);
 
-  int Index = ui->TypeComboBox->findText(I.m_Type, Qt::MatchFixedString);
-  if (Index > -1)
-  {
-    ui->TypeComboBox->setCurrentIndex(Index);
-  }
-
-  Index = ui->StateComboBox->findText(I.m_State, Qt::MatchFixedString);
+  int Index = ui->StateComboBox->findText(I.m_State, Qt::MatchFixedString);
   if (Index > -1)
   {
     ui->StateComboBox->setCurrentIndex(Index);
@@ -113,16 +101,8 @@ WareshubIssueDialog::WareshubIssueDialog(const QStringList& IDs, QWidget* Parent
 
   ui->DescriptionTextEdit->setPlainText(I.m_Description);
 
-  Index = ui->UrgencyComboBox->findText(I.m_Urgency, Qt::MatchFixedString);
-  if (Index > -1)
-  {
-    ui->UrgencyComboBox->setCurrentIndex(Index);
-  }
-
   connect(ui->IDLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(onChanged()));
   connect(ui->TitleLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(onChanged()));
-  connect(ui->TypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onChanged()));
-
   onChanged();
 }
 
@@ -145,14 +125,13 @@ WareshubIssueDialog::Issue WareshubIssueDialog::getIssue()
 {
   Issue I;
 
-  I.m_ID = ui->IDLineEdit->text();
+  I.m_ID = ui->IDLineEdit->text().toUInt();
   I.m_Title = ui->TitleLineEdit->text();
   I.m_Creator = ui->CreatorLineEdit->text();
-  I.m_Date = ui->DateDateEdit->date();
-  I.m_Type = ui->TypeComboBox->currentText();
+  I.m_DateCreation = ui->DateDateTimeEdit->dateTime();
   I.m_State = ui->StateComboBox->currentText();
+  I.m_Tags = ui->TagsLineEdit->text();
   I.m_Description = ui->DescriptionTextEdit->toPlainText();
-  I.m_Urgency = ui->UrgencyComboBox->currentText();
 
   return I;
 }
@@ -164,12 +143,8 @@ WareshubIssueDialog::Issue WareshubIssueDialog::getIssue()
 
 void WareshubIssueDialog::onChanged()
 {
-  QString ID = ui->IDLineEdit->text();
-  if (ID.isEmpty())
-  {
-    setMessage(tr("ID cannot be empty"));
-  }
-  else if (m_IDs.contains(ID))
+  unsigned int ID = ui->IDLineEdit->text().toUInt();
+  if (m_IDs.contains(ID))
   {
     setMessage(tr("This ID already exists"));
   }  
@@ -177,10 +152,6 @@ void WareshubIssueDialog::onChanged()
   {
     setMessage(tr("Title cannot be empty"));
   }
-  else if (ui->TypeComboBox->currentText().isEmpty())
-  {
-    setMessage(tr("Type cannot be empty"));
-  }  
   else
   {
     setMessage();

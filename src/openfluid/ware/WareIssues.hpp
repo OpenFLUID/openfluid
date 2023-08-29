@@ -34,6 +34,7 @@
   @file WareIssues.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 #ifndef __OPENFLUID_WARE_WAREISSUES_HPP__
@@ -45,6 +46,8 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/thirdparty/JSON.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -56,6 +59,8 @@ enum class IssueUrgency { LOW, MEDIUM, HIGH };
 class OPENFLUID_API WareIssue
 {
   public:
+
+    unsigned int ID;
 
     std::string Title;
     
@@ -70,6 +75,55 @@ class OPENFLUID_API WareIssue
     openfluid::core::DateTime UpdatedAt;
 
     bool IsOpen = true;
+
+
+    openfluid::thirdparty::json toJSON(unsigned int NewID=0) const
+    {
+      if (NewID == 0)
+      {
+        NewID = ID;
+      }
+      auto IObj = openfluid::thirdparty::json::object();
+      IObj["id"] = NewID;
+      IObj["title"] = Title;
+      IObj["description"] = Description;
+      IObj["tags"] = Tags;
+      IObj["creator"] = Creator;
+      IObj["created_at"] = CreatedAt.getAsISOString();
+      IObj["updated_at"] = UpdatedAt.getAsISOString();
+      IObj["state"] = IsOpen ? "open" : "closed";
+      return IObj;
+    }
+
+    static WareIssue fromJSON(const openfluid::thirdparty::json& IssueJson)
+    {
+      WareIssue NewI;
+      if (!IssueJson.contains("id"))
+      {
+        throw openfluid::base::FrameworkException("Info not containing id");
+      }
+      if (IssueJson["id"].is_number_integer())
+      {
+        NewI.ID = IssueJson["id"].get<unsigned int>();
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException("Bad id format for ware issue");
+      }
+      NewI.Title = IssueJson.value("title","");
+      NewI.Description = IssueJson.value("description","");
+      if (IssueJson.contains("tags"))
+      {
+        NewI.Tags = IssueJson.value("tags",std::vector<std::string>());
+      }
+      
+      NewI.Creator = IssueJson.value("creator","");
+      NewI.CreatedAt = openfluid::core::DateTime::fromISOString(IssueJson.value("created_at",""));
+      NewI.UpdatedAt = openfluid::core::DateTime::fromISOString(IssueJson.value("updated_at",""));
+      NewI.IsOpen = (IssueJson.value("state","") != "closed");
+      return NewI;
+    }
+    //NOTE: issue comparison is implemented in waresdev/tests, move here as class method when needed
 };
 
 
@@ -103,13 +157,13 @@ class OPENFLUID_API WareIssues
       Removes the issue with the given ID (does nothing if the ID does not exist)
       @param[in] ID The ID of the issue to remove
     */
-    void remove(int ID);
+    void remove(unsigned int ID);
 
     /**
       Returns the issue with the given ID
       @param[in] ID The ID of the issue
     */
-    const WareIssue& get(int ID) const;
+    const WareIssue& get(unsigned int ID) const;
 
     /**
       Returns all the issues as a map indexed by issues ID

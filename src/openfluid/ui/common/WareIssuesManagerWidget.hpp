@@ -27,86 +27,84 @@
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
 
-*/
+ */
 
 /**
-  @file WareshubIssueDialog.hpp
+  @file WareIssuesManagerWidget.hpp
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
-#ifndef __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__
-#define __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_WAREISSUESMANAGERWIDGET_HPP__
+#define __OPENFLUID_UICOMMON_WAREISSUESMANAGERWIDGET_HPP__
 
 
-#include <QDate>
+#include <QLineEdit>
+#include <QComboBox>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ui/common/MessageDialog.hpp>
+#include <openfluid/ui/common/WareshubIssueDialog.hpp>
+#include <openfluid/thirdparty/JSON.hpp>
+#include <openfluid/ware/WareSignature.hpp>
 
 
 namespace Ui {
-class WareshubIssueDialog;
+  class WareIssuesManagerWidget;
 }
 
 
-namespace openfluid { namespace ui { namespace waresdev {
+namespace openfluid { namespace ui { namespace common {
 
 
-class OPENFLUID_API WareshubIssueDialog: public openfluid::ui::common::MessageDialog
+class OPENFLUID_API WareIssuesManagerWidget: public QWidget
 {
   Q_OBJECT
 
+  private:
 
-  public:
+    Ui::WareIssuesManagerWidget* ui;
 
-    struct Issue
-    {
-        QString m_ID;
-        QString m_Title;
-        QString m_Creator;
-        QDate m_Date;
-        QString m_Type;
-        QString m_State;
-        QString m_Description;
-        QString m_Urgency;
+    openfluid::thirdparty::json m_Doc;
 
-        Issue() :
-            m_Date(QDate::currentDate())
-        {
-        }
-    };
+    QMap<unsigned int, WareshubIssueDialog::Issue> m_IssuesByID;
+
+    void jsonIssuesToIssuesMap();
+
+    void issuesMapToJsonIssues();
+
+    void updateIssuesTable();
 
 
   private slots:
 
-    void onChanged();
+    void onRemoveIssueClicked();
 
+    void onEditIssueClicked();
 
-  private:
-
-    Ui::WareshubIssueDialog* ui;
-
-    QStringList m_IDs;
-
-    QString m_DefaultMessage;
-
-    QStringList m_Types = { "", "bug", "feature", "review" };
-
-    QStringList m_Statuses = { "open", "closed" };
-
-    QStringList m_Urgencies = { "low", "medium", "high" };
+    void onAddIssueClicked();
 
 
   public:
 
-    WareshubIssueDialog(const QStringList& IDs, QWidget* Parent = nullptr, const Issue& I = Issue());
+    WareIssuesManagerWidget(QWidget* Parent = nullptr);
 
-    virtual ~WareshubIssueDialog();
+    virtual ~WareIssuesManagerWidget();
 
-    Issue getIssue();
+    void loadContent(const openfluid::ware::WareIssues& WareIssues);
+    
+    openfluid::ware::WareIssues getIssues() const;
+
+    void updateContent();
+
+    QString getSelectedText();
+
+    bool isModified();
+
+    QWidget* getWidget();
+
 
 };
 
@@ -114,4 +112,4 @@ class OPENFLUID_API WareshubIssueDialog: public openfluid::ui::common::MessageDi
 } } } // namespaces
 
 
-#endif /* __OPENFLUID_UIWARESDEV_WARESHUBISSUEDIALOG_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_WAREISSUESMANAGERWIDGET_HPP__ */

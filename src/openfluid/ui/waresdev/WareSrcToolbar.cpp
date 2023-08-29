@@ -86,6 +86,8 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
   addSeparator();
   addAction(mp_ActionsCollection->action("FindReplace"));
   addSeparator();
+  addAction(mp_ActionsCollection->action("EditSignature"));
+  addSeparator();
   addAction(mp_ActionsCollection->action("ConfigureWare"));
   addAction(mp_ActionsCollection->action("BuildWare"));
   if (m_DisplayDocBuild)
@@ -114,6 +116,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
     SubMenu->addAction(mp_ActionsCollection->action("Copy"));
     SubMenu->addAction(mp_ActionsCollection->action("Cut"));
     SubMenu->addAction(mp_ActionsCollection->action("Paste"));
+    SubMenu->addAction(mp_ActionsCollection->action("EditSignature"));
     SubMenu->addAction(mp_ActionsCollection->action("FindReplace"));
     SubMenu->addAction(mp_ActionsCollection->action("GoToLine"));
 

@@ -83,9 +83,14 @@ class OPENFLUID_API EditSignatureDialog : public MessageDialog
     virtual ~EditSignatureDialog();
 
     void initialize(const openfluid::ware::SimulatorSignature& Signature,
-                        const QStringList& ExistingIDs = QStringList());
+                        const QStringList& ExistingIDs = QStringList()); // used for ghosts
+
+    void initialize(const QString& Path,
+                    const QStringList& ExistingIDs = QStringList());
 
     openfluid::ware::SimulatorSignature getSignature() const;
+
+    bool exportSignature(QString Path) const;
 };
 
 

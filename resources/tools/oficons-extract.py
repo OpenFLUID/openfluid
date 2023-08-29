@@ -105,6 +105,7 @@ BaseSet['import'] = ['action','system_update_alt',True,True,False]
 
 ExtSet['file-explorer'] = ['file-tree',False,True,False]
 ExtSet['dev-wares'] = ['code-braces',False,True,False]
+ExtSet['edit-plugin'] = ['puzzle-edit',True,True,True]
 ExtSet['ghost2sim'] = ['code-json',False,True,False]
 ExtSet['log-view'] = ['message-text-outline',False,True,False]
 ExtSet['export'] = ['export',False,True,False]

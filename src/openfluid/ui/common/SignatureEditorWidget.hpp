@@ -45,6 +45,8 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/ui/common/WareIssuesManagerWidget.hpp>
+#include <openfluid/waresdev/WareSignatureSerializer.hpp>
 
 
 namespace Ui
@@ -75,9 +77,13 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     bool m_StaticID;
 
+    openfluid::ui::common::WareIssuesManagerWidget* mp_IssuesManager;
+
     void initializeCommon(const openfluid::ware::WareSignature* Signature);
 
     void initializeID(const QString& ID);
+
+    void initializeIssuesUIFromSignature(const openfluid::ware::WareSignature& Signature);
 
     void initializeParametersUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
 
@@ -90,6 +96,8 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
     void initializeVariablesUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
 
     void initializeDynamicsUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
+
+    void updateSignatureFromCommonsUI(openfluid::ware::WareSignature& Signature) const;
 
     void updateSignatureFromParametersUI(openfluid::ware::SimulatorSignature& Signature) const;
 
@@ -115,9 +123,13 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     virtual ~SignatureEditorWidget();
 
-    void initialize(const openfluid::ware::SimulatorSignature& Signature);
+    void initialize(const openfluid::ware::SimulatorSignature& Signature);  // used by ghosts
+    
+    void initialize(const QString& SignaturePath);
 
-    openfluid::ware::SimulatorSignature getSignature() const;
+    openfluid::ware::SimulatorSignature getSignature() const; // used for ghosts
+
+    bool exportSignature(const QString& SignaturePath) const;
 
     bool isValidID() const;
 

@@ -41,6 +41,21 @@
 #define __OPENFLUID_WARESDEVTESTS_SIGNATURECOMMON_HPP__
 
 
+void compareIssues(const openfluid::ware::WareIssue S1, openfluid::ware::WareIssue S2)
+{
+  BOOST_CHECK_EQUAL(S1.Title,S2.Title);
+  BOOST_CHECK_EQUAL(S1.Description,S2.Description);
+  BOOST_CHECK_EQUAL_COLLECTIONS(S1.Tags.begin(),S1.Tags.end(),S2.Tags.begin(),S2.Tags.end());
+  BOOST_CHECK_EQUAL(S1.Creator,S2.Creator);
+  BOOST_CHECK(S1.CreatedAt == S2.CreatedAt);
+  BOOST_CHECK_EQUAL(S1.IsOpen,S2.IsOpen);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 template<typename SignatureType>
 void compareSignaturesBase(const SignatureType& Sign1,const SignatureType& Sign2)
 {
@@ -74,15 +89,10 @@ void compareSignaturesBase(const SignatureType& Sign1,const SignatureType& Sign2
   BOOST_REQUIRE_EQUAL(Sign1.Issues().size(),Sign2.Issues().size()); 
   for (const auto& S1 : Sign1.Issues())
   {
+    BOOST_REQUIRE_NO_THROW(Sign2.Issues.get(S1.first));
     auto S2 = Sign2.Issues().at(S1.first);
 
-    BOOST_CHECK_EQUAL(S1.second.Title,S2.Title);
-    BOOST_CHECK_EQUAL(S1.second.Description,S2.Description);
-    BOOST_CHECK_EQUAL_COLLECTIONS(S1.second.Tags.begin(),S1.second.Tags.end(),S2.Tags.begin(),S2.Tags.end());
-    BOOST_CHECK_EQUAL(S1.second.Creator,S2.Creator);
-    BOOST_CHECK(S1.second.CreatedAt == S2.CreatedAt);
-    BOOST_CHECK(S1.second.UpdatedAt == S2.UpdatedAt);
-    BOOST_CHECK_EQUAL(S1.second.IsOpen,S2.IsOpen);
+    compareIssues(S1.second, S2);
   }
 }
 
