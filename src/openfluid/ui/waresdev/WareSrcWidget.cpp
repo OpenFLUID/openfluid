@@ -46,15 +46,20 @@
 
 
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/TextEditMsgStream.hpp>
 #include <openfluid/ui/waresdev/WareBuildOptionsDialog.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
-#include <openfluid/ui/waresdev/WareshubJsonEditor.hpp>
+#include <openfluid/ui/common/MessageFrame.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/waresdev/WareBuildOptions.hpp>
+#include <openfluid/waresdev/WareSignatureSerializer.hpp>
+#include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
+
+#include <openfluid/config.hpp>
 
 #include "ui_WareSrcWidget.h"
 
@@ -168,6 +173,7 @@ QToolButton {
   connect(mp_ActionsCollection->action("Cut"), SIGNAL(triggered()), this, SLOT(cutText()));
   connect(mp_ActionsCollection->action("Paste"), SIGNAL(triggered()), this, SLOT(pasteText()));
   connect(mp_ActionsCollection->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
+  connect(mp_ActionsCollection->action("EditSignature"), SIGNAL(triggered()), this, SLOT(editSignature()));//TOIMPL
   connect(mp_ActionsCollection->action("GoToLine"), SIGNAL(triggered()), this, SLOT(goToLine()));
 
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), this, SLOT(configure()));
@@ -267,46 +273,28 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
                                   const QString& TabTooltip)
 {
   WareFileEditor* Editor;
+  bool IsMeta = false;
 
-  if (QFileInfo(AbsolutePath).fileName() == "wareshub.json")
+  if (QFileInfo(AbsolutePath).fileName().toStdString() == openfluid::config::WARESDEV_WAREMETA_FILE)
   {
-    try
+    IsMeta = true;
+  }
+  WareSrcFileEditor* SrcEditor = new WareSrcFileEditor(AbsolutePath, this);
+
+  for (WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
+  {
+    if (Msg.m_Path == AbsolutePath)
     {
-      WareshubJsonEditor* JsonEditor = new WareshubJsonEditor(AbsolutePath, this);
-
-      connect(JsonEditor, SIGNAL(editorChanged(WareFileEditor*,bool)), this,
-              SLOT(onEditorTxtModified(WareFileEditor*,bool)));
-
-      connect(JsonEditor, SIGNAL(editorSaved()), this, SIGNAL(editorSaved()));
-
-      Editor = JsonEditor;
-    }
-    catch (std::exception& e)
-    {
-      QMessageBox::critical(this, tr("File error"), QString::fromUtf8(e.what()));
-      return;
+      SrcEditor->addLineMessage(Msg);
     }
   }
-  else
-  {
-    WareSrcFileEditor* SrcEditor = new WareSrcFileEditor(AbsolutePath, this);
 
-    for (WareSrcMsgParser::WareSrcMsg Msg : m_Container.getMessages())
-    {
-      if (Msg.m_Path == AbsolutePath)
-      {
-        SrcEditor->addLineMessage(Msg);
-      }
-    }
+  connect(SrcEditor, SIGNAL(editorTxtChanged(WareFileEditor*,bool)), this,
+          SLOT(onEditorTxtModified(WareFileEditor*,bool)));
 
-    connect(SrcEditor, SIGNAL(editorTxtChanged(WareFileEditor*,bool)), this,
-            SLOT(onEditorTxtModified(WareFileEditor*,bool)));
+  connect(SrcEditor, SIGNAL(editorSaved()), this, SIGNAL(editorSaved()));
 
-    connect(SrcEditor, SIGNAL(editorSaved()), this, SIGNAL(editorSaved()));
-
-    Editor = SrcEditor;
-  }
-
+  Editor = SrcEditor;
   QWidget* Widget = Editor->getWidget();
 
   int Pos = ui->WareSrcFileCollection->insertTab(Index, Widget, TabLabel);
@@ -320,6 +308,12 @@ void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath, const 
   {
     Widget->installEventFilter(this);
   }
+  if (IsMeta)
+  {
+    QMessageBox::warning(this, tr("Signature direct edit"), 
+                               tr("Warning: you are editing the signature file of the ware.\n"
+                                  "It is advised to use instead the dedicated dialog to avoid any issue."));
+  } 
 }
 
 
@@ -787,6 +781,37 @@ void WareSrcWidget::saveCurrentEditor()
     
     onWareChange();
   // TOIMPL emit wareChanged for other ware changes through watcher
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::editSignature(QString Path)
+{
+  if (Path.isEmpty())
+  {
+    Path = QDir::fromNativeSeparators(QDir(QString::fromStdString(
+      m_Container.getAbsolutePath())+"/"+QString::fromStdString(openfluid::config::WARESDEV_WAREMETA_FILE)).path());
+  }
+
+  openfluid::ui::common::EditSignatureDialog Dlg;
+  try
+  {
+    Dlg.initialize(Path);
+  }
+  catch (openfluid::base::FrameworkException& E)
+  {
+    QMessageBox::critical(nullptr, tr("Signature issue"), tr("In ") + Path + ":\n" + 
+                                   QString::fromStdString(E.getMessage()) + 
+                                   tr("\n\nTo solve this issue, you can edit the json file with an external program."));
+    return;
+  }
+  if (Dlg.exec() == QDialog::Accepted)
+  {
+    Dlg.exportSignature(Path);
   }
 }
 

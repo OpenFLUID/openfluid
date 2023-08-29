@@ -60,7 +60,29 @@
 namespace openfluid { namespace waresdev {
 
 
-// TOIMPL move into WareSignatureSerializer class? or elsewhere?
+inline openfluid::ware::WareType detectWareTypeFromJson(const openfluid::thirdparty::json& Json)
+{
+  if (Json.contains("simulator"))
+  {
+    return openfluid::ware::WareType::SIMULATOR; 
+  }
+  else if (Json.contains("observer"))
+  {
+    return openfluid::ware::WareType::OBSERVER; 
+  }
+  else if (Json.contains("builderext"))
+  {
+    return openfluid::ware::WareType::BUILDEREXT; 
+  }
+
+  return openfluid::ware::WareType::UNDEFINED;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 inline openfluid::ware::WareType detectWareType(const std::string& Path)
 {
   std::ifstream InFile(Path,std::ifstream::in);
@@ -69,18 +91,7 @@ inline openfluid::ware::WareType detectWareType(const std::string& Path)
   {
     auto Json = openfluid::thirdparty::json::parse(InFile);
   
-    if (Json.contains("simulator"))
-    {
-      return openfluid::ware::WareType::SIMULATOR; 
-    }
-    else if (Json.contains("observer"))
-    {
-      return openfluid::ware::WareType::OBSERVER; 
-    }
-    else if (Json.contains("builderext"))
-    {
-      return openfluid::ware::WareType::BUILDEREXT; 
-    }
+    return detectWareTypeFromJson(Json);
   }
   catch (openfluid::thirdparty::json::exception& E)
   {
@@ -95,7 +106,6 @@ inline openfluid::ware::WareType detectWareType(const std::string& Path)
 // =====================================================================
 
 
-// TOIMPL move into WareSignatureSerializer class? or elsewhere?
 inline std::pair<openfluid::ware::WareType,openfluid::ware::WareID_t> detectWareTypeAndID(const std::string& Path)
 {
   openfluid::ware::WareType Type = openfluid::ware::WareType::UNDEFINED;
@@ -107,18 +117,7 @@ inline std::pair<openfluid::ware::WareType,openfluid::ware::WareID_t> detectWare
   {
     auto Json = openfluid::thirdparty::json::parse(InFile);
   
-    if (Json.contains("simulator"))
-    {
-      Type = openfluid::ware::WareType::SIMULATOR; 
-    }
-    else if (Json.contains("observer"))
-    {
-      Type = openfluid::ware::WareType::OBSERVER; 
-    }
-    else if (Json.contains("builderext"))
-    {
-      Type = openfluid::ware::WareType::BUILDEREXT; 
-    }
+    Type = detectWareTypeFromJson(Json);
 
     const std::string TmpID = Json.value("id","");
     if (openfluid::tools::isValidWareID(TmpID))
@@ -370,22 +369,12 @@ SignatureType WareSignatureSerializer<SignatureType>::fromJSONBase(const openflu
         {
           try
           {
-            unsigned int ID = I["id"].get<unsigned int>();
-
-            openfluid::ware::WareIssue Issue;
-            Issue.Title = I.value("title","");
-            Issue.Description = I.value("description","");
-            Issue.Tags = I.value("tags",std::vector<std::string>());
-            Issue.Creator = I.value("creator","");
-            Issue.CreatedAt = openfluid::core::DateTime::fromISOString(I.value("created_at",""));
-            Issue.UpdatedAt = openfluid::core::DateTime::fromISOString(I.value("updated_at",""));
-            Issue.IsOpen = (I.value("state","") != "closed");
-
-            Sign.Issues.insert(Issue,ID);
+            openfluid::ware::WareIssue Issue = openfluid::ware::WareIssue::fromJSON(I);
+            Sign.Issues.insert(Issue,Issue.ID);
           }
-          catch (...)
+          catch (std::exception& E)
           {
-            // TOIMPL manage exceptions
+            throw E;
           }
         }
       }
@@ -461,15 +450,7 @@ openfluid::thirdparty::json WareSignatureSerializer<SignatureType>::toJSONBase(c
     auto IssArr = openfluid::thirdparty::json::array();
     for (const auto& I : Sign.Issues.getAll())
     {
-      auto IObj = openfluid::thirdparty::json::object();
-      IObj["id"] = I.first;
-      IObj["title"] = I.second.Title;
-      IObj["description"] = I.second.Description;
-      IObj["tags"] = I.second.Tags;
-      IObj["creator"] = I.second.Creator;
-      IObj["created_at"] = I.second.CreatedAt.getAsISOString();
-      IObj["updated_at"] = I.second.UpdatedAt.getAsISOString();
-      IObj["state"] = I.second.IsOpen ? "open" : "closed";
+      auto IObj = I.second.toJSON(I.first);
       IssArr.push_back(IObj);
     }
     Json["issues"] = IssArr;
@@ -662,7 +643,7 @@ std::string WareSignatureSerializer<SignatureType>::toWareCPPBase(const Signatur
   for (const auto& I : Sign.Issues())
   {
     std::vector<std::string> IssData;
-
+    IssData.push_back(std::to_string(I.first));
     IssData.push_back(getQuotedString(openfluid::tools::escapeString(I.second.Title)));
     IssData.push_back(getQuotedString(openfluid::tools::escapeString(I.second.Description)));
     IssData.push_back(getCPPVectorString(I.second.Tags,true));

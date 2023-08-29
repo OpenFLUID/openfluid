@@ -17,6 +17,7 @@ SET(OPENFLUID_UI_COMMON_CPP AppMainWindow.cpp OpenFLUIDDialog.cpp
                             EditExternalToolDialog.cpp
                             PreferencesDialog.cpp DetectQtDevToolsDialog.cpp
                             TimePeriodWidget.cpp
+                            WareIssuesManagerWidget.cpp  WareshubIssueDialog.cpp
                             )
 
 SET(OPENFLUID_UI_COMMON_HPP AppMainWindow.hpp OpenFLUIDDialog.hpp 
@@ -38,6 +39,7 @@ SET(OPENFLUID_UI_COMMON_HPP AppMainWindow.hpp OpenFLUIDDialog.hpp
                             PreferencesDialog.hpp DetectQtDevToolsDialog.hpp
                             TimePeriodWidget.hpp
                             UIHelpers.hpp
+                            WareIssuesManagerWidget.hpp  WareshubIssueDialog.hpp
                             )
 
 
@@ -51,7 +53,7 @@ QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
                                    PreferencesDialog.ui DetectQtDevToolsDialog.ui
                                    TimePeriodWidget.ui
                                    EditExternalToolDialog.ui
-                                   )
+                                   WareIssuesManagerWidget.ui WareshubIssueDialog.ui)
 
 
 QT5_ADD_RESOURCES(OPENFLUID_UI_COMMON_RC resources/openfluiduicommon.qrc)
@@ -88,5 +90,6 @@ INSTALL(TARGETS openfluid-ui-common
 
 INSTALL(FILES ${OPENFLUID_UI_COMMON_HPP} DESTINATION ${OPENFLUID_INCLUDE_INSTALL_PATH}/ui/common)
 
-
-
+IF(OFBUILD_ENABLE_TESTING)
+  ADD_SUBDIRECTORY(tests)
+ENDIF()

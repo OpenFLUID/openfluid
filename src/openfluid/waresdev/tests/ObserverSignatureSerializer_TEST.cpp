@@ -33,6 +33,7 @@
   @file ObserverSignatureSerializer_TEST.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+  @author Armel Thöni <armel.thoni@inrae.fr>
 */
 
 
@@ -58,7 +59,7 @@
 const auto WorkPath = openfluid::tools::Path({CONFIGTESTS_OUTPUT_DATA_DIR,"SignatureSerializer","observer"});
 
 
-openfluid::ware::ObserverSignature getRefSignature()
+openfluid::ware::ObserverSignature getObserverRefSignature()
 {
   openfluid::ware::ObserverSignature Sign;
 
@@ -107,7 +108,7 @@ void compareSignatures(const openfluid::ware::ObserverSignature& Sign1,
 
 BOOST_AUTO_TEST_CASE(write_json)
 {
-  auto Sign = getRefSignature();
+  auto Sign = getObserverRefSignature();
 
   openfluid::waresdev::ObserverSignatureSerializer()
                        .writeToJSONFile(Sign,WorkPath.fromThis("openfluid-ware.json").toGeneric());
@@ -120,7 +121,7 @@ BOOST_AUTO_TEST_CASE(write_json)
 
 BOOST_AUTO_TEST_CASE(write_cpp)
 {
-  auto Sign = getRefSignature();
+  auto Sign = getObserverRefSignature();
 
   openfluid::waresdev::ObserverSignatureSerializer()
                        .writeToWareCPPFile(Sign,WorkPath.fromThis("signature.cpp").toGeneric());
@@ -133,7 +134,7 @@ BOOST_AUTO_TEST_CASE(write_cpp)
 
 BOOST_AUTO_TEST_CASE(read_json)
 {
-  auto SignRef = getRefSignature();
+  auto SignRef = getObserverRefSignature();
   auto Sign = 
     openfluid::waresdev::ObserverSignatureSerializer()
                          .readFromJSONFile(WorkPath.fromThis("openfluid-ware.json").toGeneric());

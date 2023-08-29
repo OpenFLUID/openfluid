@@ -114,6 +114,8 @@ class OPENFLUID_API NewWareDialog : public openfluid::ui::common::MessageDialog
     openfluid::builderext::ExtensionCategory getBuilderextCategory() const;
 
     QString getBuilderextMenuText() const;
+
+    bool openSignature() const;
 };
 
 

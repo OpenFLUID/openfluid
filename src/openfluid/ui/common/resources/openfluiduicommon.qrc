@@ -60,6 +60,12 @@
     <file>icons/generate-doc_light.png</file>
     <file>icons/generate-doc_grayed.png</file>
     <file>icons/generate-doc_dark.png</file>
+    <file>icons/edit-plugin_light.png</file>
+    <file>icons/edit-plugin_grayed.png</file>
+    <file>icons/edit-plugin_dark.png</file>
+    <file>icons/edit-plugin_light@2x.png</file>
+    <file>icons/edit-plugin_grayed@2x.png</file>
+    <file>icons/edit-plugin_dark@2x.png</file>
     <file>icons/open_dark.png</file>
     <file>icons/open_grayed.png</file>
     <file>icons/open_light.png</file>

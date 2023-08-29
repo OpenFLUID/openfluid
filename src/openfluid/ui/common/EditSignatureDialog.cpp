@@ -53,7 +53,7 @@ EditSignatureDialog::EditSignatureDialog(QWidget* Parent):
 {
   ui->setupUi(this);
 
-  setupMessageUi(tr("Edit signature"));
+  setupMessageUi(tr("Edit ware information"));
 }
 
 
@@ -119,11 +119,34 @@ void EditSignatureDialog::initialize(const openfluid::ware::SimulatorSignature& 
 // =====================================================================
 
 
+void EditSignatureDialog::initialize(const QString& SignaturePath,
+                                     const QStringList& ExistingIDs)
+{
+
+  ui->SignatureWidget->initialize(SignaturePath);
+
+  EditSignatureDialog::initialize(ExistingIDs);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::ware::SimulatorSignature EditSignatureDialog::getSignature() const
 {
   return ui->SignatureWidget->getSignature();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool EditSignatureDialog::exportSignature(QString Path) const
+{
+  return ui->SignatureWidget->exportSignature(Path);
+}
 
 } } } // namespaces
 

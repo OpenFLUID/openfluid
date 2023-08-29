@@ -48,6 +48,7 @@
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/WareSrcActionsCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcMsgViewer.hpp>
+#include <openfluid/waresdev/WareSignatureSerializer.hpp>
 
 #include <openfluid/dllexport.hpp>
 
@@ -206,6 +207,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void openFile();
 
     void onWareChange();
+
+    void editSignature(QString Path = "");
 
     /**
       @param TopDirectory The path to the topmost directory where may be saved the file,

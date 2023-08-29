@@ -747,8 +747,7 @@ void ProjectModuleWidget::whenSrcEditAsked(const QString& ID,openfluid::ware::Wa
       Dlg.initialize(*(Container.signature()));
       if (Dlg.exec() == QDialog::Accepted)
       {
-        auto Signature = Dlg.getSignature();
-        openfluid::waresdev::SimulatorSignatureSerializer().writeToJSONFile(Signature,Container.getPath());
+        Dlg.exportSignature(QString::fromStdString(Container.getPath()));
         updateSimulatorsWares();
       }
     }
