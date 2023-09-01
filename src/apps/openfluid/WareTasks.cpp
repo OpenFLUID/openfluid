@@ -326,7 +326,7 @@ std::string getReportStatusAsString(openfluid::waresdev::WareSrcChecker::Reporti
   {
     return "warning";
   }
-  else if (Status == openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::ERROR)
+  else if (Status == openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::ERROR_STATUS)
   {
     return "error";
   }

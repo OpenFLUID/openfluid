@@ -137,7 +137,7 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performStructureChe
     // [e] CMakeLists.txt exists at root
     processReportingItem(Data,"cmakelists_exists",
                          [&](){return m_SrcPathObj.isFile(openfluid::config::WARESDEV_SRC_CMAKESTDFILE);},
-                         ReportingData::ReportingStatus::ERROR);
+                         ReportingData::ReportingStatus::ERROR_STATUS);
 
     // [w] README or README.md file exists
     auto IsAnyReadme = [&](){
@@ -186,7 +186,7 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performMetainfoChec
     // [e] metadata file is readable and well formed
     const auto Type = openfluid::waresdev::detectWareType(MetaFileObj.toGeneric());
     bool MetaIsReadable = (Type != openfluid::ware::WareType::UNDEFINED);
-    processReportingItem(Data,"file_iscorrect",[&](){return MetaIsReadable;},ReportingData::ReportingStatus::ERROR);
+    processReportingItem(Data,"file_iscorrect",[&](){return MetaIsReadable;},ReportingData::ReportingStatus::ERROR_STATUS);
 
     if (MetaIsReadable)
     {
@@ -267,13 +267,13 @@ WareSrcChecker::ReportingData WareSrcChecker::performCheck(bool Pedantic) const
   
   // [e] ware src directory exists
   bool BaseIsOK = m_SrcPathObj.isDirectory();
-  processReportingItem(BaseData,"rootdir_exists",[&](){return BaseIsOK;},ReportingData::ReportingStatus::ERROR);
+  processReportingItem(BaseData,"rootdir_exists",[&](){return BaseIsOK;},ReportingData::ReportingStatus::ERROR_STATUS);
 
   if (BaseIsOK)
   {
     // [e] ware src is detected as 220000
     BaseIsOK = (tryDetectWareSrcVersion(m_SrcPathObj) >= 202000);
-    processReportingItem(BaseData,"version_iscorrect",[&](){return BaseIsOK;},ReportingData::ReportingStatus::ERROR);
+    processReportingItem(BaseData,"version_iscorrect",[&](){return BaseIsOK;},ReportingData::ReportingStatus::ERROR_STATUS);
   }
 
 

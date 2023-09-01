@@ -62,7 +62,7 @@ std::map<std::pair<std::string, ReportingData::ReportingStatus>,
 void WareStatusItemWidget::populateReportItemLabels()
 {
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "cmakelists_exists", ReportingData::ReportingStatus::ERROR)] = \
+    "cmakelists_exists", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       tr("'CMakeLists.txt' file does not exist.");
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "readme_exists", ReportingData::ReportingStatus::WARNING)] = \
@@ -78,21 +78,21 @@ void WareStatusItemWidget::populateReportItemLabels()
       tr("'tests' directory does not exist");
 
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "file_iscorrect", ReportingData::ReportingStatus::ERROR)] = \
+    "file_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       tr("Metadata can not be read");
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "migration_isclean", ReportingData::ReportingStatus::WARNING)] = \
       tr("Comments from migration remain in code");
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "rootdir_exists", ReportingData::ReportingStatus::ERROR)] = \
+    "rootdir_exists", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       tr("");
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "version_iscorrect", ReportingData::ReportingStatus::ERROR)] = \
+    "version_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       tr("Ware version is below current OpenFLUID version");
 
 
   ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "version_iscorrect", ReportingData::ReportingStatus::ERROR)] = \
+    "version_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       std::pair<QString, QString>("migration", tr("Try to migrate the ware"));
   ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "migration_isclean", ReportingData::ReportingStatus::WARNING)] = \
@@ -177,7 +177,7 @@ void WareStatusItemWidget::setStatusLevel(const ReportingData::ReportingStatus L
   {
     ui->StatusIconLabel->setWarningStatus();
   }
-  else if (Level == ReportingData::ReportingStatus::ERROR)
+  else if (Level == ReportingData::ReportingStatus::ERROR_STATUS)
   {
     ui->StatusIconLabel->setErrorStatus();
   }

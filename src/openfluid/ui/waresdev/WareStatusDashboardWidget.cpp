@@ -154,7 +154,7 @@ void WareStatusDashboardWidget::refresh()
       for (const auto& Item : CatItems.second.Items)
       {
         if (Item.Status == ReportingData::ReportingStatus::WARNING || 
-            Item.Status == ReportingData::ReportingStatus::ERROR)
+            Item.Status == ReportingData::ReportingStatus::ERROR_STATUS)
         {
           addMessage(Item);
         }
@@ -196,7 +196,7 @@ void WareStatusDashboardWidget::setLevel(const ReportingData::ReportingStatus Le
     ui->TitleLabel->setText(tr("Warnings raised"));
     m_TitleColor = openfluid::ui::config::STATUS_WARNCOLOR;
   }
-  else if (Level == ReportingData::ReportingStatus::ERROR)
+  else if (Level == ReportingData::ReportingStatus::ERROR_STATUS)
   {
     ui->TitleLabel->setText(tr("Issues detected"));
     m_TitleColor = openfluid::ui::config::STATUS_ERRCOLOR;
