@@ -61,7 +61,7 @@ class ReportingData
 
     enum class ReportingStatus
     { 
-      UNKNOWN = 0, DISABLED, OK, WARNING, ERROR 
+      UNKNOWN = 0, DISABLED, OK, WARNING, ERROR_STATUS 
     };
 
 
