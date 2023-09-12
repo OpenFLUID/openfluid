@@ -47,7 +47,7 @@
   Macro for the beginning of definition of signature hook
 */
 #define BEGIN_SIMULATOR_SIGNATURE(id) \
-  openfluid::ware::SimulatorSignature* generateSignature() \
+  [[deprecated]] openfluid::ware::SimulatorSignature* generateSignature() \
   { \
     openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
     Signature->ID = (id);
@@ -56,7 +56,7 @@
 /**
   Macro for the end of definition of signature hook
 */
-#define END_SIMULATOR_SIGNATURE \
+#define END_SIMULATOR_SIGNATURE _Pragma ("GCC warning \"'END_SIMULATOR_SIGNATURE' macro is deprecated\"") \
     return Signature; \
   }
 
