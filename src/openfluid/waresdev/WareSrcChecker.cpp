@@ -186,7 +186,8 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performMetainfoChec
     // [e] metadata file is readable and well formed
     const auto Type = openfluid::waresdev::detectWareType(MetaFileObj.toGeneric());
     bool MetaIsReadable = (Type != openfluid::ware::WareType::UNDEFINED);
-    processReportingItem(Data,"file_iscorrect",[&](){return MetaIsReadable;},ReportingData::ReportingStatus::ERROR_STATUS);
+    processReportingItem(Data, "file_iscorrect", [&](){return MetaIsReadable;},
+                         ReportingData::ReportingStatus::ERROR_STATUS);
 
     if (MetaIsReadable)
     {
@@ -273,7 +274,8 @@ WareSrcChecker::ReportingData WareSrcChecker::performCheck(bool Pedantic) const
   {
     // [e] ware src is detected as 220000
     BaseIsOK = (tryDetectWareSrcVersion(m_SrcPathObj) >= 202000);
-    processReportingItem(BaseData,"version_iscorrect",[&](){return BaseIsOK;},ReportingData::ReportingStatus::ERROR_STATUS);
+    processReportingItem(BaseData, "version_iscorrect", [&](){return BaseIsOK;},
+                         ReportingData::ReportingStatus::ERROR_STATUS);
   }
 
 
