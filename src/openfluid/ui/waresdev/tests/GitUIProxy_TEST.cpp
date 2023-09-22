@@ -43,6 +43,13 @@
 #define BOOST_TEST_MODULE unittest_gituiproxy
 
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
+
 #include <iostream>
 
 #include <QCoreApplication>
@@ -99,7 +106,12 @@ class F
       TestPath = CONFIGTESTS_OUTPUT_DATA_DIR + "/gitclient";
 
       DestPath = QString::fromStdString(TestPath + "/" + "TestGitRepository");
+
+#if (QT_VERSION_MAJOR < 6)
       DestDir = DestPath;
+#else
+      DestDir.setPath(DestPath);
+#endif
 
       forceRemove(QString::fromStdString(TestPath));
 
@@ -166,7 +178,11 @@ class F
           FirstAvailSimId = Ware.first;
 
           DestPath = QString::fromStdString(TestPath + "/" + FirstAvailSimId);
+#if (QT_VERSION_MAJOR < 6)
           DestDir = DestPath;
+#else
+          DestDir.setPath(DestPath);
+#endif
 
           return true;
         }
@@ -187,7 +203,11 @@ class F
 
       QString Cmd = QString("\"%1\" %2").arg(GitPgm).arg(Args);
 
+#if (QT_VERSION_MAJOR < 6)
       Process.start(Cmd);
+#else
+      Process.startCommand(Cmd);
+#endif
       Process.waitForFinished(-1);
     }
 };

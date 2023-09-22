@@ -36,6 +36,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QLocale>
 #include <QMessageBox>
@@ -653,8 +659,13 @@ void PreferencesDialog::intializeTextEditorSettings()
 void PreferencesDialog::updateSyntaxElementLabel(QLabel* Label, const QStringList& Decorations,
   const QString& ColorName)
 {
+#if (QT_VERSION_MAJOR < 6)
   QStringList Font = Decorations.filter(QRegExp("bold|italic"));
   QStringList TextDecoration = Decorations.filter(QRegExp("underline|strike-through"));
+#else
+  QStringList Font = Decorations.filter(QRegularExpression("bold|italic"));
+  QStringList TextDecoration = Decorations.filter(QRegularExpression("underline|strike-through"));
+#endif
 
   QString Stylesheet = QString("QLabel {font: %1;text-decoration: %2;color: %3}")
           .arg(Font.isEmpty() ? "none" : Font.join(" "))

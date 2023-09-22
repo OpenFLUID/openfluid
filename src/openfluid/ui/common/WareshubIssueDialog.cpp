@@ -37,6 +37,12 @@
  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QPushButton>
 #include <openfluid/ui/common/WareshubIssueDialog.hpp>
@@ -86,7 +92,11 @@ WareshubIssueDialog::WareshubIssueDialog(const QList<unsigned int>& IDs, QWidget
     m_IDs.removeAll(I.m_ID);
     ui->IDLineEdit->setText(QString::number(I.m_ID));
   }
+#if (QT_VERSION_MAJOR < 6)
   ui->IDLineEdit->setValidator(new QRegExpValidator(QRegExp("^[0-9a-zA-Z_-]*$"), this));
+#else
+  ui->IDLineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9a-zA-Z_-]*$"), this));
+#endif
 
   ui->TitleLineEdit->setText(I.m_Title);
   ui->TagsLineEdit->setText(I.m_Tags);

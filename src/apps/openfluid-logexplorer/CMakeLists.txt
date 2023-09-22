@@ -1,4 +1,4 @@
-
+add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
 
 SET(LOGEXPLORER_GUI_OPTION)
 
@@ -17,11 +17,11 @@ SET_TARGET_PROPERTIES(openfluid-logexplorer PROPERTIES RUNTIME_OUTPUT_DIRECTORY 
                                                    
 SET_TARGET_PROPERTIES(openfluid-logexplorer PROPERTIES OUTPUT_NAME ${OPENFLUID_LOGEXPLORER_APP})
 
-
 TARGET_LINK_LIBRARIES(openfluid-logexplorer
                       openfluid-tools
                       openfluid-ui-common
-                      Qt5::Core
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTGUI_LIBRARIES}
                      )
                                    
                

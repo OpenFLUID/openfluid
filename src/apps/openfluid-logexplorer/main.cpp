@@ -36,15 +36,26 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <iostream>
 #include <typeinfo>
 
 #include <QApplication>
+#if (QT_VERSION_MAJOR < 6)
+#include <QDesktopWidget>
+#else
+#include <QGuiApplication>
+#include <QScreen>
+#endif
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QDir>
-#include <QDesktopWidget>
 
 #include <openfluid/base/Init.hpp>
 #include <openfluid/config.hpp>
@@ -94,10 +105,15 @@ int main(int argc, char** argv)
     }
 
     openfluid::ui::common::LogExplorerDialog LogDlg(LogDir);
-
+#if (QT_VERSION_MAJOR < 6)
     QRect ScreenRect = QApplication::desktop()->screenGeometry();
     LogDlg.resize(ScreenRect.width()*0.9,ScreenRect.height()*0.9);
     LogDlg.move((ScreenRect.width()-LogDlg.width())/2, (ScreenRect.height()-LogDlg.height())/2);
+#else
+    QRect ScreenRect = QGuiApplication::primaryScreen()->geometry();
+    LogDlg.resize(ScreenRect.width()*0.9,ScreenRect.height()*0.9);
+    LogDlg.move((ScreenRect.width()-LogDlg.width())/2, (ScreenRect.height()-LogDlg.height())/2);
+#endif
 
     LogDlg.show();
 

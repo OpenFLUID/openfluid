@@ -15,13 +15,19 @@
 
 <br/>
 
-* [About OpenFLUID](#about-openfluid)
-* [Getting started](#getting-started)
-    * [Installation](#installation)
-    * [Manuals and Trainings](#manuals-and-trainings)
-* [Resources](#resources)
-* [Authors and License](#authors-and-license)
-* [Contact](#contact)
+- [About OpenFLUID](#about-openfluid)
+  - [Features](#features)
+  - [Built with](#built-with)
+- [Getting started](#getting-started)
+  - [Installation](#installation)
+    - [Linux](#linux)
+    - [MacOS](#macos)
+    - [Windows](#windows)
+    - [From sources](#from-sources)
+  - [Manuals and Trainings](#manuals-and-trainings)
+- [Resources](#resources)
+- [Authors and License](#authors-and-license)
+- [Contact](#contact)
 
 
 # About OpenFLUID
@@ -56,7 +62,7 @@ OpenFLUID relies on several tools and libraries
 * [JSON](https://github.com/nlohmann/json) for metadata and settings I/O
 * [TinyXML](https://github.com/leethomason/tinyxml2) for datasets I/O
 * [libcurl](https://github.com/curl/curl) for network operations
-* [Qt5](https://www.qt.io/) for UI framework and applications
+* [Qt5](https://www.qt.io/) for UI framework and applications, Qt6 potentially incoming
 * [CMake](https://cmake.org/) for build/test/packaging configuration and management
 * [Doxygen](https://www.doxygen.nl/) for technical documentation
 

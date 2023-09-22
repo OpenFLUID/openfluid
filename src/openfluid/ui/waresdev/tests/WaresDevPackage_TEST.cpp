@@ -42,6 +42,12 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WaresDevPackage
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <boost/test/unit_test.hpp>
 
@@ -157,12 +163,21 @@ class F
       WaresdevForImportPath = getCleanedPath(WorkspaceForImportPath, "wares-dev");
 
       OutOfwdpPath = getCleanedPath(QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR), "ofwdp");
+#if (QT_VERSION_MAJOR < 6)
       OutOfwdpDir = QDir(OutOfwdpPath);
+#else
+      OutOfwdpDir.setPath(OutOfwdpPath);
+#endif
 
       QString TempOfwdpPath = getCleanedPath(TempOFPath, "ofwdp");
       QDir TempOfwdpDir(TempOfwdpPath);
+#if (QT_VERSION_MAJOR < 6)
       TempPackageExportDir = QDir(TempOfwdpDir.filePath("export/my_package"));
       TempPackageImportFileDir = QDir(TempOfwdpDir.filePath("import_file/my_package"));
+#else
+      TempPackageExportDir.setPath(TempOfwdpDir.filePath("export/my_package"));
+      TempPackageImportFileDir.setPath(TempOfwdpDir.filePath("import_file/my_package"));
+#endif
 
       DirPathsCreated << WorkspaceForExportPath << WorkspaceForImportPath << OutOfwdpPath << TempOfwdpPath;
     }

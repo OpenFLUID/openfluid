@@ -107,7 +107,11 @@ int main(int argc, char** argv)
 
       ExitCode = CLOSE_OPENFLUID_QT_APPLICATION_WITH_GUI;
 
+#if (QT_VERSION_MAJOR < 6)
       OPENFLUID_QT_APPLICATION.flush();
+#else
+      QCoreApplication::sendPostedEvents();
+#endif
 
     }
     while (ExitCode == openfluid::ui::config::EXIT_CODE_FOR_RESTART);

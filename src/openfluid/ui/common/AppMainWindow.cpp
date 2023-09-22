@@ -36,11 +36,19 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QApplication>
 #include <QResizeEvent>
 #include <QMoveEvent>
+#if (QT_VERSION_MAJOR < 6)
 #include <QDesktopWidget>
+#endif
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/ui/common/AppMainWindow.hpp>
@@ -84,7 +92,11 @@ void AppMainWindow::saveWindowGeometry() const
 
 QSize AppMainWindow::computeDefaultSize() const
 {
+#if (QT_VERSION_MAJOR < 6)
   const QRect& ScreenRect = QApplication::desktop()->screenGeometry();
+#else
+  const QRect& ScreenRect = QGuiApplication::primaryScreen()->geometry();
+#endif
 
   return QSize(ScreenRect.width()*0.9,ScreenRect.height()*0.9);
 }
@@ -96,7 +108,11 @@ QSize AppMainWindow::computeDefaultSize() const
 
 QPoint AppMainWindow::computeDefaultPosition() const
 {
+#if (QT_VERSION_MAJOR < 6)
   const QRect& ScreenRect = QApplication::desktop()->screenGeometry();
+#else
+  const QRect& ScreenRect = QGuiApplication::primaryScreen()->geometry();
+#endif
 
   return QPoint((ScreenRect.width()-width())/2,(ScreenRect.height()-height())/2);
 }

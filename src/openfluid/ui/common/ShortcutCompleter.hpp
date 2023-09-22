@@ -33,6 +33,7 @@
   @file ShortcutCompleter.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -79,7 +80,11 @@ class OPENFLUID_API ShortcutCompleter : public QCompleter
       Sets the shortcut sequence to open the completer popup
       @param[in] Shortcut the shortcut sequence
     */
+#if (QT_VERSION_MAJOR < 6)
     void setShortcut(const QKeySequence& Shortcut = QKeySequence(Qt::CTRL+Qt::Key_Space));
+#else
+    void setShortcut(const QKeySequence& Shortcut = QKeySequence(Qt::CTRL | Qt::Key_Space));
+#endif
 
     /**
       Links the completer to a line edit

@@ -45,7 +45,11 @@
 
 #include <QInputDialog>
 #include <QColor>
+#if (QT_VERSION_MAJOR < 6)
 #include <QRegExp>
+#else
+#include <QRegularExpression>
+#endif
 #include <QLineEdit>
 #include <QIcon>
 #include <QApplication>
@@ -97,7 +101,12 @@ inline double computeLuminance(const QColor& Color)
 // =====================================================================
 
 
+#if (QT_VERSION_MAJOR < 6)
 inline void fixLineEdit(QLineEdit* LineEdit,QRegExp SearchRegExp = QRegExp("[^\\w]"),QString NewStr = "_")
+#else
+inline void fixLineEdit(QLineEdit* LineEdit,QRegularExpression SearchRegExp = QRegularExpression("[^\\w]"),
+                        QString NewStr = "_")
+#endif
 {
   int CPos = LineEdit->cursorPosition();
   LineEdit->setText(LineEdit->text().replace(SearchRegExp,NewStr));

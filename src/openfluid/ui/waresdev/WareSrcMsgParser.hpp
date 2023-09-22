@@ -42,7 +42,23 @@
 #define __OPENFLUID_UIWARESDEV_WARESRCMSGPARSER_HPP__
 
 
-#include <QRegExp>
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
+#if (QT_VERSION_MAJOR < 6)
+#  pragma message("QT_VERSION_MAJOR < 6")
+
+
+#  include <QRegExp>
+#else
+#  pragma message("QT_VERSION_MAJOR >= 6?")
+
+
+#  include <QRegularExpression>  
+#endif
 #include <QDir>
 
 #include <openfluid/dllexport.hpp>
@@ -50,7 +66,7 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-
+const int a = 0;
 class OPENFLUID_API WareSrcMsgParser
 {
   public:
@@ -108,7 +124,11 @@ class OPENFLUID_API WareSrcMsgParserGcc: public WareSrcMsgParser
 {
   private:
 
+#if (QT_VERSION_MAJOR < 6)
     QRegExp m_GccMsgParseRx = QRegExp("^(.+):(\\d+):(\\d+): *(warning|error|note): *(.+)");
+#else
+    QRegularExpression m_GccMsgParseRx = QRegularExpression("^(.+):(\\d+):(\\d+): *(warning|error|note): *(.+)");
+#endif
 
   public:
 
@@ -125,7 +145,11 @@ class OPENFLUID_API WareSrcMsgParserCMake: public WareSrcMsgParser
 {
   private:
 
+#if (QT_VERSION_MAJOR < 6)
     QRegExp m_CMakeMsgParseRx = QRegExp("^CMake Error at (.+):(\\d+) *(.+)");
+#else
+    QRegularExpression m_CMakeMsgParseRx = QRegularExpression("^CMake Error at (.+):(\\d+) *(.+)");
+#endif
 
     QDir m_AbsoluteDir;
 

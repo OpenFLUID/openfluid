@@ -37,6 +37,12 @@
  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <fstream>
 
@@ -297,7 +303,12 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
       // file empty, can be removed
       QProcess* Process = new QProcess();
       Process->setWorkingDirectory(MainPathString);
+
+#if (QT_VERSION_MAJOR < 6)
       Process->start(QString::fromStdString(m_ExecutablePath),{"rm", "--cached", ".gitmodules"});
+#else
+      Process->start(QString::fromStdString(m_ExecutablePath),{"rm", "--cached", ".gitmodules"});
+#endif
       Process->waitForReadyRead(-1);
       Process->waitForFinished(-1);
       int ErrCode = Process->exitCode();
@@ -388,7 +399,11 @@ GitUIProxy::TreeStatusInfo GitUIProxy::status(const QString& Path)
 
   TreeStatus.m_BranchName = Out.section('\n', 0, 0).section(' ', 1).section("...", 0, 0);
 
+#if (QT_VERSION_MAJOR < 6)
   QStringList PathLines = Out.section('\n', 1).split('\n', QString::SkipEmptyParts);
+#else
+  QStringList PathLines = Out.section('\n', 1).split('\n', Qt::SkipEmptyParts);
+#endif
   for (const QString& PathLine : PathLines)
   {
     QChar IndexLetter = PathLine.at(0);
@@ -461,7 +476,11 @@ std::pair<int, QString> GitUIProxy::launchLocalCommand(const QString& Path, QStr
   QProcess LocalProcess;
   LocalProcess.setWorkingDirectory(Path);
 
+#if (QT_VERSION_MAJOR < 6)
   LocalProcess.start(QString::fromStdString(m_ExecutablePath),Args);
+#else
+  LocalProcess.start(QString::fromStdString(m_ExecutablePath),Args);
+#endif
 
   LocalProcess.waitForReadyRead(-1);
   LocalProcess.waitForFinished(-1);

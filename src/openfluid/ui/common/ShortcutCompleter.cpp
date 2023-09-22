@@ -34,6 +34,7 @@
   @file ShortcutCompleter.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -53,7 +54,11 @@ ShortcutCompleter::ShortcutCompleter(QObject* Parent):
   setCompletionMode(QCompleter::UnfilteredPopupCompletion);
 
   mp_ShortcutAction->setShortcutContext(Qt::WidgetShortcut);
+#if (QT_VERSION_MAJOR < 6)
   mp_ShortcutAction->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_Space));
+#else
+  mp_ShortcutAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Space));
+#endif
   connect(mp_ShortcutAction.get(),SIGNAL(triggered()),this,SLOT(complete()));
 }
 

@@ -37,6 +37,12 @@
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QSettings>
 #include <QCoreApplication>
@@ -60,7 +66,12 @@ WaresDevPackage::WaresDevPackage(const QString& PackageFilePath, const QString& 
   QString TempOfwdpSubDirPath = QDir(QString::fromStdString(openfluid::base::Environment::getTempDir()))
       .absoluteFilePath("ofwdp");
 
+#if (QT_VERSION_MAJOR < 6)
   m_PackageTempDir = QDir(QString("%1/%2/%3").arg(TempOfwdpSubDirPath).arg(TempSubFolderName).arg(m_PackageName));
+#else
+  m_PackageTempDir.setPath(QString("%1/%2/%3").arg(TempOfwdpSubDirPath).arg(TempSubFolderName).arg(m_PackageName));
+#endif
+  
   m_PackageTempPath = m_PackageTempDir.absolutePath();
 
   if (m_PackageTempDir.exists())

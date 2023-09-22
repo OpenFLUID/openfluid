@@ -66,6 +66,7 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLi
 
   Msg.m_Type = DefaultMsgType;
 
+#if (QT_VERSION_MAJOR < 6)
   if (m_GccMsgParseRx.indexIn(MessageLine) != -1)
   {
     Msg.m_Path = QDir::fromNativeSeparators(m_GccMsgParseRx.cap(1));
@@ -75,6 +76,18 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserGcc::parse(const QString& MessageLi
                  WareSrcMsg::MessageType::MSG_WARNING : WareSrcMsg::MessageType::MSG_ERROR;
     Msg.m_Content = m_GccMsgParseRx.cap(5);
   }
+#else
+  const auto& Match = m_GccMsgParseRx.match(MessageLine);
+  if (Match.hasMatch())
+  {
+    Msg.m_Path = QDir::fromNativeSeparators(Match.captured(1));
+    Msg.m_LineNb = Match.captured(2).toInt();
+    Msg.m_ColNb = Match.captured(3).toInt();
+    Msg.m_Type = (Match.captured(4) == "warning" || Match.captured(4) == "note") ?
+                 WareSrcMsg::MessageType::MSG_WARNING : WareSrcMsg::MessageType::MSG_ERROR;
+    Msg.m_Content = Match.captured(5);
+  }
+#endif
 
   return Msg;
 }
@@ -102,6 +115,7 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& Message
 
   Msg.m_Type = DefaultMsgType;
 
+#if (QT_VERSION_MAJOR < 6)
   if (m_CMakeMsgParseRx.indexIn(MessageLine) != -1)
   {
     Msg.m_Path = QDir::fromNativeSeparators(m_AbsoluteDir.absoluteFilePath(m_CMakeMsgParseRx.cap(1)));
@@ -109,6 +123,16 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& Message
     Msg.m_Type = WareSrcMsg::MessageType::MSG_ERROR;
     Msg.m_Content = m_CMakeMsgParseRx.cap(4);
   }
+#else
+  const auto& Match = m_CMakeMsgParseRx.match(MessageLine);
+  if (Match.hasMatch())
+  {
+    Msg.m_Path = QDir::fromNativeSeparators(m_AbsoluteDir.absoluteFilePath(Match.captured(1)));
+    Msg.m_LineNb = Match.captured(2).toInt();
+    Msg.m_Type = WareSrcMsg::MessageType::MSG_ERROR;
+    Msg.m_Content = Match.captured(4);
+  }
+#endif
 
   return Msg;
 }

@@ -1,14 +1,24 @@
+add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
+
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 SET(DEVSTUDIO_CPP MainWindow.cpp WorkspaceToolbar.cpp WareBuildStatusWidget.cpp)
 
 SET(DEVSTUDIO_HPP MainWindow.hpp WorkspaceToolbar.hpp WareBuildStatusWidget.hpp)
 
-QT5_WRAP_UI(DEVSTUDIO_UI MainWindow.ui WareBuildStatusWidget.ui)
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(DEVSTUDIO_UI MainWindow.ui WareBuildStatusWidget.ui)
+ELSE()
+  QT_WRAP_UI(DEVSTUDIO_UI MainWindow.ui WareBuildStatusWidget.ui)
+ENDIF()
 
 ### RESOURCES #
 
-QT5_ADD_RESOURCES(DEVSTUDIO_QRC resources/openfluiddevstudio.qrc)
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_ADD_RESOURCES(DEVSTUDIO_QRC resources/openfluiddevstudio.qrc)
+ELSE()
+  QT_ADD_RESOURCES(DEVSTUDIO_QRC resources/openfluiddevstudio.qrc)
+ENDIF()
 
 SET(DEVSTUDIO_WIN32RC)
 
@@ -38,8 +48,8 @@ TARGET_LINK_LIBRARIES(openfluid-devstudio-main
                       openfluid-ui-common
                       openfluid-waresdev
                       openfluid-ui-waresdev
-                      Qt5::Core
-                      Qt5::Widgets                      
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTWIDGETS_LIBRARIES}                      
                      )
 
 

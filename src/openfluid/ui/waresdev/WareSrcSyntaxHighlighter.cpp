@@ -70,11 +70,11 @@ void WareSrcSyntaxHighlighter::highlightBlock(const QString& Text)
 {
   for (const WareSrcFiletypeManager::HighlightingRule& Rule : m_HighlightingRules)
   {
+    auto Expression(Rule.Pattern);
 
-    QRegExp Expression(Rule.Pattern);
-
-    if(Rule.EndPattern == QRegExp())
+    if(Rule.EndPattern.pattern().length() == 0)
     {
+#if (QT_VERSION_MAJOR < 6)
       int Index = Expression.indexIn(Text);
       while (Index >= 0)
       {
@@ -82,22 +82,38 @@ void WareSrcSyntaxHighlighter::highlightBlock(const QString& Text)
         setFormat(Index, Length, Rule.Format);
         Index = Expression.indexIn(Text, Index + Length);
       }
+#else
+      QRegularExpressionMatchIterator It = Expression.globalMatch(Text);
+      while (It.hasNext())
+      {
+        QRegularExpressionMatch Match = It.next();
+        setFormat(Match.capturedStart(), Match.capturedLength(), Rule.Format);
+      }
+#endif      
     }
     else
     {
-      QRegExp EndExpression(Rule.EndPattern);
+      auto EndExpression(Rule.EndPattern);
 
       setCurrentBlockState(0);
-
       int StartIndex = 0;
       if (previousBlockState() != 1)
       {
+#if (QT_VERSION_MAJOR < 6)
         StartIndex = Expression.indexIn(Text);
+#else
+        StartIndex = Text.indexOf(Expression);
+#endif
       }
 
       while (StartIndex >= 0)
       {
+#if (QT_VERSION_MAJOR < 6)
         int EndIndex = EndExpression.indexIn(Text, StartIndex);
+#else
+        QRegularExpressionMatch EndMatch;
+        int EndIndex = Text.indexOf(EndExpression, StartIndex, &EndMatch);
+#endif
         int MatchedLength;
         if (EndIndex == -1)
         {
@@ -107,10 +123,18 @@ void WareSrcSyntaxHighlighter::highlightBlock(const QString& Text)
         else
         {
           MatchedLength = EndIndex - StartIndex
+#if (QT_VERSION_MAJOR < 6)
               + EndExpression.matchedLength();
+#else
+              + EndMatch.capturedLength();
+#endif
         }
         setFormat(StartIndex, MatchedLength, Rule.Format);
+#if (QT_VERSION_MAJOR < 6)
         StartIndex = Expression.indexIn(Text, StartIndex + MatchedLength);
+#else
+        StartIndex = Text.indexOf(Expression, StartIndex + MatchedLength);
+#endif
       }
     }
 

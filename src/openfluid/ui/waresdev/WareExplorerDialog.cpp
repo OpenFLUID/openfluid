@@ -38,6 +38,13 @@
 */
 
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
+
 #include <QFileInfo>
 #include <QMessageBox>
 
@@ -65,8 +72,13 @@ WareExplorerDialog::WareExplorerDialog(QWidget* Parent, const QString& TopDirect
 
   ui->FilepathEdit->setFocus();
 
+#if (QT_VERSION_MAJOR < 6)
   QRegExp FilepathRx(QString("[a-zA-Z0-9._%1-]+").arg(QDir::separator()));
   ui->FilepathEdit->setValidator(new QRegExpValidator(FilepathRx, this));
+#else
+  QRegularExpression FilepathRx(QString("[a-zA-Z0-9._%1-]+").arg(QDir::separator()));
+  ui->FilepathEdit->setValidator(new QRegularExpressionValidator(FilepathRx, this));
+#endif
   ui->FilepathEdit->setToolTip(
       tr("Accepts only letters, digits, dashes ('-'), underscores ('_'), dots ('.') and paths separators ('%1').")
       .arg(QDir::separator()));

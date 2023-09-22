@@ -1,4 +1,4 @@
-
+INCLUDE(${OpenFLUID_DIR}/OpenFLUIDDetectQt.cmake)
 
 SET(OPENFLUID_BUILDEREXT_CPP PluggableModalExtension.cpp
                              PluggableModelessExtension.cpp
@@ -30,8 +30,9 @@ TARGET_LINK_LIBRARIES(openfluid-ui-builderext
                       openfluid-ware
                       openfluid-tools
                       openfluid-fluidx
-                      Qt5::Core
-                      Qt5::Widgets
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTWIDGETS_LIBRARIES}
+                      ${QT_QTGUI_LIBRARIES}
                      )
 
 

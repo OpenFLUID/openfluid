@@ -34,7 +34,15 @@
   @file OGRGDALHelpers.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
+
+
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
 
 
 #include <QStringList>
@@ -42,6 +50,14 @@
 #include <openfluid/utils/GDALHelpers.hpp>
 
 #include "OGRGDALHelpers.hpp"
+
+
+#if (QT_VERSION_MAJOR == 5)
+#pragma message "Qt 5 in builderext source"
+#endif
+#if (QT_VERSION_MAJOR == 6)
+#pragma message "Qt 6 in builderext source"
+#endif
 
 
 const QMap<QString,QString> OGRGDALHelpers::m_FileExtsDriversMap =
@@ -144,15 +160,24 @@ bool OGRGDALHelpers::convertFieldToAttribute(const OGRFeature* Feature,
 bool OGRGDALHelpers::convertConnectionsStringToList(const QString& ConnStr,
                                                     QList<SourceConnection>& ConnList)
 {
+
   ConnList.clear();
 
+#if (QT_VERSION_MAJOR < 6)
   QStringList UnitsList = ConnStr.split(";",QString::SkipEmptyParts);
+#else
+  QStringList UnitsList = ConnStr.split(";",Qt::SkipEmptyParts);
+#endif
 
   if (!UnitsList.isEmpty())
   {
     for (int i=0; i< UnitsList.size(); i++)
     {
+#if (QT_VERSION_MAJOR < 6)
       QStringList ClassIDPair = UnitsList[i].split("#",QString::SkipEmptyParts);
+#else
+      QStringList ClassIDPair = UnitsList[i].split("#",Qt::SkipEmptyParts);
+#endif
 
       if (ClassIDPair.size() != 2)
       {

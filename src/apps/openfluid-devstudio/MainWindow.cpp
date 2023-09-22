@@ -31,16 +31,23 @@
 
 /**
  @file MainWindow.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QApplication>
+#if (QT_VERSION_MAJOR < 6)
 #include <QDesktopWidget>
+#endif
 #include <QAction>
 #include <QUrl>
 #include <QDir>
@@ -378,7 +385,11 @@ void MainWindow::createLocalActions()
   m_Actions["ExportWareSources"] = new openfluid::ui::common::DefaultAction(tr("Export wares sources..."), this);
   m_Actions["GitDashboard"] = new openfluid::ui::common::DefaultAction(tr("Dashboard..."), this);
   m_Actions["DevDashboard"] = new openfluid::ui::common::DefaultAction(tr("Development dashboard..."), this);
+#if (QT_VERSION_MAJOR < 6)
   m_Actions["DevDashboard"]->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_D));
+#else
+  m_Actions["DevDashboard"]->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
+#endif
 
   // Help menu
   m_Actions["HelpOnlineWeb"] = new openfluid::ui::common::DefaultAction(tr("Web site"), this);

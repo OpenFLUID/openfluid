@@ -1,3 +1,4 @@
+INCLUDE(${OpenFLUID_DIR}/OpenFLUIDDetectQt.cmake) # FIXME fix this since we only need SVG in this case, and do so for every file using this line without needing all items
 
 SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
                               OStreamMsgStream.cpp
@@ -54,7 +55,8 @@ SET(OPENFLUID_UI_WARESDEV_HPP WareSrcUIContainer.hpp
                               WareStatusDashboardWidget.hpp
                               WareStatusItemWidget.hpp)
 
-QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui WareBuildOptionsWidget.ui WareBuildOptionsDialog.ui
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui WareBuildOptionsWidget.ui WareBuildOptionsDialog.ui
                                      EmptyPage.ui CppPage.ui CMakeConfigPage.ui
                                      NewWareDialog.ui FindReplaceDialog.ui
                                      WaresSrcExportDialog.ui WaresSrcImportDialog.ui FragmentsSrcImportDialog.ui FragmentCreationDialog.ui WaresSrcIOProgressDialog.ui
@@ -63,6 +65,17 @@ QT5_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui Ware
                                      WorkspaceDevDashboardDialog.ui WorkspaceDevWaresWidget.ui WorkspaceDevGitWidget.ui
                                      MigrationSetupDialog.ui
                                      WareStatusDashboardWidget.ui WareStatusItemWidget.ui)
+ELSE()
+  QT_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui WareExplorerDialog.ui WareBuildOptionsWidget.ui WareBuildOptionsDialog.ui
+                                     EmptyPage.ui CppPage.ui CMakeConfigPage.ui
+                                     NewWareDialog.ui FindReplaceDialog.ui
+                                     WaresSrcExportDialog.ui WaresSrcImportDialog.ui FragmentsSrcImportDialog.ui FragmentCreationDialog.ui WaresSrcIOProgressDialog.ui
+                                     WaresImportFilterWidget.ui WareGitDialog.ui
+                                     WorkspaceDevProcessDialog.ui
+                                     WorkspaceDevDashboardDialog.ui WorkspaceDevWaresWidget.ui WorkspaceDevGitWidget.ui
+                                     MigrationSetupDialog.ui
+                                     WareStatusDashboardWidget.ui WareStatusItemWidget.ui)
+ENDIF()
                                    
 
 #QT5_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)
@@ -84,13 +97,15 @@ SET_TARGET_PROPERTIES(openfluid-ui-waresdev PROPERTIES VERSION "${OPENFLUID_VERS
                                         COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
+MESSAGE(STATUS "In ui/waresdev ${QT_VERSION_MAJOR}")
+
 TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       openfluid-ui-common
                       openfluid-waresdev
                       openfluid-utils
                       openfluid-tools
-                      Qt5::Core
-                      Qt5::Widgets
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTWIDGETS_LIBRARIES}
                      )
 
 

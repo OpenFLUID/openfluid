@@ -1,4 +1,4 @@
-
+INCLUDE(${OpenFLUID_DIR}/OpenFLUIDDetectQt.cmake)
 
 SET(OPENFLUID_UI_COMMON_CPP AppMainWindow.cpp OpenFLUIDDialog.cpp 
                             MessageDialog.cpp MessageFrame.cpp
@@ -43,7 +43,8 @@ SET(OPENFLUID_UI_COMMON_HPP AppMainWindow.hpp OpenFLUIDDialog.hpp
                             )
 
 
-QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
                                    RunSimulationDialog.ui RunCLISimulationDialog.ui
                                    AboutDialog.ui
                                    SignatureEditorWidget.ui SignatureDataEditorWidget.ui EditSignatureDialog.ui
@@ -54,9 +55,26 @@ QT5_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
                                    TimePeriodWidget.ui
                                    EditExternalToolDialog.ui
                                    WareIssuesManagerWidget.ui WareshubIssueDialog.ui)
+ELSE()
+  QT_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
+                                   RunSimulationDialog.ui RunCLISimulationDialog.ui
+                                   AboutDialog.ui
+                                   SignatureEditorWidget.ui SignatureDataEditorWidget.ui EditSignatureDialog.ui
+                                   PathsManagementWidget.ui WaresSearchPathsWidget.ui
+                                   ExternalToolsManagementWidget.ui
+                                   LogExplorerDialog.ui
+                                   PreferencesDialog.ui DetectQtDevToolsDialog.ui
+                                   TimePeriodWidget.ui
+                                   EditExternalToolDialog.ui
+                                   WareIssuesManagerWidget.ui WareshubIssueDialog.ui)
+ENDIF()
 
 
-QT5_ADD_RESOURCES(OPENFLUID_UI_COMMON_RC resources/openfluiduicommon.qrc)
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_ADD_RESOURCES(OPENFLUID_UI_COMMON_RC resources/openfluiduicommon.qrc)
+ELSE()
+  QT_ADD_RESOURCES(OPENFLUID_UI_COMMON_RC resources/openfluiduicommon.qrc)
+ENDIF()
 
 ADD_LIBRARY(openfluid-ui-common SHARED ${OPENFLUID_UI_COMMON_CPP} ${OPENFLUID_UI_COMMON_HPP}
                                        ${OPENFLUID_UI_COMMON_RC} ${OPENFLUID_UI_COMMON_UI})
@@ -76,8 +94,8 @@ TARGET_LINK_LIBRARIES(openfluid-ui-common
                       openfluid-tools
                       openfluid-machine
                       openfluid-fluidx
-                      Qt5::Core
-                      Qt5::Widgets
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTWIDGETS_LIBRARIES}
                      )
 
 

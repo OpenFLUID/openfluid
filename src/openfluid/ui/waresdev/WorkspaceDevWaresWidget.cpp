@@ -36,8 +36,24 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
+#if (QT_VERSION_MAJOR == 5)
+
 
 #include <QRegExp>
+#pragma message "Qt 5 in workspace source"
+#endif
+#if (QT_VERSION_MAJOR == 6)
+
+
+#include <QRegularExpression>
+#pragma message "Qt 6 in workspace source"
+#endif
 
 #include <openfluid/config.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevWaresWidget.hpp>
@@ -49,7 +65,7 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-
+const int ab=0;
 const WorkspaceDevDashboardTypes::ActionsByRows WorkspaceDevWaresWidget::Actions =
 {
   {{"configure","Configure"},{"build","Build"},{"doc","Doc"}},
@@ -124,6 +140,7 @@ void WorkspaceDevWaresWidget::selectFiltered()
 
   if (!REStr.isEmpty())
   {
+#if (QT_VERSION_MAJOR < 6)
     QRegExp RE(REStr);
     if (!ui->RegExpCheckBox->isChecked())
     {
@@ -139,6 +156,27 @@ void WorkspaceDevWaresWidget::selectFiltered()
         Item->setCheckState(Qt::Checked);
       }
     }
+#else
+    QRegularExpression RE;
+    if (!ui->RegExpCheckBox->isChecked())
+    {
+      RE = QRegularExpression(QRegularExpression::wildcardToRegularExpression(REStr));
+    }
+    else
+    {
+      RE = QRegularExpression(REStr);
+    }
+
+    for (unsigned int i =0; i < m_WaresCount; i++)
+    {
+      QTableWidgetItem* Item = ui->WaresTableWidget->item(i,0);
+
+      if (RE.match(Item->text()).hasMatch())
+      {
+        Item->setCheckState(Qt::Checked);
+      }
+    }
+#endif
   }
 }
 

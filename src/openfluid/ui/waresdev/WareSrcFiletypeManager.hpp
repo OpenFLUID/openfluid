@@ -45,7 +45,11 @@
 
 #include <QTextCharFormat>
 #include <QMap>
+#if (QT_VERSION_MAJOR < 6)
 #include <QRegExp>
+#else
+#include <QRegularExpression>
+#endif
 
 #include <openfluid/utils/SingletonMacros.hpp>
 #include <openfluid/dllexport.hpp>
@@ -68,15 +72,22 @@ class OPENFLUID_API WareSrcFiletypeManager
     {
       QString StyleName;
 
+#if (QT_VERSION_MAJOR < 6)
       QRegExp Pattern;
 
       QRegExp EndPattern;
+#else
+      QRegularExpression Pattern;
+
+      QRegularExpression EndPattern;
+#endif
 
       QTextCharFormat Format;
 
       HighlightingRule()
       { }
 
+#if (QT_VERSION_MAJOR < 6)
       HighlightingRule(const QString& AStyleName, QRegExp APattern, QTextCharFormat AFormat) :
         StyleName(AStyleName), Pattern(APattern), EndPattern(QRegExp()), Format(AFormat)
       { }
@@ -85,6 +96,16 @@ class OPENFLUID_API WareSrcFiletypeManager
                        QTextCharFormat AFormat) :
         StyleName(AStyleName), Pattern(ABeginPattern), EndPattern(AnEndPattern), Format(AFormat)
       { }
+#else
+      HighlightingRule(const QString& AStyleName, QRegularExpression APattern, QTextCharFormat AFormat) :
+        StyleName(AStyleName), Pattern(APattern), EndPattern(QRegularExpression()), Format(AFormat)
+      { }
+
+      HighlightingRule(const QString& AStyleName, QRegularExpression ABeginPattern, QRegularExpression AnEndPattern,
+                       QTextCharFormat AFormat) :
+        StyleName(AStyleName), Pattern(ABeginPattern), EndPattern(AnEndPattern), Format(AFormat)
+      { }
+#endif
     };
 
     typedef QVector<HighlightingRule> HighlightingRules_t;

@@ -55,6 +55,11 @@
 #include <QPoint>
 #include <QSize>
 
+#if (QT_VERSION_MAJOR < 6)
+#else
+#include <QRegularExpression>
+#endif
+
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/core/DateTime.hpp>
 
@@ -84,8 +89,13 @@ inline QString toIniCompatible(const std::string& Str)
 */
 inline std::string fromIniCompatible(const QVariant& Var)
 {
+#if (QT_VERSION_MAJOR < 6)
   if (Var.type() == QVariant::StringList)
   {
+#else
+  if (Var.typeId() == QVariant::StringList) //TODO TOTEST metaType or typeId?
+  {
+#endif
     return Var.toStringList().join(", ").toStdString();
   }
   else
@@ -280,8 +290,12 @@ inline QStringList toQStringList(const std::set<int>& IntSet)
 inline QStringList convertArgsStringToList(const QString& ArgsStr)
 {
   // converting string args as a list, without splitting spaces in quotes
+#if (QT_VERSION_MAJOR < 6)
   QStringList ArgsList = ArgsStr.split(QRegExp("\\s(?=(?:\"[^\"]*\"|[^\"])*$)"),QString::SkipEmptyParts);
-  
+#else
+  QStringList ArgsList = ArgsStr.split(QRegularExpression("\\s(?=(?:\"[^\"]*\"|[^\"])*$)"),Qt::SkipEmptyParts);
+#endif
+
   // removing of quotes
   for (auto& Arg : ArgsList)
   {

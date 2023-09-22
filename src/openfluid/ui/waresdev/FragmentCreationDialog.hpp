@@ -59,7 +59,11 @@ class OPENFLUID_API FragmentCreationDialog: public openfluid::ui::common::Messag
 
     bool check();
 
+#if (QT_VERSION_MAJOR < 6)
     QRegExp getFragmentNamedRegExp();
+#else
+    QRegularExpression getFragmentNamedRegExp();
+#endif
 
 
   private:

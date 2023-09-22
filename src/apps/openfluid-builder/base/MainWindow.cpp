@@ -37,10 +37,20 @@
  */
 
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
+
 #include <QCloseEvent>
 #include <QLayout>
 #include <QApplication>
+#if (QT_VERSION_MAJOR < 6)
 #include <QDesktopWidget>
+#else
+#endif
 
 #include "MainWindow.hpp"
 

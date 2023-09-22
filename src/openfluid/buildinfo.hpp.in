@@ -62,7 +62,7 @@ const std::string BUILD_LIB_tinyxml2_VERSION = "@OFBUILD_3RDPARTY_tinyxml2_VERSI
 const std::string BUILD_LIB_Boost_VERSION = "@Boost_MAJOR_VERSION@.@Boost_MINOR_VERSION@.@Boost_SUBMINOR_VERSION@";
 const std::string BUILD_LIB_GDAL_VERSION = "@GDAL_VERSION@";
 const std::string BUILD_LIB_CURL_VERSION = "@CURL_VERSION_STRING@";
-const std::string BUILD_LIB_QT_VERSION = "@Qt5Core_VERSION@";
+const std::string BUILD_LIB_QT_VERSION = "@QT_VERSION@";
 
 const bool BUILD_OPENFLUID_UI = @OFBUILD_ENABLE_GUI_01@;
 

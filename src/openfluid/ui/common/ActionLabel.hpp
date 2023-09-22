@@ -41,6 +41,8 @@
 #define __OPENFLUID_UICOMMON_ACTIONLABEL_HPP__
 
 
+#include <QObject>
+
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/common/ClickableLabel.hpp>
 
@@ -50,6 +52,9 @@ namespace openfluid { namespace ui { namespace common {
 
 class OPENFLUID_API ActionLabel : public ClickableLabel
 {
+
+  Q_OBJECT
+
   public:
 
     explicit ActionLabel(QWidget* Parent = nullptr);

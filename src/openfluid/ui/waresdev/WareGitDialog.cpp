@@ -36,8 +36,17 @@
  @author Aline LIBRES <aline.libres@gmail.com>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QTextDocument>
+#if (QT_VERSION_MAJOR >= 6)
+#include <QRegularExpression>
+#endif
 
 #include <openfluid/ui/waresdev/WareGitDialog.hpp>
 
@@ -76,7 +85,11 @@ void WareGitDialog::setContent(const QString& Content)
   Html.replace("\x1b[m", "</span>");
 
   // in case there are other ANSI decorations
+#if (QT_VERSION_MAJOR < 6)
   Html.replace(QRegExp("\x1b\[[0-9;]+m"), "<span>");
+#else
+  Html.replace(QRegularExpression("\x1b\[[0-9;]+m"), "<span>");
+#endif
 
   ui->ContentTextEdit->setHtml(Html);
 }

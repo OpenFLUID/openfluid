@@ -36,9 +36,19 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QDir>
+#if (QT_VERSION_MAJOR < 6)
 #include <QRegExp>
+#else
+#include <QRegularExpression>
+#endif
 
 #include <openfluid/ui/waresdev/WorkspaceDevPurgeWorker.hpp>
 #include <openfluid/base/Environment.hpp>
@@ -98,7 +108,11 @@ WorkspaceDevPurgeWorker::~WorkspaceDevPurgeWorker()
 
 void WorkspaceDevPurgeWorker::run()
 {
+#if (QT_VERSION_MAJOR < 6)
   QRegExp FilterRegExp(m_BuildDirRegexStr);
+#else
+  QRegularExpression FilterRegExp(m_BuildDirRegexStr);
+#endif
 
   for (auto& WType : m_Selection)
   {
@@ -114,8 +128,13 @@ void WorkspaceDevPurgeWorker::run()
 
       for (auto SubDir : SubDirs)
       {
+#if (QT_VERSION_MAJOR < 6)
         if (FilterRegExp.exactMatch(SubDir.fileName()))
         {
+#else
+        if (FilterRegExp.match(SubDir.fileName()).hasMatch())
+        {
+#endif
           auto SubDirFSP = openfluid::tools::FilesystemPath(SubDir.absoluteFilePath().toStdString());
           SubDirFSP.removeDirectory();
 
