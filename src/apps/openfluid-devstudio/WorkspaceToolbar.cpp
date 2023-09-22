@@ -38,6 +38,12 @@
  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QMenu>
 #include <QToolButton>
@@ -61,12 +67,15 @@
 WorkspaceToolbar::WorkspaceToolbar(QWidget* Parent) :
     QToolBar(Parent)
 {
-
   setIconSize(QSize(32, 32));
   setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
   layout()->setSpacing(0);
+#if (QT_VERSION_MAJOR < 6)
   layout()->setMargin(0);
+#else
+  layout()->setContentsMargins(QMargins());
+#endif
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
   m_ExternalTools = 

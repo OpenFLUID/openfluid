@@ -182,6 +182,9 @@ ENDIF()
 
 ################### compilation and build ###################
 
+add_compile_options(-Wno-attributes)  # TODO REMOVE to fix
+add_compile_options(-Wno-missing-field-initializers)  # TODO REMOVE to fix 
+
 SET(OFBUILD_DEBUG_COMPILE_OPTIONS "")
 SET(OFBUILD_RELEASE_COMPILE_OPTIONS "")
 IF((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))

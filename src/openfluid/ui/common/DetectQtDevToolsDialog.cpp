@@ -36,6 +36,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QDir>
 #include <QFileInfo>
@@ -203,7 +209,11 @@ void DetectQtDevToolsDialog::runDetection()
     QApplication::instance()->processEvents();
 
     QProcess Process;
+#if (QT_VERSION_MAJOR < 6)
     Process.start(qtpathsPath, QStringList() << "--install-prefix");
+#else
+    Process.start(qtpathsPath, QStringList() << "--install-prefix");
+#endif
     Process.waitForFinished();
 
     if (Process.exitStatus() == QProcess::NormalExit && Process.exitCode() == 0)

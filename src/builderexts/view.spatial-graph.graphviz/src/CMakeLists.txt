@@ -1,6 +1,9 @@
 FIND_PACKAGE(GDAL REQUIRED)
 
-FIND_PACKAGE(Qt5 COMPONENTS Svg REQUIRED)
+FIND_PACKAGE(Qt6 COMPONENTS SvgWidgets)
+IF (NOT Qt6_FOUND)
+  FIND_PACKAGE(Qt5 COMPONENTS Svg REQUIRED)
+ENDIF()
 
 # set this to add include directories
 # ex: SET(WARE_INCLUDE_DIRS /path/to/include/A/ /path/to/include/B/)
@@ -12,7 +15,11 @@ SET(WARE_LIBRARY_DIRS ${GDAL_LIBRARY_DIRS})
 
 # set this to add linked libraries
 # ex: SET(WARE_LINK_LIBS libA libB)
-SET(WARE_LINK_LIBS ${GDAL_LIBRARIES} Qt5::Svg)
+IF (NOT Qt6_FOUND)
+  SET(WARE_LINK_LIBS ${GDAL_LIBRARIES} Qt5::Svg)
+ELSE()
+  SET(WARE_LINK_LIBS ${GDAL_LIBRARIES} Qt6::SvgWidgets)
+ENDIF()
 
 # set this to add definitions
 # ex: SET(WARE_DEFINITIONS "-DDebug")

@@ -34,7 +34,14 @@
   @file AboutDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
+
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
 
 
 #include <list>
@@ -198,7 +205,11 @@ QString AboutDialog::generateBuildInfoText()
 
 QString AboutDialog::quickndirtyMardown2HTML(const QString& Content)
 {
+#if (QT_VERSION_MAJOR < 6)
   QStringList SourceLines = Content.split(QRegExp("[\r\n]"));
+#else
+  QStringList SourceLines = Content.split(QRegularExpression("[\r\n]"));
+#endif
   QStringList ProcessedLines;
   
   for (auto& Line : SourceLines)

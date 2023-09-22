@@ -37,14 +37,28 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  */
 
-
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WareSrcFiletypeManager
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
 
-#include <QRegExp>
+#if (QT_VERSION_MAJOR < 6)
+#  pragma message("QT_VERSION_MAJOR < 6")
+
+
+#  include <QRegExp>
+#else
+#  pragma message("QT_VERSION_MAJOR >= 6?")
+
+
+#  include <QRegularExpression>  
+#endif
 
 #include <boost/test/unit_test.hpp>
 
@@ -69,45 +83,54 @@ BOOST_AUTO_TEST_CASE(parseSyntaxFile)
 // =====================================================================
 
 
+bool hasMatch(QString Pattern, QString Content)
+{
+#if (QT_VERSION_MAJOR < 6)
+  return QRegExp(Pattern).indexIn(Content) != -1;
+#else
+  return QRegularExpression(Pattern, QRegularExpression::DotMatchesEverythingOption).globalMatch(Content).hasNext();
+#endif  
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 BOOST_AUTO_TEST_CASE(checkRegExp)
 {
-  BOOST_CHECK(QRegExp("\\bint\\b").indexIn("bla int bla") != -1);
-  BOOST_CHECK(QRegExp("\\bit\\b").indexIn("bla int bla") == -1);
+  BOOST_CHECK(hasMatch("\\bint\\b", "bla int bla"));
+  BOOST_CHECK(!hasMatch("\\bit\\b", "bla int bla"));
 
-  QRegExp preproc("^\\s*#\\s*\\w+");  //<pattern value="^\s*#\s*\w+" />
-  BOOST_CHECK(preproc.indexIn("#include bla") != -1);
-  BOOST_CHECK(preproc.indexIn(" #include bla") != -1);
-  BOOST_CHECK(preproc.indexIn("# include bla") != -1);
+  QString preproc("^\\s*#\\s*\\w+");  //<pattern value="^\s*#\s*\w+" />
+  BOOST_CHECK(hasMatch(preproc, "#include bla"));
+  BOOST_CHECK(hasMatch(preproc, "#include bla"));
+  BOOST_CHECK(hasMatch(preproc, "# include bla"));
 
   // <pattern value="\bOPENFLUID_\w+\b" />  <pattern value="\bOpenFLUID_\w+\b" />
-  BOOST_CHECK(QRegExp("\\bOPENFLUID_\\w+\\b").indexIn(" OPENFLUID_GET(bla) ") != -1);
+  BOOST_CHECK(hasMatch("\\bOPENFLUID_\\w+\\b", " OPENFLUID_GET(bla) "));
 
-  QRegExp simpleComment("//.*$");  // <pattern value="//.*$" />
-  BOOST_CHECK(simpleComment.indexIn("// comment") != -1);
-  BOOST_CHECK(simpleComment.indexIn("bla //comment ") != -1);
-  BOOST_CHECK(simpleComment.indexIn("//* comment") != -1);
-  BOOST_CHECK(simpleComment.indexIn("bla / bla") == -1);
-  BOOST_CHECK(simpleComment.indexIn("bla/bla") == -1);
+  QString simpleComment("//.*$");  // <pattern value="//.*$" />
+  BOOST_CHECK(hasMatch(simpleComment, "// comment"));
+  BOOST_CHECK(hasMatch(simpleComment, "bla //comment "));
+  BOOST_CHECK(hasMatch(simpleComment, "//* comment"));
+  BOOST_CHECK(!hasMatch(simpleComment, "bla / bla"));
+  BOOST_CHECK(!hasMatch(simpleComment, "bla/bla"));
 
-  QRegExp multiComment("((^|[^/])/{1}\\*).*(\\*/)");  // <pattern start="(^|[^/])/{1}\*" end="\*/" />
-  multiComment.indexIn("/* comment */");
-  BOOST_CHECK(multiComment.matchedLength() != -1);
-  multiComment.indexIn("/* comment\n next line */");
-  BOOST_CHECK(multiComment.matchedLength() != -1);
-  multiComment.indexIn("//* comment */");
-  BOOST_CHECK(multiComment.matchedLength() == -1);
-  multiComment.indexIn("// comment ");
-  BOOST_CHECK(multiComment.matchedLength() == -1);
-  multiComment.indexIn("/ bla ");
-  BOOST_CHECK(multiComment.matchedLength() == -1);
+  QString multiComment("((^|[^/])/{1}\\*).*(\\*/)");  // <pattern start="(^|[^/])/{1}\*" end="\*/" />
+  BOOST_CHECK(hasMatch(multiComment, "/* comment */"));
+  BOOST_CHECK(hasMatch(multiComment, "/* comment\n next line */"));
+  BOOST_CHECK(!hasMatch(multiComment, "//* comment */"));
+  BOOST_CHECK(!hasMatch(multiComment, "// comment "));
+  BOOST_CHECK(!hasMatch(multiComment, "/ bla "));
 
-  BOOST_CHECK(QRegExp("\"[^\"]*\"").indexIn(" bla \"text text \"") != -1);  // <pattern value='\"[^\"]*\"' />
-  BOOST_CHECK(QRegExp("\'[^\']*\'").indexIn(" bla 'text text '") != -1);  // <pattern value="\'[^\']*\'" />
+  BOOST_CHECK(hasMatch("\"[^\"]*\"", " bla \"text text \""));  // <pattern value='\"[^\"]*\"' />
+  BOOST_CHECK(hasMatch("\'[^\']*\'", " bla 'text text '"));  // <pattern value="\'[^\']*\'" />
 
-  QRegExp function("\\w+\\s*(?=\\()");  //<pattern value="\w+\s*(?=\()" />
-  BOOST_CHECK(function.indexIn("func()") != -1);
-  BOOST_CHECK(function.indexIn("func(param)") != -1);
-  BOOST_CHECK(function.indexIn("func ( param)") != -1);
-  BOOST_CHECK(function.indexIn("2*(3+5)") == -1);
+  QString functionRegex("\\w+\\s*(?=\\()");  //<pattern value="\w+\s*(?=\()" />
+  BOOST_CHECK(hasMatch(functionRegex, "func()"));
+  BOOST_CHECK(hasMatch(functionRegex, "func(param)"));
+  BOOST_CHECK(hasMatch(functionRegex, "func ( param)"));
+  BOOST_CHECK(!hasMatch(functionRegex, "2*(3+5)"));
 }
 

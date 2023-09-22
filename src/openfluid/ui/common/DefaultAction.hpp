@@ -41,6 +41,7 @@
 #define __OPENFLUID_UICOMMON_DEFAULTACTION_HPP__
 
 
+#include <QObject>
 #include <QAction>
 
 #include <openfluid/dllexport.hpp>
@@ -51,6 +52,9 @@ namespace openfluid { namespace ui { namespace common {
 
 class OPENFLUID_API DefaultAction : public QAction
 {
+
+  Q_OBJECT
+
   public:
 
     DefaultAction(const QIcon& Icon, const QString& Text, QObject* Parent = nullptr) : QAction(Icon,Text,Parent)

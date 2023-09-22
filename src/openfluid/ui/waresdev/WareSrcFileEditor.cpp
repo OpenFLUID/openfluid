@@ -37,6 +37,9 @@
  */
 
 
+// OpenFLUID:stylecheck:!brac-oneline
+
+
 #include <QDir>
 #include <QPainter>
 #include <QTextStream>
@@ -272,7 +275,11 @@ void WareSrcFileEditor::updateSettings()
 
   // Indent
 
+#if (QT_VERSION_MAJOR < 6)
   m_SpaceCharWidth = fontMetrics().width(' ');
+#else
+  m_SpaceCharWidth = fontMetrics().horizontalAdvance(' ');
+#endif
 
   m_IndentString = QString(" ").repeated(PrefMgr->getWaresdevIndentSpaceNb());
 }
@@ -357,7 +364,11 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
     TestCursor.setPosition(TestPosition, QTextCursor::KeepAnchor);
     TestSelection = TestCursor.selectedText();
   }
+#if (QT_VERSION_MAJOR < 6)
   while (m_WordPartRegExp.exactMatch(TestSelection.left(1)));
+#else
+  while (m_WordPartRegExp.match(TestSelection.left(1)).hasMatch());
+#endif  
 
   if (RemoveFirstChar)
   {
@@ -418,7 +429,11 @@ int WareSrcFileEditor::lineNumberAreaWidth()
     ++Digits;
   }
 
+#if (QT_VERSION_MAJOR < 6)
   int Space = 3 + fontMetrics().width(QLatin1Char('9')) * Digits;
+#else
+  int Space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * Digits;
+#endif
 
   return Space;
 }

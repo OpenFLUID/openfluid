@@ -96,7 +96,11 @@ void WareSrcActionsCollection::createActions()
                                     openfluid::ui::common::getIcon("file-save","/ui/common",false),tr("Save all"),this);
   if (m_WithShortcuts)
   {
+#if (QT_VERSION_MAJOR < 6)
     m_Actions["SaveAllFiles"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S));
+#else
+    m_Actions["SaveAllFiles"]->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S));
+#endif
   }
   m_Actions["SaveAllFiles"]->setToolTip(tr("Save all files of the ware"));
   m_Actions["SaveAllFiles"]->setEnabled(false);
@@ -144,7 +148,11 @@ void WareSrcActionsCollection::createActions()
   m_Actions["GoToLine"] = new openfluid::ui::common::DefaultAction(tr("Go to line..."), this);
   if (m_WithShortcuts)
   {
+#if (QT_VERSION_MAJOR < 6)
     m_Actions["GoToLine"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+#else
+    m_Actions["GoToLine"]->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
+#endif
   }
 
 
@@ -157,7 +165,11 @@ void WareSrcActionsCollection::createActions()
                                      tr("Configure"),this);
   if (m_WithShortcuts)
   {
+#if (QT_VERSION_MAJOR < 6)
     m_Actions["ConfigureWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B));
+#else
+    m_Actions["ConfigureWare"]->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B));
+#endif
   }
 
 
@@ -167,7 +179,11 @@ void WareSrcActionsCollection::createActions()
                                  openfluid::ui::common::getIcon("build","/ui/common",false),tr("Build"),this);
   if (m_WithShortcuts)
   {
+#if (QT_VERSION_MAJOR < 6)
     m_Actions["BuildWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
+#else
+    m_Actions["BuildWare"]->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
+#endif
   }
 
 
@@ -177,7 +193,11 @@ void WareSrcActionsCollection::createActions()
                                    tr("Generate doc"),this);
   if (m_WithShortcuts)
   {
+#if (QT_VERSION_MAJOR < 6)
     m_Actions["GenerateDoc"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+#else
+    m_Actions["GenerateDoc"]->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
+#endif
   }
 
 

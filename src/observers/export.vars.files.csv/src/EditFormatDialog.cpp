@@ -80,11 +80,16 @@ EditFormatDialog::EditFormatDialog(const QStringList& ExistingFormats,QWidget* P
   ui->FloatFormatComboBox->addItems(m_FloatFormatsLabels);
   ui->FloatFormatComboBox->setCurrentIndex(0);
   
-
+#if (QT_VERSION_MAJOR < 6)
   m_PreviewDateTimes = QList<openfluid::core::DateTime>::fromVector(
                                 QVector<openfluid::core::DateTime>::fromStdVector(getPreviewDateTimes()));
   m_PreviewValues = QList<double>::fromVector(
                                 QVector<double>::fromStdVector(getPreviewValues()));
+#else
+  m_PreviewDateTimes = QList<openfluid::core::DateTime>(getPreviewDateTimes().begin(), getPreviewDateTimes().end());
+  m_PreviewValues = QList<double>(getPreviewValues().begin(), getPreviewValues().end());
+  //TODO TOTEST check if memory is correctly handled since it is not a vector copy anymore
+#endif
 
   connect(ui->FormatNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->PredefDateRadioButton,SIGNAL(toggled(bool)),this,SLOT(checkGlobal()));

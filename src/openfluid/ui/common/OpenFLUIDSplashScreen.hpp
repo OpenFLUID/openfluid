@@ -40,7 +40,8 @@
 #ifndef __OPENFLUID_UICOMMON_OPENFLUIDSPLASHSCREEN_HPP__
 #define __OPENFLUID_UICOMMON_OPENFLUIDSPLASHSCREEN_HPP__
 
-
+ 
+ #include <QObject>
 #include <QSplashScreen>
 #include <QPixmap>
 
@@ -52,6 +53,9 @@ namespace openfluid { namespace ui { namespace common {
 
 class OPENFLUID_API OpenFLUIDSplashScreen : public QSplashScreen
 {
+
+  Q_OBJECT
+
   public:
 
     explicit OpenFLUIDSplashScreen(const QPixmap& Pixmap = QPixmap());

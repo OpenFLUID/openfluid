@@ -11,3 +11,6 @@ _*
 # OpenFLUID local configuration files
 CMake.in.local.config
 CMake.in.local.cmake
+
+# analysis files
+*.clazy.yaml

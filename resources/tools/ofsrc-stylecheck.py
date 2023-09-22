@@ -528,6 +528,7 @@ class SourceTreeChecker:
 
     @cppOnly
     def checkBrackets(self, Filename, Lines):
+        CheckOneline = True
 
         i = 1
         IsNewBlock = False
@@ -537,6 +538,9 @@ class SourceTreeChecker:
         IsDo = False
         for Line in Lines:
             if len(Line.split()) > 0:
+                if CheckOneline:
+                    CheckOneline = not self.isDirective(Line, "!brac-oneline")
+
                 FirstWord = Line.split()[0].split("(")[0]
                 NoCommentLine = Line.split("//")[0]
                 NoSpaceLine = NoCommentLine.replace(" ","")
@@ -579,7 +583,8 @@ class SourceTreeChecker:
                                     if FirstWord == "for" and NoSpaceLine.endswith(";"):    # unconclusive
                                         pass
                                     else:
-                                        self.addProblem('BRAC',Filename,i,'block must not be on one line')
+                                        if CheckOneline:
+                                            self.addProblem('BRAC',Filename,i,'block must not be on one line')
                                 else: # finish with "{" case
                                     self.addProblem('BRAC',Filename,i,'bracket must be on a new line')
                             IsPartialInstruction = False

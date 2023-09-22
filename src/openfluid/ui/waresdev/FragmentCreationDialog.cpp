@@ -35,6 +35,12 @@
   @author Armel THÖNI <armel.thoni@inra.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <openfluid/config.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
@@ -70,10 +76,17 @@ FragmentCreationDialog::FragmentCreationDialog(QWidget* Parent) :
 // =====================================================================
 
 
+#if (QT_VERSION_MAJOR < 6)
 QRegExp FragmentCreationDialog::getFragmentNamedRegExp()
 {
   return QRegExp(QString::fromStdString(openfluid::tools::FragmentNameRuleString));
 }
+#else
+QRegularExpression FragmentCreationDialog::getFragmentNamedRegExp()
+{
+  return QRegularExpression(QString::fromStdString(openfluid::tools::FragmentNameRuleString));
+}
+#endif
 
 
 // =====================================================================
@@ -89,7 +102,11 @@ bool FragmentCreationDialog::check()
   }
   else 
   {
+#if (QT_VERSION_MAJOR < 6)
     QRegExpValidator Validator(getFragmentNamedRegExp(), 0);
+#else
+    QRegularExpressionValidator Validator(getFragmentNamedRegExp(), 0);
+#endif
     QString FragmentName(ui->FragmentNameLineEdit->text());
     QString FirstLetter(FragmentName.front());
     int pos = 0;

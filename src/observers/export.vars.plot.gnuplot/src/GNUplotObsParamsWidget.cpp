@@ -36,6 +36,13 @@
 */
 
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QListWidget>
@@ -98,9 +105,13 @@ GNUplotObsParamsWidget::GNUplotObsParamsWidget(): openfluid::ui::builderext::Plu
 
 
   // General tab
-
+#if (QT_VERSION_MAJOR < 6)
   connect(ui->TerminalComboBox, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentIndexChanged),
           this, &GNUplotObsParamsWidget::setTerminal);
+#else
+  connect(ui->TerminalComboBox, &QComboBox::currentTextChanged,
+          this, &GNUplotObsParamsWidget::setTerminal);
+#endif
   connect(ui->OutputEdit, &QLineEdit::editingFinished, this, &GNUplotObsParamsWidget::setOutputFileName);
   connect(ui->GnuplotCheckBox, &QCheckBox::clicked, this, &GNUplotObsParamsWidget::setGNUplotOption);
   connect(ui->KeepGnuplotCheckBox, &QCheckBox::clicked, this, &GNUplotObsParamsWidget::setPersistantOption);
@@ -121,16 +132,28 @@ GNUplotObsParamsWidget::GNUplotObsParamsWidget(): openfluid::ui::builderext::Plu
   connect(ui->SerieDataFileRadio, &QRadioButton::clicked, this, &GNUplotObsParamsWidget::changeSerieType);
 
   connect(ui->VariableNameEdit, &QLineEdit::editingFinished, this, &GNUplotObsParamsWidget::setVariableName);
+#if (QT_VERSION_MAJOR < 6)
   connect(ui->UnitsClassComboBox, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
             this, &GNUplotObsParamsWidget::setUnitsClass);
   connect(ui->UnitIDComboBox, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
             this, &GNUplotObsParamsWidget::setUnitID);
+#else
+  connect(ui->UnitsClassComboBox, &QComboBox::textActivated,
+            this, &GNUplotObsParamsWidget::setUnitsClass);
+  connect(ui->UnitIDComboBox, &QComboBox::textActivated,
+            this, &GNUplotObsParamsWidget::setUnitID);
+#endif
 
   connect(ui->BrowseButton, &QPushButton::clicked, this, &GNUplotObsParamsWidget::setSourceFileName);
 
   connect(ui->SerieLabelEdit, &QLineEdit::editingFinished, this, &GNUplotObsParamsWidget::setSerieLabel);
+#if (QT_VERSION_MAJOR < 6)
   connect(ui->SerieStyleComboBox, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentIndexChanged),
             this, &GNUplotObsParamsWidget::setSerieStyle);
+#else
+  connect(ui->SerieStyleComboBox, &QComboBox::currentTextChanged,
+            this, &GNUplotObsParamsWidget::setSerieStyle);
+#endif
 
 
   // Graphs tab
@@ -145,8 +168,13 @@ GNUplotObsParamsWidget::GNUplotObsParamsWidget(): openfluid::ui::builderext::Plu
 
   connect(ui->GraphTitleEdit, &QLineEdit::editingFinished, this, &GNUplotObsParamsWidget::setGraphTitle);
   connect(ui->GraphYLabelEdit, &QLineEdit::editingFinished, this, &GNUplotObsParamsWidget::setGraphYLabel);
+#if (QT_VERSION_MAJOR < 6)
   connect(ui->GraphLegendComboBox, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentIndexChanged),
             this, &GNUplotObsParamsWidget::setGraphLegend);
+#else
+  connect(ui->GraphLegendComboBox, &QComboBox::currentTextChanged,
+            this, &GNUplotObsParamsWidget::setGraphLegend);
+#endif
   connect(ui->GraphSeriesListWidget, &QListWidget::itemClicked, this, &GNUplotObsParamsWidget::setGraphSeries);
 }
 

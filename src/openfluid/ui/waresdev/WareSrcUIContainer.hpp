@@ -58,6 +58,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 class WareSrcProcess : public QProcess
 {
 
+  Q_OBJECT
+
   public:
 
     enum class Type { NONE, CONFIGURE, BUILD};

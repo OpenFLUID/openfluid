@@ -1,3 +1,6 @@
+add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
+message(WARNING "${QT_VERSION_MAJOR}")
+
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 PROJECT("import.spatial-graph.ogr-gdal")

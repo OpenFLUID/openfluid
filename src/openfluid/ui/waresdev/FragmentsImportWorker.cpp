@@ -35,6 +35,12 @@
   @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QCoreApplication>
 #include <QFileInfo>
@@ -97,8 +103,13 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
   }
   // Checking if git URL is valid
   QString ProcessedGitUrl = GitUrl;
+#if (QT_VERSION_MAJOR < 6)
   if (ProcessedGitUrl[ProcessedGitUrl.length()-1] == "/")
   {
+#else
+  if (ProcessedGitUrl[ProcessedGitUrl.length()-1] == '/')
+  {
+#endif
     ProcessedGitUrl.chop(1);
   }
 

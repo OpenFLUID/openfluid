@@ -542,6 +542,7 @@ void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QSt
 
   if (AdjustedCommand.count("\"") >= 2)
   {
+#if (QT_VERSION_MAJOR < 6)
     QRegExp Rx("^\"(.*)\"(.*)");
     if (Rx.indexIn(AdjustedCommand) != -1)
     {
@@ -549,6 +550,20 @@ void WareSrcWidgetCollection::openExternalTool(const QString& Command, const QSt
       Program = CommandParts[1];
       SplittedCommand = CommandParts[2].split(" ");
     }
+#else
+    QRegularExpression Rx("^\"(.*)\"(.*)");
+    auto Match = Rx.match(AdjustedCommand);
+    if (Match.hasMatch())
+    {
+      Program = Match.captured(1);
+      SplittedCommand = Match.captured(2).split(" ");
+    }
+    else
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Error in tool syntax");
+    }
+#endif
   }
   else
   {

@@ -37,6 +37,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QPushButton>
 #include <QMessageBox>
@@ -97,19 +103,35 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
 
   QString IDTooltip;
   QString ClassTooltip;
+#if (QT_VERSION_MAJOR < 6)
   QRegExp ClassnameRegExp = getClassnameRegExp(ClassTooltip);
+#else
+  QRegularExpression ClassnameRegExp = getClassnameRegExp(ClassTooltip);
+#endif
 
   // "required" placeholder
   QString PlaceholderStr = getPlaceholderRequired();
 
   ui->IdEdit->setValidator(
+#if (QT_VERSION_MAJOR < 6)
       new QRegExpValidator(getWareIdRegExp(IDTooltip), this));
+#else
+      new QRegularExpressionValidator(getWareIdRegExp(IDTooltip), this));
+#endif
   ui->IdEdit->setToolTip(IDTooltip);
   ui->IdEdit->setPlaceholderText(PlaceholderStr);
+#if (QT_VERSION_MAJOR < 6)
   ui->ClassNameEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
+#else
+  ui->ClassNameEdit->setValidator(new QRegularExpressionValidator(ClassnameRegExp, this));
+#endif
   ui->ClassNameEdit->setToolTip(ClassTooltip);
   ui->ClassNameEdit->setPlaceholderText(PlaceholderStr);
+#if (QT_VERSION_MAJOR < 6)
   ui->UiParamClassNameEdit->setValidator(new QRegExpValidator(ClassnameRegExp, this));
+#else
+  ui->UiParamClassNameEdit->setValidator(new QRegularExpressionValidator(ClassnameRegExp, this));
+#endif
   ui->UiParamClassNameEdit->setToolTip(ClassTooltip);
   ui->UiParamClassNameEdit->setPlaceholderText(PlaceholderStr);
 
@@ -153,10 +175,18 @@ NewWareDialog::~NewWareDialog()
 // =====================================================================
 
 
+#if (QT_VERSION_MAJOR < 6)
 QRegExp NewWareDialog::getClassnameRegExp(QString& Tooltip)
+#else
+QRegularExpression NewWareDialog::getClassnameRegExp(QString& Tooltip)
+#endif
 {
   Tooltip = QObject::tr("Accepts only letters, digits, underscores ('_'), and must begin with a letter.");
+#if (QT_VERSION_MAJOR < 6)
   return QRegExp("[a-zA-Z]+[a-zA-Z0-9_]*");
+#else
+  return QRegularExpression("[a-zA-Z]+[a-zA-Z0-9_]*");
+#endif
 }
 
 
@@ -164,12 +194,20 @@ QRegExp NewWareDialog::getClassnameRegExp(QString& Tooltip)
 // =====================================================================
 
 
+#if (QT_VERSION_MAJOR < 6)
 QRegExp NewWareDialog::getWareIdRegExp(QString& Tooltip)
+#else
+QRegularExpression NewWareDialog::getWareIdRegExp(QString& Tooltip)
+#endif
 {
   // TODO see openfluid::tools::isValidWareID() for refactoring
 
   Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
+#if (QT_VERSION_MAJOR < 6)
   return QRegExp(QString::fromStdString(openfluid::tools::WareIDRuleString));
+#else
+  return QRegularExpression(QString::fromStdString(openfluid::tools::WareIDRuleString));
+#endif
 }
 
 

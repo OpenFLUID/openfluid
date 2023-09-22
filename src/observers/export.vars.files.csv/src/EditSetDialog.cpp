@@ -36,6 +36,12 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
 
 #include <QPushButton>
 
@@ -100,10 +106,17 @@ void EditSetDialog::checkGlobal()
 
   if (ui->SelectedUnitsRadioButton->isChecked())
   {
+#if (QT_VERSION_MAJOR < 6)
     QRegExp Exp("^[0-9]+(;[0-9]+)*$");
 
     ValidLists = !ui->SelectedUnitsTextEdit->toPlainText().isEmpty() &&
                  Exp.exactMatch(ui->SelectedUnitsTextEdit->toPlainText());
+#else
+    QRegularExpression Exp("^[0-9]+(;[0-9]+)*$");
+
+    ValidLists = !ui->SelectedUnitsTextEdit->toPlainText().isEmpty() &&
+                 Exp.match(ui->SelectedUnitsTextEdit->toPlainText()).hasMatch();
+#endif
   }
 
   if (ValidLists && ui->SelectedVariablesRadioButton->isChecked())

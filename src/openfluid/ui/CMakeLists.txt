@@ -1,3 +1,4 @@
+add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
 
 ADD_SUBDIRECTORY(common)
 ADD_SUBDIRECTORY(waresdev)

@@ -1,3 +1,4 @@
+add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
 # set this to add include directories
 # ex: SET(WARE_INCLUDE_DIRS /path/to/include/A/ /path/to/include/B/)
 #SET(WARE_INCLUDE_DIRS )

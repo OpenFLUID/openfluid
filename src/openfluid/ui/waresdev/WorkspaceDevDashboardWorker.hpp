@@ -81,7 +81,12 @@ class OPENFLUID_API WorkspaceDevDashboardWorker : public QObject
 } } }  // namespaces
 
 
+#if (QT_VERSION_MAJOR < 6)
 Q_DECLARE_METATYPE(openfluid::ui::waresdev::WorkspaceDevDashboardTypes::WareGitInfos);
+#else
+//Q_DECLARE_METATYPE(openfluid::ui::waresdev::WorkspaceDevDashboardTypes::WareGitInfos);
+//Error, aknowledged bug by Qt: https://bugreports.qt.io/browse/QTBUG-111968
+#endif
 
 
 #endif /* __OPENFLUID_UIWARESDEV_WORKSPACEDEVDASHBOARDWORKER_HPP__ */

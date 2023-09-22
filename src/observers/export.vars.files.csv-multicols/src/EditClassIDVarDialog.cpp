@@ -36,6 +36,13 @@
 */
 
 
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
+
+
 #include <QPushButton>
 
 #include <openfluid/tools/IDHelpers.hpp>
@@ -120,7 +127,11 @@ void EditClassIDVarDialog::checkGlobal()
 
     if (ui->SelectedUnitsRadioButton->isChecked())
     {
+#if (QT_VERSION_MAJOR < 6)
       QRegExp Exp("^[0-9]+([-;][0-9]+)*$");
+#else
+      QRegularExpression Exp("^[0-9]+([-;][0-9]+)*$");
+#endif
         
       std::string UnitsIDsStr = ui->SelectedUnitsTextEdit->toPlainText().trimmed().toStdString();
       std::vector<std::string> ContiguousIDs = openfluid::tools::split(UnitsIDsStr, ";"); 
@@ -137,8 +148,13 @@ void EditClassIDVarDialog::checkGlobal()
       {
         setMessage(tr("Empty units list"));
       }
+#if (QT_VERSION_MAJOR < 6)      
       else if (!Exp.exactMatch(ui->SelectedUnitsTextEdit->toPlainText()))
       {
+#else
+      else if (!Exp.match(ui->SelectedUnitsTextEdit->toPlainText()).hasMatch())
+      {
+#endif
         setMessage(tr("Invalid character or wrong syntax in units list"));
       }
     }

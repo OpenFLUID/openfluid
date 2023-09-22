@@ -34,13 +34,22 @@
   @file AppActions.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
+
+
+#ifndef QT_VERSION_MAJOR
+#pragma message "Qt version not found in source"
+#else
+#pragma message "Qt version found in source"
+#endif
 
 
 #include <algorithm>
 
 #include <QMenuBar>
 #include <QToolBar>
+#include <QActionGroup>
 #include <QDir>
 
 #include <openfluid/base/ApplicationException.hpp>
@@ -151,7 +160,11 @@ void AppActions::createActions()
   m_Actions["ProjectProperties"] = new openfluid::ui::common::DefaultAction(tr("Properties"), this);
 
   m_Actions["ProjectExplore"] = new openfluid::ui::common::DefaultAction( tr("Open in file explorer"), this);
+#if (QT_VERSION_MAJOR < 6)
   m_Actions["ProjectExplore"]->setShortcut(QKeySequence(Qt::ALT+Qt::Key_X));
+#else
+  m_Actions["ProjectExplore"]->setShortcut(QKeySequence(Qt::ALT | Qt::Key_X));
+#endif
 
   m_Actions["ProjectQuit"] = new openfluid::ui::common::DefaultAction( tr("Quit"), this);
   m_Actions["ProjectQuit"]->setShortcuts(QKeySequence::Quit);
@@ -186,11 +199,19 @@ void AppActions::createActions()
 
   //Simulation menu
   m_Actions["WaresRefresh"] = new openfluid::ui::common::DefaultAction( tr("Reload simulators and observers"), this);
+#if (QT_VERSION_MAJOR < 6)
   m_Actions["WaresRefresh"]->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_R));
+#else
+  m_Actions["WaresRefresh"]->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_R));
+#endif
 
   m_Actions["SimulationRun"] = new openfluid::ui::common::DefaultAction( tr("Run simulation"), this);
   m_Actions["SimulationRun"]->setIcon(openfluid::ui::common::getIcon("run","/ui/common",true));
+#if (QT_VERSION_MAJOR < 6)
   m_Actions["SimulationRun"]->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
+#else
+  m_Actions["SimulationRun"]->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
+#endif
 
   m_Actions["SimulationMode"] = new openfluid::ui::common::DefaultAction( tr("Mode"), this);
   QActionGroup* ConfigureGroup = new QActionGroup(this);

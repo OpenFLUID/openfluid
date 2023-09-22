@@ -275,7 +275,12 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
                     ItemElt = ItemElt->NextSiblingElement("item"))
                 {
                   QString ItemText = QString::fromStdString(openfluid::thirdparty::getXMLText(ItemElt));
+#if (QT_VERSION_MAJOR < 6)
                   Rules.append(HighlightingRule(StyleName, QRegExp(QString("\\b%1\\b").arg(ItemText)),Format));
+#else
+                  Rules.append(HighlightingRule(StyleName, QRegularExpression(QString("\\b%1\\b").arg(ItemText)),
+                                                Format));
+#endif
                 }
               }
             }
@@ -299,12 +304,21 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
                   
                   if (!SimplePatternValue.isEmpty())
                   {
+#if (QT_VERSION_MAJOR < 6)
                     Rules.append(HighlightingRule(StyleName, QRegExp(SimplePatternValue), Format));
+#else
+                    Rules.append(HighlightingRule(StyleName, QRegularExpression(SimplePatternValue), Format));
+#endif
                   }
                   else if (!BeginPatternValue.isEmpty() && !EndPatternValue.isEmpty())
                   {
                     Rules.append(HighlightingRule(StyleName,
+#if (QT_VERSION_MAJOR < 6)
                                                   QRegExp(BeginPatternValue),QRegExp(EndPatternValue),
+#else
+                                                  QRegularExpression(BeginPatternValue),
+                                                  QRegularExpression(EndPatternValue),
+#endif
                                                   Format));
                   }
                 }

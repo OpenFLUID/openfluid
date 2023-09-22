@@ -1,8 +1,8 @@
-
+INCLUDE(${OpenFLUID_DIR}/OpenFLUIDDetectQt.cmake)
+add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
 
 CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
-
 
 INCLUDE_DIRECTORIES(base common datastore model monitoring spatial outputs runconfig extensions)
 
@@ -41,7 +41,10 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp base/WaresTrans
                      base/EditProjectPropertiesDialog.hpp
                      )
 
-QT5_WRAP_UI(BUILDER_BASE_UI base/HomeModuleWidget.ui base/ProjectModuleWidget.ui
+# Note: tried a wrapper to handle both qt5 and 6 names but issue with arg forwarding
+# TODO: at least group sources in a var to minimize redundancy (eg https://doc.qt.io/qt-5/qtwidgets-cmake-qt-wrap-ui.html#examples)
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_BASE_UI base/HomeModuleWidget.ui base/ProjectModuleWidget.ui
                             base/NewProjectDialog.ui
                             base/OpenExampleProjectDialog.ui
                             base/StatusMessagesWidget.ui
@@ -50,6 +53,17 @@ QT5_WRAP_UI(BUILDER_BASE_UI base/HomeModuleWidget.ui base/ProjectModuleWidget.ui
                             base/NewslineWidget.ui base/NewsItemWidget.ui
                             base/EditProjectPropertiesDialog.ui
                             )
+ELSE()
+  QT_WRAP_UI(BUILDER_BASE_UI base/HomeModuleWidget.ui base/ProjectModuleWidget.ui
+                            base/NewProjectDialog.ui
+                            base/OpenExampleProjectDialog.ui
+                            base/StatusMessagesWidget.ui
+                            base/DashboardInfosWidget.ui base/DashboardStatusWidget.ui
+                            base/SaveAsDialog.ui
+                            base/NewslineWidget.ui base/NewsItemWidget.ui
+                            base/EditProjectPropertiesDialog.ui
+                            )
+ENDIF()
 
 
 
@@ -71,10 +85,17 @@ SET(BUILDER_COMMON_HPP common/AbstractModuleWidget.hpp
                        common/AddParamDialog.hpp
                       )
 
-QT5_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
                               common/AddWareDialog.ui
                               common/AddParamDialog.ui
                               )
+ELSE()
+  QT_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
+                              common/AddWareDialog.ui
+                              common/AddParamDialog.ui
+                              )
+ENDIF()
 
 
 
@@ -102,9 +123,12 @@ SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
                       model/AddSimulatorDialog.hpp model/AddGeneratorDialog.hpp
                      )
 
-QT5_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
-                             model/AddGeneratorDialog.ui
-                           )
+
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui model/AddGeneratorDialog.ui)
+ELSE()
+  QT_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui model/AddGeneratorDialog.ui)
+ENDIF()
 
 
 ### SPATIAL #
@@ -141,7 +165,8 @@ SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
                         spatial/AddEventDialog.hpp
                        )
 
-QT5_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
                                spatial/UnitsClassWidget.ui
                                spatial/EditAttributesValuesDialog.ui
                                spatial/EditAttributeNameDialog.ui
@@ -149,6 +174,16 @@ QT5_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
                                spatial/AddConnectionDialog.ui
                                spatial/EditEventDialog.ui
                              )
+ELSE()
+  QT_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
+                               spatial/UnitsClassWidget.ui
+                               spatial/EditAttributesValuesDialog.ui
+                               spatial/EditAttributeNameDialog.ui
+                               spatial/AddUnitDialog.ui
+                               spatial/AddConnectionDialog.ui
+                               spatial/EditEventDialog.ui
+                             )
+ENDIF()
 
 
 ### DATASTORE #
@@ -161,9 +196,15 @@ SET(BUILDER_DATASTORE_HPP datastore/DatastoreWidget.hpp
                           datastore/AddDatastoreItemDialog.hpp
                           )
 
-QT5_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
                                  datastore/EditDatastoreItemDialog.ui
                                  )
+ELSE()
+  QT_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
+                                 datastore/EditDatastoreItemDialog.ui
+                                 )
+ENDIF()
 
 ### MONITORING #
 
@@ -177,8 +218,13 @@ SET(BUILDER_MONITORING_HPP monitoring/MonitoringWidget.hpp
                            monitoring/AddObserverDialog.hpp
                            )
 
-QT5_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
                                   )
+ELSE()
+  QT_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
+                                  )
+ENDIF()
 
 
 ### SIMCONFIG #
@@ -187,7 +233,11 @@ SET(BUILDER_RUNCONFIG_CPP runconfig/RunConfigurationWidget.cpp)
 
 SET(BUILDER_RUNCONFIG_HPP runconfig/RunConfigurationWidget.hpp)
 
-QT5_WRAP_UI(BUILDER_RUNCONFIG_UI runconfig/RunConfigurationWidget.ui)
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_RUNCONFIG_UI runconfig/RunConfigurationWidget.ui)
+ELSE()
+  QT_WRAP_UI(BUILDER_RUNCONFIG_UI runconfig/RunConfigurationWidget.ui)
+ENDIF()
 
 
 
@@ -199,8 +249,13 @@ SET(BUILDER_OUTPUTS_CPP outputs/OutputsWidget.cpp
 SET(BUILDER_OUTPUTS_HPP outputs/OutputsWidget.hpp
                            )
 
-QT5_WRAP_UI(BUILDER_OUTPUTS_UI outputs/OutputsWidget.ui
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_OUTPUTS_UI outputs/OutputsWidget.ui
                                  )
+ELSE()
+  QT_WRAP_UI(BUILDER_OUTPUTS_UI outputs/OutputsWidget.ui
+                                 )
+ENDIF()
 
 
 ### EXTENSION #
@@ -214,12 +269,20 @@ SET(BUILDER_EXTENSIONS_HPP extensions/ExtensionPluginsManager.hpp
                            extensions/ExtensionsRegistry.hpp
                            )
 
-QT5_WRAP_UI(BUILDER_EXTENSIONS_UI )
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_WRAP_UI(BUILDER_EXTENSIONS_UI )
+ELSE()
+  QT_WRAP_UI(BUILDER_EXTENSIONS_UI )
+ENDIF()
 
 
 ### RESOURCES #
 
-QT5_ADD_RESOURCES(BUILDER_QRC resources/openfluidbuilder.qrc)
+IF (QT_VERSION_MAJOR LESS 6)
+  QT5_ADD_RESOURCES(BUILDER_QRC resources/openfluidbuilder.qrc)
+ELSE()
+  QT_ADD_RESOURCES(BUILDER_QRC resources/openfluidbuilder.qrc)
+ENDIF()
 
 SET(BUILDER_WIN32RC)
 
@@ -270,9 +333,9 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-ui-builderext
                       openfluid-ui-waresdev
                       openfluid-waresdev
-                      Qt5::Core
-                      Qt5::Widgets
-                      Qt5::Svg
+                      ${QT_QTCORE_LIBRARY}
+                      ${QT_QTWIDGETS_LIBRARIES}
+                      ${QT_QTSVG_LIBRARY}
                       ${GDAL_LIBRARIES}
                      )
 

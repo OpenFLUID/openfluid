@@ -159,9 +159,15 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
 
     WareSrcSyntaxHighlighter* mp_SyntaxHighlighter = nullptr;
 
+#if (QT_VERSION_MAJOR < 6)
     QRegExp m_SelectionTagsRegExp;
     QRegExp m_AllTagsRegExp;
     QRegExp m_WordPartRegExp;
+#else
+    QRegularExpression m_SelectionTagsRegExp;
+    QRegularExpression m_AllTagsRegExp;
+    QRegularExpression m_WordPartRegExp;
+#endif
 
     QWidget* mp_LineNumberArea;
 
