@@ -77,6 +77,48 @@ jobs:
 ##########################################
 
 
+  ci-linux-release-qt6:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Installation of dependencies
+        run: | 
+          sudo apt update && sudo apt install -y \
+            libboost-dev libgdal-dev libcurl4-gnutls-dev \
+            libgl1-mesa-dev \
+            qtchooser qt6-base-dev qt6-tools-dev libqt6svg6-dev qt6-l10n-tools qt6-base-dev-tools qt6-tools-dev-tools \
+            libqt6uitools6 linguist-qt6 \
+            libqt6core5compat6 libqt6gui6 \
+            gnuplot p7zip-full graphviz
+      - name: Checkout of source code
+        uses: actions/checkout@v3
+      - name: Preparation
+        run: mkdir ./_build
+      - name: Configuration
+        run: cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+        working-directory: ./_build
+      - name: Style check
+        run: make stylecheck
+        working-directory: ./_build
+      - name: Build
+        run: make -j 2
+        working-directory: ./_build
+        env:
+          QT_SELECT: qt6
+      - name: Packaging
+        run: cpack && ls -l *.deb
+        working-directory: ./_build
+      - name: Upload of OpenFLUID package
+        uses: actions/upload-artifact@v3
+        with:
+          name: deb-package-${{ matrix.os }}-qt6
+          path: ./_build/openfluid*.deb
+          retention-days: 3
+
+
+##########################################
+
+
   ci-linux-install:
     strategy:
       matrix:
