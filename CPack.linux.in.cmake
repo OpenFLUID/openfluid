@@ -13,7 +13,7 @@ IF(OFBUILD_ENABLE_GUI)
     SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel")
     SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel")
   ELSE()
-    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qt6-base-dev qt6-tools-dev libqt6svg6-dev") #FIXME find packages
+    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qt6-base-dev, qt6-tools-dev, libqt6svg6-dev") #FIXME find packages
     #SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel") #FIXME find packages
     #SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel") #FIXME find packages
   ENDIF()
