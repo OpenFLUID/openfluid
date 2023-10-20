@@ -621,7 +621,7 @@ void WareSrcDocalyzer::processRmarkdownContent()
 
 
   // checking required R packages are installed
-  for (const std::string& P : {"knitr","rmarkdown"})
+  for (const std::string& P : {std::string("knitr"),std::string("rmarkdown")})
   {
     openfluid::utils::Process::Command Cmd = 
     {
@@ -866,7 +866,7 @@ void WareSrcDocalyzer::buildDocument() const
   BibCmd.setOutErrFiles(m_WorkPathObj.toGeneric(),"build-bib");
 
   int PassCount = 0;
-  for (const std::string& Pass : {"first","second","third"})
+  for (const std::string& Pass : {std::string("first"),std::string("second"),std::string("third")})
   {
     PassCount++;
 

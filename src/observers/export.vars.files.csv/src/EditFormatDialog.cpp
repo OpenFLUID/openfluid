@@ -86,9 +86,10 @@ EditFormatDialog::EditFormatDialog(const QStringList& ExistingFormats,QWidget* P
   m_PreviewValues = QList<double>::fromVector(
                                 QVector<double>::fromStdVector(getPreviewValues()));
 #else
-  m_PreviewDateTimes = QList<openfluid::core::DateTime>(getPreviewDateTimes().begin(), getPreviewDateTimes().end());
-  m_PreviewValues = QList<double>(getPreviewValues().begin(), getPreviewValues().end());
-  //TODO TOTEST check if memory is correctly handled since it is not a vector copy anymore
+  auto PreviousDateTimes = getPreviewDateTimes();
+  auto PreviousValues = getPreviewValues();
+  m_PreviewDateTimes = QList<openfluid::core::DateTime>(PreviousDateTimes.begin(), PreviousDateTimes.end());
+  m_PreviewValues = QList<double>(PreviousValues.begin(), PreviousValues.end());
 #endif
 
   connect(ui->FormatNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));

@@ -1472,7 +1472,7 @@ void WareSrcWidgetCollection::updateEditorsSettings()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::onWareChange(const QString& WarePath)
+void WareSrcWidgetCollection::onWareChange(const QString& /*WarePath*/) //FIXME: why WarePath ignored here?
 {
   openfluid::ui::waresdev::WareSrcFiletypeManager::instance()->updateStyles();
   for (WareSrcWidget* Ware : m_WareSrcWidgetByPath.values())

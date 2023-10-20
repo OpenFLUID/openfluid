@@ -1,5 +1,4 @@
-INCLUDE(${OpenFLUID_DIR}/OpenFLUIDDetectQt.cmake)
-add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
+INCLUDE(${OpenFLUID_DIR}/QtNamespaceFacade.cmake)
 
 CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
@@ -42,7 +41,6 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp base/WaresTrans
                      )
 
 # Note: tried a wrapper to handle both qt5 and 6 names but issue with arg forwarding
-# TODO: at least group sources in a var to minimize redundancy (eg https://doc.qt.io/qt-5/qtwidgets-cmake-qt-wrap-ui.html#examples)
 IF (QT_VERSION_MAJOR LESS 6)
   QT5_WRAP_UI(BUILDER_BASE_UI base/HomeModuleWidget.ui base/ProjectModuleWidget.ui
                             base/NewProjectDialog.ui

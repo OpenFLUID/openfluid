@@ -38,26 +38,11 @@
  */
 
 
-#ifndef QT_VERSION_MAJOR
-#pragma message "Qt version not found in source"
-#else
-#pragma message "Qt version found in source"
-#endif
-
-
 #include <QStringList>
 
 #include <openfluid/utils/GDALHelpers.hpp>
 
 #include "OGRGDALHelpers.hpp"
-
-
-#if (QT_VERSION_MAJOR == 5)
-#pragma message "Qt 5 in builderext source"
-#endif
-#if (QT_VERSION_MAJOR == 6)
-#pragma message "Qt 6 in builderext source"
-#endif
 
 
 const QMap<QString,QString> OGRGDALHelpers::m_FileExtsDriversMap =

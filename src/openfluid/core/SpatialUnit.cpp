@@ -287,8 +287,8 @@ bool SpatialUnit::importGeometryFromWkt(const std::string& WKT)
     deleteGeometry();
   }
 
-  // const char* WktBuffer = (const char*)(WKT.c_str());
-  char* WktBuffer = (char*)(WKT.c_str());
+  const char* WktBuffer = (const char*)(WKT.c_str());
+  //char* WktBuffer = (char*)(WKT.c_str()); // FIXME remove this commented line if const char* validated
 
   // TODO set spatial reference (from name given as method argument?)
   OGRErr Error = OGRGeometryFactory::createFromWkt(&WktBuffer,nullptr,&m_Geometry);

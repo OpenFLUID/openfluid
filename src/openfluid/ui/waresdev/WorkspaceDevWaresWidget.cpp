@@ -34,25 +34,19 @@
   @file WorkspaceDevWaresWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
-#ifndef QT_VERSION_MAJOR
-#pragma message "Qt version not found in source"
-#else
-#pragma message "Qt version found in source"
-#endif
 
 #if (QT_VERSION_MAJOR == 5)
 
 
 #include <QRegExp>
-#pragma message "Qt 5 in workspace source"
 #endif
 #if (QT_VERSION_MAJOR == 6)
 
 
 #include <QRegularExpression>
-#pragma message "Qt 6 in workspace source"
 #endif
 
 #include <openfluid/config.hpp>
@@ -65,7 +59,7 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-const int ab=0;
+
 const WorkspaceDevDashboardTypes::ActionsByRows WorkspaceDevWaresWidget::Actions =
 {
   {{"configure","Configure"},{"build","Build"},{"doc","Doc"}},

@@ -1,4 +1,4 @@
-INCLUDE(${OpenFLUID_DIR}/OpenFLUIDDetectQt.cmake)
+INCLUDE(${OpenFLUID_DIR}/QtNamespaceFacade.cmake)
 
 SET(OPENFLUID_BUILDEREXT_CPP PluggableModalExtension.cpp
                              PluggableModelessExtension.cpp

@@ -1,4 +1,4 @@
-INCLUDE(${OpenFLUID_DIR}/OpenFLUIDDetectQt.cmake)
+INCLUDE(${OpenFLUID_DIR}/QtNamespaceFacade.cmake)
 
 SET(OPENFLUID_UI_COMMON_CPP AppMainWindow.cpp OpenFLUIDDialog.cpp 
                             MessageDialog.cpp MessageFrame.cpp

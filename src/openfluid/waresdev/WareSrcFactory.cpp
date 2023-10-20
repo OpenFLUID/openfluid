@@ -208,7 +208,7 @@ void renderParamsUIFiles(const openfluid::tools::FilesystemPath& PathObj,
   openfluid::tools::TemplateProcessor TplProc("%%","%%");
   openfluid::tools::TemplateProcessor::Errors Errors;
 
-  for (const std::string& Ext : {".cpp",".hpp"})
+  for (const std::string& Ext : {std::string(".cpp"), std::string(".hpp")})
   {
     auto CommonFile =  openfluid::tools::Path({openfluid::base::Environment::getInstallPrefix(),
                                                 openfluid::config::SHARE_WARESDEV_INSTALL_PATH,
@@ -345,7 +345,7 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
 
     BuilderextSignatureSerializer().writeToJSONFile(Signature,WareInfoFileObj.toGeneric());
 
-    for (const std::string& Ext : {".cpp",".hpp"})
+    for (const std::string& Ext : {std::string(".cpp"), std::string(".hpp")})
     {
       auto CommonFile =  openfluid::tools::Path({openfluid::base::Environment::getInstallPrefix(),
                                                   openfluid::config::SHARE_WARESDEV_INSTALL_PATH,

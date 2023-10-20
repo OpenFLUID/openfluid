@@ -34,6 +34,7 @@
   @file QtHelpers.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -93,7 +94,7 @@ inline std::string fromIniCompatible(const QVariant& Var)
   if (Var.type() == QVariant::StringList)
   {
 #else
-  if (Var.typeId() == QVariant::StringList) //TODO TOTEST metaType or typeId?
+  if (Var.typeId() == QMetaType::QStringList)
   {
 #endif
     return Var.toStringList().join(", ").toStdString();

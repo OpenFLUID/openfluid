@@ -161,7 +161,7 @@ int DataTasks::generateData(const std::string Path, bool WithSample) const
         Obs->setParameter("format.auto.date","ISO");
         Obs->setParameter("format.auto.header","colnames-as-comment");
 
-        for (const std::string& CName : {"UnitsA","UnitsB"})
+        for (const std::string& CName : {std::string("UnitsA"),std::string("UnitsB")})
         {
           Obs->setParameter("set.auto"+CName+".format","auto");
           Obs->setParameter("set.auto"+CName+".unitsclass",CName);
