@@ -9,26 +9,33 @@ jobs:
 ##########################################
 
 
-  ci-linux-debug:
-    runs-on: ubuntu-20.04
+  ci-linux-debug-qt6:
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Installation of dependencies
         run: | 
           sudo apt update && sudo apt install -y \
             libboost-all-dev libgdal-dev libcurl4-gnutls-dev \
-            qt5-default qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev \
+            libgl1-mesa-dev \
+            qtchooser qt6-base-dev qt6-tools-dev libqt6svg6-dev qt6-l10n-tools qt6-base-dev-tools qt6-tools-dev-tools \
+            libqt6uitools6 linguist-qt6 \
+            libqt6core5compat6 libqt6gui6 \
             gnuplot p7zip-full graphviz
       - name: Checkout of source code
         uses: actions/checkout@v3
       - name: Preparation
         run: mkdir ./_build
+      - name: QtChooser
+        run: qtchooser -install qt6 $(which qmake6)
       - name: Configuration
         run: cmake ..
         working-directory: ./_build
       - name: Build
         run: make -j 2
         working-directory: ./_build
+        env:
+          QT_SELECT: qt6
       - name: Testing
         run: ctest -j 2 --output-on-failure
         working-directory: ./_build
@@ -94,6 +101,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Preparation
         run: mkdir ./_build
+      - name: QtChooser
+        run: qtchooser -install qt6 $(which qmake6)
       - name: Configuration
         run: cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
         working-directory: ./_build

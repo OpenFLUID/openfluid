@@ -35,6 +35,7 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 

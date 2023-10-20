@@ -34,6 +34,7 @@
   @file WaresTranslationsRegistry.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -94,9 +95,16 @@ QTranslator* WaresTranslationsRegistry::tryLoadWareTranslation(const QString& Wa
     if (m_TranslatorsByFile.find(LangFile) == m_TranslatorsByFile.end())
     {
       QTranslator* Translator = new QTranslator(QApplication::instance());
-      Translator->load(LangFile);
-      QApplication::installTranslator(Translator);
-      m_TranslatorsByFile[LangFile].reset(Translator);
+      if (Translator->load(LangFile))
+      {
+        QApplication::installTranslator(Translator);
+        m_TranslatorsByFile[LangFile].reset(Translator);
+      }
+      else
+      {
+        std::cerr << "Default translation load error" << std::endl; 
+        // TODO find better way to return exception (raise? OF exception structure?)
+      }
     }
 
     return m_TranslatorsByFile[LangFile].get();

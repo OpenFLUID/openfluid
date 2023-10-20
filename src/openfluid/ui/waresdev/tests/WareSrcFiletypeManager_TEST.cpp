@@ -35,6 +35,7 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 #define BOOST_TEST_MAIN
@@ -42,19 +43,12 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WareSrcFiletypeManager
 
-#ifndef QT_VERSION_MAJOR
-#pragma message "Qt version not found in source"
-#else
-#pragma message "Qt version found in source"
-#endif
 
 #if (QT_VERSION_MAJOR < 6)
-#  pragma message("QT_VERSION_MAJOR < 6")
 
 
 #  include <QRegExp>
 #else
-#  pragma message("QT_VERSION_MAJOR >= 6?")
 
 
 #  include <QRegularExpression>  

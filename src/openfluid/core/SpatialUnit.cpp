@@ -287,8 +287,8 @@ bool SpatialUnit::importGeometryFromWkt(const std::string& WKT)
     deleteGeometry();
   }
 
-  // const char* WktBuffer = (const char*)(WKT.c_str());
-  char* WktBuffer = (char*)(WKT.c_str());
+  //const char* WktBuffer = (const char*)(WKT.c_str()); // TODO test this in controlled context to check if regression
+  char* WktBuffer = (char*)(WKT.c_str()); 
 
   // TODO set spatial reference (from name given as method argument?)
   OGRErr Error = OGRGeometryFactory::createFromWkt(&WktBuffer,nullptr,&m_Geometry);

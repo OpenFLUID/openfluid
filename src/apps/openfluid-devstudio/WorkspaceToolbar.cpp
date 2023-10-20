@@ -38,12 +38,6 @@
  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
-#ifndef QT_VERSION_MAJOR
-#pragma message "Qt version not found in source"
-#else
-#pragma message "Qt version found in source"
-#endif
-
 
 #include <QMenu>
 #include <QToolButton>

@@ -35,6 +35,7 @@
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -42,19 +43,11 @@
 #define __OPENFLUID_UIWARESDEV_WARESRCMSGPARSER_HPP__
 
 
-#ifndef QT_VERSION_MAJOR
-#pragma message "Qt version not found in source"
-#else
-#pragma message "Qt version found in source"
-#endif
-
 #if (QT_VERSION_MAJOR < 6)
-#  pragma message("QT_VERSION_MAJOR < 6")
 
 
 #  include <QRegExp>
 #else
-#  pragma message("QT_VERSION_MAJOR >= 6?")
 
 
 #  include <QRegularExpression>  
@@ -66,7 +59,7 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-const int a = 0;
+
 class OPENFLUID_API WareSrcMsgParser
 {
   public:

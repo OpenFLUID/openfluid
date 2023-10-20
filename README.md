@@ -62,7 +62,7 @@ OpenFLUID relies on several tools and libraries
 * [JSON](https://github.com/nlohmann/json) for metadata and settings I/O
 * [TinyXML](https://github.com/leethomason/tinyxml2) for datasets I/O
 * [libcurl](https://github.com/curl/curl) for network operations
-* [Qt5](https://www.qt.io/) for UI framework and applications, Qt6 potentially incoming
+* [Qt6](https://www.qt.io/) for UI framework and applications (Qt5 deprecated)
 * [CMake](https://cmake.org/) for build/test/packaging configuration and management
 * [Doxygen](https://www.doxygen.nl/) for technical documentation
 

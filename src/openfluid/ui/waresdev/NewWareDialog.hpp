@@ -32,9 +32,9 @@
 
 /**
  @file NewWareDialog.hpp
- @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
