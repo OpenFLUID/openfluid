@@ -32,10 +32,10 @@
 
 /**
  @file WareSrcFiletypeManager.hpp
- @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 

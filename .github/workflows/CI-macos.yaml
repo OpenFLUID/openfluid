@@ -9,7 +9,7 @@ jobs:
 ##########################################
 
 
-  ci-macos-release:
+  ci-macos-debug:
     strategy:
       matrix:
         os: [macos-11,macos-12]
@@ -19,26 +19,29 @@ jobs:
       - name: Installation of dependencies
         run: | 
           brew install \
-            boost gdal curl qt5 \
+            boost gdal curl qt6 \
             doxygen gnuplot doxygen
       - name: Checkout of source code
         uses: actions/checkout@v3
       - name: Preparation
         run: |
-          echo "$(brew --prefix qt5)/bin" >> $GITHUB_PATH
+          echo "$(brew --prefix qt6)/bin" >> $GITHUB_PATH
           mkdir ./_build
       - name: Configuration
-        run: cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)/lib/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+        run: cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt6)/lib/cmake
         working-directory: ./_build
       - name: Build
         run: make -j 2
+        working-directory: ./_build
+      - name: Testing
+        run: ctest -j 2 --output-on-failure
         working-directory: ./_build
 
 
 ##########################################
 
 
-  ci-macos-release-qt6:
+  ci-macos-release:
     strategy:
       matrix:
         os: [macos-11,macos-12]

@@ -34,6 +34,7 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -41,12 +42,6 @@
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_WaresDevPackage
-
-#ifndef QT_VERSION_MAJOR
-#pragma message "Qt version not found in source"
-#else
-#pragma message "Qt version found in source"
-#endif
 
 
 #include <boost/test/unit_test.hpp>

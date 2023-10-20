@@ -34,13 +34,8 @@
   @file DetectQtDevToolsDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
-
-#ifndef QT_VERSION_MAJOR
-#pragma message "Qt version not found in source"
-#else
-#pragma message "Qt version found in source"
-#endif
 
 
 #include <QDir>
@@ -212,7 +207,7 @@ void DetectQtDevToolsDialog::runDetection()
 #if (QT_VERSION_MAJOR < 6)
     Process.start(qtpathsPath, QStringList() << "--install-prefix");
 #else
-    Process.start(qtpathsPath, QStringList() << "--install-prefix");
+    Process.startCommand(qtpathsPath.append(" --install-prefix"));
 #endif
     Process.waitForFinished();
 

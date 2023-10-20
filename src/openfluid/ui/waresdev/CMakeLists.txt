@@ -1,4 +1,4 @@
-INCLUDE(${OpenFLUID_DIR}/OpenFLUIDDetectQt.cmake) # FIXME fix this since we only need SVG in this case, and do so for every file using this line without needing all items
+INCLUDE(${OpenFLUID_DIR}/QtNamespaceFacade.cmake)
 
 SET(OPENFLUID_UI_WARESDEV_CPP WareSrcUIContainer.cpp
                               OStreamMsgStream.cpp

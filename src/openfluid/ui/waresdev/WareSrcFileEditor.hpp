@@ -31,9 +31,9 @@
 
 /**
  @file WareSrcFileEditor.hpp
- @brief Header of ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 #ifndef __OPENFLUID_UIWARESDEV_WARESRCFILEEDITOR_HPP__

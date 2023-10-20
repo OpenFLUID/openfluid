@@ -35,6 +35,7 @@
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -80,11 +81,21 @@ int main(int argc, char** argv)
       if (Lang != "default")
       {
         // load provided default translations
-        QtTranslator.load("qt_" + Lang.left(2) + ".qm", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-
+#if (QT_VERSION_MAJOR < 6)
+        if (!QtTranslator.load("qt_" + Lang.left(2) + ".qm", QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        {
+#else
+        if (!QtTranslator.load("qt_" + Lang.left(2) + ".qm", QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+        {
+#endif
+          std::cerr << "Default translation load error" << std::endl;
+        }
         // load provided OpenFLUID translations
-        OpenFLUIDTranslator.load(QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
-                                 QString(openfluid::base::Environment::getTranslationsDir().c_str()));
+        if (!OpenFLUIDTranslator.load(QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
+                                 QString(openfluid::base::Environment::getTranslationsDir().c_str())))
+        {
+          std::cerr << "OpenFLUID translation load error" << std::endl;
+        }
       }
       OPENFLUID_QT_APPLICATION.installTranslator(&QtTranslator);
       OPENFLUID_QT_APPLICATION.installTranslator(&OpenFLUIDTranslator);

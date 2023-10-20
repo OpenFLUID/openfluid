@@ -35,12 +35,6 @@
   @author Armel THÖNI <armel.thoni@inra.fr>
 */
 
-#ifndef QT_VERSION_MAJOR
-#pragma message "Qt version not found in source"
-#else
-#pragma message "Qt version found in source"
-#endif
-
 
 #include <openfluid/config.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>

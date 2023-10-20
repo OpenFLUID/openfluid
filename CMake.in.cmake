@@ -23,7 +23,7 @@ SET(OFBUILD_CUSTOM_CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.
 SET(OPENFLUID_VERSION_MAJOR 2)
 SET(OPENFLUID_VERSION_MINOR 2)
 SET(OPENFLUID_VERSION_PATCH 0)
-SET(OPENFLUID_VERSION_STATUS "alpha98") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
+SET(OPENFLUID_VERSION_STATUS "alpha99") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
 
 SET(OPENFLUID_VERSION_FULL "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}")
 
@@ -182,8 +182,8 @@ ENDIF()
 
 ################### compilation and build ###################
 
-add_compile_options(-Wno-attributes)  # TODO REMOVE to fix
-add_compile_options(-Wno-missing-field-initializers)  # TODO REMOVE to fix 
+add_compile_options(-Wno-attributes)
+add_compile_options(-Wno-missing-field-initializers)
 
 SET(OFBUILD_DEBUG_COMPILE_OPTIONS "")
 SET(OFBUILD_RELEASE_COMPILE_OPTIONS "")
