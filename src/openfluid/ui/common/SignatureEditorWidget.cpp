@@ -923,7 +923,7 @@ bool SignatureEditorWidget::isValidID() const
     return true;
   }
 
-  return openfluid::tools::isValidWareID(ui->IDEdit->text().toStdString());
+  return openfluid::tools::isValidWareID(ui->IDEdit->text().toStdString(), true);
 }
 
 

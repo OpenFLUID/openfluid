@@ -82,12 +82,19 @@ bool isValidDatasetName(const std::string& Name)
 // =====================================================================
 
 
-bool isValidWareID(const openfluid::ware::WareID_t& ID)
+bool isValidWareID(const openfluid::ware::WareID_t& ID, bool Template)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
 
-  return std::regex_match(ID,std::regex(WareIDRuleString));
+  if (Template)
+  {
+    return std::regex_match(ID,std::regex(WareIDRuleStringAndTpl));
+  }
+  else
+  {
+    return std::regex_match(ID,std::regex(WareIDRuleString));
+  }
 }
 
 
