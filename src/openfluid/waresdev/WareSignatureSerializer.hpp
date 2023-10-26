@@ -288,7 +288,7 @@ SignatureType WareSignatureSerializer<SignatureType>::fromJSONBase(const openflu
   SignatureType Sign;
 
   Sign.ID = Json.value("id","");
-  if (!openfluid::tools::isValidWareID(Sign.ID))
+  if (!openfluid::tools::isValidWareID(Sign.ID, true))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing or invalid ware ID");
   }

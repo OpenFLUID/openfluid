@@ -199,7 +199,7 @@ QRegularExpression NewWareDialog::getWareIdRegExp(QString& Tooltip)
 
   Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
 #if (QT_VERSION_MAJOR < 6)
-  return QRegExp(QString::fromStdString(openfluid::tools::WareIDRuleString));
+  return QRegExp(QString::fromStdString(openfluid::tools::WareIDRuleStringAndTpl));
 #else
   return QRegularExpression(QString::fromStdString(openfluid::tools::WareIDRuleString));
 #endif

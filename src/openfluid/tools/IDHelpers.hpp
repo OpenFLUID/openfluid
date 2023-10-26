@@ -60,6 +60,7 @@ namespace openfluid { namespace tools {
 constexpr auto DatasetNameRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
 constexpr auto WareIDRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
+constexpr auto WareIDRuleStringAndTpl("[A-Za-z0-9]+([A-Za-z0-9_@\\.\\-]*)");
 
 constexpr auto FragmentNameRuleString("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
 
@@ -99,7 +100,7 @@ bool OPENFLUID_API isValidDatasetName(const std::string& Name);
   @param[in] ID the ware ID to check
   @return true if the ID is valid
 */
-bool OPENFLUID_API isValidWareID(const openfluid::ware::WareID_t& ID);
+bool OPENFLUID_API isValidWareID(const openfluid::ware::WareID_t& ID, bool Template=false);
 
 
 /**

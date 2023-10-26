@@ -37,6 +37,8 @@ OPENFLUID_ADD_WAREPLUGIN(
   %%#TARGET%%TARGET %%TARGET%%
   # custom installation path, standard path is used if not provided
   %%#INSTALLPATH%%INSTALL_PATH %%INSTALLPATH%%
+  # parametrized signature and/or documentation
+  #CONFIGURED_SIGNATURE ON
 
 
   # enable build of parameterization UI (ON/OFF, OFF is default)
