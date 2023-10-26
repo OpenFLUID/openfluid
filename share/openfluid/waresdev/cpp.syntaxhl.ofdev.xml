@@ -194,13 +194,6 @@
           <pattern value="\bOPENFLUID_\w+\b" />
           <pattern value="\bOpenFLUID_\w+\b" />
           <pattern value="\bopenfluid::[\w::]+\b" />
-          <pattern value="\bDECLARE_\w+\b" />
-          <pattern value="\bBEGIN_SIMULATOR_SIGNATURE\b" />
-          <pattern value="\bEND_SIMULATOR_SIGNATURE\b" />
-          <pattern value="\bBEGIN_OBSERVER_SIGNATURE\b" />
-          <pattern value="\bEND_OBSERVER_SIGNATURE\b" />
-          <pattern value="\bBEGIN_BUILDEREXT_SIGNATURE\b" />
-          <pattern value="\bEND_BUILDEREXT_SIGNATURE\b" />
         </rule>
 
         <rule name="openfluid-deprecated-keywords" style="openfluid-deprecated">
@@ -221,6 +214,13 @@
           <pattern value="DECLARE_USED_VAR(?!\w)" />
           <pattern value="DECLARE_PRODUCED_VAR(?!\w)" />
           <pattern value="DECLARE_UPDATED_VAR(?!\w)" />
+          <pattern value="\bBEGIN_SIMULATOR_SIGNATURE\b" />
+          <pattern value="\bEND_SIMULATOR_SIGNATURE\b" />
+          <pattern value="\bBEGIN_OBSERVER_SIGNATURE\b" />
+          <pattern value="\bEND_OBSERVER_SIGNATURE\b" />
+          <pattern value="\bBEGIN_BUILDEREXT_SIGNATURE\b" />
+          <pattern value="\bEND_BUILDEREXT_SIGNATURE\b" />
+          <pattern value="\bDECLARE_\w+\b" />
         </rule>
         
         <rule name="string" style="quoted">

@@ -209,7 +209,7 @@ void WareSrcFiletypeManager::initializeFileTypes()
   m_WareSrcFiletypes["qt-ui"] = FileType;
 
   FileType = WareSrcFiletype();  
-  FileType.m_Extensions = "wareshub.json";
+  FileType.m_Extensions = "wareshub.json;openfluid-ware.json";
   FileType.m_LangCode = "json";
   FileType.m_IconPath = ":/ui/common/filetypes/wareshub.png";
   FileType.m_HlFilename = "";

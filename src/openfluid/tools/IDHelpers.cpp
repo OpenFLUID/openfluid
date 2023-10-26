@@ -106,7 +106,7 @@ bool isValidVariableName(const openfluid::core::VariableName_t& Name)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
-  std::regex Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
+  std::regex Exp("[A-Za-z0-9@]+([A-Za-z0-9_\\.\\-@]*)");
 
   return std::regex_match(Name,Exp);
 }
@@ -122,7 +122,7 @@ bool isValidTypedVariableName(const openfluid::core::VariableName_t& Name)
   // must start by an alphanumeric char
   // can have a type between square brackets at the end
   std::regex 
-    Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)(\\[(|double|integer|boolean|string|vector|matrix|map|tree|null)\\])?");
+    Exp("[A-Za-z0-9@]+([A-Za-z0-9_\\.\\-@]*)(\\[(|double|integer|boolean|string|vector|matrix|map|tree|null)\\])?");
 
   return std::regex_match(Name,Exp);
 }
@@ -136,7 +136,7 @@ bool isValidAttributeName(const openfluid::core::AttributeName_t& Name)
 {
   // authorized chars: a to z, A to Z, 0 to 9, -, ., _
   // must start by an alphanumeric char
-  std::regex Exp("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
+  std::regex Exp("[A-Za-z0-9@]+([A-Za-z0-9_\\.\\-@]*)");
 
   return std::regex_match(Name,Exp);
 }

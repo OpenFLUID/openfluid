@@ -104,7 +104,7 @@ void WareSrcContainer::update()
   }
 
   std::string JsonFilePath =
-    openfluid::tools::Filesystem::joinPath({m_AbsolutePath,openfluid::config::WARESDEV_WARESHUB_FILE});
+    openfluid::tools::Filesystem::joinPath({m_AbsolutePath,openfluid::config::WARESDEV_WAREMETA_FILE});
   if (openfluid::tools::Path(JsonFilePath).isFile())
   {
     m_AbsoluteJsonPath = JsonFilePath;

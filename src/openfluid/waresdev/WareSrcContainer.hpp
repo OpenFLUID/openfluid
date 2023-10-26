@@ -99,7 +99,7 @@ class OPENFLUID_API WareSrcContainer
     std::string m_AbsoluteCMakeListsPath;
 
     /**
-      Absolute path of the wareshub.json file if it exists, otherwise an empty string
+      Absolute path of the openfluid-ware.json file if it exists, otherwise an empty string
     */
     std::string m_AbsoluteJsonPath;
 
@@ -181,7 +181,7 @@ class OPENFLUID_API WareSrcContainer
     std::string getCMakeListsPath() const;
 
     /**
-      Returns the absolute path of the wareshub.json file, if this file exists,
+      Returns the absolute path of the openfluid-ware.json file, if this file exists,
       otherwise an empty string
     */
     std::string getJsonPath() const;
