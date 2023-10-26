@@ -45,6 +45,7 @@
 
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
+#include <openfluid/config.hpp>
 
 #include "SignatureCommon.hpp"
 
@@ -124,7 +125,7 @@ BOOST_AUTO_TEST_CASE(write_json)
   auto Sign = getBuilderextRefSignature();
 
   openfluid::waresdev::BuilderextSignatureSerializer()
-                       .writeToJSONFile(Sign,WorkPath.fromThis("openfluid-ware.json").toGeneric());
+                       .writeToJSONFile(Sign,WorkPath.fromThis(openfluid::config::WARESDEV_WAREMETA_FILE).toGeneric());
 }
 
 
@@ -151,7 +152,7 @@ BOOST_AUTO_TEST_CASE(read_json)
   BOOST_REQUIRE_NO_THROW(SignRef.Issues.get(100));
   auto Sign = 
     openfluid::waresdev::BuilderextSignatureSerializer()
-                         .readFromJSONFile(WorkPath.fromThis("openfluid-ware.json").toGeneric());
+                         .readFromJSONFile(WorkPath.fromThis(openfluid::config::WARESDEV_WAREMETA_FILE).toGeneric());
 
   compareSignatures(Sign,SignRef,"read_json");
 }

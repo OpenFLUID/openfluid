@@ -40,6 +40,7 @@
 #include <QDir>
 
 #include <openfluid/ui/waresdev/WorkspaceDevCheckWorker.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -99,15 +100,15 @@ void WorkspaceDevCheckWorker::run()
 
       if (m_CheckWareshub)
       {
-        if (WareDir.exists("wareshub.json"))
+        if (WareDir.exists(QString::fromStdString(openfluid::config::WARESDEV_WAREMETA_FILE)))
         {
-          writeFileMessage("wareshub.json",true);
-          emit processed(WType.first,WItem.ID,"wareshub", true);
+          writeFileMessage(QString::fromStdString(openfluid::config::WARESDEV_WAREMETA_FILE),true);
+          emit processed(WType.first,WItem.ID,"openfluid-ware", true);
         }
         else
         {
-          writeFileMessage("wareshub.json",false);
-          emit processed(WType.first,WItem.ID,"wareshub", false);
+          writeFileMessage(QString::fromStdString(openfluid::config::WARESDEV_WAREMETA_FILE),false);
+          emit processed(WType.first,WItem.ID,"openfluid-ware", false);
         }
       }
 

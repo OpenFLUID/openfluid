@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(write_json)
   auto Sign = getObserverRefSignature();
 
   openfluid::waresdev::ObserverSignatureSerializer()
-                       .writeToJSONFile(Sign,WorkPath.fromThis("openfluid-ware.json").toGeneric());
+                       .writeToJSONFile(Sign,WorkPath.fromThis(openfluid::config::WARESDEV_WAREMETA_FILE).toGeneric());
 }
 
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(read_json)
   auto SignRef = getObserverRefSignature();
   auto Sign = 
     openfluid::waresdev::ObserverSignatureSerializer()
-                         .readFromJSONFile(WorkPath.fromThis("openfluid-ware.json").toGeneric());
+                         .readFromJSONFile(WorkPath.fromThis(openfluid::config::WARESDEV_WAREMETA_FILE).toGeneric());
 
   compareSignatures(Sign,SignRef,"read_json");
 }

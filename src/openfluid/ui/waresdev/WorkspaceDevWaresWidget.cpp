@@ -63,7 +63,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 const WorkspaceDevDashboardTypes::ActionsByRows WorkspaceDevWaresWidget::Actions =
 {
   {{"configure","Configure"},{"build","Build"},{"doc","Doc"}},
-  {{"wareshub","wareshub.json"},{"readme","README"},{"license","LICENSE"}},
+  {{"openfluid-ware",QString::fromStdString(openfluid::config::WARESDEV_WAREMETA_FILE)},{"readme","README"},
+  {"license","LICENSE"}},
   {{"purge","Purge"}}
 };
 
