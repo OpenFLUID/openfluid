@@ -212,6 +212,15 @@ class OPENFLUID_API Filesystem
     static bool copyDirectory(const std::string& SrcPath, const std::string& DestPath,
                               bool WithBaseDir = false, bool RemoveExisting = false);
 
+    
+    /**
+      Recursively copies content of a directory from source to destination, handling windows bug with regular dir copy.
+      @param[in] SrcPath the source path
+      @param[in] DestPath the destination path
+      @return true if the directory was successfully copied, false otherwise
+    */
+    static bool copyDirectoryContent(const std::filesystem::path& SrcPath, const std::filesystem::path& DestPath);
+
     /**
       Recursively removes all files and directories contained in the given directory.
       It deletes the directory and recreates it.

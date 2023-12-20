@@ -137,6 +137,8 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
 {
   if (FromUrl.isEmpty() || ToPath.isEmpty())
   {
+    // TODO for non GUI interface, find a way to redirect error/info
+    //std::cout << "Empty remote url or empty destination path" << std::endl;
     emit error(tr("Empty remote url or empty destination path"));
     return false;
   }
@@ -149,6 +151,7 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
           openfluid::tools::FilesystemPath({WorkingDirectory.toStdString(), ".git", "index.lock"});
     if (GitIndexLockPath.exists())
     {
+        //std::cout << "Can not operate, git lock detected:" << std::endl;
       emit error(tr("Can not operate, git lock detected."));
       return false;
     }
@@ -199,13 +202,30 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutputAsInfo()));
 
-  mp_Process->start(QString::fromStdString(m_ExecutablePath),Args);
-
+  // TO BE USED IN INTERNAL LOGGING STACK AS "INFO"
+  // std::cout << "PROCESS START:" << m_LocalGitProgram << " : ";
+  // for (auto& p : Args)
+  // {
+  //     std::cout << " " << p.toStdString() << std::endl;
+  // }
+  // std::cout << std::endl;
+  mp_Process->start(QString::fromStdString(m_LocalGitProgram),Args);
+  if (!mp_Process->waitForStarted())
+  {
+      delete mp_Process;
+      mp_Process = nullptr;
+      //std::cout << "failed start:" << std::endl; TODO add to logging
+      return false;
+  }
+  // std::cout << "PROCESS POST START" << std::endl;
   mp_Process->waitForFinished(-1);
   mp_Process->waitForReadyRead(-1);
 
   QString Res = QString::fromUtf8(mp_Process->readAll());
+  
+  // std::cout << "PROCESS READ" << Res.toStdString() << std::endl;
   int ErrCode = mp_Process->exitCode();
+  // !std::cout << "EXIT:" << ErrCode << std::endl;
 
   delete mp_Process;
   mp_Process = nullptr;
@@ -298,11 +318,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
       QProcess* Process = new QProcess();
       Process->setWorkingDirectory(MainPathString);
 
-#if (QT_VERSION_MAJOR < 6)
-      Process->start(QString::fromStdString(m_ExecutablePath),{"rm", "--cached", ".gitmodules"});
-#else
-      Process->start(QString::fromStdString(m_ExecutablePath),{"rm", "--cached", ".gitmodules"});
-#endif
+      Process->start(QString::fromStdString(m_LocalGitProgram),{"rm", "--cached", ".gitmodules"});
       Process->waitForReadyRead(-1);
       Process->waitForFinished(-1);
       int ErrCode = Process->exitCode();
@@ -326,6 +342,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
   {
     StandardOutput += tr("Submodule successfully removed");
   }
+  //TODO for logging system std::cout << "OUT IN REMOVE:" << StandardOutput.toStdString() << std::endl;
   return std::pair(SummaryStatusCode, StandardOutput);
 }
 
@@ -470,11 +487,7 @@ std::pair<int, QString> GitUIProxy::launchLocalCommand(const QString& Path, QStr
   QProcess LocalProcess;
   LocalProcess.setWorkingDirectory(Path);
 
-#if (QT_VERSION_MAJOR < 6)
-  LocalProcess.start(QString::fromStdString(m_ExecutablePath),Args);
-#else
-  LocalProcess.start(QString::fromStdString(m_ExecutablePath),Args);
-#endif
+  LocalProcess.start(QString::fromStdString(m_LocalGitProgram),Args);
 
   LocalProcess.waitForReadyRead(-1);
   LocalProcess.waitForFinished(-1);

@@ -65,6 +65,11 @@ void CMakeProxy::findCMakeProgram()
         m_Version.erase(0,14);
       }
     }
+    else
+    {
+      //TODO transmit behaviour if path empty
+      //std::cout << "was empty" << std::endl;
+    }
   }
 }
 

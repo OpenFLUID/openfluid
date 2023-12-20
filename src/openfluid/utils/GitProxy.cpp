@@ -50,7 +50,7 @@ namespace openfluid { namespace utils {
 GitProxy::GitProxy()
 {
   findGitProgram();
-
+  m_LocalGitProgram = m_ExecutablePath;  // Hotfix to avoid issues under windows with static var def by child class
 }
 
 
