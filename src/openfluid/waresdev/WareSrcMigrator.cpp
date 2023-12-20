@@ -586,7 +586,21 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
         if (Stem == openfluid::config::WARESDEV_DOC_DIR || Stem == openfluid::config::WARESDEV_TESTS_DIR)
         {
           mp_Listener->stageMessage("standard " + Stem + " " + std::string(E.is_directory() ? "directory" : "file"));
-          std::filesystem::copy(E.path(),m_DestPathObj.stdPath()/Stem, CopyOptions);
+          try
+          {
+            openfluid::tools::Filesystem::copyDirectoryContent(E.path(), m_DestPathObj.stdPath()/Stem);
+          }
+          catch (std::exception & E)
+          {
+            //TODO cleaner exception / logging management
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, 
+                                                      "Dispatch failure: "+std::string(E.what()));
+          }
+          catch (...)
+          {
+            //TODO cleaner exception / logging management
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Dispatch failure");
+          }
         }
         else
         {

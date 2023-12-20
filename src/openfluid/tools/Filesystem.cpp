@@ -34,6 +34,7 @@
   @file Filesystem.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -275,6 +276,43 @@ bool Filesystem::copyDirectory(const std::string& SrcPath, const std::string& De
   }
 
   return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Filesystem::copyDirectoryContent(const std::filesystem::path& Source, const std::filesystem::path& Destination)
+{
+  // was a filesystem::copy but not working when destination directory already exists under Windows, 
+  // even with copy_options::update_existing
+  const auto CopyOptions = std::filesystem::copy_options::update_existing | 
+                           std::filesystem::copy_options::recursive;
+  for (const auto& E : std::filesystem::recursive_directory_iterator(Source))
+  {
+    const auto SourceItem = E.path();
+    const auto DestinationItem = Destination / std::filesystem::relative(SourceItem, Source);
+
+    try
+    {
+      if (std::filesystem::is_directory(SourceItem))
+      {
+        std::filesystem::create_directories(DestinationItem);
+      }
+      else
+      {
+        std::filesystem::copy_file(SourceItem, DestinationItem, CopyOptions);
+      }
+    } 
+    catch (const std::filesystem::filesystem_error& e)
+    {
+      //TODO cleaner exception / logging management
+      std::cerr << "Filesystem error: " << e.what() << std::endl;
+      //return false;  TOIMPL reenable this after test under windows
+    }
+  }
+  return true;
 }
 
 

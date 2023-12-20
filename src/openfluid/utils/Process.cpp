@@ -34,6 +34,7 @@
   @file Process.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -157,11 +158,21 @@ bool Process::run()
     {
       ProcessEnv[Var.first] = Var.second;
     }
-
+    // Hotfix for windows bug when work dir is empty
+    std::string WorkDir;
+    if (m_Cmd.WorkDir.empty())
+    {
+        WorkDir = ".";
+    }
+    else
+    {
+        WorkDir = m_Cmd.WorkDir;
+    }
     boost::process::child BPC(boost::process::exe = m_Cmd.Program,
                               boost::process::args = m_Cmd.Args,
-                              boost::process::start_dir = m_Cmd.WorkDir,
+                              boost::process::start_dir = WorkDir,
                               boost::process::std_out > StdOutStr, boost::process::std_err > StdErrStr,
+                              boost::process::shell,
                               ProcessEnv);
 
     // if out is redirected, create out file
@@ -214,10 +225,14 @@ bool Process::run()
   catch(const boost::process::process_error& E)
   {
     m_ErrorMsg = std::string(E.what());
+    // TODO for logging purposes
+    //std::cout << "bp catch! " << E.what() << std::endl;
     return false;
   }
   catch(...)
   {
+    // TODO for logging purposes
+    //std::cout << "other catch!" << std::endl;
     return false;
   }
 
@@ -285,9 +300,19 @@ int Process::system(const Command& Cmd, const Environment& Env)
     ProcessEnv[Var.first] = Var.second;
   }
 
+  std::string WorkDir;
+  if (Cmd.WorkDir.empty())
+  {
+      WorkDir = ".";
+  }
+  else
+  {
+      WorkDir = Cmd.WorkDir;
+  }
+
   return boost::process::system(boost::process::exe = Cmd.Program,
                                 boost::process::args = Cmd.Args,
-                                boost::process::start_dir = Cmd.WorkDir,
+                                boost::process::start_dir = WorkDir,
                                 ProcessEnv);
 }
 

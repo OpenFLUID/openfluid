@@ -34,6 +34,7 @@
   @file Filesystem_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -44,6 +45,7 @@
 
 
 #include <set>
+#include <fstream>
 #include <iostream>
 #include <filesystem>
 
@@ -210,6 +212,24 @@ BOOST_AUTO_TEST_CASE(check_dirfiles_operations)
   BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isFile("DirCopyContent/subdir/another_subdir/README"));
   BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isDirectory("DirCopyContent/subdir/another_subdir"));
 
+  //   merge dir content with existing
+
+  //     emulate existing content
+  std::filesystem::create_directory(WorkDir+"/ExistingDir");
+  std::filesystem::create_directory(WorkDir+"/ExistingDir/subdir");
+  std::ofstream(WorkDir+"/ExistingDir/EXISTING.txt").flush();
+  std::ofstream(WorkDir+"/ExistingDir/subdir/SUBEXISTING.txt").flush();
+
+  //    adding directory content
+  BOOST_REQUIRE(openfluid::tools::Filesystem::copyDirectoryContent(FSInputPath,WorkDir+"/ExistingDir"));
+
+  //    checking previous files
+  BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isFile("ExistingDir/EXISTING.txt"));
+  BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isFile("ExistingDir/subdir/SUBEXISTING.txt"));
+  //    checking copied files
+  BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isFile("ExistingDir/README.TOO"));
+  BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isFile("ExistingDir/subdir/another_subdir/README"));
+  
 }
 
 

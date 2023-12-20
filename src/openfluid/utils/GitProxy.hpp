@@ -34,6 +34,7 @@
   @file GitProxy.hpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -54,6 +55,9 @@ class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
 
     static void findGitProgram();
 
+  protected: 
+  
+    std::string m_LocalGitProgram;
 
   public:
 
