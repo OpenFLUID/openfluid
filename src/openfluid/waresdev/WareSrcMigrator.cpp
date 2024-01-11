@@ -51,6 +51,7 @@
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
@@ -592,13 +593,18 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
           }
           catch (std::exception & E)
           {
-            //TODO cleaner exception / logging management
+            //TODO use listener more cleverly with internal logs
+            openfluid::utils::log::error("Migration", 
+                                       "Dispatch failure: "+std::string(E.what()));
+            mp_Listener->onDispatchFilesEnd(openfluid::base::Listener::Status::ERROR_STATUS);
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, 
                                                       "Dispatch failure: "+std::string(E.what()));
           }
           catch (...)
           {
-            //TODO cleaner exception / logging management
+            openfluid::utils::log::error("Migration", 
+                                       "Dispatch failure");
+            mp_Listener->onDispatchFilesEnd(openfluid::base::Listener::Status::ERROR_STATUS);
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Dispatch failure");
           }
         }

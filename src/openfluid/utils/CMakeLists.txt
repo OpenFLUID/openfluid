@@ -13,7 +13,7 @@ ENDIF()
 SET(OPENFLUID_UTILS_CPP GDALHelpers.cpp
                         Process.cpp
                         HTTPClient.cpp FluidHubAPIClient.cpp
-                        ExternalProgram.cpp 
+                        ExternalProgram.cpp InternalLogger.cpp
                         CMakeProxy.cpp GitProxy.cpp GrassGISProxy.cpp PandocProxy.cpp
                         )
 
@@ -26,6 +26,7 @@ SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMach
                         ExternalProgram.hpp
                         ProgramProxy.hpp CMakeProxy.hpp GitProxy.hpp GrassGISProxy.hpp PandocProxy.hpp
                         CommandLineParser.hpp
+                        InternalLogger.hpp
                         ReportingData.hpp
                         )
 

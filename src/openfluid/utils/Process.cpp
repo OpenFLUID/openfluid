@@ -46,6 +46,7 @@
 
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/utils/Process.hpp>
 
 
@@ -225,14 +226,13 @@ bool Process::run()
   catch(const boost::process::process_error& E)
   {
     m_ErrorMsg = std::string(E.what());
-    // TODO for logging purposes
-    //std::cout << "bp catch! " << E.what() << std::endl;
+    openfluid::utils::log::error("Process", std::string("Boost process error: ")+E.what());
     return false;
   }
   catch(...)
   {
     // TODO for logging purposes
-    //std::cout << "other catch!" << std::endl;
+    openfluid::utils::log::error("Process", "Boost process error");
     return false;
   }
 

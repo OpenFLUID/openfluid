@@ -45,8 +45,9 @@
 
 #include <openfluid/ui/waresdev/GitUIProxy.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -137,9 +138,9 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
 {
   if (FromUrl.isEmpty() || ToPath.isEmpty())
   {
-    // TODO for non GUI interface, find a way to redirect error/info
-    //std::cout << "Empty remote url or empty destination path" << std::endl;
-    emit error(tr("Empty remote url or empty destination path"));
+    std::string ErrorMsg = "Empty remote url or empty destination path";
+    openfluid::utils::log::error("Git", ErrorMsg);
+    emit error(tr(ErrorMsg.c_str()));
     return false;
   }
 
@@ -151,12 +152,15 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
           openfluid::tools::FilesystemPath({WorkingDirectory.toStdString(), ".git", "index.lock"});
     if (GitIndexLockPath.exists())
     {
-        //std::cout << "Can not operate, git lock detected:" << std::endl;
-      emit error(tr("Can not operate, git lock detected."));
+      std::string ErrorMsg = "Can not operate, git lock detected.";
+      openfluid::utils::log::error("Git", ErrorMsg);
+      emit error(tr(ErrorMsg.c_str()));
       return false;
     }
     else // HACK for debugging purpose, to remove before release
     {
+      openfluid::utils::log::debug("Git", 
+                                   "git lock not detected here: "+WorkingDirectory.toStdString());
       emit info(tr("git lock not detected here:")+QString::fromStdString(WorkingDirectory.toStdString()));
     }
   }
@@ -202,30 +206,35 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutputAsInfo()));
 
-  // TO BE USED IN INTERNAL LOGGING STACK AS "INFO"
-  // std::cout << "PROCESS START:" << m_LocalGitProgram << " : ";
-  // for (auto& p : Args)
-  // {
-  //     std::cout << " " << p.toStdString() << std::endl;
-  // }
-  // std::cout << std::endl;
+  std::string GitCommand = m_LocalGitProgram + " ";
+  for (auto& p : Args)
+  {
+    GitCommand += " " + p.toStdString();
+  }
+
+  openfluid::utils::log::info("Git", GitCommand);
   mp_Process->start(QString::fromStdString(m_LocalGitProgram),Args);
   if (!mp_Process->waitForStarted())
   {
       delete mp_Process;
       mp_Process = nullptr;
-      //std::cout << "failed start:" << std::endl; TODO add to logging
+      openfluid::utils::log::error("Git", "Git failed start");
       return false;
   }
-  // std::cout << "PROCESS POST START" << std::endl;
   mp_Process->waitForFinished(-1);
   mp_Process->waitForReadyRead(-1);
 
   QString Res = QString::fromUtf8(mp_Process->readAll());
+
+  std::string ResContent = Res.toStdString();
+  if (ResContent.empty())
+  {
+    ResContent = "/EMPTY/";
+  }
+  openfluid::utils::log::debug("Git", 
+                             "Git process content: "+ResContent);
   
-  // std::cout << "PROCESS READ" << Res.toStdString() << std::endl;
   int ErrCode = mp_Process->exitCode();
-  // !std::cout << "EXIT:" << ErrCode << std::endl;
 
   delete mp_Process;
   mp_Process = nullptr;
@@ -342,7 +351,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
   {
     StandardOutput += tr("Submodule successfully removed");
   }
-  //TODO for logging system std::cout << "OUT IN REMOVE:" << StandardOutput.toStdString() << std::endl;
+  openfluid::utils::log::debug("Git", StandardOutput.toStdString());
   return std::pair(SummaryStatusCode, StandardOutput);
 }
 
