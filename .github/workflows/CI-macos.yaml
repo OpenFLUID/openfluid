@@ -12,7 +12,7 @@ jobs:
   ci-macos-debug:
     strategy:
       matrix:
-        os: [macos-11,macos-12]
+        os: [macos-12]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -34,7 +34,7 @@ jobs:
         run: make -j 2
         working-directory: ./_build
       - name: Testing
-        run: ctest -j 2 --output-on-failure
+        run: ctest --output-on-failure
         working-directory: ./_build
 
 
@@ -44,7 +44,7 @@ jobs:
   ci-macos-release:
     strategy:
       matrix:
-        os: [macos-11,macos-12]
+        os: [macos-12]
     runs-on: ${{ matrix.os }}
 
     steps:
