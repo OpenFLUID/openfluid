@@ -34,6 +34,8 @@
   @file config.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
+
 */
 
 
@@ -147,6 +149,7 @@ const std::string TRANSLATIONS_FILEROOT = "@OPENFLUID_TRANSLATIONS_FILEROOT@";
 
 // Log files
 const std::string MESSAGES_LOG_FILE = "@OPENFLUID_MESSAGES_LOG_FILE@";
+const std::string INTERNAL_LOG_FILE = "@OPENFLUID_INTERNAL_LOG_FILE@";
 
 
 // Profiling files

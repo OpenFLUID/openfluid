@@ -34,6 +34,7 @@
   @file FileLogger.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -77,9 +78,11 @@ class OPENFLUID_API FileLogger
 
     static std::string logTypeToString(LogType LType);
 
-    void init(const std::string& FilePath);
+    void init(const std::string& FilePath, bool Overwrite=true);
 
     void close();
+
+    void flush();
 
     void add(LogType LType, const std::string& Context, const std::string& Msg);
 

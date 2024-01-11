@@ -97,8 +97,6 @@ SET_TARGET_PROPERTIES(openfluid-ui-waresdev PROPERTIES VERSION "${OPENFLUID_VERS
                                         COMPILE_DEFINITIONS "OPENFLUID_DLL"
                                         DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
-MESSAGE(STATUS "In ui/waresdev ${QT_VERSION_MAJOR}")
-
 TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       openfluid-ui-common
                       openfluid-waresdev

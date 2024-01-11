@@ -34,9 +34,11 @@
   @file FileLogger.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/FileLogger.hpp>
 
 
@@ -93,9 +95,21 @@ std::string FileLogger::logTypeToString(LogType LType)
 // =====================================================================
 
 
-void FileLogger::init(const std::string& FilePath)
+void FileLogger::init(const std::string& FilePath, bool Overwrite)
 {
-  m_LogFile.open(FilePath.c_str(),std::ios::out);
+  if (Overwrite)
+  {
+    m_LogFile.open(FilePath.c_str(),std::ios::out);
+  }
+  else
+  {
+    m_LogFile.open(FilePath.c_str(),std::ios::app);
+  }
+  if (!m_LogFile.is_open())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                             "Log file opening failed: "+FilePath);
+  }
 }
 
 
@@ -108,6 +122,19 @@ void FileLogger::close()
   if (m_LogFile.is_open())
   {
     m_LogFile.close();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FileLogger::flush()
+{
+  if (m_LogFile.is_open())
+  {
+    m_LogFile.flush();
   }
 }
 

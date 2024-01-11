@@ -307,9 +307,10 @@ bool Filesystem::copyDirectoryContent(const std::filesystem::path& Source, const
     } 
     catch (const std::filesystem::filesystem_error& e)
     {
-      //TODO cleaner exception / logging management
-      std::cerr << "Filesystem error: " << e.what() << std::endl;
-      //return false;  TOIMPL reenable this after test under windows
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                             std::string("Directory content copy failed: ")+e.what());
+      //return false;  TOIMPL double check this part with windows
+
     }
   }
   return true;
@@ -475,7 +476,11 @@ std::string Filesystem::readFile(const openfluid::tools::Path& FileObj)
     std::copy(std::istream_iterator<char>{File >> std::noskipws},{},std::back_inserter(Content));
     File.close();
   }
-
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                             "File opening failed: "+FileObj.toGeneric());
+  }
   return Content;
 }
 
@@ -492,6 +497,11 @@ void Filesystem::writeFile(const std::string& Content, const openfluid::tools::P
   {
     File << Content;
     File.close();
+  }
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                             "File opening failed: "+FileObj.toGeneric());
   }
 }
 
