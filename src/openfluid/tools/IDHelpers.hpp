@@ -155,7 +155,7 @@ bool OPENFLUID_API extractVariableNameAndType(const openfluid::core::VariableNam
   @return the generated ID
 */
 std::string OPENFLUID_API buildGeneratorID(const openfluid::core::VariableName_t& VarName,
-                                           bool IsVector,
+                                           const std::string& strDimType,
                                            const openfluid::core::UnitsClass_t& ClassName);
 
 

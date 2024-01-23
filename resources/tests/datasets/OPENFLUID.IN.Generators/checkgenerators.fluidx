@@ -11,6 +11,10 @@
       <param name="fixedvalue" value="12.7" />
     </generator>
 
+    <generator varname="tests.fixed-vector-unique" unitsclass="TestUnits" varsize="7" method="fixed">
+      <param name="fixedvalue" value="[1,3,5,7,9,11,13]" />
+    </generator>
+
     <generator varname="tests.fixeddt" unitsclass="TestUnits" method="fixed">
       <param name="fixedvalue" value="1.27" />
       <param name="deltat" value="300" />

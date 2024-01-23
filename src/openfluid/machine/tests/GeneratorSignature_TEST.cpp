@@ -34,6 +34,7 @@
   @file GeneratorSignature_TEST.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 #define BOOST_TEST_MAIN
@@ -69,11 +70,12 @@ BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
   openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM,
-                                               "TU","var",5);
+                                               "TU","var",openfluid::core::Value::DOUBLE, 
+                                               openfluid::fluidx::DataDimensions(5));
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
-  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),1);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),2);
 }
 
 

@@ -34,6 +34,7 @@
 
   @author Aline LIBRES <libres@supagro.inra.fr>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -123,7 +124,9 @@ openfluid::ware::WareID_t SimulatorRegistry::addGenerator(const GeneratorSpecs& 
     
     auto Container = createGeneratorContainer();
     auto Signature = new openfluid::machine::GeneratorSignature(Specs.Method,Specs.UnitsClass,
-                                                             Specs.VariableName,Specs.VariableSize);  
+                                                                Specs.VariableName,
+                                                                Specs.VariableType,
+                                                                Specs.VariableDimensions);  
 
     Container.setSignature(Signature);
     Container.validate();

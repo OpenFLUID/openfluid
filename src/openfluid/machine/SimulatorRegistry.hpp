@@ -35,6 +35,7 @@
 
   @author Aline LIBRES <libres@supagro.inra.fr>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -74,11 +75,16 @@ class OPENFLUID_API GeneratorSpecs
       The name of the produced variable
     */
     openfluid::core::VariableName_t VariableName;
+
+    /**
+      The type of the produced variable (at scalar level)
+    */
+    openfluid::core::Value::Type VariableType = openfluid::core::Value::DOUBLE;
     
     /**
-      The size of the produced variable. if > 1, the variabble is a vector of double
+      The dmensions of the produced variable.
     */
-    unsigned int VariableSize = 1;
+    openfluid::fluidx::DataDimensions VariableDimensions = openfluid::fluidx::DataDimensions();
 };
 
 

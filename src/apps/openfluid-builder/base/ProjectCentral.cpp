@@ -33,6 +33,7 @@
  @file ProjectCentral.cpp
 
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -480,7 +481,10 @@ void ProjectCentral::checkModel()
     {
       const auto* GenDesc = static_cast<const openfluid::fluidx::GeneratorDescriptor*>(Item);
       Reg->addGenerator({GenDesc->getGeneratorMethod(),GenDesc->getUnitsClass(),
-                          GenDesc->getVariableName(),GenDesc->getVariableSize()});
+                          GenDesc->getVariableName(),
+                          GenDesc->getVariableType(),
+                          GenDesc->getVariableDimensions()
+                         });
     }
   }
 

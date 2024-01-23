@@ -34,6 +34,7 @@
   @file GeneratorDescriptor.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -45,22 +46,19 @@
 namespace openfluid { namespace fluidx {
 
 
-GeneratorDescriptor::GeneratorDescriptor(
-    openfluid::core::VariableName_t VarName,
-    openfluid::core::UnitsClass_t UnitsClass, GeneratorMethod GenMethod,
-    unsigned int VarSize) :
-    ModelItemDescriptor(openfluid::tools::buildGeneratorID(VarName,(VarSize > 1),UnitsClass))
+GeneratorDescriptor::GeneratorDescriptor(openfluid::core::VariableName_t VarName, 
+                        openfluid::core::UnitsClass_t UnitsClass,
+                        GeneratorMethod GenMethod, 
+                        openfluid::core::Value::Type VarType, 
+                        DataDimensions VarDimensions) :
+    ModelItemDescriptor(openfluid::tools::buildGeneratorID(VarName, VarDimensions.strType(), UnitsClass))
 {
   m_WareType = openfluid::ware::WareType::GENERATOR;
   m_VarName = VarName;
   m_UnitsClass = UnitsClass;
   m_GenMethod = GenMethod;
-  m_VarSize = VarSize;
-
-  if (m_VarSize < 1)
-  {
-    m_VarSize = 1;
-  }
+  m_VarType = VarType;
+  m_VarDimensions = VarDimensions;
 }
 
 
@@ -93,6 +91,15 @@ GeneratorDescriptor::GeneratorMethod GeneratorDescriptor::getGeneratorMethod() c
   return m_GenMethod;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::Value::Type GeneratorDescriptor::getVariableType() const
+{
+    return m_VarType;
+}
 
 } } // namespaces
 

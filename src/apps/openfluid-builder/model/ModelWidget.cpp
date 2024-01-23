@@ -34,6 +34,7 @@
   @file ModelWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -358,7 +359,9 @@ void ModelWidget::addGenerator()
         new openfluid::fluidx::GeneratorDescriptor(AddGenDlg.getVariableName().toStdString(),
                                                    AddGenDlg.getUnitClass().toStdString(),
                                                    AddGenDlg.getMethod(),
-                                                   AddGenDlg.getVariableSize());
+                                                   AddGenDlg.getVarType(),
+                                                   AddGenDlg.getDimensions()
+                                                   );
 
     GenDesc->setParameters(AddGenDlg.getParams());
 
@@ -370,7 +373,10 @@ void ModelWidget::addGenerator()
     if (!Reg->hasGenerator(GenID))
     {
       Reg->addGenerator({GenDesc->getGeneratorMethod(),GenDesc->getUnitsClass(),
-                          GenDesc->getVariableName(),GenDesc->getVariableSize()});
+                          GenDesc->getVariableName(),
+                          GenDesc->getVariableType(),
+                          GenDesc->getVariableDimensions()
+                         });
     }
 
     GeneratorWidget* GenWidget = new GeneratorWidget(this,GenDesc,GenID,0);
@@ -544,7 +550,10 @@ void ModelWidget::updateCoupledModel()
       if (!Reg->hasGenerator(GenID))
       {
         Reg->addGenerator({GenDesc->getGeneratorMethod(),GenDesc->getUnitsClass(),
-                           GenDesc->getVariableName(),GenDesc->getVariableSize()});
+                           GenDesc->getVariableName(),
+                           GenDesc->getVariableType(),
+                           GenDesc->getVariableDimensions()
+                           });
       }
 
 

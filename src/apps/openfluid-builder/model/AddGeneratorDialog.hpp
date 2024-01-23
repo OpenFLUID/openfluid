@@ -34,6 +34,7 @@
   @file AddGeneratorDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -67,6 +68,8 @@ class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
 
     void selectDistriFile();
 
+    void refresh();
+
 
   private:
 
@@ -90,7 +93,9 @@ class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
 
     QString getUnitClass() const;
 
-    unsigned int getVariableSize() const;
+    openfluid::core::Value::Type getVarType() const;
+
+    openfluid::fluidx::DataDimensions getDimensions() const;
 
     openfluid::ware::WareParams_t getParams() const;
 

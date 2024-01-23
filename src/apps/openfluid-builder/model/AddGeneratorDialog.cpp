@@ -34,6 +34,7 @@
   @file AddGeneratorDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -66,6 +67,15 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
   connect(ui->InjectRadioButton,SIGNAL(toggled(bool)),this,SLOT(switchGeneratorOptions()));
 
   connect(ui->VectorRadioButton,SIGNAL(toggled(bool)),ui->VectorSpinBox,SLOT(setEnabled(bool)));
+  connect(ui->MatrixRadioButton,SIGNAL(toggled(bool)),ui->MatrixColsSpinBox,SLOT(setEnabled(bool)));
+  connect(ui->MatrixRadioButton,SIGNAL(toggled(bool)),ui->MatrixRowsSpinBox,SLOT(setEnabled(bool)));
+  connect(ui->ScalarRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
+  connect(ui->VectorRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
+  connect(ui->MatrixRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
+  connect(ui->DoubleRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
+  connect(ui->IntegerRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
+  connect(ui->BooleanRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
+  connect(ui->StringRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
 
   connect(ui->VarNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitsClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
@@ -80,6 +90,8 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
   ui->FixedRadioButton->setChecked(true);
   ui->DoubleRadioButton->setChecked(true);
   ui->VectorSpinBox->setEnabled(false);
+  ui->MatrixColsSpinBox->setEnabled(false);
+  ui->MatrixRowsSpinBox->setEnabled(false);
 
   // "required" placeholder
   QString PlaceholderStr = getPlaceholderRequired();
@@ -94,6 +106,7 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
   ui->VarNameEdit->setFocus();
 
   checkGlobal();
+  refresh();
 }
 
 
@@ -107,6 +120,59 @@ AddGeneratorDialog::~AddGeneratorDialog()
 }
 
 
+void AddGeneratorDialog::refresh()
+{
+  if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED ||
+      m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM)
+  {
+    ui->MatrixRadioButton->setEnabled(true);
+    ui->IntegerRadioButton->setEnabled(true);
+    ui->BooleanRadioButton->setEnabled(true);
+    ui->StringRadioButton->setEnabled(m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED);
+  }
+  else
+  {
+    ui->MatrixRadioButton->setEnabled(false);
+    ui->IntegerRadioButton->setEnabled(false);
+    ui->BooleanRadioButton->setEnabled(false);
+    ui->StringRadioButton->setEnabled(false);
+    if (!ui->DoubleRadioButton->isChecked())
+    {
+      ui->DoubleRadioButton->setChecked(true);
+    }
+  }
+  if (ui->StringRadioButton->isChecked() && !ui->StringRadioButton->isEnabled())
+  {
+    ui->DoubleRadioButton->setChecked(true);
+  }
+  if (ui->BooleanRadioButton->isChecked())
+  {
+    ui->RangeFrame->setVisible(false);
+  }
+  else
+  {
+    ui->RangeFrame->setVisible(true);
+  }
+  ui->DimensionsGroupBox->setEnabled(ui->DoubleRadioButton->isChecked());
+  if (!ui->MatrixRadioButton->isEnabled() && ui->MatrixRadioButton->isChecked())
+  {
+    ui->ScalarRadioButton->setChecked(true);
+  }
+  if (!ui->VectorRadioButton->isEnabled() && ui->VectorRadioButton->isChecked())
+  {
+    ui->ScalarRadioButton->setChecked(true);
+  }
+  if (ui->VectorRadioButton->isChecked() || ui->MatrixRadioButton->isChecked())
+  {
+    ui->RandomIdenticalValueCheckbox->setEnabled(!ui->BooleanRadioButton->isChecked());
+  }
+  else
+  {
+    ui->RandomIdenticalValueCheckbox->setEnabled(false);
+  }
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -115,24 +181,25 @@ void AddGeneratorDialog::switchGeneratorOptions()
 {
   if (ui->FixedRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED;
+    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED;
     ui->OptionsWidget->setCurrentIndex(0);
   }
   else if (ui->RandomRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM;
+    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM;
     ui->OptionsWidget->setCurrentIndex(1);
   }
   else if (ui->InterpRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP;
+    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP;
     ui->OptionsWidget->setCurrentIndex(2);
   }
   else if (ui->InjectRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT;
+    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT;
     ui->OptionsWidget->setCurrentIndex(2);
   }
+  refresh();
 }
 
 
@@ -181,15 +248,45 @@ QString AddGeneratorDialog::getUnitClass() const
 // =====================================================================
 
 
-unsigned int AddGeneratorDialog::getVariableSize() const
+openfluid::fluidx::DataDimensions AddGeneratorDialog::getDimensions() const
 {
-  if (ui->DoubleRadioButton->isChecked())
+  if (ui->ScalarRadioButton->isChecked())
   {
-    return 1;
+    return openfluid::fluidx::DataDimensions();
+  }
+  else if (ui->VectorRadioButton->isChecked())
+  {
+    return openfluid::fluidx::DataDimensions(ui->VectorSpinBox->value());
   }
   else
   {
-    return ui->VectorSpinBox->value();
+    return openfluid::fluidx::DataDimensions(ui->MatrixColsSpinBox->value(), 
+                                             ui->MatrixRowsSpinBox->value());
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::Value::Type AddGeneratorDialog::getVarType() const
+{
+  if (ui->IntegerRadioButton->isChecked())
+  {
+    return openfluid::core::Value::INTEGER;
+  }
+  else if (ui->BooleanRadioButton->isChecked())
+  {
+    return openfluid::core::Value::BOOLEAN;
+  }
+  else if (ui->StringRadioButton->isChecked())
+  {
+    return openfluid::core::Value::STRING;
+  }
+  else
+  {
+    return openfluid::core::Value::DOUBLE;
   }
 }
 
@@ -202,14 +299,14 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
 {
   openfluid::ware::WareParams_t Params;
 
-  if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED)
+  if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED)
   {
     if (!ui->ValueEdit->text().isEmpty())
     {
       Params["fixedvalue"] = ui->ValueEdit->text().toStdString();
     }
   }
-  else if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM)
+  else if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM)
   {
     if (!ui->MinValueEdit->text().isEmpty())
     {
@@ -219,8 +316,12 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
     {
       Params["max"] = ui->MaxValueEdit->text().toStdString();
     }
+    if (!ui->ScalarRadioButton->isChecked())
+    {
+      Params["identicalcells"] = ui->RandomIdenticalValueCheckbox->isChecked();
+    }
   }
-  else if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP)
+  else if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP)
   {
     Params["keeptmpdir"] = "false";
     if (!ui->SourcesFileEdit->text().isEmpty())
@@ -232,7 +333,7 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
       Params["distribution"] = ui->DistriFileEdit->text().toStdString();
     }
   }
-  else if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
+  else if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT)
   {
     if (!ui->SourcesFileEdit->text().isEmpty())
     {

@@ -34,6 +34,7 @@
   @file InterpGenerator.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -188,9 +189,9 @@ openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
       Value = 0.0;
     }
 
-    if (isVectorVariable())
+    if (m_VarDimensions.isVector())
     {
-      openfluid::core::VectorValue VV(m_VarSize,Value);
+      openfluid::core::VectorValue VV(m_VarDimensions.Rows,Value);
       OPENFLUID_InitializeVariable(LU,m_VarName,VV);
     }
     else
@@ -239,9 +240,9 @@ openfluid::base::SchedulingRequest InterpGenerator::runStep()
         Value = m_Min;
       }
 
-      if (isVectorVariable())
+      if (m_VarDimensions.isVector())
       {
-        openfluid::core::VectorValue VV(m_VarSize,Value);
+        openfluid::core::VectorValue VV(m_VarDimensions.Rows,Value);
         OPENFLUID_AppendVariable(LU,m_VarName,VV);
       }
       else

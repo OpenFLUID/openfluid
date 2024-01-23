@@ -34,6 +34,7 @@
   @file GeneratorWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -98,9 +99,14 @@ void GeneratorWidget::refresh()
     setAvailableWare(true);
 
     QString DimStr = tr("scalar");
-    if (static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc)->getVariableSize() > 1)
+    const auto Dims = static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc)->getVariableDimensions();
+    if (Dims.isVector())
     {
       DimStr = tr("vector");
+    }
+    else if (Dims.isMatrix())
+    {
+      DimStr = tr("matrix");
     }
 
     ui->NameLabel->setText(
