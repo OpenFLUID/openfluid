@@ -34,6 +34,7 @@
   @file GeneratorDescriptor.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -43,9 +44,129 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace fluidx {
+
+
+struct DataDimensions
+{
+  enum class DType {SCALAR, VECTOR, MATRIX};
+
+  DType Type;
+  
+  unsigned long Cols, Rows;
+
+  void applyDimensions(std::string SerializedVariableSize)
+  {
+    Rows = 1;
+    Cols = 1;
+    if (SerializedVariableSize[0] != '[') // compatibility with previous syntax S=1 <=> SCALAR, S>1 <=> VECTOR
+    {
+      if (SerializedVariableSize == "" || SerializedVariableSize == "1")
+      {
+        Type = DType::SCALAR;
+      }
+      else
+      {
+        applyDimensions("["+SerializedVariableSize+"]");
+      }
+    }
+    else 
+    {
+      std::string TrimmedStrDims = SerializedVariableSize.substr(1, SerializedVariableSize.size()-2);
+      if (TrimmedStrDims.find(",") != std::string::npos)
+      {
+        Type = DType::MATRIX;
+        auto Dims = openfluid::tools::split(TrimmedStrDims, ",");
+        try
+        {
+          Cols = std::stoi(Dims[0]);
+          Rows = std::stoi(Dims[1]);
+        }
+        catch(const std::exception& e)
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                "generator dimensions parsing failure");
+        }
+      }
+      else
+      {
+        Type = DType::VECTOR;
+        try
+        {
+          Rows = std::stoi(TrimmedStrDims);
+        }
+        catch(const std::exception& e)
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                "generator dimensions parsing failure");
+        }
+      }
+    }
+  }
+
+  DataDimensions() : Type(DType::SCALAR), Cols(1), Rows(1)
+  {
+  }
+
+  DataDimensions(unsigned long Size): Type(DType::VECTOR), Cols(1), Rows(Size)
+  {
+  }
+
+  DataDimensions(unsigned long ColsNbr, unsigned long RowsNbr) : Type(DType::MATRIX), Cols(ColsNbr), Rows(RowsNbr)
+  {
+  }
+
+  DataDimensions(std::string SerializedVariableSize)
+  {
+    applyDimensions(SerializedVariableSize);
+  }
+
+  std::string strType() const
+  {
+    switch (Type)
+    {
+      case DType::SCALAR:
+        return "scalar";
+      case DType::VECTOR:
+        return "vector";
+      case DType::MATRIX:
+        return "matrix";
+    }
+    return "";
+  }
+
+  bool isScalar() const
+  {
+    return (Type == DType::SCALAR);
+  }
+  
+  bool isVector() const
+  {
+    return (Type == DType::VECTOR);
+  }
+  
+  bool isMatrix() const
+  {
+    return (Type == DType::MATRIX);
+  }
+
+  const std::string getSerializedVariableSize() const
+  {
+    switch (Type)
+    {
+      case DType::SCALAR:
+        return "1";
+      case DType::VECTOR:
+        return "["+std::to_string(Rows)+"]";
+      case DType::MATRIX:
+        return "["+std::to_string(Cols)+","+std::to_string(Rows)+"]";
+    }
+    return "1";
+  }
+};
 
 
 class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
@@ -62,7 +183,9 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     GeneratorMethod m_GenMethod;
 
-    unsigned int m_VarSize;
+    openfluid::core::Value::Type m_VarType;
+
+    DataDimensions m_VarDimensions;
 
     std::string m_GeneratedID;
 
@@ -75,7 +198,9 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
     { }
 
     GeneratorDescriptor(openfluid::core::VariableName_t VarName, openfluid::core::UnitsClass_t UnitsClass,
-                        GeneratorMethod GenMethod, unsigned int VarSize=1);
+                        GeneratorMethod GenMethod, 
+                        openfluid::core::Value::Type VarType=openfluid::core::Value::Type::DOUBLE, 
+                        DataDimensions VarDimensions=DataDimensions());
 
     openfluid::core::VariableName_t getVariableName() const;
 
@@ -83,22 +208,17 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     GeneratorMethod getGeneratorMethod() const;
 
-    unsigned int getVariableSize() const
+    DataDimensions getVariableDimensions() const
     {
-      return m_VarSize;
+      return m_VarDimensions;
     }
 
-    openfluid::core::Value::Type getVariableType() const
+    std::size_t getVariableSize() const
     {
-      if (m_VarSize > 1)
-      {
-        return openfluid::core::Value::Type::VECTOR;
-      }
-      else
-      {
-        return openfluid::core::Value::Type::DOUBLE;
-      }
+      return m_VarDimensions.Cols*m_VarDimensions.Rows;
     }
+
+    openfluid::core::Value::Type getVariableType() const;
 };
 
 

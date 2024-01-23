@@ -34,6 +34,7 @@
   @file IDHelpers.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -185,7 +186,7 @@ bool extractVariableNameAndType(const openfluid::core::VariableName_t& Name,
 
 
 std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
-                             bool IsVector,
+                             const std::string& strDimType,
                              const openfluid::core::UnitsClass_t& ClassName)
 {
   // <varname>.<unitsclass>.gen<type> where <type> can be scalar or vector
@@ -194,14 +195,8 @@ std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
   GenID += ".";
   GenID += ClassName;
   GenID += ".gen";
-  if (IsVector)
-  {
-    GenID += "vector";
-  }
-  else
-  {
-    GenID += "scalar";
-  }
+  
+  GenID += strDimType;
 
   return GenID;
 }

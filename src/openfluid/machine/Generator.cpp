@@ -34,6 +34,7 @@
   @file Generator.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -43,8 +44,7 @@
 namespace openfluid { namespace machine {
 
 
-Generator::Generator() : PluggableSimulator(),
-  m_VarSize(1)
+Generator::Generator() : PluggableSimulator()
 {
 
 }

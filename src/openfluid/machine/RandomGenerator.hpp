@@ -34,6 +34,7 @@
   @file RandomGenerator.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -52,11 +53,10 @@ namespace openfluid { namespace machine {
 
 class OPENFLUID_API RandomGenerator : public Generator
 {
-  private:
+  protected:
 
-    openfluid::core::DoubleValue m_Min;
-
-    openfluid::core::DoubleValue m_Max;
+    
+    bool m_IdenticalCellValues;
 
     openfluid::core::Duration_t m_DeltaT;
 
@@ -71,17 +71,99 @@ class OPENFLUID_API RandomGenerator : public Generator
 
     void initParams(const openfluid::ware::WareParams_t& Params);
 
-    void checkConsistency();
-
-    openfluid::base::SchedulingRequest initializeRun();
-
-    openfluid::base::SchedulingRequest runStep();
+    openfluid::base::SchedulingRequest endOfStep();
 
     void finalizeRun()
     { }
 
 };
 
+
+// =====================================================================
+// =====================================================================
+
+
+template<class T>
+class NumericalRandomGenerator : public RandomGenerator
+{
+
+  protected:
+
+    T m_Min;
+
+    T m_Max;
+
+
+  public: 
+    
+    NumericalRandomGenerator();
+
+    void initParams(const openfluid::ware::WareParams_t& Params);
+
+    void checkConsistency();
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class DoubleRandomGenerator : public NumericalRandomGenerator<openfluid::core::DoubleValue>
+{
+
+  public:
+
+    DoubleRandomGenerator();
+
+    void initParams(const openfluid::ware::WareParams_t& Params);
+
+    openfluid::base::SchedulingRequest initializeRun();
+
+    openfluid::base::SchedulingRequest runStep();
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class IntRandomGenerator : public NumericalRandomGenerator<int>
+{
+
+  public:
+
+    IntRandomGenerator();
+
+    void initParams(const openfluid::ware::WareParams_t& Params);
+
+    openfluid::base::SchedulingRequest initializeRun();
+
+    openfluid::base::SchedulingRequest runStep();
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class BooleanRandomGenerator : public RandomGenerator
+{
+
+  private:
+    
+    double m_Probability = 0.5;  // TODO allow custom probability
+
+
+  public:
+
+    BooleanRandomGenerator();
+
+    openfluid::base::SchedulingRequest initializeRun();
+
+    void checkConsistency();
+
+    openfluid::base::SchedulingRequest runStep();
+};
 
 } }  //namespaces
 

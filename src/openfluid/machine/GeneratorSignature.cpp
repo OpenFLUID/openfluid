@@ -33,6 +33,7 @@
   @file GeneratorSignature.cpp
 
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -45,10 +46,12 @@ namespace openfluid { namespace machine {
 
 GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,
                                        const openfluid::core::UnitsClass_t& U, 
-                                       const openfluid::core::VariableName_t& VN, const unsigned int VS):
-    SimulatorSignature(), Method(M), UnitsClass(U), VariableName(VN), VariableSize(VS)
+                                       const openfluid::core::VariableName_t& VN, 
+                                       const openfluid::core::Value::Type VT,
+                                       const openfluid::fluidx::DataDimensions& VD):
+    SimulatorSignature(), Method(M), UnitsClass(U), VariableName(VN), VariableType(VT), VariableDimensions(VD)
 {
-  ID = openfluid::tools::buildGeneratorID(VariableName,(VariableSize > 1),UnitsClass);
+  ID = openfluid::tools::buildGeneratorID(VariableName, VariableDimensions.strType(), UnitsClass);
 
   switch (Method)
   {
@@ -70,8 +73,16 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
   }
 
   std::string TypedVarName = VariableName;
-  VariableSize > 1 ? TypedVarName += "[vector]" : TypedVarName += "[double]";
-
+  std::string VarDimType = VariableDimensions.strType();
+  if (VarDimType == "scalar")
+  {
+    TypedVarName += "["+openfluid::core::Value::getStringFromValueType(VariableType)+"]";
+  }
+  else
+  {
+    TypedVarName += "["+VarDimType+"]";
+  } 
+  
   HandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem(TypedVarName,UnitsClass,"",""));
 }
 
@@ -102,11 +113,20 @@ void GeneratorSignature::setRandomInfo()
   Name = "Random values";
   Description = "Generates a random value in a range";
 
-  HandledData.RequiredParams.push_back(
-      openfluid::ware::SignatureDataItem("min","Lower bound of the random range for the value to produce","-"));
+  if (VariableType != openfluid::core::Value::Type::BOOLEAN)
+  {
+    HandledData.RequiredParams.push_back(
+        openfluid::ware::SignatureDataItem("min","Lower bound of the random range for the value to produce","-"));
 
-  HandledData.RequiredParams.push_back(
-      openfluid::ware::SignatureDataItem("max","Upper bound of the random range for the value to produce","-"));
+    HandledData.RequiredParams.push_back(
+        openfluid::ware::SignatureDataItem("max","Upper bound of the random range for the value to produce","-"));
+  }
+
+  if (!VariableDimensions.isScalar())
+  {
+    HandledData.UsedParams.push_back(
+        openfluid::ware::SignatureDataItem("identicalcells","Vector cells contain identical values","bool"));
+  }
 
   HandledData.UsedParams.push_back(
       openfluid::ware::SignatureDataItem("deltat","DeltaT to use instead of the default DeltaT","s"));

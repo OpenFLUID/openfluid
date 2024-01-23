@@ -34,6 +34,7 @@
   @file DataTasks.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -145,7 +146,7 @@ int DataTasks::generateData(const std::string Path, bool WithSample) const
         // --- model
 
         auto Gen = new openfluid::fluidx::GeneratorDescriptor(
-                    "var.example","UnitsA",openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM,1
+                    "var.example","UnitsA",openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM
                   );
         Gen->setParameter("min","0");
         Gen->setParameter("max","1");

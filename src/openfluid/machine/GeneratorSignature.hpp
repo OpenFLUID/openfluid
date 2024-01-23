@@ -34,6 +34,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 #ifndef __OPENFLUID_MACHINE_GENERATORSIGNATURE_HPP__
@@ -70,11 +71,15 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 
     const openfluid::core::VariableName_t VariableName;
 
-    const unsigned int VariableSize;
+    const openfluid::core::Value::Type VariableType;
+
+    const openfluid::fluidx::DataDimensions VariableDimensions;
 
     GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,
                        const openfluid::core::UnitsClass_t& U, 
-                       const openfluid::core::VariableName_t& VN, const unsigned int VS = 1);
+                       const openfluid::core::VariableName_t& VN, 
+                       const openfluid::core::Value::Type VT=openfluid::core::Value::DOUBLE, 
+                       const openfluid::fluidx::DataDimensions& VD=openfluid::fluidx::DataDimensions());
 
     virtual ~GeneratorSignature() = default;
 

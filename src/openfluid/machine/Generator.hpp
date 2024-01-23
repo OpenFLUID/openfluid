@@ -34,6 +34,7 @@
   @file Generator.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -59,7 +60,7 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GenMethod;
 
-    unsigned int m_VarSize;
+    openfluid::fluidx::DataDimensions m_VarDimensions;
 
 
   public:
@@ -71,12 +72,13 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 
 
     void setInfos(openfluid::core::VariableName_t VarName, openfluid::core::UnitsClass_t UnitsClass,
-                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, unsigned int VarSize=1)
+                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
+                  openfluid::fluidx::DataDimensions VarDimensions=openfluid::fluidx::DataDimensions())
     {
       m_VarName = VarName;
       m_UnitsClass = UnitsClass;
       m_GenMethod = GenMethod;
-      m_VarSize = VarSize;
+      m_VarDimensions = VarDimensions;
     }
 
     openfluid::core::VariableName_t getVariableName() const
@@ -102,20 +104,6 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
       return m_GenMethod;
     }
 
-    inline bool isVectorVariable() const
-    {
-      return (m_VarSize > 1);
-    }
-
-    inline bool isScalarVariable() const
-    {
-      return (!isVectorVariable());
-    }
-
-    inline unsigned int getVariableSize() const
-    {
-      return m_VarSize;
-    }
 
     virtual void prepareData()
     {

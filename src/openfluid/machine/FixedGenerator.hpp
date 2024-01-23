@@ -34,6 +34,7 @@
   @file FixedGenerator.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -48,13 +49,28 @@
 namespace openfluid { namespace machine {
 
 
+template<class T=double>
 class OPENFLUID_API FixedGenerator : public Generator
 {
   private:
 
-    openfluid::core::DoubleValue m_VarValue;
+    T m_VarValue;
 
     openfluid::core::Duration_t m_DeltaT;
+
+    void processVarValue(const openfluid::ware::WareParams_t& Params);
+
+    void applyValue(openfluid::core::SpatialUnit* LU, bool init=false)
+    {
+        if (init)
+        {
+          OPENFLUID_InitializeVariable(LU,m_VarName,(T)0);
+        }
+        else
+        {
+          OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
+        }
+    }
 
   public:
 

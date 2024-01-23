@@ -34,6 +34,7 @@
   @file Factory.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -232,7 +233,8 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
                        GenDesc->getGeneratorMethod(),
                        GenDesc->getUnitsClass(),
                        GenDesc->getVariableName(),
-                       GenDesc->getVariableSize()
+                       GenDesc->getVariableType(),
+                       GenDesc->getVariableDimensions()
                      });
 
         if (GenID.empty())

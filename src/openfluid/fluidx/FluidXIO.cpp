@@ -34,6 +34,7 @@
   @file FluidXIO.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -212,7 +213,11 @@ class FluidXReaderImplementation
           std::string UnitsClass = openfluid::thirdparty::getXMLAttribute(Elt,"unitsclass");
           std::string Method = openfluid::thirdparty::getXMLAttribute(Elt,"method");
           std::string VarSize = openfluid::thirdparty::getXMLAttribute(Elt,"varsize");
-          unsigned int VarSizeNum = 1;
+          std::string VarType = openfluid::thirdparty::getXMLAttribute(Elt,"vartype");
+          openfluid::core::Value::Type VarTypeReal = openfluid::core::Value::DOUBLE;
+          openfluid::core::Value::getValueTypeFromString(VarType, VarTypeReal);
+          DataDimensions VarDimensionsReal = DataDimensions();
+
 
           if (!VarName.empty() && !UnitsClass.empty() && !Method.empty())
           {
@@ -220,19 +225,19 @@ class FluidXReaderImplementation
                 openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE;
             if (Method == "fixed")
             {
-              GenMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED;
+              GenMethod = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED;
             }
             if (Method == "random")
             {
-              GenMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM;
+              GenMethod = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM;
             }
             if (Method == "interp")
             {
-              GenMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP;
+              GenMethod = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP;
             }
             if (Method == "inject")
             {
-              GenMethod = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT;
+              GenMethod = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT;
             }
 
             if (GenMethod == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE)
@@ -243,15 +248,11 @@ class FluidXReaderImplementation
 
             if (!VarSize.empty())
             {
-              if (!openfluid::tools::toNumeric(VarSize,VarSizeNum))
-              {
-                throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                          "wrong variable size format in generator ("+
-                                                          m_CurrentFile+ ")");
-              }
+              VarDimensionsReal = DataDimensions(VarSize);
             }
 
-            auto GD = new openfluid::fluidx::GeneratorDescriptor(VarName,UnitsClass,GenMethod,VarSizeNum);
+            auto GD = new openfluid::fluidx::GeneratorDescriptor(VarName,UnitsClass,GenMethod,VarTypeReal,
+                                                                 VarDimensionsReal);
             GD->setParameters(extractParams(Elt));
             GD->setEnabled(extractWareEnabled(Elt));
             m_Descriptor.m_ModelDescriptor.appendItem(GD);
@@ -975,11 +976,15 @@ class FluidXWriterImplementation
           auto GenElt = ModelElt->InsertNewChildElement("generator");
           GenElt->SetAttribute("varname",GenDesc->getVariableName().c_str());
 
-          if (GenDesc->getVariableSize() != 1)
+          if (!GenDesc->getVariableDimensions().isScalar())
           {
-            GenElt->SetAttribute("varsize",GenDesc->getVariableSize());
+            GenElt->SetAttribute("varsize",GenDesc->getVariableDimensions().getSerializedVariableSize().c_str());
           }
-
+          openfluid::core::Value::Type VarType = GenDesc->getVariableType();
+          if (VarType != openfluid::core::Value::DOUBLE)
+          {
+            GenElt->SetAttribute("vartype",openfluid::core::Value::getStringFromValueType(VarType).c_str());
+          }
           GenElt->SetAttribute("unitsclass",GenDesc->getUnitsClass().c_str());
           GenElt->SetAttribute("method",getGeneratorMethodAsStr(GenDesc->getGeneratorMethod()).c_str());
           GenElt->SetAttribute("enabled",GenDesc->isEnabled());
