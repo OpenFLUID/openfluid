@@ -34,6 +34,7 @@
   @file ModelScene.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -43,6 +44,7 @@
 #include <openfluid/machine/SimulatorRegistry.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ui/QtHelpers.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 #include "builderconfig.hpp"
 #include "ModelScene.hpp"
@@ -187,12 +189,10 @@ void ModelScene::refresh()
         openfluid::fluidx::GeneratorDescriptor* GenDesc = dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
 
         GenCount++;
-
         GeneratorGraphics* GenG = new GeneratorGraphics(QPoint(0,0),
-                                                        QString::fromStdString(ID),SimCount+GenCount,
-                                                        QString::fromStdString(GenDesc->getVariableName()),
-                                                        QString::fromStdString(GenDesc->getUnitsClass()), 
-                                                        BGColor, BorderColor);
+                                                      QString::fromStdString(ID),SimCount+GenCount,
+                                                      openfluid::tools::deduceVarPairs(GenDesc->getVariableTriplets()),
+                                                      BGColor, BorderColor);
         addItem(GenG);
         GenG->moveBy(Position.x(),Position.y());
         GenG->initialize();

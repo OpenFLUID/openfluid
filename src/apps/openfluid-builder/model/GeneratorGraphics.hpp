@@ -34,6 +34,7 @@
   @file GeneratorGraphics.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -56,7 +57,7 @@ class GeneratorGraphics : public ModelItemGraphics
 
     GeneratorGraphics(const QPointF &Coords,
                       const QString& ID, unsigned int Order,
-                      const QString& VarName, const QString& UnitsClass, 
+                      const openfluid::tools::UnitVarPairs_t& VarPairs,
                       const QColor& BGColor, const QColor& BorderColor,
                       QGraphicsItem* Parent = nullptr);
 

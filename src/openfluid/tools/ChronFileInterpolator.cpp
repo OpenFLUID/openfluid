@@ -34,6 +34,7 @@
   @file ChronFileInterpolator.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -119,7 +120,7 @@ void ChronFileInterpolator::checkPostload()
 // =====================================================================
 
 
-void ChronFileInterpolator::loadInFile(ChronologicalSerie& Data)
+void ChronFileInterpolator::loadInFile(ChronologicalSerie<double>& Data)
 {
   checkPreload();
 
@@ -238,14 +239,10 @@ void ChronFileInterpolator::loadInFile(ChronologicalSerie& Data)
   {
     double CumulatedValue = 0;
 
-    ChronologicalSerie::iterator it;
-    ChronologicalSerie::iterator itb = Data.begin();
-    ChronologicalSerie::iterator ite = Data.end();
-
-    for (it=itb;it!=ite;++it)
+    for (auto& LocalValue : Data)
     {
-      CumulatedValue +=  (*it).second;
-      (*it).second = CumulatedValue;
+      CumulatedValue +=  LocalValue.second;
+      LocalValue.second = CumulatedValue;
     }
   }
 

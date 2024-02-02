@@ -49,6 +49,7 @@
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/machine/InjectGenerator.hpp>
+#include <openfluid/machine/MultiInjectGenerator.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 
 
@@ -443,6 +444,10 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
       {
         CurrentItem->Body.reset(new InjectGenerator());
       }
+      else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
+      {
+        CurrentItem->Body.reset(new MultiInjectGenerator());
+      }
       else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP)
       {
         CurrentItem->Body.reset(new InterpGenerator());
@@ -452,11 +457,20 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"invalid generator method in model instance");
       }
 
-      ((openfluid::machine::Generator*)
-          (CurrentItem->Body.get()))->setInfos(GenSignature->VariableName,
-                                               GenSignature->UnitsClass,
+      if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
+      {
+        ((openfluid::machine::Generator*)
+          (CurrentItem->Body.get()))->setInfos(GenSignature->VariableTriplets,
                                                GenSignature->Method,
                                                GenSignature->VariableDimensions);
+      }
+      else
+      {
+        ((openfluid::machine::MonoGenerator*)
+          (CurrentItem->Body.get()))->setInfos(GenSignature->VariableTriplets,
+                                               GenSignature->Method,
+                                               GenSignature->VariableDimensions);
+      }
     }
     else
     {

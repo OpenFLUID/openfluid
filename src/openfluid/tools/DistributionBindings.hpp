@@ -34,6 +34,7 @@
   @file DistributionBindings.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -44,18 +45,48 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
 
 
+inline std::vector<openfluid::tools::ClassIDVar> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
+                                                                                 bool RemoveFirst=false)
+{
+  std::vector<std::string> Columns = openfluid::tools::split(SelectionStr, ";");
+  
+  
+  std::vector<openfluid::tools::ClassIDVar> CSVTriplets;
+  int Begin = RemoveFirst ? 1 : 0;
+  for (std::size_t i=Begin;i<Columns.size();i++)
+  {
+    const std::string& Column = Columns[i];
+    // parse and create CSVTriplet
+    std::size_t HashPosition = Column.find("#");
+    std::size_t ColonPosition = Column.find(":");
+    
+    openfluid::tools::ClassIDVar CurrentCSVTriplet;
+    
+    CurrentCSVTriplet.UnitsClass = Column.substr(0,HashPosition);
+    CurrentCSVTriplet.UnitsIDsStr = Column.substr(HashPosition+1, ColonPosition-HashPosition-1);
+    CurrentCSVTriplet.VariableName = Column.substr(ColonPosition+1);
+    
+    CSVTriplets.push_back(CurrentCSVTriplet);
+  }
+  return CSVTriplets;
+};
+
+
+template<typename DataType=double>
 class ReaderNextValue
 {
   public:
 
-    ProgressiveChronFileReader* Reader;
+    ProgressiveChronFileReader<DataType>* Reader;
 
-    ChronItem_t NextValue;
+    ChronItem_t<DataType> NextValue;
 
     bool isAvailable;
 
@@ -68,30 +99,121 @@ class ReaderNextValue
 // =====================================================================
 
 
-class OPENFLUID_API DistributionBindings
+template<typename DataType=double>
+class GenericDistributionBindings
 {
   public:
 
-    typedef std::map<openfluid::core::UnitID_t,ReaderNextValue*> UnitIDReader_t;
-
-    typedef std::list<ReaderNextValue> ReadersNextValues_t;
+    typedef std::list<ReaderNextValue<DataType>> ReadersNextValues_t;
 
 
-  private:
-
-    UnitIDReader_t m_UnitIDReaders;
+  protected:
 
     ReadersNextValues_t m_ReadersNextValues;
+
+
+  public:
+
+    GenericDistributionBindings() = default;
+
+    ~GenericDistributionBindings()
+    {
+
+      // delete readers
+
+      for (ReaderNextValue<DataType>& RNV : m_ReadersNextValues)
+      {
+        if (RNV.Reader)
+        {
+          delete RNV.Reader;
+        }
+      }
+    }
+
+    void advanceToTime(const openfluid::core::DateTime& DT)
+    {
+      for (ReaderNextValue<DataType>& RNV : m_ReadersNextValues)
+      {
+        bool DataFound = true;
+        openfluid::tools::ChronItem_t<DataType> CI;
+
+        if ((RNV.isAvailable && RNV.NextValue.first < DT) ||
+            RNV.isAvailable == false)
+        {
+          RNV.isAvailable = false;
+
+          while (DataFound && !RNV.isAvailable)
+          {
+            DataFound = RNV.Reader->getNextValue(CI);
+            if (DataFound && CI.first >= DT)
+            {
+              RNV.isAvailable = true;
+              RNV.NextValue = CI;
+            }
+          }
+        }
+      }
+    }
+
+    bool advanceToNextTimeAfter(const openfluid::core::DateTime& DT, openfluid::core::DateTime& NextDT)
+    {
+      openfluid::core::DateTime DTPlusOne(DT);
+      DTPlusOne.addSeconds(1);
+      advanceToTime(DTPlusOne);
+
+      openfluid::core::DateTime NDT;
+
+      bool AvailableFound = false;
+
+      for (ReaderNextValue<DataType>& RNV : m_ReadersNextValues)
+      {
+
+        if (!AvailableFound && RNV.isAvailable)
+        {
+          NDT = RNV.NextValue.first;
+          AvailableFound = true;
+        }
+      }
+
+      if (!AvailableFound)
+      {
+        return false;
+      }
+
+      for (ReaderNextValue<DataType>& RNV : m_ReadersNextValues)
+      {
+        if (RNV.isAvailable && RNV.NextValue.first < NDT)
+        {
+          NDT = RNV.NextValue.first;
+        }
+      }
+
+      NextDT = NDT;
+
+      return true;
+    }
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class OPENFLUID_API DistributionBindings : public GenericDistributionBindings<double>
+{
+  public:
+
+    typedef std::map<openfluid::core::UnitID_t,ReaderNextValue<double>*> UnitIDReader_t;
+
+
+  protected:
+
+    UnitIDReader_t m_UnitIDReaders;
 
   public:
 
     DistributionBindings(const DistributionTables& DistriTables);
-
-    ~DistributionBindings();
-
-    void advanceToTime(const openfluid::core::DateTime& DT);
-
-    bool advanceToNextTimeAfter(const openfluid::core::DateTime& DT, openfluid::core::DateTime& NextDT);
 
     bool getValue(const openfluid::core::UnitID_t& UnitID,
                   const openfluid::core::DateTime& DT,
@@ -99,6 +221,40 @@ class OPENFLUID_API DistributionBindings
 
     void displayBindings();
 
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class OPENFLUID_API MulticolDistributionBindings : public GenericDistributionBindings<std::vector<std::string>>
+{
+  public:
+    
+    typedef std::map<std::vector<std::string>, unsigned int> TripletLocation_t;
+
+  private:
+    
+    TripletLocation_t m_ColBySelectionTriplets;
+
+
+  public:
+
+    MulticolDistributionBindings(const std::string& DataFile,
+                         const std::string& DateFormat = "%Y%m%dT%H%M%S",
+                         const std::string& ColSeparators = ";");
+
+    bool getValue(const openfluid::core::UnitsClass_t& UnitsClass, 
+                  const openfluid::core::UnitID_t& UnitID, 
+                  const openfluid::core::VariableName_t& VariableName, 
+                  const openfluid::core::DateTime& DT,
+                  openfluid::core::DoubleValue& Value);
+
+    TripletLocation_t getColBySelectionTriplet()
+    {
+      return m_ColBySelectionTriplets;
+    }
 };
 
 

@@ -44,9 +44,75 @@
 namespace openfluid { namespace machine {
 
 
-Generator::Generator() : PluggableSimulator()
+void Generator::setInfos(openfluid::tools::UnitVarTriplets_t Triplets,
+                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
+                  openfluid::core::Dimensions VarDimensions)
 {
+  m_VarTriplets = Triplets;
+  m_GenMethod = GenMethod;
+  m_VarDimensions = VarDimensions;
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Generator::getGeneratorMethod() const
+{
+  return m_GenMethod;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MonoGenerator::setInfos(openfluid::tools::UnitVarTriplets_t Triplets,
+              openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
+              openfluid::core::Dimensions VarDimensions)
+{
+  if (Triplets.size() != 1)
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                          "Wrong number of columns for this generator");  
+  }
+  Generator::setInfos(Triplets, GenMethod, VarDimensions);
+  m_VarName = getVariableName();
+  m_UnitsClass = getUnitsClass();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::VariableName_t MonoGenerator::getVariableName() const
+{
+  return m_VarTriplets[0].VariableName;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::UnitsClass_t MonoGenerator::getUnitsClass() const
+{
+  return m_VarTriplets[0].UnitsClass;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  @deprecated Since version 2.1.0. Use openfluid::machine::MonoGenerator::getUnitsClass() const instead
+*/
+[[deprecated]] openfluid::core::UnitsClass_t MonoGenerator::getUnitClass() const
+{
+  return getUnitsClass();
 }
 
 

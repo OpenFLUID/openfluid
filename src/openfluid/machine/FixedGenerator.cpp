@@ -45,7 +45,7 @@
 namespace openfluid { namespace machine {
 
 template <class T>
-FixedGenerator<T>::FixedGenerator() : Generator(), m_DeltaT(0)
+FixedGenerator<T>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 {
   m_VarValue = (T)0;
 }
@@ -56,7 +56,7 @@ FixedGenerator<T>::FixedGenerator() : Generator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<double>::FixedGenerator() : Generator(), m_DeltaT(0)
+FixedGenerator<double>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 {
   m_VarValue = 0;
 }
@@ -67,7 +67,7 @@ FixedGenerator<double>::FixedGenerator() : Generator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<long int>::FixedGenerator() : Generator(), m_DeltaT(0)
+FixedGenerator<long int>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 {
   m_VarValue = 0;
 }
@@ -78,7 +78,7 @@ FixedGenerator<long int>::FixedGenerator() : Generator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<bool>::FixedGenerator() : Generator(), m_DeltaT(0)
+FixedGenerator<bool>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 {
   m_VarValue = false;
 }
@@ -89,7 +89,7 @@ FixedGenerator<bool>::FixedGenerator() : Generator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<std::string>::FixedGenerator() : Generator(), m_DeltaT(0)
+FixedGenerator<std::string>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 {
   m_VarValue = "";
 }
@@ -100,7 +100,7 @@ FixedGenerator<std::string>::FixedGenerator() : Generator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<openfluid::core::VectorValue>::FixedGenerator() : Generator(), m_DeltaT(0)
+FixedGenerator<openfluid::core::VectorValue>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 {
   m_VarValue = openfluid::core::VectorValue(1);
 }
@@ -111,7 +111,7 @@ FixedGenerator<openfluid::core::VectorValue>::FixedGenerator() : Generator(), m_
 
 
 template <>
-FixedGenerator<openfluid::core::MatrixValue>::FixedGenerator() : Generator(), m_DeltaT(0)
+FixedGenerator<openfluid::core::MatrixValue>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 {
   m_VarValue = openfluid::core::MatrixValue();
 }

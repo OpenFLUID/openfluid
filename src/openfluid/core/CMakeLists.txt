@@ -6,6 +6,7 @@ SET(OPENFLUID_CORE_CPP Value.cpp UnstructuredValue.cpp
                        IntegerValue.cpp BooleanValue.cpp DoubleValue.cpp StringValue.cpp NullValue.cpp
                        VectorValue.cpp MatrixValue.cpp MapValue.cpp TreeValue.cpp
                        GeoValue.cpp GeoRasterValue.cpp GeoVectorValue.cpp
+                       Dimensions.cpp
                        DateTime.cpp
                        SpatialUnit.cpp UnitsCollection.cpp SpatialGraph.cpp
                        ValuesBuffer.cpp ValuesBufferProperties.cpp
@@ -22,6 +23,7 @@ SET(OPENFLUID_CORE_HPP Vector.hpp Matrix.hpp Tree.hpp
                        GeoValue.hpp GeoRasterValue.hpp GeoVectorValue.hpp
                        IndexedValue.hpp
                        TypeDefs.hpp
+                       Dimensions.hpp
                        DateTime.hpp
                        SpatialUnit.hpp UnitsCollection.hpp SpatialGraph.hpp
                        ValuesBuffer.hpp ValuesBufferProperties.hpp

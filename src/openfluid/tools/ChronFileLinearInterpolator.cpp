@@ -34,6 +34,7 @@
   @file ChronFileLinearInterpolator.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -80,7 +81,7 @@ void ChronFileLinearInterpolator::runInterpolation()
   loadInFile(Data);
 
   openfluid::core::DateTime CurrentDateTime = m_BeginDate;
-  ChronItem_t BeforeCurrentTime, AfterCurrentTime;
+  ChronItem_t<double> BeforeCurrentTime, AfterCurrentTime;
 
   long x,x1;
   double y,y0,y1;

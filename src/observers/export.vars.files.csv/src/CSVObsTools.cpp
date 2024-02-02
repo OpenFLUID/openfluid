@@ -47,7 +47,7 @@
 
 
 CSVSet::CSVSet() :
-  UnitsClass(""), UnitsIDsStr(""), isAllUnits(false), VariablesStr(""), isAllVars(false), FormatName("")
+  UnitsClass(""), UnitsIDsStr(""), isAllUnits(false), VariableName(""), isAllVars(false), FormatName("")
 {
 
 };
@@ -164,7 +164,7 @@ std::vector<std::string> parseSetsFromParamsTree(const openfluid::ware::WarePara
       }
 
       Sets[SetName].UnitsIDsStr = Set.second.getChildValue("unitsIDs","*");
-      Sets[SetName].VariablesStr = Set.second.getChildValue("vars","*");
+      Sets[SetName].VariableName = Set.second.getChildValue("vars","*");
 
       Sets[SetName].FormatName = Set.second.getChildValue("format","");
     }

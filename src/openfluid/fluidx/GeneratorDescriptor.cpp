@@ -46,16 +46,14 @@
 namespace openfluid { namespace fluidx {
 
 
-GeneratorDescriptor::GeneratorDescriptor(openfluid::core::VariableName_t VarName, 
-                        openfluid::core::UnitsClass_t UnitsClass,
+GeneratorDescriptor::GeneratorDescriptor(openfluid::tools::UnitVarTriplets_t VarTriplets,
                         GeneratorMethod GenMethod, 
                         openfluid::core::Value::Type VarType, 
-                        DataDimensions VarDimensions) :
-    ModelItemDescriptor(openfluid::tools::buildGeneratorID(VarName, VarDimensions.strType(), UnitsClass))
+                        openfluid::core::Dimensions VarDimensions) :
+    ModelItemDescriptor(openfluid::tools::buildGeneratorID(deduceVarPairs(VarTriplets), VarDimensions.strType()))
 {
   m_WareType = openfluid::ware::WareType::GENERATOR;
-  m_VarName = VarName;
-  m_UnitsClass = UnitsClass;
+  m_VarTriplets = VarTriplets;
   m_GenMethod = GenMethod;
   m_VarType = VarType;
   m_VarDimensions = VarDimensions;
@@ -68,7 +66,16 @@ GeneratorDescriptor::GeneratorDescriptor(openfluid::core::VariableName_t VarName
 
 openfluid::core::VariableName_t GeneratorDescriptor::getVariableName() const
 {
-  return m_VarName;
+  std::vector<std::string> Vars;
+  for (const auto& Pair : m_VarTriplets)
+  {
+    if (std::count(Vars.begin(), Vars.end(), Pair.VariableName) == 0)
+    {
+      Vars.push_back(Pair.VariableName);
+    }
+  }
+  
+  return openfluid::tools::join(Vars, ", ");
 }
 
 
@@ -78,7 +85,25 @@ openfluid::core::VariableName_t GeneratorDescriptor::getVariableName() const
 
 openfluid::core::UnitsClass_t GeneratorDescriptor::getUnitsClass() const
 {
-  return m_UnitsClass;
+  std::vector<std::string> UnitClasses;
+  for (const auto& Pair : m_VarTriplets)
+  {
+    if (std::count(UnitClasses.begin(), UnitClasses.end(), Pair.UnitsClass) == 0)
+    {
+      UnitClasses.push_back(Pair.UnitsClass);
+    }
+  }
+  return openfluid::tools::join(UnitClasses, ", ");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+const openfluid::tools::UnitVarTriplets_t& GeneratorDescriptor::getVariableTriplets() const
+{ 
+  return m_VarTriplets;
 }
 
 

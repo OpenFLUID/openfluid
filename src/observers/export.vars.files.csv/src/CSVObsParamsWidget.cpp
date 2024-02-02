@@ -227,9 +227,9 @@ void CSVObsParamsWidget::update()
         TableItem->setBackground(WarnBrush);
       }
 
-      TableItem = new QTableWidgetItem(QString::fromStdString(Set.second.VariablesStr));
+      TableItem = new QTableWidgetItem(QString::fromStdString(Set.second.VariableName));
       ui->SetsTableWidget->setItem(RowCount-1, 3, TableItem);
-      if (Set.second.VariablesStr.empty())
+      if (Set.second.VariableName.empty())
       {
         TableItem->setBackground(WarnBrush);
       }

@@ -51,7 +51,7 @@
 namespace openfluid { namespace machine {
 
 
-class OPENFLUID_API RandomGenerator : public Generator
+class OPENFLUID_API RandomGenerator : public MonoGenerator
 {
   protected:
 

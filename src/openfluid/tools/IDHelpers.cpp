@@ -72,9 +72,6 @@ bool isValidAlphaNumName(const std::string& Name)
 
 bool isValidDatasetName(const std::string& Name)
 {
-  // authorized chars: a to z, A to Z, 0 to 9, -, ., _
-  // must start by an alphanumeric char
-
   return std::regex_match(Name,std::regex(DatasetNameRuleString));
 }
 
@@ -105,11 +102,19 @@ bool isValidWareID(const openfluid::ware::WareID_t& ID, bool Template)
 
 bool isValidVariableName(const openfluid::core::VariableName_t& Name)
 {
-  // authorized chars: a to z, A to Z, 0 to 9, -, ., _
-  // must start by an alphanumeric char
-  std::regex Exp("[A-Za-z0-9@]+([A-Za-z0-9_\\.\\-@]*)");
+  return std::regex_match(Name,std::regex(VariableNameRuleString));
+}
 
-  return std::regex_match(Name,Exp);
+
+// =====================================================================
+// =====================================================================
+
+
+std::string getVariableSelectionRegExp() //FIXME Constant function: better way to write it?
+{
+  std::string TripletPattern = "[^#;:]*#[0-9*-]+:";
+  TripletPattern += VariableNameRuleString;
+  return "^"+TripletPattern+"(;"+TripletPattern+")*$";
 }
 
 
@@ -185,18 +190,33 @@ bool extractVariableNameAndType(const openfluid::core::VariableName_t& Name,
 // =====================================================================
 
 
-std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
-                             const std::string& strDimType,
-                             const openfluid::core::UnitsClass_t& ClassName)
+std::string buildGeneratorID(const openfluid::tools::UnitVarPairs_t& VarPairs,
+                             const std::string& StrDimType)
 {
   // <varname>.<unitsclass>.gen<type> where <type> can be scalar or vector
 
-  std::string GenID(VarName);
-  GenID += ".";
-  GenID += ClassName;
-  GenID += ".gen";
+  std::string GenID;
+  bool Cut = false;
+  for (const auto& Pair : VarPairs)
+  {
+    if (Cut)
+    {
+      break;
+    }
+    if (GenID.size() > 30)
+    {
+      Cut = true;
+      GenID += "etc_";
+    }
+    else
+    {
+      GenID += Pair.VariableName + "." + Pair.UnitsClass+".";
+    }
+  }
+
+  GenID += "gen";
   
-  GenID += strDimType;
+  GenID += StrDimType;
 
   return GenID;
 }

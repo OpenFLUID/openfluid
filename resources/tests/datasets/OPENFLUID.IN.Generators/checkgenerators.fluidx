@@ -7,6 +7,10 @@
       <param name="fixedvalue" value="12.7" />
     </generator>
 
+    <generator varname="tests.fixed.string" unitsclass="TestUnits" vartype="string" method="fixed">
+      <param name="fixedvalue" value="foo" />
+    </generator>
+
     <generator varname="tests.fixed-vector" unitsclass="TestUnits" varsize="7" method="fixed">
       <param name="fixedvalue" value="12.7" />
     </generator>

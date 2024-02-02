@@ -196,7 +196,7 @@ class CSVFilesObserver : public CSVFilesObserverBase
           std::vector<openfluid::core::VariableName_t> VarArray;
           VarArray.clear();
 
-          if (SetFiles.second.SetDefinition.VariablesStr == "*")
+          if (SetFiles.second.SetDefinition.VariableName == "*")
           {
             // process all variables
             VarArray =
@@ -208,7 +208,7 @@ class CSVFilesObserver : public CSVFilesObserverBase
             // process selected variables
             std::vector<openfluid::core::VariableName_t> TmpVarArray;
 
-            TmpVarArray = openfluid::tools::split(SetFiles.second.SetDefinition.VariablesStr,";");
+            TmpVarArray = openfluid::tools::split(SetFiles.second.SetDefinition.VariableName,";");
 
             for (unsigned int i = 0; i < TmpVarArray.size(); i++)
             {

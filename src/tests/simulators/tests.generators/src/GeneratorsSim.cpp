@@ -92,7 +92,7 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
 
   void checkConsistency()
   {
-
+    
   }
 
 

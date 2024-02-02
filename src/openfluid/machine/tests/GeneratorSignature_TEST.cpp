@@ -55,7 +55,7 @@
 BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
   openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED,
-                                              "TU","var");
+                                              {{"TU","var"}});
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),1);
@@ -70,8 +70,8 @@ BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
   openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM,
-                                               "TU","var",openfluid::core::Value::DOUBLE, 
-                                               openfluid::fluidx::DataDimensions(5));
+                                               {{"TU","var"}},openfluid::core::Value::DOUBLE, 
+                                               openfluid::core::Dimensions(5));
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
   openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP,
-                                              "TU","var");
+                                              {{"TU","var"}});
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
@@ -101,9 +101,24 @@ BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 BOOST_AUTO_TEST_CASE(test_InjectGeneratorConstructor)
 {
   openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT,
-                                              "TU","var");
+                                              {{"TU","var"}});
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
   BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),2);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(test_MultiInjectGeneratorConstructor)
+{
+  openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL,
+                                              openfluid::tools::deserializeVarTriplets("TU#*:v;TU#*:w"));
+
+  BOOST_CHECK(!Sign.ID.empty());
+  BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),1);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),0);
 }
