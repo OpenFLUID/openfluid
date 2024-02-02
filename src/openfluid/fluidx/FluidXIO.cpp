@@ -239,6 +239,10 @@ class FluidXReaderImplementation
             {
               GenMethod = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT;
             }
+            if (Method == "inject-multicol")
+            {
+              GenMethod = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL;
+            }
 
             if (GenMethod == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE)
             {
@@ -915,6 +919,8 @@ class FluidXWriterImplementation
           return "interp";
         case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT:
           return "inject";
+        case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECTMULTICOL:
+          return "inject-multicol";
           break;
         default:
           break;

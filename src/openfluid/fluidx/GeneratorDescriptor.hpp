@@ -49,7 +49,6 @@
 
 namespace openfluid { namespace fluidx {
 
-
 struct DataDimensions
 {
   enum class DType {SCALAR, VECTOR, MATRIX};
@@ -172,7 +171,7 @@ struct DataDimensions
 class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 {
   public:
-    enum class GeneratorMethod { NONE, FIXED, RANDOM, INTERP, INJECT };
+    enum class GeneratorMethod { NONE, FIXED, RANDOM, INTERP, INJECT, INJECTMULTICOL };
 
 
   private:

@@ -34,6 +34,7 @@
   @file ChronologicalSerie.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -50,18 +51,20 @@
 namespace openfluid { namespace tools {
 
 
-typedef std::pair<openfluid::core::DateTime,double> ChronItem_t;
+template <typename DataType=double>
+using ChronItem_t = std::pair<openfluid::core::DateTime,DataType>;
 
 
 /**
   Container for a chronological data serie
 */
-class OPENFLUID_API ChronologicalSerie : public std::list<ChronItem_t>
+template <typename DataType=double>
+class ChronologicalSerie : public std::list<ChronItem_t<DataType>>
 {
   private:
 
-    std::list<ChronItem_t>::iterator m_InternalIterator;
-    std::list<ChronItem_t>::iterator m_PreviousInternalIterator;
+    typename std::list<ChronItem_t<DataType>>::iterator m_InternalIterator;
+    typename std::list<ChronItem_t<DataType>>::iterator m_PreviousInternalIterator;
 
 
   public:
@@ -69,13 +72,21 @@ class OPENFLUID_API ChronologicalSerie : public std::list<ChronItem_t>
     /**
       Default constructor
     */
-    ChronologicalSerie() : std::list<ChronItem_t>(), m_InternalIterator(begin()), m_PreviousInternalIterator(begin())
-    { }
-
+    ChronologicalSerie() : std::list<ChronItem_t<DataType>>(), m_InternalIterator(this->begin()), 
+      m_PreviousInternalIterator(this->begin())
+    {
+    }
     /**
       Resets the internal iterator
     */
-    void reset();
+    void reset()
+    {
+      if (this->size() >= 2)
+      {
+        m_PreviousInternalIterator = (this->begin());
+        m_InternalIterator = (++this->begin());
+      }
+    }
 
     /**
       Finds the two surrending values for a given date. If the given date is exactly found in the serie,
@@ -85,7 +96,70 @@ class OPENFLUID_API ChronologicalSerie : public std::list<ChronItem_t>
       @param[out] After The closest date after the given date
       @return true if the closest dates before and after have been found
     */
-    bool getSurroundingValues(const openfluid::core::DateTime& DT, ChronItem_t& Before, ChronItem_t& After);
+    bool getSurroundingValues(const openfluid::core::DateTime& DT, 
+                              ChronItem_t<DataType>& Before, 
+                              ChronItem_t<DataType>& After)
+    {
+      if (this->size() <2)
+      {
+        return false;
+      }
+
+      if ((*m_PreviousInternalIterator).first > DT || m_InternalIterator == this->end())
+      {
+        reset();
+      }
+
+
+      while (m_InternalIterator != this->end() &&
+            !((*m_InternalIterator).first >= DT &&
+              (*m_PreviousInternalIterator).first <= DT))
+      {
+
+        // found exact time
+        if ((*m_InternalIterator).first == DT)
+        {
+          Before = (*m_InternalIterator);
+          After = (*m_InternalIterator);
+          return true;
+        }
+        else if ((*m_PreviousInternalIterator).first == DT)
+        {
+          Before = (*m_PreviousInternalIterator);
+          After = (*m_PreviousInternalIterator);
+          return true;
+        }
+
+        ++m_PreviousInternalIterator;
+        ++m_InternalIterator;
+      }
+
+
+      if (m_InternalIterator != this->end())
+      {
+        if ((*m_PreviousInternalIterator).first == DT)
+        {
+          Before = (*m_InternalIterator);
+          After = (*m_InternalIterator);
+          return true;
+        }
+        else if ((*m_InternalIterator).first == DT)
+        {
+          Before = (*m_InternalIterator);
+          After = (*m_InternalIterator);
+          return true;
+        }
+        else
+        {
+          Before = (*(m_PreviousInternalIterator));
+          After = (*m_InternalIterator);
+          return true;
+        }
+      }
+
+
+      return false;
+    }
 
 };
 

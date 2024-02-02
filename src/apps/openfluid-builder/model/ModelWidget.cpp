@@ -355,6 +355,7 @@ void ModelWidget::addGenerator()
 
   if (AddGenDlg.exec() == QDialog::Accepted)
   {
+    //TOIMPL preparsing of multi generator data here?
     openfluid::fluidx::GeneratorDescriptor* GenDesc =
         new openfluid::fluidx::GeneratorDescriptor(AddGenDlg.getVariableName().toStdString(),
                                                    AddGenDlg.getUnitClass().toStdString(),

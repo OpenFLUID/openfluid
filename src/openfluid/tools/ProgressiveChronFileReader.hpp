@@ -34,6 +34,7 @@
   @file ProgressiveChronFileReader.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -43,13 +44,15 @@
 
 #include <openfluid/tools/ProgressiveColumnFileReader.hpp>
 #include <openfluid/tools/ChronologicalSerie.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace tools {
 
 
-class OPENFLUID_API ProgressiveChronFileReader : public ProgressiveColumnFileReader
+template<class DataType>
+class ProgressiveChronFileReader : public ProgressiveColumnFileReader
 {
   private:
 
@@ -60,15 +63,90 @@ class OPENFLUID_API ProgressiveChronFileReader : public ProgressiveColumnFileRea
 
     ProgressiveChronFileReader(const std::string& FileName,
                                const std::string& DateFormat = "%Y-%m-%dT%H:%M:%S",
-                               const std::string& ColSeparators = " \t\r\n");
+                               const std::string& ColSeparators = " \t\r\n") :
+        ProgressiveColumnFileReader(FileName,ColSeparators), m_DateFormat(DateFormat)
+    {
+    }
 
     virtual ~ProgressiveChronFileReader()
-    { }
+    {
+    }
 
 
-    bool getNextValue(ChronItem_t& Value);
+    bool getNextValue(ChronItem_t<DataType>& Value);
 
 };
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<>
+inline bool OPENFLUID_API ProgressiveChronFileReader<double>::getNextValue(ChronItem_t<double>& Value)
+{
+  std::vector<std::string> Values;
+  openfluid::core::DateTime DT;
+  double Val;
+
+  while (getNextLine(Values))
+  {
+    if (Values.size() == 2)
+    {
+      if (DT.setFromString(Values.front(),m_DateFormat) &&
+          openfluid::tools::toNumeric(Values.back(),Val))
+      {
+        Value.first = DT;
+        Value.second = Val;
+        return true;
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                  "wrong data in " + m_FileName);
+      }
+    }
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<>
+inline bool OPENFLUID_API ProgressiveChronFileReader<std::vector<std::string>>::getNextValue(
+  ChronItem_t<std::vector<std::string>>& Value)
+{
+  std::vector<std::string> Values;
+  openfluid::core::DateTime DT;
+
+  while (getNextLine(Values))
+  {
+    if (Values.size() >= 2)
+    {
+      if (DT.setFromString(Values.front(),m_DateFormat) )
+      {
+        Value.first = DT;
+        Value.second.clear();
+        for (std::size_t i=1;i<Values.size();i++)
+        {
+          Value.second.push_back(Values[i]);
+        }
+        return true;
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                  "wrong data in " + m_FileName);
+      }
+    }
+  }
+
+  return false;
+}
 
 
 } } // namespaces

@@ -31,41 +31,65 @@
 
 
 /**
-  @file GeneratorGraphics.hpp
+  @file MultiInjectGenerator.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
-#ifndef __OPENFLUID_BUILDERAPP_GENERATORGRAPHICS_HPP__
-#define __OPENFLUID_BUILDERAPP_GENERATORGRAPHICS_HPP__
+#ifndef __OPENFLUID_MACHINE_MULTIINJECTGENERATOR_HPP__
+#define __OPENFLUID_MACHINE_MULTIINJECTGENERATOR_HPP__
 
 
-#include "ModelItemGraphics.hpp"
+#include <queue>
+#include <map>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/machine/Generator.hpp>
+#include <openfluid/tools/DistributionBindings.hpp>
 
 
-class GeneratorGraphics : public ModelItemGraphics
+namespace openfluid { namespace machine {
+
+
+class OPENFLUID_API MultiInjectGenerator : public Generator
 {
-  Q_OBJECT
+  private:
 
-  protected:
+    std::string m_DataFile;
 
-    static QPointF m_ProducedIOFromCenter;
+    std::string m_Selection;
+
+    std::map<std::string, std::set<std::string>> m_VarsByUnitsClass;
+
+    openfluid::tools::ReaderNextValue<std::vector<std::string>> m_ReaderNextValue;
+    
+    openfluid::tools::MulticolDistributionBindings* m_DistriBindings;
+
 
   public:
 
-    GeneratorGraphics(const QPointF &Coords,
-                      const QString& ID, unsigned int Order,
-                      const QString& VarName, const QString& UnitsClass, 
-                      bool IsMulti,
-                      const QColor& BGColor, const QColor& BorderColor,
-                      QGraphicsItem* Parent = nullptr);
+    MultiInjectGenerator(const std::string& m_Selection="");
 
-    ~GeneratorGraphics();
+    ~MultiInjectGenerator();
 
-    QPointF getProducedIOPosition();
+    void initParams(const openfluid::ware::WareParams_t& Params);
+
+    void prepareData();
+
+    void checkConsistency();
+
+    openfluid::base::SchedulingRequest initializeRun();
+
+    openfluid::base::SchedulingRequest runStep();
+
+    void finalizeRun()
+    { }
+
 };
 
 
-#endif /* __OPENFLUID_BUILDERAPP_GENERATORGRAPHICS_HPP__ */
+} } //namespaces
+
+
+#endif /* __OPENFLUID_MACHINE_MULTIINJECTGENERATOR_HPP__ */

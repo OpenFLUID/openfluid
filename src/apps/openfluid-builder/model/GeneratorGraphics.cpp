@@ -34,10 +34,14 @@
   @file GeneratorGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
 #include <QBrush>
+
+#include <openfluid/machine/GeneratorSignature.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 #include "builderconfig.hpp"
 #include "GeneratorGraphics.hpp"
@@ -45,14 +49,25 @@
 
 GeneratorGraphics::GeneratorGraphics(const QPointF& Coords,
                                      const QString& ID, unsigned int Order,
-                                     const QString& VarName, const QString& UnitsClass, 
+                                     const QString& VarName, const QString& UnitsClass, bool IsMulti, 
                                      const QColor& BGColor, const QColor& BorderColor,
                                      QGraphicsItem* Parent):
   ModelItemGraphics(Coords,ID,tr("Generator"),Order,BorderColor,Parent)
 {
-  m_ProducedVars.push_back(
-    openfluid::ware::SignatureSpatialDataItem(VarName.toStdString(),UnitsClass.toStdString(),"",""));
-
+  if (IsMulti)
+  {
+    // TOIMPL change for less late parsing of var/units class and better responsibility split
+    for (const auto& VarPair : openfluid::tools::parseVars(VarName.toStdString())) 
+    {
+      m_ProducedVars.push_back(
+        openfluid::ware::SignatureSpatialDataItem(VarPair.first,VarPair.second,"",""));
+    }
+  }
+  else
+  {
+    m_ProducedVars.push_back(
+      openfluid::ware::SignatureSpatialDataItem(VarName.toStdString(),UnitsClass.toStdString(),"",""));
+  }
   // Out slot
   drawIOSlot(getProducedIOPosition(),SlotType::SLOT_PROD,m_ProducedVars);
   QColor EffectiveBGColor;

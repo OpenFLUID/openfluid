@@ -34,6 +34,7 @@
   @file DistributionBindings.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -43,133 +44,30 @@
 namespace openfluid { namespace tools {
 
 
-DistributionBindings::DistributionBindings(const DistributionTables& DistriTables)
+DistributionBindings::DistributionBindings(const DistributionTables& DistriTables) : GenericDistributionBindings()
 {
-  DistributionTables::SourceIDFile_t::const_iterator itb = DistriTables.SourcesTable.begin();
-  DistributionTables::SourceIDFile_t::const_iterator ite = DistriTables.SourcesTable.end();
-
-  for (DistributionTables::SourceIDFile_t::const_iterator it = itb; it != ite; ++it)
   {
-    ReaderNextValue RNV;
-    RNV.Reader = new ProgressiveChronFileReader((*it).second);
-    m_ReadersNextValues.push_back(RNV);
+    DistributionTables::SourceIDFile_t::const_iterator itb = DistriTables.SourcesTable.begin();
+    DistributionTables::SourceIDFile_t::const_iterator ite = DistriTables.SourcesTable.end();
 
-    DistributionTables::UnitIDSourceID_t::const_iterator itub = DistriTables.UnitsTable.begin();
-    DistributionTables::UnitIDSourceID_t::const_iterator itue = DistriTables.UnitsTable.end();
-
-    for (DistributionTables::UnitIDSourceID_t::const_iterator itu = itub; itu != itue; ++itu)
+    for (DistributionTables::SourceIDFile_t::const_iterator it = itb; it != ite; ++it)
     {
-      if ((*itu).second == (*it).first)
+      ReaderNextValue<double> RNV;
+      RNV.Reader = new ProgressiveChronFileReader<double>((*it).second);
+      m_ReadersNextValues.push_back(RNV);
+
+      DistributionTables::UnitIDSourceID_t::const_iterator itub = DistriTables.UnitsTable.begin();
+      DistributionTables::UnitIDSourceID_t::const_iterator itue = DistriTables.UnitsTable.end();
+
+      for (DistributionTables::UnitIDSourceID_t::const_iterator itu = itub; itu != itue; ++itu)
       {
-        m_UnitIDReaders[(*itu).first] = &m_ReadersNextValues.back();
-      }
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-DistributionBindings::~DistributionBindings()
-{
-  // delete readers
-
-  ReadersNextValues_t::iterator it;
-  ReadersNextValues_t::iterator bit = m_ReadersNextValues.begin();
-  ReadersNextValues_t::iterator eit = m_ReadersNextValues.end();
-
-  for (it=bit;it!=eit;++it)
-  {
-    if ((*it).Reader)
-    {
-      delete (*it).Reader;
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DistributionBindings::advanceToTime(const openfluid::core::DateTime& DT)
-{
-  // set readers position to the first value equal or greater for each reader
-  ReadersNextValues_t::iterator itb = m_ReadersNextValues.begin();
-  ReadersNextValues_t::iterator ite = m_ReadersNextValues.end();
-
-  for (ReadersNextValues_t::iterator it = itb; it != ite; ++it)
-  {
-    bool DataFound = true;
-    openfluid::tools::ChronItem_t CI;
-
-    if (((*it).isAvailable && (*it).NextValue.first < DT) ||
-        (*it).isAvailable == false)
-    {
-      (*it).isAvailable = false;
-
-      while (DataFound && !(*it).isAvailable)
-      {
-        DataFound = (*it).Reader->getNextValue(CI);
-        if (DataFound && CI.first >= DT)
+        if ((*itu).second == (*it).first)
         {
-          (*it).isAvailable = true;
-          (*it).NextValue = CI;
+          m_UnitIDReaders[(*itu).first] = &m_ReadersNextValues.back();
         }
       }
     }
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool DistributionBindings::advanceToNextTimeAfter(const openfluid::core::DateTime& DT,
-                                                  openfluid::core::DateTime& NextDT)
-{
-  openfluid::core::DateTime DTPlusOne(DT);
-  DTPlusOne.addSeconds(1);
-  advanceToTime(DTPlusOne);
-
-
-  ReadersNextValues_t::iterator itb = m_ReadersNextValues.begin();
-  ReadersNextValues_t::iterator ite = m_ReadersNextValues.end();
-
-  openfluid::core::DateTime NDT;
-
-  bool AvailableFound = false;
-
-  for (ReadersNextValues_t::iterator it = itb; it != ite; ++it)
-  {
-
-    if (!AvailableFound && (*it).isAvailable)
-    {
-      NDT = (*it).NextValue.first;
-      AvailableFound = true;
-    }
-  }
-
-  if (!AvailableFound)
-  {
-    return false;
-  }
-
-  for (ReadersNextValues_t::iterator it = itb; it != ite; ++it)
-  {
-    if ((*it).isAvailable && (*it).NextValue.first < NDT)
-    {
-      NDT = (*it).NextValue.first;
-    }
-  }
-
-  NextDT = NDT;
-
-  return true;
-
 }
 
 
@@ -183,7 +81,7 @@ bool DistributionBindings::getValue(const openfluid::core::UnitID_t& UnitID,
 {
   // if a value is available for DT : passes the value to caller, and returns true
   // else returns false
-  UnitIDReader_t::iterator it = m_UnitIDReaders.find(UnitID);
+  typename UnitIDReader_t::iterator it = m_UnitIDReaders.find(UnitID);
 
   if (it != m_UnitIDReaders.end() && (*it).second->isAvailable && (*it).second->NextValue.first == DT)
   {
@@ -201,13 +99,76 @@ bool DistributionBindings::getValue(const openfluid::core::UnitID_t& UnitID,
 
 void DistributionBindings::displayBindings()
 {
-  UnitIDReader_t::iterator itb = m_UnitIDReaders.begin();
-  UnitIDReader_t::iterator ite = m_UnitIDReaders.end();
-
-  for (UnitIDReader_t::iterator it = itb; it != ite; ++it)
+  for (auto& IDReader : m_UnitIDReaders)
   {
-    std::cout << (*it).first << " -> " << (*it).second->Reader->getFileName() << std::endl;
+    std::cout << IDReader.first << " -> " << IDReader.second->Reader->getFileName() << std::endl;
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+MulticolDistributionBindings::MulticolDistributionBindings(const std::string& DataFile, 
+                      const std::string& DateFormat,
+                      const std::string& ColSeparators) : 
+    GenericDistributionBindings()
+{
+  // check if file exists
+  ReaderNextValue<std::vector<std::string>> RNV;
+  try
+  {
+    RNV.Reader = new ProgressiveChronFileReader<std::vector<std::string>>(DataFile, DateFormat, ColSeparators);
+  }
+  catch (openfluid::base::FrameworkException& E)
+  {
+    RNV.Reader = nullptr;//TODO check if object correctly deleted
+    throw E;
+  }
+  m_ReadersNextValues.push_back(RNV);
+
+  std::string Header;
+  RNV.Reader->getNextLine(Header);
+  const auto& SelectionTriplets = stringSelectionToClassIDVarList(Header, true);
+  unsigned int Col = 0;
+  for (const auto& Triplet : SelectionTriplets)
+  {
+    m_ColBySelectionTriplets[{Triplet.UnitsClassesStr, Triplet.VariablesStr, Triplet.UnitsIDsStr}] = Col;
+    Col++;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MulticolDistributionBindings::getValue(const openfluid::core::UnitsClass_t& UnitsClass, 
+                                    const openfluid::core::UnitID_t& UnitID, 
+                                    const openfluid::core::VariableName_t& VariableName, 
+                                    const openfluid::core::DateTime& DT,
+                                    openfluid::core::DoubleValue& Value)
+{
+  // if a value is available for DT : passes the value to caller, and returns true
+  // else returns false
+  const auto& RNV = m_ReadersNextValues.front();
+
+  if (RNV.isAvailable && RNV.NextValue.first == DT)
+  {
+    std::map<std::vector<std::string>, unsigned int>::iterator It = 
+      m_ColBySelectionTriplets.find({UnitsClass, VariableName, std::to_string(UnitID)});
+    if (It == m_ColBySelectionTriplets.end())
+    {
+      It = m_ColBySelectionTriplets.find({UnitsClass, VariableName, "*"});
+    }
+    if (It != m_ColBySelectionTriplets.end())
+    {
+      openfluid::core::StringValue(RNV.NextValue.second[(*It).second]).toDoubleValue(Value);
+      return true;
+    }
+  }
+  return false;
 }
 
 

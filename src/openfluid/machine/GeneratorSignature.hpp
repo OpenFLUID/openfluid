@@ -62,6 +62,8 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 
     void setInjectionInfo(); 
 
+    void setInjectionMulticolInfo();
+
 
   public:
 

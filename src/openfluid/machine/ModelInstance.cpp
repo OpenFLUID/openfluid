@@ -49,6 +49,7 @@
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/machine/InjectGenerator.hpp>
+#include <openfluid/machine/MultiInjectGenerator.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 
 
@@ -442,6 +443,10 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
       else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT)
       {
         CurrentItem->Body.reset(new InjectGenerator());
+      }
+      else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
+      {
+        CurrentItem->Body.reset(new MultiInjectGenerator(GenSignature->VariableName));
       }
       else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP)
       {

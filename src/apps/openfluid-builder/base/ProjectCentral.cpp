@@ -559,6 +559,22 @@ void ProjectCentral::checkModel()
                                           .arg(QString::fromStdString(ID)));
             }
           }
+          if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECTMULTICOL)
+          {
+            // data file
+            std::string FileNameFromParam = Item->getParameters()["datafile"];
+
+            if (!FileNameFromParam.empty() &&
+                !QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(FileNameFromParam))).exists())
+            {
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
+                ProjectStatusLevel::PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
+                              .addMessage(tr("File %1 required by generator %2 does not exist")
+                                          .arg(QString::fromStdString(FileNameFromParam))
+                                          .arg(QString::fromStdString(ID)));
+            }
+          }
         }
         else
         {

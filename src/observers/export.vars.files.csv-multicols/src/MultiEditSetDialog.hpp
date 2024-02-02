@@ -34,6 +34,7 @@
   @file MultiEditSetDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -83,7 +84,7 @@ class MultiEditSetDialog : public openfluid::ui::common::OpenFLUIDDialog
     
     QStringList m_ClassNames;
     
-    std::vector<ClassIDVar> m_TripletList;
+    std::vector<openfluid::tools::ClassIDVarPrecision> m_TripletList;
 
 
   public:

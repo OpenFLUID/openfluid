@@ -39,6 +39,8 @@
 
 #include <openfluid/machine/GeneratorSignature.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -67,6 +69,9 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
     case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT:
       setInjectionInfo();
       break;
+    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECTMULTICOL:
+      setInjectionMulticolInfo();
+      break;
     default:
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Invalid generator type");
       break;
@@ -83,7 +88,17 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
     TypedVarName += "["+VarDimType+"]";
   } 
   
-  HandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem(TypedVarName,UnitsClass,"",""));
+  if (Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECTMULTICOL)
+  {
+    for (const auto& VarPair : openfluid::tools::parseVars(VariableName))
+    {
+      HandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem(VarPair.first,VarPair.second,"",""));
+    }
+  }
+  else
+  {
+    HandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem(TypedVarName,UnitsClass,"",""));
+  }
 }
 
 
@@ -179,6 +194,20 @@ void GeneratorSignature::setInjectionInfo()
 
   HandledData.RequiredParams.push_back(
       openfluid::ware::SignatureDataItem("distribution","Distribution filename for the value to produce","-"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void GeneratorSignature::setInjectionMulticolInfo()
+{
+  Name = "Values from file injection for several values";
+  Description = "Generates injected values -no time interpolation- from given data series";
+
+  HandledData.RequiredParams.push_back(
+      openfluid::ware::SignatureDataItem("datafile","Data file name for the values to produce","-"));
 }
 
 

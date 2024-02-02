@@ -265,7 +265,8 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
             {
               for (openfluid::core::VariableName_t CurrentVar : VarArray)
               {
-                ClassIDVar CurrentTriplet(UnitsClass, std::to_string(CurrentID), CurrentVar, Triplet.Precision,
+                openfluid::tools::ClassIDVarPrecision CurrentTriplet(UnitsClass, std::to_string(CurrentID), CurrentVar, 
+                                          Triplet.Precision,
                                           Triplet.FloatFormat);
                 SetFiles.second.SetDefinition.ExpandedSelection.push_back(CurrentTriplet);
                 
@@ -277,7 +278,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
                 {
                   ColumnsHeaders += SetFiles.second.Format->ColSeparator;
                 }
-                ColumnsHeaders += CurrentTriplet.GetClassIDVarString(false);
+                ColumnsHeaders += CurrentTriplet.getClassIDVarString(false);
               }
             }
           }
@@ -330,7 +331,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
         }
         
         bool IsValue = false;
-        for (ClassIDVar Column : SetFiles.second.SetDefinition.ExpandedSelection)
+        for (openfluid::tools::ClassIDVarPrecision Column : SetFiles.second.SetDefinition.ExpandedSelection)
         {
           LineHandle << SetFiles.second.Format->ColSeparator;
           

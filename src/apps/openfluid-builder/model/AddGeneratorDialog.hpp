@@ -64,6 +64,8 @@ class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
 
     void checkGlobal();
 
+    void selectDataFile();
+
     void selectSourcesFile();
 
     void selectDistriFile();

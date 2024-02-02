@@ -107,3 +107,18 @@ BOOST_AUTO_TEST_CASE(test_InjectGeneratorConstructor)
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
   BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),2);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(test_MultiInjectGeneratorConstructor)
+{
+  openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL,
+                                              "multi","TU#*:v;TU#*:w");
+
+  BOOST_CHECK(!Sign.ID.empty());
+  BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),1);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),0);
+}

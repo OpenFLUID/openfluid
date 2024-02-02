@@ -31,35 +31,29 @@
 
 
 /**
-  @file GeneratorDescriptor.cpp
+  @file VarHelpers.cpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/machine/SimulatorRegistry.hpp>
-#include <openfluid/tools/IDHelpers.hpp>
+#include <algorithm>
+
+#include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 
-namespace openfluid { namespace fluidx {
+namespace openfluid { namespace tools {
 
 
-GeneratorDescriptor::GeneratorDescriptor(openfluid::core::VariableName_t VarName, 
-                        openfluid::core::UnitsClass_t UnitsClass,
-                        GeneratorMethod GenMethod, 
-                        openfluid::core::Value::Type VarType, 
-                        DataDimensions VarDimensions) :
-    ModelItemDescriptor(openfluid::tools::buildGeneratorID(VarName, VarDimensions.strType(), UnitsClass))
+// =====================================================================
+// =====================================================================
+
+
+std::string ClassIDVar::getClassIDVarString()
 {
-  m_WareType = openfluid::ware::WareType::GENERATOR;
-  // m_GenExtent = GeneratorExtent::MONO;
-  m_VarName = VarName;
-  m_UnitsClass = UnitsClass;
-  m_GenMethod = GenMethod;
-  m_VarType = VarType;
-  m_VarDimensions = VarDimensions;
+  std::string TripletString = UnitsClassesStr + "#" + UnitsIDsStr + ":" + VariablesStr;
+  return TripletString;
 }
 
 
@@ -67,9 +61,14 @@ GeneratorDescriptor::GeneratorDescriptor(openfluid::core::VariableName_t VarName
 // =====================================================================
 
 
-openfluid::core::VariableName_t GeneratorDescriptor::getVariableName() const
+std::string ClassIDVarPrecision::getClassIDVarString(bool WithPrecision)
 {
-  return m_VarName;
+  std::string TripletString = ClassIDVar::getClassIDVarString();
+  if (HasPrecision && WithPrecision)
+  {
+    TripletString += "%" + std::to_string(Precision);
+  }
+  return TripletString;
 }
 
 
@@ -77,30 +76,21 @@ openfluid::core::VariableName_t GeneratorDescriptor::getVariableName() const
 // =====================================================================
 
 
-openfluid::core::UnitsClass_t GeneratorDescriptor::getUnitsClass() const
+std::vector<std::pair<std::string, std::string>> parseVars(const std::string& Selection)
 {
-  return m_UnitsClass;
+  std::vector<std::pair<std::string, std::string>> ParsedSelection;
+  for (const auto& SubS : openfluid::tools::split(Selection, ";"))
+  {
+    std::string UnitsClass = SubS.substr(0,SubS.find("#"));
+    std::string VarName = SubS.substr(SubS.find(":")+1);
+    std::pair<std::string, std::string> VarPair(VarName, UnitsClass);
+    if (std::count(ParsedSelection.begin(), ParsedSelection.end(), VarPair) == 0)  // ensures unicity of Var/SU
+    { 
+      ParsedSelection.push_back(VarPair);
+    }
+  }
+  return ParsedSelection;
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-GeneratorDescriptor::GeneratorMethod GeneratorDescriptor::getGeneratorMethod() const
-{
-  return m_GenMethod;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::core::Value::Type GeneratorDescriptor::getVariableType() const
-{
-    return m_VarType;
-}
-
-} } // namespaces
-
+} }

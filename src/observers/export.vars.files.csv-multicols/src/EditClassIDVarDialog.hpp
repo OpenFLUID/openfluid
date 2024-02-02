@@ -76,7 +76,7 @@ class EditClassIDVarDialog : public openfluid::ui::common::MessageDialog
       
     void update();
 
-    std::vector<ClassIDVar> getClassIDVarSettings();
+    std::vector<openfluid::tools::ClassIDVarPrecision> getClassIDVarSettings();
   
 };
 

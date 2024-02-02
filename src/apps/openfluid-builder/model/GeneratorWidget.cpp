@@ -110,7 +110,7 @@ void GeneratorWidget::refresh()
     }
 
     ui->NameLabel->setText(
-        tr("Produces %1 variable %2 on %3 (%4)")
+        tr("Produces %1 variable %2 on %3 (%4)") //TOIMPL fix label for multigen
         .arg(DimStr)
         .arg(QString::fromStdString(static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc)
                                     ->getVariableName()))

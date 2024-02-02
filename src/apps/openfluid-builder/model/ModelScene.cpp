@@ -34,6 +34,7 @@
   @file ModelScene.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -187,11 +188,13 @@ void ModelScene::refresh()
         openfluid::fluidx::GeneratorDescriptor* GenDesc = dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
 
         GenCount++;
-
+        bool IsMulti = (GenDesc->getGeneratorMethod() == 
+                          openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL);
         GeneratorGraphics* GenG = new GeneratorGraphics(QPoint(0,0),
                                                         QString::fromStdString(ID),SimCount+GenCount,
                                                         QString::fromStdString(GenDesc->getVariableName()),
                                                         QString::fromStdString(GenDesc->getUnitsClass()), 
+                                                        IsMulti,
                                                         BGColor, BorderColor);
         addItem(GenG);
         GenG->moveBy(Position.x(),Position.y());
