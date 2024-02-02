@@ -34,6 +34,7 @@
   @file ChronFileInterpolator.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -92,9 +93,9 @@ class OPENFLUID_API ChronFileInterpolator
 
     PreProcess m_PreProcess;
 
-    void loadInFile(ChronologicalSerie& Data);
+    void loadInFile(ChronologicalSerie<double>& Data);
 
-    static void displayChronSerie(ChronologicalSerie& Data)
+    static void displayChronSerie(ChronologicalSerie<double>& Data)
     {
       std::cout << "--------------------------------" << std::endl;
       for (const auto& Datum : Data)

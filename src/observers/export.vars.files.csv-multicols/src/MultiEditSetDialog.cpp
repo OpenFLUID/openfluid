@@ -34,6 +34,7 @@
   @file MultiEditSetDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -143,7 +144,7 @@ void MultiEditSetDialog::refreshTable()
     RowCount++;
     ui->TripletsTableWidget->setRowCount(RowCount);
 
-    QTableWidgetItem *TableItem = new QTableWidgetItem(QString::fromStdString(Triplet.UnitsClassesStr));
+    QTableWidgetItem *TableItem = new QTableWidgetItem(QString::fromStdString(Triplet.UnitsClass));
     ui->TripletsTableWidget->setItem(RowCount-1, 0, TableItem);
     if (Triplet.UnitsIDsStr.empty())
     {
@@ -157,9 +158,9 @@ void MultiEditSetDialog::refreshTable()
       TableItem->setBackground(WarnBrush);
     }
 
-    TableItem = new QTableWidgetItem(QString::fromStdString(Triplet.VariablesStr));
+    TableItem = new QTableWidgetItem(QString::fromStdString(Triplet.VariableName));
     ui->TripletsTableWidget->setItem(RowCount-1, 2, TableItem);
-    if (Triplet.VariablesStr.empty())
+    if (Triplet.VariableName.empty())
     {
       TableItem->setBackground(WarnBrush);
     }
@@ -228,7 +229,7 @@ void MultiEditSetDialog::addTriplet()
 
   if (AddDlg.exec() == QDialog::Accepted)
   {
-    std::vector<ClassIDVar> Triplets = AddDlg.getClassIDVarSettings();
+    std::vector<openfluid::tools::ClassIDVarPrecision> Triplets = AddDlg.getClassIDVarSettings();
     m_TripletList.insert(m_TripletList.end(), Triplets.begin(), Triplets.end());
     
     refreshTable();
@@ -274,7 +275,7 @@ void MultiEditSetDialog::editTriplet()
     if (CurrentRow < m_TripletList.size())
     {
       m_TripletList.erase(m_TripletList.begin()+CurrentRow);
-      std::vector<ClassIDVar> Triplets = EditDlg.getClassIDVarSettings();
+      std::vector<openfluid::tools::ClassIDVarPrecision> Triplets = EditDlg.getClassIDVarSettings();
       m_TripletList.insert(m_TripletList.begin()+CurrentRow, Triplets.begin(), Triplets.end());
       
     }
@@ -333,7 +334,7 @@ openfluid::ware::WareParams_t MultiEditSetDialog::getMultiSetParams()
   std::size_t TripletNumber = 0;
   for (auto& Triplet : m_TripletList)
   {
-    SelectionStr += Triplet.GetClassIDVarString(true);
+    SelectionStr += Triplet.getClassIDVarString(true);
     if (TripletNumber < m_TripletList.size()-1)
     {
       SelectionStr += ";";

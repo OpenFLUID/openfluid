@@ -48,7 +48,7 @@ namespace openfluid { namespace machine {
 
 
 RandomGenerator::RandomGenerator() :
-  Generator(), m_IdenticalCellValues(true), m_DeltaT(0)
+  MonoGenerator(), m_IdenticalCellValues(true), m_DeltaT(0)
 {
   std::random_device RandomDevice;
 

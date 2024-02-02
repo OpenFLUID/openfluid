@@ -31,15 +31,18 @@
 
 
 /**
-  @file InterpGenerator.hpp
+  @file MultiInjectGenerator.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+  @author Armel THÖNI <armel.thoni@inrae.fr>
+*/
 
 
-#ifndef __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__
-#define __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__
+#ifndef __OPENFLUID_MACHINE_MULTIINJECTGENERATOR_HPP__
+#define __OPENFLUID_MACHINE_MULTIINJECTGENERATOR_HPP__
 
+
+#include <queue>
+#include <map>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
@@ -49,29 +52,24 @@
 namespace openfluid { namespace machine {
 
 
-class OPENFLUID_API InterpGenerator : public MonoGenerator
+class OPENFLUID_API MultiInjectGenerator : public Generator
 {
   private:
 
-    bool m_IsMin;
-    bool m_IsMax;
-    bool m_IsKeepTmp;
+    std::string m_DataFile;
 
-    double m_Min;
-    double m_Max;
+    std::map<std::string, std::set<std::string>> m_VarsByUnitsClass;
 
-    std::string m_SourcesFile;
-    std::string m_DistriFile;
-    std::string m_TmpDir;
-
-    openfluid::tools::DistributionBindings* m_DistriBindings;
+    openfluid::tools::ReaderNextValue<std::vector<std::string>> m_ReaderNextValue;
+    
+    openfluid::tools::MulticolDistributionBindings* m_DistriBindings;
 
 
   public:
 
-    InterpGenerator();
+    MultiInjectGenerator();
 
-    ~InterpGenerator();
+    ~MultiInjectGenerator();
 
     void initParams(const openfluid::ware::WareParams_t& Params);
 
@@ -83,7 +81,8 @@ class OPENFLUID_API InterpGenerator : public MonoGenerator
 
     openfluid::base::SchedulingRequest runStep();
 
-    void finalizeRun();
+    void finalizeRun()
+    { }
 
 };
 
@@ -91,4 +90,4 @@ class OPENFLUID_API InterpGenerator : public MonoGenerator
 } } //namespaces
 
 
-#endif /* __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__ */
+#endif /* __OPENFLUID_MACHINE_MULTIINJECTGENERATOR_HPP__ */

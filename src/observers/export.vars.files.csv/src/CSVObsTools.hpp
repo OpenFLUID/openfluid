@@ -70,7 +70,7 @@ class CSVSet
 
     bool isAllUnits;
 
-    std::string VariablesStr;
+    std::string VariableName;
 
     bool isAllVars;
 

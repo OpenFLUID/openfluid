@@ -52,7 +52,7 @@
 namespace openfluid { namespace machine {
 
 
-class OPENFLUID_API InjectGenerator : public Generator
+class OPENFLUID_API InjectGenerator : public MonoGenerator
 {
   private:
 

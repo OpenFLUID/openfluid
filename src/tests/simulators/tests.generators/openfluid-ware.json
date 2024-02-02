@@ -41,9 +41,23 @@
             "type": "double"
           },
           {
-            "name": "tests.fixed-vector",
+            "name": "tests.fixed.string",
             "unitsclass": "TestUnits",
             "description": "fixed value from generators for tests",
+            "siunit": "",
+            "type": "string"
+          },
+          {
+            "name": "tests.fixed-vector",
+            "unitsclass": "TestUnits",
+            "description": "fixed vector value from vector generators for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.fixed-vector-unique",
+            "unitsclass": "TestUnits",
+            "description": "fixed unique value from vector enerators for tests",
             "siunit": "",
             "type": "vector"
           },
@@ -51,8 +65,7 @@
             "name": "tests.random",
             "unitsclass": "TestUnits",
             "description": "random value from generators for tests",
-            "siunit": "",
-            "type": "double"
+            "siunit": ""
           },
           {
             "name": "tests.random-vector",
@@ -65,8 +78,7 @@
             "name": "tests.interp",
             "unitsclass": "TestUnits",
             "description": "interpolated value from generators for tests",
-            "siunit": "",
-            "type": "double"
+            "siunit": ""
           },
           {
             "name": "tests.interp-vector",
@@ -79,15 +91,13 @@
             "name": "tests.inject",
             "unitsclass": "TestUnits",
             "description": "injected value from generators for tests",
-            "siunit": "",
-            "type": "double"
+            "siunit": ""
           },
           {
             "name": "tests.injectasync",
             "unitsclass": "TestUnits",
             "description": "injected value from generators for tests",
-            "siunit": "",
-            "type": "double"
+            "siunit": ""
           },
           {
             "name": "tests.injectasync-vector",

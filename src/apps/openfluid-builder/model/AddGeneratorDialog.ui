@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>715</width>
-    <height>400</height>
+    <width>768</width>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,423 +16,544 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <layout class="QHBoxLayout" name="MainHorizontalLayout" stretch="0,0,1">
-     <property name="leftMargin">
-      <number>12</number>
+    <widget class="QTabWidget" name="VarTab">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="rightMargin">
-      <number>12</number>
-     </property>
-     <item>
-      <widget class="QWidget" name="widget_2" native="true">
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QRadioButton" name="FixedRadioButton">
-          <property name="styleSheet">
-           <string notr="true">font : bold;</string>
-          </property>
-          <property name="text">
-           <string>Fixed values</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="RandomRadioButton">
-          <property name="styleSheet">
-           <string notr="true">font : bold;</string>
-          </property>
-          <property name="text">
-           <string>Random values</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="InterpRadioButton">
-          <property name="styleSheet">
-           <string notr="true">font : bold;</string>
-          </property>
-          <property name="text">
-           <string>Values from file interpolation</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="InjectRadioButton">
-          <property name="styleSheet">
-           <string notr="true">font : bold;</string>
-          </property>
-          <property name="text">
-           <string>Values from file injection</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QFrame" name="frame">
-       <property name="frameShape">
-        <enum>QFrame::VLine</enum>
+     <widget class="QWidget" name="MonovarTab">
+      <attribute name="title">
+       <string>Single column</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="MainHorizontalLayout" stretch="0,0,0">
+       <property name="leftMargin">
+        <number>12</number>
        </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+       <property name="rightMargin">
+        <number>12</number>
        </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0,0,0">
-       <item row="4" column="3">
-        <widget class="QWidget" name="widget" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
+       <item>
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QRadioButton" name="FixedRadioButton">
+            <property name="styleSheet">
+             <string notr="true">font : bold;</string>
+            </property>
+            <property name="text">
+             <string>Fixed values</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="RandomRadioButton">
+            <property name="styleSheet">
+             <string notr="true">font : bold;</string>
+            </property>
+            <property name="text">
+             <string>Random values</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="InterpRadioButton">
+            <property name="styleSheet">
+             <string notr="true">font : bold;</string>
+            </property>
+            <property name="text">
+             <string>Values from file interpolation</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="InjectRadioButton">
+            <property name="styleSheet">
+             <string notr="true">font : bold;</string>
+            </property>
+            <property name="text">
+             <string>Values from file injection</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
-       <item row="9" column="0" colspan="6">
-        <widget class="QStackedWidget" name="OptionsWidget">
-         <property name="currentIndex">
-          <number>1</number>
+       <item>
+        <widget class="QFrame" name="frame">
+         <property name="frameShape">
+          <enum>QFrame::VLine</enum>
          </property>
-         <widget class="QWidget" name="FixedWidget">
-          <layout class="QFormLayout" name="formLayout">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Value:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="ValueEdit"/>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="RandomWidget">
-          <layout class="QFormLayout" name="formLayout_2">
-           <item row="0" column="1">
-            <widget class="QWidget" name="RangeFrame" native="true">
-             <layout class="QGridLayout" name="gridLayout_4">
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_4">
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QGroupBox" name="groupBox_3">
+           <property name="title">
+            <string>Signature</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0">
+              <item row="1" column="0" colspan="2">
+               <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Minimum value:</string>
+                 <string>Variable name:</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                 </property>
                </widget>
               </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="MinValueEdit"/>
+              <item row="2" column="2" colspan="2">
+               <widget class="QLineEdit" name="UnitsClassEdit"/>
               </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_5">
+              <item row="1" column="2" colspan="2">
+               <widget class="QLineEdit" name="VarNameEdit"/>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QLabel" name="label_2">
                 <property name="text">
-                 <string>Maximum value:</string>
+                 <string>Units class:</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="MaxValueEdit"/>
-              </item>
-              <item row="2" column="1">
-               <widget class="QCheckBox" name="RandomIdenticalValueCheckbox">
-                <property name="text">
-                 <string>Same value in whole vector/matrix</string>
                 </property>
                </widget>
               </item>
              </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="InterpInjectWidget">
-          <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,0">
-           <item row="3" column="0" colspan="3">
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="SourcesFileEdit"/>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="DistriFileEdit"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Distribution file:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="SourcesBrowseButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>30</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>24</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="DistriBrowseButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>30</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>24</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Sources file:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Variable name:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0" colspan="6">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="2" colspan="4">
-        <widget class="QLineEdit" name="VarNameEdit"/>
-       </item>
-       <item row="2" column="0" colspan="6">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Type</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QRadioButton" name="DoubleRadioButton">
-            <property name="text">
-             <string>Double</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="IntegerRadioButton">
-            <property name="text">
-             <string>Integer</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="BooleanRadioButton">
-            <property name="text">
-             <string>Boolean</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="StringRadioButton">
-            <property name="text">
-             <string>String</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="0" rowspan="3" colspan="6">
-        <widget class="QGroupBox" name="DimensionsGroupBox">
-         <property name="title">
-          <string>Dimensions</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="1">
-           <widget class="QRadioButton" name="VectorRadioButton">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>Vector:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3">
-           <widget class="QSpinBox" name="MatrixRowsSpinBox">
-            <property name="toolTip">
-             <string>Number of rows</string>
-            </property>
-            <property name="maximum">
-             <number>10000</number>
-            </property>
-            <property name="value">
-             <number>2</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QRadioButton" name="ScalarRadioButton">
-            <property name="text">
-             <string>Scalar</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QRadioButton" name="MatrixRadioButton">
-            <property name="text">
-             <string>Matrix:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QSpinBox" name="MatrixColsSpinBox">
-            <property name="toolTip">
-             <string>Number of columns</string>
-            </property>
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>10000</number>
-            </property>
-            <property name="value">
-             <number>2</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="VectorSpinBox">
-            <property name="minimum">
-             <number>2</number>
-            </property>
-            <property name="maximum">
-             <number>16777215</number>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Units class:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2" colspan="4">
-        <widget class="QLineEdit" name="UnitsClassEdit"/>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>Type</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QRadioButton" name="DoubleRadioButton">
+                 <property name="text">
+                  <string>Double</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="IntegerRadioButton">
+                 <property name="text">
+                  <string>Integer</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="BooleanRadioButton">
+                 <property name="text">
+                  <string>Boolean</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="StringRadioButton">
+                 <property name="text">
+                  <string>String</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="DimensionsGroupBox">
+              <property name="title">
+               <string>Dimensions</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_2">
+               <item row="0" column="1">
+                <widget class="QRadioButton" name="VectorRadioButton">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Vector:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="3">
+                <widget class="QSpinBox" name="MatrixRowsSpinBox">
+                 <property name="toolTip">
+                  <string>Number of rows</string>
+                 </property>
+                 <property name="maximum">
+                  <number>10000</number>
+                 </property>
+                 <property name="value">
+                  <number>2</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QRadioButton" name="ScalarRadioButton">
+                 <property name="text">
+                  <string>Scalar</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QRadioButton" name="MatrixRadioButton">
+                 <property name="text">
+                  <string>Matrix:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2">
+                <widget class="QSpinBox" name="MatrixColsSpinBox">
+                 <property name="toolTip">
+                  <string>Number of columns</string>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>10000</number>
+                 </property>
+                 <property name="value">
+                  <number>2</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QSpinBox" name="VectorSpinBox">
+                 <property name="minimum">
+                  <number>2</number>
+                 </property>
+                 <property name="maximum">
+                  <number>16777215</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>Parameter values</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="QStackedWidget" name="OptionsWidget">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="FixedWidget">
+               <layout class="QFormLayout" name="formLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>Value:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="ValueEdit"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="RandomWidget">
+               <layout class="QFormLayout" name="formLayout_2">
+                <item row="0" column="1">
+                 <widget class="QWidget" name="RangeFrame" native="true">
+                  <layout class="QGridLayout" name="gridLayout_4">
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_4">
+                     <property name="text">
+                      <string>Minimum value:</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLineEdit" name="MinValueEdit"/>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_5">
+                     <property name="text">
+                      <string>Maximum value:</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLineEdit" name="MaxValueEdit"/>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QCheckBox" name="RandomIdenticalValueCheckbox">
+                     <property name="text">
+                      <string>Same value in whole vector/matrix</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="InterpInjectWidget">
+               <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,0">
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="SourcesFileEdit"/>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLineEdit" name="DistriFileEdit"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_9">
+                  <property name="text">
+                   <string>Distribution file:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QPushButton" name="SourcesBrowseButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>30</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>24</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QPushButton" name="DistriBrowseButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>30</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>24</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string>Sources file:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
-     </item>
-    </layout>
+     </widget>
+     <widget class="QWidget" name="MultivarTab">
+      <attribute name="title">
+       <string>Multi column</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QWidget" name="widget_3" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QRadioButton" name="MultiInjectRadioButton">
+            <property name="styleSheet">
+             <string notr="true">font : bold;</string>
+            </property>
+            <property name="text">
+             <string>Values from file injection</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frame_2">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="QGroupBox" name="groupBox_5">
+              <property name="title">
+               <string>Signature</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_9">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Selected columns:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="SelectionLineEdit">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="placeholderText">
+                  <string>UnitClass#UnitID:var.name;UnitClass#UnitID:other.var.name</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_4">
+              <property name="title">
+               <string>Parameter value</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_6">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Data file:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="DataFileEdit">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Actual csv file</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="DataFileBrowseButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>30</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>24</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>

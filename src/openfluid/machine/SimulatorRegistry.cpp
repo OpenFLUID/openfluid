@@ -119,12 +119,12 @@ void SimulatorRegistry::discoverWares(bool WithGhosts, const std::string IDPatte
 openfluid::ware::WareID_t SimulatorRegistry::addGenerator(const GeneratorSpecs& Specs)
 {
   if (Specs.Method != openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE &&
-      !Specs.UnitsClass.empty() && !Specs.VariableName.empty())
+      (Specs.VarTriplets.size() > 0))
   {
     
     auto Container = createGeneratorContainer();
-    auto Signature = new openfluid::machine::GeneratorSignature(Specs.Method,Specs.UnitsClass,
-                                                                Specs.VariableName,
+    auto Signature = new openfluid::machine::GeneratorSignature(Specs.Method,
+                                                                Specs.VarTriplets,
                                                                 Specs.VariableType,
                                                                 Specs.VariableDimensions);  
 
@@ -140,6 +140,8 @@ openfluid::ware::WareID_t SimulatorRegistry::addGenerator(const GeneratorSpecs& 
 
     return Signature->ID;
   }
+
+  //TOIMPL add warning here that a ware without ID have been created
 
   return openfluid::ware::WareID_t();
 }

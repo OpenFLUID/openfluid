@@ -44,7 +44,7 @@
 
 #include <QStringList>
 
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/core/Dimensions.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
 
 
@@ -63,6 +63,8 @@ class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
     void switchGeneratorOptions();
 
     void checkGlobal();
+
+    void selectDataFile();
 
     void selectSourcesFile();
 
@@ -89,13 +91,17 @@ class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
       return m_Method; 
     }
 
-    QString getVariableName() const;
+#if (QT_VERSION_MAJOR < 6)
+    QRegExp getVariableSelectionRegExp();
+#else
+    QRegularExpression getVariableSelectionRegExp();
+#endif
 
-    QString getUnitClass() const;
+    openfluid::tools::UnitVarTriplets_t getVariableTriplets() const;
 
     openfluid::core::Value::Type getVarType() const;
 
-    openfluid::fluidx::DataDimensions getDimensions() const;
+    openfluid::core::Dimensions getDimensions() const;
 
     openfluid::ware::WareParams_t getParams() const;
 

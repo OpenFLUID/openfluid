@@ -34,6 +34,7 @@
   @file ProgressiveChronFileReader_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -60,7 +61,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::tools::ProgressiveColumnFileReader PColumnFR(CONFIGTESTS_INPUT_MISCDATA_DIR+
                                                           "/ChronFiles/measured_ticks.dat");
-  openfluid::tools::ProgressiveChronFileReader PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
+  openfluid::tools::ProgressiveChronFileReader<double> PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
 }
 
 
@@ -96,9 +97,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // ---------------------------------------------------------------------
 
 
-  openfluid::tools::ChronItem_t CI;
+  openfluid::tools::ChronItem_t<double> CI;
 
-  openfluid::tools::ProgressiveChronFileReader PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
+  openfluid::tools::ProgressiveChronFileReader<double> PChronFR(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ChronFiles/temp.dat");
 
   while (PChronFR.getNextValue(CI))
   {

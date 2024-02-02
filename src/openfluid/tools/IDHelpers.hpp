@@ -48,6 +48,7 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -57,12 +58,20 @@ namespace openfluid { namespace tools {
 //   auto stands for char[] here
 //   char[] used instead of string since not compatible with constexpr up to C++ 17 (TOWATCH)
 
+
+//   authorized chars: a to z, A to Z, 0 to 9, -, ., _
+//   must start by an alphanumeric char
 constexpr auto DatasetNameRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 
 constexpr auto WareIDRuleString("[A-Za-z0-9]+([A-Za-z0-9_\\.\\-]*)");
 constexpr auto WareIDRuleStringAndTpl("[A-Za-z0-9]+([A-Za-z0-9_@\\.\\-]*)");
 
 constexpr auto FragmentNameRuleString("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
+
+
+//   authorized chars: a to z, A to Z, 0 to 9, -, ., _
+//   must start by an alphabetic char
+constexpr auto VariableNameRuleString("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
 
 
 /**
@@ -114,6 +123,14 @@ bool OPENFLUID_API isValidVariableName(const openfluid::core::VariableName_t& Na
 
 
 /**
+  Checks whether a variable sequence (without type) is valid or not.\n
+  To be valid, a sequence must contain triplets of variable separated by ';'
+  @return the regex as string (for compatibility reasons)
+*/
+std::string OPENFLUID_API getVariableSelectionRegExp();
+
+
+/**
   Checks whether a variable name (with or without type) is valid or not.\n
   To be valid, a variable name must only contain alphanumeric, '_', '-' or '.' characters,
   must begin by an alphanumeric character, and can be suffixed by a valid type into square brackets.
@@ -154,9 +171,8 @@ bool OPENFLUID_API extractVariableNameAndType(const openfluid::core::VariableNam
   @param[in] ClassName The name of the spatial unit class associated where the variable is produced
   @return the generated ID
 */
-std::string OPENFLUID_API buildGeneratorID(const openfluid::core::VariableName_t& VarName,
-                                           const std::string& strDimType,
-                                           const openfluid::core::UnitsClass_t& ClassName);
+std::string OPENFLUID_API buildGeneratorID(const openfluid::tools::UnitVarPairs_t& VarPairs,
+                                           const std::string& StrDimType);
 
 
 } } // namespaces

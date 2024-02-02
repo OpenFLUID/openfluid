@@ -186,7 +186,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
         {
           // UNIT CLASS
           std::vector<openfluid::core::UnitsClass_t> UnitsClassArray;
-          if (Triplet.UnitsClassesStr == "*")
+          if (Triplet.UnitsClass == "*")
           {
             openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
             for (UnitsIt = mp_SpatialData->allSpatialUnitsByClass()->begin();
@@ -196,13 +196,13 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
               UnitsClassArray.push_back((*UnitsIt).first);
             }
           }
-          else if (OPENFLUID_IsUnitsClassExist(Triplet.UnitsClassesStr))
+          else if (OPENFLUID_IsUnitsClassExist(Triplet.UnitsClass))
           {
-            UnitsClassArray.push_back(Triplet.UnitsClassesStr);
+            UnitsClassArray.push_back(Triplet.UnitsClass);
           }
           else
           {
-            OPENFLUID_LogWarning("Unit class "+Triplet.UnitsClassesStr+" does not exist. Ignored.");
+            OPENFLUID_LogWarning("Unit class "+Triplet.UnitsClass+" does not exist. Ignored.");
           }
           std::sort(UnitsClassArray.begin(), UnitsClassArray.end());
           
@@ -237,7 +237,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
             std::vector<openfluid::core::VariableName_t> VarArray;
             VarArray.clear();
 
-            if (Triplet.VariablesStr == "*")
+            if (Triplet.VariableName == "*")
             {
               // process all variables
               VarArray =
@@ -248,13 +248,13 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
             {
               // process selected variables
               if (mp_SpatialData->spatialUnits(UnitsClass)
-                      ->list()->begin()->variables()->isVariableExist(Triplet.VariablesStr))
+                      ->list()->begin()->variables()->isVariableExist(Triplet.VariableName))
               {
-                 VarArray.push_back(Triplet.VariablesStr);
+                 VarArray.push_back(Triplet.VariableName);
               }
               else
               {
-                OPENFLUID_LogWarning("Variable "+Triplet.VariablesStr+" for units class "+
+                OPENFLUID_LogWarning("Variable "+Triplet.VariableName+" for units class "+
                                      UnitsClass+" does not exist. Ignored.");
               }
             }
@@ -265,7 +265,8 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
             {
               for (openfluid::core::VariableName_t CurrentVar : VarArray)
               {
-                ClassIDVar CurrentTriplet(UnitsClass, std::to_string(CurrentID), CurrentVar, Triplet.Precision,
+                openfluid::tools::ClassIDVarPrecision CurrentTriplet(UnitsClass, std::to_string(CurrentID), CurrentVar, 
+                                          Triplet.Precision,
                                           Triplet.FloatFormat);
                 SetFiles.second.SetDefinition.ExpandedSelection.push_back(CurrentTriplet);
                 
@@ -277,7 +278,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
                 {
                   ColumnsHeaders += SetFiles.second.Format->ColSeparator;
                 }
-                ColumnsHeaders += CurrentTriplet.GetClassIDVarString(false);
+                ColumnsHeaders += CurrentTriplet.getClassIDVarString(false);
               }
             }
           }
@@ -330,14 +331,14 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
         }
         
         bool IsValue = false;
-        for (ClassIDVar Column : SetFiles.second.SetDefinition.ExpandedSelection)
+        for (openfluid::tools::ClassIDVarPrecision Column : SetFiles.second.SetDefinition.ExpandedSelection)
         {
           LineHandle << SetFiles.second.Format->ColSeparator;
           
           openfluid::core::Value* Val =
-              mp_SpatialData->spatialUnit(Column.UnitsClassesStr, 
+              mp_SpatialData->spatialUnit(Column.UnitsClass, 
                                           std::stoi(Column.UnitsIDsStr.c_str()))->variables()->currentValueIfIndex(
-                                                     Column.VariablesStr,OPENFLUID_GetCurrentTimeIndex());
+                                                     Column.VariableName,OPENFLUID_GetCurrentTimeIndex());
 
           if (Val!=nullptr)
           {

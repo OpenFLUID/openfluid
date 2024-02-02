@@ -31,64 +31,64 @@
 
 
 /**
-  @file InterpGenerator.hpp
+  @file Dimensions.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+  @author Armel THÖNI <armel.thoni@inrae.fr>
+*/
 
 
-#ifndef __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__
-#define __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__
+#ifndef __OPENFLUID_CORE_DIMENSIONS_HPP__
+#define __OPENFLUID_CORE_DIMENSIONS_HPP__
 
+
+#include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/machine/Generator.hpp>
-#include <openfluid/tools/DistributionBindings.hpp>
 
 
-namespace openfluid { namespace machine {
+namespace openfluid { namespace core {
 
 
-class OPENFLUID_API InterpGenerator : public MonoGenerator
+class OPENFLUID_API Dimensions
 {
+
   private:
+    static const char s_BeginningSymbol  = '[';
+    static const char s_SeparatorSymbol = ',';
+    static const char s_EndSymbol = ']';
 
-    bool m_IsMin;
-    bool m_IsMax;
-    bool m_IsKeepTmp;
-
-    double m_Min;
-    double m_Max;
-
-    std::string m_SourcesFile;
-    std::string m_DistriFile;
-    std::string m_TmpDir;
-
-    openfluid::tools::DistributionBindings* m_DistriBindings;
+    void applyDimensions(std::string SerializedVariableSize);
 
 
   public:
 
-    InterpGenerator();
+    enum class DimensionType {SCALAR, VECTOR, MATRIX};
 
-    ~InterpGenerator();
+    DimensionType Type;
+    
+    unsigned long Cols, Rows;
 
-    void initParams(const openfluid::ware::WareParams_t& Params);
 
-    void prepareData();
+    Dimensions();
 
-    void checkConsistency();
+    Dimensions(unsigned long Size);
 
-    openfluid::base::SchedulingRequest initializeRun();
+    Dimensions(unsigned long ColsNbr, unsigned long RowsNbr);
+    
+    Dimensions(std::string SerializedVariableSize);
 
-    openfluid::base::SchedulingRequest runStep();
+    std::string strType() const;
 
-    void finalizeRun();
+    bool isScalar() const;
+    
+    bool isVector() const;
+    
+    bool isMatrix() const;
 
+    const std::string getSerializedVariableSize() const;
 };
 
+} } // namespaces
 
-} } //namespaces
 
-
-#endif /* __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__ */
+#endif /* __OPENFLUID_CORE_DIMENSIONS_HPP__ */

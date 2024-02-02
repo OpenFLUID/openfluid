@@ -46,6 +46,8 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ui/common/ShortcutCompleter.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 
 #include "ui_AddGeneratorDialog.h"
 #include "AddGeneratorDialog.hpp"
@@ -65,6 +67,7 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
   connect(ui->RandomRadioButton,SIGNAL(toggled(bool)),this,SLOT(switchGeneratorOptions()));
   connect(ui->InterpRadioButton,SIGNAL(toggled(bool)),this,SLOT(switchGeneratorOptions()));
   connect(ui->InjectRadioButton,SIGNAL(toggled(bool)),this,SLOT(switchGeneratorOptions()));
+  connect(ui->VarTab,SIGNAL(currentChanged(int)),this,SLOT(switchGeneratorOptions()));
 
   connect(ui->VectorRadioButton,SIGNAL(toggled(bool)),ui->VectorSpinBox,SLOT(setEnabled(bool)));
   connect(ui->MatrixRadioButton,SIGNAL(toggled(bool)),ui->MatrixColsSpinBox,SLOT(setEnabled(bool)));
@@ -79,13 +82,19 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
 
   connect(ui->VarNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitsClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
+  
+  connect(ui->DataFileEdit,SIGNAL(textChanged(const QString&)),this,SLOT(checkGlobal()));
+  connect(ui->SelectionLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
+  
 
+  connect(ui->DataFileBrowseButton,SIGNAL(clicked()),this,SLOT(selectDataFile()));
   connect(ui->SourcesBrowseButton,SIGNAL(clicked()),this,SLOT(selectSourcesFile()));
   connect(ui->DistriBrowseButton,SIGNAL(clicked()),this,SLOT(selectDistriFile()));
 
-  switchGeneratorOptions();
 
   m_Method = openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED;
+  
+  switchGeneratorOptions();
 
   ui->FixedRadioButton->setChecked(true);
   ui->DoubleRadioButton->setChecked(true);
@@ -97,6 +106,7 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
   QString PlaceholderStr = getPlaceholderRequired();
   ui->UnitsClassEdit->setPlaceholderText(PlaceholderStr);
   ui->VarNameEdit->setPlaceholderText(PlaceholderStr);
+  ui->DataFileEdit->setPlaceholderText(PlaceholderStr);
 
   openfluid::ui::common::ShortcutCompleter* Completer =
       new openfluid::ui::common::ShortcutCompleter(ProjectCentral::instance()->unitsClassesList(),this);
@@ -179,26 +189,34 @@ void AddGeneratorDialog::refresh()
 
 void AddGeneratorDialog::switchGeneratorOptions()
 {
-  if (ui->FixedRadioButton->isChecked())
+  if (ui->VarTab->currentWidget() == ui->MonovarTab)
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED;
-    ui->OptionsWidget->setCurrentIndex(0);
+    if (ui->FixedRadioButton->isChecked())
+    {
+      m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED;
+      ui->OptionsWidget->setCurrentIndex(0);
+    }
+    else if (ui->RandomRadioButton->isChecked())
+    {
+      m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM;
+      ui->OptionsWidget->setCurrentIndex(1);
+    }
+    else if (ui->InterpRadioButton->isChecked())
+    {
+      m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP;
+      ui->OptionsWidget->setCurrentIndex(2);
+    }
+    else if (ui->InjectRadioButton->isChecked())
+    {
+      m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT;
+      ui->OptionsWidget->setCurrentIndex(2);
+    }
   }
-  else if (ui->RandomRadioButton->isChecked())
+  else if (ui->MultiInjectRadioButton->isChecked())
   {
-    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM;
-    ui->OptionsWidget->setCurrentIndex(1);
+    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL;
   }
-  else if (ui->InterpRadioButton->isChecked())
-  {
-    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP;
-    ui->OptionsWidget->setCurrentIndex(2);
-  }
-  else if (ui->InjectRadioButton->isChecked())
-  {
-    m_Method = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT;
-    ui->OptionsWidget->setCurrentIndex(2);
-  }
+  checkGlobal();
   refresh();
 }
 
@@ -207,19 +225,76 @@ void AddGeneratorDialog::switchGeneratorOptions()
 // =====================================================================
 
 
+#if (QT_VERSION_MAJOR < 6)
+QRegExp AddGeneratorDialog::getVariableSelectionRegExp()
+{
+  return QRegExp(QString::fromStdString(openfluid::tools::getVariableSelectionRegExp()));
+}
+#else
+QRegularExpression AddGeneratorDialog::getVariableSelectionRegExp()
+{
+  return QRegularExpression(QString::fromStdString(openfluid::tools::getVariableSelectionRegExp()));
+}
+#endif
+
+
+// =====================================================================
+// =====================================================================
+
+
 void AddGeneratorDialog::checkGlobal()
 {
-  if (ui->VarNameEdit->text().isEmpty())
+  if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
   {
-    setMessage(tr("Variable name cannot be empty"));
-  }
-  else if (ui->UnitsClassEdit->text().isEmpty())
-  {
-    setMessage(tr("Units class cannot be empty"));
+#if (QT_VERSION_MAJOR < 6)
+    QRegExpValidator Validator(getVariableSelectionRegExp(), 0);
+#else
+    QRegularExpressionValidator Validator(getVariableSelectionRegExp(), 0);
+#endif
+    QString SelectionText(ui->SelectionLineEdit->text());
+    int pos = 0;
+    const auto Validation = Validator.validate(SelectionText, pos);
+    ui->SelectionLineEdit->setStyleSheet("");
+    if (SelectionText.isEmpty())
+    {
+      setMessage(tr("Selection cannot be empty"));
+    }
+    else if (Validation != QValidator::Acceptable)
+    {
+      if (Validation == QValidator::Intermediate)
+      {
+        ui->SelectionLineEdit->setStyleSheet("background-color: #FFFFBB");
+        setMessage(tr("Selection input may not be finished"));
+      }
+      else
+      {
+        ui->SelectionLineEdit->setStyleSheet("background-color: red");
+        setMessage(tr("Selection format is not valid"));
+      }
+    }
+    else if (ui->DataFileEdit->text().isEmpty())
+    {
+      setMessage(tr("Data file cannot be empty"));
+    }
+    else
+    {
+      setMessage();
+    }
   }
   else
   {
-    setMessage();
+    if (ui->VarNameEdit->text().isEmpty())
+    {
+      setMessage(tr("Variable name cannot be empty"));
+    }
+    else if (ui->UnitsClassEdit->text().isEmpty())
+    {
+      setMessage(tr("Units class cannot be empty"));
+    }
+    else
+    {
+      setMessage();
+    }
   }
 }
 
@@ -228,40 +303,40 @@ void AddGeneratorDialog::checkGlobal()
 // =====================================================================
 
 
-QString AddGeneratorDialog::getVariableName() const
+openfluid::tools::UnitVarTriplets_t AddGeneratorDialog::getVariableTriplets() const
 {
-  return ui->VarNameEdit->text();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString AddGeneratorDialog::getUnitClass() const
-{
-  return ui->UnitsClassEdit->text();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::fluidx::DataDimensions AddGeneratorDialog::getDimensions() const
-{
-  if (ui->ScalarRadioButton->isChecked())
+  openfluid::tools::UnitVarTriplets_t Triplets;
+  if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
   {
-    return openfluid::fluidx::DataDimensions();
+    Triplets = openfluid::tools::deserializeVarTriplets(ui->SelectionLineEdit->text().toStdString());
+  }
+  else
+  {
+    Triplets.push_back(openfluid::tools::ClassIDVar(ui->UnitsClassEdit->text().toStdString(), "*", 
+                       ui->VarNameEdit->text().toStdString()));
+  }
+  return Triplets;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::Dimensions AddGeneratorDialog::getDimensions() const
+{
+  if (ui->MatrixRadioButton->isChecked())
+  {
+    return openfluid::core::Dimensions(ui->MatrixColsSpinBox->value(), 
+                                             ui->MatrixRowsSpinBox->value());
   }
   else if (ui->VectorRadioButton->isChecked())
   {
-    return openfluid::fluidx::DataDimensions(ui->VectorSpinBox->value());
+    return openfluid::core::Dimensions(ui->VectorSpinBox->value());
   }
   else
   {
-    return openfluid::fluidx::DataDimensions(ui->MatrixColsSpinBox->value(), 
-                                             ui->MatrixRowsSpinBox->value());
+    return openfluid::core::Dimensions();
   }
 }
 
@@ -344,6 +419,13 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
       Params["distribution"] = ui->DistriFileEdit->text().toStdString();
     }
   }
+  else if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
+  {
+    if (!ui->SelectionLineEdit->text().isEmpty())
+    {
+      Params["datafile"] = ui->DataFileEdit->text().toStdString();
+    }
+  }
 
   return Params;
 }
@@ -364,6 +446,31 @@ void AddGeneratorDialog::selectSourcesFile()
   if (FileName.startsWith(CurrentDir))
   {
     ui->SourcesFileEdit->setText(FileName.remove(0,CurrentDir.length()+1));
+  }
+  else
+  {
+    QMessageBox::critical(QApplication::activeWindow(),"OpenFLUID-Builder",
+                          tr("Choosen file is not located in the input dataset of the project"),QMessageBox::Close);
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AddGeneratorDialog::selectDataFile()
+{
+  QString CurrentDir = QString::fromStdString(openfluid::base::RunContextManager::instance()->getInputDir());
+
+  QString FileName = QFileDialog::getOpenFileName(this,
+                                                  tr("Select sources file"),
+                                                  CurrentDir,
+                                                  tr("All files (*.*)"));
+  if (FileName.startsWith(CurrentDir))
+  {
+    ui->DataFileEdit->setText(FileName.remove(0,CurrentDir.length()+1));
   }
   else
   {

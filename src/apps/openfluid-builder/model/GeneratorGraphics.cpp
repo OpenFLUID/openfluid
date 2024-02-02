@@ -34,10 +34,14 @@
   @file GeneratorGraphics.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
 #include <QBrush>
+
+#include <openfluid/machine/GeneratorSignature.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 #include "builderconfig.hpp"
 #include "GeneratorGraphics.hpp"
@@ -45,14 +49,16 @@
 
 GeneratorGraphics::GeneratorGraphics(const QPointF& Coords,
                                      const QString& ID, unsigned int Order,
-                                     const QString& VarName, const QString& UnitsClass, 
+                                     const openfluid::tools::UnitVarPairs_t& VarPairs,
                                      const QColor& BGColor, const QColor& BorderColor,
                                      QGraphicsItem* Parent):
   ModelItemGraphics(Coords,ID,tr("Generator"),Order,BorderColor,Parent)
 {
-  m_ProducedVars.push_back(
-    openfluid::ware::SignatureSpatialDataItem(VarName.toStdString(),UnitsClass.toStdString(),"",""));
-
+  for (const auto& VarPair : VarPairs) 
+  {
+    m_ProducedVars.push_back(
+      openfluid::ware::SignatureSpatialDataItem(VarPair.VariableName,VarPair.UnitsClass,"",""));
+  }
   // Out slot
   drawIOSlot(getProducedIOPosition(),SlotType::SLOT_PROD,m_ProducedVars);
   QColor EffectiveBGColor;

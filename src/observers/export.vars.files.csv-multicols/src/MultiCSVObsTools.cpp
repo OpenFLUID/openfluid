@@ -44,6 +44,7 @@
 #include <openfluid/base/OtherException.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 #include "MultiCSVObsTools.hpp"
 
@@ -52,32 +53,6 @@ MultiCSVFormat::MultiCSVFormat(): CSVFormat(),
                                   MissingValueString("NA")
 {
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-ClassIDVar::ClassIDVar():
-  UnitsClassesStr(""), UnitsIDsStr(""), VariablesStr("")
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string ClassIDVar::GetClassIDVarString(bool WithPrecision)
-{
-  std::string TripletString = UnitsClassesStr + "#" + UnitsIDsStr + ":" + VariablesStr;
-  if (HasPrecision && WithPrecision)
-  {
-    TripletString += "%" + std::to_string(Precision);
-  }
-  return TripletString;
 }
 
 
@@ -96,14 +71,14 @@ CSVMultiSet::CSVMultiSet() :
 // =====================================================================
 
 
-std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
+std::vector<openfluid::tools::ClassIDVarPrecision> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
                                                         const unsigned int DefaultPrecision, 
                                                         const std::string& DefaultFloatFormat)
 {
   std::vector<std::string> Columns = openfluid::tools::split(SelectionStr, ";");
   
   
-  std::vector<ClassIDVar> CSVTriplets;
+  std::vector<openfluid::tools::ClassIDVarPrecision> CSVTriplets;
   for (std::string& Column : Columns)
   {
     // parse and create CSVTriplet
@@ -111,15 +86,15 @@ std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string& Selec
     std::size_t ColonPosition = Column.find(":");
     std::size_t PercentPosition = Column.find("%");
     
-    ClassIDVar CurrentCSVTriplet;
+    openfluid::tools::ClassIDVarPrecision CurrentCSVTriplet;
     
-    CurrentCSVTriplet.UnitsClassesStr = Column.substr(0,HashPosition);
+    CurrentCSVTriplet.UnitsClass = Column.substr(0,HashPosition);
     CurrentCSVTriplet.UnitsIDsStr = Column.substr(HashPosition+1, ColonPosition-HashPosition-1);
     CurrentCSVTriplet.FloatFormat = DefaultFloatFormat;
     
     if (PercentPosition != std::string::npos) // if precision information
     {
-      CurrentCSVTriplet.VariablesStr = Column.substr(ColonPosition+1, PercentPosition-ColonPosition-1);
+      CurrentCSVTriplet.VariableName = Column.substr(ColonPosition+1, PercentPosition-ColonPosition-1);
       CurrentCSVTriplet.HasPrecision = true;
       
       std::size_t EndOfPrecisionPos = Column.size();
@@ -140,7 +115,7 @@ std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string& Selec
     }
     else
     {
-      CurrentCSVTriplet.VariablesStr = Column.substr(ColonPosition+1);
+      CurrentCSVTriplet.VariableName = Column.substr(ColonPosition+1);
       CurrentCSVTriplet.HasPrecision = false;
       CurrentCSVTriplet.Precision = DefaultPrecision;
     }

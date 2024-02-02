@@ -54,61 +54,74 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 {
   protected:
 
-    openfluid::core::VariableName_t m_VarName;
-
-    openfluid::core::UnitsClass_t m_UnitsClass;
-
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GenMethod;
 
-    openfluid::fluidx::DataDimensions m_VarDimensions;
+    openfluid::core::Dimensions m_VarDimensions;
+    
+    openfluid::tools::UnitVarTriplets_t m_VarTriplets;
 
 
   public:
 
-    Generator();
+    Generator() : PluggableSimulator()
+    {
+    }
 
     virtual ~Generator()
-    { }
+    {
+    }
 
 
-    void setInfos(openfluid::core::VariableName_t VarName, openfluid::core::UnitsClass_t UnitsClass,
+    void setInfos(openfluid::tools::UnitVarTriplets_t Triplets,
                   openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
-                  openfluid::fluidx::DataDimensions VarDimensions=openfluid::fluidx::DataDimensions())
-    {
-      m_VarName = VarName;
-      m_UnitsClass = UnitsClass;
-      m_GenMethod = GenMethod;
-      m_VarDimensions = VarDimensions;
-    }
+                  openfluid::core::Dimensions VarDimensions=openfluid::core::Dimensions());
 
-    openfluid::core::VariableName_t getVariableName() const
-    {
-      return m_VarName;
-    }
-
-    openfluid::core::UnitsClass_t getUnitsClass() const
-    {
-      return m_UnitsClass;
-    }
-
-    /**
-      @deprecated Since version 2.1.0. Use openfluid::machine::Generator::getUnitsClass() const instead
-    */
-    [[deprecated]] openfluid::core::UnitsClass_t getUnitClass() const
-    {
-      return m_UnitsClass;
-    }
-
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod getGeneratorMethod() const
-    {
-      return m_GenMethod;
-    }
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod getGeneratorMethod() const;
 
 
     virtual void prepareData()
     {
-
     }
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class OPENFLUID_API MonoGenerator : public Generator
+{
+  protected:
+
+    openfluid::core::VariableName_t m_VarName;
+
+    openfluid::core::UnitsClass_t m_UnitsClass;
+
+
+  public:
+
+    MonoGenerator() : Generator()
+    {
+    }
+
+    virtual ~MonoGenerator()
+    {
+    }
+
+
+    void setInfos(openfluid::tools::UnitVarTriplets_t Triplets,
+                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
+                  openfluid::core::Dimensions VarDimensions=openfluid::core::Dimensions());
+
+    openfluid::core::VariableName_t getVariableName() const;
+
+    openfluid::core::UnitsClass_t getUnitsClass() const;
+
+    /**
+      @deprecated Since version 2.1.0. Use openfluid::machine::Generator::getUnitsClass() const instead
+    */
+    [[deprecated]] openfluid::core::UnitsClass_t getUnitClass() const;
+
 };
 
 

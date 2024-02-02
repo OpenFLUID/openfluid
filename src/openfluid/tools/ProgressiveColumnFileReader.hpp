@@ -34,6 +34,7 @@
   @file ProgressiveColumnFileReader.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -59,12 +60,12 @@ class OPENFLUID_API ProgressiveColumnFileReader
 
     std::ifstream m_File;
 
-    std::string m_ColSeparators;
-
 
   protected:
 
     std::string m_FileName;
+    
+    std::string m_ColSeparators;
 
 
   public:

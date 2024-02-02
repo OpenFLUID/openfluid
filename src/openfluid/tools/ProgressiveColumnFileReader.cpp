@@ -34,8 +34,11 @@
   @file ProgressiveColumnFileReader.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
+
+#include <filesystem>
 
 #include <boost/algorithm/string.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -49,8 +52,15 @@ namespace openfluid { namespace tools {
 
 ProgressiveColumnFileReader::ProgressiveColumnFileReader(const std::string& FileName,
                                                          const std::string& ColSeparators):
-    m_File(FileName.c_str()), m_ColSeparators(ColSeparators), m_FileName(FileName)
+    m_FileName(FileName), m_ColSeparators(ColSeparators)
 {
+  if (!std::filesystem::exists(FileName))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "File " + FileName+" does not exist");
+
+  }
+  m_File = std::ifstream(FileName.c_str());
   if (!m_File.is_open())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,

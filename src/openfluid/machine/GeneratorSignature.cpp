@@ -39,19 +39,20 @@
 
 #include <openfluid/machine/GeneratorSignature.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
 GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,
-                                       const openfluid::core::UnitsClass_t& U, 
-                                       const openfluid::core::VariableName_t& VN, 
+                                       const openfluid::tools::UnitVarTriplets_t& V,
                                        const openfluid::core::Value::Type VT,
-                                       const openfluid::fluidx::DataDimensions& VD):
-    SimulatorSignature(), Method(M), UnitsClass(U), VariableName(VN), VariableType(VT), VariableDimensions(VD)
+                                       const openfluid::core::Dimensions& VD):
+    SimulatorSignature(), Method(M), VariableTriplets(V), VariableType(VT), VariableDimensions(VD)
 {
-  ID = openfluid::tools::buildGeneratorID(VariableName, VariableDimensions.strType(), UnitsClass);
+  const auto VarPairs = openfluid::tools::deduceVarPairs(VariableTriplets);
+  ID = openfluid::tools::buildGeneratorID(VarPairs, VariableDimensions.strType());
 
   switch (Method)
   {
@@ -67,23 +68,29 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
     case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT:
       setInjectionInfo();
       break;
+    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECTMULTICOL:
+      setInjectionMulticolInfo();
+      break;
     default:
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Invalid generator type");
       break;
   }
 
-  std::string TypedVarName = VariableName;
-  std::string VarDimType = VariableDimensions.strType();
-  if (VarDimType == "scalar")
+  for (const auto& VarPair : VarPairs)
   {
-    TypedVarName += "["+openfluid::core::Value::getStringFromValueType(VariableType)+"]";
+    std::string TypedVarName = VarPair.VariableName;
+    std::string VarDimType = VariableDimensions.strType();
+    if (VarDimType == "scalar")
+    {
+      TypedVarName += "["+openfluid::core::Value::getStringFromValueType(VariableType)+"]";
+    }
+    else
+    {
+      TypedVarName += "["+VarDimType+"]";
+    } 
+    HandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem(TypedVarName,
+                                                                                 VarPair.UnitsClass,"",""));
   }
-  else
-  {
-    TypedVarName += "["+VarDimType+"]";
-  } 
-  
-  HandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem(TypedVarName,UnitsClass,"",""));
 }
 
 
@@ -179,6 +186,26 @@ void GeneratorSignature::setInjectionInfo()
 
   HandledData.RequiredParams.push_back(
       openfluid::ware::SignatureDataItem("distribution","Distribution filename for the value to produce","-"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void GeneratorSignature::setInjectionMulticolInfo()
+{
+  Name = "Values from file injection for several values";
+  Description = "Generates injected values -no time interpolation- from given data series with selected columns:\n";
+
+  // Add custom information about selection for this generator
+  for (const auto& VT : VariableTriplets)
+  {
+    Description += "- "+VT.getClassIDVarString() +"\n";
+  }
+
+  HandledData.RequiredParams.push_back(
+      openfluid::ware::SignatureDataItem("datafile","Data file name for the values to produce","-"));
 }
 
 

@@ -42,6 +42,7 @@
 #include <fstream>
 #include <functional>
 
+#include <openfluid/core/Dimensions.hpp>
 #include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -209,6 +210,7 @@ class FluidXReaderImplementation
         }
         else if (TagName == "generator")
         {
+          std::string VarSelection = openfluid::thirdparty::getXMLAttribute(Elt,"variables");
           std::string VarName = openfluid::thirdparty::getXMLAttribute(Elt,"varname");
           std::string UnitsClass = openfluid::thirdparty::getXMLAttribute(Elt,"unitsclass");
           std::string Method = openfluid::thirdparty::getXMLAttribute(Elt,"method");
@@ -216,10 +218,11 @@ class FluidXReaderImplementation
           std::string VarType = openfluid::thirdparty::getXMLAttribute(Elt,"vartype");
           openfluid::core::Value::Type VarTypeReal = openfluid::core::Value::DOUBLE;
           openfluid::core::Value::getValueTypeFromString(VarType, VarTypeReal);
-          DataDimensions VarDimensionsReal = DataDimensions();
+          openfluid::core::Dimensions VarDimensionsReal;
 
+          openfluid::tools::UnitVarTriplets_t VarTriplets;
 
-          if (!VarName.empty() && !UnitsClass.empty() && !Method.empty())
+          if (!Method.empty() && (!VarName.empty() || !VarSelection.empty()))
           {
             openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod =
                 openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE;
@@ -239,6 +242,25 @@ class FluidXReaderImplementation
             {
               GenMethod = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT;
             }
+            if (Method == "inject-multicol")
+            {
+              // Process selection into Vars
+              VarTriplets = openfluid::tools::deserializeVarTriplets(VarSelection);
+              GenMethod = openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL;
+            }
+            else
+            {
+              if (!VarName.empty())
+              {
+                VarTriplets.push_back(openfluid::tools::ClassIDVar(UnitsClass, "*", VarName));
+              }
+              else
+              {
+                throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                          "missing attribute(s) in generator description ("+
+                                                          m_CurrentFile+")");
+              }
+            }
 
             if (GenMethod == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE)
             {
@@ -248,10 +270,11 @@ class FluidXReaderImplementation
 
             if (!VarSize.empty())
             {
-              VarDimensionsReal = DataDimensions(VarSize);
+              VarDimensionsReal = openfluid::core::Dimensions(VarSize);
             }
 
-            auto GD = new openfluid::fluidx::GeneratorDescriptor(VarName,UnitsClass,GenMethod,VarTypeReal,
+            auto GD = new openfluid::fluidx::GeneratorDescriptor(VarTriplets,
+                                                                 GenMethod,VarTypeReal,
                                                                  VarDimensionsReal);
             GD->setParameters(extractParams(Elt));
             GD->setEnabled(extractWareEnabled(Elt));
@@ -915,6 +938,8 @@ class FluidXWriterImplementation
           return "interp";
         case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT:
           return "inject";
+        case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECTMULTICOL:
+          return "inject-multicol";
           break;
         default:
           break;
@@ -974,18 +999,27 @@ class FluidXWriterImplementation
               dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item);
 
           auto GenElt = ModelElt->InsertNewChildElement("generator");
-          GenElt->SetAttribute("varname",GenDesc->getVariableName().c_str());
+          if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
+          {
+            GenElt->SetAttribute("variables", serializeVarTriplets(GenDesc->getVariableTriplets()).c_str());
+          }
+          else
+          {
+            GenElt->SetAttribute("varname",GenDesc->getVariableName().c_str());
 
-          if (!GenDesc->getVariableDimensions().isScalar())
-          {
-            GenElt->SetAttribute("varsize",GenDesc->getVariableDimensions().getSerializedVariableSize().c_str());
+            if (!GenDesc->getVariableDimensions().isScalar())
+            {
+              GenElt->SetAttribute("varsize",GenDesc->getVariableDimensions().getSerializedVariableSize().c_str());
+            }
+            openfluid::core::Value::Type VarType = GenDesc->getVariableType();
+            
+            //FIXME disambiguate difference between implicit DOUBLE type and NONE type
+            if (VarType != openfluid::core::Value::DOUBLE && VarType != openfluid::core::Value::NONE)
+            {
+              GenElt->SetAttribute("vartype",openfluid::core::Value::getStringFromValueType(VarType).c_str());
+            }
+            GenElt->SetAttribute("unitsclass",GenDesc->getUnitsClass().c_str());
           }
-          openfluid::core::Value::Type VarType = GenDesc->getVariableType();
-          if (VarType != openfluid::core::Value::DOUBLE)
-          {
-            GenElt->SetAttribute("vartype",openfluid::core::Value::getStringFromValueType(VarType).c_str());
-          }
-          GenElt->SetAttribute("unitsclass",GenDesc->getUnitsClass().c_str());
           GenElt->SetAttribute("method",getGeneratorMethodAsStr(GenDesc->getGeneratorMethod()).c_str());
           GenElt->SetAttribute("enabled",GenDesc->isEnabled());
           insertWareParams(GenDesc->getParameters(),GenElt);

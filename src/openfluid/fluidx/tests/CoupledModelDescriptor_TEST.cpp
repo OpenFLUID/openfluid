@@ -46,6 +46,7 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <openfluid/core/Dimensions.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
@@ -67,20 +68,20 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(SimDesc.isType(openfluid::ware::WareType::SIMULATOR),true);
   BOOST_REQUIRE_EQUAL(SimDesc.getParameters().size(),0);
 
-  openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",
-                                                  openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED);
+  openfluid::fluidx::GeneratorDescriptor GenDesc1({{"test.unitclass","test.var"}},
+                                                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED);
 
   BOOST_REQUIRE_EQUAL(GenDesc1.getVariableName(),"test.var");
   BOOST_REQUIRE_EQUAL(GenDesc1.getUnitsClass(),"test.unitclass");
   BOOST_REQUIRE_EQUAL(static_cast<int>(GenDesc1.getGeneratorMethod()), 
-                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
+                      static_cast<int>(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED));
   BOOST_REQUIRE_EQUAL(GenDesc1.getVariableSize(),1);
   BOOST_REQUIRE_EQUAL(GenDesc1.getParameters().size(),0);
 
-  openfluid::fluidx::GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",
-                                                  openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP,
+  openfluid::fluidx::GeneratorDescriptor GenDesc2({{"test.unitclass2","test.var2"}},
+                                                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP,
                                                   openfluid::core::Value::Type::DOUBLE,
-                                                  openfluid::fluidx::DataDimensions(13));
+                                                  openfluid::core::Dimensions(13));
 
   BOOST_REQUIRE_EQUAL(GenDesc2.getVariableName(),"test.var2");
   BOOST_REQUIRE_EQUAL(GenDesc2.getUnitsClass(),"test.unitclass2");
@@ -108,13 +109,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
   SimDesc.setParameter("param3",std::string("var3"));
   SimDesc.setParameter("param2",std::string("var22"));
 
-  openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",
+
+  openfluid::fluidx::GeneratorDescriptor GenDesc1({{"test.unitclass","test.var"}},
                                                   openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED,
                                                   openfluid::core::Value::Type::DOUBLE,
-                                                  openfluid::fluidx::DataDimensions(7));
+                                                  openfluid::core::Dimensions(7));
   GenDesc1.setParameter("fixedvalue",std::string("20.5"));
 
-  openfluid::fluidx::GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",
+  openfluid::fluidx::GeneratorDescriptor GenDesc2({{"test.unitclass2","test.var2"}},
                                                   openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP);
   GenDesc2.setParameter("sources",std::string("datasources.xml"));
   GenDesc2.setParameter("distribution",std::string("distribution.dat"));

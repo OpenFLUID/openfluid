@@ -146,7 +146,7 @@ int DataTasks::generateData(const std::string Path, bool WithSample) const
         // --- model
 
         auto Gen = new openfluid::fluidx::GeneratorDescriptor(
-                    "var.example","UnitsA",openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM
+                    {{"UnitsA", "var.example"}}, openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM
                   );
         Gen->setParameter("min","0");
         Gen->setParameter("max","1");

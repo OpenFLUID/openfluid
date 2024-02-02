@@ -45,6 +45,7 @@
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -62,24 +63,23 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 
     void setInjectionInfo(); 
 
+    void setInjectionMulticolInfo();
+
 
   public:
 
     const openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method;
 
-    const openfluid::core::UnitsClass_t UnitsClass;
-
-    const openfluid::core::VariableName_t VariableName;
+    const openfluid::tools::UnitVarTriplets_t VariableTriplets;
 
     const openfluid::core::Value::Type VariableType;
 
-    const openfluid::fluidx::DataDimensions VariableDimensions;
+    const openfluid::core::Dimensions VariableDimensions;
 
     GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,
-                       const openfluid::core::UnitsClass_t& U, 
-                       const openfluid::core::VariableName_t& VN, 
-                       const openfluid::core::Value::Type VT=openfluid::core::Value::DOUBLE, 
-                       const openfluid::fluidx::DataDimensions& VD=openfluid::fluidx::DataDimensions());
+                       const openfluid::tools::UnitVarTriplets_t& V,
+                       const openfluid::core::Value::Type VT=openfluid::core::Value::NONE, 
+                       const openfluid::core::Dimensions& VD=openfluid::core::Dimensions());
 
     virtual ~GeneratorSignature() = default;
 

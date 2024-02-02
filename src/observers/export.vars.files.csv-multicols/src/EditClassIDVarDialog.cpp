@@ -225,9 +225,9 @@ void EditClassIDVarDialog::initialize(const QString& UnitsClasses, const QString
 // =====================================================================
 
 
-std::vector<ClassIDVar> EditClassIDVarDialog::getClassIDVarSettings()
+std::vector<openfluid::tools::ClassIDVarPrecision> EditClassIDVarDialog::getClassIDVarSettings()
 {
-  std::vector<ClassIDVar> Triplets;
+  std::vector<openfluid::tools::ClassIDVarPrecision> Triplets;
   std::vector<std::string> UnitsClasses;
   if (ui->AllClassesRadioButton->isChecked())
   {
@@ -293,10 +293,10 @@ std::vector<ClassIDVar> EditClassIDVarDialog::getClassIDVarSettings()
     {
       for (const auto& Var : Vars)
       {
-        ClassIDVar CurrentTriplet;
-        CurrentTriplet.UnitsClassesStr = Class;
+        openfluid::tools::ClassIDVarPrecision CurrentTriplet;
+        CurrentTriplet.UnitsClass = Class;
         CurrentTriplet.UnitsIDsStr = Unit;
-        CurrentTriplet.VariablesStr = Var;
+        CurrentTriplet.VariableName = Var;
         CurrentTriplet.HasPrecision = HasPrecision;
         CurrentTriplet.Precision = Precision;
         

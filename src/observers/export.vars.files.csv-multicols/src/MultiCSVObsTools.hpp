@@ -45,6 +45,7 @@
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 #include "../../CsvObserverBase.hpp"
 
@@ -75,47 +76,15 @@ class MultiCSVFormat: public CSVFormat
  // =====================================================================
 
 
-class ClassIDVar
-{
-  public:
-    
-    openfluid::core::UnitsClass_t UnitsClassesStr;
-
-    std::string UnitsIDsStr;
-
-    openfluid::core::VariableName_t VariablesStr;
-    
-    bool HasPrecision;
-    unsigned int Precision;
-    
-    std::string FloatFormat;
-    
-    ClassIDVar();
-    
-    ClassIDVar(openfluid::core::UnitsClass_t Classes, std::string IDs, openfluid::core::VariableName_t Vars, 
-              unsigned int Precision, std::string FloatFormat) : 
-        UnitsClassesStr(Classes), UnitsIDsStr(IDs), VariablesStr(Vars), Precision(Precision), FloatFormat(FloatFormat)
-    {
-      
-    }
-    
-    std::string GetClassIDVarString(bool WithPrecision);
-};
-
-
- // =====================================================================
- // =====================================================================
-
-
 class CSVMultiSet
 {
   public:
       
     std::string Selection;
     
-    std::vector<ClassIDVar> SelectionList;
+    std::vector<openfluid::tools::ClassIDVarPrecision> SelectionList;
     
-    std::vector<ClassIDVar> ExpandedSelection;
+    std::vector<openfluid::tools::ClassIDVarPrecision> ExpandedSelection;
 
     std::string FormatName;
 
@@ -136,7 +105,7 @@ typedef std::map<std::string, MultiCSVFormat> MultiFormatMap_t;
 // =====================================================================
 
 
-std::vector<ClassIDVar> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
+std::vector<openfluid::tools::ClassIDVarPrecision> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
                                                         const unsigned int DefaultPrecision, 
                                                         const std::string& DefaultFloatFormat);
 

@@ -50,7 +50,7 @@ namespace openfluid { namespace machine {
 
 
 template<class T=double>
-class OPENFLUID_API FixedGenerator : public Generator
+class OPENFLUID_API FixedGenerator : public MonoGenerator
 {
   private:
 

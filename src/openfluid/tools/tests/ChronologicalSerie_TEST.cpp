@@ -34,6 +34,7 @@
   @file ChronologicalSerie_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -69,9 +70,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_operations)
 {
 
-  openfluid::tools::ChronItem_t B, A;
+  openfluid::tools::ChronItem_t<double> B, A;
 
-  openfluid::tools::ChronologicalSerie CS1;
+  openfluid::tools::ChronologicalSerie<double> CS1;
 
   CS1.push_back(std::make_pair(openfluid::core::DateTime(2013,06,26,0,0,0),15.3));
   CS1.push_back(std::make_pair(openfluid::core::DateTime(2013,06,26,1,0,0),15.1));

@@ -1,5 +1,6 @@
 
 SET(OPENFLUID_MACHINE_CPP Generator.cpp FixedGenerator.cpp RandomGenerator.cpp InjectGenerator.cpp InterpGenerator.cpp
+                          MultiInjectGenerator.cpp
                           GeneratorSignature.cpp
                           ModelInstance.cpp MonitoringInstance.cpp
                           DynamicLib.cpp
@@ -13,6 +14,7 @@ SET(OPENFLUID_MACHINE_CPP Generator.cpp FixedGenerator.cpp RandomGenerator.cpp I
 
 SET(OPENFLUID_MACHINE_HPP ModelItemInstance.hpp
                           Generator.hpp FixedGenerator.hpp RandomGenerator.hpp InjectGenerator.hpp InterpGenerator.hpp
+                          MultiInjectGenerator.hpp
                           GeneratorSignature.hpp
                           WareInstance.hpp ObserverInstance.hpp
                           ModelInstance.hpp MonitoringInstance.hpp

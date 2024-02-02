@@ -356,8 +356,7 @@ void ModelWidget::addGenerator()
   if (AddGenDlg.exec() == QDialog::Accepted)
   {
     openfluid::fluidx::GeneratorDescriptor* GenDesc =
-        new openfluid::fluidx::GeneratorDescriptor(AddGenDlg.getVariableName().toStdString(),
-                                                   AddGenDlg.getUnitClass().toStdString(),
+        new openfluid::fluidx::GeneratorDescriptor(AddGenDlg.getVariableTriplets(),
                                                    AddGenDlg.getMethod(),
                                                    AddGenDlg.getVarType(),
                                                    AddGenDlg.getDimensions()
@@ -372,8 +371,8 @@ void ModelWidget::addGenerator()
 
     if (!Reg->hasGenerator(GenID))
     {
-      Reg->addGenerator({GenDesc->getGeneratorMethod(),GenDesc->getUnitsClass(),
-                          GenDesc->getVariableName(),
+      Reg->addGenerator({GenDesc->getGeneratorMethod(),
+                          GenDesc->getVariableTriplets(),
                           GenDesc->getVariableType(),
                           GenDesc->getVariableDimensions()
                          });
@@ -549,8 +548,8 @@ void ModelWidget::updateCoupledModel()
 
       if (!Reg->hasGenerator(GenID))
       {
-        Reg->addGenerator({GenDesc->getGeneratorMethod(),GenDesc->getUnitsClass(),
-                           GenDesc->getVariableName(),
+        Reg->addGenerator({GenDesc->getGeneratorMethod(),
+                           GenDesc->getVariableTriplets(),
                            GenDesc->getVariableType(),
                            GenDesc->getVariableDimensions()
                            });

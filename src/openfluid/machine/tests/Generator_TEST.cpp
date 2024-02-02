@@ -82,15 +82,13 @@ class TestSimulation
         ->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.TestSimulation");
 
       SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),
-                                                                openfluid::core::DateTime(2012,1,1,0,3,19),60);
+                                                                openfluid::core::DateTime(2012,1,1,6,0,0),3660);
 
       SB.spatialGraph().addUnit(openfluid::core::SpatialUnit("SU",1,1));
       SB.spatialGraph().addUnit(openfluid::core::SpatialUnit("SU",2,1));
 
       Monitoring = std::make_unique<openfluid::machine::MonitoringInstance>(SB);
-
       Listener = std::make_unique<openfluid::machine::MachineListener>();
-
       MInstance = std::make_unique<openfluid::machine::ModelInstance>(SB,Listener.get());
     }
   
@@ -156,8 +154,8 @@ BOOST_AUTO_TEST_CASE(check_random_scalar)
   {
     //DOUBLE
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
-                                            "SU", 
-                                            "a"};
+                                            {{"SU","a"}}};
+                                            
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}};
 
     TestSimulation TS;
@@ -173,11 +171,11 @@ BOOST_AUTO_TEST_CASE(check_random_scalar)
     TS2.wholeSimulation();
     BOOST_ASSERT(RandomValue != asDouble(TS2.getLatestValue("SU", 1, "a")));
   }
+
   {
     //INT
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
-                                             "SU", 
-                                             "b", 
+                                             {{"SU","b"}},
                                              openfluid::core::Value::INTEGER};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20000"}};
 
@@ -197,8 +195,7 @@ BOOST_AUTO_TEST_CASE(check_random_scalar)
   {
     //BOOLEAN
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
-                                             "SU", 
-                                             "b", 
+                                             {{"SU","b"}},
                                              openfluid::core::Value::BOOLEAN};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}};
 
@@ -210,8 +207,7 @@ BOOST_AUTO_TEST_CASE(check_random_scalar)
   {
     //STRING
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
-                                             "SU", 
-                                             "b", 
+                                             {{"SU","b"}},
                                              openfluid::core::Value::STRING};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}};
 
@@ -233,10 +229,9 @@ BOOST_AUTO_TEST_CASE(check_random_vector)
   {
     // TEST VECTOR INTEGER
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
-                                            "SU", 
-                                            "a", 
+                                            {{"SU","a"}}, 
                                              openfluid::core::Value::INTEGER,
-                                             openfluid::fluidx::DataDimensions(3)};
+                                             openfluid::core::Dimensions(3)};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20000"}};
 
     TestSimulation TS;
@@ -248,10 +243,9 @@ BOOST_AUTO_TEST_CASE(check_random_vector)
   {
     // TEST VECTOR BOOL
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
-                                            "SU", 
-                                            "a", 
+                                             {{"SU","a"}}, 
                                              openfluid::core::Value::BOOLEAN,
-                                             openfluid::fluidx::DataDimensions(3)};
+                                             openfluid::core::Dimensions(3)};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}};
 
     TestSimulation TS;
@@ -264,10 +258,9 @@ BOOST_AUTO_TEST_CASE(check_random_vector)
   // VECTOR OF DOUBLE
 
   openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
-                                            "SU", 
-                                            "a", 
+                                            {{"SU","a"}}, 
                                              openfluid::core::Value::DOUBLE,
-                                             openfluid::fluidx::DataDimensions(3)};
+                                             openfluid::core::Dimensions(3)};
   {
     // TEST VECTOR CELLS NOT ID
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"identicalcells", "false"}};
@@ -305,8 +298,7 @@ BOOST_AUTO_TEST_CASE(check_fixed_scalar)
   {
     //DOUBLE
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                            "SU", 
-                                            "a"};
+                                            {{"SU","a"}}};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "32"}};
 
     TestSimulation TS;
@@ -319,8 +311,7 @@ BOOST_AUTO_TEST_CASE(check_fixed_scalar)
   {
     //INTEGER
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                             "SU", 
-                                             "b", 
+                                             {{"SU","b"}}, 
                                              openfluid::core::Value::INTEGER};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "2"}};
 
@@ -334,8 +325,7 @@ BOOST_AUTO_TEST_CASE(check_fixed_scalar)
   {
     //BOOLEAN
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                             "SU", 
-                                             "b", 
+                                             {{"SU","b"}}, 
                                              openfluid::core::Value::BOOLEAN};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "true"}};
 
@@ -348,8 +338,7 @@ BOOST_AUTO_TEST_CASE(check_fixed_scalar)
   {
     //STRING
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                             "SU", 
-                                             "b", 
+                                             {{"SU","b"}}, 
                                              openfluid::core::Value::STRING};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "foo bar"}};
 
@@ -371,10 +360,9 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
   {
     // TEST VECTOR INT
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                            "SU", 
-                                            "a", 
+                                             {{"SU","a"}}, 
                                              openfluid::core::Value::INTEGER,
-                                             openfluid::fluidx::DataDimensions(3)};
+                                             openfluid::core::Dimensions(3)};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "3"}};
 
     TestSimulation TS;
@@ -386,10 +374,9 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
   {
     // TEST VECTOR BOOL
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                            "SU", 
-                                            "a", 
+                                             {{"SU","a"}}, 
                                              openfluid::core::Value::BOOLEAN,
-                                             openfluid::fluidx::DataDimensions(3)};
+                                             openfluid::core::Dimensions(3)};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "true"}};
 
     TestSimulation TS;
@@ -401,10 +388,9 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
   {
     // TEST VECTOR STRING
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                            "SU", 
-                                            "a", 
+                                             {{"SU","a"}}, 
                                              openfluid::core::Value::STRING,
-                                             openfluid::fluidx::DataDimensions(3)};
+                                             openfluid::core::Dimensions(3)};
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "foo"}};
 
     TestSimulation TS;
@@ -417,10 +403,9 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
   // VECTOR OF DOUBLE
 
   openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                            "SU", 
-                                            "a", 
+                                            {{"SU","a"}}, 
                                              openfluid::core::Value::DOUBLE,
-                                             openfluid::fluidx::DataDimensions(3)};
+                                             openfluid::core::Dimensions(3)};
   {
     // TEST VECTOR CELLS FROM VAL
     openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "2.4"}};
@@ -453,6 +438,197 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
 
     TestSimulation TS;
     TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+ 
+
+BOOST_AUTO_TEST_CASE(check_inject)
+{
+  {
+    // REGULAR INJECTION
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT, 
+                                            {{"TestUnits","tests.inject"}}};
+    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinject.xml"}, 
+                                            {"distribution", "distri.dat"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    openfluid::base::RunContextManager::instance()->setInputDir(
+      CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators");
+    TS.SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2000,01,01,0,0,0),
+                                                                openfluid::core::DateTime(2000,01,01,1,0,0),60);
+    std::map<int, int> UnitsInfos = {{1,1}, {2,2}, {3,1}, {4,3}, {5,1}};
+    for (auto& UnitInfos : UnitsInfos)
+    {
+      TS.SB.spatialGraph().addUnit(openfluid::core::SpatialUnit("TestUnits",UnitInfos.first,UnitInfos.second));
+    }
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("TestUnits", 1, "tests.inject")), 60, 0.00001);
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("TestUnits", 2, "tests.inject")), 0.0, 0.00001);
+  }
+  {
+    // Missing file
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT, 
+                                            {{"TestUnits","tests.inject"}}};
+    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinject_MISSING.xml"}, 
+                                            {"distribution", "distri.dat"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_interp)
+{
+  {
+    // REGULAR INTERPOLATION
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP, 
+                                            {{"TestUnits", "tests.interp"}}};
+    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinterp.xml"}, 
+                                            {"distribution", "distri.dat"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    openfluid::base::RunContextManager::instance()->setInputDir(
+      CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.Generators");
+    TS.SB.simulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2000,01,01,0,0,0),
+                                                                openfluid::core::DateTime(2000,01,01,1,0,0),60);
+    std::map<int, int> UnitsInfos = {{1,1}, {2,2}, {3,1}, {4,3}, {5,1}};
+    for (auto& UnitInfos : UnitsInfos)
+    {
+      TS.SB.spatialGraph().addUnit(openfluid::core::SpatialUnit("TestUnits",UnitInfos.first,UnitInfos.second));
+    }
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("TestUnits", 1, "tests.interp")), -9, 0.00001);
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("TestUnits", 2, "tests.interp")), 109.94, 0.01);
+  }
+  {
+    // Missing file
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP, 
+                                            {{"TestUnits", "tests.interp"}}};
+    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinterp_MISSING.xml"}, 
+                                            {"distribution", "distri.dat"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+  
+
+BOOST_AUTO_TEST_CASE(check_inject_multi)
+{
+  {
+    //EXPLICIT COLUMNS
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+      openfluid::tools::deserializeVarTriplets("SU#1:var.a;SU#2:var.a;SU#1:var.b;SU#2:var.b")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_out.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 1, "var.b")), 0.03, 0.00001);
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 2, "var.a")), 3.5823, 0.00001);
+  }
+  {
+    //GENERIC COLUMNS IN SELECTION
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#*:var.a;SU#*:var.b")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_out.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 1, "var.b")), 0.03, 0.00001);
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 2, "var.a")), 3.5823, 0.00001);
+  }
+  {
+    //GENERIC COLUMNS IN DATA FILE
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#1:var.a;SU#1:var.b")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_joker.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 1, "var.b")), 0.03, 0.00001);
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 1, "var.a")), 2.5632, 0.00001);
+  }
+  {
+    //GENERIC COLUMNS IN DATA FILE AND SELECTION
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#*:var.a;SU#*:var.b")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_joker.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 1, "var.a")), 2.5632, 0.00001);
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 1, "var.b")), 0.03, 0.00001);
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 2, "var.a")), 3.5823, 0.00001);
+  }
+  {
+    //Missing data file
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#*:var.a;SU#*:var.b")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_out_MISSING.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+  {
+    //Missing column
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#*:var.a;SU#*:var.c")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_out.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+  {
+    //Missing unit in datafile
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#*:var.a;SU#*:var.c")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_out.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.SB.spatialGraph().addUnit(openfluid::core::SpatialUnit("SU",10,2));
     TS.addGenerator(Specs, Params);
     BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
   }

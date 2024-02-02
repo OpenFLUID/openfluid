@@ -47,7 +47,7 @@
 namespace openfluid { namespace machine {
 
 
-InterpGenerator::InterpGenerator() : Generator(),
+InterpGenerator::InterpGenerator() : MonoGenerator(),
   m_IsMin(false), m_IsMax(false), m_Min(0.0), m_Max(0.0),
   m_SourcesFile(""),m_DistriFile(""),m_DistriBindings(nullptr)
 {

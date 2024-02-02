@@ -47,6 +47,7 @@
 #include <openfluid/machine/GeneratorSignature.hpp>
 #include <openfluid/machine/WareRegistry.hpp>
 #include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -67,24 +68,19 @@ class OPENFLUID_API GeneratorSpecs
       openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::NONE;
 
     /**
-      The units class on which the genrators produces the variable
+      The triplets of the produced variable
     */
-    openfluid::core::UnitsClass_t UnitsClass;
-
-    /**
-      The name of the produced variable
-    */
-    openfluid::core::VariableName_t VariableName;
+    openfluid::tools::UnitVarTriplets_t VarTriplets;
 
     /**
       The type of the produced variable (at scalar level)
     */
-    openfluid::core::Value::Type VariableType = openfluid::core::Value::DOUBLE;
+    openfluid::core::Value::Type VariableType = openfluid::core::Value::DOUBLE; // NONE?
     
     /**
       The dmensions of the produced variable.
     */
-    openfluid::fluidx::DataDimensions VariableDimensions = openfluid::fluidx::DataDimensions();
+    openfluid::core::Dimensions VariableDimensions = openfluid::core::Dimensions();
 };
 
 
