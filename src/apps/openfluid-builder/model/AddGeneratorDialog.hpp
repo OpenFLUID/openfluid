@@ -70,6 +70,8 @@ class AddGeneratorDialog : public openfluid::ui::common::MessageDialog
 
     void selectDistriFile();
 
+    void extractHeader();
+
     void refresh();
 
 

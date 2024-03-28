@@ -56,6 +56,7 @@ inline std::vector<openfluid::tools::ClassIDVar> stringSelectionToClassIDVarList
                                                                                  bool RemoveFirst=false)
 {
   std::vector<std::string> Columns = openfluid::tools::split(SelectionStr, ";");
+   //TODO Extract and make split char consistent between ops
   
   
   std::vector<openfluid::tools::ClassIDVar> CSVTriplets;
@@ -64,8 +65,8 @@ inline std::vector<openfluid::tools::ClassIDVar> stringSelectionToClassIDVarList
   {
     const std::string& Column = Columns[i];
     // parse and create CSVTriplet
-    std::size_t HashPosition = Column.find("#");
-    std::size_t ColonPosition = Column.find(":");
+    std::size_t HashPosition = Column.find("#");  // TODO extract default chars
+    std::size_t ColonPosition = Column.find(":");  // TODO extract default chars
     
     openfluid::tools::ClassIDVar CurrentCSVTriplet;
     
@@ -238,6 +239,8 @@ class OPENFLUID_API MulticolDistributionBindings : public GenericDistributionBin
     
     TripletLocation_t m_ColBySelectionTriplets;
 
+    inline static const std::string s_MissingValueString = "NA";  // TODO set as parameter transmitted by calling object
+
 
   public:
 
@@ -245,7 +248,13 @@ class OPENFLUID_API MulticolDistributionBindings : public GenericDistributionBin
                          const std::string& DateFormat = "%Y%m%dT%H%M%S",
                          const std::string& ColSeparators = ";");
 
-    bool getValue(const openfluid::core::UnitsClass_t& UnitsClass, 
+
+    /**
+      Apply to Value the wanted value from distribution table for given variable at given time
+      @return the status as int: 1 for success, 0 for expected NA, -1 for failed conversion from string to double
+      @throw openfluid::base::FrameworkException when wrong number of columns
+    */
+    int getValue(const openfluid::core::UnitsClass_t& UnitsClass, 
                   const openfluid::core::UnitID_t& UnitID, 
                   const openfluid::core::VariableName_t& VariableName, 
                   const openfluid::core::DateTime& DT,

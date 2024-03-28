@@ -38,16 +38,19 @@
 */
 
 
+#include <fstream>
+
 #include <QPushButton>
 #include <QFileDialog>
 #include <QMessageBox>
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/VarHelpers.hpp>
 #include <openfluid/ui/common/ShortcutCompleter.hpp>
 #include <openfluid/ui/config.hpp>
-#include <openfluid/tools/VarHelpers.hpp>
-#include <openfluid/tools/IDHelpers.hpp>
 
 #include "ui_AddGeneratorDialog.h"
 #include "AddGeneratorDialog.hpp"
@@ -80,11 +83,14 @@ AddGeneratorDialog::AddGeneratorDialog(QWidget* Parent) :
   connect(ui->BooleanRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
   connect(ui->StringRadioButton,SIGNAL(clicked()),this,SLOT(refresh()));
 
+  connect(ui->FromFileHeaderButton,SIGNAL(clicked()),this,SLOT(extractHeader()));
+
+  connect(ui->DataFileEdit,SIGNAL(textChanged(const QString&)),this,SLOT(refresh()));
   connect(ui->VarNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitsClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   
   connect(ui->DataFileEdit,SIGNAL(textChanged(const QString&)),this,SLOT(checkGlobal()));
-  connect(ui->SelectionLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
+  connect(ui->SelectionLineEdit,SIGNAL(textChanged(const QString&)),this,SLOT(checkGlobal()));
   
 
   connect(ui->DataFileBrowseButton,SIGNAL(clicked()),this,SLOT(selectDataFile()));
@@ -180,6 +186,7 @@ void AddGeneratorDialog::refresh()
   {
     ui->RandomIdenticalValueCheckbox->setEnabled(false);
   }
+  ui->FromFileHeaderButton->setEnabled(!ui->DataFileEdit->text().isEmpty());
 }
 
 
@@ -268,7 +275,7 @@ void AddGeneratorDialog::checkGlobal()
       }
       else
       {
-        ui->SelectionLineEdit->setStyleSheet("background-color: red");
+        ui->SelectionLineEdit->setStyleSheet("color: red");
         setMessage(tr("Selection format is not valid"));
       }
     }
@@ -502,6 +509,30 @@ void AddGeneratorDialog::selectDistriFile()
     QMessageBox::critical(QApplication::activeWindow(),"OpenFLUID-Builder",
                           tr("Choosen file is not located in the input dataset of the project"),QMessageBox::Close);
   }
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void AddGeneratorDialog::extractHeader()
+{
+  std::ifstream DataFile(openfluid::tools::Filesystem::joinPath({
+                          openfluid::base::RunContextManager::instance()->getInputDir(), 
+                          ui->DataFileEdit->text().toStdString()}));
+  if (DataFile.good())
+  {
+    std::string HeaderLine;
+    std::getline(DataFile, HeaderLine);
+
+    // Remove first column of line
+    HeaderLine = HeaderLine.substr(HeaderLine.find(";")+1); //TODO Extract and make split char consistent between ops
+    ui->SelectionLineEdit->setText(QString::fromStdString(HeaderLine));
+  }
+  else
+  {
+    setMessage(tr("Data file not working"));
+  }
 }
 
