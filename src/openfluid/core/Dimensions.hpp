@@ -53,14 +53,14 @@ class OPENFLUID_API Dimensions
 {
 
   private:
-    static const char s_BeginningSymbol  = '[';
-    static const char s_SeparatorSymbol = ',';
-    static const char s_EndSymbol = ']';
 
     void applyDimensions(std::string SerializedVariableSize);
 
 
   public:
+    static const char s_BeginningSymbol;
+    static const char s_SeparatorSymbol;
+    static const char s_EndSymbol;
 
     enum class DimensionType {SCALAR, VECTOR, MATRIX};
 

@@ -595,6 +595,9 @@ BOOST_AUTO_TEST_CASE(check_inject_multi)
     BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 1, "var.b")), 0.03, 0.00001);
     BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 2, "var.a")), 3.5823, 0.00001);
   }
+
+
+  // BAD SETTING
   {
     //Missing data file
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
@@ -631,5 +634,65 @@ BOOST_AUTO_TEST_CASE(check_inject_multi)
     TS.SB.spatialGraph().addUnit(openfluid::core::SpatialUnit("SU",10,2));
     TS.addGenerator(Specs, Params);
     BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+
+  // BAD DATA
+  {
+    // nan
+    std::cout << "Checking nan value" << std::endl;
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#1:var.a;SU#2:var.b")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_na.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+    // when nan found, latest available value is the one at previous time
+    BOOST_REQUIRE_CLOSE(asDouble(TS.getLatestValue("SU", 2, "var.b")), 0.04, 0.00001);
+  }
+  {
+    // missing
+    std::cout << "Checking missing value" << std::endl;
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#1:var.a;SU#2:var.b")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_missing.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    try
+    {
+      TS.wholeSimulation();
+      BOOST_CHECK_MESSAGE(false, "Simulation not in exception");
+    }
+    catch (const openfluid::base::FrameworkException& E)
+    {
+      BOOST_REQUIRE(std::string(E.what()).find("Wrong number of columns") != std::string::npos);
+    }
+  }
+  {
+    // wrong type
+    std::cout << "Checking wrong value" << std::endl;
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#1:var.a;SU#2:var.b")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_wrongformat.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    try
+    {
+      TS.wholeSimulation();
+      BOOST_CHECK_MESSAGE(false, "Simulation not in exception");
+    }
+    catch (const openfluid::base::FrameworkException& E)
+    {
+      // Expecting an exception explaining that the value has not been injected
+      BOOST_REQUIRE(std::string(E.what()).find("Value not injected") != std::string::npos);
+    }
   }
 }

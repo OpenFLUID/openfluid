@@ -38,6 +38,7 @@
 
 
 #include <algorithm>
+#include <regex>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/Dimensions.hpp>
@@ -45,6 +46,10 @@
 
 
 namespace openfluid { namespace core {
+
+const char Dimensions::s_BeginningSymbol  = '[';
+const char Dimensions::s_SeparatorSymbol = ',';
+const char Dimensions::s_EndSymbol = ']';
 
 
 Dimensions::Dimensions() : Type(DimensionType::SCALAR), Cols(1), Rows(1)
@@ -102,14 +107,20 @@ void Dimensions::applyDimensions(std::string SerializedVariableSize)
       applyDimensions(s_BeginningSymbol+SerializedVariableSize+s_EndSymbol);
     }
   }
-  else 
+  else  // String begins with a '['
   {
+    if (SerializedVariableSize[SerializedVariableSize.size()-1] != s_EndSymbol)
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+              "generator dimensions parsing failure: bad ending symbol");
+
+    }
     std::string TrimmedStrDims = SerializedVariableSize.substr(1, SerializedVariableSize.size()-2);
-    unsigned int SplittedGroups = std::count(TrimmedStrDims.begin(), TrimmedStrDims.end(), ',');
+    unsigned int SplittedGroups = std::count(TrimmedStrDims.begin(), TrimmedStrDims.end(), s_SeparatorSymbol);
     if (SplittedGroups > 1)
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-              "generator dimensions parsing failure");
+              "generator dimensions parsing failure: too many groups");
     }
     else if (SplittedGroups == 1)
     {
@@ -120,16 +131,22 @@ void Dimensions::applyDimensions(std::string SerializedVariableSize)
       {
         // Not using openfluid::tools::split since not reachable from core namespace
         Cols = std::stoi(TrimmedStrDims.substr(0, P));
-        Rows = std::stoi(TrimmedStrDims.substr(P));
+        Rows = std::stoi(TrimmedStrDims.substr(P+1));
       }
       catch(const std::exception& e)
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                "generator dimensions parsing failure");
+                "generator dimensions parsing failure: string to int conversion");
       }
     }
     else
     {
+      // String does not contain separator
+      if (!std::regex_match(TrimmedStrDims, std::regex("\\d+")))
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                "generator dimensions parsing failure: not an integer");
+      }
       Type = DimensionType::VECTOR;
       try
       {
@@ -138,7 +155,7 @@ void Dimensions::applyDimensions(std::string SerializedVariableSize)
       catch(const std::exception& e)
       {
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                "generator dimensions parsing failure");
+                "generator dimensions parsing failure: string to int conversion");
       }
     }
   }

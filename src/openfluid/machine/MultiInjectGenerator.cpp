@@ -213,12 +213,17 @@ openfluid::base::SchedulingRequest MultiInjectGenerator::runStep()
     {
       for (const auto& Var : VarByUnitClass.second)
       {
-        if (!m_DistriBindings->getValue(VarByUnitClass.first, LU->getID(), Var, CurrentDT,Value))
+        int Status = m_DistriBindings->getValue(VarByUnitClass.first, LU->getID(), Var, CurrentDT,Value);
+        if (Status == 1)
         {
-          Value = 0.0;
+          OPENFLUID_AppendVariable(LU,Var,Value);
         }
-
-        OPENFLUID_AppendVariable(LU,Var,Value);
+        else if (Status == -1)
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, 
+                "Value not injected since issue occured during multi-column injection: " + VarByUnitClass.first + \
+                "#" + std::to_string(LU->getID()) + ":" + Var + " at time " + CurrentDT.getAsISOString());
+        }
       }
     }
   }

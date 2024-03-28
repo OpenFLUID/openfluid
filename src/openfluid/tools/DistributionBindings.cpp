@@ -144,7 +144,7 @@ MulticolDistributionBindings::MulticolDistributionBindings(const std::string& Da
 // =====================================================================
 
 
-bool MulticolDistributionBindings::getValue(const openfluid::core::UnitsClass_t& UnitsClass, 
+int MulticolDistributionBindings::getValue(const openfluid::core::UnitsClass_t& UnitsClass, 
                                     const openfluid::core::UnitID_t& UnitID, 
                                     const openfluid::core::VariableName_t& VariableName, 
                                     const openfluid::core::DateTime& DT,
@@ -156,6 +156,13 @@ bool MulticolDistributionBindings::getValue(const openfluid::core::UnitsClass_t&
 
   if (RNV.isAvailable && RNV.NextValue.first == DT)
   {
+    if (RNV.NextValue.second.size() != m_ColBySelectionTriplets.size())
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                "Wrong number of columns at time "+DT.getAsISOString());
+    }
+
+
     std::map<std::vector<std::string>, unsigned int>::iterator It = 
       m_ColBySelectionTriplets.find({UnitsClass, VariableName, std::to_string(UnitID)});
     if (It == m_ColBySelectionTriplets.end())
@@ -164,11 +171,22 @@ bool MulticolDistributionBindings::getValue(const openfluid::core::UnitsClass_t&
     }
     if (It != m_ColBySelectionTriplets.end())
     {
-      openfluid::core::StringValue(RNV.NextValue.second[(*It).second]).toDoubleValue(Value);
-      return true;
+      std::string CurrentValue = RNV.NextValue.second[(*It).second];
+      if (CurrentValue == s_MissingValueString)
+      {
+        return 0; // Doing nothing when NA detected
+      }
+      if (openfluid::core::StringValue(CurrentValue).toDoubleValue(Value))
+      {
+        return 1;
+      }
+      else
+      {
+        return -1; // sending error code instead of throw to let calling function handle it
+      }
     }
   }
-  return false;
+  return -1;
 }
 
 

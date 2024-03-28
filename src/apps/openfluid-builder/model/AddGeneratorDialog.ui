@@ -466,7 +466,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="0" column="1">
+               <item row="1" column="2">
+                <widget class="QPushButton" name="FromFileHeaderButton">
+                 <property name="text">
+                  <string>Extract from data file</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1" colspan="2">
                 <widget class="QLineEdit" name="SelectionLineEdit">
                  <property name="text">
                   <string/>
@@ -475,6 +482,19 @@
                   <string>UnitClass#UnitID:var.name;UnitClass#UnitID:other.var.name</string>
                  </property>
                 </widget>
+               </item>
+               <item row="1" column="1">
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </widget>
