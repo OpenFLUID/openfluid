@@ -93,6 +93,11 @@ void AddUnitsClassDialog::checkGlobal()
   {
     setMessage(tr("Units class name already exists"));
   }
+  else if (ui->ClassEdit->text().toStdString().find("#") != std::string::npos || 
+           ui->ClassEdit->text().toStdString().find(":") != std::string::npos)
+  {
+    setMessage(tr("'#' and ':' are forbidden for units class name"));
+  }
   else if (ui->UnitIDEdit->text().isEmpty())
   {
     setMessage(tr("Unit ID cannot be empty"));
