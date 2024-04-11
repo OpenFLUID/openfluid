@@ -695,4 +695,43 @@ BOOST_AUTO_TEST_CASE(check_inject_multi)
       BOOST_REQUIRE(std::string(E.what()).find("Value not injected") != std::string::npos);
     }
   }
+  {
+    //wrong SU in selection
+    std::cout << "Checking wrong SU in selection" << std::endl;
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                  openfluid::tools::deserializeVarTriplets("SU#1:var.a;SU#2:var.a;SU#1:var.b;SU#2:var.b;SU#3:var.a")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_out.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+  {
+    //Missing spatial unit joker
+    std::cout << "Checking missing spatial unit" << std::endl;
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#1:var.a")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_out.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+  {
+    //Missing spatial unit joker
+    std::cout << "Checking missing spatial unit joker" << std::endl;
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                            openfluid::tools::deserializeVarTriplets("SU#1:var.a")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                             CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_joker.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
 }
