@@ -44,6 +44,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
+#include <openfluid/config.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
@@ -319,8 +320,8 @@ openfluid::tools::UnitVarTriplets_t AddGeneratorDialog::getVariableTriplets() co
   }
   else
   {
-    Triplets.push_back(openfluid::tools::ClassIDVar(ui->UnitsClassEdit->text().toStdString(), "*", 
-                       ui->VarNameEdit->text().toStdString()));
+    Triplets.push_back(openfluid::tools::ClassIDVar(ui->UnitsClassEdit->text().toStdString(), 
+                         openfluid::config::CHAR_JOKER, ui->VarNameEdit->text().toStdString()));
   }
   return Triplets;
 }

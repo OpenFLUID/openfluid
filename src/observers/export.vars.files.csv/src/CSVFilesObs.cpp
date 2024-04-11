@@ -41,6 +41,7 @@
 #include <sstream>
 #include <iomanip>
 
+#include <openfluid/config.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
@@ -196,7 +197,7 @@ class CSVFilesObserver : public CSVFilesObserverBase
           std::vector<openfluid::core::VariableName_t> VarArray;
           VarArray.clear();
 
-          if (SetFiles.second.SetDefinition.VariableName == "*")
+          if (SetFiles.second.SetDefinition.VariableName == openfluid::config::CHAR_JOKER)
           {
             // process all variables
             VarArray =
@@ -227,7 +228,7 @@ class CSVFilesObserver : public CSVFilesObserverBase
           }
 
 
-          if (SetFiles.second.SetDefinition.UnitsIDsStr == "*")
+          if (SetFiles.second.SetDefinition.UnitsIDsStr == openfluid::config::CHAR_JOKER)
           {
             // all units
 

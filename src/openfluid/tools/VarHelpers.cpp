@@ -81,9 +81,9 @@ UnitVarTriplets_t deserializeVarTriplets(const std::string& Selection)
     std::string UnitsClass = SubS.substr(0, PosHash);
     std::string ID = SubS.substr(PosHash+1,SubS.find(":")-(PosHash+1));
     std::string VarName = SubS.substr(SubS.find(":")+1);
-    if (VarName.empty() || UnitsClass.empty())
+    if (VarName.empty() || UnitsClass.empty() || ID.empty())
     {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Error in variable parsing");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Error in variable parsing: "+Selection);
     }
     ClassIDVar VarTriplet(UnitsClass, ID, VarName);
     if (std::count(ParsedSelection.begin(), ParsedSelection.end(), VarTriplet) == 0)  // ensures unicity of Var/Class/ID

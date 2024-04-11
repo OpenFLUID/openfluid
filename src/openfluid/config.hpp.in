@@ -229,6 +229,10 @@ const std::string URL_ISSUES = "@OPENFLUID_URL_ISSUES@";
 const std::string DEBUG_PREFIX = "@OPENFLUID_DEBUG_PREFIX@";
 
 
+// Symbols
+const std::string CHAR_JOKER = "*";
+
+
 } } //namespaces
 
 #endif /* __OPENFLUID_CONFIG_HPP__ */

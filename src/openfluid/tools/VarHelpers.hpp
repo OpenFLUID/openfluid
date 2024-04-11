@@ -44,6 +44,7 @@
 #include <map>
 #include <vector>
 
+#include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 
@@ -113,7 +114,7 @@ struct OPENFLUID_API ClassIDVar : UnitVarPair
       if (TmpV.size() == 2)
       {
         UnitsClass = TmpV[0];
-        UnitsIDsStr = "*";
+        UnitsIDsStr = openfluid::config::CHAR_JOKER;
         VariableName = TmpV[1];
       }
       else if (Data.size() == 3)

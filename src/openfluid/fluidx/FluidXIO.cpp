@@ -252,7 +252,7 @@ class FluidXReaderImplementation
             {
               if (!VarName.empty())
               {
-                VarTriplets.push_back(openfluid::tools::ClassIDVar(UnitsClass, "*", VarName));
+                VarTriplets.push_back(openfluid::tools::ClassIDVar(UnitsClass, openfluid::config::CHAR_JOKER, VarName));
               }
               else
               {
