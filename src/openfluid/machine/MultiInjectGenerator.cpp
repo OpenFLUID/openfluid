@@ -129,29 +129,79 @@ void MultiInjectGenerator::checkConsistency()
 {
   // checks that every variable in the selection is available in provided file
   openfluid::core::SpatialUnit* LU;
-  for (const auto& VarByUnitClass : m_VarsByUnitsClass)
+  openfluid::tools::MulticolDistributionBindings::TripletLocation_t ColBySelectionTriplet = 
+    m_DistriBindings->getColBySelectionTriplet();
+  
+  for (const auto& Triplet : m_VarTriplets)
   {
-    OPENFLUID_UNITS_ORDERED_LOOP(VarByUnitClass.first,LU)
+    // Check if identified ID exists for class
+    // Check if all units from class in file
+    
+    // No joker in csv
+    if (ColBySelectionTriplet.find({Triplet.UnitsClass, Triplet.VariableName, 
+          openfluid::config::CHAR_JOKER}) == ColBySelectionTriplet.end())
     {
-      for (const auto& Var : VarByUnitClass.second)
+      // checks if file contains all required ID for unit class
+      std::vector<std::string> MissingUnits;
+
+      bool FoundID = Triplet.UnitsIDsStr == openfluid::config::CHAR_JOKER;
+
+      OPENFLUID_UNITS_ORDERED_LOOP(Triplet.UnitsClass, LU)
       {
-        openfluid::tools::MulticolDistributionBindings::TripletLocation_t ColBySelectionTriplet = 
-          m_DistriBindings->getColBySelectionTriplet();
-        openfluid::tools::MulticolDistributionBindings::TripletLocation_t::iterator It = 
-          ColBySelectionTriplet.find({VarByUnitClass.first, Var, std::to_string(LU->getID())});
-        if (It == ColBySelectionTriplet.end())
+        std::string CurrentIDStr = std::to_string(LU->getID());
+        if (CurrentIDStr == Triplet.UnitsIDsStr)
         {
-          It = ColBySelectionTriplet.find({VarByUnitClass.first, Var, "*"});
+          FoundID = true;
         }
-        if (It == ColBySelectionTriplet.end())
+
+        if (ColBySelectionTriplet.find({Triplet.UnitsClass, Triplet.VariableName, 
+              CurrentIDStr}) == ColBySelectionTriplet.end())
         {
-          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-              "Variable from selection not found in data file: " + \
-              VarByUnitClass.first+"#"+std::to_string(LU->getID())+":"+Var);
+          MissingUnits.push_back(CurrentIDStr);
         }
       }
+
+      if (!FoundID)
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+              "Unit ID from selection not found in spatial domain: " + \
+              Triplet.UnitsClass + " " + Triplet.UnitsIDsStr);
+      }
+
+
+      if (MissingUnits.size() > 0)
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+              "Variable from selection not found in data file: " + \
+              Triplet.getClassIDVarString() + " for unit(s) " + openfluid::tools::join(MissingUnits, ", "));
+      }
     }
-  }
+
+    // Check if all units from class in selection
+    //   check if joker in selection
+    if (std::find(m_VarTriplets.begin(), m_VarTriplets.end(), openfluid::tools::ClassIDVar(Triplet.UnitsClass, 
+          openfluid::config::CHAR_JOKER, Triplet.VariableName)) == m_VarTriplets.end())
+    {
+      std::vector<std::string> MissingUnits;
+      // iterate over all units of class
+      OPENFLUID_UNITS_ORDERED_LOOP(Triplet.UnitsClass, LU)
+      {
+        std::string CurrentIDStr = std::to_string(LU->getID());
+        if (std::find(m_VarTriplets.begin(), m_VarTriplets.end(), openfluid::tools::ClassIDVar(Triplet.UnitsClass, 
+              CurrentIDStr, Triplet.VariableName)) == m_VarTriplets.end())
+        {
+          MissingUnits.push_back(CurrentIDStr);
+        }
+      }
+      if (MissingUnits.size() > 0)
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+              "Unit from domain not found in selection for variable " + \
+              Triplet.VariableName + " for unit(s) "+ Triplet.UnitsClass + " " + \
+              openfluid::tools::join(MissingUnits, ", "));
+      }
+    }
+  }  
 }
 
 

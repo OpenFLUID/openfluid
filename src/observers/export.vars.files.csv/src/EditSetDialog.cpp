@@ -40,6 +40,7 @@
 
 #include <QPushButton>
 
+#include <openfluid/config.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 
@@ -153,7 +154,7 @@ void EditSetDialog::initialize(const QString& Name, const QString& Format,
   ui->FormatComboBox->setCurrentIndex(ui->FormatComboBox->findText(Format));
   ui->UnitsClassComboBox->lineEdit()->setText(UnitsClass);
 
-  if (UnitsIDs == "*")
+  if (UnitsIDs == QString::fromStdString(openfluid::config::CHAR_JOKER))
   {
     ui->AllUnitsRadioButton->setChecked(true);
   }
@@ -163,7 +164,7 @@ void EditSetDialog::initialize(const QString& Name, const QString& Format,
     ui->SelectedUnitsTextEdit->setPlainText(UnitsIDs);
   }
 
-  if (Vars == "*")
+  if (Vars == QString::fromStdString(openfluid::config::CHAR_JOKER))
   {
     ui->AllVariablesRadioButton->setChecked(true);
   }
@@ -188,13 +189,13 @@ openfluid::ware::WareParams_t EditSetDialog::getSetParams()
   std::string FormatStr = ui->FormatComboBox->currentText().toStdString();
   std::string UnitsClassStr = ui->UnitsClassComboBox->currentText().toStdString();
 
-  std::string UnitsIDsStr = "*";
+  std::string UnitsIDsStr = openfluid::config::CHAR_JOKER;
   if (ui->SelectedUnitsRadioButton->isChecked())
   {
     UnitsIDsStr = ui->SelectedUnitsTextEdit->toPlainText().trimmed().toStdString();
   }
 
-  std::string VarsStr = "*";
+  std::string VarsStr = openfluid::config::CHAR_JOKER;
   if (ui->SelectedVariablesRadioButton->isChecked())
   {
     VarsStr = ui->SelectedVariablesTextEdit->toPlainText().trimmed().toStdString();

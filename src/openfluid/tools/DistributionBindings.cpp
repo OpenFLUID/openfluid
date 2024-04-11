@@ -38,6 +38,8 @@
  */
 
 
+#include <openfluid/config.hpp>
+
 #include <openfluid/tools/DistributionBindings.hpp>
 
 
@@ -167,7 +169,7 @@ int MulticolDistributionBindings::getValue(const openfluid::core::UnitsClass_t& 
       m_ColBySelectionTriplets.find({UnitsClass, VariableName, std::to_string(UnitID)});
     if (It == m_ColBySelectionTriplets.end())
     {
-      It = m_ColBySelectionTriplets.find({UnitsClass, VariableName, "*"});
+      It = m_ColBySelectionTriplets.find({UnitsClass, VariableName, openfluid::config::CHAR_JOKER});
     }
     if (It != m_ColBySelectionTriplets.end())
     {

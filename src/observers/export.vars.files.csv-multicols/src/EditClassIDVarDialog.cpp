@@ -175,7 +175,7 @@ void EditClassIDVarDialog::checkGlobal()
 void EditClassIDVarDialog::initialize(const QString& UnitsClasses, const QString& UnitsIDs, const QString& Variables, 
                                    const bool HasPrecision, const std::size_t Precision)
 {
-  if (UnitsClasses == "*")
+  if (UnitsClasses == QString::fromStdString(openfluid::config::CHAR_JOKER))
   {
     ui->AllClassesRadioButton->setChecked(true);
   }
@@ -189,7 +189,7 @@ void EditClassIDVarDialog::initialize(const QString& UnitsClasses, const QString
     }
   }
 
-  if (UnitsIDs == "*")
+  if (UnitsIDs == QString::fromStdString(openfluid::config::CHAR_JOKER))
   {
     ui->AllUnitsRadioButton->setChecked(true);
   }
@@ -199,7 +199,7 @@ void EditClassIDVarDialog::initialize(const QString& UnitsClasses, const QString
     ui->SelectedUnitsTextEdit->setPlainText(UnitsIDs);
   }
 
-  if (Variables == "*")
+  if (Variables == QString::fromStdString(openfluid::config::CHAR_JOKER))
   {
     ui->AllVariablesRadioButton->setChecked(true);
   }
@@ -231,7 +231,7 @@ std::vector<openfluid::tools::ClassIDVarPrecision> EditClassIDVarDialog::getClas
   std::vector<std::string> UnitsClasses;
   if (ui->AllClassesRadioButton->isChecked())
   {
-    UnitsClasses.push_back("*");
+    UnitsClasses.push_back(openfluid::config::CHAR_JOKER);
   }
   else
   {
@@ -245,7 +245,7 @@ std::vector<openfluid::tools::ClassIDVarPrecision> EditClassIDVarDialog::getClas
   std::vector<std::string> UnitsIDs;
   if (ui->AllUnitsRadioButton->isChecked())
   {
-    UnitsIDs.push_back("*");
+    UnitsIDs.push_back(openfluid::config::CHAR_JOKER);
   }
   else
   {
@@ -271,7 +271,7 @@ std::vector<openfluid::tools::ClassIDVarPrecision> EditClassIDVarDialog::getClas
   std::vector<std::string> Vars;
   if (ui->AllVariablesRadioButton->isChecked())
   {
-    Vars.push_back("*");
+    Vars.push_back(openfluid::config::CHAR_JOKER);
   }
   else
   {

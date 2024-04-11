@@ -42,6 +42,7 @@
 #include <iomanip>
 #include <algorithm>
 
+#include <openfluid/config.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 
 #include "MultiCSVObsTools.hpp"
@@ -186,7 +187,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
         {
           // UNIT CLASS
           std::vector<openfluid::core::UnitsClass_t> UnitsClassArray;
-          if (Triplet.UnitsClass == "*")
+          if (Triplet.UnitsClass == openfluid::config::CHAR_JOKER)
           {
             openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
             for (UnitsIt = mp_SpatialData->allSpatialUnitsByClass()->begin();
@@ -210,7 +211,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
           for (const auto& UnitsClass : UnitsClassArray)
           {
             std::vector<openfluid::core::UnitID_t> UnitIDArray;
-            if (Triplet.UnitsIDsStr == "*")
+            if (Triplet.UnitsIDsStr == openfluid::config::CHAR_JOKER)
             {
               // all units
               OPENFLUID_UNITS_ORDERED_LOOP(UnitsClass,TmpU)
@@ -237,7 +238,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
             std::vector<openfluid::core::VariableName_t> VarArray;
             VarArray.clear();
 
-            if (Triplet.VariableName == "*")
+            if (Triplet.VariableName == openfluid::config::CHAR_JOKER)
             {
               // process all variables
               VarArray =
