@@ -103,6 +103,98 @@ BOOST_AUTO_TEST_CASE(read_json)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(compare_json)
+{
+  auto SignRef = getRefSignature();
+
+  const auto FilesPath = openfluid::tools::Path({CONFIGTESTS_INPUT_MISCDATA_DIR,"SignatureSerializer"});
+  std::ifstream InFile(FilesPath.toGeneric()+"/ref_sim.json", std::ifstream::in);
+
+  auto Json = openfluid::thirdparty::json::parse(InFile);
+
+  auto JsonRef = 
+    openfluid::waresdev::SimulatorSignatureSerializer().toJSON(SignRef);
+  
+  compareJSON(Json, JsonRef, "to_json");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(compare_json_recursive)
+{
+  auto SignRef = getRefSignature();
+
+  const auto FilesPath = openfluid::tools::Path({CONFIGTESTS_INPUT_MISCDATA_DIR,"SignatureSerializer"});
+  std::ifstream InFile(FilesPath.toGeneric()+"/ref_sim.json", std::ifstream::in);
+
+  auto Json = openfluid::thirdparty::json::parse(InFile);
+
+  auto JsonRef = 
+    openfluid::waresdev::SimulatorSignatureSerializer().toJSON(SignRef);
+
+  std::cout << "compare_json_recursive" << std::endl;
+
+  bool IsEqual = compareJSONRecursive(JsonRef, Json);
+
+  BOOST_REQUIRE(IsEqual);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(compare_json_recursive_unordered)
+{
+  auto SignRef = getRefSignature();
+
+  const auto FilesPath = openfluid::tools::Path({CONFIGTESTS_INPUT_MISCDATA_DIR,"SignatureSerializer"});
+  std::ifstream InFile(FilesPath.toGeneric()+"/ref_sim_unordered.json", std::ifstream::in);
+
+  auto Json = openfluid::thirdparty::json::parse(InFile);
+
+  auto JsonRef = 
+    openfluid::waresdev::SimulatorSignatureSerializer().toJSON(SignRef);
+
+  std::cout << "compare_json_recursive_unordered" << std::endl;
+
+  bool IsEqual = compareJSONRecursive(JsonRef, Json);
+
+  BOOST_REQUIRE(IsEqual);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(compare_json_recursive_unordered_array)
+{
+  auto SignRef = getRefSignature();
+
+  const auto FilesPath = openfluid::tools::Path({CONFIGTESTS_INPUT_MISCDATA_DIR,"SignatureSerializer"});
+  std::ifstream InFile(FilesPath.toGeneric()+"/ref_sim_unordered_array.json", std::ifstream::in);
+
+  auto Json = openfluid::thirdparty::json::parse(InFile);
+
+  auto JsonRef = 
+    openfluid::waresdev::SimulatorSignatureSerializer().toJSON(SignRef);
+
+  std::cout << "compare_json_recursive_unordered_array" << std::endl;
+
+  bool IsEqual = compareJSONRecursive(JsonRef, Json, false);
+
+  BOOST_REQUIRE(!IsEqual);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool displayExceptionMsg(const openfluid::base::FrameworkException& E)
 {
   std::cout << E.what() << std::endl;

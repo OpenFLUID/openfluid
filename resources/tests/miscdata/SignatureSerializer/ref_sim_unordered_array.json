@@ -6,12 +6,12 @@
   "status": "beta",
   "authors": [
     {
-      "name": "Kurt Cobain",
-      "email": "kurt@nirvana.org"
-    },
-    {
       "name": "Dave Grohl",
       "email": "dave@nirvana.org"
+    },
+    {
+      "name": "Kurt Cobain",
+      "email": "kurt@nirvana.org"
     },
     {
       "name": "Krist Novoselic",

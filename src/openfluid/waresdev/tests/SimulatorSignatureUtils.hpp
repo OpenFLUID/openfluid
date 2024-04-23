@@ -73,7 +73,7 @@ openfluid::ware::SimulatorSignature getRefSignature()
 
   Sign.Issues.add({101, "Issue X","This is the issue X",{"bug","results"},"Dave",
                    openfluid::core::DateTime(1983,07,22,16,47,11),
-                   openfluid::core::DateTime::now()});
+                   openfluid::core::DateTime(2024,02,29,12,16,52)});
   Sign.Issues.add({102, "Issue Y","This is\nthe issue Y",{"feature","IO"},"Kurt",
                    openfluid::core::DateTime(),
                    openfluid::core::DateTime(),
@@ -181,5 +181,127 @@ void compareSignatures(const openfluid::ware::SimulatorSignature& Sign1,
   BOOST_CHECK_EQUAL(Sign1.TimeScheduling.Max,Sign2.TimeScheduling.Max);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void compareDataItemsJSON(const openfluid::thirdparty::json& DataItem1,
+                          const openfluid::thirdparty::json& DataItem2)
+{
+  BOOST_CHECK_EQUAL(DataItem1.value("name", ""), DataItem2.value("name", ""));
+  BOOST_CHECK_EQUAL(DataItem1.value("description", ""), DataItem2.value("description", ""));
+  BOOST_CHECK_EQUAL(DataItem1.value("siunit", ""), DataItem2.value("siunit", ""));
+  BOOST_CHECK_EQUAL(DataItem1.value("type", ""), DataItem2.value("type", ""));
+  BOOST_CHECK_EQUAL(DataItem1.value("unitsclass", ""), DataItem2.value("unitsclass", ""));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void compareIOConditionJSON(const openfluid::thirdparty::json& Object1,
+                            const openfluid::thirdparty::json& Object2,
+                            const std::string& ConditionKey)
+{
+  openfluid::thirdparty::json ConditionObject1 = Object1.value(ConditionKey, openfluid::thirdparty::json::array());
+  openfluid::thirdparty::json ConditionObject2 = Object2.value(ConditionKey, openfluid::thirdparty::json::array());
+  checkArraysJSON    (ConditionObject1, ConditionObject2);
+  for (unsigned int i=0; i < ConditionObject1.size(); i++)
+  {
+    compareDataItemsJSON(ConditionObject1[i], ConditionObject2[i]);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void compareJSON(const openfluid::thirdparty::json& Json1,
+                 const openfluid::thirdparty::json& Json2,
+                 const std::string& Context) 
+{
+  std::cout << Context << " : compareJSON()" << std::endl;
+
+  compareJSONBase(Json1, Json2);
+
+  openfluid::thirdparty::json Simulator1 = Json1.value("simulator",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json Simulator2 = Json2.value("simulator",openfluid::thirdparty::json::object());
+  BOOST_CHECK(Simulator1.is_object());
+  BOOST_CHECK(Simulator2.is_object());
+
+  openfluid::thirdparty::json Data1 = Simulator1.value("data",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json Data2 = Simulator2.value("data",openfluid::thirdparty::json::object());
+
+  // Parameters
+  openfluid::thirdparty::json Params1 = Data1.value("parameters",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json Params2 = Data2.value("parameters",openfluid::thirdparty::json::object());
+  compareIOConditionJSON(Params1, Params2, "required");
+  compareIOConditionJSON(Params1, Params2, "used");
+
+  // Attributes
+  openfluid::thirdparty::json Attributes1 = Data1.value("attributes",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json Attributes2 = Data2.value("attributes",openfluid::thirdparty::json::object());
+  compareIOConditionJSON(Attributes1, Attributes2, "required");
+  compareIOConditionJSON(Attributes1, Attributes2, "used");
+  compareIOConditionJSON(Attributes1, Attributes2, "produced");
+
+  // Variables
+  openfluid::thirdparty::json Variables1 = Data1.value("variables",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json Variables2 = Data2.value("variables",openfluid::thirdparty::json::object());
+  compareIOConditionJSON(Variables1, Variables2, "required");
+  compareIOConditionJSON(Variables1, Variables2, "used");
+  compareIOConditionJSON(Variables1, Variables2, "produced");
+  compareIOConditionJSON(Variables1, Variables2, "updated");
+
+  // Events
+  openfluid::thirdparty::json Events1 = Data1.value("events",openfluid::thirdparty::json::array());
+  openfluid::thirdparty::json Events2 = Data2.value("events",openfluid::thirdparty::json::array());
+  checkArraysJSON    (Events1, Events2);
+  for (unsigned int i=0; i < Events1.size(); i++)
+  {
+    BOOST_CHECK_EQUAL(Events1[i], Events2[i]);
+  }
+
+  // Extra files
+  openfluid::thirdparty::json ExtraFiles1 = Data1.value("extrafiles",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json ExtraFiles2 = Data2.value("extrafiles",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json RequiredEF1 = ExtraFiles1.value("required",openfluid::thirdparty::json::array());
+  openfluid::thirdparty::json RequiredEF2 = ExtraFiles2.value("required",openfluid::thirdparty::json::array());
+  checkArraysJSON    (RequiredEF1, RequiredEF2);
+  for (unsigned int i=0; i < RequiredEF1.size(); i++)
+  {
+    BOOST_CHECK_EQUAL(RequiredEF1[i], RequiredEF2[i]);
+  }
+  openfluid::thirdparty::json UsedEF1 = ExtraFiles1.value("used",openfluid::thirdparty::json::array());
+  openfluid::thirdparty::json UsedEF2 = ExtraFiles2.value("used",openfluid::thirdparty::json::array());
+  checkArraysJSON    (UsedEF1, UsedEF2);
+  for (unsigned int i=0; i < UsedEF1.size(); i++)
+  {
+    BOOST_CHECK_EQUAL(UsedEF1[i], UsedEF2[i]);
+  }
+
+  // Spatial graph
+  openfluid::thirdparty::json SpatialGraph1 = Simulator1.value("spatial_graph",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json SpatialGraph2 = Simulator2.value("spatial_graph",openfluid::thirdparty::json::object());
+  BOOST_CHECK_EQUAL(SpatialGraph1.value("description", ""), SpatialGraph2.value("description", ""));
+  openfluid::thirdparty::json DetailsSG1 = SpatialGraph1.value("details", openfluid::thirdparty::json::array());
+  openfluid::thirdparty::json DetailsSG2 = SpatialGraph2.value("details", openfluid::thirdparty::json::array());
+  checkArraysJSON    (DetailsSG1, DetailsSG2);
+  for (unsigned int i=0; i < DetailsSG1.size(); i++)
+  {
+    BOOST_CHECK_EQUAL(DetailsSG1[i].value("unitsclass", ""), DetailsSG2[i].value("unitsclass", ""));
+    BOOST_CHECK_EQUAL(DetailsSG1[i].value("description", ""), DetailsSG2[i].value("description", ""));
+  }
+
+  // Scheduling
+  openfluid::thirdparty::json Scheduling1 = Simulator1.value("scheduling",openfluid::thirdparty::json::object());
+  openfluid::thirdparty::json Scheduling2 = Simulator2.value("scheduling",openfluid::thirdparty::json::object());
+  BOOST_CHECK_EQUAL(Scheduling1.value("type", ""), Scheduling2.value("type", ""));
+  BOOST_CHECK_EQUAL(Scheduling1.value("min", 0), Scheduling2.value("min", 0));
+  BOOST_CHECK_EQUAL(Scheduling1.value("max", 0), Scheduling2.value("max", 0));
+}
 
 #endif /* __OPENFLUID_WARESDEVTESTS_SIMULATORSIGNATUREUTILS_HPP__ */
