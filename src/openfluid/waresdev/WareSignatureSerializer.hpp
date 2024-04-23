@@ -332,6 +332,7 @@ SignatureType WareSignatureSerializer<SignatureType>::fromJSONBase(const openflu
   //license
   Sign.License = openfluid::tools::trim(Json.value("license",""));
 
+  // links
   {
     openfluid::thirdparty::json::array_t LinksArr = Json.value("links",openfluid::thirdparty::json::array());
     for (const auto& L : LinksArr)
