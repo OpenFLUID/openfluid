@@ -1,4 +1,4 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <openfluid format="fluidx 4">
  <model>
   <simulator ID="traffic.surf.trafficlights-state">
@@ -6,7 +6,4 @@
   <simulator ID="traffic.surf.car-transfer">
   </simulator>
  </model>
-
-
 </openfluid>
-
