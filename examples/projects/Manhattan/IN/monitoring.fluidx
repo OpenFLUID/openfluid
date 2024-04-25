@@ -1,44 +1,43 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <openfluid format="fluidx 4">
- <monitoring>
-  <observer ID="export.vars.files.csv">
-   <param name="format.Format1.commentchar" value="#"/>
-   <param name="format.Format1.date" value="%Y %m %d %H %M %S"/>
-   <param name="set.RU.format" value="Format1"/>
-   <param name="set.RU.unitsclass" value="RU"/>
-   <param name="set.RU.vars" value="*"/>
-   <param name="set.TLU.format" value="Format1"/>
-   <param name="set.TLU.unitsclass" value="TLU"/>
-   <param name="set.TLU.vars" value="*"/>
-  </observer>
-  <observer ID="export.vars.files.kml-anim">
-   <param name="layers.anim.colorscale" value="FFFFFDF6;10;FFCBD3B3;25;FFD3CD92;50;FFD3B283;75;FFD39669;100;FFA84F0F;250;FF9A9301;500;FF6BAC00;750;FF00CF0A;1000;FF00E570;1500;FF00F9DC;2000;FF00F5FF;2500;FF00D7FF;3000;FF00B3FF;4000;FF008CFF;5000;FF004FFF;6000;FF1800F6"/>
-   <param name="layers.anim.linewidth" value="4"/>
-   <param name="layers.anim.sourcefile" value="manhattan.shp"/>
-   <param name="layers.anim.sourcetype" value="file"/>
-   <param name="layers.anim.unitsclass" value="RU"/>
-   <param name="layers.anim.varname" value="examples.RU.S.stock"/>
-   <param name="title" value="Cars circulation in Manhattan streets"/>
-   <param name="kmzfilename" value="manhattan-anim.kmz" /> 
-   <param name="tryopengearth" value="0"/>
-  </observer>
-   <observer ID="export.vars.plot.gnuplot">
-   <param name="graph.g1.key" value="default"/>
-   <param name="graph.g1.series" value="s1"/>
-   <param name="graph.g1.ylabel" value="values (xx.yy-1)"/>
-   <param name="output" value="examples.RU11.stock.pdf"/>
-   <param name="persistent" value="0"/>
-   <param name="serie.s1.label" value="RU#11-cars-stock"/>
-   <param name="serie.s1.style" value="line"/>
-   <param name="serie.s1.unitID" value="11"/>
-   <param name="serie.s1.unitsclass" value="RU"/>
-   <param name="serie.s1.var" value="examples.RU.S.stock"/>
-   <param name="terminal" value="pdfcairo size 11.7,8.3"/>
-   <param name="tryopengnuplot" value="1"/>
-  </observer>
-  
- </monitoring>
-
-
+    <monitoring>
+        <observer ID="export.vars.files.kml-anim" enabled="true">
+            <param name="kmzfilename" value="manhattan-anim.kmz"/>
+            <param name="layers.anim.colorscale" value="FFFFFDF6;10;FFCBD3B3;25;FFD3CD92;50;FFD3B283;75;FFD39669;100;FFA84F0F;250;FF9A9301;500;FF6BAC00;750;FF00CF0A;1000;FF00E570;1500;FF00F9DC;2000;FF00F5FF;2500;FF00D7FF;3000;FF00B3FF;4000;FF008CFF;5000;FF004FFF;6000;FF1800F6"/>
+            <param name="layers.anim.linewidth" value="4"/>
+            <param name="layers.anim.sourcefile" value="manhattan.shp"/>
+            <param name="layers.anim.sourcetype" value="file"/>
+            <param name="layers.anim.unitsclass" value="RU"/>
+            <param name="layers.anim.varname" value="examples.RU.S.stock"/>
+            <param name="title" value="Cars circulation in Manhattan streets"/>
+            <param name="tryopengearth" value="0"/>
+        </observer>
+        <observer ID="export.vars.plot.gnuplot" enabled="true">
+            <param name="graph.g1.key" value="default"/>
+            <param name="graph.g1.series" value="s1"/>
+            <param name="graph.g1.ylabel" value="values (xx.yy-1)"/>
+            <param name="output" value="examples.RU11.stock.pdf"/>
+            <param name="persistent" value="0"/>
+            <param name="serie.s1.label" value="RU#11-cars-stock"/>
+            <param name="serie.s1.style" value="line"/>
+            <param name="serie.s1.unitID" value="11"/>
+            <param name="serie.s1.unitsclass" value="RU"/>
+            <param name="serie.s1.var" value="examples.RU.S.stock"/>
+            <param name="terminal" value="pdfcairo size 11.7,8.3"/>
+            <param name="tryopengnuplot" value="1"/>
+        </observer>
+        <observer ID="export.vars.files.csv-multicols" enabled="true">
+            <param name="format.Format.colsep" value=";"/>
+            <param name="format.Format.commentchar" value="#"/>
+            <param name="format.Format.date" value="ISO"/>
+            <param name="format.Format.float-format" value="auto"/>
+            <param name="format.Format.header" value="colnames-as-comment"/>
+            <param name="format.Format.missingvalue" value="NA"/>
+            <param name="format.Format.precision" value="5"/>
+            <param name="set.RUall.format" value="Format"/>
+            <param name="set.RUall.selection" value="RU#*:*"/>
+            <param name="set.TLUall.format" value="Format"/>
+            <param name="set.TLUall.selection" value="TLU#*:*"/>
+        </observer>
+    </monitoring>
 </openfluid>
-

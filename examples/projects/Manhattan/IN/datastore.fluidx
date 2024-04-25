@@ -1,9 +1,6 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <openfluid format="fluidx 4">
-  
-  <datastore>
-    <dataitem id="Manhattan_RU" type="geovector" source="manhattan.shp" unitsclass="RU" />
-  </datastore>
-
+    <datastore>
+        <dataitem id="Manhattan_RU" type="geovector" source="manhattan.shp" unitsclass="RU"/>
+    </datastore>
 </openfluid>
-
