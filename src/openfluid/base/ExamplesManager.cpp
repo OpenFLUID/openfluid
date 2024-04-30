@@ -37,6 +37,8 @@
  */
 
 
+#include <iostream>
+
 #include <openfluid/base/ExamplesManager.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/FrameworkException.hpp>
@@ -100,7 +102,7 @@ bool ExamplesManager::installProject(const std::string& ProjectDir,
                                                                  openfluid::config::PROJECTS_PATH});
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::PROJECTS_PATH});
-
+  std::cout << "-- Installing project " << ProjectDir << " from " << FromPath << " to " << ToPath << std::endl;
   return installDirectory(FromPath, ToPath, ProjectDir, Force);
 }
 
@@ -119,7 +121,7 @@ bool ExamplesManager::installSimulator(const std::string& SimulatorDir,
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::WARESDEV_PATH,
                                                                openfluid::config::SIMULATORS_PATH});
-
+  std::cout << "-- Installing simulator " << SimulatorDir << " from " << FromPath << " to " << ToPath << std::endl;
   return installDirectory(FromPath,ToPath,SimulatorDir,Force);
 }
 

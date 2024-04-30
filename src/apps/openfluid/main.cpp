@@ -254,7 +254,7 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto Info2BuildCmd = openfluid::utils::CommandLineCommand("info2build","Generate build files frow ware information");
+  auto Info2BuildCmd = openfluid::utils::CommandLineCommand("info2build","Generate build files from ware information");
   Info2BuildCmd.addOptions({{"src-path","s","source path containing the " +
                                             openfluid::config::WARESDEV_WAREMETA_FILE +
                                             " file",true}});
