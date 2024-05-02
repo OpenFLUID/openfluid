@@ -222,7 +222,12 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   
   Menu.addMenu(&GitMenu);
 
-  if (currentIndex().data(Qt::DisplayRole).toString().contains("[") && openfluid::utils::GitProxy::isAvailable())
+  QString WarePath = getWarePath();
+
+  GitUIProxy Git;
+  GitUIProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
+    
+  if (openfluid::utils::GitProxy::isAvailable() && TreeStatus.m_IsGitTracked)
   {
     InitAction->setEnabled(false);
   }
@@ -347,6 +352,23 @@ QString WareSrcExplorer::getCurrentDir()
 // =====================================================================
 
 
+QString WareSrcExplorer::getWarePath()
+{
+  if (currentIndex().isValid()) 
+  {
+    return QString::fromStdString(
+           openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(getCurrentPath().toStdString()).AbsoluteWarePath
+           );
+  }
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 QString WareSrcExplorer::getCurrentPath()
 {
   if (currentIndex().isValid())
@@ -395,11 +417,12 @@ void WareSrcExplorer::onNewFileAsked()
     return;
   }
 
-  auto PInfo = 
-    openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(mp_Model->filePath(currentIndex()).toStdString());
+  QString currentPath = getCurrentPath();
 
-  const auto FilePath = openfluid::ui::common::createNewFile(this,
-                                                             mp_Model->filePath(currentIndex()));
+  auto PInfo = 
+    openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(currentPath.toStdString());
+
+  const auto FilePath = openfluid::ui::common::createNewFile(this, currentPath);
 
   if (!FilePath.isEmpty())
   {
@@ -425,7 +448,7 @@ void WareSrcExplorer::onNewFolderAsked()
     return;
   }
 
-  QString CurrentPath = mp_Model->filePath(currentIndex());
+  QString CurrentPath = getCurrentPath();
   QFileInfo CurrentFileInfo(CurrentPath);
   QString FocusDirPath;
   if (CurrentFileInfo.isDir())
@@ -501,12 +524,7 @@ void WareSrcExplorer::onNewFragmentAsked()
     return;
   }
 
-  QString CurrentPath = mp_Model->filePath(currentIndex());
-
-  QString WarePath = 
-    QString::fromStdString(
-      openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
-    );
+  QString WarePath = getWarePath();
 
   openfluid::ui::waresdev::FragmentCreationDialog Dialog(this); 
 
@@ -533,12 +551,7 @@ void WareSrcExplorer::onRemoteFragmentAsked()
     return;
   }
 
-  QString CurrentPath = mp_Model->filePath(currentIndex());
-
-  QString WarePath = 
-    QString::fromStdString(
-      openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
-    );
+  QString WarePath = getWarePath();
 
   GitUIProxy Git;
   bool HasWareVersionControl = Git.status(WarePath).m_IsGitTracked;
@@ -555,7 +568,7 @@ void WareSrcExplorer::onRemoteFragmentAsked()
 void WareSrcExplorer::onFragmentRemovalAsked()
 {
   // TODO several improvements on workflow and display, cf github
-  QString CurrentPath = mp_Model->filePath(currentIndex());
+  QString CurrentPath = getCurrentPath();
   openfluid::ui::waresdev::GitUIProxy Git;
 
   openfluid::waresdev::WareSrcEnquirer::WarePathInfo WareInfo = 
@@ -622,7 +635,7 @@ void WareSrcExplorer::onDeleteFolderAsked()
     return;
   }
 
-  QString CurrentPath = mp_Model->filePath(currentIndex());
+  QString CurrentPath = getCurrentPath();
 
   if (QMessageBox::warning(this, tr("Delete folder"), 
         tr("Are you sure you want to delete \"%1\"?\n"
@@ -632,10 +645,7 @@ void WareSrcExplorer::onDeleteFolderAsked()
     return;
   }
 
-
-  openfluid::waresdev::WareSrcEnquirer::WarePathInfo WareInfo = 
-    openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString());
-  QString WarePath = QString::fromStdString(WareInfo.AbsoluteWarePath);
+  QString WarePath = getWarePath();
 
   // Ensure that current path is in the current workspace
   if (!openfluid::tools::Path(openfluid::base::WorkspaceManager::instance()->getWorkspacePath()).contains(
@@ -671,7 +681,7 @@ void WareSrcExplorer::onDeleteFileAsked()
     return;
   }
 
-  QString CurrentPath = mp_Model->filePath(currentIndex());
+  QString CurrentPath = getCurrentPath();
 
   if (QMessageBox::warning(this, tr("Delete file"), tr("Are you sure you want to delete \"%1\"?").arg(CurrentPath),
                            QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
@@ -683,10 +693,7 @@ void WareSrcExplorer::onDeleteFileAsked()
 
   if (QDir().remove(CurrentPath))
   {
-    QString WarePath = 
-      QString::fromStdString(
-        openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
-      );
+    QString WarePath = getWarePath();
 
     emit wareChanged(WarePath);
   }
@@ -706,12 +713,9 @@ void WareSrcExplorer::onGitInitAsked()
 {
   GitUIProxy Git;
 
-  QString CurrentPath = mp_Model->filePath(currentIndex());
+  QString CurrentPath = getCurrentPath();
 
-  QString WarePath = 
-    QString::fromStdString(
-      openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(CurrentPath.toStdString()).AbsoluteWarePath
-    );
+  QString WarePath = getWarePath();
 
   openfluid::ui::waresdev::WareGitDialog Dialog;
   Dialog.setWindowTitle("git init");
@@ -731,9 +735,11 @@ void WareSrcExplorer::onGitStatusAsked()
 {
   GitUIProxy Git;
 
+  QString WarePath = getWarePath();
+
   openfluid::ui::waresdev::WareGitDialog Dialog;
   Dialog.setWindowTitle("git status");
-  Dialog.setContent(Git.statusHtml(mp_Model->filePath(currentIndex()), true));
+  Dialog.setContent(Git.statusHtml(WarePath, true));
   Dialog.exec();
 }
 
@@ -746,9 +752,11 @@ void WareSrcExplorer::onGitLogAsked()
 {
   GitUIProxy Git;
 
+  QString WarePath = getWarePath();
+
   openfluid::ui::waresdev::WareGitDialog Dialog;
   Dialog.setWindowTitle("git log");
-  Dialog.setContent(Git.logHtml(mp_Model->filePath(currentIndex()), true));
+  Dialog.setContent(Git.logHtml(WarePath, true));
   Dialog.exec();
 }
 
