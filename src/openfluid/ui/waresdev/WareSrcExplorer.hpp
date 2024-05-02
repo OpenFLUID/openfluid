@@ -151,6 +151,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     QString getCurrentPath();
 
+    QString getWarePath();
+
     void updateExplorerModel(const QString& Path);
 
 };
