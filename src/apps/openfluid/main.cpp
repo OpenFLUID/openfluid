@@ -240,7 +240,7 @@ int main(int argc, char **argv)
                                                        "Arguments can be passed to the build tool "
                                                        "after the --- switch.");
   BuildCmd.addOptions({{"build-path","b","path to the build directory",true},
-                       {"src-path","b","path to the sources directory (build directory is deduced)",true},
+                       {"src-path","s","path to the sources directory (build directory is deduced)",true},
                        {"with-install","i","install ware if built is successful (replaces the given target if any)"}, 
                        {"target","t","target to build (default is empty)",true},
                        {"jobs","j","number of jobs during build (default is 1)",true}});
