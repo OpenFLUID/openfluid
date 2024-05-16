@@ -1,21 +1,28 @@
 
 SET(CPACK_SOURCE_GENERATOR "TGZ")
-
-
-SET(OFPACK_DEPEND_DEB "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libgdal-dev, libcurl4, gcc, g++, cmake (>= 3.1), gnuplot (>= 4.2), p7zip-full, graphviz, git")
-SET(OFPACK_DEPEND_RPM_FEDORA "make, gcc-c++, gcc-gfortran, cmake, boost-devel >= 1.54, gdal-devel, libcurl, p7zip, gnuplot, graphviz, doxygen, git")
-SET(OFPACK_DEPEND_RPM_CENTOS "gcc-c++, boost-devel >= 1.40, gdal-devel, libcurl, git")
+SET(OFPACK_DEPEND_DEB "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev,
+                       libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libgdal-dev, libcurl4, gcc,
+                       g++, cmake (>= 3.1), 
+                       gnuplot (>= 4.2), p7zip-full, graphviz, git, pandoc")
+SET(OFPACK_DEPEND_RPM_FEDORA "make, gcc-c++, gcc-gfortran, cmake, boost-devel >= 1.54, gdal-devel, libcurl, p7zip,
+                              gnuplot, graphviz, doxygen, git, pandoc, texlive-scheme-full")
+SET(OFPACK_DEPEND_RPM_CENTOS "gcc-c++, boost-devel >= 1.40, gdal-devel, libcurl, git, pandoc")
 
 IF(OFBUILD_ENABLE_GUI)
 
   IF (QT_VERSION_MAJOR LESS 6)
-    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qtbase5-dev-tools, qttools5-dev-tools, libqt5svg5-dev, libqt5webkit5-dev")
-    SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel")
-    SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel")
+    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qtbase5-dev-tools, qttools5-dev-tools, libqt5svg5-dev, 
+                           libqt5webkit5-dev")
+    SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, 
+                                  qt5-qtwebkit-devel")
+    SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, 
+                                  qt5-qtwebkit-devel")
   ELSE()
-    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qt6-base-dev, qt6-tools-dev, libqt6svg6-dev") #FIXME find packages
-    #SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel") #FIXME find packages
-    #SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel") #FIXME find packages
+    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qt6-base-dev, qt6-tools-dev, libqt6svg6-dev")
+    SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt6-qttools-devel, qt6-qtbase-devel, qt6-qtsvg-devel, 
+                                  qt6-qtwebengine-devel")
+    SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt6-qttools-devel, qt6-qtbase-devel, qt6-qtsvg-devel, 
+                                  qt6-qtwebengine-devel")
   ENDIF()
 ENDIF()
 
@@ -23,22 +30,33 @@ ENDIF()
 IF(OFBUILD_DISTRO_IS_DEBIAN)
   SET(CPACK_GENERATOR "DEB")
   SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
+  
+  IF(OFBUILD_DISTRO_VERSION EQUAL "11" OR OFBUILD_DISTRO_VERSION EQUAL "10")
+    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, pandoc-citeproc")
+  ENDIF()
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "${OFPACK_DEPEND_DEB}")
   SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${OFBUILD_DISTRO_ARCH}")
   SET(CPACK_DEBIAN_PACKAGE_SECTION "science")
   SET(CPACK_DEBIAN_PACKAGE_PRIORITY "extra")
-  SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${OFBUILD_DISTRO_CODE}_${OFBUILD_DISTRO_ARCH}")
+  SET(CPACK_PACKAGE_FILE_NAME 
+     "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${OFBUILD_DISTRO_CODE}_${OFBUILD_DISTRO_ARCH}")
 ENDIF()
 
 
 IF(OFBUILD_DISTRO_IS_UBUNTU)
   SET(CPACK_GENERATOR "DEB")
   SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
+
+  IF(OFBUILD_DISTRO_VERSION EQUAL "18.04" OR OFBUILD_DISTRO_VERSION EQUAL "20.04" OR 
+     OFBUILD_DISTRO_VERSION EQUAL "22.04")
+    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, pandoc-citeproc")
+  ENDIF()
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "${OFPACK_DEPEND_DEB}")
   SET(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${OFBUILD_DISTRO_ARCH}")
   SET(CPACK_DEBIAN_PACKAGE_SECTION "science")
   SET(CPACK_DEBIAN_PACKAGE_PRIORITY "extra")
-  SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${OFBUILD_DISTRO_CODE}_${OFBUILD_DISTRO_ARCH}")
+  SET(CPACK_PACKAGE_FILE_NAME 
+     "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${OFBUILD_DISTRO_CODE}_${OFBUILD_DISTRO_ARCH}")
 ENDIF()
 
 
@@ -58,12 +76,16 @@ IF(OFBUILD_DISTRO_IS_CENTOS)
   IF(OPENFLUID_VERSION_STATUS)
     SET(CPACK_RPM_PACKAGE_RELEASE "0.${OPENFLUID_VERSION_STATUS}.el${CENTOS_EL_VERSION}")
   ENDIF()
-  SET(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "${CMAKE_INSTALL_PREFIX}" "${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}"
-                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_LIB_INSTALL_PATH}" "${CMAKE_INSTALL_PREFIX}/${OFBUILD_INCLUDE_INSTALL_PATH}"
+  SET(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "${CMAKE_INSTALL_PREFIX}"
+                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}"
+                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_LIB_INSTALL_PATH}" 
+                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_INCLUDE_INSTALL_PATH}"
                                            "${CMAKE_INSTALL_PREFIX}/${OFBUILD_SHARE_INSTALL_PATH}"
                                            "${CMAKE_INSTALL_PREFIX}/${OPENFLUID_DESKTOPENTRY_INSTALL_PATH}"
-                                           "${CMAKE_INSTALL_PREFIX}/${OPENFLUID_SHARE_TRANSLATIONS_INSTALL_PATH}" "${CMAKE_INSTALL_PREFIX}/${OFBUILD_SHARE_INSTALL_PATH}/doc")
-  SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_RPM_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.${OFBUILD_DISTRO_ARCH}")
+                                           "${CMAKE_INSTALL_PREFIX}/${OPENFLUID_SHARE_TRANSLATIONS_INSTALL_PATH}" 
+                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_SHARE_INSTALL_PATH}/doc")
+  SET(CPACK_PACKAGE_FILE_NAME 
+      "${CPACK_PACKAGE_NAME}-${CPACK_RPM_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.${OFBUILD_DISTRO_ARCH}")
 ENDIF()
 
 
@@ -83,11 +105,15 @@ IF(OFBUILD_DISTRO_IS_FEDORA)
   IF(OPENFLUID_VERSION_STATUS)
     SET(CPACK_RPM_PACKAGE_RELEASE "0.${OPENFLUID_VERSION_STATUS}.fc${FEDORA_FC_VERSION}")
   ENDIF()
-  SET(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "${CMAKE_INSTALL_PREFIX}" "${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}"
-                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_LIB_INSTALL_PATH}" "${CMAKE_INSTALL_PREFIX}/${OFBUILD_INCLUDE_INSTALL_PATH}"
+  SET(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "${CMAKE_INSTALL_PREFIX}" 
+                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}"
+                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_LIB_INSTALL_PATH}" 
+                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_INCLUDE_INSTALL_PATH}"
                                            "${CMAKE_INSTALL_PREFIX}/${OFBUILD_SHARE_INSTALL_PATH}"
                                            "${CMAKE_INSTALL_PREFIX}/${OPENFLUID_DESKTOPENTRY_INSTALL_PATH}"
-                                           "${CMAKE_INSTALL_PREFIX}/${OPENFLUID_SHARE_TRANSLATIONS_INSTALL_PATH}" "${CMAKE_INSTALL_PREFIX}/${OFBUILD_SHARE_INSTALL_PATH}/doc")
-  SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_RPM_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.${OFBUILD_DISTRO_ARCH}")
+                                           "${CMAKE_INSTALL_PREFIX}/${OPENFLUID_SHARE_TRANSLATIONS_INSTALL_PATH}" 
+                                           "${CMAKE_INSTALL_PREFIX}/${OFBUILD_SHARE_INSTALL_PATH}/doc")
+  SET(CPACK_PACKAGE_FILE_NAME 
+     "${CPACK_PACKAGE_NAME}-${CPACK_RPM_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.${OFBUILD_DISTRO_ARCH}")
 ENDIF()
 
