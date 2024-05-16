@@ -55,6 +55,9 @@
      <property name="text">
       <string notr="true">NameLabel</string>
      </property>
+     <property name="textInteractionFlags">
+      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
     </widget>
    </item>
    <item>
@@ -77,6 +80,9 @@
      </property>
      <property name="text">
       <string notr="true">SIUnitLabel</string>
+     </property>
+     <property name="textInteractionFlags">
+       <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
      </property>
     </widget>
    </item>

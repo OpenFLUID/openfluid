@@ -612,8 +612,8 @@ void PreferencesDialog::intializeTextEditorSettings()
     row ++;
   }
 
-  connect(SignalMapperCB,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementDecoration(int)));
-  connect(SignalMapperButton,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementColor(int)));
+  connect(SignalMapperCB,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementDecoration(int)));  // FIXME no such signal
+  connect(SignalMapperButton,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementColor(int)));  // FIXME no such signal
 
   ui->scrollArea->setEnabled(IsHLEnabled);
 

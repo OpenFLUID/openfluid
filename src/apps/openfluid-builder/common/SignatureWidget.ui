@@ -143,6 +143,9 @@
           <property name="text">
            <string>Name</string>
           </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+          </property>
          </column>
          <column>
           <property name="text">
@@ -255,6 +258,9 @@
           <property name="text">
            <string>Name</string>
           </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+          </property>
          </column>
          <column>
           <property name="text">
@@ -325,6 +331,9 @@
          <column>
           <property name="text">
            <string>Name</string>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
           </property>
          </column>
          <column>

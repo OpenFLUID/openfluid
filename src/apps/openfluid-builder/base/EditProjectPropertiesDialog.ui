@@ -70,6 +70,9 @@
        <property name="text">
         <string notr="true">TextLabel</string>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </item>
      <item row="1" column="0">
@@ -171,6 +174,9 @@
            <widget class="QLabel" name="DeprecatedTextLabel">
             <property name="text">
              <string notr="true">DeprecatedFiles</string>
+            </property>
+            <property name="textInteractionFlags">
+                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
             </property>
            </widget>
           </item>
