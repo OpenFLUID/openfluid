@@ -165,15 +165,6 @@ void AppActions::createActions()
 
 
   // Edit menu
-  m_Actions["EditCut"] = new openfluid::ui::common::DefaultAction( tr("&Cut"), this);
-  m_Actions["EditCut"]->setShortcuts(QKeySequence::Cut);
-
-  m_Actions["EditCopy"] = new openfluid::ui::common::DefaultAction( tr("&Copy"), this);
-  m_Actions["EditCopy"]->setShortcuts(QKeySequence::Copy);
-
-  m_Actions["EditPaste"] = new openfluid::ui::common::DefaultAction( tr("&Paste"), this);
-  m_Actions["EditPaste"]->setShortcuts(QKeySequence::Paste);
-
   m_Actions["EditPreferences"] = new openfluid::ui::common::DefaultAction( tr("Preferences..."), this);
   m_Actions["EditPreferences"]->setMenuRole(QAction::PreferencesRole);
 
@@ -485,10 +476,6 @@ void AppActions::createMenus(MainWindow& MainWin)
 
 
   Menu = MainWin.menuBar()->addMenu(tr("&Edit"));
-  Menu->addAction(action("EditCut"));
-  Menu->addAction(action("EditCopy"));
-  Menu->addAction(action("EditPaste"));
-  Menu->addSeparator();
   Menu->addAction(action("EditPreferences"));
 
 

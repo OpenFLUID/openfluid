@@ -135,6 +135,9 @@
           <property name="text">
            <string notr="true">PathLabel</string>
           </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+          </property>
           <property name="wordWrap">
            <bool>true</bool>
           </property>

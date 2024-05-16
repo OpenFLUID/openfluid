@@ -99,6 +99,9 @@
            <property name="text">
             <string>No problem detected</string>
            </property>
+           <property name="textInteractionFlags">
+            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+           </property>
            <property name="alignment">
             <set>Qt::AlignBottom|Qt::AlignHCenter</set>
            </property>
