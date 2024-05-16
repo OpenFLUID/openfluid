@@ -5,7 +5,7 @@ SET(OFPACK_DEPEND_DEB "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev
                        g++, cmake (>= 3.1), 
                        gnuplot (>= 4.2), p7zip-full, graphviz, git, pandoc")
 SET(OFPACK_DEPEND_RPM_FEDORA "make, gcc-c++, gcc-gfortran, cmake, boost-devel >= 1.54, gdal-devel, libcurl, p7zip,
-                              gnuplot, graphviz, doxygen, git, pandoc, texlive-scheme-full")
+                              gnuplot, graphviz, doxygen, git, pandoc, texlive-scheme-full")  # FIXME texlive-scheme-full too heavy, find underlying necessary packages (pdflatex...)
 SET(OFPACK_DEPEND_RPM_CENTOS "gcc-c++, boost-devel >= 1.40, gdal-devel, libcurl, git, pandoc")
 
 IF(OFBUILD_ENABLE_GUI)
@@ -31,7 +31,7 @@ IF(OFBUILD_DISTRO_IS_DEBIAN)
   SET(CPACK_GENERATOR "DEB")
   SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
   
-  IF(OFBUILD_DISTRO_VERSION EQUAL "11" OR OFBUILD_DISTRO_VERSION EQUAL "10")
+  IF(OFBUILD_DISTRO_VERSION LESS "12")
     SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, pandoc-citeproc")
   ENDIF()
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "${OFPACK_DEPEND_DEB}")
@@ -47,8 +47,7 @@ IF(OFBUILD_DISTRO_IS_UBUNTU)
   SET(CPACK_GENERATOR "DEB")
   SET(CPACK_DEBIAN_PACKAGE_CONFLICTS "mhydas")
 
-  IF(OFBUILD_DISTRO_VERSION EQUAL "18.04" OR OFBUILD_DISTRO_VERSION EQUAL "20.04" OR 
-     OFBUILD_DISTRO_VERSION EQUAL "22.04")
+  IF(OFBUILD_DISTRO_VERSION LESS "22.10")
     SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, pandoc-citeproc")
   ENDIF()
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "${OFPACK_DEPEND_DEB}")
