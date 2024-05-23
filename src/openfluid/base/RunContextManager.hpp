@@ -165,6 +165,13 @@ class OPENFLUID_API RunContextManager : public Environment
     void setDateTimeOutputDir();
 
     /**
+      Sets the full path of the simulation input and output directory
+      @param[in] InputDir the full path of the input directory
+      @param[in] OutputDir the full path of the output directory
+    */
+    void setIODir(const std::string& InputDir, const std::string& OutputDir);
+
+    /**
       Returns the status of automatic cleaning of output directory before simulation run
       @return true if enabled, false if disabled
     */

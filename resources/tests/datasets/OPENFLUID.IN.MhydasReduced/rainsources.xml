@@ -1,0 +1,6 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <datasources>
+    <filesource ID="1" file="raingauge_3_1997_06_05.txt" />
+  </datasources>
+</openfluid>
