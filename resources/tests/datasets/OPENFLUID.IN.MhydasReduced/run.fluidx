@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+  <run>
+    <scheduling deltat="60" constraint="none" />
+    <period begin="1997-06-05 04:30:00" end="1997-06-05 16:00:00" />
+  </run>
+</openfluid>
