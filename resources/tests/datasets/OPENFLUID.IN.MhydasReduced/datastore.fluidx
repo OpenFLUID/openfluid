@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+	<datastore>
+		<dataitem id="RS" type="geovector" source="shapefiles/roujan_rs_wgs84.shp" />
+		<dataitem id="SU" type="geovector" source="shapefiles/roujan_su_wgs84.shp" />
+	</datastore>
+</openfluid>
