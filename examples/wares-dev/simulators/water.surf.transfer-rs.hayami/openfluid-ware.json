@@ -7,11 +7,11 @@
   "authors": [
     {
       "name": "Moussa R.",
-      "email": "roger.moussa@inrae.fr"
+      "email": "moussa@supagro.inra.fr"
     },
     {
       "name": "Fabre J.-C.",
-      "email": "jean-christophe.fabre@inrae.fr"
+      "email": "fabrejc@supagro.inra.fr"
     },
     {
       "name": "Louchart X.",
@@ -23,14 +23,33 @@
     }
   ],
   "contacts": [],
-  "license": "",
+  "license": "GPL-3.0",
   "tags": [
     "hydrology",
     "transfer",
-    "Hayami"
+    "Hayami",
+    "water",
+    "surface",
+    "network",
+    "transfer",
+    "hayami"
   ],
   "links": [],
-  "issues": [],
+  "issues": [
+    {
+      "id": 616102928,
+      "title": "Variables descriptions",
+      "description": "Review description of variables\nIn particular, water.surf.Q.downstream-rs variable\nshould be described as \"discharge\" instead of \"volume\"\n",
+      "tags": [
+        "normal-urgency",
+        "review"
+      ],
+      "creator": "fabrejc",
+      "created_at": "2014-07-01 00:00:00",
+      "updated_at": "2014-07-01 00:00:00",
+      "state": "open"
+    }
+  ],
   "simulator": {
     "data": {
       "parameters": {

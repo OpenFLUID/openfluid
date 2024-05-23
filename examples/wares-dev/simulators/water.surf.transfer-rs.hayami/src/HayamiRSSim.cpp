@@ -1,39 +1,108 @@
 /*
 
-  This file is part of OpenFLUID software
+  This file is part of MHYDAS simulators for OpenFLUID software
   Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
-  OpenFLUID is free software: you can redistribute it and/or modify
+  This part of MHYDAS is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  OpenFLUID is distributed in the hope that it will be useful,
+  This part of MHYDAS is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  along with this part of MHYDAS. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
-  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  Other Usage means a use of MHYDAS that is inconsistent with the GPL
   license, and requires a written agreement between You and INRA.
-  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  Licensees for Other Usage of MHYDAS may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
-
 /**
-  @file WareMain.cpp
-  
-  @author Armel THONI <armel.thoni@inra.fr>
+  @file HayamiRSSim.cpp
+ */
+
+
+/*
+<sim2doc>
+
+% Definition des noms de la fonction
+\newcommand{\frenchname}{Transfert d'eau dans le réseau hydrographique selon la méthode de propagation d'Hayami}
+\newcommand{\englishname}{Water transfer on ditch network using hayami propagation method}
+
+% Definition FileID
+\newcommand{\FileID}{water.surf.transfer-rs.hayami}
+
+% Definition variables produites
+\newcommand{\VarProdA}{water.surf.Q.downstream-rs}
+\newcommand{\VarProdB}{water.surf.H.level-rs}
+
+% Used variables (if necessary)
+\newcommand{\VarUsedA}{water.surf.Q.downstream-su}
+\newcommand{\VarUsedB}{water.sz-surf.Q.baseflow}
+\newcommand{\VarUsedC}{water.uz.Q.interflow}
+
+% Definition parametres
+\newcommand{\ParamA}{maxsteps}
+\newcommand{\ParamB}{meancel}
+\newcommand{\ParamC}{meansigma}
+\newcommand{\ParamD}{calibstep}
+\newcommand{\ParamE}{rsbuffer}
+
+%Definition des proprietes distribuees
+\newcommand{\PropDisA}{nmanning}
+\newcommand{\PropDisB}{length}
+\newcommand{\PropDisC}{width}
+\newcommand{\PropDisD}{height}
+\newcommand{\PropDisE}{slope}
+
+% Main file for function description and utilisation
+
+
+\selectlanguage{english}
+
+\begin{abstract}
+\iflanguage{english}{\input{./doc/english/HayamiRS_abstract.tex}}{\input{./doc/french/HayamiRS_resume.tex}}
+\end{abstract}
+
+%******************************
+% Scientific concepts
+\iflanguage{english}{\section{Scientific concepts}}{\section{Concepts scientifiques}}
+\iflanguage{english}{\input{./doc/english/HayamiRS_scientific_concept.tex}}
+  {\input{./doc/french/HayamiRS_concept_scientifique.tex}}
+
+
+%******************************
+% Functional description
+\iflanguage{english}{\section{Functional description}}{\section{Notice d'utilisation}}
+\iflanguage{english}{\input{./doc/english/HayamiRS_functional_description.tex}}
+  {\input{./doc/french/HayamiRS_notice_utilisation.tex}}
+
+%******************************
+% References
+\bibliography{./doc/common/water.surf.transfer-rs.hayami.bib}
+
+%******************************
+% Appendices
+\end{multicols}
+
+%\clearpage
+
+\begin{multicols}{2}
+
+
+</sim2doc>
  */
 
 
@@ -43,7 +112,7 @@
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 
-#include "HayamiTools.hpp"
+#include "fragments/hayami.kernel/HayamiTools.hpp"
 
 
 /**
@@ -72,10 +141,10 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
           Calibration step for height-discharge relation (meters)
      */
     float m_CalibrationStep;
-    
+
     float m_RSBuffer;
 
-    IDKernelMap m_RSKernel;
+    fragments::hydro::IDKernelMap m_RSKernel;
 
     bool m_UseUpSUOutput;
 
@@ -220,7 +289,6 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
     void prepareData()
     {
 
-
     }
 
 
@@ -254,8 +322,7 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(RS,"width",RSwidth);
 
         // Checking parameters consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
         if (RSmanning <= 0)
         {
           OPENFLUID_RaiseError("The Manning roughness coefficient of RS " + IDStr + " should be positive.");
@@ -354,8 +421,8 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(RS,"length",RSlength);
         Cel = m_MeanCelerity * (m_MeanManning / RSmanning) * (sqrt((RSslope / m_MeanSlope)));
         Sigma = m_MeanSigma * (RSmanning/ m_MeanManning) * (m_MeanSlope / RSslope);
-        m_RSKernel[RS->getID()] = t_HayamiKernel();
-        ComputeHayamiKernel(Cel, Sigma,RSlength,m_MaxSteps,OPENFLUID_GetDefaultDeltaT(), m_RSKernel[RS->getID()]);
+        m_RSKernel[RS->getID()] = fragments::hydro::t_HayamiKernel();
+        fragments::hydro::ComputeHayamiKernel(Cel, Sigma,RSlength,m_MaxSteps,OPENFLUID_GetDefaultDeltaT(), m_RSKernel[RS->getID()]);
 
       }
 
@@ -455,8 +522,7 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
             UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue + TmpInterflow;
 
             // Checking used variable consistency
-            std::string UpSUStr;
-            openfluid::tools::convertValue(UpSU,&UpSUStr);
+            std::string UpSUStr = std::to_string(UpSU->getID());
             if (TmpValue < 0)
             {
               OPENFLUID_RaiseError("The used variable output volume at the outlet of the upstream SU " + UpSUStr + 
@@ -496,8 +562,7 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
           UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;
 
           // Checking used variable consistency
-          std::string UpRSStr;
-          openfluid::tools::convertValue(UpRS,&UpRSStr);
+          std::string UpRSStr = std::to_string(UpRS->getID());
           if (TmpValue < 0)
           {
             OPENFLUID_RaiseError("The used variable output volume at the outlet of the upstream RS " + UpRSStr + 
@@ -519,6 +584,7 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
               OPENFLUID_GetVariable(DownGU,"water.sz-surf.Q.baseflow",TmpValue);
               UpGUsOutputsSum = UpGUsOutputsSum + TmpValue;
             }
+            
           }
         }
 
@@ -531,7 +597,14 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
         QOutput = 0;
         if (m_CurrentInputSum[ID] > 0)
         {
-          QOutput = DoHayamiPropagation(m_RSKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
+          int sumKernel = 0;
+          for (const auto& d : m_RSKernel[ID]) { 
+             sumKernel += d;
+          }
+          OPENFLUID_LogWarning("Sum Kernel : " + std::to_string(sumKernel));
+          //OPENFLUID_LogAndDisplayWarning("QInput->at(CurrentStep - i) : " + std::to_string(QInput->at(CurrentStep - i)));
+          //OPENFLUID_LogAndDisplayWarning("TimeStep : " + TimeStep);
+          QOutput = fragments::hydro::DoHayamiPropagation(m_RSKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
         }
 
         QOutput = QOutput + UpLatSUsOutputsSum;
@@ -539,16 +612,14 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
 
         if (!computeWaterHeightFromDischarge(ID,QOutput,TmpValue))
         {
-          std::string IDStr;
-          openfluid::tools::convertValue(ID,&IDStr);
+          std::string IDStr = std::to_string(ID);
           OPENFLUID_RaiseWarning("cannot compute water height on RS " + IDStr);
         }
 
         OPENFLUID_AppendVariable(RS,"water.surf.H.level-rs",TmpValue);
 
         // Checking produced variables consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
         if (TmpValue < 0)
         {
           OPENFLUID_RaiseError("The produced variable water height at the outlet of the RS " + IDStr + 

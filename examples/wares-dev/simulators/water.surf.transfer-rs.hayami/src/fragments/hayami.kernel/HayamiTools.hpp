@@ -48,6 +48,9 @@
 #include <openfluid/core/TypeDefs.hpp>
 
 
+namespace fragments {
+  namespace hydro {
+
 typedef std::vector<double> t_HayamiKernel;
 typedef std::map<int, t_HayamiKernel> IDKernelMap;
 
@@ -159,3 +162,6 @@ inline float DoHayamiPropagation(const t_HayamiKernel& Kernel,
 }
 
 #endif // __HAYAMITOOLS_H__
+
+}
+}

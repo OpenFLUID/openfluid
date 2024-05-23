@@ -1,15 +1,14 @@
-\subsection{Simulator name}
-The name (ID) of the simulator is \texttt{\FileID}.
+\subsection{Nom de la fonction}
+Le nom (fileID) de la fonction de simulation est \texttt{\FileID}.
 
+\subsection{Paramètres de la fonction}
+La fonction ``\frenchname'' doit être utilisée et renseignée avec les paramètres suivants :\\
 
-\subsection{Simulator parameters}
-The simulator ``\englishname'' must be used with the following parameters :
-\vspace{1em}
 
 \hspace{-0.5cm}
 \begin{tabular}{|llcc|}
  \hline
-\it Symbol & \it Name & \it Value range & \it Unit \\
+\it Symbole & \it Nom & \it Valeurs & \it Unité \\
  \hline
 $Max Step$ & \texttt{\ParamA} & $>0$ & $-$ \\
 $C$ & \texttt{\ParamB} & $>0$ & $m/s$ \\
@@ -20,31 +19,28 @@ $RS buffer$ & \texttt{\ParamE} & $\geq 0$ & $m$ \\
 \end{tabular} 
 \vspace{1em}
 
-Thus, the correct syntax to use in the \texttt{model.xml} file is illustrated hereafter.
+La syntaxe correcte de déclaration d'utilisation de la fonction dans le fichier \texttt{model.xml} doit ressembler à l'exemple illustré ci-après :
 
-\begin{small}
 \begin{verbatim}
-<simulator ID="water.surf.
-           transfer-rs.hayami">
+<function fileID="water.surf.
+          transfer-rs.hayami">
     <param name="calibstep" value="0.005" />
     <param name="maxsteps" value="100" />
     <param name="meancel" value="0.5" />
     <param name="meansigma" value="500" />
     <param name="rsbuffer" value="1" />
-</simulator>
+</function>
 \end{verbatim}
-\end{small}
 
 
-
-\subsection{Unit properties required}
-The simulator requires some geometric properties and soil characteristics. These are described in the following table.
+\subsection{Propriétés distribuées}
+La fonction ``\frenchname'' requiert les propriétés distribuées suivantes :
 \vspace{1em}
 
 \hspace{-0.5cm}
 \begin{tabular}{|llcc|}
  \hline
-\it Symbol &\it Name & \it Value range & \it Unit \\
+\it Symbole & \it Nom & \it Valeurs & \it Unité \\
  \hline
 $n$ & \texttt{\PropDisA} & $>0$ & $s/m\up{-1/3}$ \\
 $L$ & \texttt{\PropDisB} & $>0$ & $m$ \\
@@ -52,19 +48,19 @@ $l$ & \texttt{\PropDisC} & $>0$ & $m$ \\
 $H$ & \texttt{\PropDisD} & $>0$ & $m$ \\
 $\beta$ & \texttt{\PropDisE} & $>0$ & $m/m$ \\
 \hline
-\end{tabular}
+\end{tabular} 
 \vspace{1em}
 
 
 
 \subsection{Variables}
-Variables produced, required and updated by the simulator are listed hereafter.
+Les variables produites, utilisées et requises par cette fonction sont listées dans le tableau ci-après.
 \vspace{1em}
 
 \hspace{-0.5cm}
 \begin{tabular}{|lll|}
  \hline
-\it Symbol & \it Name & \it Unit \\
+\it Symbole & \it Nom & \it Unité \\
  \hline
 $Q_{SU}$ & \texttt{\VarUsedA} & $m\up{3}/s$ \\
 $Q_b$ & \texttt{\VarUsedB} & $m\up{3}/s$ \\
