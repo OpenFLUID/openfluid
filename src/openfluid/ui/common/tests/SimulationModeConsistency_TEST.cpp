@@ -68,7 +68,7 @@ void runCLISimulation()
   std::unique_ptr<QProcess> process = std::make_unique<QProcess>();
 
   const auto INPath = openfluid::tools::Path(
-    {CONFIGTESTS_INPUT_DATASETS_DIR,"OPENFLUID.IN.MhydasReduced"});
+    {CONFIGTESTS_INPUT_DATASETS_DIR,"OPENFLUID.IN.Firespread"});
   const auto OUTPath = openfluid::tools::Path(
     {CONFIGTESTS_OUTPUT_DATA_DIR,"SimulationModeConsistency/CLI-mode/OUT"});
   std::string CmdPath = openfluid::tools::Filesystem::joinPath({openfluid::base::Environment::getInstallPrefix(),
@@ -84,7 +84,9 @@ void runCLISimulation()
                 << QDir::toNativeSeparators(QString::fromStdString(OUTPath.toGeneric()));
 
   process->start(Command, Args);
-  BOOST_CHECK(process->waitForFinished());
+  BOOST_CHECK(process->waitForFinished(-1));
+  QString commandOutput = process->readAllStandardOutput();
+  std::cout << commandOutput.toStdString() << std::endl;
 }
 
 
@@ -97,7 +99,7 @@ void runIntegratedSimulation()
   openfluid::base::IOListener Listener;
   openfluid::fluidx::FluidXIO FXIO(&Listener);
   const auto INPath = openfluid::tools::Path(
-    {CONFIGTESTS_INPUT_DATASETS_DIR,"OPENFLUID.IN.MhydasReduced"});
+    {CONFIGTESTS_INPUT_DATASETS_DIR,"OPENFLUID.IN.Firespread"});
   const auto prjPath = openfluid::tools::Path(
     {CONFIGTESTS_OUTPUT_DATA_DIR,"SimulationModeConsistency/integrated-mode"});
   const auto OUTPath = openfluid::tools::Path(
@@ -139,9 +141,8 @@ BOOST_AUTO_TEST_CASE(check_consistency)
        << QDir::toNativeSeparators(QString::fromStdString(OUTPathIntegratedMode.toGeneric()))
        << QDir::toNativeSeparators(QString::fromStdString(OUTPathCLIMode.toGeneric()));
 
-  process->setProcessChannelMode(QProcess::MergedChannels);
   process->start(diffCommand, args);
-  BOOST_CHECK(process->waitForFinished());
+  BOOST_CHECK(process->waitForFinished(-1));
   QString diffcommandOutput = process->readAllStandardOutput();
 
   BOOST_CHECK(diffcommandOutput.toStdString() == "");

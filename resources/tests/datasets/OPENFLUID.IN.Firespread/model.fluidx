@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <model>
+        <generator variables="AU#*:gas.atm.V.windspeed;AU#*:gas.atm.degree.mainwinddir" method="inject-multicol" enabled="true">
+            <param name="datafile" value="multi_inject.csv"/>
+        </generator>
+        <simulator ID="spatial.atm.grid.connection-dynamics" enabled="true"/>
+        <simulator ID="fire.surf.prod-spread" enabled="true">
+            <param name="ignitionunits" value="1237;387"/>
+        </simulator>
+    </model>
+</openfluid>

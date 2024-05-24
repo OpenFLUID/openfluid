@@ -61,7 +61,8 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
     WindFireConnectSimulator() : PluggableSimulator()
     {
-      m_RandomEngine.seed(std::time(0));
+      //m_RandomEngine.seed(std::time(0));
+      m_RandomEngine.seed(0);
     }
 
 
