@@ -24,7 +24,14 @@
     "data": {
       "parameters": {
         "required": [],
-        "used": []
+        "used": [
+          {
+            "name": "random-seed-value",
+            "description": "Seed used for mt19937 random number generation, if negative seed will change each time",
+            "siunit": "-",
+            "type": "integer"
+          }
+        ]
       },
       "attributes": {
         "required": [

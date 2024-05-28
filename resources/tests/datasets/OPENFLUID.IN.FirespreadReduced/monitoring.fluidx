@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <monitoring>
+        <observer ID="export.vars.files.csv-multicols" enabled="true">
+            <param name="format.auto.colsep" value=";"/>
+            <param name="format.auto.date" value="ISO"/>
+            <param name="format.auto.header" value="colnames-as-comment"/>
+            <param name="set.autoAll.format" value="auto"/>
+            <param name="set.autoAll.selection" value="*#1:*"/>
+        </observer>
+        <observer ID="export.vars.files.csv-multicols" enabled="true">
+            <param name="format.auto.colsep" value=";"/>
+            <param name="format.auto.date" value="ISO"/>
+            <param name="format.auto.header" value="colnames-as-comment"/>
+            <param name="set.winddir.format" value="auto"/>
+            <param name="set.winddir.selection" value="AU#1:gas.atm.degree.winddir"/>
+        </observer>
+    </monitoring>
+</openfluid>

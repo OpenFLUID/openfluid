@@ -53,6 +53,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     typedef openfluid::core::IDMap<std::vector<openfluid::core::SpatialUnit*> >::Type Connections_t;
 
     std::mt19937 m_RandomEngine;
+    long m_RngSeed;
 
     Connections_t m_PotentialConnections;
 
@@ -61,7 +62,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
     WindFireConnectSimulator() : PluggableSimulator()
     {
-      m_RandomEngine.seed(std::time(0));
+
     }
 
 
@@ -80,9 +81,14 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     // =====================================================================
 
 
-    void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+    void initParams(const openfluid::ware::WareParams_t& Params)
     {
-
+      bool FoundRngSeed = OPENFLUID_GetSimulatorParameter(Params,"rngseed",m_RngSeed);
+      if (!FoundRngSeed || m_RngSeed < 0)
+      {
+        m_RngSeed = std::time(0);
+      }
+      m_RandomEngine.seed(m_RngSeed);
     }
 
 
@@ -264,7 +270,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
         openfluid::core::IntegerValue CorrectedDir =
             getCorrectedWindDir((int)(LatestMainWindDir.value()->asDoubleValue().get()));
 
-        OPENFLUID_AppendVariable(AU,"gas.atm.degree.winddir",getCorrectedWindDir(CorrectedDir));
+        OPENFLUID_AppendVariable(AU,"gas.atm.degree.winddir",CorrectedDir);
 
         // update land connections according to corrected wind direction
         updateLandConnections(AU,CorrectedDir);
