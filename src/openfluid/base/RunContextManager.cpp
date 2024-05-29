@@ -544,18 +544,6 @@ void RunContextManager::setOutputDir(const std::string& OutputDir)
 // =====================================================================
 
 
-void RunContextManager::setIODir(const std::string& InputDir, const std::string& OutputDir)
-{
-  m_InputDir = openfluid::tools::Filesystem::absolutePath(InputDir);
-  m_OutputDir = openfluid::tools::Filesystem::absolutePath(OutputDir);
-  updateWaresEnvironment();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void RunContextManager::setDateTimeOutputDir()
 {
   closeProject();

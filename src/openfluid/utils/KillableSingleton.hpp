@@ -53,7 +53,7 @@ namespace openfluid { namespace utils {
   @snippet misc/singleton.cpp killablesingleton
 */
 template<typename T>
-class KillableSingleton
+[[deprecated]] class KillableSingleton
 {
 
   private:
