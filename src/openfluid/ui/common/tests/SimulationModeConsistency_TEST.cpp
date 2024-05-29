@@ -33,6 +33,7 @@
   @file SimulationModeConsistency_TEST.cpp
 
   @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -55,6 +56,7 @@
 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/base/IOListener.hpp>
+#include <openfluid/config.hpp>
 #include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -63,14 +65,16 @@
 #include "tests-config.hpp"
 
 
-void runCLISimulation() 
-{
-  std::unique_ptr<QProcess> process = std::make_unique<QProcess>();
+const std::string TestName = "SimulationModeConsistency";
+const std::string IntegratedFolder = "integrated-mode";
+const std::string CLIFolder = "CLI-mode";
 
-  const auto INPath = openfluid::tools::Path(
-    {CONFIGTESTS_INPUT_DATASETS_DIR,"OPENFLUID.IN.MhydasReduced"});
+
+void runCLISimulation(const std::string& DatasetName, const openfluid::tools::Path& INPath) 
+{
+  std::unique_ptr<QProcess> Process = std::make_unique<QProcess>();
   const auto OUTPath = openfluid::tools::Path(
-    {CONFIGTESTS_OUTPUT_DATA_DIR,"SimulationModeConsistency/CLI-mode/OUT"});
+    {CONFIGTESTS_OUTPUT_DATA_DIR, TestName, DatasetName, CLIFolder, openfluid::config::PROJECT_OUTPUTDIRPREFIX});
   std::string CmdPath = openfluid::tools::Filesystem::joinPath({openfluid::base::Environment::getInstallPrefix(),
                                                                 openfluid::config::INSTALL_BIN_PATH,
                                                                 openfluid::config::CMD_APP
@@ -83,8 +87,8 @@ void runCLISimulation()
                 << QDir::toNativeSeparators(QString::fromStdString(INPath.toGeneric())) 
                 << QDir::toNativeSeparators(QString::fromStdString(OUTPath.toGeneric()));
 
-  process->start(Command, Args);
-  BOOST_CHECK(process->waitForFinished());
+  Process->start(Command, Args);
+  BOOST_CHECK(Process->waitForFinished(-1));
 }
 
 
@@ -92,27 +96,40 @@ void runCLISimulation()
 // =====================================================================
 
 
-void runIntegratedSimulation()
+class TestRunContextManager : public openfluid::base::RunContextManager
+{
+  public:
+
+    TestRunContextManager(const openfluid::tools::Path& INPath, const openfluid::tools::Path& PrjPath)
+    // TODO  find solution without full project generation, not easy: solutions only based on output dir failed
+    {
+      createProject(PrjPath.toGeneric(), "Test project","This is a test project", "John Doe", false);
+      m_InputDir = INPath.toGeneric();
+      updateWaresEnvironment();
+      setClearOutputDir(true);
+    }
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+void runIntegratedSimulation(const std::string& DatasetName, const openfluid::tools::Path& INPath)
 {
   openfluid::base::IOListener Listener;
   openfluid::fluidx::FluidXIO FXIO(&Listener);
-  const auto INPath = openfluid::tools::Path(
-    {CONFIGTESTS_INPUT_DATASETS_DIR,"OPENFLUID.IN.MhydasReduced"});
-  const auto prjPath = openfluid::tools::Path(
-    {CONFIGTESTS_OUTPUT_DATA_DIR,"SimulationModeConsistency/integrated-mode"});
-  const auto OUTPath = openfluid::tools::Path(
-    {CONFIGTESTS_OUTPUT_DATA_DIR,"SimulationModeConsistency/integrated-mode/OUT"});
+  const auto PrjPath = openfluid::tools::Path(
+    {CONFIGTESTS_OUTPUT_DATA_DIR, TestName, DatasetName, IntegratedFolder});
   openfluid::fluidx::FluidXDescriptor m_FXDesc = FXIO.loadFromDirectory(INPath.toGeneric());
 
   openfluid::ui::common::RunSimulationListener* mp_Listener = new openfluid::ui::common::RunSimulationListener();
   openfluid::ui::common::RunSimulationWorker* Worker =
       new openfluid::ui::common::RunSimulationWorker(&m_FXDesc, mp_Listener);
 
-  openfluid::base::RunContextManager::instance()->createProject(prjPath.toGeneric(),
-                                                                "Test project","This is a test project",
-                                                                "John Doe", false);
-  openfluid::base::RunContextManager::instance()->setIODir(INPath.toGeneric(), OUTPath.toGeneric());
+  openfluid::base::RunContextManager::setInstance(new TestRunContextManager(INPath, PrjPath));
   Worker->run();
+  openfluid::base::RunContextManager::kill();
 }
 
 
@@ -120,32 +137,84 @@ void runIntegratedSimulation()
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_consistency)
+bool compareModes(const std::string& DatasetName, const openfluid::tools::Path& DatasetPath)
 {
-  std::unique_ptr<QProcess> process = std::make_unique<QProcess>();
+  std::unique_ptr<QProcess> Process = std::make_unique<QProcess>();
 
-  runIntegratedSimulation();
-  runCLISimulation();
+  runIntegratedSimulation(DatasetName, DatasetPath);
+  runCLISimulation(DatasetName, DatasetPath);
 
   const auto OUTPathIntegratedMode = openfluid::tools::Path(
-    {CONFIGTESTS_OUTPUT_DATA_DIR,"SimulationModeConsistency/integrated-mode/OUT"});
+    {CONFIGTESTS_OUTPUT_DATA_DIR, TestName, DatasetName, IntegratedFolder, openfluid::config::PROJECT_OUTPUTDIRPREFIX});
   const auto OUTPathCLIMode = openfluid::tools::Path(
-    {CONFIGTESTS_OUTPUT_DATA_DIR,"SimulationModeConsistency/CLI-mode/OUT"});
+    {CONFIGTESTS_OUTPUT_DATA_DIR, TestName, DatasetName, CLIFolder, openfluid::config::PROJECT_OUTPUTDIRPREFIX});
 
-  QString diffCommand = "diff";
-  QStringList args;
-  args << "--exclude=*.log" 
-       << "-qr"
+  QString DiffCommand = "diff";
+  QStringList Args;
+  Args << "-y"
+       << "--suppress-common-lines"
+       << "--exclude=*.log"
+       << "--exclude=*.kmz"
+       << "--exclude=*.pdf"
+       << "--exclude=*.gnuplot"
        << QDir::toNativeSeparators(QString::fromStdString(OUTPathIntegratedMode.toGeneric()))
        << QDir::toNativeSeparators(QString::fromStdString(OUTPathCLIMode.toGeneric()));
 
-  process->setProcessChannelMode(QProcess::MergedChannels);
-  process->start(diffCommand, args);
-  BOOST_CHECK(process->waitForFinished());
-  QString diffcommandOutput = process->readAllStandardOutput();
-
-  BOOST_CHECK(diffcommandOutput.toStdString() == "");
+  Process->start(DiffCommand, Args);
+  BOOST_CHECK(Process->waitForFinished(-1));
+  std::string DiffCommandOutput = Process->readAllStandardOutput().toStdString() + \
+                                  Process->readAllStandardError().toStdString();
+  std::cout << DiffCommandOutput << std::endl;
+  return (DiffCommandOutput == "");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_consistency_Firespread)
+{
+  const openfluid::tools::Path INPath = openfluid::tools::Path(
+    {CONFIGTESTS_INPUT_DATASETS_DIR, "OPENFLUID.IN.FirespreadReduced"});
+  BOOST_CHECK(compareModes("FirespreadReduced", INPath));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_consistency_MhydasRoujan)
+{
+  const openfluid::tools::Path INPath = openfluid::tools::Path(
+   {CONFIGTESTS_INPUT_DATASETS_DIR, "OPENFLUID.IN.MhydasReduced"});
+  BOOST_CHECK(compareModes("MhydasReduced", INPath));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_consistency_Manhattan)
+{
+  const openfluid::tools::Path INPath = openfluid::tools::Path(
+    {openfluid::config::EXAMPLES_PROJECTS_SOURCE_PATH, "Manhattan", "IN"});
+  BOOST_CHECK(compareModes("Manhattan", INPath));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+// BOOST_AUTO_TEST_CASE(check_consistency_Primitives) // TOIMPL enable when random generator seedable
+// {
+//   const openfluid::tools::Path INPath = openfluid::tools::Path(
+//     {openfluid::config::EXAMPLES_PROJECTS_SOURCE_PATH, "Primitives", "IN"});
+//   BOOST_CHECK(compareModes("Primitives", INPath));
+// }
 
 
 // =====================================================================

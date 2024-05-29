@@ -74,6 +74,11 @@
         delete mp_Instance;\
         mp_Instance = nullptr;\
       }\
+    }\
+    static void setInstance(T* Instance)\
+    {\
+      kill();\
+      mp_Instance = Instance;\
     }
 
 

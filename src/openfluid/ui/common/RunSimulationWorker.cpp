@@ -34,6 +34,7 @@
   @file RunSimulationWorker.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -372,9 +373,6 @@ void RunSimulationWorker::run()
 
     openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(mp_FXDesc->monitoring(),
                                                                        MonitInstance);
-
-
-    SimBlob.spatialGraph().sortUnitsByProcessOrder();
 
 
     // simulation begins -->

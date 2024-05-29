@@ -48,6 +48,8 @@ struct SortByProcessOrder
 {
   bool operator ()(SpatialUnit& U1,SpatialUnit& U2) const
   {
+    // warning: does not apply specific order when units have identical order. 
+    //   Based on spatial units injection LIFO (reversed): if domain contains SU 1,3,2,4, iterator will give 4,2,3,1
     return (U1.getProcessOrder() <= U2.getProcessOrder());
   }
 
