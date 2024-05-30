@@ -612,8 +612,13 @@ void PreferencesDialog::intializeTextEditorSettings()
     row ++;
   }
 
-  connect(SignalMapperCB,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementDecoration(int)));  // FIXME no such signal
-  connect(SignalMapperButton,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementColor(int)));  // FIXME no such signal
+#if (QT_VERSION_MAJOR < 6)
+  connect(SignalMapperCB,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementDecoration(int)));
+  connect(SignalMapperButton,SIGNAL(mapped(int)), this,SLOT(changeSyntaxElementColor(int)));
+#else
+  connect(SignalMapperCB,SIGNAL(mappedInt(int)), this,SLOT(changeSyntaxElementDecoration(int)));
+  connect(SignalMapperButton,SIGNAL(mappedInt(int)), this,SLOT(changeSyntaxElementColor(int))); 
+#endif
 
   ui->scrollArea->setEnabled(IsHLEnabled);
 
