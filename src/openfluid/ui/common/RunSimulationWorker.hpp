@@ -153,7 +153,7 @@ class OPENFLUID_API RunSimulationListener : public QObject, public openfluid::ma
 // =====================================================================
 
 
-class RunSimulationWorker : public QObject
+class OPENFLUID_API RunSimulationWorker : public QObject
 {
 
   Q_OBJECT;
