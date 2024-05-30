@@ -34,6 +34,7 @@
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Armel THÖNI <armel.thoni@inrae.fr>
+ @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -191,8 +192,11 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 
   connect(mp_Completer, SIGNAL(activated(QString)), this, SLOT(insertCompletion()));
 
+#if (QT_VERSION_MAJOR < 6)
   connect(mp_SignalMapper, SIGNAL(mapped(QString)), this, SLOT(onInsertRequested(QString)));
-
+#else 
+  connect(mp_SignalMapper, SIGNAL(mappedString(QString)), this, SLOT(onInsertRequested(QString)));
+#endif
 
   updateContent();
 
