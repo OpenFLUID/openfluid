@@ -35,6 +35,7 @@
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@gmail.com>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -50,6 +51,7 @@
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -206,6 +208,11 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   Menu.addAction(tr("Copy relative path"), this, SLOT(onCopyRelativePathAsked()));
 
   Menu.addSeparator();
+
+  if(checkForMigrationFiles()) {
+    Menu.addAction(tr("Revert migration"), this, SLOT(onRevertMigrationAsked()));
+    Menu.addSeparator();
+  }
 
   QMenu GitMenu;
   GitMenu.setTitle("Git");
@@ -403,6 +410,26 @@ bool WareSrcExplorer::setCurrentPath(const QString& Path)
 void WareSrcExplorer::scrollToCurrent()
 {
   scrollTo(currentIndex());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcExplorer::checkForMigrationFiles()
+{
+  QString warePath = getWarePath();
+
+  openfluid::tools::FilesystemPath migrationFolderPath = openfluid::tools::FilesystemPath(
+    openfluid::tools::Filesystem::joinPath({warePath.toStdString(), 
+                                            openfluid::config::WARESDEV_MIGRATION_WORK_DIR}));
+
+  openfluid::tools::FilesystemPath originalFolderPath = openfluid::tools::FilesystemPath(
+    openfluid::tools::Filesystem::joinPath({warePath.toStdString(), 
+                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));
+
+  return migrationFolderPath.exists() && originalFolderPath.exists();
 }
 
 
@@ -758,6 +785,30 @@ void WareSrcExplorer::onGitLogAsked()
   Dialog.setWindowTitle("git log");
   Dialog.setContent(Git.logHtml(WarePath, true));
   Dialog.exec();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onRevertMigrationAsked()
+{
+  QString warePath = getWarePath();
+
+  openfluid::tools::FilesystemPath migrationFolderPath = openfluid::tools::FilesystemPath(
+    openfluid::tools::Filesystem::joinPath({warePath.toStdString(), 
+                                            openfluid::config::WARESDEV_MIGRATION_WORK_DIR}));
+
+  openfluid::tools::FilesystemPath originalFolderPath = openfluid::tools::FilesystemPath(
+    openfluid::tools::Filesystem::joinPath({warePath.toStdString(), 
+                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));
+
+  openfluid::tools::Filesystem::copyDirectoryContent(std::filesystem::path(originalFolderPath.toGeneric()),
+                                                     std::filesystem::path(warePath.toStdString()));
+
+  migrationFolderPath.removeDirectory();
+  originalFolderPath.removeDirectory();
 }
 
 
