@@ -357,6 +357,64 @@ bool Filesystem::emptyDirectory(const std::string& Path)
 // =====================================================================
 
 
+bool Filesystem::emptyDirectory(const std::string& Path, const std::vector<std::string>& PathsToExlude)
+{
+  auto PathFSP = FilesystemPath(Path);
+
+  if (!PathFSP.isDirectory())
+  {
+    return false;
+  }
+
+  for (const auto & Entry : std::filesystem::directory_iterator(PathFSP.stdPath()))
+  {
+    auto EntryFSP = FilesystemPath(Entry.path().string());
+
+    if(std::find(PathsToExlude.begin(), PathsToExlude.end(), EntryFSP.toGeneric()) != PathsToExlude.end()) {
+      continue;
+    }
+
+    //sub path from a path to exlude
+    auto isExcludedPath = [&PathsToExlude, &EntryFSP]() {
+      for (const auto& PathToExlude : PathsToExlude)
+      {
+        auto PathToExludeFSP = FilesystemPath(PathToExlude);
+        if (PathToExludeFSP.contains(EntryFSP.toGeneric())) 
+        {
+          return true;
+        }
+      }
+      return false;
+    };
+    if(isExcludedPath())
+    {
+      continue;
+    }
+
+    if (Entry.is_directory())
+    {
+      if (!EntryFSP.removeDirectory())
+      {
+        return false;
+      }
+    }
+    else
+    {
+      if (!EntryFSP.removeFile())
+      {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string Filesystem::makeUniqueSubdirectory(const std::string& Path, const std::string& SubdirName)
 {
   if (SubdirName.empty())

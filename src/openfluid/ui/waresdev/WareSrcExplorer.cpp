@@ -797,17 +797,18 @@ void WareSrcExplorer::onRevertMigrationAsked()
   QString warePath = getWarePath();
 
   openfluid::tools::FilesystemPath migrationFolderPath = openfluid::tools::FilesystemPath(
-    openfluid::tools::Filesystem::joinPath({warePath.toStdString(), 
+    openfluid::tools::Filesystem::joinPath({warePath.toStdString(),
                                             openfluid::config::WARESDEV_MIGRATION_WORK_DIR}));
 
   openfluid::tools::FilesystemPath originalFolderPath = openfluid::tools::FilesystemPath(
     openfluid::tools::Filesystem::joinPath({warePath.toStdString(), 
-                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));
+                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));   
+
+  openfluid::tools::Filesystem::emptyDirectory(warePath.toStdString(), {originalFolderPath.toGeneric()});          
 
   openfluid::tools::Filesystem::copyDirectoryContent(std::filesystem::path(originalFolderPath.toGeneric()),
                                                      std::filesystem::path(warePath.toStdString()));
 
-  migrationFolderPath.removeDirectory();
   originalFolderPath.removeDirectory();
 }
 
