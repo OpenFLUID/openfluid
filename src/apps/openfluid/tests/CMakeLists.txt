@@ -314,7 +314,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "configure"
                            "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim"
-                           "--build-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/build/sim/tests.cmdline.sim"
+                           "--build-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim/_build-release-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}"
                            "--generator=${CMAKE_GENERATOR}"
                            "---"
                            "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
@@ -326,7 +326,7 @@ SET_PROPERTY(TEST cmdline-openfluid-ConfigureSimulator APPEND PROPERTY DEPENDS c
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "build" "--build-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/build/sim/tests.cmdline.sim"
+                           "build" "--build-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim/_build-release-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}"
                            "-t" "install" "-j" "2")
 SET_PROPERTY(TEST cmdline-openfluid-BuildSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureSimulator)
 
@@ -343,9 +343,8 @@ ENDIF()
 
 ADD_TEST(NAME cmdline-openfluid-PurgeSimulator
          COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                  "purge" "--path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim") # TOIMPL
+                  "purge" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim")
 SET_PROPERTY(TEST cmdline-openfluid-PurgeSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-BuildSimulator)
-SET_PROPERTY(TEST cmdline-openfluid-PurgeSimulator APPEND PROPERTY SKIP_RETURN_CODE ${OFBUILD_UNITTESTS_SKIP_CODE})
 
 
 ###########################################################################

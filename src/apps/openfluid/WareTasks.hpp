@@ -34,6 +34,7 @@
   @file WareTasks.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -61,6 +62,8 @@ class WareTasks : public TasksBase
     int processDocalyze() const;
 
     int processInfo2Build() const;
+
+    int processPurge() const;
 
 
   public:

@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -248,8 +249,9 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto PurgeCmd = openfluid::utils::CommandLineCommand("purge","purge build outputs on ware sources"); // TOIMPL
-  PurgeCmd.addOptions({{"path","p","path to the ware sources",true}});
+  auto PurgeCmd = openfluid::utils::CommandLineCommand("purge","purge build outputs on ware sources");
+  PurgeCmd.addOptions({{"src-path","s","path to the ware sources",true}});
+  PurgeCmd.addOptions({{"build-type","t","CMake build mode (Debug|Release|..., default is Release)", true}});
   Parser.addCommand(PurgeCmd);
 
   // ---
