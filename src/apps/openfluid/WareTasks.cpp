@@ -34,6 +34,7 @@
   @file WareTasks.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -542,6 +543,37 @@ int WareTasks::processInfo2Build() const
 // =====================================================================
 
 
+int WareTasks::processPurge() const
+{
+  std::string WarePath = m_Cmd.getOptionValue("src-path");
+
+  if (!m_Cmd.isOptionActive("src-path") || WarePath.empty())
+  {
+    return error("missing or empty ware sources path");
+  }
+
+  std::string BuildType = openfluid::utils::CMakeProxy::DefaultBuildType;
+  if (m_Cmd.isOptionActive("build-type") && !m_Cmd.getOptionValue("build-type").empty())
+  {
+    BuildType = m_Cmd.getOptionValue("build-type");
+  }
+
+  std::string buildPath = openfluid::tools::Filesystem::joinPath({ WarePath, 
+    openfluid::utils::CMakeProxy::getBuildDir(BuildType) });
+
+  if(!openfluid::tools::Filesystem::emptyDirectory(buildPath)) 
+  {
+    return error("Error while clearing directory : " + buildPath);
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int WareTasks::process() const
 {
   if (m_Cmd.getName() == "create-ware")
@@ -570,7 +602,7 @@ int WareTasks::process() const
   }
   else if (m_Cmd.getName() == "purge")
   {
-    return notImplemented(); // TOIMPL
+    return processPurge();
   }
   else if (m_Cmd.getName() == "info2build")
   {
