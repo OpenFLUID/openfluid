@@ -35,11 +35,13 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
  @author Armel THÖNI <armel.thoni@inrae.fr>
+ @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/Process.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/config.hpp>
 
@@ -102,5 +104,45 @@ bool GitProxy::isAvailable()
   return (!m_ExecutablePath.empty() && !m_Version.empty());
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool GitProxy::isPathGitRepo(const std::string& Path)
+{
+  openfluid::utils::Process::Command Cmd{
+    .Program = "git",
+    .Args = {"rev-parse", "--is-inside-work-tree"},
+    .WorkDir = Path
+  };
+  openfluid::utils::Process Process(Cmd);
+  Process.run();
+  return Process.getExitCode() == 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+const std::string GitProxy::getCurrentBranchName(const std::string& Path)
+{
+  openfluid::utils::Process::Command Cmd{
+    .Program = "git",
+    .Args = {"branch", "--show-current"},
+    .WorkDir = Path
+  };
+  openfluid::utils::Process Process(Cmd);
+  Process.run();
+  if(Process.getExitCode() == 0)
+  {
+    return Process.stdOutLines()[0];
+  }
+  else
+  {
+    throw GitOperationException("Error with git branch command in path : " + Path);
+  }
+}
 
 } } // namespaces

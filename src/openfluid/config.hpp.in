@@ -182,6 +182,7 @@ const std::string WARESDEV_WARESHUB_FILE = "wareshub.json";  // deprecated
 const std::string WARESDEV_MIGRATION_WORK_DIR = "_migration";
 const std::string WARESDEV_MIGRATION_ORIGINAL_DIR = "_original";
 const std::string WARESDEV_DOCALYZER_WORK_DIRROOT = "_docalyzer";
+const std::string WARESDEV_BRANCH_INFO_FILE = "branch-info.txt";
 
 
 // Project

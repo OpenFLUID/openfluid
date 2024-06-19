@@ -34,6 +34,7 @@
   @file WareSrcChecker.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -224,7 +225,7 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performMetainfoChec
 
 WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performCodeCheck(bool OKToRun) const
 {
-  auto Data = InitializeReportingItemList({"migration_isclean"});
+  auto Data = InitializeReportingItemList({"migration_isclean_no_comments"});
 
 
   if (OKToRun)
@@ -246,7 +247,7 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performCodeCheck(bo
       }
       return true;
     };
-    processReportingItem(Data,"migration_isclean",FindMigrationTagInFile);
+    processReportingItem(Data,"migration_isclean_no_comments",FindMigrationTagInFile);
 
     // [w] sim2doc tag in C++ files
     // TOIMPL to do
@@ -263,7 +264,7 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performCodeCheck(bo
 WareSrcChecker::ReportingData WareSrcChecker::performCheck(bool Pedantic) const
 {
   ReportingData Data;
-  auto BaseData = InitializeReportingItemList({"rootdir_exists","version_iscorrect"});
+  auto BaseData = InitializeReportingItemList({"rootdir_exists","version_iscorrect", "no_migration_files"});
 
   
   // [e] ware src directory exists
@@ -274,8 +275,21 @@ WareSrcChecker::ReportingData WareSrcChecker::performCheck(bool Pedantic) const
   {
     // [e] ware src is detected as 220000
     BaseIsOK = (tryDetectWareSrcVersion(m_SrcPathObj) >= 202000);
-    processReportingItem(BaseData, "version_iscorrect", [&](){return BaseIsOK;},
+    bool HasMigrationFiles = hasMigrationFiles();
+
+    if(BaseIsOK)
+    {
+      processReportingItem(BaseData, "no_migration_files", [&](){return !HasMigrationFiles;},
+                                    ReportingData::ReportingStatus::WARNING);
+    } 
+    else 
+    {
+      processReportingItem(BaseData, "no_migration_files", [&](){return !HasMigrationFiles;},
+                                    ReportingData::ReportingStatus::ERROR_STATUS);
+
+      processReportingItem(BaseData, "version_iscorrect", [&](){return HasMigrationFiles;},
                          ReportingData::ReportingStatus::ERROR_STATUS);
+    }
   }
 
 
@@ -313,6 +327,24 @@ unsigned int WareSrcChecker::tryDetectWareSrcVersion(const openfluid::tools::Fil
   }
 
   return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcChecker::hasMigrationFiles() const
+{
+  openfluid::tools::FilesystemPath MigrationFolderPath = openfluid::tools::FilesystemPath(
+    openfluid::tools::Filesystem::joinPath({m_SrcPathObj.toGeneric(), 
+                                            openfluid::config::WARESDEV_MIGRATION_WORK_DIR}));
+
+  openfluid::tools::FilesystemPath OriginalFolderPath = openfluid::tools::FilesystemPath(
+    openfluid::tools::Filesystem::joinPath({m_SrcPathObj.toGeneric(), 
+                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));
+
+  return MigrationFolderPath.exists() && OriginalFolderPath.exists();
 }
 
 

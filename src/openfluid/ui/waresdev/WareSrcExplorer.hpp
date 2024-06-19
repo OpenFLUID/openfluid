@@ -102,8 +102,6 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void onGitLogAsked();
 
-    void onRevertMigrationAsked();
-
 
   private:
 
@@ -112,8 +110,6 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
     QString m_TopDirectoryPath;
 
     QString getCurrentDir();
-
-    bool checkForMigrationFiles();
 
 
   signals:

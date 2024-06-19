@@ -146,7 +146,7 @@ inline T toNumeric(const std::string& Str)
   @snippet misc/strings.cpp str_starts
   @param[in] Str the string to check
   @param[in] SubStr the substring
-  @return true if the string starts with the substring, falser otherwise
+  @return true if the string starts with the substring, false otherwise
 */
 bool OPENFLUID_API startsWith(const std::string& Str,const std::string& SubStr);
 
@@ -156,7 +156,7 @@ bool OPENFLUID_API startsWith(const std::string& Str,const std::string& SubStr);
   @snippet misc/strings.cpp str_ends
   @param[in] Str the string to check
   @param[in] SubStr the substring
-  @return true if the string ends with the substring, falser otherwise
+  @return true if the string ends with the substring, false otherwise
 */
 bool OPENFLUID_API endsWith(const std::string& Str,const std::string& SubStr);
 
@@ -166,7 +166,7 @@ bool OPENFLUID_API endsWith(const std::string& Str,const std::string& SubStr);
   @snippet misc/strings.cpp str_contains
   @param[in] Str the string to check
   @param[in] SubStr the substring
-  @return true if the string contains the substring, falser otherwise
+  @return true if the string contains the substring, false otherwise
 */
 bool OPENFLUID_API contains(const std::string& Str,const std::string& SubStr);
 
@@ -240,11 +240,11 @@ std::string OPENFLUID_API join(const std::vector<std::string>& Vect, const std::
 /**
   Checks if two strings match
   @snippet misc/strings.cpp str_match
-  @param[in] Str1 the string to check
-  @param[in] Str2 the second string to check
-  @return true if both string match (include joker char), falser otherwise
+  @param[in] Str the string to check
+  @param[in] RefRegex the reference regular expression
+  @return true if Str string match RefRegex, false otherwise
 */
-bool OPENFLUID_API match(const std::string& Str1, const std::string& Str2);
+bool OPENFLUID_API match(const std::string& Str, const std::string& RefRegex);
 
 
 } } // namespaces

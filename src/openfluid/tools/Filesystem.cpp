@@ -331,7 +331,7 @@ bool Filesystem::emptyDirectory(const std::string& Path, const std::vector<std::
     return false;
   }
   
-  auto isExcludedPath = [&PathsToExlude](openfluid::tools::FilesystemPath EntryFSP) {
+  auto IsExcludedPath = [&PathsToExlude](openfluid::tools::FilesystemPath EntryFSP) {
     if(std::find(PathsToExlude.begin(), PathsToExlude.end(), EntryFSP.toGeneric()) != PathsToExlude.end()) 
     {
       return true;
@@ -341,7 +341,7 @@ bool Filesystem::emptyDirectory(const std::string& Path, const std::vector<std::
     {
       auto PathToExludeFSP = FilesystemPath(PathToExlude);
       std::string EntryGeneric = EntryFSP.toGeneric();
-      if (openfluid::tools::match(PathToExludeFSP.toGeneric(), EntryGeneric))
+      if (openfluid::tools::match(EntryGeneric, PathToExludeFSP.toGeneric()))
       {
         return true;
       }
@@ -355,7 +355,7 @@ bool Filesystem::emptyDirectory(const std::string& Path, const std::vector<std::
 
     if(PathsToExlude.size() > 0)
     {
-      if(isExcludedPath(EntryFSP))
+      if(IsExcludedPath(EntryFSP))
       {
         continue;
       }

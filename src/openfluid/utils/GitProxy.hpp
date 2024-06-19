@@ -35,6 +35,7 @@
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -42,6 +43,7 @@
 #define __OPENFLUID_UTILS_GITPROXY_HPP__
 
 
+#include <openfluid/base/OtherException.hpp>
 #include <openfluid/utils/ProgramProxy.hpp>
 #include <openfluid/dllexport.hpp>
 
@@ -67,6 +69,29 @@ class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
 
     static bool isAvailable();
 
+    static bool isPathGitRepo(const std::string& Path);
+
+    static const std::string getCurrentBranchName(const std::string& Path);   
+
+};
+
+class GitOperationException : public openfluid::base::Exception
+{
+  protected:
+
+    void buildFullMessage()
+    {
+      m_FullMessage = m_Message;
+    }
+
+
+  public:
+
+    GitOperationException(const std::string& Msg) :
+      Exception(Msg)
+    {
+      buildFullMessage();
+    }
 };
 
 

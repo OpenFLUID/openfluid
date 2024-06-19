@@ -36,6 +36,7 @@
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
  @author Armel Thoni <armel.thoni@inra.fr>
+ @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -51,7 +52,9 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
@@ -264,9 +267,9 @@ bool WareSrcWidgetCollection::requestWareTabClosing(WareSrcWidget* Ware)
 
 void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& OperationCode, const QString& WarePath)
 {
+  QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
   if (OperationCode == "migration")
   {
-    QMap<QString, WareSrcWidget*>::iterator it = m_WareSrcWidgetByPath.find(WarePath);
     if (it == m_WareSrcWidgetByPath.end())
     {
       QMessageBox::warning(nullptr,
@@ -341,6 +344,108 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
     // reopen ware
     openPath(WarePath);
   }
+
+  else if(OperationCode == "revert-migration")
+  {
+    if (it == m_WareSrcWidgetByPath.end())
+    {
+      QMessageBox::warning(nullptr,
+                          tr("Revert migration failure"),
+                          tr("Ware requested not found"),
+                          QMessageBox::Close,QMessageBox::Close);
+      return;
+    }
+
+    if(!requestWareTabClosing(it.value()))
+    {
+      return;
+    }
+
+    openfluid::tools::Path MigrationFolderPath = openfluid::tools::Path(
+    openfluid::tools::Filesystem::joinPath({WarePath.toStdString(),
+                                            openfluid::config::WARESDEV_MIGRATION_WORK_DIR}));
+
+    openfluid::tools::Path OriginalFolderPath = openfluid::tools::Path(
+                                            openfluid::tools::Filesystem::joinPath({WarePath.toStdString(), 
+                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));
+
+    openfluid::tools::Path HiddenPaths = openfluid::tools::Path(
+                                            openfluid::tools::Filesystem::joinPath({WarePath.toStdString(), 
+                                                                                    "\\..*"}));
+
+    openfluid::tools::Path UnderscorePaths = openfluid::tools::Path(
+                                            openfluid::tools::Filesystem::joinPath({WarePath.toStdString(), 
+                                                                                    "_.*"}));
+
+    if(OriginalFolderPath.exists() && MigrationFolderPath.exists())   
+    {  
+      openfluid::tools::Path BranchInfoFile = openfluid::tools::Path({MigrationFolderPath.toGeneric(),
+                                                                      openfluid::config::WARESDEV_BRANCH_INFO_FILE});
+      if(BranchInfoFile.exists())
+      {
+        std::string GitBranchNameFromFile = openfluid::tools::Filesystem::readFile(BranchInfoFile);
+        GitUIProxy Git;
+        try
+        {
+          std::string CurrentBranchName = GitUIProxy::getCurrentBranchName(WarePath.toStdString());
+          if(CurrentBranchName != GitBranchNameFromFile)
+          {
+            if(Git.checkout(WarePath, QString::fromStdString(GitBranchNameFromFile), false))
+            {
+              QProcess Process; 
+              Process.setWorkingDirectory(WarePath);
+              Process.start("git", {"branch", "-d", GitUIProxy::getCurrentOpenFLUIDBranchName()});
+              Process.waitForFinished(-1);
+              if(Process.exitCode() != 0)
+              {
+                QString gitBranchErrorMsg = tr("Error while deleting previous git branch");
+                QMessageBox::warning(nullptr, tr("Revert migration failure"), 
+                                  gitBranchErrorMsg, QMessageBox::Close);
+                openfluid::utils::log::error("Migration:revert", gitBranchErrorMsg.toStdString());
+                openfluid::utils::log::debug("Migration:revert", Process.readAllStandardOutput().toStdString());
+                openfluid::utils::log::debug("Migration:revert", Process.readAllStandardError().toStdString());
+                return;
+              }
+            }
+            else
+            {
+              QString gitCheckoutErrorMsg = tr("Not able to checkout previous git branch");
+              QMessageBox::warning(nullptr, tr("Revert migration failure"), 
+                                  gitCheckoutErrorMsg, QMessageBox::Close);
+              openfluid::utils::log::error("Migration:revert", gitCheckoutErrorMsg.toStdString());
+              return;
+            }
+          }
+        }
+        catch(const std::exception& E)
+        {
+          QMessageBox::warning(nullptr, tr("Revert migration failure"), 
+                                  tr(E.what()), QMessageBox::Close);
+          openfluid::utils::log::error("Migration:revert", E.what());
+          return;
+        }
+      }
+
+      openfluid::tools::Filesystem::emptyDirectory(WarePath.toStdString(), {OriginalFolderPath.toGeneric(), 
+                                                                            HiddenPaths.toGeneric(),
+                                                                            UnderscorePaths.toGeneric()
+                                                                          }); 
+
+      openfluid::tools::Filesystem::copyDirectoryContent(std::filesystem::path(OriginalFolderPath.toGeneric()),
+                                                        std::filesystem::path(WarePath.toStdString()));
+
+      OriginalFolderPath.removeDirectory();
+      MigrationFolderPath.removeDirectory();
+      openPath(WarePath);    
+    }   
+    else 
+    {
+      QMessageBox::warning(nullptr, tr("Revert migration failure"), tr("No migration folders available."),
+                           QMessageBox::Close);
+      return;
+    }                                                           
+  }
+
   else
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Custom action not recognized");
