@@ -37,6 +37,7 @@
  */
 
 
+#include <regex>
 #include <utility>
 
 #include <boost/algorithm/string.hpp>
@@ -170,6 +171,24 @@ std::vector<std::string> split(const std::string& Str, const std::string& SepCha
 std::string join(const std::vector<std::string>& Vect, const std::string& Sep)
 {
   return boost::algorithm::join(Vect,Sep);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool match(const std::string& Str1, const std::string& Str2)
+{
+  if(Str1 == Str2) 
+  {
+    return true;
+  }
+
+  std::regex regexPattern1(Str1);
+  std::regex regexPattern2(Str2);
+
+  return std::regex_match(Str2, regexPattern1) || std::regex_match(Str1, regexPattern2);
 }
 
 

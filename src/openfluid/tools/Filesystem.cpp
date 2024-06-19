@@ -59,6 +59,7 @@
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -321,42 +322,6 @@ bool Filesystem::copyDirectoryContent(const std::filesystem::path& Source, const
 // =====================================================================
 
 
-bool Filesystem::emptyDirectory(const std::string& Path)
-{
-  auto PathFSP = FilesystemPath(Path);
-
-  if (!PathFSP.isDirectory())
-  {
-    return false;
-  }
-
-  for (const auto & Entry : std::filesystem::directory_iterator(PathFSP.stdPath()))
-  {
-    auto EntryFSP = FilesystemPath(Entry.path().string());
-    if (Entry.is_directory())
-    {
-      if (!EntryFSP.removeDirectory())
-      {
-        return false;
-      }
-    }
-    else
-    {
-      if (!EntryFSP.removeFile())
-      {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool Filesystem::emptyDirectory(const std::string& Path, const std::vector<std::string>& PathsToExlude)
 {
   auto PathFSP = FilesystemPath(Path);
@@ -365,30 +330,35 @@ bool Filesystem::emptyDirectory(const std::string& Path, const std::vector<std::
   {
     return false;
   }
+  
+  auto isExcludedPath = [&PathsToExlude](openfluid::tools::FilesystemPath EntryFSP) {
+    if(std::find(PathsToExlude.begin(), PathsToExlude.end(), EntryFSP.toGeneric()) != PathsToExlude.end()) 
+    {
+      return true;
+    }
+
+    for (const auto& PathToExlude : PathsToExlude)
+    {
+      auto PathToExludeFSP = FilesystemPath(PathToExlude);
+      std::string EntryGeneric = EntryFSP.toGeneric();
+      if (openfluid::tools::match(PathToExludeFSP.toGeneric(), EntryGeneric))
+      {
+        return true;
+      }
+    }
+    return false;
+  };
 
   for (const auto & Entry : std::filesystem::directory_iterator(PathFSP.stdPath()))
   {
     auto EntryFSP = FilesystemPath(Entry.path().string());
 
-    if(std::find(PathsToExlude.begin(), PathsToExlude.end(), EntryFSP.toGeneric()) != PathsToExlude.end()) {
-      continue;
-    }
-
-    //sub path from a path to exlude
-    auto isExcludedPath = [&PathsToExlude, &EntryFSP]() {
-      for (const auto& PathToExlude : PathsToExlude)
-      {
-        auto PathToExludeFSP = FilesystemPath(PathToExlude);
-        if (PathToExludeFSP.contains(EntryFSP.toGeneric())) 
-        {
-          return true;
-        }
-      }
-      return false;
-    };
-    if(isExcludedPath())
+    if(PathsToExlude.size() > 0)
     {
-      continue;
+      if(isExcludedPath(EntryFSP))
+      {
+        continue;
+      }
     }
 
     if (Entry.is_directory())
@@ -406,7 +376,6 @@ bool Filesystem::emptyDirectory(const std::string& Path, const std::vector<std::
       }
     }
   }
-
   return true;
 }
 

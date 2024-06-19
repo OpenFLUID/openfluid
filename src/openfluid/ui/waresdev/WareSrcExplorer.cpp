@@ -52,6 +52,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -802,9 +803,15 @@ void WareSrcExplorer::onRevertMigrationAsked()
 
   openfluid::tools::FilesystemPath originalFolderPath = openfluid::tools::FilesystemPath(
     openfluid::tools::Filesystem::joinPath({warePath.toStdString(), 
-                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));   
+                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));
 
-  openfluid::tools::Filesystem::emptyDirectory(warePath.toStdString(), {originalFolderPath.toGeneric()});          
+  openfluid::tools::FilesystemPath hiddenPaths = openfluid::tools::FilesystemPath(
+    openfluid::tools::Filesystem::joinPath({warePath.toStdString(), 
+                                            "\\..*"}));
+
+  openfluid::tools::Filesystem::emptyDirectory(warePath.toStdString(), {originalFolderPath.toGeneric(), 
+                                                                        hiddenPaths.toGeneric(),
+                                                                       }); 
 
   openfluid::tools::Filesystem::copyDirectoryContent(std::filesystem::path(originalFolderPath.toGeneric()),
                                                      std::filesystem::path(warePath.toStdString()));
