@@ -34,6 +34,7 @@
  @file WareSrcChecker.hpp
  
  @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+ @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -83,6 +84,8 @@ class OPENFLUID_API WareSrcChecker
     WareSrcChecker::ReportingData::ReportingList performCodeCheck(bool OKToRun) const;
 
     void updateWithPedanticCheck(ReportingData& RepData) const;
+
+    bool hasMigrationFiles() const;
 
 
   public:

@@ -225,15 +225,7 @@ class OPENFLUID_API Filesystem
       Recursively removes all files and directories contained in the given directory.
       It deletes the directory and recreates it.
       @param[in] Path the directory to empty
-      @return true if successful
-    */
-    //static bool emptyDirectory(const std::string& Path);
-
-    /**
-      Recursively removes all files and directories contained in the given directory.
-      It deletes the directory and recreates it.
-      @param[in] Path the directory to empty
-      @param[in] PathsToExlude Path that are not deleted. If Path is a folder, do not delete files inside it
+      @param[in] PathsToExlude Paths that are not deleted.
       @return true if successful
     */
     static bool emptyDirectory(const std::string& Path, const std::vector<std::string>& PathsToExlude = {});
@@ -283,7 +275,6 @@ class OPENFLUID_API Filesystem
                                                                   bool ExtIncludeDot = false);
 
 };
-
 
 } }  // namespaces
 

@@ -34,6 +34,7 @@
   @file WareSrcMigrator.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -53,6 +54,7 @@
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/utils/Process.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
@@ -346,6 +348,28 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
   m_WorkPathObj = openfluid::tools::Path({m_DestPathObj.toGeneric(),openfluid::config::WARESDEV_MIGRATION_WORK_DIR});
   m_WorkPathObj.makeDirectory();
 
+  if(openfluid::utils::GitProxy::isPathGitRepo(m_SrcPathObj.toGeneric()))
+  {
+    try
+    {
+      std::string CurrentBranchName = openfluid::utils::GitProxy::getCurrentBranchName(m_SrcPathObj.toGeneric());
+      if(m_WorkPathObj.makeFile(openfluid::config::WARESDEV_BRANCH_INFO_FILE)) 
+      {
+        openfluid::tools::Filesystem::writeFile(CurrentBranchName, 
+                openfluid::tools::Path({m_WorkPathObj.toGeneric(), openfluid::config::WARESDEV_BRANCH_INFO_FILE}));
+      }
+      else 
+      {
+        mp_Listener->stageMessage("Error while creating branch info file");
+        openfluid::utils::log::error("Migration", "Error while creating branch info file");
+      }
+    }
+    catch(openfluid::utils::GitOperationException& E)
+    {
+      mp_Listener->stageMessage(E.what());
+      openfluid::utils::log::error("Migration", E.what());
+    }
+  }
 
   // 1st pass : search for simulator or observer
   for (const auto& FileObj : SrcFilesObjs)

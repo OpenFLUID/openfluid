@@ -178,17 +178,14 @@ std::string join(const std::vector<std::string>& Vect, const std::string& Sep)
 // =====================================================================
 
 
-bool match(const std::string& Str1, const std::string& Str2)
+bool match(const std::string& Str, const std::string& RefRegex)
 {
-  if(Str1 == Str2) 
+  if(Str == RefRegex) 
   {
     return true;
   }
-
-  std::regex regexPattern1(Str1);
-  std::regex regexPattern2(Str2);
-
-  return std::regex_match(Str2, regexPattern1) || std::regex_match(Str1, regexPattern2);
+  
+  return std::regex_match(Str, std::regex(RefRegex));
 }
 
 

@@ -34,6 +34,7 @@
   @file WareStatusItemWidget.cpp
 
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -81,7 +82,7 @@ void WareStatusItemWidget::populateReportItemLabels()
     "file_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       tr("Metadata can not be read");
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "migration_isclean", ReportingData::ReportingStatus::WARNING)] = \
+    "migration_isclean_no_comments", ReportingData::ReportingStatus::WARNING)] = \
       tr("Comments from migration remain in code");
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "rootdir_exists", ReportingData::ReportingStatus::ERROR_STATUS)] = \
@@ -89,14 +90,26 @@ void WareStatusItemWidget::populateReportItemLabels()
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "version_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       tr("Ware version is below current OpenFLUID version");
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "no_migration_files", ReportingData::ReportingStatus::WARNING)] = \
+      tr("Migration folders remain in ware source path. Remove them or"); // TODO : Find better solution
+  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "no_migration_files", ReportingData::ReportingStatus::ERROR_STATUS)] = \
+      tr("Ware migration failed");
 
 
   ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "version_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       std::pair<QString, QString>("migration", tr("Try to migrate the ware"));
   ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "migration_isclean", ReportingData::ReportingStatus::WARNING)] = \
+    "migration_isclean_no_comments", ReportingData::ReportingStatus::WARNING)] = \
       std::pair<QString, QString>("", tr("Look for '[MIGRATION]' comments in CMakeLists.txt and main cpp file."));
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "no_migration_files", ReportingData::ReportingStatus::ERROR_STATUS)] = \
+      std::pair<QString, QString>("revert-migration", tr("Revert migration"));
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
+    "no_migration_files", ReportingData::ReportingStatus::WARNING)] = \
+      std::pair<QString, QString>("revert-migration", tr("Revert migration"));
 }
 
 

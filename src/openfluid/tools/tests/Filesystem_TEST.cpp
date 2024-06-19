@@ -212,6 +212,21 @@ BOOST_AUTO_TEST_CASE(check_dirfiles_operations)
   BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isFile("DirCopyContent/subdir/another_subdir/README"));
   BOOST_REQUIRE(openfluid::tools::FilesystemPath(WorkDir).isDirectory("DirCopyContent/subdir/another_subdir"));
 
+
+  openfluid::tools::FilesystemPath WorkDirFSP = openfluid::tools::FilesystemPath(WorkDir);
+  BOOST_REQUIRE(WorkDirFSP.makeDirectory("_testDir"));
+  BOOST_REQUIRE(WorkDirFSP.makeDirectory(".hidden"));
+  BOOST_REQUIRE(WorkDirFSP.makeFile(".hidden/hiddenFile.txt"));
+  BOOST_REQUIRE(WorkDirFSP.makeFile("file.json"));
+
+  openfluid::tools::Filesystem::emptyDirectory(WorkDir, {WorkDir+"/\\..*", WorkDir+"/_.*"});
+
+  BOOST_REQUIRE(WorkDirFSP.isDirectory(".hidden"));
+  BOOST_REQUIRE(WorkDirFSP.isDirectory("_testDir"));
+
+  BOOST_REQUIRE(WorkDirFSP.isFile(".hidden/hiddenFile.txt"));
+  BOOST_REQUIRE(!WorkDirFSP.isFile("file.json"));
+
   //   merge dir content with existing
 
   //     emulate existing content
