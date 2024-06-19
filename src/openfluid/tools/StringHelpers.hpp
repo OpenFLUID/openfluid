@@ -237,6 +237,16 @@ std::vector<std::string> OPENFLUID_API split(const std::string& Str, const std::
 std::string OPENFLUID_API join(const std::vector<std::string>& Vect, const std::string& Sep);
 
 
+/**
+  Checks if two strings match
+  @snippet misc/strings.cpp str_match
+  @param[in] Str1 the string to check
+  @param[in] Str2 the second string to check
+  @return true if both string match (include joker char), falser otherwise
+*/
+bool OPENFLUID_API match(const std::string& Str1, const std::string& Str2);
+
+
 } } // namespaces
 
 

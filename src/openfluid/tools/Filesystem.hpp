@@ -227,7 +227,7 @@ class OPENFLUID_API Filesystem
       @param[in] Path the directory to empty
       @return true if successful
     */
-    static bool emptyDirectory(const std::string& Path);
+    //static bool emptyDirectory(const std::string& Path);
 
     /**
       Recursively removes all files and directories contained in the given directory.
@@ -236,7 +236,7 @@ class OPENFLUID_API Filesystem
       @param[in] PathsToExlude Path that are not deleted. If Path is a folder, do not delete files inside it
       @return true if successful
     */
-    static bool emptyDirectory(const std::string& Path, const std::vector<std::string>& PathsToExlude);
+    static bool emptyDirectory(const std::string& Path, const std::vector<std::string>& PathsToExlude = {});
 
     /**
       Gets the list of files found in the specified directory
