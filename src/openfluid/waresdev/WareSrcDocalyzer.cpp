@@ -232,6 +232,10 @@ WareSrcDocalyzer::WareSrcDocalyzer(const std::string& SrcPath, const std::string
   mp_Listener(Listener),
   m_InputFormats(InputFormats)
 {
+  if (OutputPath.empty())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Output path empty");
+  }
   if (m_InputFormats.empty())
   {
     m_InputFormats = {"tex","Rmd","md","readme"};
@@ -885,7 +889,8 @@ void WareSrcDocalyzer::buildDocument() const
 
   if (!getGeneratedFilePath("integrated","pdf").isFile())
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"error building final document");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "error building final document "+m_WorkPathObj.toGeneric());
   }
 
   openfluid::tools::Filesystem::copyFile(getGeneratedFilePath("integrated","pdf").toGeneric(),
