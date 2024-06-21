@@ -332,11 +332,12 @@ SET_PROPERTY(TEST cmdline-openfluid-BuildSimulator APPEND PROPERTY DEPENDS cmdli
 
 
 IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
-  ADD_TEST(NAME cmdline-openfluid-DocalyzeSimulator
+  OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeSimulator
           COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                   "docalyze"
                   "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim"
-                  "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim")
+                  "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim"
+          POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim.pdf")
   SET_PROPERTY(TEST cmdline-openfluid-DocalyzeSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
 ENDIF()
 
@@ -499,11 +500,12 @@ IF(OFBUILD_ENABLE_GUI)
   SET_PROPERTY(TEST cmdline-openfluid-BuildBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureBuilderext)
 
   IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
-    ADD_TEST(NAME cmdline-openfluid-DocalyzeBuilderext
-    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-            "docalyze"
-            "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext/tests.cmdline.bext"
-            "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext")
+    OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeBuilderext
+                       COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                              "docalyze"
+                              "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext/tests.cmdline.bext"
+                              "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext"
+                       POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext/tests.cmdline.bext.pdf")
     SET_PROPERTY(TEST cmdline-openfluid-DocalyzeBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareBuilderext)
   ENDIF()
 ENDIF()
@@ -602,11 +604,12 @@ IF(OFBUILD_ENABLE_GUI)
   SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedSimulatorParamsUI)
 
   IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
-    ADD_TEST(NAME cmdline-openfluid-DocalyzeMigratedSimulatorParamsUI
-             COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                     "docalyze"
-                     "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
-                     "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim")
+    OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeMigratedSimulatorParamsUI
+                       COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                               "docalyze"
+                               "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                               "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim"
+                       POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim-ui-migrated")
     SET_PROPERTY(TEST cmdline-openfluid-DocalyzeMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulatorParamsUI)
   ENDIF()
 ENDIF()
@@ -790,6 +793,7 @@ IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
   
 
   FIND_PROGRAM(_DOCALYZER_RMARKDOWN NAMES Rscript Rscript.exe) # check required Rscript tool
+  # TODO add dependency to knitr & rmarkdown here (hard to check since R package)
   IF(_DOCALYZER_RMARKDOWN)
     OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatRmarkdown
                        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"

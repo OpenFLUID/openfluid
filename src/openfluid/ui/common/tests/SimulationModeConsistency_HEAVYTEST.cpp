@@ -30,7 +30,7 @@
  */
 
 /**
-  @file SimulationModeConsistency_TEST.cpp
+  @file SimulationModeConsistency_HEAVYTEST.cpp
 
   @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>

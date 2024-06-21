@@ -164,7 +164,7 @@ int main(int argc, char **argv)
   // ---
 
   auto PrepWksCmd = openfluid::utils::CommandLineCommand("prepare-workspace","Prepare an OpenFLUID workspace");
-  PrepWksCmd.addOptions({{"path","p","path to the worspace root",true}}); // TOIMPL
+  PrepWksCmd.addOptions({{"path","p","path to the workspace root",true}});
   Parser.addCommand(PrepWksCmd);
 
   // ---
@@ -222,7 +222,7 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto DocCmd = openfluid::utils::CommandLineCommand("docalyze","Build documentation of a ware"); // TOIMPL
+  auto DocCmd = openfluid::utils::CommandLineCommand("docalyze","Build documentation of a ware");
   DocCmd.addOptions({{"src-path","s","path to the ware sources",true}});
   DocCmd.addOptions({{"input-format","i","input format of documentation sources "
                                          "(tex|Rmd|md|readme|auto, auto is default)",true}});
