@@ -341,7 +341,7 @@ bool Filesystem::emptyDirectory(const std::string& Path, const std::vector<std::
     {
       auto PathToExludeFSP = FilesystemPath(PathToExlude);
       std::string EntryGeneric = EntryFSP.toGeneric();
-      if (openfluid::tools::match(EntryGeneric, PathToExludeFSP.toGeneric()))
+      if (openfluid::tools::matchWithWildcard(PathToExludeFSP.toGeneric(), EntryGeneric))
       {
         return true;
       }

@@ -361,21 +361,15 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
       return;
     }
 
-    openfluid::tools::Path MigrationFolderPath = openfluid::tools::Path(
-    openfluid::tools::Filesystem::joinPath({WarePath.toStdString(),
-                                            openfluid::config::WARESDEV_MIGRATION_WORK_DIR}));
+    openfluid::tools::Path MigrationFolderPath = openfluid::tools::Path({WarePath.toStdString(),
+                                                 openfluid::config::WARESDEV_MIGRATION_WORK_DIR});
 
-    openfluid::tools::Path OriginalFolderPath = openfluid::tools::Path(
-                                            openfluid::tools::Filesystem::joinPath({WarePath.toStdString(), 
-                                            openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR}));
+    openfluid::tools::Path OriginalFolderPath = openfluid::tools::Path({WarePath.toStdString(), 
+                                                openfluid::config::WARESDEV_MIGRATION_ORIGINAL_DIR});
 
-    openfluid::tools::Path HiddenPaths = openfluid::tools::Path(
-                                            openfluid::tools::Filesystem::joinPath({WarePath.toStdString(), 
-                                                                                    "\\..*"}));
+    openfluid::tools::Path HiddenPaths = openfluid::tools::Path({WarePath.toStdString(),  ".*"});
 
-    openfluid::tools::Path UnderscorePaths = openfluid::tools::Path(
-                                            openfluid::tools::Filesystem::joinPath({WarePath.toStdString(), 
-                                                                                    "_.*"}));
+    openfluid::tools::Path UnderscorePaths = openfluid::tools::Path({WarePath.toStdString(), "_*"});
 
     if(OriginalFolderPath.exists() && MigrationFolderPath.exists())   
     {  
