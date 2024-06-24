@@ -1,4 +1,12 @@
 
+SET(OFBUILD_TMP_DIR_RAW "$ENV{TMP}")  # Env var known on Windows OS
+STRING(REPLACE "\\" "/" OFBUILD_TMP_DIR "${OFBUILD_TMP_DIR_RAW}")
+
+IF(OFBUILD_TMP_DIR STREQUAL "")
+  SET(OFBUILD_TMP_DIR "/tmp")  # Generic tmp location on Unix/Mac OS
+ENDIF()
+
+MESSAGE(STATUS "Tmp path used: ${OFBUILD_TMP_DIR}")
 
 
 ADD_SUBDIRECTORY(simulators)
