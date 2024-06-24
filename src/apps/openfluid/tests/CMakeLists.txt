@@ -531,7 +531,7 @@ COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
         "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration" "--format=json")
 SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulator
             APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulator
-            APPEND PROPERTY PASS_REGULAR_EXPRESSION "\"migration_isclean\"\: \"warning\"")
+            APPEND PROPERTY PASS_REGULAR_EXPRESSION "\"migration_isclean_no_comments\"\: \"warning\"")
 
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedSimulator
@@ -581,7 +581,7 @@ IF(OFBUILD_ENABLE_GUI)
           "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated")
   SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulatorParamsUI
                APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulatorParamsUI
-               APPEND PROPERTY PASS_REGULAR_EXPRESSION "code/migration_isclean \: warning")
+               APPEND PROPERTY PASS_REGULAR_EXPRESSION "code/migration_isclean_no_comments \: warning")
 
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedSimulatorParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
@@ -728,11 +728,11 @@ IF(OFBUILD_ENABLE_GUI)
 
   ADD_TEST(NAME cmdline-openfluid-CheckMigratedBuilderext
   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-          "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration" "--ignore=migration_isclean,docdir_exists," "-f")
+          "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration" "--ignore=migration_isclean_no_comments,docdir_exists," "-f")
   SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedBuilderext
                APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateBuilderext
                APPEND PROPERTY FAIL_REGULAR_EXPRESSION "warning"
-               APPEND PROPERTY PASS_REGULAR_EXPRESSION "code/migration_isclean \: disabled"
+               APPEND PROPERTY PASS_REGULAR_EXPRESSION "code/migration_isclean_no_comments \: disabled"
                APPEND PROPERTY PASS_REGULAR_EXPRESSION "structure/docdir_exists \: disabled")
 
 

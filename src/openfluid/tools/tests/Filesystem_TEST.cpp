@@ -219,7 +219,8 @@ BOOST_AUTO_TEST_CASE(check_dirfiles_operations)
   BOOST_REQUIRE(WorkDirFSP.makeFile(".hidden/hiddenFile.txt"));
   BOOST_REQUIRE(WorkDirFSP.makeFile("file.json"));
 
-  openfluid::tools::Filesystem::emptyDirectory(WorkDir, {WorkDir+"/\\..*", WorkDir+"/_.*"});
+  openfluid::tools::Filesystem::emptyDirectory(WorkDir, {openfluid::tools::Path({WorkDir, ".*"}).toGeneric(), 
+                                                         openfluid::tools::Path({WorkDir, "_*"}).toGeneric()});
 
   BOOST_REQUIRE(WorkDirFSP.isDirectory(".hidden"));
   BOOST_REQUIRE(WorkDirFSP.isDirectory("_testDir"));
