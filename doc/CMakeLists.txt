@@ -1,6 +1,8 @@
 
 
 IF(DOXYGEN_FOUND)
+  SET(CONTENTS_DIR contents)
+  FILE(GLOB_RECURSE CONTENT_FILES "${CONTENTS_DIR}/*")
 
   ADD_SUBDIRECTORY(snippets)
 
@@ -13,13 +15,14 @@ IF(DOXYGEN_FOUND)
 
   CONFIGURE_FILE(HTML-Doxyfile.in HTML-Doxyfile)
   CONFIGURE_FILE(layout/header.html.in layout/header.html @ONLY)
-  CONFIGURE_FILE(contents/mainpage.md.in contents/mainpage.md @ONLY)
-  CONFIGURE_FILE(contents/foreword.md.in contents/foreword.md @ONLY)
+  CONFIGURE_FILE(${CONTENTS_DIR}/mainpage.md.in ${CONTENTS_DIR}/mainpage.md @ONLY)
+  CONFIGURE_FILE(${CONTENTS_DIR}/foreword.md.in ${CONTENTS_DIR}/foreword.md @ONLY)
 
 
   ADD_CUSTOM_COMMAND(
     OUTPUT "${OFBUILD_DIST_MAIN_DOC_DIR}/html/index.html"
     DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile"
+    DEPENDS "${OFBUILD_DOCBUILD_DIR}/latex/main.tex" ${CONTENT_FILES}
     COMMAND "${DOXYGEN}"
        ARGS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile")
 
@@ -33,7 +36,7 @@ IF(DOXYGEN_FOUND)
     STRING(REPLACE "~" "$\\sim$" OFBUILD_LATEX_VERSION_FULL "${OPENFLUID_VERSION_FULL}")
 
     FILE(MAKE_DIRECTORY "${OFBUILD_DOCBUILD_DIR}")
-    FILE(COPY "${CMAKE_CURRENT_SOURCE_DIR}/contents/" 
+    FILE(COPY "${CMAKE_CURRENT_SOURCE_DIR}/${CONTENTS_DIR}/" 
        DESTINATION "${OFBUILD_DOCBUILD_DIR}/latex"
        FILES_MATCHING
        PATTERN "*.png"
@@ -48,7 +51,7 @@ IF(DOXYGEN_FOUND)
     ADD_CUSTOM_COMMAND(
       OUTPUT  "${OFBUILD_DIST_MAIN_DOC_DIR}/openfluid_manual_${OPENFLUID_VERSION_FULL}.pdf"
       DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/LaTeX-Doxyfile"
-      DEPENDS "${OFBUILD_DOCBUILD_DIR}/latex/main.tex"
+      DEPENDS "${OFBUILD_DOCBUILD_DIR}/latex/main.tex" ${CONTENT_FILES}
       COMMAND "${DOXYGEN}"
          ARGS "${CMAKE_CURRENT_BINARY_DIR}/LaTeX-Doxyfile"
       COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_COMMAND} 
