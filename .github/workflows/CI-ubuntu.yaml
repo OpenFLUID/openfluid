@@ -21,7 +21,8 @@ jobs:
             qtchooser qt6-base-dev qt6-tools-dev libqt6svg6-dev qt6-l10n-tools qt6-base-dev-tools qt6-tools-dev-tools \
             libqt6uitools6 linguist-qt6 \
             libqt6core5compat6 libqt6gui6 \
-            gnuplot p7zip-full graphviz
+            gnuplot p7zip-full graphviz \
+            doxygen texlive-latex-extra texlive-fonts-extra latex2html pandoc pandoc-citeproc
       - name: Checkout of source code
         uses: actions/checkout@v3
       - name: Preparation
@@ -57,6 +58,7 @@ jobs:
             libboost-dev libgdal-dev libcurl4-gnutls-dev \
             qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev \
             gnuplot p7zip-full graphviz
+
       - name: Checkout of source code
         uses: actions/checkout@v3
       - name: Preparation
