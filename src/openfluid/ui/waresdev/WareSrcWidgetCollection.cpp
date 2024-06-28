@@ -1230,7 +1230,7 @@ void WareSrcWidgetCollection::newSimulatorFromGhost(const openfluid::ware::Simul
     }
     else
     {
-      QMessageBox::critical(nullptr, tr("Create simulator"), tr("Error creating simulator %2 from ghost")
+      QMessageBox::critical(nullptr, tr("Create simulator"), tr("Error creating simulator %1 from ghost")
                                                              .arg(QString::fromStdString(Signature.ID)));
     }
   }
