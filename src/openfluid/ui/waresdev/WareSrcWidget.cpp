@@ -804,7 +804,7 @@ void WareSrcWidget::editSignature(QString Path)
   }
   catch (openfluid::base::FrameworkException& E)
   {
-    QMessageBox::critical(nullptr, tr("Signature issue"), tr("In ") + Path + ":\n" + 
+    QMessageBox::critical(nullptr, tr("Signature issue"), tr("In %1:\n").arg(Path) + 
                                    QString::fromStdString(E.getMessage()) + 
                                    tr("\n\nTo solve this issue, you can edit the json file with an external program."));
     return;
