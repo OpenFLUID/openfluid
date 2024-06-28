@@ -4,6 +4,7 @@
 
 # Since OpenFLUID 2.2
 The signature is defined in a dedicated file called "openfluid_ware.json". It is located at the root of the simulator directory.
+**It is advised to use DevStudio dialog "Edit signature" to edit its information instead of working directly with json content.**
 This file contains the same information than before but in a tree structure:
 ```json
 {
@@ -22,7 +23,7 @@ This file contains the same information than before but in a tree structure:
 }
 ```
 
-Note: From OpenFLUID 2.1 to 2.2: In most cases, the migration of a simulator can be done automatically through DevStudio "Try to migrate" button or command line "openfluid migrate-ware". This migration will automatically convert the signature from the C++ file into a corresponding json file. For more information, see the page dedicated to ware migration(TOIMPL)
+Note: From OpenFLUID 2.1 to 2.2: In most cases, the migration of a simulator can be done automatically through DevStudio "Try to migrate" button or command line "openfluid migrate-ware". This migration will automatically convert the signature from the C++ file into a corresponding json file. For more information, see the [page dedicated to ware migration on Community](https://community.openfluid-project.org/scidev/simupdate/).
 
 ## Identification {#dev_signature_id}
 

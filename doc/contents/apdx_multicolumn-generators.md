@@ -6,7 +6,7 @@
 
 The format of the source file is a CSV format which defines the values of the desired variables according 
 to a simulation date. The first column defines the simulation dates using the ISO format `YYYYMMDDThhmmss`. 
-The first row of the column is labelled #datetime. All others columns define a variable for a desired spatial unit. 
+The first row of the column is labelled \#datetime. All others columns define a variable for a desired spatial unit. 
 The first row of these columns are labelled using the format `UnitClass#UnitID:VarName`.
 * `UnitClass` defines the unit class,
 * `UnitId` defines the unit ID,

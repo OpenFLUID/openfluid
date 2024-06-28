@@ -113,6 +113,7 @@
 \chapter{\-Creation of a simulator}\label{dev_createsim}\hypertarget{dev_createsim}{}\input{dev_createsim}
 \chapter{\-Declaration of the simulator signature}\label{dev_signature}\hypertarget{dev_signature}{}\input{dev_signature}
 \chapter{\-Development of the simulator source code}\label{dev_srccode}\hypertarget{dev_srccode}{}\input{dev_srccode}
+\chapter{\-Handling code redundancy}\label{dev_fragment}\hypertarget{dev_fragment}{}\input{dev_fragment}
 \chapter{\-Documenting simulators}\label{dev_sim2doc}\hypertarget{dev_sim2doc}{}\input{dev_sim2doc}
 
 \appendix
@@ -124,6 +125,7 @@
 \chapter{\-Multicolumn generators : setup and use }\label{apdx_multicolumn-generators}\hypertarget{apdx_multicolumn-generators}{}\input{apdx_multicolumn-generators}
 \chapter{\-Structure of an OpenFLUID project}\label{apdx_prj}\hypertarget{apdx_prj}{}\input{apdx_prj}
 \chapter{\-Organization of an OpenFLUID workspace}\label{apdx_workspace}\hypertarget{apdx_workspace}{}\input{apdx_workspace}
+\chapter{\-Working with submodules}\label{apdx_submodule}\hypertarget{apdx_submodule}{}\input{apdx_submodule}
 % TODO to be completed
 %\chapter{\-Observers parameters}\label{apdx_obsparams}\hypertarget{apdx_obsparams}{}\input{apdx_obsparams}
 
