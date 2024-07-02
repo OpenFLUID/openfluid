@@ -41,6 +41,7 @@
 * @subpage apdx_datetime
 * @subpage apdx_values
 * @subpage apdx_generators
+* @subpage apdx_multicolumn-generators
 * @subpage apdx_prj
 * @subpage apdx_workspace
 @if TodoIsDone  
