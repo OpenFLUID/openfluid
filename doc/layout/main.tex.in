@@ -121,6 +121,7 @@
 \chapter{\-Datetime formats}\label{apdx_datetime}\hypertarget{apdx_datetime}{}\input{apdx_datetime}
 \chapter{\-String representations of values}\label{apdx_values}\hypertarget{apdx_values}{}\input{apdx_values}
 \chapter{\-File formats for generators}\label{apdx_generators}\hypertarget{apdx_generators}{}\input{apdx_generators}
+\chapter{\-Multicolumn generators : setup and use }\label{apdx_multicolumn-generators}\hypertarget{apdx_multicolumn-generators}{}\input{apdx_multicolumn-generators}
 \chapter{\-Structure of an OpenFLUID project}\label{apdx_prj}\hypertarget{apdx_prj}{}\input{apdx_prj}
 \chapter{\-Organization of an OpenFLUID workspace}\label{apdx_workspace}\hypertarget{apdx_workspace}{}\input{apdx_workspace}
 % TODO to be completed
