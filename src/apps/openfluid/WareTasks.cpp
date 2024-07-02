@@ -93,6 +93,9 @@ int WareTasks::processCreate() const
   Config.ParamsUIClassName = (m_Cmd.getOptionValue("paramsui-class").empty() ? Config.ParamsUIClassName : 
                                                                                m_Cmd.getOptionValue("paramsui-class"));
 
+  Config.MainClassName = (m_Cmd.getOptionValue("main-class").empty() ? Config.MainClassName : 
+                                                                           m_Cmd.getOptionValue("main-class"));
+
   if (TypeStr == "simulator")
   {
     openfluid::ware::SimulatorSignature Sign;
