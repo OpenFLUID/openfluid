@@ -33,6 +33,7 @@
   @file CommandLineParser.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -42,6 +43,7 @@
 
 #include <map>
 #include <vector>
+#include <limits>
 #include <list>
 #include <string>
 #include <ostream>
@@ -153,6 +155,34 @@ class CommandLineOption
 
 
     /**
+      Returns the value of the option
+      @return The value
+    */
+    std::string getDetails() const
+    { 
+      std::string OptionDetail = "--" + getLongName();
+      if (isValueRequired())
+      {
+        OptionDetail += "=<arg>";
+      }
+
+      if (!getShortName().empty())
+      {
+        OptionDetail += ", -" + getShortName();
+        if (isValueRequired())
+        {
+          OptionDetail += " <arg>";
+        }
+      }
+      return OptionDetail;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
       Tests if the option is active
       @return true if the option is active
     */
@@ -227,9 +257,13 @@ class CommandLineCommand
 
     std::string m_HelpText;
 
+    std::string m_LongHelpText;
+
     std::map<std::string,CommandLineOption> m_Options;
 
     std::map<std::string,CommandLineOption*> m_ShortOptions;
+
+    std::vector<CommandLineOption> m_OptionsOrdered;
 
 
   public:
@@ -247,9 +281,11 @@ class CommandLineCommand
       @param[in] Name The long name of the command
       @param[in] HelpText The help text associated to the command
     */
-    CommandLineCommand(const std::string& Name, const std::string& HelpText):
+    CommandLineCommand(const std::string& Name, const std::string& HelpText, const std::string& LongHelpText = ""):
       m_Name(Name), m_HelpText(HelpText)
-    { }
+    { 
+      m_LongHelpText = LongHelpText.empty() ? HelpText : LongHelpText;
+    }
 
 
     // =====================================================================
@@ -263,6 +299,20 @@ class CommandLineCommand
     std::string getHelpText() const
     { 
       return m_HelpText; 
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Returns the help text of the command
+      @return The help text
+    */
+    std::string getLongHelpText() const
+    { 
+      return m_LongHelpText; 
     }
 
 
@@ -299,12 +349,28 @@ class CommandLineCommand
 
 
     /**
+      Returns the options (ordered by addition) registered for the command
+      @return The options
+    */
+    const std::vector<CommandLineOption>& optionsOrdered()
+    { 
+      return m_OptionsOrdered; 
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
       Adds an option to the command
       @param[in] Option The option to add
     */
     void addOption(const CommandLineOption& Option)
     {
       m_Options[Option.getLongName()] = Option;
+
+      m_OptionsOrdered.push_back(Option);
 
       if (!Option.getShortName().empty())
       {
@@ -485,7 +551,7 @@ class CommandLineCommand
 */
 class CommandLineParser
 {
-  private:
+  protected:
 
     std::string m_ProgramName;
 
@@ -493,7 +559,129 @@ class CommandLineParser
 
     std::map<std::string,CommandLineCommand> m_Commands;
 
+    std::vector<CommandLineCommand> m_CommandsOrdered;
+
     std::string m_ActiveCommand;
+
+    const std::string m_AvailableCommandsText = "Available commands:";
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    int getLargestCommandLength()
+    {
+      int LargestCommandLength = std::numeric_limits<int>::min();
+      for (auto& Cmd : m_Commands)
+      {
+        LargestCommandLength = std::max(LargestCommandLength, (int)Cmd.first.size());
+      }
+      
+      return LargestCommandLength;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    int getLargestOptionLength()
+    {
+      std::map<std::string,CommandLineOption> AllOptions(m_Commands[m_ActiveCommand].options());
+      CommandLineOption HelpOption = getHelpOption();
+      AllOptions.insert({HelpOption.getShortName(), HelpOption});
+
+      int LargestOptionLength = std::numeric_limits<int>::min();
+      for (auto& Opt : AllOptions)
+      {
+        LargestOptionLength = std::max(LargestOptionLength, (int)Opt.second.getDetails().size());
+      }
+
+      return LargestOptionLength;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    std::string getCustomIndent(int CommandLength, int LargestCommandLength, std::string minimalSpace = "    ")
+    {
+      int Delta = LargestCommandLength - CommandLength;
+      if (Delta > 0) 
+      {
+        minimalSpace.append(Delta, ' ');
+      }
+      return minimalSpace;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    CommandLineOption getHelpOption()
+    {
+      return CommandLineOption("help","h","display this help message");
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void displayFormattedData(std::ostream& OutStm, std::string Title, std::string HelpText, int LargestTextLength)
+    {
+      OutStm << "   " << Title << getCustomIndent(Title.size(), LargestTextLength) << HelpText << "\n";
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void displayOptions(std::ostream& OutStm, CommandLineOption HelpOption, int LargestTextLength)
+    {
+      OutStm << "\nAvailable options:\n";
+
+      displayFormattedData(OutStm, HelpOption.getDetails(), HelpOption.getHelpText(), LargestTextLength);
+
+      if(m_UseCustomOrder)
+      {
+        for (auto& Opt : m_Commands[m_ActiveCommand].optionsOrdered())
+        { 
+          displayFormattedData(OutStm, Opt.getDetails(), Opt.getHelpText(), LargestTextLength);
+        }
+      }
+      else
+      {
+        for (auto& Opt : m_Commands[m_ActiveCommand].options())
+        { 
+          displayFormattedData(OutStm, Opt.second.getDetails(), Opt.second.getHelpText(), LargestTextLength);
+        }
+      }
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void displayUsageMessage(std::ostream& OutStm)
+    {
+      std::string CmdName = m_ActiveCommand;
+      
+      if (CmdName.empty())
+      {
+        CmdName = "[<command>]";
+      }
+
+      OutStm << "Usage : " << m_ProgramName << " " << CmdName << " [<options>] [<args>]\n";
+    }
+
+
+  private:
 
     std::vector<std::string> m_ExtraArgs;
 
@@ -503,11 +691,12 @@ class CommandLineParser
 
     bool m_HelpAsked;
 
+    bool m_UseCustomOrder;
 
   public:
 
     CommandLineParser():
-      m_HelpAsked(false)
+      m_HelpAsked(false), m_UseCustomOrder(false)
     {
       addCommand(CommandLineCommand("",""));
     }
@@ -522,8 +711,8 @@ class CommandLineParser
       @param[in] ProgramName The name of the programn
       @param[in] HelpText The help text associated to the option
     */
-    CommandLineParser(const std::string& ProgramName, const std::string& HelpText) :
-      m_ProgramName(ProgramName), m_HelpText(HelpText), m_HelpAsked(false)
+    CommandLineParser(const std::string& ProgramName, const std::string& HelpText, bool UseCustomOrder = false) :
+      m_ProgramName(ProgramName), m_HelpText(HelpText), m_HelpAsked(false), m_UseCustomOrder(UseCustomOrder)
     {
       addCommand(CommandLineCommand("",""));
     }
@@ -640,6 +829,7 @@ class CommandLineParser
     void addCommand(const CommandLineCommand& Command)
     {
       m_Commands[Command.getName()] = Command;
+      m_CommandsOrdered.push_back(Command);
     }
 
 
@@ -856,57 +1046,45 @@ class CommandLineParser
       Prints the help text
       @param[in] OutStm The stream where the help text is printed (e.g. std::cout)
     */
-    void printHelp(std::ostream& OutStm)
+    virtual void printHelp(std::ostream& OutStm)
     {
-      std::string CmdName = m_ActiveCommand;
-      
-      if (CmdName.empty())
-      {
-        CmdName = "[<command>]";
-      }
+      displayUsageMessage(OutStm);
 
-      OutStm << "Usage : " << m_ProgramName << " " << CmdName << " [<options>] [<args>]\n";
+      int LargestCommandTextLength = getLargestCommandLength();
+      int LargestOptionTextLength = getLargestOptionLength();
 
       if (m_ActiveCommand.empty())
       {
-        OutStm << "\nAvailable commands:\n";
+        OutStm << "\n" << m_AvailableCommandsText << "\n";
 
-        for (auto& Cmd : m_Commands)
+        if(m_UseCustomOrder)
         {
-          if (!Cmd.first.empty())
+          for (auto& Cmd : m_CommandsOrdered)
           {
-            OutStm << "  " << Cmd.first << " : " << Cmd.second.getHelpText() << "\n";
+            if (!Cmd.getName().empty())
+            {
+              displayFormattedData(OutStm, Cmd.getName(), Cmd.getHelpText(), LargestCommandTextLength);
+            }
+          }
+        }
+        else 
+        {
+          for (auto& Cmd : m_Commands)
+          {
+            if (!Cmd.first.empty())
+            {
+              displayFormattedData(OutStm, Cmd.first, Cmd.second.getHelpText(), LargestCommandTextLength);
+            }
           }
         }
       }
 
-      if (!m_Commands[m_ActiveCommand].getHelpText().empty())
+      if (!m_Commands[m_ActiveCommand].getLongHelpText().empty())
       {
-        OutStm << "\n" << m_Commands[m_ActiveCommand].getHelpText() << "\n";
+        OutStm << "\n" << m_Commands[m_ActiveCommand].getLongHelpText() << "\n";
       }
 
-      OutStm << "\nAvailable options:\n";
-      OutStm << "  --help, -h : display this help message\n";
-
-      for (auto& Opt : m_Commands[m_ActiveCommand].options())
-      {
-        OutStm << "  --" << Opt.second.getLongName();
-        if (Opt.second.isValueRequired())
-        {
-          OutStm << "=<arg>";
-        }
-
-        if (!Opt.second.getShortName().empty())
-        {
-          OutStm << ", -" << Opt.second.getShortName();
-          if (Opt.second.isValueRequired())
-          {
-            OutStm << " <arg>";
-          }
-        }
-
-        OutStm << " : " << Opt.second.getHelpText() << "\n";
-      }
+      displayOptions(OutStm, getHelpOption(), LargestOptionTextLength);
     }
 
 
