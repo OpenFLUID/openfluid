@@ -310,7 +310,7 @@ int main(int argc, char **argv)
     else
     {
       Parser.printHelp(std::cout);
-      return TasksBase::ErrorCode;
+      return TasksBase::s_ErrorCode;
     }
   }
   else if (ActiveCmdStr == "version" || ActiveCmdStr == "info")  

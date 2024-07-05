@@ -1046,7 +1046,7 @@ class CommandLineParser
       Prints the help text
       @param[in] OutStm The stream where the help text is printed (e.g. std::cout)
     */
-    virtual void printHelp(std::ostream& OutStm)
+    void printHelp(std::ostream& OutStm)
     {
       displayUsageMessage(OutStm);
 
@@ -1059,7 +1059,7 @@ class CommandLineParser
 
         if(m_UseCustomOrder)
         {
-          for (auto& Cmd : m_CommandsOrdered)
+          for (const auto& Cmd : m_CommandsOrdered)
           {
             if (!Cmd.getName().empty())
             {
@@ -1069,7 +1069,7 @@ class CommandLineParser
         }
         else 
         {
-          for (auto& Cmd : m_Commands)
+          for (const auto& Cmd : m_Commands)
           {
             if (!Cmd.first.empty())
             {
