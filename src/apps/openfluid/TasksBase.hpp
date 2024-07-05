@@ -80,7 +80,9 @@ class TasksBase
     virtual ~TasksBase()
     { }
 
-    inline static const int ErrorCode = -1;
+    inline static const int s_ErrorCode = -1;
+
+    static constexpr const char* s_Cat = "ERROR";
 
     virtual int process() const = 0;
 
@@ -89,7 +91,8 @@ class TasksBase
       return error("unknown command");
     }
 
-    static int error(const std::string& Msg = "", const std::string& Cat = "ERROR")
+    static int error(const std::string& Msg = "", const std::string& Cat = s_Cat, 
+                     const int CustomErrorCode = s_ErrorCode)
     {
       std::cout << "\n";
 
@@ -103,7 +106,17 @@ class TasksBase
       std::cout << Msg;
       std::cout << std::endl;
 
-      return ErrorCode;
+      return CustomErrorCode;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    static int errorByCode(const int CustomErrorCode, const std::string& Msg = "")
+    {
+      return error(Msg, s_Cat, CustomErrorCode);
     }
 
 };

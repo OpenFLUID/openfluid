@@ -111,8 +111,12 @@ class CommandLineSection
     {
       m_Commands.push_back(Command);
     }
-
 };
+
+
+// =====================================================================
+// =====================================================================
+
 
 class StructuredCommandLineParser : public CommandLineParser
 {
@@ -201,7 +205,7 @@ class StructuredCommandLineParser : public CommandLineParser
       Prints the help text
       @param[in] OutStm The stream where the help text is printed (e.g. std::cout)
     */
-    void printHelp(std::ostream& OutStm) override
+    void printHelp(std::ostream& OutStm)
     {
       displayUsageMessage(OutStm);
 
@@ -213,7 +217,7 @@ class StructuredCommandLineParser : public CommandLineParser
         OutStm << "\n" << m_AvailableCommandsText << "\n\n";
 
         size_t CmdSectionIndex = 0;
-        for (auto& CmdSection : m_CommandSections)
+        for (const auto& CmdSection : m_CommandSections)
         {
           OutStm << CmdSection->getName() << ": \n";
           for (auto& Cmd : CmdSection->getCommands())
@@ -230,7 +234,7 @@ class StructuredCommandLineParser : public CommandLineParser
         if(m_NoSectionCommands.size() > 0)
         {
           OutStm << "\nOthers: \n";
-          for (auto& Cmd : m_NoSectionCommands)
+          for (const auto& Cmd : m_NoSectionCommands)
           {
             displayFormattedData(OutStm, Cmd.getName(), Cmd.getHelpText(), LargestCommandTextLength);
           }

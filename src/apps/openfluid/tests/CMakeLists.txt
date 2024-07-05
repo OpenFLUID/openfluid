@@ -517,19 +517,18 @@ ENDIF()
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "migrate-ware"
-                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
-                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
+                           "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
                    PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/sim/tests.cmdline.sim-migration"
-                                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/doc/doc.tex")
+                                           "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/doc/doc.tex")
 SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulator
              APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
 
-
 ADD_TEST(NAME cmdline-openfluid-CheckMigratedSimulator
 COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-        "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration" "--format=json")
+        "check" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration" "--format=json")
 SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulator
             APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulator
             APPEND PROPERTY PASS_REGULAR_EXPRESSION "\"migration_isclean_no_comments\"\: \"warning\"")
@@ -538,7 +537,7 @@ SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulator
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "configure"
-                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
+                           "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
                            "--generator=${CMAKE_GENERATOR}"
                            "---"
                            "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
@@ -550,7 +549,7 @@ SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedSimulator APPEND PROPERTY D
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
+                           "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
                            "-t" "install" "-j" "2")
 SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedSimulator)
 
@@ -562,24 +561,24 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulatorParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "migrate-ware"
-                             "-s" "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
-                             "--dest-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                             "-s" "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
+                             "--dest-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
                              "-v"
-                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
-                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration"
+                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
                      PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/sim/tests.cmdline.sim-ui-migration"
-                                            "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/src/CMakeLists.txt"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/doc/main.tex"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/doc/original_main.tex"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/tests/CMakeLists.txt")
+                                            "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/src/CMakeLists.txt"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/doc/main.tex"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/doc/original_main.tex"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated/tests/CMakeLists.txt")
   SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulatorParamsUI
                APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
 
 
   ADD_TEST(NAME cmdline-openfluid-CheckMigratedSimulatorParamsUI
   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-          "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated")
+          "check" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated")
   SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedSimulatorParamsUI
                APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulatorParamsUI
                APPEND PROPERTY PASS_REGULAR_EXPRESSION "code/migration_isclean_no_comments \: warning")
@@ -587,7 +586,7 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedSimulatorParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "configure"
-                             "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                             "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
                              "--generator=${CMAKE_GENERATOR}"
                              "---"
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
@@ -599,7 +598,7 @@ IF(OFBUILD_ENABLE_GUI)
 
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedSimulatorParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                             "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                             "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
                              "-t" "install" "-j" "2")
   SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedSimulatorParamsUI)
 
@@ -607,9 +606,9 @@ IF(OFBUILD_ENABLE_GUI)
     OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeMigratedSimulatorParamsUI
                        COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                                "docalyze"
-                               "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
-                               "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/sim"
-                       POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim-ui-migrated")
+                               "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
+                               "--output-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim"
+                       POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migration.pdf")
     SET_PROPERTY(TEST cmdline-openfluid-DocalyzeMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulatorParamsUI)
   ENDIF()
 ENDIF()
@@ -621,31 +620,31 @@ ENDIF()
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateObserver
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "migrate-ware"
-                           "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migration"
-                           "--dest-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
+                           "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migration"
+                           "--dest-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
                            "--verbose"
-                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migration"
-                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migration"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
                    PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/obs/tests.cmdline.obs-migration"
-                                           "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/CMakeLists.txt"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/src/CMakeLists.txt"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/doc/CMakeLists.txt"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/tests/CMakeLists.txt")
+                                           "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/src/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/doc/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated/tests/CMakeLists.txt")
 SET_PROPERTY(TEST cmdline-openfluid-MigrateObserver
              APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
 
 
 ADD_TEST(NAME cmdline-openfluid-CheckMigratedObserver
 COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-        "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated")
+        "check" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated")
 SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedObserver APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateObserver)
 
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedObserver
 COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
         "configure"
-        "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
+        "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
         "--generator=${CMAKE_GENERATOR}"
         "---"
         "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
@@ -657,7 +656,7 @@ SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedObserver APPEND PROPERTY DE
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedObserver
 COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-        "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
+        "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
         "-t" "install" "-j" "2")
 SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedObserver APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedObserver)
 
@@ -669,28 +668,28 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateObserverParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "migrate-ware"
-                             "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
-                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
+                             "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
+                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
                      PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/obs/tests.cmdline.obs-ui-migration"
-                                             "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/CMakeLists.txt"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/src/CMakeLists.txt"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/doc/CMakeLists.txt"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/tests/CMakeLists.txt")
+                                             "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/CMakeLists.txt"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/src/CMakeLists.txt"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/doc/CMakeLists.txt"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration/tests/CMakeLists.txt")
   SET_PROPERTY(TEST cmdline-openfluid-MigrateObserverParamsUI
                APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
 
 
   ADD_TEST(NAME cmdline-openfluid-CheckMigratedObserverParamsUI
   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-          "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration" "--format=json")
+          "check" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration" "--format=json")
   SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedObserverParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateObserverParamsUI)
 
 
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedObserverParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "configure"
-                             "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
+                             "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
                              "--generator=${CMAKE_GENERATOR}"
                              "---"
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
@@ -702,7 +701,7 @@ IF(OFBUILD_ENABLE_GUI)
 
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedObserverParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                             "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
+                             "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
                              "-t" "install" "-j" "2")
   SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedObserverParamsUI)
 ENDIF()
@@ -715,22 +714,22 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateBuilderext
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "migrate-ware"
-                             "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
+                             "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
                              "--verbose"
-                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
+                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
                      PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/bext/tests.cmdline.bext-migration"
-                                             "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/CMakeLists.txt"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/src/CMakeLists.txt"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/doc/CMakeLists.txt"
-                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/tests/CMakeLists.txt")
+                                             "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/CMakeLists.txt"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/src/CMakeLists.txt"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/doc/CMakeLists.txt"
+                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration/tests/CMakeLists.txt")
   SET_PROPERTY(TEST cmdline-openfluid-MigrateBuilderext
                APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
 
 
   ADD_TEST(NAME cmdline-openfluid-CheckMigratedBuilderext
   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-          "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration" "--ignore=migration_isclean_no_comments,docdir_exists," "-f")
+          "check" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration" "--ignore=migration_isclean_no_comments,docdir_exists," "-f")
   SET_PROPERTY(TEST cmdline-openfluid-CheckMigratedBuilderext
                APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateBuilderext
                APPEND PROPERTY FAIL_REGULAR_EXPRESSION "warning"
@@ -741,7 +740,7 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedBuilderext
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "configure"
-                             "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
+                             "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
                              "--generator=${CMAKE_GENERATOR}"
                              "---"
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
@@ -753,7 +752,7 @@ IF(OFBUILD_ENABLE_GUI)
 
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedBuilderext
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                             "build" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
+                             "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
                              "-t" "install" "-j" "2")
   SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedBuilderext)
 ENDIF()
@@ -795,12 +794,13 @@ IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
   FIND_PROGRAM(_DOCALYZER_RMARKDOWN NAMES Rscript Rscript.exe) # check required Rscript tool
   # TODO add dependency to knitr & rmarkdown here (hard to check since R package)
   IF(_DOCALYZER_RMARKDOWN)
-    OPENFLUID_ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatRmarkdown
-                       COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
+    ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatRmarkdown
+             COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "docalyze"
                                "--src-path=${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/cmdline-docalyze/obs/tests.cmdline-docalyze.Rmd"
                                "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/obs" "-k" "-e"
                        PRE_TEST REMOVE_FILE "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/obs/tests.cmdline-docalyze.Rmd.pdf"
                        POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/obs/tests.cmdline-docalyze.Rmd.pdf")
+    SET_PROPERTY(TEST cmdline-openfluid-DocalyzeFormatRmarkdown APPEND PROPERTY SKIP_RETURN_CODE ${OPENFLUID_RETURN_CODE_DEPENDENCY_ISSUE})
   ENDIF()
 
 

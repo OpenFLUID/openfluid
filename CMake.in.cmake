@@ -211,12 +211,18 @@ SET(OFBUILD_GITASKUSER_ENVVAR_PREFIX "OFLD_GITASKUSER_")
 
 
 ################### logfiles ###################
+
 SET(OPENFLUID_INTERNAL_LOG_FILE "openfluid-internal.log")
 SET(OPENFLUID_MESSAGES_LOG_FILE "openfluid-messages.log")
 
 SET(OPENFLUID_CUMULATIVE_PROFILE_FILE "openfluid-profile-cumulative.log")
 SET(OPENFLUID_SCHEDULE_PROFILE_FILE "openfluid-profile-schedule.log")
 SET(OPENFLUID_TIMEINDEX_PROFILE_FILE "openfluid-profile-timeindex.log")
+
+
+################### return codes ###################
+
+SET(OPENFLUID_RETURN_CODE_DEPENDENCY_ISSUE 100)
 
 
 ################### waresdev ###################

@@ -105,9 +105,13 @@ BOOST_AUTO_TEST_CASE(check_commands_order)
   Parser.printHelp(oss);
   std::string CommandsDisplay = oss.str();                               
 
-  BOOST_CHECK(CommandsDisplay.find(VersionCmd.getName()) != std::string::npos);
-  BOOST_CHECK(CommandsDisplay.find(RunCmd.getName()) != std::string::npos);
-  BOOST_CHECK(CommandsDisplay.find(BuildCmd.getName()) != std::string::npos);
-  BOOST_CHECK(CommandsDisplay.find(RunCmd.getName()) > CommandsDisplay.find(VersionCmd.getName()));
-  BOOST_CHECK(CommandsDisplay.find(BuildCmd.getName()) > CommandsDisplay.find(RunCmd.getName()));
+  std::size_t VersionCmdFoundPos = CommandsDisplay.find(VersionCmd.getName());
+  std::size_t RunCmdFoundPos = CommandsDisplay.find(RunCmd.getName());
+  std::size_t BuildCmdFoundPos = CommandsDisplay.find(BuildCmd.getName());
+
+  BOOST_CHECK(VersionCmdFoundPos != std::string::npos);
+  BOOST_CHECK(RunCmdFoundPos != std::string::npos);
+  BOOST_CHECK(BuildCmdFoundPos != std::string::npos);
+  BOOST_CHECK(RunCmdFoundPos > VersionCmdFoundPos);
+  BOOST_CHECK(BuildCmdFoundPos > RunCmdFoundPos);
 }
