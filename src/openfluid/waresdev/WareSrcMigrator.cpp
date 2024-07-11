@@ -185,8 +185,9 @@ std::string generateMigrationBlock(const std::string& LineComment, const std::st
 
 
 template<class S>
-void mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,const openfluid::tools::Path& SignFileObj)
+std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,const openfluid::tools::Path& SignFileObj)
 {
+  std::vector<std::string> Messages;
   if (WHFileObj.isFile())
   {
     std::ifstream WHFileStream;
@@ -210,7 +211,7 @@ void mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,const 
         auto Contacts = WHubDoc.value("contacts",std::vector<std::string>());
         for (const auto& C : Contacts)
         {
-          // use part of the email befor @ as contact name 
+          // use part of the email before @ as contact name 
           Signature.Contacts.push_back({C.substr(0,C.find('@')),C});
         }
 
@@ -230,6 +231,7 @@ void mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,const 
               std::string Title = Info.value("title","");
               if (!Title.empty())
               {
+                Iss.ID = std::stoi(ID);
                 Iss.Title = Title;
                 Iss.Description = Info.value("description","");
                 Iss.Creator = Info.value("creator","");
@@ -250,8 +252,14 @@ void mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,const 
                 {
                   Iss.Tags.push_back(Type);
                 }
-
-                Signature.Issues.add(Iss); 
+                try
+                {
+                  Signature.Issues.add(Iss); 
+                }
+                catch (openfluid::base::Exception& E)
+                {
+                  Messages.push_back(E.what());
+                }
               }
             }
           }
@@ -262,6 +270,7 @@ void mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,const 
       catch (openfluid::thirdparty::json::parse_error&)
       {
         // failure is not an error
+        Messages.push_back("Json can not bet read");
       }
     }
   }
@@ -564,17 +573,23 @@ void WareSrcMigrator::processSignature(const WareSrcMigrator::WareMigrationInfo&
   {
     mp_Listener->stageMessage("processing wareshub file");
 
+    std::vector<std::string> transmittedMessages;
+
     if (Info.WareType == openfluid::ware::WareType::SIMULATOR)
     {
-      mergeWareshubInSignatureFile<openfluid::waresdev::SimulatorSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
+      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::SimulatorSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
     }
     else if (Info.WareType == openfluid::ware::WareType::OBSERVER)
     {
-      mergeWareshubInSignatureFile<openfluid::waresdev::ObserverSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
+      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::ObserverSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
     }
     else if (Info.WareType == openfluid::ware::WareType::BUILDEREXT)
     {
-      mergeWareshubInSignatureFile<openfluid::waresdev::BuilderextSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
+      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::BuilderextSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
+    }
+    for (const auto& M : transmittedMessages)
+    {
+      mp_Listener->stageMessage(M);
     }
   }
 
