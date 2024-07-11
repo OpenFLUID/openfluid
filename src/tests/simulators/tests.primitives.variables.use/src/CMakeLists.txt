@@ -1,15 +1,3 @@
-# [MIGRATION](2023-03-02 11:53:40)>-------
-# Lines below should be manually adapted and cleaned
-
-SET(SIM_CPP VarsPrimitivesUseSim.cpp)
-SET(SIM_CPP CMake.in.config
-CMakeLists.txt
-VarsPrimitivesUseSim.cpp
-_migration:
-signature
-_original:)
-# -------<[MIGRATION]
-
 # set this to add include directories
 # ex: SET(WARE_INCLUDE_DIRS /path/to/include/A/ /path/to/include/B/)
 #SET(WARE_INCLUDE_DIRS )

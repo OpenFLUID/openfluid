@@ -40,6 +40,8 @@
 
 #include <iostream>
 
+#include <openfluid/config.hpp>
+
 #include "ui_WareStatusItemWidget.h"
 #include "WareStatusItemWidget.hpp"
 
@@ -92,7 +94,7 @@ void WareStatusItemWidget::populateReportItemLabels()
       tr("Ware version is below current OpenFLUID version");
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "no_migration_files", ReportingData::ReportingStatus::WARNING)] = \
-      tr("Migration folders remain in ware source path. Remove them or"); // TODO : Find better solution
+      tr("Migration folders remain in ware source path. Remove them or"); // TODO : Find more consistent display
   ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "no_migration_files", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       tr("Ware migration failed");
@@ -103,7 +105,8 @@ void WareStatusItemWidget::populateReportItemLabels()
       std::pair<QString, QString>("migration", tr("Try to migrate the ware"));
   ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "migration_isclean_no_comments", ReportingData::ReportingStatus::WARNING)] = \
-      std::pair<QString, QString>("", tr("Look for '[MIGRATION]' comments in CMakeLists.txt and main cpp file."));
+      std::pair<QString, QString>("", tr("Look for '%1' comments in CMakeLists.txt and main cpp file.").arg(
+        QString::fromStdString(openfluid::config::MIGRATION_STRING)));
   ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
     "no_migration_files", ReportingData::ReportingStatus::ERROR_STATUS)] = \
       std::pair<QString, QString>("revert-migration", tr("Revert migration"));
