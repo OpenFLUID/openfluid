@@ -56,7 +56,7 @@ void WareIssues::add(const WareIssue& Issue)
   }
   else
   {
-    throw openfluid::base::FrameworkException("Issue ID already in list");
+    throw openfluid::base::FrameworkException("Issue ID already in list: "+std::to_string(Issue.ID));
   }
 }
 
