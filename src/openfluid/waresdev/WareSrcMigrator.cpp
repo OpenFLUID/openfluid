@@ -172,9 +172,10 @@ std::string generateMigrationBlock(const std::string& LineComment, const std::st
 {
   std::string Str;
 
-  Str += LineComment + " [MIGRATION]("+openfluid::core::DateTime::now().getAsISOString()+")>-------\n"; 
+  Str += LineComment + " " + openfluid::config::MIGRATION_STRING + "(" + \
+    openfluid::core::DateTime::now().getAsISOString()+")>-------\n";
   Str += EnclosedContent;
-  Str += "\n" + LineComment + " -------<[MIGRATION]"; // TOIMPL [MIGRATION] to variablelize
+  Str += "\n" + LineComment + " -------<"+openfluid::config::MIGRATION_STRING;
 
   return Str;
 }
@@ -185,7 +186,8 @@ std::string generateMigrationBlock(const std::string& LineComment, const std::st
 
 
 template<class S>
-std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,const openfluid::tools::Path& SignFileObj)
+std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,
+                                                      const openfluid::tools::Path& SignFileObj)
 {
   std::vector<std::string> Messages;
   if (WHFileObj.isFile())
@@ -274,6 +276,7 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
       }
     }
   }
+  return Messages;
 }
 
 
@@ -577,15 +580,18 @@ void WareSrcMigrator::processSignature(const WareSrcMigrator::WareMigrationInfo&
 
     if (Info.WareType == openfluid::ware::WareType::SIMULATOR)
     {
-      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::SimulatorSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
+      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::SimulatorSignatureSerializer>(WHubFileObj,
+        ExportedSignFileObj);
     }
     else if (Info.WareType == openfluid::ware::WareType::OBSERVER)
     {
-      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::ObserverSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
+      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::ObserverSignatureSerializer>(WHubFileObj,
+        ExportedSignFileObj);
     }
     else if (Info.WareType == openfluid::ware::WareType::BUILDEREXT)
     {
-      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::BuilderextSignatureSerializer>(WHubFileObj,ExportedSignFileObj);
+      transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::BuilderextSignatureSerializer>(
+        WHubFileObj,ExportedSignFileObj);
     }
     for (const auto& M : transmittedMessages)
     {

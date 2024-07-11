@@ -188,6 +188,8 @@ const std::string WARESDEV_MIGRATION_ORIGINAL_DIR = "_original";
 const std::string WARESDEV_DOCALYZER_WORK_DIRROOT = "_docalyzer";
 const std::string WARESDEV_BRANCH_INFO_FILE = "branch-info.txt";
 
+const std::string MIGRATION_STRING = "[MIGRATION]";
+
 
 // Project
 const std::string PROJECT_FILE = "@OPENFLUID_PROJECT_FILE@";

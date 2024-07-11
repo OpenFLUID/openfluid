@@ -239,7 +239,7 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performCodeCheck(bo
         if (openfluid::waresdev::IsCppFile(FileObj) || openfluid::waresdev::IsCMakeFile(FileObj))
         {
           auto Content = openfluid::tools::Filesystem::readFile(FileObj);
-          if (openfluid::tools::contains(Content,"[MIGRATION]"))
+          if (openfluid::tools::contains(Content, openfluid::config::MIGRATION_STRING))
           {
             return false;
           }
