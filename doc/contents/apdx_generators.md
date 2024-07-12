@@ -1,6 +1,37 @@
-# File formats for generators {#apdx_generators}
+# Single-column value generator {#apdx_generators}
+
+This appendix provides insight about use cases and set up of generators to provide variable data easily. It deals only with single-column csv, for multi-column data files, see @ref apdx_multicolumn-generators 
 
 [TOC]
+
+# What data types can be generated?
+
+The available data types depend from the kind of wanted generation:
+
+| Generator type                 | Double (scalar) | Double (vector) | Double (matrix) | Integer | Boolean | String |
+| ------------------------------ | ------ | ------ | ------ | ------- | ------- | ------ |
+| Fixed values                   | Yes    | Yes*   | Yes*   | Yes     | Yes     | Yes    |
+| Random values                  | Yes    | Yes    | Yes    | Yes     | Yes     | No     |
+| Values from file interpolation | Yes    | No     | No     | No      | No      | No     |
+| Values from file injection     | Yes    | No     | No     | No      | No      | No     |
+
+
+## Floating-point variables
+
+*The non-scalar double generator can be used either with a single value for all, or a value for each cell of the container. Eg, for every time step and every unit of the given unit class, for a generator of vector of size 4 containing doubles: 
+- "3" will produce as variable value \[3.0, 3.0, 3.0, 3.0\] 
+- "[1,4,2.2,3]" will produce as variable value \[1.0, 4.0, 2.2, 3.0\] 
+
+An option is available for the random generator, to be able to have identical or different values inside the container. 
+Eg with a vector of 4 double: 
+- same value activated: t0: [2.1, 2.1, 2.1, 2.1], t1: [43, 43, 43, 43]
+- same value disabled: t0: [4.5, 2.0, 22.1, 1.7], t1: [10.2, 2.3, 7,4, 9.9]
+
+## Boolean
+Currently the random generator for boolean gives a balanced probability between true and false
+
+# File formats for generators
+
 
 
 @note Currently, these files formats are used by _interp_ and _inject_ generators only.

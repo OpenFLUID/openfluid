@@ -40,13 +40,15 @@ It will use a chosen multicolumn csv file.
 You can either use all the variables defined in the file or specify just a selection of them. 
 The generator will produce all selected variables from the csv file.
 
-![Extract columns in Builder](images/extract-columns.png)
+@image html extract-columns.png
+@image latex extract-columns.png "Multicolumn generator setup tab" width=11.5cm
 
 In this example (taken from *Firespread example*), we are importing the file *multi_inject.csv* which defines 
 2 variables for all spatial units in the unit class *AU* : `AU#*gas.atm.V.windspeed` and 
 `AU#*:gas.atm.degree.mainwinddir`. The *Signature* parameter defines all the selected columns from the file.
 
-![](images/generator-variables.png)
+@image html generator-variables.png "Generator variables"
+@image latex generator-variables.png "Generator variables" width=11.5cm
 
 In this image, we can see that the generators produces the selected variables *gas.atm.V.windspeed*
 and *gas.atm.degree.mainwinddir*. 

@@ -121,7 +121,9 @@
 \chapter{\-Command line options and environment variables}\label{apdx_optenv}\hypertarget{apdx_optenv}{}\input{apdx_optenv}
 \chapter{\-Datetime formats}\label{apdx_datetime}\hypertarget{apdx_datetime}{}\input{apdx_datetime}
 \chapter{\-String representations of values}\label{apdx_values}\hypertarget{apdx_values}{}\input{apdx_values}
-\chapter{\-File formats for generators}\label{apdx_generators}\hypertarget{apdx_generators}{}\input{apdx_generators}
+\chapter{\-Variabilize ware signature}\label{apdx_tpl_signature}\hypertarget{apdx_tpl_signature}{}\input{apdx_tpl_signature}
+\chapter{\-Generator variable format and setup}\label{apdx_generators}\hypertarget{apdx_generators}{}\input{apdx_generators}
+apdx_generator_types
 \chapter{\-Multicolumn generators : setup and use }\label{apdx_multicolumn-generators}\hypertarget{apdx_multicolumn-generators}{}\input{apdx_multicolumn-generators}
 \chapter{\-Structure of an OpenFLUID project}\label{apdx_prj}\hypertarget{apdx_prj}{}\input{apdx_prj}
 \chapter{\-Organization of an OpenFLUID workspace}\label{apdx_workspace}\hypertarget{apdx_workspace}{}\input{apdx_workspace}
