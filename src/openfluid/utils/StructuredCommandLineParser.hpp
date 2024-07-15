@@ -133,6 +133,7 @@ class StructuredCommandLineParser : public CommandLineParser
       Instanciates a command line parser with the given parameters
       @param[in] ProgramName The name of the programn
       @param[in] HelpText The help text associated to the option
+      @param[in] CommandSections List of commands section
     */
     StructuredCommandLineParser(const std::string& ProgramName, const std::string& HelpText,
                                const std::vector<CommandLineSection*>& CommandSections) :

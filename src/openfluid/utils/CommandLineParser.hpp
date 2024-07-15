@@ -280,6 +280,7 @@ class CommandLineCommand
       Instanciates a command with the given parameters
       @param[in] Name The long name of the command
       @param[in] HelpText The help text associated to the command
+      @param[in] LongHelpText The long help text associated to the command
     */
     CommandLineCommand(const std::string& Name, const std::string& HelpText, const std::string& LongHelpText = ""):
       m_Name(Name), m_HelpText(HelpText)
@@ -710,6 +711,7 @@ class CommandLineParser
       Instanciates a command line parser with the given parameters
       @param[in] ProgramName The name of the programn
       @param[in] HelpText The help text associated to the option
+      @param[in] UseCustomOrder Enables custom order in the display
     */
     CommandLineParser(const std::string& ProgramName, const std::string& HelpText, bool UseCustomOrder = false) :
       m_ProgramName(ProgramName), m_HelpText(HelpText), m_HelpAsked(false), m_UseCustomOrder(UseCustomOrder)

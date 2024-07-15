@@ -237,16 +237,6 @@ std::vector<std::string> OPENFLUID_API split(const std::string& Str, const std::
 std::string OPENFLUID_API join(const std::vector<std::string>& Vect, const std::string& Sep);
 
 
-/**
-  Checks if two strings match
-  @snippet misc/strings.cpp str_match
-  @param[in] Str the string to check
-  @param[in] RefRegex the reference regular expression
-  @return true if Str string match RefRegex, false otherwise
-*/
-bool OPENFLUID_API match(const std::string& Str, const std::string& RefRegex);
-
-
 } } // namespaces
 
 

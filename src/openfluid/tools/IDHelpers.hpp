@@ -107,6 +107,7 @@ bool OPENFLUID_API isValidDatasetName(const std::string& Name);
   To be valid, a ware ID must only contain alphanumeric, '_', '-', '.' characters,
   and must begin by an alphanumeric character.
   @param[in] ID the ware ID to check
+  @param[in] Template True to enable a template on the ware ID
   @return true if the ID is valid
 */
 bool OPENFLUID_API isValidWareID(const openfluid::ware::WareID_t& ID, bool Template=false);
@@ -166,10 +167,8 @@ bool OPENFLUID_API extractVariableNameAndType(const openfluid::core::VariableNam
 
 /**
   Builds a generator ID
-  @param[in] VarName The name of the variable produced by the generator
-  @param[in] IsVector true if the variable is a vector, false if it is a scalar
-  @param[in] ClassName The name of the spatial unit class associated where the variable is produced
-  @return the generated ID
+  @param[in] VarPairs Pair of unit classes/variables to create the generator ID
+  @param[in] StrDimType Dimension type of generator
 */
 std::string OPENFLUID_API buildGeneratorID(const openfluid::tools::UnitVarPairs_t& VarPairs,
                                            const std::string& StrDimType);
