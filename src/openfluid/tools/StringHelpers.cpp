@@ -174,21 +174,6 @@ std::string join(const std::vector<std::string>& Vect, const std::string& Sep)
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-bool match(const std::string& Str, const std::string& RefRegex)
-{
-  if(Str == RefRegex) 
-  {
-    return true;
-  }
-  
-  return std::regex_match(Str, std::regex(RefRegex));
-}
-
-
 } } // namespaces
 
 

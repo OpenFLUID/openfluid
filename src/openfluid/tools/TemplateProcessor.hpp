@@ -56,7 +56,7 @@ namespace openfluid { namespace tools {
   Class for rendering templates from string, files or directories.
 
 _Example of use_
-```cpp
+~~~~~~~~~~~~~~~{.cpp}
   const openfluid::tools::TemplateProcessor::Data Data = {
     {"key1","value #1"},
     {"key2","value #2"}
@@ -72,7 +72,7 @@ _Example of use_
 
   // recursive directory rendering
   TplProc.renderDirectory("/path/to/template/directory","/path/to/rendered/directory",Data,Errors);
-```
+~~~~~~~~~~~~~~~
 */
 class OPENFLUID_API TemplateProcessor
 {
