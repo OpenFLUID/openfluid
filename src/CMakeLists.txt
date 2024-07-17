@@ -14,8 +14,16 @@ LINK_DIRECTORIES(${GDAL_LIBRARY_DIRS})
 
 
 # Set tmp directory
-SET(OFBUILD_TMP_DIR_RAW "$ENV{TMP}")  # Env var known on Windows OS
-STRING(REPLACE "\\" "/" OFBUILD_TMP_DIR "${OFBUILD_TMP_DIR_RAW}")
+# Precedence order:
+#  1) check OPENFLUID_TEMP_PATH env var
+#  2) check TMP env var
+#  3) set as '/tmp'
+SET(OFBUILD_TMP_DIR "$ENV{OPENFLUID_TEMP_PATH}")
+
+IF(OFBUILD_TMP_DIR STREQUAL "")
+  SET(OFBUILD_TMP_DIR_RAW "$ENV{TMP}")  # Env var known on Windows OS
+  STRING(REPLACE "\\" "/" OFBUILD_TMP_DIR "${OFBUILD_TMP_DIR_RAW}")
+ENDIF()
 
 IF(OFBUILD_TMP_DIR STREQUAL "")
   SET(OFBUILD_TMP_DIR "/tmp")  # Generic tmp location on Unix/Mac OS
