@@ -21,17 +21,35 @@ The path are separated by colon on UNIX systems, and by semicolon on Windows sys
 
 Usage : `openfluid [<command>] [<options>] [<args>]`
 
-Available commands:
 
-* `buddy` : Execute a buddy. Available buddies are newsim, newdata, sim2doc, examples
-* `report` : Display informations about available wares
-* `run` : Run a simulation from a project or an input dataset
-* `show-paths` : Show search paths for wares
+Available commands:
+* About OpenFLUID: 
+   * `info`:                 Display information about OpenFLUID
+   * `version`:              Display OpenFLUID version
+   * `install-examples`:     Install or reinstall examples in the user directory
+   * `prepare-workspace`:    Prepare an OpenFLUID workspace
+
+* About wares: 
+   * `report`:               Display report about available wares
+   * `create-ware`:          Create ware sources
+   * `check`:                Checks ware sources for potential issues
+   * `configure`:            Configure ware sources for build
+   * `build`:                Build configured ware sources
+   * `docalyze`:             Build documentation of a ware
+   * `purge`:                purge build outputs on ware sources
+   * `migrate-ware`:         Migrate ware sources to current version
+   * `migrate-ghostsim`:     Migrate ghost simulator to current version
+   * `info2build`:           Generate build files from ware information
+
+* About simulation: 
+   * `run`:                  Run a simulation
+   * `create-data`:          Create project or dataset
+
 
 Available options:
 
-* `--help,-h` : display this help message
-* `--version` : display version
+* `--help,-h`: display the help message
+* `--version`: display version
 
 
 ### Running simulations {#apdx_optenv_cmdopt_run}
@@ -91,6 +109,7 @@ openfluid report observers --list
 
 
 ### Paths {#apdx_optenv_cmdopt_paths}
+TOIMPL new syntax with OpenFLUID 2.2
 
 Show search paths for wares
 
@@ -101,18 +120,3 @@ Available options:
 * `--help,-h` : display this help message
 * `--observers-paths=<arg>, -n <arg>` : add extra observers search paths (colon separated)
 * `--simulators-paths=<arg>, -p <arg>` : add extra simulators search paths (colon separated)
-
-
-
-### Buddies {#apdx_optenv_cmdopt_buddies}
-
-Execute a buddy. Available buddies are newsim, newdata, sim2doc, examples
-
-Usage : `openfluid buddy [<options>] [<args>]`
-
-Available options:
-
-* `--help,-h` : display this help message
-* `--buddy-help` : display specific buddy help
-* `--options=<arg>, -o <arg>` : set buddy options
-
