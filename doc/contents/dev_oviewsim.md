@@ -3,9 +3,8 @@
 [TOC]
 
 Technically, an OpenFLUID simulator is made of two main parts: 
-the signature and a C++ class containing the computational code.
-These two parts have to be developped in a C++ file (.cpp). 
-They must be compiled before using it in the OpenFLUID software environment.
+the signature (in a .json file) and a C++ class containing the computational code in a C++ file (.cpp). 
+They must be compiled before being used in the OpenFLUID software environment.
 
 
 ## Simulator signature {#dev_oviewsim_signature}

@@ -59,7 +59,7 @@ HTML_OUTPUT            = html
 
 SEARCHENGINE		       = YES
 SERVER_BASED_SEARCH    = NO
-SHORT_NAMES			       = YES
+SHORT_NAMES			       = NO
 
 QUIET                  = YES
 WARNINGS               = YES
