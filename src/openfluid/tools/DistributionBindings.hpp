@@ -42,6 +42,7 @@
 #define __OPENFLUID_TOOLS_DISTRIBUTIONBINDINGS_HPP__
 
 
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
@@ -52,21 +53,22 @@
 namespace openfluid { namespace tools {
 
 
-inline std::vector<openfluid::tools::ClassIDVar> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
-                                                                                 bool RemoveFirst=false)
+inline std::vector<openfluid::tools::ClassIDVar> 
+stringArrayToClassIDVarList(const std::vector<std::string>& StringArray, bool RemoveFirst=false)
 {
-  std::vector<std::string> Columns = openfluid::tools::split(SelectionStr, ";");
-   //TODO Extract and make split char consistent between ops
-  
-  
   std::vector<openfluid::tools::ClassIDVar> CSVTriplets;
   int Begin = RemoveFirst ? 1 : 0;
-  for (std::size_t i=Begin;i<Columns.size();i++)
+  for (std::size_t i=Begin;i<StringArray.size();i++)
   {
-    const std::string& Column = Columns[i];
+    const std::string& Column = StringArray[i];
     // parse and create CSVTriplet
     std::size_t HashPosition = Column.find("#");  // TODO extract default chars
     std::size_t ColonPosition = Column.find(":");  // TODO extract default chars
+
+    if(HashPosition == std::string::npos || ColonPosition == std::string::npos)
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "wrong format for multicolumn csv file");
+    }
     
     openfluid::tools::ClassIDVar CurrentCSVTriplet;
     
@@ -77,6 +79,20 @@ inline std::vector<openfluid::tools::ClassIDVar> stringSelectionToClassIDVarList
     CSVTriplets.push_back(CurrentCSVTriplet);
   }
   return CSVTriplets;
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline std::vector<openfluid::tools::ClassIDVar> stringSelectionToClassIDVarList(const std::string& SelectionStr, 
+                                                                                 bool RemoveFirst=false)
+{
+  std::vector<std::string> Columns = openfluid::tools::split(SelectionStr, ";");
+   //TODO Extract and make split char consistent between ops
+  
+  return stringArrayToClassIDVarList(Columns, RemoveFirst);
 };
 
 
