@@ -455,3 +455,26 @@ int RunTasks::process() const
 
   return 0;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+int RunTasks::showPaths() const
+{
+  if (m_Cmd.isOptionActive("simulators-paths"))
+    {
+      openfluid::base::Environment::addExtraSimulatorsDirs(
+          m_Cmd.getOptionValue("simulators-paths"));
+    }
+
+    if (m_Cmd.isOptionActive("observers-paths"))
+    {
+      openfluid::base::Environment::addExtraObserversDirs(
+          m_Cmd.getOptionValue("observers-paths"));
+    }
+
+    printPaths(false);
+    return 0;
+}

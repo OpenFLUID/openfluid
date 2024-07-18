@@ -31,6 +31,7 @@ Available commands:
 
 * About wares: 
    * `report`:               Display report about available wares
+   * `show-paths`            Show search paths for wares
    * `create-ware`:          Create ware sources
    * `check`:                Checks ware sources for potential issues
    * `configure`:            Configure ware sources for build
@@ -109,8 +110,6 @@ openfluid report observers --list
 
 
 ### Paths {#apdx_optenv_cmdopt_paths}
-TOIMPL new syntax with OpenFLUID 2.2
-
 Show search paths for wares
 
 Usage : `openfluid show-paths [<options>] [<args>]`
