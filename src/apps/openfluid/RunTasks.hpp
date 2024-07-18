@@ -57,6 +57,8 @@ class RunTasks : public TasksBase
     { }
 
     int process() const;
+
+    int showPaths() const;
 };
 
 

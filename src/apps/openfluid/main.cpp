@@ -174,6 +174,16 @@ int main(int argc, char **argv)
 
   Parser.addCommand(ReportCmd, &WareSection);
 
+  // --- show paths
+
+  openfluid::utils::CommandLineCommand ShowPathsCmd("show-paths","Show search paths for wares");
+  
+  for (auto& Opt : SearchOptions)
+  {
+    ShowPathsCmd.addOption(Opt);
+  }
+  Parser.addCommand(ShowPathsCmd, &WareSection);
+
   // ---
 
   auto CreateWareCmd = openfluid::utils::CommandLineCommand("create-ware","Create ware sources");
@@ -328,6 +338,10 @@ int main(int argc, char **argv)
   else if (ActiveCmdStr == "run")  
   {
     return RunTasks(Parser).process();
+  }
+  else if (ActiveCmdStr == "show-paths")
+  {
+    return RunTasks(Parser).showPaths();
   }
   else if (ActiveCmdStr == "report")  
   {
