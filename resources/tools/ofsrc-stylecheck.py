@@ -46,7 +46,6 @@ class SourceTreeChecker:
 
 
     def __init__(self, SrcRootPath, IsVerbose, DisableChecks="", ExcludePaths=""):
-
         self.SrcOpenFLUIDDir = 'src/openfluid'
         self.SrcAppsDir = 'src/apps'
         self.MainCMakeFile = 'CMakeLists.txt'
@@ -130,8 +129,9 @@ class SourceTreeChecker:
         self.OFDependentIncludes = ["unistd.h"]
 
         for Dirname, Dirnames, Filenames in os.walk(self.SrcRootPath):
+            Dirnames[:] = [d for d in Dirnames if self.isValidFolder(d)]
             for Filename in Filenames:
-                RelFilename = os.path.relpath(os.path.join(Dirname, Filename),self.SrcRootPath)                
+                RelFilename = os.path.relpath(os.path.join(Dirname, Filename),self.SrcRootPath)
                 if self.isValidFile(RelFilename):
                     self.FileList.append(RelFilename)
 
@@ -162,6 +162,17 @@ class SourceTreeChecker:
     def isCMakeFile(Filename):
         return (Filename.endswith('CMakeLists.txt') or 
                 Filename.endswith('.cmake') or Filename.endswith('.cmake.in'))
+
+
+############################################################################
+
+
+    @staticmethod
+    def isValidFolder(Foldername):
+        return (
+                not Foldername.startswith('.') and 
+                not Foldername.startswith('_') 
+        )
 
 
 ############################################################################
