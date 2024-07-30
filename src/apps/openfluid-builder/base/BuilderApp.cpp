@@ -166,7 +166,7 @@ void BuilderApp::initialize()
     if (NumberSuccess>0 && QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
       tr("Migration succeeded for %1 ghost(s). Original file(s) were renamed with extension .xml.old. "
           "Do you want to remove them?").arg(QString::fromStdString(std::to_string(NumberSuccess))),
-      QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+      QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
     {
       for (const auto& GhostPath : SuccessGhostPaths)
       {

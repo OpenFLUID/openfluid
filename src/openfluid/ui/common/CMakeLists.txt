@@ -17,7 +17,7 @@ SET(OPENFLUID_UI_COMMON_CPP AppMainWindow.cpp OpenFLUIDDialog.cpp
                             EditExternalToolDialog.cpp
                             PreferencesDialog.cpp DetectQtDevToolsDialog.cpp
                             TimePeriodWidget.cpp
-                            WareIssuesManagerWidget.cpp  WareshubIssueDialog.cpp
+                            WareIssuesManagerWidget.cpp  WareshubIssueDialog.cpp BuilderextSetupWidget.cpp
                             )
 
 SET(OPENFLUID_UI_COMMON_HPP AppMainWindow.hpp OpenFLUIDDialog.hpp 
@@ -39,7 +39,7 @@ SET(OPENFLUID_UI_COMMON_HPP AppMainWindow.hpp OpenFLUIDDialog.hpp
                             PreferencesDialog.hpp DetectQtDevToolsDialog.hpp
                             TimePeriodWidget.hpp
                             UIHelpers.hpp
-                            WareIssuesManagerWidget.hpp  WareshubIssueDialog.hpp
+                            WareIssuesManagerWidget.hpp  WareshubIssueDialog.hpp  BuilderextSetupWidget.hpp
                             )
 
 
@@ -54,7 +54,7 @@ IF (QT_VERSION_MAJOR LESS 6)
                                    PreferencesDialog.ui DetectQtDevToolsDialog.ui
                                    TimePeriodWidget.ui
                                    EditExternalToolDialog.ui
-                                   WareIssuesManagerWidget.ui WareshubIssueDialog.ui)
+                                   WareIssuesManagerWidget.ui WareshubIssueDialog.ui BuilderextSetupWidget.ui)
 ELSE()
   QT_WRAP_UI(OPENFLUID_UI_COMMON_UI MessageFrame.ui
                                    RunSimulationDialog.ui RunCLISimulationDialog.ui
@@ -66,7 +66,7 @@ ELSE()
                                    PreferencesDialog.ui DetectQtDevToolsDialog.ui
                                    TimePeriodWidget.ui
                                    EditExternalToolDialog.ui
-                                   WareIssuesManagerWidget.ui WareshubIssueDialog.ui)
+                                   WareIssuesManagerWidget.ui WareshubIssueDialog.ui BuilderextSetupWidget.ui)
 ENDIF()
 
 

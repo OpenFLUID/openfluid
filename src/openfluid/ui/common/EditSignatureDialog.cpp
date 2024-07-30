@@ -34,6 +34,7 @@
   @file EditSignatureDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -52,7 +53,7 @@ EditSignatureDialog::EditSignatureDialog(QWidget* Parent):
     MessageDialog(Parent), ui(new Ui::EditSignatureDialog)
 {
   ui->setupUi(this);
-
+  
   setupMessageUi(tr("Edit ware information"));
 }
 
@@ -109,7 +110,7 @@ void EditSignatureDialog::checkGlobally()
 void EditSignatureDialog::initialize(const openfluid::ware::SimulatorSignature& Signature,
                                      const QStringList& ExistingIDs)
 {
-  ui->SignatureWidget->initialize(Signature);
+  ui->SignatureWidget->initializeSimulator(Signature);
 
   EditSignatureDialog::initialize(ExistingIDs);
 }

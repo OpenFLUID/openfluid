@@ -460,7 +460,18 @@ void SignatureEditorWidget::initializeDynamicsUIFromSignature(const openfluid::w
 // =====================================================================
 
 
-void SignatureEditorWidget::initialize(const openfluid::ware::SimulatorSignature& Signature)
+void SignatureEditorWidget::initializeIntegrationUIFromSignature(
+  const openfluid::builderext::BuilderExtensionSignature& Signature)
+{
+  ui->BextSetupWidget->initializeFromSignature(Signature);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureEditorWidget::initializeSimulator(const openfluid::ware::SimulatorSignature& Signature)
 {
   initializeCommon(&Signature);
 
@@ -483,6 +494,18 @@ void SignatureEditorWidget::initialize(const openfluid::ware::SimulatorSignature
 // =====================================================================
 
 
+void SignatureEditorWidget::initializeBuilderext(const openfluid::builderext::BuilderExtensionSignature& Signature)
+{
+  initializeCommon(&Signature);
+
+  initializeIntegrationUIFromSignature(Signature);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SignatureEditorWidget::initialize(const QString& SignaturePath)
 {
   openfluid::ware::WareType Type = openfluid::waresdev::detectWareType(SignaturePath.toStdString());
@@ -490,9 +513,10 @@ void SignatureEditorWidget::initialize(const QString& SignaturePath)
 
   if (Type == openfluid::ware::WareType::SIMULATOR)
   {
+    removeTab(5);//BuilderextTab
     auto Signature = openfluid::waresdev::SimulatorSignatureSerializer().readFromJSONFile(SignaturePath.toStdString());
 
-    initialize(Signature);
+    initializeSimulator(Signature);
   }
   else 
   {
@@ -502,6 +526,7 @@ void SignatureEditorWidget::initialize(const QString& SignaturePath)
     removeTab(1);//DynamicsTab
     if (Type == openfluid::ware::WareType::OBSERVER)
     {
+      removeTab(1);//BuilderextTab
       auto Signature = openfluid::waresdev::ObserverSignatureSerializer().readFromJSONFile(SignaturePath.toStdString());
 
       initializeCommon(&Signature);
@@ -511,9 +536,7 @@ void SignatureEditorWidget::initialize(const QString& SignaturePath)
       auto Signature = openfluid::waresdev::BuilderextSignatureSerializer().readFromJSONFile(
         SignaturePath.toStdString());
 
-      initializeCommon(&Signature);
-
-      //TODO add custom tab for builderext type
+      initializeBuilderext(Signature);
     }
   }
 }
@@ -826,6 +849,19 @@ void SignatureEditorWidget::updateSignatureFromCommonsUI(openfluid::ware::WareSi
 // =====================================================================
 
 
+void SignatureEditorWidget::updateSignatureFromIntegrationUI(
+  openfluid::builderext::BuilderExtensionSignature& Signature) const
+{
+  Signature.Mode = ui->BextSetupWidget->getBuilderextMode();
+  Signature.Category = ui->BextSetupWidget->getBuilderextCategory();
+  Signature.MenuText = ui->BextSetupWidget->getBuilderextMenuText().toStdString();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::ware::SimulatorSignature SignatureEditorWidget::getSignature() const
 {
 
@@ -874,7 +910,7 @@ bool SignatureEditorWidget::exportSignature(const QString& SignaturePath) const
   {
     openfluid::builderext::BuilderExtensionSignature Signature;
     updateSignatureFromCommonsUI(Signature);
-    //TODO add specific fields for builderext
+    updateSignatureFromIntegrationUI(Signature);
     openfluid::waresdev::BuilderextSignatureSerializer().writeToJSONFile(Signature,SignaturePath.toStdString());
     return true;
   }
