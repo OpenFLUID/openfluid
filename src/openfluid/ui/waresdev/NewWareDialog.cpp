@@ -41,6 +41,12 @@
 
 #include <QPushButton>
 #include <QMessageBox>
+#include <QRegularExpressionValidator>
+#if (QT_VERSION_MAJOR < 6)
+#include <QRegExp>
+#else
+#include <QRegularExpression>
+#endif
 
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
@@ -66,9 +72,6 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
                           openfluid::base::WorkspaceManager::instance()->getWaresPath(m_WareType))
                        );
 
-  ui->BextTypeComboBox->addItems(getBuilderExtTypeTexts());
-  ui->BextCategoryComboBox->addItems(getBuilderExtCategoryTexts());
-
   QString WareId;
   QString SrcClassname;
 
@@ -78,13 +81,13 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
       setupMessageUi(tr("Create a new simulator"));
       WareId = "sim.id";
       SrcClassname = "Simulator";
-      ui->BuilderExtWidget->setVisible(false);
+      ui->BextSetupWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::OBSERVER:
       setupMessageUi(tr("Create a new observer"));
       WareId = "obs.id";
       SrcClassname = "Observer";
-      ui->BuilderExtWidget->setVisible(false);
+      ui->BextSetupWidget->setVisible(false);
       break;
     case openfluid::ware::WareType::BUILDEREXT:
       setupMessageUi(tr("Create a new Builder extension"));
@@ -210,31 +213,6 @@ QRegularExpression NewWareDialog::getWareIdRegExp(QString& Tooltip)
 // =====================================================================
 
 
-QStringList NewWareDialog::getBuilderExtTypeTexts()
-{
-  QStringList BextMode_Texts;
-  BextMode_Texts << QObject::tr("Modal") << QObject::tr("Modeless") << QObject::tr("Workspace");
-  return BextMode_Texts;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QStringList NewWareDialog::getBuilderExtCategoryTexts()
-{
-  QStringList BextCategory_Texts;
-  BextCategory_Texts << QObject::tr("Spatial domain") << QObject::tr("Model") << QObject::tr("Results")
-                      << QObject::tr("Other");
-  return BextCategory_Texts;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void NewWareDialog::onInformationChanged()
 {
   QString WarningMsg = "";
@@ -308,17 +286,7 @@ bool NewWareDialog::isWareUI() const
 
 openfluid::builderext::ExtensionMode  NewWareDialog::getBuilderextMode() const
 {
-  if (ui->BextTypeComboBox->currentIndex() == 0)
-  {
-    return openfluid::builderext::ExtensionMode::MODAL;
-  }
-
-  if (ui->BextTypeComboBox->currentIndex() == 1)
-  {
-    return openfluid::builderext::ExtensionMode::MODELESS;
-  }
-
-  return openfluid::builderext::ExtensionMode::WORKSPACE;
+  return ui->BextSetupWidget->getBuilderextMode();
 }
 
 
@@ -328,22 +296,7 @@ openfluid::builderext::ExtensionMode  NewWareDialog::getBuilderextMode() const
 
 openfluid::builderext::ExtensionCategory  NewWareDialog::getBuilderextCategory() const
 {
-  if (ui->BextCategoryComboBox->currentIndex() == 0)
-  {
-    return openfluid::builderext::ExtensionCategory::SPATIAL;
-  }
-
-  if (ui->BextCategoryComboBox->currentIndex() == 1)
-  {
-    return openfluid::builderext::ExtensionCategory::MODEL;
-  }
-
-  if (ui->BextCategoryComboBox->currentIndex() == 2)
-  {
-    return openfluid::builderext::ExtensionCategory::RESULTS;
-  }
-
-  return openfluid::builderext::ExtensionCategory::OTHER;
+  return ui->BextSetupWidget->getBuilderextCategory();
 }
 
 
@@ -353,7 +306,7 @@ openfluid::builderext::ExtensionCategory  NewWareDialog::getBuilderextCategory()
 
 QString NewWareDialog::getBuilderextMenuText() const
 {
-  return ui->BextMenutextEdit->text();
+  return ui->BextSetupWidget->getBuilderextMenuText();
 }
 
 
