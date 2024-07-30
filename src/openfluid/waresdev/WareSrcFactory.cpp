@@ -358,6 +358,7 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
   }
   catch(openfluid::base::FrameworkException& E)
   {
+    std::cout << E.what() << std::endl; //TOIMPL send in log file
     return std::string();
   }
 

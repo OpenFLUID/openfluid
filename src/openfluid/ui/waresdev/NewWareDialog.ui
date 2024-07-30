@@ -238,86 +238,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QWidget" name="BuilderExtWidget" native="true">
-       <layout class="QVBoxLayout" name="verticalLayout_6">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <layout class="QFormLayout" name="formLayout_2">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="BextType_label">
-            <property name="text">
-             <string>Show mode</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="BextTypeComboBox"/>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="BuilderExtGroupBox">
-          <property name="title">
-           <string>Extension parameters</string>
-          </property>
-          <layout class="QFormLayout" name="formLayout_4">
-           <property name="labelAlignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="leftMargin">
-            <number>9</number>
-           </property>
-           <property name="topMargin">
-            <number>9</number>
-           </property>
-           <property name="rightMargin">
-            <number>9</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="BextCategory_label">
-             <property name="text">
-              <string>Category</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="BextCategoryComboBox"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="BextMenutext_label">
-             <property name="text">
-              <string>Menu Text</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="BextMenutextEdit"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+      <widget class="openfluid::ui::common::BuilderextSetupWidget" name="BextSetupWidget" native="true"/>
      </item>
      <item>
       <widget class="Line" name="line_4">
@@ -378,14 +299,19 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>openfluid::ui::common::BuilderextSetupWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">openfluid/ui/common/BuilderextSetupWidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>IdEdit</tabstop>
   <tabstop>ClassNameEdit</tabstop>
   <tabstop>UiParamGroupBox</tabstop>
   <tabstop>UiParamClassNameEdit</tabstop>
-  <tabstop>BextTypeComboBox</tabstop>
-  <tabstop>BextCategoryComboBox</tabstop>
-  <tabstop>BextMenutextEdit</tabstop>
   <tabstop>SignatureCheckBox</tabstop>
  </tabstops>
  <resources/>
