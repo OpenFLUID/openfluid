@@ -60,7 +60,7 @@ std::string OPENFLUID_API getGhostSimulatorPath(const std::string& ParentPath, c
 
 bool migrateGhostSimulator(const std::string& ParentPath, const openfluid::ware::WareID_t& ID)
 {
-  auto OldPathObj = openfluid::tools::Path({ParentPath,ID+openfluid::config::SIMULATORS_GHOSTS_SUFFIX+".xml"});
+  auto OldPathObj = openfluid::tools::Path({ParentPath,ID+".xml"});//DIRTYCODE variabilize "xml"
 
   if (OldPathObj.isFile())
   {
@@ -72,13 +72,14 @@ bool migrateGhostSimulator(const std::string& ParentPath, const openfluid::ware:
         SimulatorSignatureSerializer().writeToJSONFile(Sign,getGhostSimulatorPath(ParentPath,ID));
         return true;
       }
-      catch(...)
+      catch(const std::exception& e)
       {
+        std::cout << "Error during ghost simulator JSON write: " << e.what() << std::endl;// TODO send as logs
         return false;
       }
     }
   }
-
+std::cout << "Path is not a file: " << OldPathObj.toNative() << std::endl;// TODO send as logs
   return false;
 }
 

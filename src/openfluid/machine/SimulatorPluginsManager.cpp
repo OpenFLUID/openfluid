@@ -95,8 +95,10 @@ SimulatorPluginsManager::getAvailableGhosts(const std::string& IDPattern) const
       }
 
     }
-    catch(...)
-    { }
+    catch (std::exception& E)
+    {
+      std::cout << E.what() << std::endl;//TOIMPL ADD OUTPUT IN LOGS?
+    }
    
   }
 
