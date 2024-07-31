@@ -38,6 +38,7 @@
 
 
 #include <QApplication>
+#include <QMessageBox>
 #include <QTime>
 
 #include <openfluid/base/PreferencesManager.hpp>
@@ -49,6 +50,7 @@
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/ui/QtHelpers.hpp>
+#include <openfluid/waresdev/GhostsHelpers.hpp>
 
 #include "BuilderApp.hpp"
 #include "ExtensionsRegistry.hpp"
@@ -120,7 +122,37 @@ void BuilderApp::initialize()
     openfluid::base::Environment::addExtraBuilderextsDirs(ExtraPaths[i].toStdString());
   }
 
-  // TOIMPL migrate ghosts automatically ?
+  // Diagnosis of existing ghost simulators in previous format (xml)
+  std::vector<std::string> GhostPaths;
+  for (const auto& P : openfluid::machine::SimulatorPluginsManager::instance()->getPluginsSearchPaths())
+  {
+    std::vector<std::string> TmpFiles = openfluid::tools::Filesystem::findFilesBySuffixAndExtension(P,
+                                                                           openfluid::config::SIMULATORS_GHOSTS_SUFFIX,
+                                                                           ".xml",
+                                                                           true,true);
+    for (const auto& F : TmpFiles)
+    {
+      GhostPaths.push_back(F);
+    }
+  }
+
+  if (GhostPaths.size() > 0 && QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
+                           tr("Do you want to automatically migrate following ghost wares?\n\n%1").arg(QString::fromStdString("- "+openfluid::tools::join(GhostPaths, "\n- "))),
+                           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
+      == QMessageBox::Ok)
+  {
+    mp_Splash->setMessage(tr("Migrating ghosts simulators"));
+    for (const auto& F : GhostPaths)
+    {
+      // migrate ghosts automatically
+      openfluid::waresdev::migrateGhostSimulator(GhostPath.dirname(), openfluid::tools::FilesystemPath(F).basename());
+      
+      //FIXME followed by such outputs at project opening:
+      //    spook.for.conversion_ofghost-sim... 1
+      //    Missing or invalid ware ID (sent by OpenFLUID framework, located at static SignatureType openfluid::waresdev::WareSignatureSerializer<SignatureType>::fromJSONBase(const json&) [with SignatureType = openfluid::ware::SimulatorSignature; openfluid::thirdparty::json = nlohmann::basic_json<nlohmann::ordered_map>])
+      //    -- Installing simulator sppok.for.conversion from /home/thoniarm/Documents/OF_FACTORY/development/openfluid-ssh/_build/dist/share/doc/openfluid/examples/wares-dev/simulators to /home/thoniarm/.openfluid/examples/wares-dev/simulators
+    }
+  }
 
 
   // Extensions
