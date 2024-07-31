@@ -15,8 +15,8 @@ See also the @ref apdx_workspace appendix for sources codes location in workspac
 
 In order to build and develop a simulator, the following tools are required:
 
-* GCC as the C++/C/Fortran compiler (version 4.9 or later for C++14 compatibility, version 6.x or later is recommended)
-* CMake as the build configuration tool (version 3.1 or later). OpenFLUID provides a CMake module to ease the build of simulators. 
+* GCC as the C++/C/Fortran compiler (version 7 or later for C++17 compatibility)
+* CMake as the build configuration tool (version 3.10 or later). OpenFLUID provides a CMake module to ease the build of simulators. 
 
 Detailed instructions for installation of these tools are available on the OpenFLUID Community web site
 (<http://community.openfluid-project.org>). 
@@ -29,14 +29,14 @@ Even if simulators can be developped using any text editor, the OpenFLUID-DevStu
 The OpenFLUID-DevStudio application is made of a main toolbar located on top, 
 a file navigator on the left side and a file editor on the right side.
 
-@image html screenshot_devstudio_overview_html.png "Screenshot of OpenFLUID-DevStudio workspace"
+@image html screenshot_devstudio_overview.png "Screenshot of OpenFLUID-DevStudio workspace"
 @image latex screenshot_devstudio_overview.png "Screenshot of OpenFLUID-DevStudio workspace" width=11.5cm
 
 To create a new simulator, go to menu _File > New ware > Simulator..._ This opens the new simulator dialog dox. 
 In this dialog box, set the simulator ID and source files names then click _OK_. 
 The Source code of a new simulator is created.  
 
-@image html screenshot_devstudio_newware_html.png "Screenshot of new simulator dialog"
+@image html screenshot_devstudio_newware.png "Screenshot of new simulator dialog"
 @image latex screenshot_devstudio_newware.png "Screenshot of new simulator dialog" width=5.5cm
 
 Once created, click on the _Configure_ button of the main toolbar. Once the configure process is completed, 
@@ -56,11 +56,11 @@ including source code and build configuration using the OpenFLUID CMake module.
 @snippet wares/ExampleSimulator.cpp example_full
 
 
-### File CMake.in.config containing the build configuration {#dev_createsim_exmpl_config}
+### File CMakeLists.txt containing the ware configuration {#dev_createsim_exmpl_cmakelists}
 
-@include wares/CMake.in.cmake.snippet
-
-
-### File CMakeLists.txt defining the build process {#dev_createsim_exmpl_cmakelists}
- 
 @include wares/CMakeLists.txt.snippet
+
+
+### File src/CMakeLists.txt defining the plugin build {#dev_createsim_exmpl_src_cmakelists}
+ 
+@include wares/src.CMakeLists.txt.snippet

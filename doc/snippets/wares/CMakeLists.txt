@@ -32,5 +32,3 @@ TARGET_LINK_LIBRARIES(snippets_wares STATIC
 
 SET_TARGET_PROPERTIES(snippets_wares PROPERTIES
                       ARCHIVE_OUTPUT_DIRECTORY "${OFBUILD_TESTS_BINARY_DIR}")
-
-# TOIMPL review/refactor CMake.in.cmake.snippet and CMakeLists.txt.snippet
