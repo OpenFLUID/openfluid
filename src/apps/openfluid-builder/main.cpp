@@ -52,6 +52,7 @@
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 
 #include "BuilderApp.hpp"
 #include "builderconfig.hpp"
@@ -66,6 +67,8 @@ int main(int argc, char** argv)
     int ExitCode = 0;
 
     INIT_OPENFLUID_QT_APPLICATION_WITH_GUI(argc,argv);
+
+    openfluid::utils::log::setup();
 
     do
     {

@@ -34,13 +34,15 @@
   @file GhostsHelpers.cpp
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
 #include <openfluid/waresdev/GhostsHelpers.hpp>
 #include <openfluid/waresdev/SimulatorSignatureXMLReader.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
-#include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -58,28 +60,50 @@ std::string OPENFLUID_API getGhostSimulatorPath(const std::string& ParentPath, c
 // =====================================================================
 
 
+openfluid::tools::Path oldSignaturePath(const std::string& ParentPath, const openfluid::ware::WareID_t& ID)
+{
+  return openfluid::tools::Path({ParentPath,ID+".xml.old"});
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool migrateGhostSimulator(const std::string& ParentPath, const openfluid::ware::WareID_t& ID)
 {
-  auto OldPathObj = openfluid::tools::Path({ParentPath,ID+".xml"});//DIRTYCODE variabilize "xml"
+  auto OldPathObj = openfluid::tools::Path({ParentPath,ID+".xml"});
 
-  if (OldPathObj.isFile())
+  if (!OldPathObj.isFile())
   {
-    openfluid::ware::SimulatorSignature Sign;
-    if (SimulatorSignatureXMLReader::loadFromFile(OldPathObj.toGeneric(),Sign))
+    openfluid::utils::log::error("Ghost migration", 
+                                 "Path is not a file: " + OldPathObj.toNative());
+    return false;
+  }
+  openfluid::ware::SimulatorSignature Sign;
+  if (SimulatorSignatureXMLReader::loadFromFile(OldPathObj.toGeneric(),Sign))
+  {
+    try
     {
-      try
+      SimulatorSignatureSerializer().writeToJSONFile(Sign,getGhostSimulatorPath(ParentPath,ID));
+      const auto OldPathRenamed = oldSignaturePath(ParentPath, ID).toNative();
+      if (!openfluid::tools::Filesystem::renameFile(OldPathObj.toNative(), OldPathRenamed))
       {
-        SimulatorSignatureSerializer().writeToJSONFile(Sign,getGhostSimulatorPath(ParentPath,ID));
-        return true;
+        openfluid::utils::log::error("Ghost migration", 
+          "Rename failed from "+OldPathObj.toNative()+" to "+OldPathRenamed);
       }
-      catch(const std::exception& e)
-      {
-        std::cout << "Error during ghost simulator JSON write: " << e.what() << std::endl;// TODO send as logs
-        return false;
-      }
+      return true;
+    }
+    catch(const std::exception& e)
+    {
+      std::cout << "Error during ghost simulator JSON write: " << e.what() << std::endl;
+      openfluid::utils::log::error("Ghost migration", 
+                                    "Error during ghost simulator JSON write: " + std::string(e.what()));
+      return false;
     }
   }
-std::cout << "Path is not a file: " << OldPathObj.toNative() << std::endl;// TODO send as logs
+  openfluid::utils::log::error("Ghost migration", 
+                               "XML loading failure for file " + OldPathObj.toGeneric());
   return false;
 }
 

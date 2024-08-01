@@ -34,7 +34,11 @@
   @file BuilderApp.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
+
+
+// OpenFLUID:stylecheck:!brac
 
 
 #include <QApplication>
@@ -136,22 +140,51 @@ void BuilderApp::initialize()
     }
   }
 
+  mp_Splash->setMessage(tr("Checking ghost simulators"));
   if (GhostPaths.size() > 0 && QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
-                           tr("Do you want to automatically migrate following ghost wares?\n\n%1").arg(QString::fromStdString("- "+openfluid::tools::join(GhostPaths, "\n- "))),
-                           QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
+    tr("Do you want to automatically migrate following ghost wares?\n\n%1").arg(QString::fromStdString("- "+ \
+      openfluid::tools::join(GhostPaths, "\n- "))),
+    QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
       == QMessageBox::Ok)
   {
-    mp_Splash->setMessage(tr("Migrating ghosts simulators"));
+    std::vector<openfluid::tools::Path> SuccessGhostPaths;
+    std::vector<std::string> FailGhosts;
     for (const auto& F : GhostPaths)
     {
       // migrate ghosts automatically
-      openfluid::waresdev::migrateGhostSimulator(GhostPath.dirname(), openfluid::tools::FilesystemPath(F).basename());
-      
-      //FIXME followed by such outputs at project opening:
-      //    spook.for.conversion_ofghost-sim... 1
-      //    Missing or invalid ware ID (sent by OpenFLUID framework, located at static SignatureType openfluid::waresdev::WareSignatureSerializer<SignatureType>::fromJSONBase(const json&) [with SignatureType = openfluid::ware::SimulatorSignature; openfluid::thirdparty::json = nlohmann::basic_json<nlohmann::ordered_map>])
-      //    -- Installing simulator sppok.for.conversion from /home/thoniarm/Documents/OF_FACTORY/development/openfluid-ssh/_build/dist/share/doc/openfluid/examples/wares-dev/simulators to /home/thoniarm/.openfluid/examples/wares-dev/simulators
+      const auto GhostPath = openfluid::tools::FilesystemPath(F);
+      if (openfluid::waresdev::migrateGhostSimulator(GhostPath.dirname(), GhostPath.basename()))
+      {
+        SuccessGhostPaths.push_back(GhostPath);
+      }
+      else
+      {
+        FailGhosts.push_back(F);
+      }
     }
+    unsigned int NumberSuccess = SuccessGhostPaths.size();
+    if (NumberSuccess>0 && QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
+      tr("Migration succeeded for %1 ghost(s). Original file(s) were renamed with extension .xml.old. "
+          "Do you want to remove them?").arg(QString::fromStdString(std::to_string(NumberSuccess))),
+      QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+    {
+      for (const auto& GhostPath : SuccessGhostPaths)
+      {
+        openfluid::waresdev::oldSignaturePath(GhostPath.dirname(), GhostPath.basename()).removeFile();
+      }
+    }
+    if (!FailGhosts.empty())
+    {
+      QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
+        tr("Migration failed for following ghost(s): \n%1\n\nYou can migrate them manually with "
+        "command: \nopenfluid migrate-ghostsim").arg(QString::fromStdString("- "+ \
+          openfluid::tools::join(FailGhosts, "\n- "))),
+        QMessageBox::Ok, QMessageBox::Ok);
+    }
+  }
+  else
+  {
+    //TOIMPL remember the No (cf PreferencesManager)
   }
 
 
