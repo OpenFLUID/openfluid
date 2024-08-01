@@ -230,10 +230,10 @@ SET(OPENFLUID_RETURN_CODE_DEPENDENCY_ISSUE 100)
 SET(OPENFLUID_WARESDEV_SRC_CMAKESTDFILE "CMakeLists.txt")
 SET(OPENFLUID_WARESDEV_SRC_MAINFILE "WareMain.cpp")
 SET(OPENFLUID_WARESDEV_SRC_PARAMSUIFILE "WareUI.cpp")
-SET(OPENFLUID_WARESDEV_SRC_DIR "src")  # TOIMPL use this config variable wherever possible
-SET(OPENFLUID_WARESDEV_TESTS_DIR "tests") # TOIMPL use this config variable wherever possible
-SET(OPENFLUID_WARESDEV_DOC_DIR "doc") # TOIMPL use this config variable wherever possible
-SET(OPENFLUID_WARESDEV_DOC_MAIN_FILEROOT "main") # TOIMPL use this config variable wherever possible
+SET(OPENFLUID_WARESDEV_SRC_DIR "src")  # TODO use this config variable wherever possible
+SET(OPENFLUID_WARESDEV_TESTS_DIR "tests") # TODO use this config variable wherever possible
+SET(OPENFLUID_WARESDEV_DOC_DIR "doc") # TODO use this config variable wherever possible
+SET(OPENFLUID_WARESDEV_DOC_MAIN_FILEROOT "main") # TODO use this config variable wherever possible
 SET(OPENFLUID_WARESDEV_README_FILEROOT "README")
 SET(OPENFLUID_WARESDEV_WAREMETA_FILE "${OPENFLUID_MAIN_NAME}-ware.json")
 SET(OPENFLUID_WARESDEV_BUILD_MAINSIGN "main_signature.cpp")

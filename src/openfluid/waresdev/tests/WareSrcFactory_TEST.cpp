@@ -72,15 +72,16 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,SimsPath.toGeneric());
 
   BOOST_CHECK(SimsPath.isDirectory(Sign.ID));
-  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/src"));
-  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/doc"));
-  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/tests"));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_DOC_DIR));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_TESTS_DIR));
 
-  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/CMakeLists.txt"));
-  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/WareMain.cpp"));
-  BOOST_CHECK(!SimsPath.isFile(Sign.ID+"/src/WareUI.hpp"));
-  BOOST_CHECK(!SimsPath.isFile(Sign.ID+"/src/WareUI.cpp"));
-  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareMain.cpp"));
+  BOOST_CHECK(!SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareUI.hpp"));
+  BOOST_CHECK(!SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareUI.cpp"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/"+ \
+                                openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
 }
 
 
@@ -106,15 +107,16 @@ BOOST_AUTO_TEST_CASE(create_files_sim_withui)
   openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,SimsPath.toGeneric());
 
   BOOST_CHECK(SimsPath.isDirectory(Sign.ID));
-  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/src"));
-  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/doc"));
-  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/tests"));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_DOC_DIR));
+  BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_TESTS_DIR));
 
-  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/CMakeLists.txt"));
-  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/WareMain.cpp"));
-  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/WareUI.hpp"));
-  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/WareUI.cpp"));
-  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareMain.cpp"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareUI.hpp"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareUI.cpp"));
+  BOOST_CHECK(SimsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/"+ \
+                                openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
 }
 
 
@@ -138,15 +140,16 @@ BOOST_AUTO_TEST_CASE(create_files_obs)
   openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ObssPath.toGeneric());
 
   BOOST_CHECK(ObssPath.isDirectory(Sign.ID));
-  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/src"));
-  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/doc"));
-  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/tests"));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_DOC_DIR));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_TESTS_DIR));
 
-  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/CMakeLists.txt"));
-  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/WareMain.cpp"));
-  BOOST_CHECK(!ObssPath.isFile(Sign.ID+"/src/WareUI.hpp"));
-  BOOST_CHECK(!ObssPath.isFile(Sign.ID+"/src/WareUI.cpp"));
-  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareMain.cpp"));
+  BOOST_CHECK(!ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareUI.hpp"));
+  BOOST_CHECK(!ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareUI.cpp"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/"+ \
+                                openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
 }
 
 
@@ -172,15 +175,16 @@ BOOST_AUTO_TEST_CASE(create_files_obs_withui)
   openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ObssPath.toGeneric());
 
   BOOST_CHECK(ObssPath.isDirectory(Sign.ID));
-  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/src"));
-  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/doc"));
-  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/tests"));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_DOC_DIR));
+  BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_TESTS_DIR));
 
-  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/CMakeLists.txt"));
-  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/WareMain.cpp"));
-  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/WareUI.hpp"));
-  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/WareUI.cpp"));
-  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareMain.cpp"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareUI.hpp"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareUI.cpp"));
+  BOOST_CHECK(ObssPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/"+ \
+                                openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
 }
 
 
@@ -209,13 +213,14 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   openfluid::waresdev::WareSrcFactory::createBuilderext(Sign,Config,BextsPath.toGeneric());
 
   BOOST_CHECK(BextsPath.isDirectory(Sign.ID));
-  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/src"));
-  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/doc"));
-  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/tests"));
+  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
+  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_DOC_DIR));
+  BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_TESTS_DIR));
 
-  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/CMakeLists.txt"));
-  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/src/WareMain.cpp"));
-  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/src/WareMain.hpp"));
-  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/src/CMakeLists.txt"));
+  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
+  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareMain.cpp"));
+  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/WareMain.hpp"));
+  BOOST_CHECK(BextsPath.isFile(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR+"/"+ \
+                                openfluid::config::WARESDEV_SRC_CMAKESTDFILE));
 }
 

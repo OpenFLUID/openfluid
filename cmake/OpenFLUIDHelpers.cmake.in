@@ -333,7 +333,7 @@ FUNCTION(_OPENFLUID_WAREPLUGIN_BUILD)
 
   ADD_LIBRARY(${_WARE_TARGET} MODULE ${_ALL_SRC_FILES})
   IF(MINGW)
-    # TOIMPL check if still necessary
+    # TODO check if still necessary
     # workaround for CMake bug with MinGW
     SET_TARGET_PROPERTIES(${_WARE_TARGET} PROPERTIES LINK_FLAGS "-shared")
   ENDIF()
@@ -538,7 +538,7 @@ ENDFUNCTION()
 ###########################################################################
 
 
-# TOIMPL write doc (parameters, context variables if any, ...))
+# TODO write doc (parameters, context variables if any, ...))
 # WARE_DEFINITIONS : definitions to add at compile time
 # WARE_INCLUDE_DIRS : directories to include headers
 # WARE_LIBRARY_DIRS : directories for linking extra libraries
@@ -585,7 +585,7 @@ ENDFUNCTION()
 ###########################################################################
 
 
-# TOIMPL write doc
+# Generates targets corresponding to provided test list or to any .IN folder in test folder if DISCOVER is active
 FUNCTION(OPENFLUID_ADD_WARETESTS)
   SET(_ARGS_OPTIONS "DISCOVER")
   SET(_ARGS_ONEVAL)
