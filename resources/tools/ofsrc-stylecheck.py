@@ -548,6 +548,8 @@ class SourceTreeChecker:
         IsPartialInstruction = False
         IsDo = False
         for Line in Lines:
+            if self.isDirective(Line, "!brac"):
+                return
             if len(Line.split()) > 0:
                 if CheckOneline:
                     CheckOneline = not self.isDirective(Line, "!brac-oneline")
