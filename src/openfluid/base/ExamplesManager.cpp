@@ -34,6 +34,7 @@
   @file ExamplesManager.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -100,6 +101,11 @@ bool ExamplesManager::installProject(const std::string& ProjectDir,
 {
   std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
                                                                  openfluid::config::PROJECTS_PATH});
+  if (!openfluid::tools::FilesystemPath({FromPath,ProjectDir}).isDirectory())
+  {
+    // silent since called for every ware import
+    return false;
+  }
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::PROJECTS_PATH});
   std::cout << "-- Installing project " << ProjectDir << " from " << FromPath << " to " << ToPath << std::endl;
@@ -118,6 +124,11 @@ bool ExamplesManager::installSimulator(const std::string& SimulatorDir,
   std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
                                                                  openfluid::config::WARESDEV_PATH,
                                                                  openfluid::config::SIMULATORS_PATH});
+  if (!openfluid::tools::FilesystemPath({FromPath,SimulatorDir}).isDirectory())
+  {
+    // silent since called for every ware import
+    return false;
+  }
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::WARESDEV_PATH,
                                                                openfluid::config::SIMULATORS_PATH});

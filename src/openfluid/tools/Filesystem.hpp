@@ -51,7 +51,7 @@
 namespace openfluid { namespace tools {
 
 
-// TOIMPL Refactor for consistent usage of FilesystemPath and std::string
+// TODO Refactor for consistent usage of FilesystemPath and std::string
 
 
 class OPENFLUID_API Filesystem
