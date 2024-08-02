@@ -184,7 +184,7 @@ void BuilderApp::initialize()
   }
   else
   {
-    //TOIMPL remember the No (cf PreferencesManager)
+    //TOIMPL remember the "no" (cf PreferencesManager)
   }
 
 

@@ -636,7 +636,8 @@ void WareSrcDocalyzer::processRmarkdownContent()
 
     if (openfluid::utils::Process::execute(Cmd) != 0)
     {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"R package "+P+" not installed");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+        openfluid::config::ERROR_MESSAGE_MISSING_R_PACKAGE+": "+P);
     }
   }
 
