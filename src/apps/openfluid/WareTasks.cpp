@@ -478,7 +478,7 @@ int WareTasks::processDocalyze() const
   }
   catch(const openfluid::base::FrameworkException& E)
   {
-    if(std::string(E.what()).find("not installed") != std::string::npos) //TOIMPL Replace by custom exception
+    if(std::string(E.what()).find(openfluid::config::ERROR_MESSAGE_MISSING_R_PACKAGE) != std::string::npos)
     {
       return errorByCode(openfluid::config::RETURN_CODE_DEPENDENCY_ISSUE, E.what());
     }
