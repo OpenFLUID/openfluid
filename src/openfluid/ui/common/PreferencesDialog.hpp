@@ -34,6 +34,7 @@
   @file PreferencesDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -104,6 +105,8 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
     void confirmConnectionsRemoval(bool Confirm);
 
     void confirmAttributesRemoval(bool Confirm);
+
+    void skipGhostMigration(bool Skip);
 
     void enableWatchers(bool Active);
 
