@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>802</width>
-    <height>590</height>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -91,7 +91,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="GeneralPage">
        <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -267,6 +267,13 @@
             <widget class="QCheckBox" name="WatchCheckBox">
              <property name="text">
               <string>Watch for simulators and observers plugins changes on disk (recommended)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="GhostsMigrationCheckBox">
+             <property name="text">
+              <string>Skip automatic migration for ghosts simulators on Builder launch</string>
              </property>
             </widget>
            </item>
@@ -793,8 +800,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>561</width>
-               <height>251</height>
+               <width>324</width>
+               <height>83</height>
               </rect>
              </property>
              <property name="sizePolicy">

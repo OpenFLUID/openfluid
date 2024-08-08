@@ -34,6 +34,7 @@
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 #ifndef __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__
@@ -240,6 +241,10 @@ class OPENFLUID_API PreferencesManager
     bool isBuilderSpatialAttrsRemovalConfirm() const;
 
     void setBuilderSpatialAttrsRemovalConfirm(bool Confirm);
+
+    bool isBuilderSkipGhostMigration() const;
+
+    void setBuilderSkipGhostMigration(bool Skip);
 
 
     bool isWaresdevAutomaticSaveBeforeBuild() const;
