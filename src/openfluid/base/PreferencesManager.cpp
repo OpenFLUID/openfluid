@@ -35,6 +35,7 @@
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
   @author Aline LIBRES <libres@supagro.inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -1191,6 +1192,26 @@ bool PreferencesManager::isBuilderAutomaticSaveBeforeRun() const
 void PreferencesManager::setBuilderAutomaticSaveBeforeRun(bool AutoSave)
 { 
   m_Settings->setValue("/builder/ui/autosave","beforerun",AutoSave);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isBuilderSkipGhostMigration() const
+{
+  return m_Settings->getValue("/builder/boot/skipghostmigration").get<bool>(false);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setBuilderSkipGhostMigration(bool Skip)
+{
+  m_Settings->setValue("/builder/boot","skipghostmigration", Skip);
 }
 
 

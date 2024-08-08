@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -141,50 +142,54 @@ void BuilderApp::initialize()
   }
 
   mp_Splash->setMessage(tr("Checking ghost simulators"));
-  if (GhostPaths.size() > 0 && QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
+
+  if(GhostPaths.size() > 0 && !openfluid::base::PreferencesManager::instance()->isBuilderSkipGhostMigration())
+  {
+    if (QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
     tr("Do you want to automatically migrate following ghost wares?\n\n%1").arg(QString::fromStdString("- "+ \
       openfluid::tools::join(GhostPaths, "\n- "))),
     QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel)
       == QMessageBox::Ok)
-  {
-    std::vector<openfluid::tools::Path> SuccessGhostPaths;
-    std::vector<std::string> FailGhosts;
-    for (const auto& F : GhostPaths)
     {
-      // migrate ghosts automatically
-      const auto GhostPath = openfluid::tools::FilesystemPath(F);
-      if (openfluid::waresdev::migrateGhostSimulator(GhostPath.dirname(), GhostPath.basename()))
+      std::vector<openfluid::tools::Path> SuccessGhostPaths;
+      std::vector<std::string> FailGhosts;
+      for (const auto& F : GhostPaths)
       {
-        SuccessGhostPaths.push_back(GhostPath);
+        // migrate ghosts automatically
+        const auto GhostPath = openfluid::tools::FilesystemPath(F);
+        if (openfluid::waresdev::migrateGhostSimulator(GhostPath.dirname(), GhostPath.basename()))
+        {
+          SuccessGhostPaths.push_back(GhostPath);
+        }
+        else
+        {
+          FailGhosts.push_back(F);
+        }
       }
-      else
+      unsigned int NumberSuccess = SuccessGhostPaths.size();
+      if (NumberSuccess>0 && QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
+        tr("Migration succeeded for %1 ghost(s). Original file(s) were renamed with extension .xml.old. "
+            "Do you want to remove them?").arg(QString::fromStdString(std::to_string(NumberSuccess))),
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
       {
-        FailGhosts.push_back(F);
+        for (const auto& GhostPath : SuccessGhostPaths)
+        {
+          openfluid::waresdev::oldSignaturePath(GhostPath.dirname(), GhostPath.basename()).removeFile();
+        }
+      }
+      if (!FailGhosts.empty())
+      {
+        QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
+          tr("Migration failed for following ghost(s): \n%1\n\nYou can migrate them manually with "
+          "command: \nopenfluid migrate-ghostsim").arg(QString::fromStdString("- "+ \
+            openfluid::tools::join(FailGhosts, "\n- "))),
+          QMessageBox::Ok, QMessageBox::Ok);
       }
     }
-    unsigned int NumberSuccess = SuccessGhostPaths.size();
-    if (NumberSuccess>0 && QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
-      tr("Migration succeeded for %1 ghost(s). Original file(s) were renamed with extension .xml.old. "
-          "Do you want to remove them?").arg(QString::fromStdString(std::to_string(NumberSuccess))),
-      QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+    else
     {
-      for (const auto& GhostPath : SuccessGhostPaths)
-      {
-        openfluid::waresdev::oldSignaturePath(GhostPath.dirname(), GhostPath.basename()).removeFile();
-      }
+      openfluid::base::PreferencesManager::instance()->setBuilderSkipGhostMigration(true);
     }
-    if (!FailGhosts.empty())
-    {
-      QMessageBox::warning(QApplication::activeWindow(), tr("Migrate ghosts"),
-        tr("Migration failed for following ghost(s): \n%1\n\nYou can migrate them manually with "
-        "command: \nopenfluid migrate-ghostsim").arg(QString::fromStdString("- "+ \
-          openfluid::tools::join(FailGhosts, "\n- "))),
-        QMessageBox::Ok, QMessageBox::Ok);
-    }
-  }
-  else
-  {
-    //TOIMPL remember the "no" (cf PreferencesManager)
   }
 
 

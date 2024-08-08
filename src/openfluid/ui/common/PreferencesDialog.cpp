@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -127,7 +128,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
   connect(ui->UnitsRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmUnitsRemoval(bool)));
   connect(ui->ConnectionsRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmConnectionsRemoval(bool)));
   connect(ui->AttributesRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmAttributesRemoval(bool)));
-
+  connect(ui->GhostsMigrationCheckBox,SIGNAL(toggled(bool)),this,SLOT(skipGhostMigration(bool)));
 
   connect(ui->WorkspacesPathsWidget,SIGNAL(pathsUpdated()),this,SLOT(processWorkspacesPathsUpdate()));
   connect(ui->ExtToolsWidget,SIGNAL(toolsUpdated()),this,SLOT(processExtToolsUpdate()));
@@ -278,6 +279,8 @@ void PreferencesDialog::initialize()
     ui->ConnectionsRemovalCheckBox->setChecked(mp_PrefsMan->isBuilderSpatialConnsRemovalConfirm());
     ui->AttributesRemovalCheckBox->setChecked(mp_PrefsMan->isBuilderSpatialAttrsRemovalConfirm());
 
+    ui->GhostsMigrationCheckBox->setChecked(mp_PrefsMan->isBuilderSkipGhostMigration());
+
 
     // Simulations
     ui->DeltaTSpinBox->setValue(mp_PrefsMan->getBuilderDeltaT());
@@ -391,6 +394,16 @@ void PreferencesDialog::confirmConnectionsRemoval(bool Confirm)
 void PreferencesDialog::confirmAttributesRemoval(bool Confirm)
 {
   mp_PrefsMan->setBuilderSpatialAttrsRemovalConfirm(Confirm);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::skipGhostMigration(bool Skip)
+{
+  mp_PrefsMan->setBuilderSkipGhostMigration(Skip);
 }
 
 
