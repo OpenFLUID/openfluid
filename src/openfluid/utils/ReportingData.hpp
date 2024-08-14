@@ -70,6 +70,8 @@ class ReportingData
       M Message;
 
       ReportingStatus Status;
+
+      M SpecificInformation;
     };
 
 

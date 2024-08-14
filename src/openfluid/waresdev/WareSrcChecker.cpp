@@ -35,6 +35,7 @@
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
   @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -59,7 +60,7 @@ WareSrcChecker::ReportingData::ReportingList InitializeReportingItemList(const s
   WareSrcChecker::ReportingData::ReportingList List;
   for (const auto& M : Msgs)
   {
-    List.Items.push_back({M,WareSrcChecker::ReportingData::ReportingStatus::UNKNOWN});
+    List.Items.push_back({M,WareSrcChecker::ReportingData::ReportingStatus::UNKNOWN, ""});
   }
   return List;
 }
@@ -71,7 +72,8 @@ WareSrcChecker::ReportingData::ReportingList InitializeReportingItemList(const s
 
 void WareSrcChecker::processReportingItem(WareSrcChecker::ReportingData::ReportingList& List,
                                           const std::string& Msg, std::function<bool()> Predicate,
-                                          WareSrcChecker::ReportingData::ReportingStatus StatusIfFail) const
+                                          WareSrcChecker::ReportingData::ReportingStatus StatusIfFail,
+                                          const std::string& SpecificInformation) const
 {
   auto It = std::find_if(List.Items.begin(),List.Items.end(),[&Msg](const auto& II){ return II.Message == Msg; });
 
@@ -88,6 +90,7 @@ void WareSrcChecker::processReportingItem(WareSrcChecker::ReportingData::Reporti
     {
       (*It).Status = WareSrcChecker::ReportingData::ReportingStatus::OK;
     }
+    (*It).SpecificInformation = SpecificInformation;
   }
   else
   {
@@ -123,6 +126,9 @@ void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
 
   bool IsDataDescr = true;
   bool IsDataUnit = true;
+  std::string DescrInformation = "";
+  std::string UnitInformation = "";
+
   if (Json.value("simulator", openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array())
   {
     openfluid::thirdparty::json DataJson = Json.at("simulator").at("data");
@@ -130,18 +136,28 @@ void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
     {
       for (const std::string& Cat : {"parameters", "attributes", "variables"})
       {
-        for (const auto& SubCatJson : DataJson.at(Cat))
+        std::string CatSingular = Cat;
+        CatSingular.pop_back();
+        for (const auto& SubCatJson : DataJson.at(Cat))  // used, required, updated...
         {
           for (const auto& ItemJson : SubCatJson)
           {
             if (ItemJson.value("description", "") == "")
             {
-              //DIRTYCODE change into real info std::cout << "PROBLEM D WITH CAT " << Cat << ItemJson.value("name", "") <<  std::endl;
+              if (DescrInformation != "")
+              {
+                DescrInformation += ", ";
+              }
+              DescrInformation += CatSingular + " '"+ ItemJson.value("name", "?") + "'";
               IsDataDescr = false;
             }
             if (ItemJson.value("siunit", "") == "")
             {
-              //DIRTYCODE change into real info std::cout << "PROBLEM SI WITH CAT " << Cat << ItemJson.value("name", "") <<  std::endl;
+              if (UnitInformation != "")
+              {
+                UnitInformation += ", ";
+              }
+              UnitInformation += CatSingular + " '" + ItemJson.value("name", "?") + "'";
               IsDataUnit = false;
             }
           }
@@ -149,16 +165,13 @@ void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
       }
     }
   }
-  // TOIMPL be more specific about warning location when about several variables
   // [w] non-empty description of parameters/attributes/variables
-  // TOIMPL to do
   processReportingItem(RepData.Categories["metainfo"],"data_description_exists", [&](){return IsDataDescr;},
-                                    ReportingData::ReportingStatus::WARNING);
+                                    ReportingData::ReportingStatus::WARNING, DescrInformation);
 
   // [w] non-empty SIUnit of parameters/attributes/variables
-  // TOIMPL to do
   processReportingItem(RepData.Categories["metainfo"],"data_unit_exists", [&](){return IsDataUnit;},
-                                    ReportingData::ReportingStatus::WARNING);
+                                    ReportingData::ReportingStatus::WARNING, UnitInformation);
 }
 
 
@@ -245,7 +258,6 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performMetainfoChec
 
       // [w] name of containing directory matches ID
       const auto DirectoryName = m_SrcPathObj.filename();
-      std::cout << "DN?" << DirectoryName << "full" << m_SrcPathObj.toGeneric() << std::endl;
       processReportingItem(Data,"rootdir_matchesid", [&](){return IdFromMetadata==DirectoryName;},
                                     ReportingData::ReportingStatus::WARNING);
 

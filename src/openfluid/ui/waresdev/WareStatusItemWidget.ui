@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>341</width>
-    <height>27</height>
+    <width>517</width>
+    <height>47</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,43 +27,14 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,1">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>10</width>
-         <height>1</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="openfluid::ui::common::StatusIconLabel" name="StatusIconLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-         <horstretch>16</horstretch>
-         <verstretch>16</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="text">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="bottomMargin">
+      <number>4</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>2</number>
+     </property>
+     <item row="0" column="2">
       <widget class="QLabel" name="MessageLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
@@ -94,7 +65,23 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>1</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="4">
       <widget class="QPushButton" name="FixButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -107,7 +94,7 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="5">
       <widget class="QLabel" name="HelpLabel">
        <property name="styleSheet">
         <string notr="true">color: rgb(136, 138, 133);
@@ -121,7 +108,26 @@ font: italic 11pt;</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
+      <widget class="openfluid::ui::common::StatusIconLabel" name="StatusIconLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+         <horstretch>16</horstretch>
+         <verstretch>16</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="text">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -133,6 +139,21 @@ font: italic 11pt;</string>
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="1" column="2" colspan="5">
+      <widget class="QLabel" name="InformationLabel">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="indent">
+        <number>10</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
