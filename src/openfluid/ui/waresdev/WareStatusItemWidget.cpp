@@ -39,6 +39,7 @@
 
 
 #include <iostream>
+#include <vector>
 
 #include <openfluid/config.hpp>
 
@@ -50,11 +51,12 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 using ReportingData = openfluid::waresdev::WareSrcChecker::ReportingData;
+using ReportingStatus = ReportingData::ReportingStatus;
 
 
-std::map<std::pair<std::string, ReportingData::ReportingStatus>, 
+std::map<std::pair<std::string, ReportingStatus>, 
              QString>  WareStatusItemWidget::ms_LabelForReportItem;
-std::map<std::pair<std::string, ReportingData::ReportingStatus>, 
+std::map<std::pair<std::string, ReportingStatus>, 
              std::pair<QString, QString>> WareStatusItemWidget::ms_ActionForReportItem;
 
 
@@ -64,54 +66,60 @@ std::map<std::pair<std::string, ReportingData::ReportingStatus>,
 
 void WareStatusItemWidget::populateReportItemLabels()
 {
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "cmakelists_exists", ReportingData::ReportingStatus::ERROR_STATUS)] = \
-      tr("'CMakeLists.txt' file does not exist.");
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "readme_exists", ReportingData::ReportingStatus::WARNING)] = \
-      tr("Readme file does not exist");
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "srcdir_exists", ReportingData::ReportingStatus::WARNING)] = \
-      tr("'src' directory does not exist");
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "docdir_exists", ReportingData::ReportingStatus::WARNING)] = \
-      tr("'doc' directory does not exist");
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "testsdir_exists", ReportingData::ReportingStatus::WARNING)] = \
-      tr("'tests' directory does not exist");
+  std::vector<std::pair<std::string, QString>> WarningReports;
+  std::vector<std::pair<std::string, QString>> ErrorReports;
 
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "file_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
-      tr("Metadata can not be read");
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "migration_isclean_no_comments", ReportingData::ReportingStatus::WARNING)] = \
-      tr("Comments from migration remain in code");
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "rootdir_exists", ReportingData::ReportingStatus::ERROR_STATUS)] = \
-      tr("");
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "version_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
-      tr("Ware version is below current OpenFLUID version");
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "no_migration_files", ReportingData::ReportingStatus::WARNING)] = \
-      tr("Migration folders remain in ware source path. Remove them or"); // TODO : Find more consistent display
-  ms_LabelForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "no_migration_files", ReportingData::ReportingStatus::ERROR_STATUS)] = \
-      tr("Ware migration failed");
+  ErrorReports.push_back({"cmakelists_exists", tr("'CMakeLists.txt' file does not exist.")});
+  WarningReports.push_back({"readme_exists", tr("Readme file does not exist")});
+  WarningReports.push_back({"srcdir_exists", tr("'src' directory does not exist")});
+  WarningReports.push_back({"docdir_exists", tr("'doc' directory does not exist")});
+  WarningReports.push_back({"testsdir_exists", tr("'tests' directory does not exist")});
+
+  ErrorReports.push_back({"file_iscorrect", tr("Metadata can not be read")});
+  WarningReports.push_back({"migration_isclean_no_comments", tr("Comments from migration remain in code")});
+  ErrorReports.push_back({"rootdir_exists", tr("")});
+  ErrorReports.push_back({"version_iscorrect", tr("Ware version is below current OpenFLUID version")});
+  WarningReports.push_back({"no_migration_files", 
+                            tr("Migration folders remain in ware source path. Remove them or")}); 
+                            // TODO : Find more consistent display
+  ErrorReports.push_back({"no_migration_files", tr("Ware migration failed")});
 
 
-  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "version_iscorrect", ReportingData::ReportingStatus::ERROR_STATUS)] = \
+  ErrorReports.push_back({"id_iscorrect", tr("No ID set in ware signature")});
+  WarningReports.push_back({"name_exists", tr("No full ware name given in ware signature")});
+  WarningReports.push_back({"authors_exist", tr("No author defined in ware signature")});
+  WarningReports.push_back({"contacts_exist", tr("No contact provided in ware signature")});
+  WarningReports.push_back({"licence_exists", tr("No license defined in ware signature")});
+  WarningReports.push_back({"rootdir_matchesid", tr("Discrepency between ware ID and folder name")});
+  WarningReports.push_back({"waretype_correct", tr("Unknown ware type")});
+  WarningReports.push_back({"ware_description_exists", tr("No description in ware signature")});
+  WarningReports.push_back({"data_description_exists", tr("No description for data in ware signature")});
+  WarningReports.push_back({"data_unit_exists", tr("No unit set for data in ware signature")});
+
+  for (const auto& Report : WarningReports)
+  {
+    ms_LabelForReportItem[std::make_pair<const std::string, const ReportingStatus>(
+      std::string(Report.first), ReportingStatus::WARNING)] = Report.second;
+  }
+
+  for (const auto& Report : ErrorReports)
+  {
+    ms_LabelForReportItem[std::make_pair<const std::string, const ReportingStatus>(
+      std::string(Report.first), ReportingStatus::ERROR_STATUS)] = Report.second;
+  }
+
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingStatus>(
+    "version_iscorrect", ReportingStatus::ERROR_STATUS)] = \
       std::pair<QString, QString>("migration", tr("Try to migrate the ware"));
-  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "migration_isclean_no_comments", ReportingData::ReportingStatus::WARNING)] = \
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingStatus>(
+    "migration_isclean_no_comments", ReportingStatus::WARNING)] = \
       std::pair<QString, QString>("", tr("Look for '%1' comments in CMakeLists.txt and main cpp file.").arg(
         QString::fromStdString(openfluid::config::MIGRATION_STRING)));
-  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "no_migration_files", ReportingData::ReportingStatus::ERROR_STATUS)] = \
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingStatus>(
+    "no_migration_files", ReportingStatus::ERROR_STATUS)] = \
       std::pair<QString, QString>("revert-migration", tr("Revert migration"));
-  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingData::ReportingStatus>(
-    "no_migration_files", ReportingData::ReportingStatus::WARNING)] = \
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingStatus>(
+    "no_migration_files", ReportingStatus::WARNING)] = \
       std::pair<QString, QString>("revert-migration", tr("Revert migration"));
 }
 
@@ -187,17 +195,17 @@ WareStatusItemWidget::~WareStatusItemWidget()
 // =====================================================================
 
 
-void WareStatusItemWidget::setStatusLevel(const ReportingData::ReportingStatus Level)
+void WareStatusItemWidget::setStatusLevel(const ReportingStatus Level)
 {
-  if (Level == ReportingData::ReportingStatus::WARNING)
+  if (Level == ReportingStatus::WARNING)
   {
     ui->StatusIconLabel->setWarningStatus();
   }
-  else if (Level == ReportingData::ReportingStatus::ERROR_STATUS)
+  else if (Level == ReportingStatus::ERROR_STATUS)
   {
     ui->StatusIconLabel->setErrorStatus();
   }
-  else if (Level == ReportingData::ReportingStatus::DISABLED)
+  else if (Level == ReportingStatus::DISABLED)
   {
       ui->StatusIconLabel->setDisabledStatus();
   }

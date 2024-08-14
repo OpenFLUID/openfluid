@@ -96,7 +96,7 @@ inline openfluid::ware::WareType detectWareType(const std::string& Path)
   catch (openfluid::thirdparty::json::exception& E)
   {
     return openfluid::ware::WareType::UNDEFINED;
-  }  
+  }
 
   return openfluid::ware::WareType::UNDEFINED;
 }
