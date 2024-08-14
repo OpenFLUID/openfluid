@@ -83,7 +83,7 @@ class OPENFLUID_API WareSrcChecker
 
     WareSrcChecker::ReportingData::ReportingList performCodeCheck(bool OKToRun) const;
 
-    void updateWithPedanticCheck(ReportingData& RepData) const;
+    void updateWithPedanticCheck(ReportingData& RepData);
 
     bool hasMigrationFiles() const;
 
@@ -104,7 +104,7 @@ class OPENFLUID_API WareSrcChecker
       @param[in] Pedantic Enables pedantic supplementary checks
       @return The report of the performed checks
     */
-    ReportingData performCheck(bool Pedantic = false) const;
+    ReportingData performCheck(bool Pedantic = false);
 
     /**
       Tries to detect the OpenFLUID compatibility version of the sources. Currently, 

@@ -91,7 +91,7 @@ void WareSrcChecker::processReportingItem(WareSrcChecker::ReportingData::Reporti
   }
   else
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"internal checker error");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"internal checker error: check not found: "+Msg);
   }
 }
 
@@ -111,16 +111,54 @@ WareSrcChecker::WareSrcChecker(const std::string& SrcPath, const ChecksList& Ign
 // =====================================================================
 
 
-void WareSrcChecker::updateWithPedanticCheck(ReportingData& /*RepData*/) const
+void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
 {
-  // [w] non-empty description of ware
-  // TOIMPL to do
+  auto MetaFileObj = m_SrcPathObj.fromThis(openfluid::config::WARESDEV_WAREMETA_FILE);
+  std::ifstream InFile(MetaFileObj.toGeneric(),std::ifstream::in);
+  auto Json = openfluid::thirdparty::json::parse(InFile);
 
+  // [w] non-empty description of ware
+  processReportingItem(RepData.Categories["metainfo"],"ware_description_exists", [&](){return Json.value("description", "") != "";},
+                                    ReportingData::ReportingStatus::WARNING);
+
+  bool IsDataDescr = true;
+  bool IsDataUnit = true;
+  if (Json.value("simulator", openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array())
+  {
+    openfluid::thirdparty::json DataJson = Json.at("simulator").at("data");
+    if (DataJson != openfluid::thirdparty::json::array())
+    {
+      for (const std::string& Cat : {"parameters", "attributes", "variables"})
+      {
+        for (const auto& SubCatJson : DataJson.at(Cat))
+        {
+          for (const auto& ItemJson : SubCatJson)
+          {
+            if (ItemJson.value("description", "") == "")
+            {
+              //DIRTYCODE change into real info std::cout << "PROBLEM D WITH CAT " << Cat << ItemJson.value("name", "") <<  std::endl;
+              IsDataDescr = false;
+            }
+            if (ItemJson.value("siunit", "") == "")
+            {
+              //DIRTYCODE change into real info std::cout << "PROBLEM SI WITH CAT " << Cat << ItemJson.value("name", "") <<  std::endl;
+              IsDataUnit = false;
+            }
+          }
+        }
+      }
+    }
+  }
+  // TOIMPL be more specific about warning location when about several variables
   // [w] non-empty description of parameters/attributes/variables
   // TOIMPL to do
+  processReportingItem(RepData.Categories["metainfo"],"data_description_exists", [&](){return IsDataDescr;},
+                                    ReportingData::ReportingStatus::WARNING);
 
   // [w] non-empty SIUnit of parameters/attributes/variables
   // TOIMPL to do
+  processReportingItem(RepData.Categories["metainfo"],"data_unit_exists", [&](){return IsDataUnit;},
+                                    ReportingData::ReportingStatus::WARNING);
 }
 
 
@@ -176,9 +214,10 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performStructureChe
 
 WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performMetainfoCheck(bool OKToRun) const
 {
-  auto Data = InitializeReportingItemList({"file_iscorrect","id_iscorrect",
+  auto Data = InitializeReportingItemList({"file_iscorrect","id_iscorrect", "waretype_correct",
                                            "name_exists","authors_exist","contacts_exist","licence_exists",
-                                           "rootdir_matchesid"});
+                                           "rootdir_matchesid", 
+                                           "ware_description_exists", "data_description_exists", "data_unit_exists"});
 
   if (OKToRun)
   {
@@ -193,25 +232,41 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performMetainfoChec
     if (MetaIsReadable)
     {
       // [e] metadata file contains correct ware type
-      // TOIMPL to do
+      processReportingItem(Data,"waretype_correct", [&](){return Type != openfluid::ware::WareType::OTHER;},
+                                    ReportingData::ReportingStatus::ERROR_STATUS);
 
+      std::ifstream InFile(MetaFileObj.toGeneric(),std::ifstream::in);
+      auto Json = openfluid::thirdparty::json::parse(InFile);
+      
       // [e] metadata file contains ID
-      // TOIMPL to do
+      const auto IdFromMetadata = Json.value("id", "");
+      processReportingItem(Data,"id_iscorrect", [&](){return IdFromMetadata != "";},
+                                    ReportingData::ReportingStatus::ERROR_STATUS);
 
       // [w] name of containing directory matches ID
-      // TOIMPL to do
+      const auto DirectoryName = m_SrcPathObj.filename();
+      std::cout << "DN?" << DirectoryName << "full" << m_SrcPathObj.toGeneric() << std::endl;
+      processReportingItem(Data,"rootdir_matchesid", [&](){return IdFromMetadata==DirectoryName;},
+                                    ReportingData::ReportingStatus::WARNING);
 
       // [w] metadata file contains non-empty name
-      // TOIMPL to do
+      processReportingItem(Data,"name_exists", [&](){return Json.value("name", "") != "";},
+                                    ReportingData::ReportingStatus::WARNING);
 
       // [w] metadata file contains at least one author
-      // TOIMPL to do
+      processReportingItem(Data,"authors_exist", [&](){return Json.value("authors", openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array();},
+                                    ReportingData::ReportingStatus::WARNING);
 
       // [w] metadata file contains at least one contact
-      // TOIMPL to do
+      processReportingItem(Data,"contacts_exist", [&](){return Json.value("contacts", openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array();},
+                                    ReportingData::ReportingStatus::WARNING);
+
+      // TOIMPL add contact field in real ware signature (not ghost?)
+      // TOIMPL add license field in ware signature dialog
       
       // [w] metadata file contains non-empty license
-      // TOIMPL to do
+      processReportingItem(Data,"licence_exists", [&](){return  Json.value("license", "") != "";},
+                                    ReportingData::ReportingStatus::WARNING);
       }
     }
 
@@ -261,8 +316,10 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performCodeCheck(bo
 // =====================================================================
 
 
-WareSrcChecker::ReportingData WareSrcChecker::performCheck(bool Pedantic) const
+WareSrcChecker::ReportingData WareSrcChecker::performCheck(bool Pedantic)
 {
+  // DIRTYCODE add check refresh when signature changed through dialog
+
   ReportingData Data;
   auto BaseData = InitializeReportingItemList({"rootdir_exists","version_iscorrect", "no_migration_files"});
 

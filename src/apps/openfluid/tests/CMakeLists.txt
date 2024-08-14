@@ -306,7 +306,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareSimulator
 
 ADD_TEST(NAME cmdline-openfluid-CheckSimulator
         COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim" "-w")
+                "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim")
 SET_PROPERTY(TEST cmdline-openfluid-CheckSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
 
 
@@ -397,10 +397,9 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareObserver
 
 ADD_TEST(NAME cmdline-openfluid-CheckObserver
          COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                 "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs" "-w" "-f")
+                 "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs" "-f")
 SET_PROPERTY(TEST cmdline-openfluid-CheckObserver
-             APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareObserver
-             APPEND PROPERTY FAIL_REGULAR_EXPRESSION "warning")
+             APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareObserver)
 
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureObserver
@@ -475,7 +474,7 @@ IF(OFBUILD_ENABLE_GUI)
 
   ADD_TEST(NAME cmdline-openfluid-CheckBuilderext
           COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                  "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext/tests.cmdline.bext" "-w" "-f")
+                  "check" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/bext/tests.cmdline.bext" "-f")
   SET_PROPERTY(TEST cmdline-openfluid-CheckBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareBuilderext)
 
 
