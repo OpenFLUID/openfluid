@@ -38,6 +38,8 @@
 */
 
 
+#include <vector>
+
 #include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/ui/common/SignatureEditorWidget.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
@@ -63,13 +65,19 @@ SignatureEditorWidget::SignatureEditorWidget(QWidget* Parent):
   setCurrentIndex(0);
   ui->IDLabel->setVisible(false);
 
-  ui->AddAuthorButton->setText("");
-  ui->AddAuthorButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
-  ui->AddAuthorButton->setIconSize(QSize(20,20));
+  for (auto* Button : std::vector<QPushButton*>({ui->AddAuthorButton, ui->AddContactButton}))
+  {
+    Button->setText("");
+    Button->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
+    Button->setIconSize(QSize(20,20));
+  }
 
-  ui->RemoveAuthorButton->setText("");
-  ui->RemoveAuthorButton->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
-  ui->RemoveAuthorButton->setIconSize(QSize(20,20));
+  for (auto* Button : std::vector<QPushButton*>({ui->RemoveAuthorButton, ui->RemoveContactButton}))
+  {
+    Button->setText("");
+    Button->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
+    Button->setIconSize(QSize(20,20));
+  }
 
   ui->FixedSchedValueEdit->setValidator(new QIntValidator(ui->FixedSchedValueEdit));
   ui->RangeSchedMinValueEdit->setValidator(new QIntValidator(ui->RangeSchedMinValueEdit));
@@ -77,6 +85,9 @@ SignatureEditorWidget::SignatureEditorWidget(QWidget* Parent):
 
   connect(ui->AddAuthorButton,SIGNAL(clicked()),this,SLOT(addAuthorLine()));
   connect(ui->RemoveAuthorButton,SIGNAL(clicked()),this,SLOT(removeAuthorLine()));
+
+  connect(ui->AddContactButton,SIGNAL(clicked()),this,SLOT(addContactLine()));
+  connect(ui->RemoveContactButton,SIGNAL(clicked()),this,SLOT(removeContactLine()));
 
 }
 
@@ -153,6 +164,17 @@ void SignatureEditorWidget::initializeCommon(const openfluid::ware::WareSignatur
   }
 
   ui->StatusComboBox->setCurrentIndex(Signature->Status);
+
+  ui->LicenseEdit->setText(QString::fromStdString(Signature->License));
+
+  ui->ContactsTableWidget->setRowCount(Signature->Contacts.size());
+  i = 0;
+  for (auto& Contact : Signature->Contacts)
+  {
+    ui->ContactsTableWidget->setItem(i,0,new QTableWidgetItem(QString::fromStdString(Contact.first)));
+    ui->ContactsTableWidget->setItem(i,1,new QTableWidgetItem(QString::fromStdString(Contact.second)));
+    i++;
+  }
 
   ui->TagsEdit->setText(QString::fromStdString(openfluid::tools::join(Signature->Tags, ";")));
 
@@ -828,6 +850,13 @@ void SignatureEditorWidget::updateSignatureFromCommonsUI(openfluid::ware::WareSi
                                                ui->AuthorsTableWidget->item(i,1)->text().toStdString()));
   }
 
+
+  for (int i=0; i < ui->ContactsTableWidget->rowCount() ; i++)
+  {
+    Signature.Contacts.push_back(std::make_pair(ui->ContactsTableWidget->item(i,0)->text().toStdString(),
+                                               ui->ContactsTableWidget->item(i,1)->text().toStdString()));
+  }
+
   Signature.Version = ui->VersionEdit->text().toStdString();
   Signature.Status = openfluid::ware::EXPERIMENTAL;  // TODO change Status to enum class
   if (ui->StatusComboBox->currentIndex() == 1)
@@ -838,6 +867,8 @@ void SignatureEditorWidget::updateSignatureFromCommonsUI(openfluid::ware::WareSi
   {
     Signature.Status = openfluid::ware::STABLE;
   }  
+
+  Signature.License = ui->LicenseEdit->text().toStdString();
 
   Signature.Tags = openfluid::tools::split(ui->TagsEdit->text().toStdString(), ';');  // TOIMPL make split char generic
   
@@ -944,6 +975,36 @@ void SignatureEditorWidget::removeAuthorLine()
   if (Row >= 0)
   {
     ui->AuthorsTableWidget->removeRow(Row);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureEditorWidget::addContactLine()
+{
+  int RowCount = ui->ContactsTableWidget->rowCount();
+
+  ui->ContactsTableWidget->setRowCount(RowCount+1);
+
+  ui->ContactsTableWidget->setItem(RowCount,0,new QTableWidgetItem("name"));
+  ui->ContactsTableWidget->setItem(RowCount,1,new QTableWidgetItem("email"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureEditorWidget::removeContactLine()
+{
+  int Row = ui->ContactsTableWidget->currentRow();
+
+  if (Row >= 0)
+  {
+    ui->ContactsTableWidget->removeRow(Row);
   }
 }
 

@@ -121,8 +121,9 @@ void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
   auto Json = openfluid::thirdparty::json::parse(InFile);
 
   // [w] non-empty description of ware
-  processReportingItem(RepData.Categories["metainfo"],"ware_description_exists", [&](){return Json.value("description", "") != "";},
-                                    ReportingData::ReportingStatus::WARNING);
+  processReportingItem(RepData.Categories["metainfo"],"ware_description_exists", 
+                       [&](){return Json.value("description", "") != "";},
+                       ReportingData::ReportingStatus::WARNING);
 
   bool IsDataDescr = true;
   bool IsDataUnit = true;
@@ -266,15 +267,14 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performMetainfoChec
                                     ReportingData::ReportingStatus::WARNING);
 
       // [w] metadata file contains at least one author
-      processReportingItem(Data,"authors_exist", [&](){return Json.value("authors", openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array();},
-                                    ReportingData::ReportingStatus::WARNING);
+      processReportingItem(Data,"authors_exist", [&](){return Json.value("authors", 
+          openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array();}, 
+        ReportingData::ReportingStatus::WARNING);
 
       // [w] metadata file contains at least one contact
-      processReportingItem(Data,"contacts_exist", [&](){return Json.value("contacts", openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array();},
-                                    ReportingData::ReportingStatus::WARNING);
-
-      // TOIMPL add contact field in real ware signature (not ghost?)
-      // TOIMPL add license field in ware signature dialog
+      processReportingItem(Data,"contacts_exist", [&](){return Json.value("contacts", 
+          openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array();},
+        ReportingData::ReportingStatus::WARNING);
       
       // [w] metadata file contains non-empty license
       processReportingItem(Data,"licence_exists", [&](){return  Json.value("license", "") != "";},
@@ -330,8 +330,6 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performCodeCheck(bo
 
 WareSrcChecker::ReportingData WareSrcChecker::performCheck(bool Pedantic)
 {
-  // DIRTYCODE add check refresh when signature changed through dialog
-
   ReportingData Data;
   auto BaseData = InitializeReportingItemList({"rootdir_exists","version_iscorrect", "no_migration_files"});
 

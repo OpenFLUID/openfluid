@@ -72,6 +72,9 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     void removeAuthorLine();
 
+    void addContactLine();
+
+    void removeContactLine();
 
   private:
 
