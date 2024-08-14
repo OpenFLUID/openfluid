@@ -35,6 +35,7 @@
  
  @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -75,7 +76,8 @@ class OPENFLUID_API WareSrcChecker
     void processReportingItem(ReportingData::ReportingList& List,
                               const std::string& Msg, std::function<bool()> Predicate,
                               ReportingData::ReportingStatus StatusIfFail = 
-                                ReportingData::ReportingStatus::WARNING) const;
+                                ReportingData::ReportingStatus::WARNING,
+                              const std::string& SpecificInformation="") const;
 
     WareSrcChecker::ReportingData::ReportingList performStructureCheck(bool OKToRun) const;
 

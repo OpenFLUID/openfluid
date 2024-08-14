@@ -94,7 +94,7 @@ void WareStatusItemWidget::populateReportItemLabels()
   WarningReports.push_back({"waretype_correct", tr("Unknown ware type")});
   WarningReports.push_back({"ware_description_exists", tr("No description in ware signature")});
   WarningReports.push_back({"data_description_exists", tr("No description for data in ware signature")});
-  WarningReports.push_back({"data_unit_exists", tr("No unit set for data in ware signature")});
+  WarningReports.push_back({"data_unit_exists", tr("No SI unit set for data in ware signature")});
 
   for (const auto& Report : WarningReports)
   {
@@ -167,6 +167,14 @@ WareStatusItemWidget::WareStatusItemWidget(const ReportingData::ReportingItem& I
     ui->FixButton->setText(ActionLabel);
     ui->HelpLabel->setVisible(false);
     connect(ui->FixButton, SIGNAL(pressed()), this, SLOT(onButtonPressed()));
+  }
+  if (Item.SpecificInformation != "")
+  {
+    ui->InformationLabel->setText(QString::fromStdString(Item.SpecificInformation));
+  }
+  else
+  {
+    ui->InformationLabel->setVisible(false);
   }
 }
 
