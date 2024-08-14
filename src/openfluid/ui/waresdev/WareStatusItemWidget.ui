@@ -153,6 +153,9 @@ font: italic 11pt;</string>
        <property name="indent">
         <number>10</number>
        </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+       </property>
       </widget>
      </item>
     </layout>

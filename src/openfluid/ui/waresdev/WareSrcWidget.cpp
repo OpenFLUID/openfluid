@@ -812,6 +812,7 @@ void WareSrcWidget::editSignature(QString Path)
   if (Dlg.exec() == QDialog::Accepted)
   {
     Dlg.exportSignature(Path);
+    mp_Board->refresh();
   }
 }
 
