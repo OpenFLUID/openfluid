@@ -137,6 +137,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void clearEditorsMessages();
 
+    void enableSignatureEdition(bool Enabled);
+
 
   protected:
 
