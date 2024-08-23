@@ -871,9 +871,9 @@ unsigned int SimulationInspectorWare::OPENFLUID_GetUnitsCount() const
 
 bool SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
                                                 const openfluid::core::UnitID_t& ID,
-                                                openfluid::core::SpatialUnit* aUnit) const
+                                                openfluid::core::SpatialUnit*& aUnit) const
 {
-  aUnit =  const_cast<openfluid::core::SpatialUnit*>(mp_SpatialData->spatialUnit(ClassName,ID));
+  aUnit = const_cast<openfluid::core::SpatialUnit*>(mp_SpatialData->spatialUnit(ClassName,ID));
   return (aUnit != nullptr);
 }
 
