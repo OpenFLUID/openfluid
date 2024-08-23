@@ -181,14 +181,20 @@ void MultiEditFormatDialog::checkGlobal()
 
 
 void MultiEditFormatDialog::initialize(const QString& Name, const QString& Header, const QString& ColSep,
-                                 const QString& Date, const QString& Precision, const QString& CommentChar, 
-                                 const QString& MissingValueStr)
+                                 const QString& Date, const QString& Precision, const QString& FloatFormat, 
+                                 const QString& CommentChar, const QString& MissingValueStr)
 {
   ui->FormatNameEdit->setText(Name);
   ui->ColSepEdit->setText(ColSep);
   ui->PrecisionSpinBox->setValue(Precision.toLong());
   ui->CommentCharEdit->setText(CommentChar);
   ui->MissingValueEdit->setText(MissingValueStr);
+
+  int FloatFormatIndex = m_FloatFormatsCodes.indexOf(FloatFormat.toStdString());
+  if(FloatFormatIndex >= 0)
+  {
+    ui->FloatFormatComboBox->setCurrentIndex(FloatFormatIndex);
+  }
 
   int HeaderIndex = m_HeaderCodes.indexOf(StrToHeaderType(Header.toStdString()));
   if (HeaderIndex >= 0)
