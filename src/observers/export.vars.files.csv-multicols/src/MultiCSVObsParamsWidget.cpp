@@ -329,6 +329,7 @@ void MultiCSVObsParamsWidget::editFormat()
                        getParamValue(FormatStr+"colsep",";"),
                        getParamValue(FormatStr+"date","ISO"),
                        getParamValue(FormatStr+"precision","5"),
+                       getParamValue(FormatStr+"float-format","Auto"),
                        getParamValue(FormatStr+"commentchar","#"),
                        getParamValue(FormatStr+"missingvalue","NA"));
 

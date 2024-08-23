@@ -93,8 +93,8 @@ class MultiEditFormatDialog: public openfluid::ui::common::OpenFLUIDDialog
     ~MultiEditFormatDialog();
 
     void initialize(const QString& Name, const QString& Header, const QString& ColSep,
-                    const QString& Date, const QString& Precision, const QString& CommentChar, 
-                    const QString& MissingValueStr);
+                    const QString& Date, const QString& Precision, const QString& FloatFormat, 
+                    const QString& CommentChar, const QString& MissingValueStr);
 
     openfluid::ware::WareParams_t getFormatParams();
 };
