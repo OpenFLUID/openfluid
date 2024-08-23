@@ -222,7 +222,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       openfluid::core::SpatialUnit* CurrentUnit = nullptr;
 
-      CurrentUnit = OPENFLUID_GetUnit("TU",1);
+      OPENFLUID_GetUnit("TU",1, CurrentUnit);
       if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",22))
       {
         OPENFLUID_RaiseError("incorrect from-to connection for unit TU#1");

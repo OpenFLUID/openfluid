@@ -721,7 +721,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
     */
     bool OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
                            const openfluid::core::UnitID_t& ID,
-                           openfluid::core::SpatialUnit* aUnit) const;
+                           openfluid::core::SpatialUnit*& aUnit) const;
 
     openfluid::core::SpatialUnit* OPENFLUID_GetUnit(const openfluid::core::UnitsClass_t& ClassName,
                                                     const openfluid::core::UnitID_t& ID) const;
