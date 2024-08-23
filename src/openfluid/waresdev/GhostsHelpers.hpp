@@ -52,7 +52,8 @@ namespace openfluid { namespace waresdev {
 
 std::string OPENFLUID_API getGhostSimulatorPath(const std::string& ParentPath, const openfluid::ware::WareID_t& ID);
 
-openfluid::tools::Path oldSignaturePath(const std::string& ParentPath, const openfluid::ware::WareID_t& ID);
+openfluid::tools::Path OPENFLUID_API oldSignaturePath(const std::string& ParentPath, 
+                                                      const openfluid::ware::WareID_t& ID);
 
 bool OPENFLUID_API migrateGhostSimulator(const std::string& ParentPath, const openfluid::ware::WareID_t& ID);
 
