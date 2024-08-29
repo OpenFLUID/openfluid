@@ -44,12 +44,98 @@
 #include <set>
 #include <vector>
 #include <string>
+#include <regex>
 
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace waresdev {
+
+
+class OPENFLUID_API WarePurgeHandler
+{
+
+  private:
+
+    std::string m_BuildDirRegexStr = "_build-";
+    std::string ModeArg = "(release|debug)";
+    std::string VersionArg = "[0-9]+\\.[0-9]+";
+    std::string VersionMajorMinorStr;
+    std::string CurrentVersionRegex;
+    
+
+  public:
+
+    WarePurgeHandler(bool CurrentVersion, bool OtherVersions, bool ReleaseMode, bool DebugMode)
+    {
+
+      VersionMajorMinorStr = openfluid::base::Environment::getVersionMajorMinor();
+      CurrentVersionRegex = openfluid::tools::replace(VersionMajorMinorStr, ".", "\\.");
+
+      if (CurrentVersion && !OtherVersions)  // Current version only
+      {
+        VersionArg = CurrentVersionRegex;
+      }
+      else if (!CurrentVersion && OtherVersions)  // Other versions only
+      {
+        VersionArg = "(?!"+CurrentVersionRegex+")[0-9]+\\.[0-9]+";
+      }
+
+      if (ReleaseMode && !DebugMode)  // Release mode only
+      {
+        ModeArg = "release";
+      }
+      else if (!ReleaseMode && DebugMode) // Debug mode only
+      {
+        ModeArg = "debug";
+      }
+
+      m_BuildDirRegexStr = m_BuildDirRegexStr + ModeArg + "-" + VersionArg;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void purge(openfluid::tools::FilesystemPath WarePath, 
+               std::function<void(std::string, std::string)> WriteMessageFunc,
+               std::function<void(bool)> EmitSignal)
+    { 
+      std::regex FilterRegExp(m_BuildDirRegexStr);
+
+      for (const auto& Entry : std::filesystem::directory_iterator(WarePath.stdPath()))
+      {
+        auto EntryFSP = openfluid::tools::FilesystemPath(Entry.path().string());
+        if (std::regex_match(EntryFSP.filename(), FilterRegExp)) {
+          EntryFSP.removeDirectory();
+
+          if(EntryFSP.isDirectory())
+          {
+            WriteMessageFunc(EntryFSP.filename() + ": Error ", "Error");
+            EmitSignal(false);
+          }
+          else
+          {
+            WriteMessageFunc(EntryFSP.filename() + ": Deleted ", "Success");
+            EmitSignal(true);
+          }
+        }
+      }
+    }
+
+    ~WarePurgeHandler()
+    {
+
+    }
+};
+
+
+
 
 
 // TOIMPL reuse this wherever possible 

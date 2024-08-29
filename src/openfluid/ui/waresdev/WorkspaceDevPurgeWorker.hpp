@@ -42,6 +42,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/WorkspaceDevProcessWorker.hpp>
+#include <openfluid/waresdev/WareSrcHelpers.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -54,7 +55,7 @@ class OPENFLUID_API WorkspaceDevPurgeWorker : public WorkspaceDevProcessWorker
 
   private:
 
-    QString m_BuildDirRegexStr = "_build-%1-%2";
+    openfluid::waresdev::WarePurgeHandler PurgeHandler;
 
 
   public slots:

@@ -56,34 +56,10 @@ namespace openfluid { namespace ui { namespace waresdev {
 WorkspaceDevPurgeWorker::WorkspaceDevPurgeWorker(const WorkspaceDevDashboardTypes::WaresSelectionByType& Selection,
                                                  bool CurrentVersion, bool OtherVersions,
                                                  bool ReleaseMode, bool DebugMode) :
-  WorkspaceDevProcessWorker(Selection)
+  WorkspaceDevProcessWorker(Selection),
+  PurgeHandler(CurrentVersion, OtherVersions, ReleaseMode, DebugMode)
 {
-  // be careful : anything performed here will be executed from the parent thread!
 
-  QString ModeArg = "(release|debug)";
-  QString VersionArg = "[0-9]+\\.[0-9]+";
-  QString CurrentVersionRegex = QString::fromStdString(openfluid::base::Environment::getVersionMajorMinor())
-                                 .replace(".","\\.");
-
-  if (CurrentVersion && !OtherVersions)  // Current version only
-  {
-    VersionArg = CurrentVersionRegex;
-  }
-  else if (!CurrentVersion && OtherVersions)  // Other versions only
-  {
-    VersionArg = "(?!"+CurrentVersionRegex+")[0-9]+\\.[0-9]+";
-  }
-
-  if (ReleaseMode && !DebugMode)  // Release mode only
-  {
-    ModeArg = "release";
-  }
-  else if (!ReleaseMode && DebugMode) // Debug mode only
-  {
-    ModeArg = "debug";
-  }
-
-  m_BuildDirRegexStr = m_BuildDirRegexStr.arg(ModeArg).arg(VersionArg);
 }
 
 
@@ -103,12 +79,6 @@ WorkspaceDevPurgeWorker::~WorkspaceDevPurgeWorker()
 
 void WorkspaceDevPurgeWorker::run()
 {
-#if (QT_VERSION_MAJOR < 6)
-  QRegExp FilterRegExp(m_BuildDirRegexStr);
-#else
-  QRegularExpression FilterRegExp(m_BuildDirRegexStr);
-#endif
-
   for (auto& WType : m_Selection)
   {
     for (auto& WItem : WType.second)
@@ -121,30 +91,19 @@ void WorkspaceDevPurgeWorker::run()
 
       QFileInfoList SubDirs = Dir.entryInfoList();
 
-      for (auto SubDir : SubDirs)
+      auto WriteMessageFunc = [this](std::string Msg, std::string LevelInfo) -> void
       {
-#if (QT_VERSION_MAJOR < 6)
-        if (FilterRegExp.exactMatch(SubDir.fileName()))
-        {
-#else
-        if (FilterRegExp.match(SubDir.fileName()).hasMatch())
-        {
-#endif
-          auto SubDirFSP = openfluid::tools::FilesystemPath(SubDir.absoluteFilePath().toStdString());
-          SubDirFSP.removeDirectory();
+        std::string Color = LevelInfo == "Error" ? "red" : "green";
+        writeMessage(QString::fromStdString("<font style='color: " + Color + ";'>"+ Msg + "</font>"));
+      };
 
-          if (SubDirFSP.isDirectory())
-          {
-            writeMessage(SubDir.fileName() + ": <font style='color: red;'>"+tr("Error")+"</font>");
-            emit processed(WType.first,WItem.ID,"purge", false);
-          }
-          else
-          {
-            writeMessage(SubDir.fileName() + ": <font style='color: green;'>"+tr("Deleted")+"</font>");
-            emit processed(WType.first,WItem.ID,"purge", true);
-          }
-        }
-      }
+      auto EmitProcess = [this, &WType, &WItem](bool Status) -> void
+      {
+        emit processed(WType.first, WItem.ID, "purge", Status);
+      };
+
+      PurgeHandler.purge(WItem.Path.toStdString(), WriteMessageFunc, EmitProcess);
+
       writeMessage();
 
       emit wareCompleted();
