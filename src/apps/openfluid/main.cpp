@@ -162,8 +162,9 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto ReportCmd = openfluid::utils::CommandLineCommand("report","Display report about available wares");
-  ReportCmd.addOptions({{"list","l","display as simple list of wares IDs"},
+  auto ReportCmd = openfluid::utils::CommandLineCommand("report", "Display report about available wares");
+  ReportCmd.addOptions({{"type","t","type of ware to report (simulators|observers)", true},
+                        {"list","l","display as simple list of wares IDs"},
                         {"with-errors","e","report errors if any"},
                         {"format","","output format (text|json, default is text)",true}});
 

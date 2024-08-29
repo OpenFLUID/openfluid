@@ -209,6 +209,8 @@ int WareTasks::processConfigure() const
 
   std::map<std::string,std::string> Vars = openfluid::waresdev::initializeConfigureVariables();
 
+  Vars["CMAKE_BUILD_TYPE"] = BuildType;
+
   auto CMakeCmd = openfluid::utils::CMakeProxy::getConfigureCommand(BuildFSP.toGeneric(),SrcFSP.toGeneric(),
                                                                     Vars,Generator);
   CMakeCmd.Args << m_ThirdPartyArgs;
@@ -459,7 +461,14 @@ int WareTasks::processDocalyze() const
   if (!InputFormats.empty() && InputFormats.front() != "tex" && InputFormats.front() != "rmd" && 
       InputFormats.front() != "md" && InputFormats.front() != "readme")
   {
-    return error("unknown input format for documentation sources");
+    if(InputFormats.front() == "auto")
+    {
+      InputFormats = {};
+    }
+    else 
+    {
+      return error("unknown input format for documentation sources");
+    }
   }
 
   std::string OutputPath = "";
