@@ -50,19 +50,24 @@ int ReportTasks::process() const
 
     std::string Waretype;
 
-    if (m_ExtraArgs.empty() || (m_ExtraArgs.at(0) != "simulators" && m_ExtraArgs.at(0) != "observers"))
+    if (!m_Cmd.isOptionActive("type"))
     {
-      return error("type of wares is missing for reporting");
+      if (m_ExtraArgs.empty() || (m_ExtraArgs.at(0) != "simulators" && m_ExtraArgs.at(0) != "observers"))
+      {
+        return error("type of wares is missing for reporting");
+      }
+      else
+      {
+        Waretype = m_ExtraArgs.at(0);
+      }
     }
-    else
+    else if(m_Cmd.getOptionValue("type") != "simulators" && m_Cmd.getOptionValue("type") != "observers")
     {
-      Waretype = m_ExtraArgs.at(0);
+      return error("type of wares is not valid for reporting");
     }
-
-    std::string MatchStr;
-    if (m_ExtraArgs.size() > 1)
+    else 
     {
-      MatchStr = m_ExtraArgs.at(1);
+      Waretype = m_Cmd.getOptionValue("type");
     }
 
     bool Detailed = !m_Cmd.isOptionActive("list");

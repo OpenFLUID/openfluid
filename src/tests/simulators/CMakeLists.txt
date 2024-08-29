@@ -503,3 +503,13 @@ OPENFLUID_ADD_TEST(NAME simulators-WrongVersion
                                   "-p" "${OFBUILD_TESTS_BINARY_DIR}")
 SET_TESTS_PROPERTIES(simulators-WrongVersion PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongversion")
 
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME simulators-WrongVersion-bis 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                           "report" "-t" "simulators" "--list"
+                           "-p" "${OFBUILD_TESTS_BINARY_DIR}")
+SET_TESTS_PROPERTIES(simulators-WrongVersion-bis PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongversion")
+
