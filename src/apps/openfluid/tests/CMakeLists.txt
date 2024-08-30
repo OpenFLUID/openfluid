@@ -344,7 +344,11 @@ ENDIF()
 
 ADD_TEST(NAME cmdline-openfluid-PurgeSimulator
          COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                  "purge" "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim")
+                  "purge" 
+                  "--src-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim"
+                  "--build-type=release" 
+                  "--build-version=current"
+         POST_TEST CHECK_DIRECTORY_NOT_EXISTING "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim/_build-release-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}")
 SET_PROPERTY(TEST cmdline-openfluid-PurgeSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-BuildSimulator)
 
 

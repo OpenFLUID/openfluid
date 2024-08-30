@@ -572,19 +572,92 @@ int WareTasks::processPurge() const
     return error("missing or empty ware sources path");
   }
 
-  std::string BuildType = openfluid::utils::CMakeProxy::DefaultBuildType;
-  if (m_Cmd.isOptionActive("build-type") && !m_Cmd.getOptionValue("build-type").empty())
+  if (!m_Cmd.isOptionActive("build-type") && !m_Cmd.isOptionActive("build-version"))
   {
-    BuildType = m_Cmd.getOptionValue("build-type");
+    return error("missing build type or build version to purge");
   }
 
-  std::string buildPath = openfluid::tools::Filesystem::joinPath({ WarePath, 
-    openfluid::utils::CMakeProxy::getBuildDir(BuildType) });
+  std::string ReleaseModeStr = "release";
+  std::string DebugModeStr = "debug";
+  std::string CurrentVersionStr = "current";
+  std::string OtherVersionsStr = "other";
 
-  if(!openfluid::tools::Filesystem::emptyDirectory(buildPath)) 
+  bool ReleaseMode = true;
+  bool DebugMode = true;
+  bool CurrentVersion = true;
+  bool OtherVersions = true;
+
+  if(m_Cmd.isOptionActive("build-type") && !m_Cmd.getOptionValue("build-type").empty())
   {
-    return error("Error while clearing directory : " + buildPath);
+    std::vector<std::string> BuildTypes = openfluid::tools::split(m_Cmd.getOptionValue("build-type"), "+");
+    bool HasReleaseMode = false;
+    bool HasDebugMode = false;
+    for(auto& BuildType : BuildTypes)
+    {
+      BuildType = openfluid::tools::toLowerCase(BuildType);
+      if(BuildType != ReleaseModeStr && BuildType != DebugModeStr)
+      {
+        return error("wrong build type");
+      }
+      if(BuildType == ReleaseModeStr)
+      {
+        HasReleaseMode = true;
+      }
+      if(BuildType == DebugModeStr)
+      {
+        HasDebugMode = true;
+      }
+    }
+
+    ReleaseMode = HasReleaseMode;
+    DebugMode = HasDebugMode;
+    if(!ReleaseMode && !DebugMode)
+    {
+      return error("wrong build type");
+    }
   }
+
+  if(m_Cmd.isOptionActive("build-version") && !m_Cmd.getOptionValue("build-version").empty())
+  {
+    std::vector<std::string> BuildVersions = openfluid::tools::split(m_Cmd.getOptionValue("build-version"), "+");
+    bool HasCurrentVersion = false;
+    bool HasOtherVersions = false;
+    for(auto& BuildVersion : BuildVersions)
+    {
+      BuildVersion = openfluid::tools::toLowerCase(BuildVersion);
+      if(BuildVersion != CurrentVersionStr && BuildVersion != OtherVersionsStr)
+      {
+        return error("wrong build version");
+      }
+      if(BuildVersion == CurrentVersionStr)
+      {
+        HasCurrentVersion = true;
+      }
+      if(BuildVersion == OtherVersionsStr)
+      {
+        HasOtherVersions = true;
+      }
+    }
+    
+    CurrentVersion = HasCurrentVersion;
+    OtherVersions = HasOtherVersions;
+    if(!CurrentVersion && !OtherVersions)
+    {
+      return error("wrong build version");
+    }
+  }
+
+  openfluid::waresdev::WarePurgeHandler PurgeHandler(CurrentVersion, OtherVersions, ReleaseMode, DebugMode);
+
+  auto WriteMessageFunc = [this](std::string Msg, std::string LevelInfo) -> void
+  {
+    std::string Color = LevelInfo == "Error" ? "red" : "green";
+    LevelInfo == "Error" ? openfluid::tools::Console::setErrorColor() : openfluid::tools::Console::setOKColor();
+    std::cout << Msg << std::endl;
+    openfluid::tools::Console::resetAttributes();
+  };
+
+  PurgeHandler.purge(WarePath, WriteMessageFunc, [](bool Status) {});
 
   return 0;
 }
