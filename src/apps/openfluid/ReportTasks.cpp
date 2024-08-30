@@ -34,6 +34,7 @@
   @file ReportTasks.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -50,7 +51,7 @@ int ReportTasks::process() const
 
     std::string Waretype;
 
-    if (!m_Cmd.isOptionActive("type"))
+    if (!m_Cmd.isOptionActive("ware-type"))
     {
       if (m_ExtraArgs.empty() || (m_ExtraArgs.at(0) != "simulators" && m_ExtraArgs.at(0) != "observers"))
       {
@@ -61,13 +62,13 @@ int ReportTasks::process() const
         Waretype = m_ExtraArgs.at(0);
       }
     }
-    else if(m_Cmd.getOptionValue("type") != "simulators" && m_Cmd.getOptionValue("type") != "observers")
+    else if(m_Cmd.getOptionValue("ware-type") != "simulators" && m_Cmd.getOptionValue("ware-type") != "observers")
     {
       return error("type of wares is not valid for reporting");
     }
     else 
     {
-      Waretype = m_Cmd.getOptionValue("type");
+      Waretype = m_Cmd.getOptionValue("ware-type");
     }
 
     bool Detailed = !m_Cmd.isOptionActive("list");

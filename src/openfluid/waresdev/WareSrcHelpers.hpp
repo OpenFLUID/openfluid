@@ -34,6 +34,7 @@
 
   @author Armel THÖNI <armel.thoni@inra.fr>
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -108,10 +109,17 @@ class OPENFLUID_API WarePurgeHandler
     { 
       std::regex FilterRegExp(m_BuildDirRegexStr);
 
+      if(!WarePath.exists())
+      {
+        WriteMessageFunc(WarePath.toGeneric() + ": Ware path does not exists ", "Error");
+        return;
+      }
+
       for (const auto& Entry : std::filesystem::directory_iterator(WarePath.stdPath()))
       {
         auto EntryFSP = openfluid::tools::FilesystemPath(Entry.path().string());
-        if (std::regex_match(EntryFSP.filename(), FilterRegExp)) {
+        if (std::regex_match(EntryFSP.filename(), FilterRegExp)) 
+        {
           EntryFSP.removeDirectory();
 
           if(EntryFSP.isDirectory())
@@ -133,9 +141,6 @@ class OPENFLUID_API WarePurgeHandler
 
     }
 };
-
-
-
 
 
 // TOIMPL reuse this wherever possible 

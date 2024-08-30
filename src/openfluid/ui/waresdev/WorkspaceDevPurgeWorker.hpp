@@ -33,6 +33,7 @@
   @file WorkspaceDevPurgeWorker.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 

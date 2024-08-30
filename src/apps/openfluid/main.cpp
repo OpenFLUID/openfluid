@@ -262,7 +262,10 @@ int main(int argc, char **argv)
 
   auto PurgeCmd = openfluid::utils::CommandLineCommand("purge","purge build outputs on ware sources");
   PurgeCmd.addOptions({{"src-path","s","path to the ware sources",true},
-                       {"build-type","t","CMake build mode (Debug|Release|..., default is Release)", true}});
+                       {"build-type","t","CMake build type (debug|release, Use '+' char as separator when both)", 
+                       true},
+                       {"build-version","","OpenFLUID build version (current|other, "
+                        "Use '+' char as separator when both)", true}});
   Parser.addCommand(PurgeCmd, &WareSection);
 
   // ---

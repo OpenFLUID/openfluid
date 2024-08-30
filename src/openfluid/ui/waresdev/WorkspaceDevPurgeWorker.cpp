@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
