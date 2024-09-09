@@ -46,6 +46,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
+#include <openfluid/ware/WareRNG.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -60,7 +61,7 @@ class OPENFLUID_API RandomGenerator : public MonoGenerator
 
     openfluid::core::Duration_t m_DeltaT;
 
-    std::mt19937 m_RandomEngine;
+    openfluid::ware::WareRNG Rng;
 
 
   public:

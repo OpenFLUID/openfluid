@@ -11,6 +11,7 @@
     <generator varname="var11" unitsclass="unitsA" method="random">
       <param name="min" value="5.0" />
       <param name="max" value="6.0" />
+      <param name="seed" value="1" />
     </generator>
     
     <simulator ID="examples.primitives.unitsA.up">

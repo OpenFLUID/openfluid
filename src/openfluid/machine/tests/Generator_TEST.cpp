@@ -147,13 +147,172 @@ double asDouble(openfluid::core::IndexedValue IValue)
 
 // =====================================================================
 // =====================================================================
-  
+
+
+int asInteger(openfluid::core::IndexedValue IValue)
+{
+  return IValue.value()->asIntegerValue().get();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool asBoolean(openfluid::core::IndexedValue IValue)
+{
+  return IValue.value()->asBooleanValue().get();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_seeded_random_generator)
+{
+  {
+    //INVALID SEED VALUE
+    std::cout << "Checking invalid seed value for random generator" << std::endl;
+
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                            {{"SU","a"}}};
+    openfluid::machine::GeneratorSpecs Specs2{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                            {{"SU","b"}}};
+                                            
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"seed", "text"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
+  }
+
+  {
+    //NEGATIVE SEED
+    std::cout << "Checking negative seed for random generator" << std::endl;
+
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                            {{"SU","a"}}};
+                                            
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"seed", "-10"}};
+    openfluid::ware::WareParams_t Params2 = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"seed", "1"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+
+    TestSimulation TS2;
+    TS2.defaultSetup();
+    TS2.addGenerator(Specs, Params2);
+    TS2.wholeSimulation();
+
+    BOOST_ASSERT(asDouble(TS.getLatestValue("SU", 1, "a")) != asDouble(TS2.getLatestValue("SU", 1, "a")));
+  }
+
+  {
+    //DIFFERENT SEED
+    std::cout << "Checking different seeds for random generator" << std::endl;
+
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                            {{"SU","a"}}};
+                                            
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"seed", "25"}};
+    openfluid::ware::WareParams_t Params2 = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"seed", "50"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+
+    TestSimulation TS2;
+    TS2.defaultSetup();
+    TS2.addGenerator(Specs, Params2);
+    TS2.wholeSimulation();
+
+    BOOST_ASSERT(asDouble(TS.getLatestValue("SU", 1, "a")) != asDouble(TS2.getLatestValue("SU", 1, "a")));
+  }
+
+  {
+    //DOUBLE
+    std::cout << "Checking double seeded random generator" << std::endl;
+
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                            {{"SU","a"}}};
+                                            
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"seed", "1"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+
+    TestSimulation TS2;
+    TS2.defaultSetup();
+    TS2.addGenerator(Specs, Params);
+    TS2.wholeSimulation();
+
+    BOOST_ASSERT(asDouble(TS.getLatestValue("SU", 1, "a")) == asDouble(TS2.getLatestValue("SU", 1, "a")));
+  }
+
+  {
+    //INT
+    std::cout << "Checking integer seeded random generator" << std::endl;
+
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                            {{"SU","a"}},
+                                            openfluid::core::Value::INTEGER};
+                                            
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","200"}, {"seed", "10"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+
+    TestSimulation TS2;
+    TS2.defaultSetup();
+    TS2.addGenerator(Specs, Params);
+    TS2.wholeSimulation();
+
+    BOOST_ASSERT(asInteger(TS.getLatestValue("SU", 1, "a")) == asInteger(TS2.getLatestValue("SU", 1, "a")));
+  }
+
+  {
+    //BOOLEAN
+    std::cout << "Checking boolean seeded random generator" << std::endl;
+    
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                             {{"SU","b"}},
+                                             openfluid::core::Value::BOOLEAN};
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"seed", "100"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation();
+
+    TestSimulation TS2;
+    TS2.defaultSetup();
+    TS2.addGenerator(Specs, Params);
+    TS2.wholeSimulation();
+
+    BOOST_ASSERT(asBoolean(TS.getLatestValue("SU", 1, "b")) == asBoolean(TS2.getLatestValue("SU", 1, "b")));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_random_scalar)
 {
   // TEST SCALAR RERUN NOT IDENTICAL
   {
     //DOUBLE
+    std::cout << "Checking double not seeded random generator" << std::endl;
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
                                             {{"SU","a"}}};
                                             
@@ -173,8 +332,30 @@ BOOST_AUTO_TEST_CASE(check_random_scalar)
     BOOST_ASSERT(RandomValue != asDouble(TS2.getLatestValue("SU", 1, "a")));
   }
 
+  // TEST 2 GENERATORS RUN NOT IDENTICAL
+  {
+    //DOUBLE
+    std::cout << "Checking double not seeded with 2 random generators" << std::endl;
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                            {{"SU","a"}}};
+    openfluid::machine::GeneratorSpecs Specs2{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
+                                            {{"SU","b"}}};
+                                            
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.addGenerator(Specs2, Params);
+    TS.wholeSimulation();
+    double RandomValue = asDouble(TS.getLatestValue("SU", 1, "a"));
+    BOOST_ASSERT(RandomValue >= 2 && RandomValue <= 20);
+    BOOST_ASSERT(RandomValue != asDouble(TS.getLatestValue("SU", 1, "b")));
+  }
+
   {
     //INT
+    std::cout << "Checking integer not seeded random generator" << std::endl;
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
                                              {{"SU","b"}},
                                              openfluid::core::Value::INTEGER};
@@ -195,6 +376,7 @@ BOOST_AUTO_TEST_CASE(check_random_scalar)
   }
   {
     //BOOLEAN
+    std::cout << "Checking boolean not seeded random generator" << std::endl;
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
                                              {{"SU","b"}},
                                              openfluid::core::Value::BOOLEAN};
@@ -207,6 +389,7 @@ BOOST_AUTO_TEST_CASE(check_random_scalar)
   }
   {
     //STRING
+    std::cout << "Checking string not seeded random generator" << std::endl;
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
                                              {{"SU","b"}},
                                              openfluid::core::Value::STRING};

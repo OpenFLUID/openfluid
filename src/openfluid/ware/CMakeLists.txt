@@ -3,6 +3,7 @@ SET(OPENFLUID_WARE_CPP WareIssues.cpp SimulatorSignature.cpp
                        PluggableWare.cpp SimulationDrivenWare.cpp SimulationInspectorWare.cpp SimulationContributorWare.cpp
                        PluggableSimulator.cpp PluggableObserver.cpp
                        WareParamsTree.cpp
+                       WareRNG.cpp
                        )
 
 SET(OPENFLUID_WARE_HPP WareIssues.hpp WareSignature.hpp SimulatorSignature.hpp ObserverSignature.hpp
@@ -12,6 +13,7 @@ SET(OPENFLUID_WARE_HPP WareIssues.hpp WareSignature.hpp SimulatorSignature.hpp O
                        LoopMacros.hpp ThreadedLoopMacros.hpp
                        WareException.hpp
                        WareParamsTree.hpp
+                       WareRNG.hpp
                        )
 
 

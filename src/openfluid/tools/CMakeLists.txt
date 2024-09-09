@@ -7,7 +7,7 @@ SET(OPENFLUID_TOOLS_CPP ColumnTextParser.cpp
                         FileLogger.cpp
                         SettingsBackend.cpp
                         TemplateProcessor.cpp
-                        StringHelpers.cpp DataHelpers.cpp IDHelpers.cpp MiscHelpers.cpp VarHelpers.cpp
+                        StringHelpers.cpp DataHelpers.cpp IDHelpers.cpp MiscHelpers.cpp VarHelpers.cpp RandomNumberGenerator.cpp
                         )
 
 SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp 
@@ -20,7 +20,7 @@ SET(OPENFLUID_TOOLS_HPP ColumnTextParser.hpp
                         FileLogger.hpp
                         SettingsBackend.hpp
                         TemplateProcessor.hpp
-                        StringHelpers.hpp DataHelpers.hpp IDHelpers.hpp MiscHelpers.hpp VarHelpers.hpp
+                        StringHelpers.hpp DataHelpers.hpp IDHelpers.hpp MiscHelpers.hpp VarHelpers.hpp RandomNumberGenerator.hpp
                         Timer.hpp
                         FortranCPP.hpp
                         )

@@ -5,7 +5,7 @@
             <param name="datafile" value="wind-data-multicol.csv"/>
         </generator>
         <simulator ID="spatial.atm.grid.connection-dynamics" enabled="true">
-            <param name="rngseed" value="1"/>
+            <param name="seed" value="1"/>
         </simulator>
         <simulator ID="fire.surf.prod-spread" enabled="true">
             <param name="ignitionunits" value="2;5"/>

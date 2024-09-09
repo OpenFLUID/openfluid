@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -48,11 +49,8 @@ namespace openfluid { namespace machine {
 
 
 RandomGenerator::RandomGenerator() :
-  MonoGenerator(), m_IdenticalCellValues(true), m_DeltaT(0)
+  MonoGenerator(), m_IdenticalCellValues(true), m_DeltaT(0), Rng(this)
 {
-  std::random_device RandomDevice;
-
-  m_RandomEngine.seed(RandomDevice());
 }
 
 
@@ -118,6 +116,8 @@ void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"wrong value for deltat");
   }
+
+  Rng.init(Params);
 }
 
 
@@ -276,20 +276,19 @@ openfluid::base::SchedulingRequest IntRandomGenerator::initializeRun()
 openfluid::base::SchedulingRequest DoubleRandomGenerator::runStep()
 {
   openfluid::core::SpatialUnit* LU;
-  std::uniform_real_distribution<double> Distribution(m_Min, m_Max);
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (m_VarDimensions.isScalar())  // SCALAR CASE
     {
-      openfluid::core::DoubleValue Value(Distribution(m_RandomEngine));
+      openfluid::core::DoubleValue Value(Rng.runif<double>(m_Min, m_Max));
       OPENFLUID_AppendVariable(LU,m_VarName,Value);
     }
     else if (m_VarDimensions.isVector())  // VECTOR CASE
     {
       if (m_IdenticalCellValues)
       {
-        openfluid::core::DoubleValue Value(Distribution(m_RandomEngine));
+        openfluid::core::DoubleValue Value(Rng.runif<double>(m_Min, m_Max));
         openfluid::core::VectorValue VV(m_VarDimensions.Rows,Value);
         OPENFLUID_AppendVariable(LU,m_VarName,VV);
       }
@@ -298,7 +297,7 @@ openfluid::base::SchedulingRequest DoubleRandomGenerator::runStep()
         openfluid::core::VectorValue VV(m_VarDimensions.Rows,0.0);
         for (auto& Val : VV)
         {
-          Val = openfluid::core::DoubleValue(Distribution(m_RandomEngine));
+          Val = openfluid::core::DoubleValue(Rng.runif<double>(m_Min, m_Max));
         }
         OPENFLUID_AppendVariable(LU,m_VarName,VV);
       }
@@ -307,7 +306,7 @@ openfluid::base::SchedulingRequest DoubleRandomGenerator::runStep()
     {
       if (m_IdenticalCellValues)
       {
-        openfluid::core::DoubleValue Value(Distribution(m_RandomEngine));
+        openfluid::core::DoubleValue Value(Rng.runif<double>(m_Min, m_Max));
         openfluid::core::MatrixValue MV(m_VarDimensions.Cols,m_VarDimensions.Rows,Value);
         OPENFLUID_AppendVariable(LU,m_VarName,MV);
       }
@@ -318,7 +317,7 @@ openfluid::base::SchedulingRequest DoubleRandomGenerator::runStep()
         {
           for (unsigned int r=0;r<m_VarDimensions.Rows;r++)
           {
-            MV.setElement(c, r, openfluid::core::DoubleValue(Distribution(m_RandomEngine)));
+            MV.setElement(c, r, openfluid::core::DoubleValue(Rng.runif<double>(m_Min, m_Max)));
           }
         }
         OPENFLUID_AppendVariable(LU,m_VarName,MV);
@@ -337,13 +336,12 @@ openfluid::base::SchedulingRequest DoubleRandomGenerator::runStep()
 openfluid::base::SchedulingRequest IntRandomGenerator::runStep()
 {
   openfluid::core::SpatialUnit* LU;
-  std::uniform_int_distribution<long> Distribution(m_Min, m_Max);
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (m_VarDimensions.isScalar())
     {
-      openfluid::core::IntegerValue Value(Distribution(m_RandomEngine));
+      openfluid::core::IntegerValue Value(Rng.irunif(m_Min, m_Max));
       OPENFLUID_AppendVariable(LU,m_VarName,Value);
     }
     else
@@ -388,13 +386,12 @@ openfluid::base::SchedulingRequest BooleanRandomGenerator::initializeRun()
 openfluid::base::SchedulingRequest BooleanRandomGenerator::runStep()
 {
   openfluid::core::SpatialUnit* LU;
-  std::bernoulli_distribution Distribution(m_Probability);
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
     if (m_VarDimensions.isScalar())
     {
-      openfluid::core::BooleanValue Value(Distribution(m_RandomEngine));
+      openfluid::core::BooleanValue Value(Rng.bernoulli(m_Probability));
       OPENFLUID_AppendVariable(LU,m_VarName,Value);
     }
     else

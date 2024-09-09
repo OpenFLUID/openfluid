@@ -290,6 +290,8 @@ namespace openfluid { namespace ware {
 
 class OPENFLUID_API SimulationDrivenWare : public PluggableWare
 {
+  friend class WareRNG;
+
   private:
 
     const openfluid::base::SimulationStatus* mp_SimStatus;
@@ -297,7 +299,6 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     openfluid::base::SimulationLogger* mp_SimLogger;
 
     openfluid::core::TimeIndex_t m_PreviousTimeIndex;
-
 
   protected:
 
