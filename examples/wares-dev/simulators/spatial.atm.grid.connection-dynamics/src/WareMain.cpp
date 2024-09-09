@@ -40,7 +40,9 @@
 #include <ctime>
 #include <random>
 
+#include <openfluid/tools/RandomNumberGenerator.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/ware/WareRNG.hpp>
 
 
 /**
@@ -52,17 +54,15 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
     typedef openfluid::core::IDMap<std::vector<openfluid::core::SpatialUnit*> >::Type Connections_t;
 
-    std::mt19937 m_RandomEngine;
-    long m_RngSeed;
+    openfluid::ware::WareRNG Rng;
 
     Connections_t m_PotentialConnections;
 
 
   public:
 
-    WindFireConnectSimulator() : PluggableSimulator()
+    WindFireConnectSimulator() : PluggableSimulator(), Rng(this)
     {
-
     }
 
 
@@ -83,12 +83,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      bool FoundRngSeed = OPENFLUID_GetSimulatorParameter(Params,"rngseed",m_RngSeed);
-      if (!FoundRngSeed || m_RngSeed < 0)
-      {
-        m_RngSeed = std::time(0);
-      }
-      m_RandomEngine.seed(m_RngSeed);
+      Rng.init(Params);
     }
 
 
@@ -176,10 +171,8 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::core::IntegerValue getCorrectedWindDir(const openfluid::core::IntegerValue& MainWindDir)
     {
-      std::uniform_int_distribution<int> Distribution(-45, 45);
-
       // add a random variation to main wind direction
-      openfluid::core::IntegerValue CorrectedDir(MainWindDir.get()+Distribution(m_RandomEngine));
+      openfluid::core::IntegerValue CorrectedDir(MainWindDir.get() + Rng.irunif(-45, 45));
 
       if (CorrectedDir.get()>=360)
       {

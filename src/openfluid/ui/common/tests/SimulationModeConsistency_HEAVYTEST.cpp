@@ -164,7 +164,11 @@ bool compareModes(const std::string& DatasetName, const openfluid::tools::Path& 
   BOOST_CHECK(Process->waitForFinished(-1));
   std::string DiffCommandOutput = Process->readAllStandardOutput().toStdString() + \
                                   Process->readAllStandardError().toStdString();
-  std::cout << DiffCommandOutput << std::endl;
+  if(!DiffCommandOutput.empty())
+  {
+    std::cout << DiffCommandOutput << std::endl;
+  }
+  
   return (DiffCommandOutput == "");
 }
 
@@ -209,12 +213,12 @@ BOOST_AUTO_TEST_CASE(check_consistency_Manhattan)
 // =====================================================================
 
 
-// BOOST_AUTO_TEST_CASE(check_consistency_Primitives) // TOIMPL enable when random generator seedable
-// {
-//   const openfluid::tools::Path INPath = openfluid::tools::Path(
-//     {openfluid::config::EXAMPLES_PROJECTS_SOURCE_PATH, "Primitives", "IN"});
-//   BOOST_CHECK(compareModes("Primitives", INPath));
-// }
+BOOST_AUTO_TEST_CASE(check_consistency_Primitives)
+{
+  const openfluid::tools::Path INPath = openfluid::tools::Path(
+    {openfluid::config::EXAMPLES_PROJECTS_SOURCE_PATH, "Primitives", "IN"});
+  BOOST_CHECK(compareModes("Primitives", INPath));
+}
 
 
 // =====================================================================

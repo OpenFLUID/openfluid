@@ -31,7 +31,7 @@ OPENFLUID_ADD_WAREPLUGIN(
   # list of languages for translation
   #I18N_LANGS 
   # list of supplementary OpenFLUID libraries (e.g. tools, ...)
-  #OPENFLUID_COMPONENTS 
+  OPENFLUID_COMPONENTS tools 
   # custom target name, automatically generated if not provided
   #TARGET 
   # custom installation path, standard path is used if not provided
