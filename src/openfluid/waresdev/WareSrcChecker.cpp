@@ -117,6 +117,11 @@ WareSrcChecker::WareSrcChecker(const std::string& SrcPath, const ChecksList& Ign
 void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
 {
   auto MetaFileObj = m_SrcPathObj.fromThis(openfluid::config::WARESDEV_WAREMETA_FILE);
+  if (!MetaFileObj.exists()) // all pedantic checks are currently based on metadata file
+  {
+    return;
+  }
+
   std::ifstream InFile(MetaFileObj.toGeneric(),std::ifstream::in);
   auto Json = openfluid::thirdparty::json::parse(InFile);
 
@@ -386,14 +391,10 @@ unsigned int WareSrcChecker::tryDetectWareSrcVersion(const openfluid::tools::Fil
   {
     return 202000;
   } 
-
-  // try detect < 2.2.0
-  if (!PathObj.isFile(openfluid::config::WARESDEV_WAREMETA_FILE))
+  else // try detect < 2.2.0
   {
     return 201000;
   }
-
-  return 0;
 }
 
 
