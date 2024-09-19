@@ -281,6 +281,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 
 void Engine::checkParametersConsistency()
 {
+  //TOIMPL APPLY TO OBSERVER ALSO
   for (ModelItemInstance* IInstance : m_ModelInstance.items())
   {
     for (openfluid::ware::SignatureDataItem Param : IInstance->Container.signature()->HandledData.RequiredParams)
@@ -331,7 +332,7 @@ void Engine::checkParametersConsistency()
 void Engine::checkModelConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator SimIter;
-  openfluid::ware::SignatureHandledData HData;
+  openfluid::ware::SimulatorSignatureHandledData HData;
   ModelItemInstance* CurrentSimulator;
   unsigned int i;
 
@@ -349,7 +350,7 @@ void Engine::checkModelConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Container.signature()->HandledData;
+    HData = CurrentSimulator->Container.signature()->SimulatorHandledData;
 
     // checking variables to create (produced)
     for (i=0;i< HData.ProducedVars.size();i++)
@@ -373,7 +374,7 @@ void Engine::checkModelConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Container.signature()->HandledData;
+    HData = CurrentSimulator->Container.signature()->SimulatorHandledData;
 
     // checking required variables
     for (i=0;i< HData.RequiredVars.size();i++)
@@ -395,7 +396,7 @@ void Engine::checkModelConsistency()
 void Engine::checkAttributesConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator SimIter;
-  openfluid::ware::SignatureHandledData HData;
+  openfluid::ware::SimulatorSignatureHandledData HData;
   ModelItemInstance* CurrentSimulator;
   unsigned int i;
 
@@ -405,7 +406,7 @@ void Engine::checkAttributesConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Container.signature()->HandledData;
+    HData = CurrentSimulator->Container.signature()->SimulatorHandledData;
 
     // checking required attribute
     for(i=0; i < HData.RequiredAttribute.size();i++)
@@ -433,13 +434,13 @@ void Engine::checkAttributesConsistency()
 
 void Engine::checkExtraFilesConsistency()
 {
-  openfluid::ware::SignatureHandledData HData;
+  openfluid::ware::SimulatorSignatureHandledData HData;
 
   // on each simulator
   for (const auto* Sim : m_ModelInstance.items())
   {
 
-    HData = Sim->Container.signature()->HandledData;
+    HData = Sim->Container.signature()->SimulatorHandledData;
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {

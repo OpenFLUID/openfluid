@@ -515,6 +515,198 @@ class OPENFLUID_API SimulationDrivenWare : public PluggableWare
     { }
 
 
+  protected:
+
+    /**
+      Returns true if the parameter exists
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @return true if the parameter exists, false otherwise
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Parameters"],
+        "title" : "Test if a ware parameter exists",
+        "text" : "OPENFLUID_IsWareParameterExist(Params,%%SEL_START%%ParamName%%SEL_END%%)"
+      }
+      @endcond
+    */
+    bool OPENFLUID_IsWareParameterExist(const openfluid::ware::WareParams_t& Params,
+                                             const openfluid::ware::WareParamKey_t& ParamName) const;
+
+    /**
+      Returns a ware parameter from the parameters set, as a StringValue
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @return the value of the requested parameter
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Parameters"],
+        "title" : "Get ware parameter (by return)",
+        "text" : "OPENFLUID_GetWareParameter(Params,%%SEL_START%%ParamName%%SEL_END%%)"
+      }
+      @endcond
+    */
+    openfluid::core::StringValue OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                                                 const openfluid::ware::WareParamKey_t& ParamName)
+                                                                 const;
+
+    /**
+      Gets a ware parameter from the parameters set, as a StringValue
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+
+      @cond OpenFLUID:completion
+      {
+        "contexts" : ["SIMULATOR", "OBSERVER"],
+        "menupath" : ["Parameters"],
+        "title" : "Get ware parameter",
+        "text" : "OPENFLUID_GetWareParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
+      }
+      @endcond
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         openfluid::core::StringValue& Val) const;
+
+    /**
+      Gets a ware parameter from the parameters set, as a DoubleValue
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         openfluid::core::DoubleValue& Val) const;
+
+    /**
+      Gets a ware parameter from the parameters set, as a VectorValue
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         openfluid::core::VectorValue& Val) const;
+
+    /**
+      Gets a ware parameter from the parameters set, as a MatrixValue
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         openfluid::core::MatrixValue& Val) const;
+
+    /**
+      Gets a ware parameter from the parameters set, as a boolean
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         bool& Val) const;
+
+    /**
+      Gets a ware parameter from the parameters set, as a double
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         double& Val) const;
+
+    /**
+      Gets a ware parameter value from the parameters set, as a long int
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         long& Val) const;
+
+    /**
+      Gets a ware parameter from the parameters set, as a float
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         float& Val) const;
+
+    /**
+      Gets a ware parameter value from the parameters set, as an int
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         int& Val) const;
+
+    /**
+      Gets a ware parameter value from the parameters set, as a string
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Val the value of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         std::string& Val) const;
+
+    /**
+      Gets a ware parameter vector of values from the parameters set, as a vector of strings
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         std::vector<std::string>& Vals) const;
+
+    /**
+      Gets a ware parameter vector of values from the parameters set, as a vector of doubles
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         std::vector<double>& Vals) const;
+
+    /**
+      Gets a ware parameter vector of values from the parameters set, as a vector of long ints
+      @param[in] Params the parameters set for the ware
+      @param[in] ParamName the name of the requested parameter
+      @param[out] Vals the vector of values of the requested parameter
+      @return true if the parameter exists, false otherwise
+    */
+    bool OPENFLUID_GetWareParameter(const openfluid::ware::WareParams_t& Params,
+                                         const openfluid::ware::WareParamKey_t& ParamName,
+                                         std::vector<long>& Vals) const;
+
+
   public:
 
     virtual ~SimulationDrivenWare()

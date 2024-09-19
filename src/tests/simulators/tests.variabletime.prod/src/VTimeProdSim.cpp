@@ -74,7 +74,7 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
   void initParams(const openfluid::ware::WareParams_t& Params)
   {
     long TmpLong = 0;
-    OPENFLUID_GetSimulatorParameter(Params,"usedefaultdeltat",TmpLong);
+    OPENFLUID_GetWareParameter(Params,"usedefaultdeltat",TmpLong);
 
     m_DefaultDT = TmpLong > 0;
 

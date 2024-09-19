@@ -44,9 +44,11 @@
 #include <openfluid/ui/common/SignatureEditorWidget.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
+#include <openfluid/builderext/BuilderExtensionSignature.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
 
 #include "ui_SignatureEditorWidget.h"
@@ -187,7 +189,7 @@ void SignatureEditorWidget::initializeCommon(const openfluid::ware::WareSignatur
 // =====================================================================
 
 
-void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid::ware::SimulatorSignature& Signature)
+void SignatureEditorWidget::injectParamData(const openfluid::ware::SignatureHandledData& Data)
 {
   QMap<int,QVariant> DataMap;
 
@@ -199,7 +201,7 @@ void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid:
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::ROCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::REQUIRED));
 
-  for (auto& Item : Signature.HandledData.RequiredParams)
+  for (auto& Item : Data.RequiredParams)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -213,7 +215,7 @@ void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid:
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::ROCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::USED));
 
-  for (auto& Item : Signature.HandledData.UsedParams)
+  for (auto& Item : Data.UsedParams)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -224,6 +226,26 @@ void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid:
     ui->ParametersDataWidget->addDataLine(DataMap);
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+//DIRTYCODE merge since real inheritance
+void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid::ware::SimulatorSignature& Signature)
+{
+  injectParamData(Signature.HandledData);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid::ware::ObserverSignature& Signature)
+{
+  injectParamData(Signature.HandledData);
 }
 
 
@@ -241,7 +263,7 @@ void SignatureEditorWidget::initializeExtrafilesUIFromSignature(const openfluid:
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::ROCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::REQUIRED));
 
-  for (auto& Item : Signature.HandledData.RequiredExtraFiles)
+  for (auto& Item : Signature.SimulatorHandledData.RequiredExtraFiles)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item));
@@ -251,7 +273,7 @@ void SignatureEditorWidget::initializeExtrafilesUIFromSignature(const openfluid:
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::ROCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::USED));
 
-  for (auto& Item : Signature.HandledData.UsedExtraFiles)
+  for (auto& Item : Signature.SimulatorHandledData.UsedExtraFiles)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item));
@@ -278,7 +300,7 @@ void SignatureEditorWidget::initializeAttributesUIFromSignature(const openfluid:
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::RWCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::REQUIRED));
 
-  for (auto& Item : Signature.HandledData.RequiredAttribute)
+  for (auto& Item : Signature.SimulatorHandledData.RequiredAttribute)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -294,7 +316,7 @@ void SignatureEditorWidget::initializeAttributesUIFromSignature(const openfluid:
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::RWCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::USED));
 
-  for (auto& Item : Signature.HandledData.UsedAttribute)
+  for (auto& Item : Signature.SimulatorHandledData.UsedAttribute)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -310,7 +332,7 @@ void SignatureEditorWidget::initializeAttributesUIFromSignature(const openfluid:
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::RWCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::PRODUCED));
 
-  for (auto& Item : Signature.HandledData.ProducedAttribute)
+  for (auto& Item : Signature.SimulatorHandledData.ProducedAttribute)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -336,7 +358,7 @@ void SignatureEditorWidget::initializeEventsUIFromSignature(const openfluid::war
 
   ui->EventsDataWidget->initialize({SignatureDataEditorWidget::DataColumns::UNITSCLASS});
 
-  for (auto& Item : Signature.HandledData.UsedEventsOnUnits)
+  for (auto& Item : Signature.SimulatorHandledData.UsedEventsOnUnits)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::UNITSCLASS),
                    QString::fromStdString(Item));
@@ -363,7 +385,7 @@ void SignatureEditorWidget::initializeVariablesUIFromSignature(const openfluid::
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::RWUCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::REQUIRED));
 
-  for (auto& Item : Signature.HandledData.RequiredVars)
+  for (auto& Item : Signature.SimulatorHandledData.RequiredVars)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -381,7 +403,7 @@ void SignatureEditorWidget::initializeVariablesUIFromSignature(const openfluid::
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::RWUCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::USED));
 
-  for (auto& Item : Signature.HandledData.UsedVars)
+  for (auto& Item : Signature.SimulatorHandledData.UsedVars)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -399,7 +421,7 @@ void SignatureEditorWidget::initializeVariablesUIFromSignature(const openfluid::
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::RWUCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::PRODUCED));
 
-  for (auto& Item : Signature.HandledData.ProducedVars)
+  for (auto& Item : Signature.SimulatorHandledData.ProducedVars)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -417,7 +439,7 @@ void SignatureEditorWidget::initializeVariablesUIFromSignature(const openfluid::
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::RWUCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::UPDATED));
 
-  for (auto& Item : Signature.HandledData.UpdatedVars)
+  for (auto& Item : Signature.SimulatorHandledData.UpdatedVars)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -516,6 +538,18 @@ void SignatureEditorWidget::initializeSimulator(const openfluid::ware::Simulator
 // =====================================================================
 
 
+void SignatureEditorWidget::initializeObserver(const openfluid::ware::ObserverSignature& Signature)
+{
+  initializeCommon(&Signature);
+
+  initializeParametersUIFromSignature(Signature);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SignatureEditorWidget::initializeBuilderext(const openfluid::builderext::BuilderExtensionSignature& Signature)
 {
   initializeCommon(&Signature);
@@ -542,19 +576,22 @@ void SignatureEditorWidget::initialize(const QString& SignaturePath)
   }
   else 
   {
-    removeTab(1);//ParametersTab
-    removeTab(1);//AttributesTab
-    removeTab(1);//VariablesTab
-    removeTab(1);//DynamicsTab
     if (Type == openfluid::ware::WareType::OBSERVER)
     {
-      removeTab(1);//BuilderextTab
+      removeTab(2);//AttributesTab
+      removeTab(2);//VariablesTab
+      removeTab(2);//DynamicsTab
+      removeTab(2);//BuilderextTab
       auto Signature = openfluid::waresdev::ObserverSignatureSerializer().readFromJSONFile(SignaturePath.toStdString());
 
-      initializeCommon(&Signature);
+      initializeObserver(Signature);
     }
     else if (Type == openfluid::ware::WareType::BUILDEREXT)
     {
+      removeTab(1);//ParametersTab
+      removeTab(1);//AttributesTab
+      removeTab(1);//VariablesTab
+      removeTab(1);//DynamicsTab
       auto Signature = openfluid::waresdev::BuilderextSignatureSerializer().readFromJSONFile(
         SignaturePath.toStdString());
 
@@ -657,6 +694,40 @@ void SignatureEditorWidget::updateSignatureFromParametersUI(openfluid::ware::Sim
 // =====================================================================
 
 
+void SignatureEditorWidget::updateSignatureFromParametersUI(openfluid::ware::ObserverSignature& Signature) const
+{
+  const QTableWidget* DataTableW = ui->ParametersDataWidget->dataTableWidget();
+
+  for (int i=0; i < DataTableW->rowCount();i++)
+  {
+    openfluid::ware::SignatureDataItem Item;
+
+    Item.Name = extractTableFieldToString(DataTableW,i,0);
+    Item.Description = extractTableFieldToString(DataTableW,i,2);
+    Item.SIUnit = extractTableFieldToString(DataTableW,i,3);
+
+    SignatureDataEditorWidget::DataConditionsIndices CondIndex = extractTableComboToCondition(DataTableW,i,1);
+
+    if (static_cast<int>(CondIndex) >= 0)
+    {
+      if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::USED)
+      {
+        Signature.HandledData.UsedParams.push_back(Item);
+      }
+      else
+      {
+        Signature.HandledData.RequiredParams.push_back(Item);
+      }
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+//TOIMPL remove extra file panel from obs UI
 void SignatureEditorWidget::updateSignatureFromExtrafilesUI(openfluid::ware::SimulatorSignature& Signature) const
 {
   const QTableWidget* DataTableW = ui->ExtraFilesDataWidget->dataTableWidget();
@@ -673,11 +744,11 @@ void SignatureEditorWidget::updateSignatureFromExtrafilesUI(openfluid::ware::Sim
     {
       if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::USED)
       {
-        Signature.HandledData.UsedExtraFiles.push_back(Filename);
+        Signature.SimulatorHandledData.UsedExtraFiles.push_back(Filename);
       }
       else
       {
-        Signature.HandledData.RequiredExtraFiles.push_back(Filename);
+        Signature.SimulatorHandledData.RequiredExtraFiles.push_back(Filename);
       }
     }
   }
@@ -708,15 +779,15 @@ void SignatureEditorWidget::updateSignatureFromAttributesUI(openfluid::ware::Sim
     {
       if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::USED)
       {
-        Signature.HandledData.UsedAttribute.push_back(Item);
+        Signature.SimulatorHandledData.UsedAttribute.push_back(Item);
       }
       else if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::REQUIRED)
       {
-        Signature.HandledData.RequiredAttribute.push_back(Item);
+        Signature.SimulatorHandledData.RequiredAttribute.push_back(Item);
       }
       else
       {
-        Signature.HandledData.ProducedAttribute.push_back(Item);
+        Signature.SimulatorHandledData.ProducedAttribute.push_back(Item);
       }
     }
   }
@@ -734,7 +805,7 @@ void SignatureEditorWidget::updateSignatureFromEventsUI(openfluid::ware::Simulat
   for (int i=0; i < DataTableW->rowCount();i++)
   {
     openfluid::core::UnitsClass_t Item = extractTableFieldToString(DataTableW,i,0);
-    Signature.HandledData.UsedEventsOnUnits.push_back(Item);
+    Signature.SimulatorHandledData.UsedEventsOnUnits.push_back(Item);
   }
 }
 
@@ -764,19 +835,19 @@ void SignatureEditorWidget::updateSignatureFromVariablesUI(openfluid::ware::Simu
     {
       if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::USED)
       {
-        Signature.HandledData.UsedVars.push_back(Item);
+        Signature.SimulatorHandledData.UsedVars.push_back(Item);
       }
       else if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::REQUIRED)
       {
-        Signature.HandledData.RequiredVars.push_back(Item);
+        Signature.SimulatorHandledData.RequiredVars.push_back(Item);
       }
       else if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::PRODUCED)
       {
-        Signature.HandledData.ProducedVars.push_back(Item);
+        Signature.SimulatorHandledData.ProducedVars.push_back(Item);
       }
       else
       {
-        Signature.HandledData.UpdatedVars.push_back(Item);
+        Signature.SimulatorHandledData.UpdatedVars.push_back(Item);
       }
     }
   }
@@ -934,6 +1005,7 @@ bool SignatureEditorWidget::exportSignature(const QString& SignaturePath) const
   {
     openfluid::ware::ObserverSignature Signature;
     updateSignatureFromCommonsUI(Signature);
+    updateSignatureFromParametersUI(Signature);
     openfluid::waresdev::ObserverSignatureSerializer().writeToJSONFile(Signature,SignaturePath.toStdString());
     return true;
   }

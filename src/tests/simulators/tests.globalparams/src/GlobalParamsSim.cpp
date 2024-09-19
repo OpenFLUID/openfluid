@@ -34,6 +34,7 @@
   @file GlobalParamsSim.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -83,7 +84,7 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
       std::cout << (*itParams).first << " -> " << (*itParams).second << std::endl;
     }
 
-    if (!OPENFLUID_GetSimulatorParameter(Params,"gparam1",LongParam))
+    if (!OPENFLUID_GetWareParameter(Params,"gparam1",LongParam))
     {
       OPENFLUID_RaiseError("gparam1 not found");
     }
@@ -94,7 +95,7 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
     }
 
 
-    if (!OPENFLUID_GetSimulatorParameter(Params,"lparam1",LongParam))
+    if (!OPENFLUID_GetWareParameter(Params,"lparam1",LongParam))
     {
       OPENFLUID_RaiseError("lparam1 not found");
     }
@@ -105,7 +106,7 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
     }
 
 
-    if (!OPENFLUID_GetSimulatorParameter(Params,"gparam2",StrParam))
+    if (!OPENFLUID_GetWareParameter(Params,"gparam2",StrParam))
     {
       OPENFLUID_RaiseError("gparam2 not found");
     }
@@ -116,7 +117,7 @@ class GlobalParamsSimulator : public openfluid::ware::PluggableSimulator
     }
 
 
-    if (!OPENFLUID_GetSimulatorParameter(Params,"gparam3",DoubleParam))
+    if (!OPENFLUID_GetWareParameter(Params,"gparam3",DoubleParam))
     {
       OPENFLUID_RaiseError("gparam3 not found");
     }

@@ -49,6 +49,8 @@
 
 #include <boost/test/unit_test.hpp>
 #include <boost/circular_buffer.hpp>
+#include <limits>
+#include <cmath>
 
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -340,3 +342,12 @@ BOOST_AUTO_TEST_CASE(check_typetostring)
   BOOST_REQUIRE_EQUAL(openfluid::core::Value::getStringFromValueType(openfluid::core::Value::TREE),"tree");
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_nan)
+{
+  BOOST_REQUIRE(std::isnan(openfluid::core::DoubleValue(std::numeric_limits<double>::quiet_NaN()).get()));
+}

@@ -123,15 +123,6 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @return true if the parameter exists, false otherwise
-
-      @cond OpenFLUID:completion
-      {
-        "contexts" : ["SIMULATOR"],
-        "menupath" : ["Parameters"],
-        "title" : "Test if a simulator parameter exists",
-        "text" : "OPENFLUID_IsSimulatorParameterExist(Params,%%SEL_START%%ParamName%%SEL_END%%)"
-      }
-      @endcond
     */
     bool OPENFLUID_IsSimulatorParameterExist(const openfluid::ware::WareParams_t& Params,
                                              const openfluid::ware::WareParamKey_t& ParamName) const;
@@ -141,16 +132,8 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @return the value of the requested parameter
-
-      @cond OpenFLUID:completion
-      {
-        "contexts" : ["SIMULATOR"],
-        "menupath" : ["Parameters"],
-        "title" : "Get simulator parameter (by return)",
-        "text" : "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%)"
-      }
-      @endcond
     */
+   // DIRTYCODE ADD DEPRECATED TAG?
     openfluid::core::StringValue OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                                  const openfluid::ware::WareParamKey_t& ParamName)
                                                                  const;
@@ -161,15 +144,6 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
-
-      @cond OpenFLUID:completion
-      {
-        "contexts" : ["SIMULATOR"],
-        "menupath" : ["Parameters"],
-        "title" : "Get simulator parameter",
-        "text" : "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
-      }
-      @endcond
     */
     bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,

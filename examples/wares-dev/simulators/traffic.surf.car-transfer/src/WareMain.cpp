@@ -78,7 +78,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
 
-      OPENFLUID_GetSimulatorParameter(Params,"MultiCapacity",m_MultiCapacity);
+      OPENFLUID_GetWareParameter(Params,"MultiCapacity",m_MultiCapacity);
       if (m_MultiCapacity<0)
       {
         OPENFLUID_RaiseError("The Multiplying factor for capacity (MultiCapacity) should be positive");

@@ -397,15 +397,15 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
       }
 
       // -- Parameters
-      if (!SimSignature.HandledData.RequiredExtraFiles.empty() ||
-          !SimSignature.HandledData.UsedExtraFiles.empty())
+      if (!SimSignature.SimulatorHandledData.RequiredExtraFiles.empty() ||
+          !SimSignature.SimulatorHandledData.UsedExtraFiles.empty())
       {
         TexDoc.startDataTable("Extra files","ll");
-        for (const auto& D : SimSignature.HandledData.RequiredExtraFiles)
+        for (const auto& D : SimSignature.SimulatorHandledData.RequiredExtraFiles)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D)),"required"});
         }
-        for (const auto& D : SimSignature.HandledData.UsedExtraFiles)
+        for (const auto& D : SimSignature.SimulatorHandledData.UsedExtraFiles)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D)),"used"});
         }
@@ -413,12 +413,12 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
       }
 
       // -- Attributes
-      if (!SimSignature.HandledData.ProducedAttribute.empty() ||
-          !SimSignature.HandledData.RequiredAttribute.empty() ||
-          !SimSignature.HandledData.UsedAttribute.empty())
+      if (!SimSignature.SimulatorHandledData.ProducedAttribute.empty() ||
+          !SimSignature.SimulatorHandledData.RequiredAttribute.empty() ||
+          !SimSignature.SimulatorHandledData.UsedAttribute.empty())
       {
         TexDoc.startDataTable("Attributes","llllXr");
-        for (const auto& D : SimSignature.HandledData.ProducedAttribute)
+        for (const auto& D : SimSignature.SimulatorHandledData.ProducedAttribute)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -427,7 +427,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
                                TexSignature::toFriendly(D.Description),
                                TexSignature::math(D.SIUnit)});
         }
-        for (const auto& D : SimSignature.HandledData.RequiredAttribute)
+        for (const auto& D : SimSignature.SimulatorHandledData.RequiredAttribute)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -436,7 +436,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
                                TexSignature::toFriendly(D.Description),
                                TexSignature::math(D.SIUnit)});
         }
-        for (const auto& D : SimSignature.HandledData.UsedAttribute)
+        for (const auto& D : SimSignature.SimulatorHandledData.UsedAttribute)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -449,13 +449,13 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
       }
 
       // -- Variables
-      if (!SimSignature.HandledData.ProducedVars.empty() ||
-          !SimSignature.HandledData.RequiredVars.empty() ||
-          !SimSignature.HandledData.UsedVars.empty() ||
-          !SimSignature.HandledData.UpdatedVars.empty())
+      if (!SimSignature.SimulatorHandledData.ProducedVars.empty() ||
+          !SimSignature.SimulatorHandledData.RequiredVars.empty() ||
+          !SimSignature.SimulatorHandledData.UsedVars.empty() ||
+          !SimSignature.SimulatorHandledData.UpdatedVars.empty())
       {
         TexDoc.startDataTable("Variables","llllXr");
-        for (const auto& D : SimSignature.HandledData.ProducedVars)
+        for (const auto& D : SimSignature.SimulatorHandledData.ProducedVars)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -464,7 +464,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
                                TexSignature::toFriendly(D.Description),
                                TexSignature::math(D.SIUnit)});
         }
-        for (const auto& D : SimSignature.HandledData.RequiredVars)
+        for (const auto& D : SimSignature.SimulatorHandledData.RequiredVars)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -473,7 +473,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
                                TexSignature::toFriendly(D.Description),
                                TexSignature::math(D.SIUnit)});
         }
-        for (const auto& D : SimSignature.HandledData.UsedVars)
+        for (const auto& D : SimSignature.SimulatorHandledData.UsedVars)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -482,7 +482,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
                                TexSignature::toFriendly(D.Description),
                                TexSignature::math(D.SIUnit)});
         }
-        for (const auto& D : SimSignature.HandledData.UpdatedVars)
+        for (const auto& D : SimSignature.SimulatorHandledData.UpdatedVars)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -495,10 +495,10 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
       }
 
       // -- Events
-      if (!SimSignature.HandledData.UsedEventsOnUnits.empty())
+      if (!SimSignature.SimulatorHandledData.UsedEventsOnUnits.empty())
       {
         TexDoc.startDataTable("Events","l");
-        for (const auto& D : SimSignature.HandledData.UsedEventsOnUnits)
+        for (const auto& D : SimSignature.SimulatorHandledData.UsedEventsOnUnits)
         {
           TexDoc.addDataEntry({TexSignature::toFriendly(D)});
         }

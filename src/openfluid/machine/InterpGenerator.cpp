@@ -75,28 +75,28 @@ InterpGenerator::~InterpGenerator()
 
 void InterpGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
-  if (!OPENFLUID_GetSimulatorParameter(Params,"sources",m_SourcesFile))
+  if (!OPENFLUID_GetWareParameter(Params,"sources",m_SourcesFile))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "missing sources value for generator");
   }
 
-  if (!OPENFLUID_GetSimulatorParameter(Params,"distribution",m_DistriFile))
+  if (!OPENFLUID_GetWareParameter(Params,"distribution",m_DistriFile))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "missing distribution value for generator");
   }
 
-  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmin",m_Min))
+  if (OPENFLUID_GetWareParameter(Params,"thresholdmin",m_Min))
   {
     m_IsMin = true;
   }
 
-  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmax",m_Max))
+  if (OPENFLUID_GetWareParameter(Params,"thresholdmax",m_Max))
   {
     m_IsMax = true;
   }
-  if (!OPENFLUID_GetSimulatorParameter(Params,"keeptmpdir",m_IsKeepTmp))
+  if (!OPENFLUID_GetWareParameter(Params,"keeptmpdir",m_IsKeepTmp))
   {
     m_IsKeepTmp = false;
   }

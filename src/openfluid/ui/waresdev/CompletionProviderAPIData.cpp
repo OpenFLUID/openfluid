@@ -880,42 +880,6 @@ addRule(
   Rule(
     "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
     {
-      CompletionProvider::tr("Parameters")
-    },
-    CompletionProvider::tr("Test if a simulator parameter exists"),
-    "OPENFLUID_IsSimulatorParameterExist(Params,%%SEL_START%%ParamName%%SEL_END%%)"
-  )
-);
-
-// extracted from ware/PluggableSimulator.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Parameters")
-    },
-    CompletionProvider::tr("Get simulator parameter (by return)"),
-    "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%)"
-  )
-);
-
-// extracted from ware/PluggableSimulator.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
-      CompletionProvider::tr("Parameters")
-    },
-    CompletionProvider::tr("Get simulator parameter"),
-    "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
-  )
-);
-
-// extracted from ware/PluggableSimulator.hpp
-addRule(
-  Rule(
-    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR,
-    {
       CompletionProvider::tr("Threading")
     },
     CompletionProvider::tr("Get maximum number of threads"),
@@ -1497,6 +1461,42 @@ addRule(
     },
     CompletionProvider::tr("Raise fatal error"),
     "OPENFLUID_RaiseError(%%SEL_START%%\"message\"%%SEL_END%%)"
+  )
+);
+
+// extracted from ware/SimulationDrivenWare.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
+    {
+      CompletionProvider::tr("Parameters")
+    },
+    CompletionProvider::tr("Test if a ware parameter exists"),
+    "OPENFLUID_IsWareParameterExist(Params,%%SEL_START%%ParamName%%SEL_END%%)"
+  )
+);
+
+// extracted from ware/SimulationDrivenWare.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
+    {
+      CompletionProvider::tr("Parameters")
+    },
+    CompletionProvider::tr("Get ware parameter (by return)"),
+    "OPENFLUID_GetWareParameter(Params,%%SEL_START%%ParamName%%SEL_END%%)"
+  )
+);
+
+// extracted from ware/SimulationDrivenWare.hpp
+addRule(
+  Rule(
+    "cpp",Origin::OPENFLUID,ContextFlags::SIMULATOR | ContextFlags::OBSERVER,
+    {
+      CompletionProvider::tr("Parameters")
+    },
+    CompletionProvider::tr("Get ware parameter"),
+    "OPENFLUID_GetWareParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
   )
 );
 

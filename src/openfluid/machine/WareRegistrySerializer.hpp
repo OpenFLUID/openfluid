@@ -328,13 +328,14 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
   const openfluid::ware::SimulatorSignature* Sign, std::ostream& OutStm) const
 {
   const auto& Data = Sign->HandledData;
+  const auto& SimData = Sign->SimulatorHandledData;
 
   if (!Data.UsedParams.empty() || !Data.RequiredParams.empty() ||
-      !Data.ProducedVars.empty() || !Data.UpdatedVars.empty() || 
-      !Data.RequiredVars.empty() || !Data.UsedVars.empty() ||
-      !Data.ProducedAttribute.empty() || !Data.RequiredAttribute.empty() || !Data.UsedAttribute.empty() ||
-      !Data.RequiredExtraFiles.empty() || !Data.UsedExtraFiles.empty() ||
-      !Data.UsedEventsOnUnits.empty())
+      !SimData.ProducedVars.empty() || !SimData.UpdatedVars.empty() || 
+      !SimData.RequiredVars.empty() || !SimData.UsedVars.empty() ||
+      !SimData.ProducedAttribute.empty() || !SimData.RequiredAttribute.empty() || !SimData.UsedAttribute.empty() ||
+      !SimData.RequiredExtraFiles.empty() || !SimData.UsedExtraFiles.empty() ||
+      !SimData.UsedEventsOnUnits.empty())
   {
     OutStm << getIndentedText(2,"Handled data") << "\n";
 
@@ -354,17 +355,17 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
     
     // ------ Attributes
 
-    for (const auto& Item : Data.RequiredAttribute)
+    for (const auto& Item : SimData.RequiredAttribute)
     {
       addSpatialDataForText(Item,"required attribute",OutStm);
     } 
 
-    for (const auto& Item : Data.UsedAttribute)
+    for (const auto& Item : SimData.UsedAttribute)
     {
       addSpatialDataForText(Item,"used attribute",OutStm);
     } 
 
-    for (const auto& Item : Data.ProducedAttribute)
+    for (const auto& Item : SimData.ProducedAttribute)
     {
       addSpatialDataForText(Item,"produced attribute",OutStm);
     } 
@@ -372,34 +373,34 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
 
     // ------ Variables
 
-    for (const auto& Item : Data.RequiredVars)
+    for (const auto& Item : SimData.RequiredVars)
     {
       addTypedSpatialDataForText(Item,"required variable",OutStm);
     } 
 
-    for (const auto& Item : Data.UsedVars)
+    for (const auto& Item : SimData.UsedVars)
     {
       addTypedSpatialDataForText(Item,"used variable",OutStm);
     } 
 
-    for (const auto& Item : Data.UpdatedVars)
+    for (const auto& Item : SimData.UpdatedVars)
     {
       addTypedSpatialDataForText(Item,"updated variable",OutStm);
     } 
 
-    for (const auto& Item : Data.ProducedVars)
+    for (const auto& Item : SimData.ProducedVars)
     {
       addTypedSpatialDataForText(Item,"produced variable",OutStm);
     } 
 
 
     // ------ Events
-    if (!Data.UsedEventsOnUnits.empty())
+    if (!SimData.UsedEventsOnUnits.empty())
     {
       bool First = true;
       std::string EventsStr;
 
-      for (const auto& Item : Data.UsedEventsOnUnits)
+      for (const auto& Item : SimData.UsedEventsOnUnits)
       {
         if (!First)
         {
@@ -414,12 +415,12 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
 
     // ------ Extrafiles
 
-    for (const auto& Item : Data.RequiredExtraFiles)
+    for (const auto& Item : SimData.RequiredExtraFiles)
     {
       OutStm << getIndentedText(3,"Required extra file",Item) << "\n";
     }
 
-    for (const auto& Item : Data.UsedExtraFiles)
+    for (const auto& Item : SimData.UsedExtraFiles)
     {
       OutStm << getIndentedText(3,"Used extra file",Item) << "\n";
     }

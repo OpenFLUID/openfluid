@@ -199,6 +199,81 @@ class OPENFLUID_API WareSignature
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
+/**
+Class for storage of the definition of data handled by the simulator.
+*/
+class OPENFLUID_API SignatureDataItem
+{
+  public:
+
+    std::string Name;
+    std::string Description;
+    std::string SIUnit;
+    openfluid::core::Value::Type DataType = openfluid::core::Value::NONE;
+
+    SignatureDataItem()
+    { }
+
+    SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI);
+
+    SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI,
+                      openfluid::core::Value::Type T);
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Class for storage of the definition of the data handled by the ware. This is part of the signature.
+*/
+class OPENFLUID_API SignatureHandledData
+{
+  public:
+
+    std::vector<SignatureDataItem> UsedParams;
+
+    std::vector<SignatureDataItem> RequiredParams;
+
+    SignatureHandledData()
+    {
+      clear();
+    }
+
+    ~SignatureHandledData() {}
+
+
+    void clear()
+    {
+      UsedParams.clear();
+      RequiredParams.clear();
+    }
+
+};
+
+
+class OPENFLUID_API DataWareSignature : public WareSignature
+{
+  public:
+    /**
+      Handled data
+    */
+    SignatureHandledData HandledData;
+    
+    void clear()
+    {
+      WareSignature::clear();
+      HandledData.clear();
+    }
+
+};
+
+
 } } // openfluid::ware
 
 

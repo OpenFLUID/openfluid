@@ -75,7 +75,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableSimulator
   
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      OPENFLUID_GetSimulatorParameter(Params,"gmult",m_Mult);
+      OPENFLUID_GetWareParameter(Params,"gmult",m_Mult);
     }
 
 

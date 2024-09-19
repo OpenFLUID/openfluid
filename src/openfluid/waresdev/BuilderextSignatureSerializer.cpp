@@ -90,20 +90,20 @@ std::string BuilderextSignatureSerializer::toWareCPP(const openfluid::builderext
 {
   std::string CPP;
   
-  CPP += getCPPHead("openfluid/builderext/BuilderExtensionSignature.hpp",
+  CPP += CppWriter::getCPPHead("openfluid/builderext/BuilderExtensionSignature.hpp",
                     "openfluid::builderext::BuilderExtensionSignature");
   CPP += toWareCPPBase(Sign);
   
   CPP += "\n";
 
-  CPP += getCPPAssignment("Role","openfluid::builderext::ExtensionRole::FEATURE");
-  CPP += getCPPAssignment("Mode","openfluid::builderext::ExtensionMode::"+
+  CPP += CppWriter::getCPPAssignment("Role","openfluid::builderext::ExtensionRole::FEATURE");
+  CPP += CppWriter::getCPPAssignment("Mode","openfluid::builderext::ExtensionMode::"+
                                  openfluid::tools::toUpperCase(Sign.getModeAsString()));  
-  CPP += getCPPAssignment("Category","openfluid::builderext::ExtensionCategory::"+
+  CPP += CppWriter::getCPPAssignment("Category","openfluid::builderext::ExtensionCategory::"+
                                      openfluid::tools::toUpperCase(Sign.getCategoryAsString()));  
-  CPP += getCPPAssignment("MenuText",Sign.MenuText,true);
+  CPP += CppWriter::getCPPAssignment("MenuText",Sign.MenuText,true);
   
-  CPP += getCPPTail();
+  CPP += CppWriter::getCPPTail();
 
   return CPP;
 }
@@ -118,7 +118,7 @@ std::string BuilderextSignatureSerializer::toWareCMake(const openfluid::buildere
 {
   std::string CMake;
 
-  CMake += getHead("#");
+  CMake += CppWriter::getHead("#");
   CMake += toWareCMakeBase(Sign);
 
   CMake += "SET(WARE_TYPE \"builderext\")\n";

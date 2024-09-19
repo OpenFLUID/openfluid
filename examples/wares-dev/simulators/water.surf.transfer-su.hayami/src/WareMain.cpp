@@ -97,9 +97,9 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
     {
 
       // Getting simulator parameters
-      OPENFLUID_GetSimulatorParameter(Params,"maxsteps",m_MaxSteps);
-      OPENFLUID_GetSimulatorParameter(Params,"meancel",m_MeanCelerity);
-      OPENFLUID_GetSimulatorParameter(Params,"meansigma",m_MeanSigma);
+      OPENFLUID_GetWareParameter(Params,"maxsteps",m_MaxSteps);
+      OPENFLUID_GetWareParameter(Params,"meancel",m_MeanCelerity);
+      OPENFLUID_GetWareParameter(Params,"meansigma",m_MeanSigma);
 
       // Checking parameters consistency
       if (m_MaxSteps <= 0)

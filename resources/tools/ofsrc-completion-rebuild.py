@@ -44,7 +44,7 @@
 #    "contexts" : ["SIMULATOR"],
 #    "menupath" : ["Parameters"],
 #    "title" : "Get simulator parameter",
-#    "text" : "OPENFLUID_GetSimulatorParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
+#    "text" : "OPENFLUID_GetWareParameter(Params,%%SEL_START%%ParamName%%SEL_END%%,Val)"
 #  }
 #  @endcond
 #

@@ -73,7 +73,7 @@ MultiInjectGenerator::~MultiInjectGenerator()
 void MultiInjectGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   std::string DataFileGivenPath;
-  if (OPENFLUID_GetSimulatorParameter(Params,"datafile",DataFileGivenPath))
+  if (OPENFLUID_GetWareParameter(Params,"datafile",DataFileGivenPath))
   {
     if (std::filesystem::path(DataFileGivenPath).is_absolute())
     {

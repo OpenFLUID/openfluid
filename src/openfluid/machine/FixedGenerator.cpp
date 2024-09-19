@@ -124,7 +124,7 @@ FixedGenerator<openfluid::core::MatrixValue>::FixedGenerator() : MonoGenerator()
 template <class T>
 void FixedGenerator<T>::processVarValue(const openfluid::ware::WareParams_t& Params)
 {
-  if (!OPENFLUID_GetSimulatorParameter(Params,"fixedvalue",m_VarValue))
+  if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",m_VarValue))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing fixed value for generator");
   }
@@ -139,14 +139,14 @@ template <>
 void FixedGenerator<openfluid::core::VectorValue>::processVarValue(const openfluid::ware::WareParams_t& Params)
 {
   std::string StringVarValue;
-  if (!OPENFLUID_GetSimulatorParameter(Params,"fixedvalue",StringVarValue))
+  if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",StringVarValue))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing fixed vector value for generator");
   }
   if (openfluid::core::StringValue(StringVarValue).guessTypeConversion() == openfluid::core::Value::VECTOR)
   {
     openfluid::core::VectorValue VV;
-    if (!OPENFLUID_GetSimulatorParameter(Params,"fixedvalue",VV))
+    if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",VV))
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "badly formatted fixed vector value for generator");
@@ -183,14 +183,14 @@ template <>
 void FixedGenerator<openfluid::core::MatrixValue>::processVarValue(const openfluid::ware::WareParams_t& Params)
 {
   std::string StringVarValue;
-  if (!OPENFLUID_GetSimulatorParameter(Params,"fixedvalue",StringVarValue))
+  if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",StringVarValue))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing fixed vector value for generator");
   }
   if (openfluid::core::StringValue(StringVarValue).guessTypeConversion() == openfluid::core::Value::MATRIX)
   {
     openfluid::core::MatrixValue MV;
-    if (!OPENFLUID_GetSimulatorParameter(Params,"fixedvalue",MV))
+    if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",MV))
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "badly formatted fixed vector value for generator");
@@ -229,7 +229,7 @@ void FixedGenerator<T>::initParams(const openfluid::ware::WareParams_t& Params)
   processVarValue(Params);
 
   std::string DeltaTStr;
-  if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) &&
+  if (OPENFLUID_GetWareParameter(Params,"deltat",DeltaTStr) &&
       !openfluid::tools::toNumeric(DeltaTStr,m_DeltaT))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"wrong value for deltat");

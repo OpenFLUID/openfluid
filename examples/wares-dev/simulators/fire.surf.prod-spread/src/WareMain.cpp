@@ -85,7 +85,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      OPENFLUID_GetSimulatorParameter(Params,"ignitionunits",m_IgnitionUnits);
+      OPENFLUID_GetWareParameter(Params,"ignitionunits",m_IgnitionUnits);
     }
 
 

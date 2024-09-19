@@ -93,7 +93,7 @@ class RainSUFromFilesSimulator : public openfluid::ware::PluggableSimulator
   
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      OPENFLUID_GetSimulatorParameter(Params,"threshold",m_Threshold);
+      OPENFLUID_GetWareParameter(Params,"threshold",m_Threshold);
       if (m_Threshold <= 0)
       {
         OPENFLUID_RaiseError("The rainfall threshold should be higher or equal to 0.");

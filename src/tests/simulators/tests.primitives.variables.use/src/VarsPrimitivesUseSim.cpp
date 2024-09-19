@@ -83,9 +83,9 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      OPENFLUID_GetSimulatorParameter(Params,"strparam",m_ParamString);
-      OPENFLUID_GetSimulatorParameter(Params,"doubleparam",m_ParamDouble);
-      OPENFLUID_GetSimulatorParameter(Params,"longparam",m_ParamLong);
+      OPENFLUID_GetWareParameter(Params,"strparam",m_ParamString);
+      OPENFLUID_GetWareParameter(Params,"doubleparam",m_ParamDouble);
+      OPENFLUID_GetWareParameter(Params,"longparam",m_ParamLong);
 
     }
 

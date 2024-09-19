@@ -34,6 +34,7 @@
   @file ObserverSignatureSerializer.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -45,6 +46,15 @@
 namespace openfluid { namespace waresdev {
 
 
+void ObserverSignatureSerializer::unserializeDataFromJSON(const openfluid::thirdparty::json& Json, 
+                                                           openfluid::ware::ObserverSignature& Sign) const
+{
+  if (Json.contains("parameters")) //DIRTYCODE factorize
+  {
+    DataJsonConverter::unserializeParametersFromJSON(Json.at("parameters"),Sign.HandledData);
+  }
+}
+
 openfluid::ware::ObserverSignature ObserverSignatureSerializer::fromJSON(const openfluid::thirdparty::json& Json) const
 {
   openfluid::ware::ObserverSignature Sign = fromJSONBase(Json);
@@ -52,6 +62,13 @@ openfluid::ware::ObserverSignature ObserverSignatureSerializer::fromJSON(const o
    if (!Json.contains("observer"))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing observer entry");
+  }
+
+  const auto JsonObs = Json.at("observer");
+
+  if (JsonObs.contains("data"))
+  {
+    unserializeDataFromJSON(JsonObs.at("data"),Sign);
   }
 
   return Sign;
@@ -67,6 +84,7 @@ openfluid::thirdparty::json ObserverSignatureSerializer::toJSON(const openfluid:
   openfluid::thirdparty::json Json = toJSONBase(Sign);
 
   Json["observer"] = openfluid::thirdparty::json::object();
+  Json["observer"]["data"] = DataJsonConverter::serializeDataToJSON(Sign.HandledData);
 
   return Json;
 }
@@ -80,10 +98,12 @@ std::string ObserverSignatureSerializer::toWareCPP(const openfluid::ware::Observ
 {
   std::string CPP;
   
-  CPP += getCPPHead("openfluid/ware/ObserverSignature.hpp","openfluid::ware::ObserverSignature");
+  CPP += CppWriter::getCPPHead("openfluid/ware/ObserverSignature.hpp","openfluid::ware::ObserverSignature");
   CPP += toWareCPPBase(Sign);
+
+  CPP += CppWriter::toWareCPPParams(Sign.HandledData);
   
-  CPP += getCPPTail();
+  CPP += CppWriter::getCPPTail();
 
   return CPP;
 }
@@ -97,7 +117,7 @@ std::string ObserverSignatureSerializer::toWareCMake(const openfluid::ware::Obse
 {
   std::string CMake;
 
-  CMake += getHead("#");
+  CMake += CppWriter::getHead("#");
   CMake += toWareCMakeBase(Sign);
 
   CMake += "SET(WARE_TYPE \"observer\")\n";

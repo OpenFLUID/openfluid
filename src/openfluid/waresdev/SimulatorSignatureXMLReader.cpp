@@ -223,11 +223,11 @@ bool SimulatorSignatureXMLReader::loadFromFile(const std::string& FilePath,
 
               if (Data.IOMode == "required")
               {
-                Signature.HandledData.RequiredExtraFiles.push_back(Data.Name);
+                Signature.SimulatorHandledData.RequiredExtraFiles.push_back(Data.Name);
               }
               else if (Data.IOMode == "used")
               {
-                Signature.HandledData.UsedExtraFiles.push_back(Data.Name);
+                Signature.SimulatorHandledData.UsedExtraFiles.push_back(Data.Name);
               }
             }
             else if (TagName == "events")
@@ -239,7 +239,7 @@ bool SimulatorSignatureXMLReader::loadFromFile(const std::string& FilePath,
                 return false;
               }
 
-              Signature.HandledData.UsedEventsOnUnits.push_back(Data.UnitsClass);
+              Signature.SimulatorHandledData.UsedEventsOnUnits.push_back(Data.UnitsClass);
             }
             else if (TagName == "variable")
             {
@@ -265,19 +265,19 @@ bool SimulatorSignatureXMLReader::loadFromFile(const std::string& FilePath,
 
               if (Data.IOMode == "required")
               {
-                Signature.HandledData.RequiredVars.push_back(Variable);
+                Signature.SimulatorHandledData.RequiredVars.push_back(Variable);
               }
               else if (Data.IOMode == "used")
               {
-                Signature.HandledData.UsedVars.push_back(Variable);
+                Signature.SimulatorHandledData.UsedVars.push_back(Variable);
               }
               else if (Data.IOMode == "produced")
               {
-                Signature.HandledData.ProducedVars.push_back(Variable);
+                Signature.SimulatorHandledData.ProducedVars.push_back(Variable);
               }
               else if (Data.IOMode == "updated")
               {
-                Signature.HandledData.UpdatedVars.push_back(Variable);
+                Signature.SimulatorHandledData.UpdatedVars.push_back(Variable);
               }
             }
             else if (TagName == "attribute")
@@ -297,15 +297,15 @@ bool SimulatorSignatureXMLReader::loadFromFile(const std::string& FilePath,
 
               if (Data.IOMode == "required")
               {
-                Signature.HandledData.RequiredAttribute.push_back(Attribute);
+                Signature.SimulatorHandledData.RequiredAttribute.push_back(Attribute);
               }
               else if (Data.IOMode == "used")
               {
-                Signature.HandledData.UsedAttribute.push_back(Attribute);
+                Signature.SimulatorHandledData.UsedAttribute.push_back(Attribute);
               }
               else if (Data.IOMode == "produced")
               {
-                Signature.HandledData.ProducedAttribute.push_back(Attribute);
+                Signature.SimulatorHandledData.ProducedAttribute.push_back(Attribute);
               }
             }
           }
