@@ -76,7 +76,7 @@ class SnippetsSimulator : public openfluid::ware::PluggableSimulator
 void initParams(const openfluid::ware::WareParams_t& Params)
 {
   m_MyParam = 0; //default value set to the class member
-  OPENFLUID_GetSimulatorParameter(Params,"myparam",m_MyParam);
+  OPENFLUID_GetWareParameter(Params,"myparam",m_MyParam);
 }
 //! [params]
 

@@ -83,26 +83,26 @@ openfluid::ware::SimulatorSignature getRefSignature()
   Sign.HandledData.RequiredParams.push_back({"speedl","speed limit","m/s",openfluid::core::Value::DOUBLE});
   Sign.HandledData.RequiredParams.push_back({"forcefield","field of force","n/m2",openfluid::core::Value::MATRIX});
 
-  Sign.HandledData.UsedExtraFiles = {"observed.csv","simulated.csv","randomized.csv"};
-  Sign.HandledData.RequiredExtraFiles = {"forced_data1.csv","forced_data2.csv",};
+  Sign.SimulatorHandledData.UsedExtraFiles = {"observed.csv","simulated.csv","randomized.csv"};
+  Sign.SimulatorHandledData.RequiredExtraFiles = {"forced_data1.csv","forced_data2.csv",};
 
-  Sign.HandledData.UsedAttribute.push_back({"venue_capacity[integer]","YU","the venue capacity",""});
-  Sign.HandledData.UsedAttribute.push_back({"venue_volume","YU","the venue volume","m3s"});
-  Sign.HandledData.RequiredAttribute.push_back(
+  Sign.SimulatorHandledData.UsedAttribute.push_back({"venue_capacity[integer]","YU","the venue capacity",""});
+  Sign.SimulatorHandledData.UsedAttribute.push_back({"venue_volume","YU","the venue volume","m3s"});
+  Sign.SimulatorHandledData.RequiredAttribute.push_back(
     {"stage_area","ZU","the stage area","m2",openfluid::core::Value::DOUBLE});
-  Sign.HandledData.ProducedAttribute.push_back(
+  Sign.SimulatorHandledData.ProducedAttribute.push_back(
     {"area_per_musician","ZU","the area for each musician on stage","m2",openfluid::core::Value::DOUBLE});
 
-  Sign.HandledData.ProducedVars.push_back(
+  Sign.SimulatorHandledData.ProducedVars.push_back(
     {"venue.band.music.instruments","YU","the music","db",openfluid::core::Value::VECTOR});
-  Sign.HandledData.ProducedVars.push_back({"venue.stage.light.system[map]","YU","the light","lm"});
-  Sign.HandledData.UpdatedVars.push_back(
+  Sign.SimulatorHandledData.ProducedVars.push_back({"venue.stage.light.system[map]","YU","the light","lm"});
+  Sign.SimulatorHandledData.UpdatedVars.push_back(
     {"venue.temperature.attendance","ZU","the venue temperature","K",openfluid::core::Value::DOUBLE});
-  Sign.HandledData.RequiredVars.push_back(
+  Sign.SimulatorHandledData.RequiredVars.push_back(
     {"venue.stage.power","ZU","the electric power","W",openfluid::core::Value::INTEGER});
-  Sign.HandledData.UsedVars.push_back({"venue.band.mojo","ZU","the mojo",""});
+  Sign.SimulatorHandledData.UsedVars.push_back({"venue.band.mojo","ZU","the mojo",""});
 
-  Sign.HandledData.UsedEventsOnUnits = {"ZU","YU"};
+  Sign.SimulatorHandledData.UsedEventsOnUnits = {"ZU","YU"};
 
   Sign.TimeScheduling.setAsRange(300,600);
 
@@ -135,39 +135,39 @@ void compareSignatures(const openfluid::ware::SimulatorSignature& Sign1,
   BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredParams.size(),Sign2.HandledData.RequiredParams.size());
 
   // extra files
-  BOOST_CHECK(!Sign1.HandledData.UsedExtraFiles.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.UsedExtraFiles.size(),Sign2.HandledData.UsedExtraFiles.size());
-  BOOST_CHECK_EQUAL_COLLECTIONS(Sign1.HandledData.UsedExtraFiles.begin(),Sign1.HandledData.UsedExtraFiles.end(),
-                                Sign2.HandledData.UsedExtraFiles.begin(),Sign2.HandledData.UsedExtraFiles.end());
-  BOOST_CHECK(!Sign1.HandledData.RequiredExtraFiles.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredExtraFiles.size(),Sign2.HandledData.RequiredExtraFiles.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.UsedExtraFiles.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.UsedExtraFiles.size(),Sign2.SimulatorHandledData.UsedExtraFiles.size());
+  BOOST_CHECK_EQUAL_COLLECTIONS(Sign1.SimulatorHandledData.UsedExtraFiles.begin(),Sign1.SimulatorHandledData.UsedExtraFiles.end(),
+                                Sign2.SimulatorHandledData.UsedExtraFiles.begin(),Sign2.SimulatorHandledData.UsedExtraFiles.end());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.RequiredExtraFiles.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredExtraFiles.size(),Sign2.SimulatorHandledData.RequiredExtraFiles.size());
   BOOST_CHECK_EQUAL_COLLECTIONS(
-    Sign1.HandledData.RequiredExtraFiles.begin(),Sign1.HandledData.RequiredExtraFiles.end(),
-    Sign2.HandledData.RequiredExtraFiles.begin(),Sign2.HandledData.RequiredExtraFiles.end()
+    Sign1.SimulatorHandledData.RequiredExtraFiles.begin(),Sign1.SimulatorHandledData.RequiredExtraFiles.end(),
+    Sign2.SimulatorHandledData.RequiredExtraFiles.begin(),Sign2.SimulatorHandledData.RequiredExtraFiles.end()
   );
 
   // attributes
-  BOOST_CHECK(!Sign1.HandledData.ProducedAttribute.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.ProducedAttribute.size(),Sign2.HandledData.ProducedAttribute.size());
-  BOOST_CHECK(!Sign1.HandledData.RequiredAttribute.empty());  
-  BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredAttribute.size(),Sign2.HandledData.RequiredAttribute.size());
-  BOOST_CHECK(!Sign1.HandledData.RequiredAttribute.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredAttribute.size(),Sign2.HandledData.RequiredAttribute.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.ProducedAttribute.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.ProducedAttribute.size(),Sign2.SimulatorHandledData.ProducedAttribute.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.RequiredAttribute.empty());  
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredAttribute.size(),Sign2.SimulatorHandledData.RequiredAttribute.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.RequiredAttribute.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredAttribute.size(),Sign2.SimulatorHandledData.RequiredAttribute.size());
 
   // variables
-  BOOST_CHECK(!Sign1.HandledData.ProducedVars.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.ProducedVars.size(),Sign2.HandledData.ProducedVars.size());
-  BOOST_CHECK(!Sign1.HandledData.UsedVars.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.UsedVars.size(),Sign2.HandledData.UsedVars.size());
-  BOOST_CHECK(!Sign1.HandledData.RequiredVars.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredVars.size(),Sign2.HandledData.RequiredVars.size());
-  BOOST_CHECK(!Sign1.HandledData.UpdatedVars.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.UpdatedVars.size(),Sign2.HandledData.UpdatedVars.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.ProducedVars.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.ProducedVars.size(),Sign2.SimulatorHandledData.ProducedVars.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.UsedVars.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.UsedVars.size(),Sign2.SimulatorHandledData.UsedVars.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.RequiredVars.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredVars.size(),Sign2.SimulatorHandledData.RequiredVars.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.UpdatedVars.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.UpdatedVars.size(),Sign2.SimulatorHandledData.UpdatedVars.size());
 
   // events
-  BOOST_CHECK_EQUAL(Sign1.HandledData.UsedEventsOnUnits.size(),Sign2.HandledData.UsedEventsOnUnits.size());
-  BOOST_CHECK_EQUAL_COLLECTIONS(Sign1.HandledData.UsedEventsOnUnits.begin(),Sign1.HandledData.UsedEventsOnUnits.end(),
-                                Sign2.HandledData.UsedEventsOnUnits.begin(),Sign2.HandledData.UsedEventsOnUnits.end());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.UsedEventsOnUnits.size(),Sign2.SimulatorHandledData.UsedEventsOnUnits.size());
+  BOOST_CHECK_EQUAL_COLLECTIONS(Sign1.SimulatorHandledData.UsedEventsOnUnits.begin(),Sign1.SimulatorHandledData.UsedEventsOnUnits.end(),
+                                Sign2.SimulatorHandledData.UsedEventsOnUnits.begin(),Sign2.SimulatorHandledData.UsedEventsOnUnits.end());
 
   // spatial graph
   BOOST_CHECK(!Sign1.HandledUnitsGraph.UpdatedUnitsGraph.empty());

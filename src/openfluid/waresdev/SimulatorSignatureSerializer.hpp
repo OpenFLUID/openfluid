@@ -34,6 +34,7 @@
   @file SimulatorSignatureSerializer.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -50,7 +51,8 @@
 namespace openfluid { namespace waresdev {
 
 
-class OPENFLUID_API SimulatorSignatureSerializer : public WareSignatureSerializer<openfluid::ware::SimulatorSignature>
+class OPENFLUID_API SimulatorSignatureSerializer : 
+  public WareSignatureSerializer<openfluid::ware::SimulatorSignature>
 {
   private:
 
@@ -59,9 +61,6 @@ class OPENFLUID_API SimulatorSignatureSerializer : public WareSignatureSerialize
     
     static std::string getCPPSpatialDataString(const std::string Member,
                                                const std::vector<openfluid::ware::SignatureSpatialDataItem>& Data);
-
-    void unserializeParametersFromJSON(const openfluid::thirdparty::json& Json, 
-                                       openfluid::ware::SimulatorSignature& Sign) const;
 
     void unserializeAttributesFromJSON(const openfluid::thirdparty::json& Json, 
                                        openfluid::ware::SimulatorSignature& Sign) const;
@@ -84,8 +83,6 @@ class OPENFLUID_API SimulatorSignatureSerializer : public WareSignatureSerialize
     void unserializeSchedulingFromJSON(const openfluid::thirdparty::json& Json, 
                                        openfluid::ware::SimulatorSignature& Sign) const;
 
-    openfluid::thirdparty::json serializeParametersToJSON(const openfluid::ware::SimulatorSignature& Sign) const;
-
     openfluid::thirdparty::json serializeAttributesToJSON(const openfluid::ware::SimulatorSignature& Sign) const;
 
     openfluid::thirdparty::json serializeVariablesToJSON(const openfluid::ware::SimulatorSignature& Sign) const;
@@ -104,7 +101,7 @@ class OPENFLUID_API SimulatorSignatureSerializer : public WareSignatureSerialize
   public:
 
     SimulatorSignatureSerializer() : 
-    WareSignatureSerializer<openfluid::ware::SimulatorSignature>()
+      WareSignatureSerializer<openfluid::ware::SimulatorSignature>()
     { }
 
     ~SimulatorSignatureSerializer()

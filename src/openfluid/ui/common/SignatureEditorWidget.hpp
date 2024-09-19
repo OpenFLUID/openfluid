@@ -46,7 +46,9 @@
 
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/ui/common/WareIssuesManagerWidget.hpp>
 #include <openfluid/waresdev/WareSignatureSerializer.hpp>
 
@@ -90,7 +92,11 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     void initializeIssuesUIFromSignature(const openfluid::ware::WareSignature& Signature);
 
+    void injectParamData(const openfluid::ware::SignatureHandledData& Data);
+
     void initializeParametersUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
+
+    void initializeParametersUIFromSignature(const openfluid::ware::ObserverSignature& Signature); //TOIMPL factorize
 
     void initializeExtrafilesUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
 
@@ -107,6 +113,8 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
     void updateSignatureFromCommonsUI(openfluid::ware::WareSignature& Signature) const;
 
     void updateSignatureFromParametersUI(openfluid::ware::SimulatorSignature& Signature) const;
+
+    void updateSignatureFromParametersUI(openfluid::ware::ObserverSignature& Signature) const; // TOIMPL factorize
 
     void updateSignatureFromExtrafilesUI(openfluid::ware::SimulatorSignature& Signature) const;
 
@@ -133,6 +141,8 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
     virtual ~SignatureEditorWidget();
 
     void initializeSimulator(const openfluid::ware::SimulatorSignature& Signature);  // used by ghosts
+
+    void initializeObserver(const openfluid::ware::ObserverSignature& Observer);
 
     void initializeBuilderext(const openfluid::builderext::BuilderExtensionSignature& Signature);
     

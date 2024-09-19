@@ -70,7 +70,7 @@ MessagesSimulator::~MessagesSimulator()
 
 void MessagesSimulator::initParams(const openfluid::ware::WareParams_t& Params)
 {
-  OPENFLUID_GetSimulatorParameter(Params,"rptmsgs",m_RepeatMessages);
+  OPENFLUID_GetWareParameter(Params,"rptmsgs",m_RepeatMessages);
 }
 
 

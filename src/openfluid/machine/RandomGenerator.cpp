@@ -111,7 +111,7 @@ RandomGenerator::~RandomGenerator()
 void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   std::string DeltaTStr;
-  if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) &&
+  if (OPENFLUID_GetWareParameter(Params,"deltat",DeltaTStr) &&
       !openfluid::tools::toNumeric(DeltaTStr,m_DeltaT))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"wrong value for deltat");
@@ -129,12 +129,12 @@ template<class T>
 void NumericalRandomGenerator<T>::initParams(const openfluid::ware::WareParams_t& Params)
 {
 
-  if (!OPENFLUID_GetSimulatorParameter(Params,"min",m_Min))
+  if (!OPENFLUID_GetWareParameter(Params,"min",m_Min))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing min value for generator");
   }
 
-  if (!OPENFLUID_GetSimulatorParameter(Params,"max",m_Max))
+  if (!OPENFLUID_GetWareParameter(Params,"max",m_Max))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing max value for generator");
   }
@@ -149,7 +149,7 @@ void NumericalRandomGenerator<T>::initParams(const openfluid::ware::WareParams_t
 void DoubleRandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   std::string IdenticalCellsStr;
-  if (OPENFLUID_GetSimulatorParameter(Params,"identicalcells",IdenticalCellsStr))
+  if (OPENFLUID_GetWareParameter(Params,"identicalcells",IdenticalCellsStr))
   {
     m_IdenticalCellValues = (IdenticalCellsStr == "1" || IdenticalCellsStr == "true");
     // convert str to bool 

@@ -521,7 +521,7 @@ void ProjectCentral::checkModel()
 
         // check extrafiles
 
-        const auto& ReqFiles = Sign->HandledData.RequiredExtraFiles;
+        const auto& ReqFiles = Sign->SimulatorHandledData.RequiredExtraFiles;
 
         if (Item->isType(openfluid::ware::WareType::GENERATOR))
         {
@@ -669,7 +669,7 @@ void ProjectCentral::checkModel()
 
         // check required attributes
 
-        const auto& ReqData = Sign->HandledData.RequiredAttribute;
+        const auto& ReqData = Sign->SimulatorHandledData.RequiredAttribute;
 
         for (auto itReqData = ReqData.begin(); itReqData != ReqData.end(); ++itReqData)
         {
@@ -699,7 +699,7 @@ void ProjectCentral::checkModel()
 
 
         // check produced attributes
-        const auto& ProdData = Sign->HandledData.ProducedAttribute;
+        const auto& ProdData = Sign->SimulatorHandledData.ProducedAttribute;
 
         for (auto itProdData = ProdData.begin();
             itProdData != ProdData.end(); ++itProdData)
@@ -778,7 +778,7 @@ void ProjectCentral::checkModel()
         std::string ID = Model.getID(*itModelItem);
 
         // check produced Vars
-        const auto& ProdVars = Sign->HandledData.ProducedVars;
+        const auto& ProdVars = Sign->SimulatorHandledData.ProducedVars;
 
         for (auto itData = ProdVars.begin(); itData != ProdVars.end(); ++itData)
         {
@@ -815,7 +815,7 @@ void ProjectCentral::checkModel()
         }
 
         // check updated vars
-        const auto& UpVars = Sign->HandledData.UpdatedVars;
+        const auto& UpVars = Sign->SimulatorHandledData.UpdatedVars;
         for (auto itData = UpVars.begin(); itData != UpVars.end(); ++itData)
         {
           m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->Name);
@@ -858,7 +858,7 @@ void ProjectCentral::checkModel()
         const auto* Sign = Container.signature().get();
 
         // check required Vars
-        const auto& ReqVars = Sign->HandledData.RequiredVars;
+        const auto& ReqVars = Sign->SimulatorHandledData.RequiredVars;
 
         for (auto itData = ReqVars.begin(); itData != ReqVars.end(); ++itData)
         {
@@ -894,7 +894,7 @@ void ProjectCentral::checkModel()
         }
 
         // check used Vars
-        const auto& UsedVars = Sign->HandledData.UsedVars;
+        const auto& UsedVars = Sign->SimulatorHandledData.UsedVars;
 
         for (auto itData = UsedVars.begin(); itData != UsedVars.end(); ++itData)
         {

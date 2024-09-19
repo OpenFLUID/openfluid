@@ -354,9 +354,9 @@ initParams()
 method of the simulator.
 Values of simulators parameters can be retreived using:
 
-* @if DocIsLaTeX **OPENFLUID_GetSimulatorParameter.** 
+* @if DocIsLaTeX **OPENFLUID_GetWareParameter.** 
 @else
-@link openfluid::ware::PluggableSimulator::OPENFLUID_GetSimulatorParameter OPENFLUID_GetSimulatorParameter@endlink.
+@link openfluid::ware::PluggableSimulator::OPENFLUID_GetWareParameter OPENFLUID_GetWareParameter@endlink.
 @endif
 
 The requested parameter name must be the same as the one declared in the signature 
@@ -372,9 +372,9 @@ the C++ variable storing a simulator parameter should be declared as class membe
 The types of parameters can be string, double, integer, boolean, vector of string, vector of double
 (see API documentation of 
 @if DocIsLaTeX
-OPENFLUID_GetSimulatorParameter
+OPENFLUID_GetWareParameter
 @else
-@link openfluid::ware::PluggableSimulator::OPENFLUID_GetSimulatorParameter OPENFLUID_GetSimulatorParameter @endlink
+@link openfluid::ware::PluggableSimulator::OPENFLUID_GetWareParameter OPENFLUID_GetWareParameter @endlink
 @endif
 method to get more informations about other available types
 @if DocIsLaTeX , available on the [OpenFLUID community site](https://community.openfluid-project.org/) @endif ).

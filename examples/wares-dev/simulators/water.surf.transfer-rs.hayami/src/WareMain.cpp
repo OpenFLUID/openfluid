@@ -182,11 +182,11 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
       // Getting simulator parameters
-      OPENFLUID_GetSimulatorParameter(Params,"maxsteps",m_MaxSteps);
-      OPENFLUID_GetSimulatorParameter(Params,"meancel",m_MeanCelerity);
-      OPENFLUID_GetSimulatorParameter(Params,"meansigma",m_MeanSigma);
-      OPENFLUID_GetSimulatorParameter(Params,"calibstep",m_CalibrationStep);
-      OPENFLUID_GetSimulatorParameter(Params,"rsbuffer",m_RSBuffer);
+      OPENFLUID_GetWareParameter(Params,"maxsteps",m_MaxSteps);
+      OPENFLUID_GetWareParameter(Params,"meancel",m_MeanCelerity);
+      OPENFLUID_GetWareParameter(Params,"meansigma",m_MeanSigma);
+      OPENFLUID_GetWareParameter(Params,"calibstep",m_CalibrationStep);
+      OPENFLUID_GetWareParameter(Params,"rsbuffer",m_RSBuffer);
 
       // Checking parameters consistency
       if (m_MaxSteps <= 0)

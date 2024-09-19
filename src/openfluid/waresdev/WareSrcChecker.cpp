@@ -134,37 +134,47 @@ void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
   bool IsDataUnit = true;
   std::string DescrInformation = "";
   std::string UnitInformation = "";
-
-  if (Json.value("simulator", openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array())
-  {
-    openfluid::thirdparty::json DataJson = Json.at("simulator").at("data");
-    if (DataJson != openfluid::thirdparty::json::array())
+  std::map<std::string, std::vector<std::string>> CategoryByWaretype = 
     {
-      for (const std::string& Cat : {"parameters", "attributes", "variables"})
+      {"simulator", {"parameters", "attributes", "variables"}}, 
+      {"observer", {"parameters"}}
+    };
+
+  std::string FoundWaretype = "";
+
+  for (const auto& Pair : CategoryByWaretype)
+  {
+    if (Json.value(Pair.first, openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array())
+    {
+      openfluid::thirdparty::json DataJson = Json.at(Pair.first).at("data");
+      if (DataJson != openfluid::thirdparty::json::array())
       {
-        std::string CatSingular = Cat;
-        CatSingular.pop_back();
-        for (const auto& SubCatJson : DataJson.at(Cat))  // used, required, updated...
+        for (const std::string& Cat : Pair.second)
         {
-          for (const auto& ItemJson : SubCatJson)
+          std::string CatSingular = Cat;
+          CatSingular.pop_back();
+          for (const auto& SubCatJson : DataJson.at(Cat))  // used, required, updated...
           {
-            if (ItemJson.value("description", "") == "")
+            for (const auto& ItemJson : SubCatJson)
             {
-              if (DescrInformation != "")
+              if (ItemJson.value("description", "") == "")
               {
-                DescrInformation += ", ";
+                if (DescrInformation != "")
+                {
+                  DescrInformation += ", ";
+                }
+                DescrInformation += CatSingular + " '"+ ItemJson.value("name", "?") + "'";
+                IsDataDescr = false;
               }
-              DescrInformation += CatSingular + " '"+ ItemJson.value("name", "?") + "'";
-              IsDataDescr = false;
-            }
-            if (ItemJson.value("siunit", "") == "")
-            {
-              if (UnitInformation != "")
+              if (ItemJson.value("siunit", "") == "")
               {
-                UnitInformation += ", ";
+                if (UnitInformation != "")
+                {
+                  UnitInformation += ", ";
+                }
+                UnitInformation += CatSingular + " '" + ItemJson.value("name", "?") + "'";
+                IsDataUnit = false;
               }
-              UnitInformation += CatSingular + " '" + ItemJson.value("name", "?") + "'";
-              IsDataUnit = false;
             }
           }
         }

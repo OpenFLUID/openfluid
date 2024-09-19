@@ -54,10 +54,10 @@ SimulatorGraphics::SimulatorGraphics(
 
   m_Ghost = Container.isGhost();
 
-  m_RequiredVars = Container.signature()->HandledData.RequiredVars;
-  m_UsedVars = Container.signature()->HandledData.UsedVars;
-  m_ProducedVars = Container.signature()->HandledData.ProducedVars;
-  m_UpdatedVars = Container.signature()->HandledData.UpdatedVars;
+  m_RequiredVars = Container.signature()->SimulatorHandledData.RequiredVars;
+  m_UsedVars = Container.signature()->SimulatorHandledData.UsedVars;
+  m_ProducedVars = Container.signature()->SimulatorHandledData.ProducedVars;
+  m_UpdatedVars = Container.signature()->SimulatorHandledData.UpdatedVars;
 
   // In/Out slots
   drawIOSlot(getRequiredIOPosition(),SlotType::SLOT_REQ,m_RequiredVars);

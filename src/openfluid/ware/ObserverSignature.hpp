@@ -50,7 +50,7 @@
 namespace openfluid { namespace ware {
 
 
-class OPENFLUID_API ObserverSignature : public WareSignature
+class OPENFLUID_API ObserverSignature : public DataWareSignature
 {
 
   public:
@@ -60,7 +60,7 @@ class OPENFLUID_API ObserverSignature : public WareSignature
       return WareType::OBSERVER;
     }
 
-    ObserverSignature() : WareSignature()
+    ObserverSignature() : DataWareSignature()
     { }
 
     virtual ~ObserverSignature() = default;

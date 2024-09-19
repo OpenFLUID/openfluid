@@ -393,7 +393,7 @@ std::string getSimulatorCommonCode(const openfluid::ware::SimulatorSignature& Si
   std::string TmpStr;
   std::set<openfluid::core::UnitsClass_t> UnitsClasses;
 
-  for (auto& Item : Signature.HandledData.ProducedVars)
+  for (auto& Item : Signature.SimulatorHandledData.ProducedVars)
   {
     UnitsClasses.insert(Item.UnitsClass);
   }
@@ -411,7 +411,7 @@ std::string getSimulatorCommonCode(const openfluid::ware::SimulatorSignature& Si
       TmpStr += "      OPENFLUID_UNITS_ORDERED_LOOP(\""+UClass+"\",U)\n";
       TmpStr += "      {\n";
 
-      for (auto& Item : Signature.HandledData.ProducedVars)
+      for (auto& Item : Signature.SimulatorHandledData.ProducedVars)
       {
         if (Item.UnitsClass == UClass)
         {

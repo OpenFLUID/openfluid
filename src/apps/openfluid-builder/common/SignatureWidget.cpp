@@ -338,8 +338,8 @@ void SignatureWidget::updateExtrafilesCategory(const std::vector<std::string>* I
 
 void SignatureWidget::updateExtrafiles(const openfluid::ware::SimulatorSignature* Signature)
 {
-  const std::vector<std::string>* ReqFiles = &(Signature->HandledData.RequiredExtraFiles);
-  const std::vector<std::string>* UsFiles = &(Signature->HandledData.UsedExtraFiles);
+  const std::vector<std::string>* ReqFiles = &(Signature->SimulatorHandledData.RequiredExtraFiles);
+  const std::vector<std::string>* UsFiles = &(Signature->SimulatorHandledData.UsedExtraFiles);
 
   ui->ExtrafilesTableWidget->setRowCount(ReqFiles->size()+UsFiles->size());
 
@@ -395,13 +395,13 @@ void SignatureWidget::updateVariablesCategory(const std::vector<openfluid::ware:
 void SignatureWidget::updateVariables(const openfluid::ware::SimulatorSignature* Signature)
 {
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* ProdVars =
-      &(Signature->HandledData.ProducedVars);
+      &(Signature->SimulatorHandledData.ProducedVars);
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* ReqVars =
-      &(Signature->HandledData.RequiredVars);
+      &(Signature->SimulatorHandledData.RequiredVars);
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* UsVars =
-      &(Signature->HandledData.UsedVars);
+      &(Signature->SimulatorHandledData.UsedVars);
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* UpdVars =
-      &(Signature->HandledData.UpdatedVars);
+      &(Signature->SimulatorHandledData.UpdatedVars);
 
 
   ui->VariablesTableWidget->setRowCount(ProdVars->size()+ReqVars->size()+UsVars->size()+UpdVars->size());
@@ -456,11 +456,11 @@ void SignatureWidget::updateAttributesCategory(const std::vector<openfluid::ware
 void SignatureWidget::updateAttributes(const openfluid::ware::SimulatorSignature* Signature)
 {
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* ProdAttrs =
-      &(Signature->HandledData.ProducedAttribute);
+      &(Signature->SimulatorHandledData.ProducedAttribute);
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* ReqAttrs =
-      &(Signature->HandledData.RequiredAttribute);
+      &(Signature->SimulatorHandledData.RequiredAttribute);
   const std::vector<openfluid::ware::SignatureSpatialDataItem>* UsAttrs =
-      &(Signature->HandledData.UsedAttribute);
+      &(Signature->SimulatorHandledData.UsedAttribute);
 
 
   ui->AttributesTableWidget->setRowCount(ProdAttrs->size()+ReqAttrs->size()+UsAttrs->size());
@@ -482,7 +482,7 @@ void SignatureWidget::updateAttributes(const openfluid::ware::SimulatorSignature
 
 void SignatureWidget::updateEvents(const openfluid::ware::SimulatorSignature* Signature)
 {
-  const std::vector<std::string>* Events = &(Signature->HandledData.UsedEventsOnUnits);
+  const std::vector<std::string>* Events = &(Signature->SimulatorHandledData.UsedEventsOnUnits);
 
   ui->EventsTableWidget->setRowCount(Events->size());
 

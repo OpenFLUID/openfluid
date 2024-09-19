@@ -14,7 +14,7 @@ SET(OPENFLUID_WARESDEV_HPP WareSrcHelpers.hpp WareSrcOpsListener.hpp
                            WareSrcContainer.hpp WareSrcContainerOps.hpp 
                            WareSrcFactory.hpp WareSrcMigrator.hpp WareSrcMigratorListener.hpp WareSrcChecker.hpp WareSrcDocalyzer.hpp WareSrcDocalyzerListener.hpp
                            WareBuildOptions.hpp
-                           WareSignatureSerializer.hpp
+                           WareSignatureSerializer.hpp WareCppWriterHelpers.hpp
                            SimulatorSignatureSerializer.hpp ObserverSignatureSerializer.hpp BuilderextSignatureSerializer.hpp
                            SimulatorSignatureXMLReader.hpp
                            GhostsHelpers.hpp

@@ -73,7 +73,7 @@ class ExceptionsSimulator : public openfluid::ware::PluggableSimulator
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      OPENFLUID_GetSimulatorParameter(Params,"part",m_PartStr);
+      OPENFLUID_GetWareParameter(Params,"part",m_PartStr);
 
       if (m_PartStr == "initparams")
       {

@@ -91,7 +91,7 @@ void PluggableSimulator::initializeWare(const WareID_t& ID,const unsigned int& M
 bool PluggableSimulator::OPENFLUID_IsSimulatorParameterExist(const openfluid::ware::WareParams_t& Params,
                                                              const openfluid::ware::WareParamKey_t& ParamName) const
 {
-  return (Params.find(ParamName) != Params.end());
+  return OPENFLUID_IsWareParameterExist(Params, ParamName);
 }
 
 
@@ -103,17 +103,7 @@ openfluid::core::StringValue PluggableSimulator::OPENFLUID_GetSimulatorParameter
                                                  const openfluid::ware::WareParams_t& Params,
                                                  const openfluid::ware::WareParamKey_t& ParamName) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    return it->second;
-  }
-  else
-  {
-    throw openfluid::base::FrameworkException(computeFrameworkContext(OPENFLUID_CODE_LOCATION),
-                                              "Parameter "+ParamName+ " does not exist");
-  }
+  return OPENFLUID_GetWareParameter(Params, ParamName);
 }
 
 
@@ -125,15 +115,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          openfluid::core::StringValue& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    Val = it->second;
-    return true;
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Val);
 }
 
 
@@ -145,14 +127,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          openfluid::core::DoubleValue& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    return it->second.toDoubleValue(Val);
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Val);
 }
 
 
@@ -164,14 +139,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        openfluid::core::VectorValue& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    return it->second.toVectorValue(Val);
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Val);
 }
 
 
@@ -183,14 +151,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          openfluid::core::MatrixValue& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    return it->second.toMatrixValue(Val);
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Val);
 }
 
 
@@ -202,14 +163,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          bool& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    return it->second.toBoolean(Val);
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Val);
 }
 
 
@@ -221,14 +175,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          double& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    return it->second.toDouble(Val);
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Val);
 }
 
 
@@ -240,14 +187,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          long& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    return it->second.toInteger(Val);
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName,Val);
 }
 
 
@@ -259,20 +199,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          float& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    double TmpDbl;
-
-    if(it->second.toDouble(TmpDbl))
-    {
-      Val = static_cast<float>(TmpDbl);
-      return true;
-    }
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Val);
 }
 
 
@@ -284,20 +211,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          int& Val) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    long TmpInt;
-
-    if(it->second.toInteger(TmpInt))
-    {
-      Val = static_cast<int>(TmpInt);
-      return true;
-    }
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Val);
 }
 
 
@@ -309,16 +223,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          std::string& Value) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    Value = it->second.data();
-
-    return true;
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Value);
 }
 
 
@@ -330,23 +235,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          std::vector<std::string>& Vals) const
 {
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    std::vector<std::string> Tokens = openfluid::tools::split(it->second.data(),";");
-
-    Vals.clear();
-
-    for (unsigned int i=0;i<Tokens.size();i++)
-    {
-      Vals.push_back(Tokens[i]);
-    }
-
-    return true;
-  }
-
-  return false;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Vals);
 }
 
 
@@ -358,28 +247,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          std::vector<double>& Vals) const
 {
-  bool IsOK = false;
-
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    openfluid::core::VectorValue Vect;
-
-    IsOK = it->second.toVectorValue(Vect);
-
-    if(IsOK)
-    {
-      Vals.clear();
-
-      for (unsigned long i=0;i<Vect.size();i++)
-      {
-        Vals.push_back(Vect[i]);
-      }
-    }
-  }
-
-  return IsOK;
+  return OPENFLUID_GetWareParameter(Params, ParamName, Vals);
 }
 
 
@@ -391,28 +259,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
                                                          const openfluid::ware::WareParamKey_t& ParamName,
                                                          std::vector<long>& Vals) const
 {
-  bool IsOK = false;
-
-  openfluid::ware::WareParams_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-  {
-    openfluid::core::VectorValue Vect;
-
-    IsOK = it->second.toVectorValue(Vect);
-
-    if(IsOK)
-    {
-      Vals.clear();
-
-      for (unsigned long i=0;i<Vect.size();i++)
-      {
-        Vals.push_back(static_cast<int>(Vect[i]));
-      }
-    }
-  }
-
-  return IsOK;
+  return OPENFLUID_GetWareParameter(Params, ParamName,Vals);
 }
 
 

@@ -136,20 +136,20 @@ class MorelSeytouxSimulator : public openfluid::ware::PluggableSimulator
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
 
-      OPENFLUID_GetSimulatorParameter(Params,"resstep",m_ResStep);
+      OPENFLUID_GetWareParameter(Params,"resstep",m_ResStep);
       if (m_ResStep <= 0)
       {
         OPENFLUID_RaiseError("The numerical resolution step for cumulative infiltration height (resstep) should be "
                              "positive.");
       }
 
-      OPENFLUID_GetSimulatorParameter(Params,"CoeffMultiKs",m_CoeffKs);
+      OPENFLUID_GetWareParameter(Params,"CoeffMultiKs",m_CoeffKs);
       if (m_CoeffKs <= 0)
       {
         OPENFLUID_RaiseError("The multiplying coefficient for ks (coeffks) should be strictly positive.");
       }
 
-      if (OPENFLUID_GetSimulatorParameter(Params,"CoeffMultiThetaIni",m_CoeffMultiThetaIni))
+      if (OPENFLUID_GetWareParameter(Params,"CoeffMultiThetaIni",m_CoeffMultiThetaIni))
       {
         m_UseCoeffThetaIni = true;
       }
