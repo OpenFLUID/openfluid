@@ -406,6 +406,17 @@ bool ProjectCentral::isParamSet(const openfluid::fluidx::ModelItemDescriptor* It
 // =====================================================================
 
 
+bool ProjectCentral::isParamSet(const openfluid::fluidx::ObserverDescriptor* Item,
+                                const std::string& ParamName) const
+{
+  return (!Item->getParameters()[ParamName].get().empty());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool ProjectCentral::isParamIsDouble(const openfluid::fluidx::ModelItemDescriptor* Item,
                                      const std::string& ParamName) const
 {
@@ -595,10 +606,6 @@ void ProjectCentral::checkModel()
 
         // check parameters
 
-        bool RandomMinMaxChecked = false;
-        bool InterpMinMaxChecked = false;
-        bool InjectMinMaxChecked = false;
-
 
         // required parameters
         const auto& ReqParams = Sign->HandledData.RequiredParams;
@@ -638,6 +645,11 @@ void ProjectCentral::checkModel()
         }
 
         // check Generators Params
+
+        bool RandomMinMaxChecked = false;
+        bool InterpMinMaxChecked = false;
+        bool InjectMinMaxChecked = false;
+
         if (Item->isType(openfluid::ware::WareType::GENERATOR))
         {
           openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
@@ -992,21 +1004,52 @@ void ProjectCentral::checkMonitoring()
 
   bool AtLeastOneEnabled = false;
 
-
-  for (auto itMonitoring = Items.begin(); itMonitoring != Items.end(); ++itMonitoring)
+  for (const auto* Item : Items)
   {
-    if ((*itMonitoring)->isEnabled())
+    if (Item->isEnabled())
     {
       AtLeastOneEnabled = true;
 
-      const auto& Container = Reg->wareContainer((*itMonitoring)->getID());
+      const std::string ID = Item->getID();
+      const auto& Container = Reg->wareContainer(ID);
       
       if (!Container.hasSignature())
       {
         m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(ProjectStatusLevel::PRJ_ERROR);
         m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).addMessage(tr("Observer %1 is not available")
-                                                                         .arg(QString::fromStdString((*itMonitoring)
-                                                                                                         ->getID())));
+                                                                         .arg(QString::fromStdString(ID)));
+      }
+
+      // Factorizing parameters with model check not efficient
+      const auto* Sign = Container.signature().get();
+
+      // required parameters
+
+      for (const auto& Param : Sign->HandledData.RequiredParams)
+      {
+        if (!isParamSet(Item, Param.Name))
+        {
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+            ProjectStatusLevel::PRJ_ERROR);
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                                      .addMessage(tr("Required parameter %1 for observer %2 is not set")
+                                                  .arg(QString::fromStdString(Param.Name))
+                                                  .arg(QString::fromStdString(ID)));
+        }
+      }
+
+      // used  parameters
+      for (const auto& Param : Sign->HandledData.UsedParams)
+      {
+        if (!isParamSet(Item, Param.Name))
+        {
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+            ProjectStatusLevel::PRJ_WARNING);
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                                      .addMessage(tr("Used parameter %1 for observer %2 is not set")
+                                                  .arg(QString::fromStdString(Param.Name))
+                                                  .arg(QString::fromStdString(ID)));
+        }
       }
     }
   }

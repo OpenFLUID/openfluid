@@ -12,8 +12,8 @@ SET(OPENFLUID_WARE_HPP WareIssues.hpp WareSignature.hpp SimulatorSignature.hpp O
                        TypeDefs.hpp
                        LoopMacros.hpp ThreadedLoopMacros.hpp
                        WareException.hpp
-                       WareParamsTree.hpp
                        WareRNG.hpp
+                       WareParamsTree.hpp
                        )
 
 

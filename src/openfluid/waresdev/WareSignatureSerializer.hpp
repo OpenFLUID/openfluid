@@ -399,7 +399,8 @@ std::string WareSignatureSerializer<SignatureType>::toWareCPPBase(const Signatur
   CPP += CppWriter::getCPPAssignment("Name",openfluid::tools::escapeString(Sign.Name),true);
   CPP += CppWriter::getCPPAssignment("Description",openfluid::tools::escapeString(Sign.Description),true);
   CPP += CppWriter::getCPPAssignment("Version",Sign.Version,true);
-  CPP += CppWriter::getCPPAssignment("Status","openfluid::ware::"+openfluid::tools::toUpperCase(Sign.getStatusAsString()));
+  CPP += CppWriter::getCPPAssignment("Status",
+                                     "openfluid::ware::"+openfluid::tools::toUpperCase(Sign.getStatusAsString()));
 
   // authors
   std::vector<std::string> AuthorsStrVect;

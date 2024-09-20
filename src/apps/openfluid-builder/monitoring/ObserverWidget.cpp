@@ -34,6 +34,7 @@
   @file ObserverWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -57,7 +58,7 @@ ObserverWidget::ObserverWidget(QWidget* Parent,
                                const openfluid::ware::WareID_t& ID,
                                int Index):
   WareWidget(Parent,ID,QString::fromStdString(ID),Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR,Index),
-  mp_Desc(Desc), m_IsTranslated(false)
+  mp_Desc(Desc)
 {
   refresh();
 
@@ -72,6 +73,27 @@ ObserverWidget::ObserverWidget(QWidget* Parent,
 ObserverWidget::~ObserverWidget()
 {
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ObserverWidget::setEnabledWare(bool Enabled)
+{
+  WareWidget::setEnabled(Enabled);
+  getWareDescriptor()->setEnabled(Enabled);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::fluidx::WareDescriptor* ObserverWidget::getWareDescriptor()
+{
+  return mp_Desc;
 }
 
 
@@ -97,42 +119,8 @@ void ObserverWidget::refresh()
 
     updateParametersList();
 
-    // TODO begin to be refactored, see also SimulatorWidget =========
-
-    mp_ParamsWidget = nullptr;
-
-    if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Container.getLinkUID()))
-    {
-      
-      if (!m_IsTranslated)
-      {
-        auto ParamsUIWarePath = QString::fromStdString(
-          ExtensionsRegistry::instance()->getParameterizationExtensionPath(Container.getLinkUID())
-        );
-        WaresTranslationsRegistry::instance()->tryLoadWareTranslation(ParamsUIWarePath);
-        m_IsTranslated = true;
-      }
-
-      mp_ParamsWidget = static_cast<openfluid::ui::builderext::PluggableParameterizationExtension*>(
-          ExtensionsRegistry::instance()->instanciateParameterizationExtension(Container.getLinkUID()));
-      mp_ParamsWidget->setParent(this);
-      mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));
-      mp_ParamsWidget->setFluidXDescriptor(&(ProjectCentral::instance()->descriptors()));
- 
-      connect(mp_ParamsWidget,SIGNAL(changed()),this,SLOT(notifyChangedFromParameterizationWidget()));
-
-      int Position = ui->ParameterizationStackWidget->addWidget(mp_ParamsWidget);
-
-      mp_ParamsWidget->update();
-
-      ui->ParameterizationStackWidget->setCurrentIndex(Position);
-    }
-
-    updateParameterizationSwitch();
-
-    // end to be refactored =========
-
-  }
+    const auto& LinkUID = Container.getLinkUID();
+    setupParamExtension(ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(LinkUID), LinkUID);  }
   else
   {
     setAvailableWare(false);
@@ -146,119 +134,11 @@ void ObserverWidget::refresh()
 // =====================================================================
 
 
-void ObserverWidget::setEnabledWare(bool Enabled)
+void ObserverWidget::applyContainer()
 {
-  mp_Desc->setEnabled(Enabled);
-  WareWidget::setEnabledWare(Enabled);
-  emit changed();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ObserverWidget::updateParametersList()
-{
-  clearParameterWidgets();
-
-  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
-
-  for (auto it = DescParams.begin();it != DescParams.end(); ++it)
+  const auto& Container = openfluid::machine::ObserverRegistry::instance()->wareContainer(m_ID);
+  if (Container.isValid() && Container.hasSignature())
   {
-    ParameterWidget* ParamWidget =
-        new ParameterWidget(this,
-                            QString::fromStdString((*it).first),QString::fromStdString((*it).second),
-                            QString::fromStdString(""),
-                            false,true);
-
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
-            this, SLOT(updateParameterValue(const QString&,const QString&)));
-    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
-            this, SLOT(removeParameterFromList(const QString&)));
-
-
-    ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
+    updateParametersListWithSignature(Container.signature().get());
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ObserverWidget::addParameterToList()
-{
-  QStringList ExistPList;
-
-  openfluid::ware::WareParams_t Params = mp_Desc->getParameters();
-
-  for (openfluid::ware::WareParams_t::iterator it = Params.begin();it != Params.end(); ++it)
-  {
-    ExistPList.append(QString::fromStdString((*it).first));
-  }
-
-  // set existing parameters list as completion list
-  // (for easy access to series of similar parameters)
-
-  AddParamDialog AddPDlg(ExistPList,ExistPList,this);
-
-  if (AddPDlg.exec() == QDialog::Accepted)
-  {
-    if (addParameterWidget(AddPDlg.getParamName(),AddPDlg.getParamValue()))
-    {
-      mp_Desc->setParameter(AddPDlg.getParamName().toStdString(),AddPDlg.getParamValue().toStdString());
-      emit changed();
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ObserverWidget::updateParameterValue(const QString& Name, const QString& Value)
-{
-  mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
-  emit changed();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ObserverWidget::removeParameterFromList(const QString& Name)
-{
-  if (removeParameterWidget(Name))
-  {
-    mp_Desc->eraseParameter(Name.toStdString());
-    emit changed();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ObserverWidget::prepareWareUpdate()
-{
-  if (mp_ParamsWidget)
-  {
-    ui->ParameterizationStackWidget->removeWidget(mp_ParamsWidget);
-    delete mp_ParamsWidget;
-    mp_ParamsWidget = nullptr;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ObserverWidget::updateWare()
-{
-  refresh();
 }

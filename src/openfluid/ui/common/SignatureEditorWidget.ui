@@ -14,7 +14,7 @@
    <string notr="true">TabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>1</number>
   </property>
   <widget class="QWidget" name="InfosTab">
    <attribute name="title">
@@ -402,7 +402,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QGroupBox" name="groupBox_4">
+     <widget class="QGroupBox" name="ExtraFilesGroupBox">
       <property name="title">
        <string>Extra files</string>
       </property>

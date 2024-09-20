@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OPENFLUID_WARESDEV_WARECPPWRITEHELPERS_HPP__
-#define __OPENFLUID_WARESDEV_WARECPPWRITEHELPERS_HPP__
+#ifndef __OPENFLUID_WARESDEV_WARECPPWRITERHELPERS_HPP__
+#define __OPENFLUID_WARESDEV_WARECPPWRITERHELPERS_HPP__
 
 
 #include <string>
@@ -228,14 +228,6 @@ struct CppWriter {
   {
     return "\nreturn Signature;\n}\n}\n";
   }
-
-
-  // =====================================================================
-  // =====================================================================
-
-
-  static std::string getCMakeHead(); //DIRTYCODE REMOVE?
-
 
 
   // =====================================================================
@@ -445,4 +437,4 @@ struct DataJsonConverter
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_WARESDEV_WARECPPWRITEHELPERS_HPP__ */
+#endif /* __OPENFLUID_WARESDEV_WARECPPWRITERHELPERS_HPP__ */

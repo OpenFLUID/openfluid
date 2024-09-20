@@ -49,11 +49,16 @@ namespace openfluid { namespace waresdev {
 void ObserverSignatureSerializer::unserializeDataFromJSON(const openfluid::thirdparty::json& Json, 
                                                            openfluid::ware::ObserverSignature& Sign) const
 {
-  if (Json.contains("parameters")) //DIRTYCODE factorize
+  if (Json.contains("parameters"))
   {
     DataJsonConverter::unserializeParametersFromJSON(Json.at("parameters"),Sign.HandledData);
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 openfluid::ware::ObserverSignature ObserverSignatureSerializer::fromJSON(const openfluid::thirdparty::json& Json) const
 {
