@@ -45,17 +45,14 @@
 #include "SimulatorWidget.hpp"
 #include "ParameterWidget.hpp"
 #include "AddParamDialog.hpp"
-#include "builderconfig.hpp"
-#include "ProjectCentral.hpp"
 #include "ExtensionsRegistry.hpp"
-#include "WaresTranslationsRegistry.hpp"
+#include "builderconfig.hpp"
 
 
 SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID,
                                  int Index):
-  ModelItemWidget(Parent,Desc,ID,QString::fromStdString(ID),BUILDER_SIMULATOR_BGCOLOR,Index),
-  m_IsTranslated(false)
+  ModelItemWidget(Parent,Desc,ID,QString::fromStdString(ID),BUILDER_SIMULATOR_BGCOLOR,Index)
 {
   refresh();
 
@@ -75,43 +72,6 @@ SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDe
 SimulatorWidget::~SimulatorWidget()
 {
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulatorWidget::updateParametersListWithSignature(const openfluid::ware::SimulatorSignature* Signature)
-{
-  clearParameterWidgets();
-
-  QStringList ParamsInSign = createParamWidgetsFromSignature(Signature);
-
-  // Other params not in signature
-  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
-  for (const auto& DescParam : DescParams)
-  {
-    if (!ParamsInSign.contains(QString::fromStdString(DescParam.first)))
-    { 
-      addParam(DescParam.first, DescParam.second, "", ParamsInSign, false, true);
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulatorWidget::updateParametersList()
-{
-  const auto& Container = openfluid::machine::SimulatorRegistry::instance()->wareContainer(m_ID);
-
-  if (Container.isValid() && Container.hasSignature())
-  {
-    updateParametersListWithSignature(Container.signature().get());
-  }
 }
 
 
@@ -149,39 +109,8 @@ void SimulatorWidget::refresh()
 
     updateParametersListWithSignature(Container.signature().get());
 
-    // TODO begin to be refactored, see also ObserverWidget =========
-
-    mp_ParamsWidget = nullptr;
-
-    if (ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(Container.getLinkUID()))
-    {
-      if (!m_IsTranslated)
-      {
-        auto ParamsUIWarePath = QString::fromStdString(
-          ExtensionsRegistry::instance()->getParameterizationExtensionPath(Container.getLinkUID())
-        );
-        WaresTranslationsRegistry::instance()->tryLoadWareTranslation(ParamsUIWarePath);
-        m_IsTranslated = true;
-      }
-
-      mp_ParamsWidget = static_cast<openfluid::ui::builderext::PluggableParameterizationExtension*>(
-          ExtensionsRegistry::instance()->instanciateParameterizationExtension(Container.getLinkUID()));
-      mp_ParamsWidget->setParent(this);
-      mp_ParamsWidget->linkParams(&(mp_Desc->parameters()));
-      mp_ParamsWidget->setFluidXDescriptor(&(ProjectCentral::instance()->descriptors()));
-
-      connect(mp_ParamsWidget,SIGNAL(changed()),this,SLOT(notifyChangedFromParameterizationWidget()));
-
-      int Position = ui->ParameterizationStackWidget->addWidget(mp_ParamsWidget);
-
-      mp_ParamsWidget->update();
-
-      ui->ParameterizationStackWidget->setCurrentIndex(Position);
-    }
-
-    updateParameterizationSwitch();
-
-    // end to be refactored =========
+    const auto& LinkUID = Container.getLinkUID();
+    setupParamExtension(ExtensionsRegistry::instance()->isParameterizationExtensionRegistered(LinkUID), LinkUID);
   }
   else
   {
@@ -196,78 +125,24 @@ void SimulatorWidget::refresh()
 // =====================================================================
 
 
-void SimulatorWidget::addParameterToList()
-{
-  QStringList ExistPList;
-
-  openfluid::ware::WareParams_t Params = mp_Desc->getParameters();
-
-  for (openfluid::ware::WareParams_t::iterator it = Params.begin();it != Params.end(); ++it)
-  {
-    ExistPList.append(QString::fromStdString((*it).first));
-  }
-
-
-  AddParamDialog AddPDlg(ExistPList,QStringList(),this);
-
-  if (AddPDlg.exec() == QDialog::Accepted)
-  {
-    if (addParameterWidget(AddPDlg.getParamName(),AddPDlg.getParamValue()))
-    {
-      mp_Desc->setParameter(AddPDlg.getParamName().toStdString(),AddPDlg.getParamValue().toStdString());
-      emit changed();
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulatorWidget::removeParameterFromList(const QString& Name)
-{
-  if (removeParameterWidget(Name))
-  {
-    mp_Desc->eraseParameter(Name.toStdString());
-    emit changed();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulatorWidget::prepareWareUpdate()
-{
-  if (mp_ParamsWidget)
-  {
-    ui->ParameterizationStackWidget->removeWidget(mp_ParamsWidget);
-    delete mp_ParamsWidget;
-    mp_ParamsWidget = nullptr;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulatorWidget::updateWare()
-{
-  refresh();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void SimulatorWidget::notifySrcGenerateAsked()
 {
   if (m_Ghost)
   {
     emit srcGenerateAsked(QString::fromStdString(m_ID));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorWidget::applyContainer()
+{
+  const auto& Container = openfluid::machine::SimulatorRegistry::instance()->wareContainer(m_ID);
+  if (Container.isValid() && Container.hasSignature())
+  {
+    updateParametersListWithSignature(Container.signature().get());
   }
 }

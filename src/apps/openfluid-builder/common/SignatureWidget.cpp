@@ -295,7 +295,7 @@ void SignatureWidget::updateParametersCategory(const std::vector<openfluid::ware
 // =====================================================================
 
 
-void SignatureWidget::updateParameters(const openfluid::ware::SimulatorSignature* Signature)
+void SignatureWidget::updateParameters(const openfluid::ware::DataWareSignature* Signature)
 {
   const std::vector<openfluid::ware::SignatureDataItem>* ReqParams = &(Signature->HandledData.RequiredParams);
   const std::vector<openfluid::ware::SignatureDataItem>* UsParams = &(Signature->HandledData.UsedParams);
@@ -582,6 +582,7 @@ void SignatureWidget::update(const openfluid::machine::WareContainer<openfluid::
   {
     setEnabled(true);
     updateGeneral(Container);
+    updateParameters(Container.signature().get());
   }
 }
 

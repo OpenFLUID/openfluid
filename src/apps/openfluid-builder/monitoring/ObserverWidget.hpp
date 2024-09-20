@@ -53,23 +53,14 @@ class ObserverWidget : public WareWidget
   private:
 
     openfluid::fluidx::ObserverDescriptor* mp_Desc;
-
-    bool m_IsTranslated;
-
-    void updateParametersList();
     
     bool isClickable() {return true;}
 
+    openfluid::fluidx::WareDescriptor* getWareDescriptor() override;
 
-  private slots:
+    void applyContainer();
 
     void setEnabledWare(bool Enabled);
-
-    void addParameterToList();
-
-    void updateParameterValue(const QString& Name, const QString& Value);
-
-    void removeParameterFromList(const QString& Name);
 
 
   public slots:
@@ -85,10 +76,6 @@ class ObserverWidget : public WareWidget
                    int Index);
 
     ~ObserverWidget();
-
-    void prepareWareUpdate();
-
-    void updateWare();
 
     openfluid::ware::WareType getType() const
     { 

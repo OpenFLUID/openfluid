@@ -124,7 +124,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] ParamName the name of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_IsSimulatorParameterExist(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_IsSimulatorParameterExist(const openfluid::ware::WareParams_t& Params,
                                              const openfluid::ware::WareParamKey_t& ParamName) const;
 
     /**
@@ -133,8 +133,8 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[in] ParamName the name of the requested parameter
       @return the value of the requested parameter
     */
-   // DIRTYCODE ADD DEPRECATED TAG?
-    openfluid::core::StringValue OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] openfluid::core::StringValue OPENFLUID_GetSimulatorParameter(
+                                                                 const openfluid::ware::WareParams_t& Params,
                                                                  const openfluid::ware::WareParamKey_t& ParamName)
                                                                  const;
 
@@ -145,7 +145,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          openfluid::core::StringValue& Val) const;
 
@@ -156,7 +156,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          openfluid::core::DoubleValue& Val) const;
 
@@ -167,7 +167,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          openfluid::core::VectorValue& Val) const;
 
@@ -178,7 +178,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          openfluid::core::MatrixValue& Val) const;
 
@@ -189,7 +189,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          bool& Val) const;
 
@@ -200,7 +200,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          double& Val) const;
 
@@ -211,7 +211,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          long& Val) const;
 
@@ -222,7 +222,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          float& Val) const;
 
@@ -233,7 +233,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          int& Val) const;
 
@@ -244,7 +244,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Val the value of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          std::string& Val) const;
 
@@ -255,7 +255,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Vals the vector of values of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          std::vector<std::string>& Vals) const;
 
@@ -266,7 +266,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Vals the vector of values of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          std::vector<double>& Vals) const;
 
@@ -277,7 +277,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       @param[out] Vals the vector of values of the requested parameter
       @return true if the parameter exists, false otherwise
     */
-    bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
+    [[deprecated]] bool OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                          const openfluid::ware::WareParamKey_t& ParamName,
                                          std::vector<long>& Vals) const;
 

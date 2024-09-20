@@ -137,10 +137,13 @@ void compareSignatures(const openfluid::ware::SimulatorSignature& Sign1,
   // extra files
   BOOST_CHECK(!Sign1.SimulatorHandledData.UsedExtraFiles.empty());
   BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.UsedExtraFiles.size(),Sign2.SimulatorHandledData.UsedExtraFiles.size());
-  BOOST_CHECK_EQUAL_COLLECTIONS(Sign1.SimulatorHandledData.UsedExtraFiles.begin(),Sign1.SimulatorHandledData.UsedExtraFiles.end(),
-                                Sign2.SimulatorHandledData.UsedExtraFiles.begin(),Sign2.SimulatorHandledData.UsedExtraFiles.end());
+  BOOST_CHECK_EQUAL_COLLECTIONS(Sign1.SimulatorHandledData.UsedExtraFiles.begin(),
+                                Sign1.SimulatorHandledData.UsedExtraFiles.end(),
+                                Sign2.SimulatorHandledData.UsedExtraFiles.begin(),
+                                Sign2.SimulatorHandledData.UsedExtraFiles.end());
   BOOST_CHECK(!Sign1.SimulatorHandledData.RequiredExtraFiles.empty());
-  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredExtraFiles.size(),Sign2.SimulatorHandledData.RequiredExtraFiles.size());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredExtraFiles.size(),
+                    Sign2.SimulatorHandledData.RequiredExtraFiles.size());
   BOOST_CHECK_EQUAL_COLLECTIONS(
     Sign1.SimulatorHandledData.RequiredExtraFiles.begin(),Sign1.SimulatorHandledData.RequiredExtraFiles.end(),
     Sign2.SimulatorHandledData.RequiredExtraFiles.begin(),Sign2.SimulatorHandledData.RequiredExtraFiles.end()
@@ -148,11 +151,14 @@ void compareSignatures(const openfluid::ware::SimulatorSignature& Sign1,
 
   // attributes
   BOOST_CHECK(!Sign1.SimulatorHandledData.ProducedAttribute.empty());
-  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.ProducedAttribute.size(),Sign2.SimulatorHandledData.ProducedAttribute.size());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.ProducedAttribute.size(),
+                    Sign2.SimulatorHandledData.ProducedAttribute.size());
   BOOST_CHECK(!Sign1.SimulatorHandledData.RequiredAttribute.empty());  
-  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredAttribute.size(),Sign2.SimulatorHandledData.RequiredAttribute.size());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredAttribute.size(),
+                    Sign2.SimulatorHandledData.RequiredAttribute.size());
   BOOST_CHECK(!Sign1.SimulatorHandledData.RequiredAttribute.empty());
-  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredAttribute.size(),Sign2.SimulatorHandledData.RequiredAttribute.size());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.RequiredAttribute.size(),
+                    Sign2.SimulatorHandledData.RequiredAttribute.size());
 
   // variables
   BOOST_CHECK(!Sign1.SimulatorHandledData.ProducedVars.empty());
@@ -165,9 +171,12 @@ void compareSignatures(const openfluid::ware::SimulatorSignature& Sign1,
   BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.UpdatedVars.size(),Sign2.SimulatorHandledData.UpdatedVars.size());
 
   // events
-  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.UsedEventsOnUnits.size(),Sign2.SimulatorHandledData.UsedEventsOnUnits.size());
-  BOOST_CHECK_EQUAL_COLLECTIONS(Sign1.SimulatorHandledData.UsedEventsOnUnits.begin(),Sign1.SimulatorHandledData.UsedEventsOnUnits.end(),
-                                Sign2.SimulatorHandledData.UsedEventsOnUnits.begin(),Sign2.SimulatorHandledData.UsedEventsOnUnits.end());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.UsedEventsOnUnits.size(),
+                    Sign2.SimulatorHandledData.UsedEventsOnUnits.size());
+  BOOST_CHECK_EQUAL_COLLECTIONS(Sign1.SimulatorHandledData.UsedEventsOnUnits.begin(),
+                                Sign1.SimulatorHandledData.UsedEventsOnUnits.end(),
+                                Sign2.SimulatorHandledData.UsedEventsOnUnits.begin(),
+                                Sign2.SimulatorHandledData.UsedEventsOnUnits.end());
 
   // spatial graph
   BOOST_CHECK(!Sign1.HandledUnitsGraph.UpdatedUnitsGraph.empty());

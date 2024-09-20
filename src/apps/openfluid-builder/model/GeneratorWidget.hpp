@@ -60,6 +60,9 @@ class GeneratorWidget : public ModelItemWidget
       return false;
     }
 
+    void applyContainer()
+    {}
+
 
   public slots:
 

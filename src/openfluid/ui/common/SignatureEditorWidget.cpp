@@ -191,7 +191,18 @@ void SignatureEditorWidget::initializeCommon(const openfluid::ware::WareSignatur
 
 void SignatureEditorWidget::injectParamData(const openfluid::ware::SignatureHandledData& Data)
 {
-  QMap<int,QVariant> DataMap;
+
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid::ware::DataWareSignature& Signature)
+{
+    QMap<int,QVariant> DataMap;
 
   ui->ParametersDataWidget->initialize({SignatureDataEditorWidget::DataColumns::DATAID,
                                         SignatureDataEditorWidget::DataColumns::ROCONDITION,
@@ -201,7 +212,7 @@ void SignatureEditorWidget::injectParamData(const openfluid::ware::SignatureHand
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::ROCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::REQUIRED));
 
-  for (auto& Item : Data.RequiredParams)
+  for (auto& Item : Signature.HandledData.RequiredParams)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -215,7 +226,7 @@ void SignatureEditorWidget::injectParamData(const openfluid::ware::SignatureHand
   DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::ROCONDITION),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::USED));
 
-  for (auto& Item : Data.UsedParams)
+  for (auto& Item : Signature.HandledData.UsedParams)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -225,27 +236,6 @@ void SignatureEditorWidget::injectParamData(const openfluid::ware::SignatureHand
                    QString::fromStdString(Item.SIUnit));
     ui->ParametersDataWidget->addDataLine(DataMap);
   }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-//DIRTYCODE merge since real inheritance
-void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid::ware::SimulatorSignature& Signature)
-{
-  injectParamData(Signature.HandledData);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SignatureEditorWidget::initializeParametersUIFromSignature(const openfluid::ware::ObserverSignature& Signature)
-{
-  injectParamData(Signature.HandledData);
 }
 
 
@@ -583,7 +573,7 @@ void SignatureEditorWidget::initialize(const QString& SignaturePath)
       removeTab(2);//DynamicsTab
       removeTab(2);//BuilderextTab
       auto Signature = openfluid::waresdev::ObserverSignatureSerializer().readFromJSONFile(SignaturePath.toStdString());
-
+      ui->ExtraFilesGroupBox->setVisible(false);
       initializeObserver(Signature);
     }
     else if (Type == openfluid::ware::WareType::BUILDEREXT)
@@ -661,40 +651,7 @@ openfluid::core::Value::Type extractTableComboToDataType(const QTableWidget* Tab
 // =====================================================================
 
 
-void SignatureEditorWidget::updateSignatureFromParametersUI(openfluid::ware::SimulatorSignature& Signature) const
-{
-  const QTableWidget* DataTableW = ui->ParametersDataWidget->dataTableWidget();
-
-  for (int i=0; i < DataTableW->rowCount();i++)
-  {
-    openfluid::ware::SignatureDataItem Item;
-
-    Item.Name = extractTableFieldToString(DataTableW,i,0);
-    Item.Description = extractTableFieldToString(DataTableW,i,2);
-    Item.SIUnit = extractTableFieldToString(DataTableW,i,3);
-
-    SignatureDataEditorWidget::DataConditionsIndices CondIndex = extractTableComboToCondition(DataTableW,i,1);
-
-    if (static_cast<int>(CondIndex) >= 0)
-    {
-      if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::USED)
-      {
-        Signature.HandledData.UsedParams.push_back(Item);
-      }
-      else
-      {
-        Signature.HandledData.RequiredParams.push_back(Item);
-      }
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SignatureEditorWidget::updateSignatureFromParametersUI(openfluid::ware::ObserverSignature& Signature) const
+void SignatureEditorWidget::updateSignatureFromParametersUI(openfluid::ware::DataWareSignature& Signature) const
 {
   const QTableWidget* DataTableW = ui->ParametersDataWidget->dataTableWidget();
 

@@ -123,6 +123,9 @@ class ProjectCentral : QObject
     bool isParamSet(const openfluid::fluidx::ModelItemDescriptor* Item,
                     const std::string& ParamName) const;
 
+    bool isParamSet(const openfluid::fluidx::ObserverDescriptor* Item,
+                const std::string& ParamName) const;
+
     bool isParamIsDouble(const openfluid::fluidx::ModelItemDescriptor* Item,
                          const std::string& ParamName) const;
 

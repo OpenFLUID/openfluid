@@ -549,17 +549,20 @@ std::string SimulatorSignatureSerializer::toWareCPP(const openfluid::ware::Simul
   CPP += getCPPSpatialDataString("SimulatorHandledData.ProducedVars",Sign.SimulatorHandledData.ProducedVars);
 
   // Events
-  CPP += CppWriter::getCPPAssignment("SimulatorHandledData.UsedEventsOnUnits",CppWriter::getCPPVectorString(Sign.SimulatorHandledData.UsedEventsOnUnits,true));
+  CPP += CppWriter::getCPPAssignment("SimulatorHandledData.UsedEventsOnUnits",
+                                     CppWriter::getCPPVectorString(Sign.SimulatorHandledData.UsedEventsOnUnits,true));
 
   // Spatial struct
   CPP += CppWriter::getCPPAssignment("HandledUnitsGraph.UpdatedUnitsGraph",
-                          CppWriter::getQuotedString(openfluid::tools::escapeString(Sign.HandledUnitsGraph.UpdatedUnitsGraph)));
+                          CppWriter::getQuotedString(
+                            openfluid::tools::escapeString(Sign.HandledUnitsGraph.UpdatedUnitsGraph)));
   std::vector<std::string> SpatialUpdateVect;
   for (const auto& U : Sign.HandledUnitsGraph.UpdatedUnitsClass)
   {
     SpatialUpdateVect.push_back(CppWriter::getCPPVectorString({U.UnitsClass,U.Description},true));
   }
-  CPP += CppWriter::getCPPAssignment("HandledUnitsGraph.UpdatedUnitsClass",CppWriter::getCPPVectorString(SpatialUpdateVect));
+  CPP += CppWriter::getCPPAssignment("HandledUnitsGraph.UpdatedUnitsClass",
+                                     CppWriter::getCPPVectorString(SpatialUpdateVect));
 
   // Scheduling
   if (Sign.TimeScheduling.Type == openfluid::ware::SignatureTimeScheduling::SchedulingType::DEFAULT)

@@ -86,97 +86,20 @@ ModelItemWidget::~ModelItemWidget()
 // =====================================================================
 
 
-void ModelItemWidget::updateParameterValue(const QString& Name, const QString& Value)
-{
-  mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
-  emit changed();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelItemWidget::addParam(const std::string& ParamName, const std::string& ParamValue, 
-                               const std::string& ParamUnit, QStringList& ParamsInSign, bool Required, bool Removable)
-{
-  ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                     QString::fromStdString(ParamName),
-                                                     QString::fromStdString(ParamValue),
-                                                     QString::fromStdString(ParamUnit),
-                                                     Required, Removable);
-
-  if (Removable)
-  {
-    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
-            this, SLOT(removeParameterFromList(const QString&)));
-  }
-  else
-  {
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
-            this, SLOT(updateParameterValue(const QString&,const QString&)));
-    ParamsInSign << QString::fromStdString(ParamName);
-  }
-
-  ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string ModelItemWidget::getParamValue(const std::string& ParamName, openfluid::ware::WareParams_t& DescParams)
-{
-  std::string ParamValue;
-  if (DescParams.find(ParamName) != DescParams.end())
-  {
-    ParamValue = DescParams[ParamName];
-  }
-  return ParamValue;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
- QStringList ModelItemWidget::createParamWidgetsFromSignature(const openfluid::ware::SimulatorSignature* Signature)
-{  
-  const auto& UsedParams = Signature->HandledData.UsedParams;
-  const auto&  RequiredParams = Signature->HandledData.RequiredParams;
-    
-  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
-  QStringList ParamsInSign;
-  
-  // Required params
-
-  for (const auto& Param : RequiredParams)
-  {
-    std::string ParamName = Param.Name;
-    addParam(ParamName, getParamValue(ParamName, DescParams), Param.SIUnit, ParamsInSign, true, false);
-  }
-
-  // Used params
-
-  for (const auto& Param : UsedParams)
-  {
-    std::string ParamName = Param.Name;
-    addParam(ParamName, getParamValue(ParamName, DescParams), Param.SIUnit, ParamsInSign, false, false);
-  }
-  return ParamsInSign;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void ModelItemWidget::setEnabledWare(bool Enabled)
 {
-  mp_Desc->setEnabled(Enabled);
-  WareWidget::setEnabledWare(Enabled);
-  emit changed();
+  WareWidget::setEnabled(Enabled);
+  getWareDescriptor()->setEnabled(Enabled);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::fluidx::WareDescriptor* ModelItemWidget::getWareDescriptor()
+{
+  return mp_Desc;
 }
 
 
