@@ -384,7 +384,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="MapView" name="GlobalMapView"/>
+          <widget class="openfluid::ui::spatial::MapView" name="GlobalMapView"/>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -731,9 +731,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>MapView</class>
+   <class>openfluid::ui::spatial::MapView</class>
    <extends>QGraphicsView</extends>
-   <header>MapView.hpp</header>
+   <header location="global">openfluid/ui/spatial/MapView.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>
