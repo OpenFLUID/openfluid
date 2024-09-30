@@ -81,7 +81,7 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Flu
   ui->StructureTabWidget->setCurrentIndex(0);
   ui->DataTabWidget->setCurrentIndex(0);
 
-  mp_MapScene = new MapScene(m_Domain,this);
+  mp_MapScene = new openfluid::ui::spatial::MapScene(m_Domain,this);
   ui->GlobalMapView->setScene(mp_MapScene);
 
   ui->AddUnitsClassButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
@@ -1544,7 +1544,7 @@ void SpatialDomainWidget::updateSelectionFromMap()
   
   for (QGraphicsItem* Item : MapSelectedItems)
   {
-    MapSelectedIDs.insert(dynamic_cast<MapItemGraphics*>(Item)->getUnitID());
+    MapSelectedIDs.insert(dynamic_cast<openfluid::ui::spatial::MapItemGraphics*>(Item)->getUnitID());
   }
 
   if (MapSelectedIDs == getAttributeSelectedUnitSet())
@@ -1559,7 +1559,7 @@ void SpatialDomainWidget::updateSelectionFromMap()
     ui->AttributesTableWidget->clearSelection();
     for (QGraphicsItem* Item : MapSelectedItems)
     {
-      openfluid::core::UnitID_t IDMap = dynamic_cast<MapItemGraphics*>(Item)->getUnitID();
+      openfluid::core::UnitID_t IDMap = dynamic_cast<openfluid::ui::spatial::MapItemGraphics*>(Item)->getUnitID();
       for (int i=0; i<ui->AttributesTableWidget->rowCount();i++)
       {
         if (getUnitIDFromAttributesTableRow(i) == IDMap)
@@ -1621,7 +1621,7 @@ void SpatialDomainWidget::updateIDsListSelectionFromAttributesTableChange()
 
 void SpatialDomainWidget::updateMapFromAttributesTableChange()
 {
-  const QList<MapItemGraphics*>* ActiveLayer = mp_MapScene->activeLayer();
+  const QList<openfluid::ui::spatial::MapItemGraphics*>* ActiveLayer = mp_MapScene->activeLayer();
   if (ActiveLayer != nullptr)
   {
     disconnect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
@@ -1631,7 +1631,7 @@ void SpatialDomainWidget::updateMapFromAttributesTableChange()
     for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
     {
       unsigned int AttID = getUnitIDFromAttributesTableRow(Item->row());
-      for (MapItemGraphics* MapItem : *ActiveLayer)
+      for (openfluid::ui::spatial::MapItemGraphics* MapItem : *ActiveLayer)
       {
         if (MapItem->getUnitID() == AttID)
         {

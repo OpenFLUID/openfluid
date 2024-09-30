@@ -133,12 +133,6 @@ ENDIF()
 
 SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
                         spatial/UnitsClassWidget.cpp
-                        spatial/MapScene.cpp spatial/MapView.cpp
-                        spatial/MapItemGraphics.cpp
-                        spatial/PunctualGraphics.cpp spatial/LinearGraphics.cpp spatial/SurfacicGraphics.cpp
-                        spatial/PointGraphics.cpp spatial/MultiPointGraphics.cpp
-                        spatial/LineStringGraphics.cpp spatial/MultiLineStringGraphics.cpp
-                        spatial/PolygonGraphics.cpp spatial/MultiPolygonGraphics.cpp
                         spatial/EditAttributesValuesDialog.cpp
                         spatial/EditAttributeNameDialog.cpp
                         spatial/AddUnitDialog.cpp spatial/AddUnitsClassDialog.cpp spatial/AddUnitToClassDialog.cpp
@@ -149,12 +143,6 @@ SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
 
 SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
                         spatial/UnitsClassWidget.hpp
-                        spatial/MapScene.hpp spatial/MapView.hpp
-                        spatial/MapItemGraphics.hpp
-                        spatial/PunctualGraphics.hpp spatial/LinearGraphics.hpp spatial/SurfacicGraphics.hpp
-                        spatial/PointGraphics.hpp spatial/MultiPointGraphics.hpp
-                        spatial/LineStringGraphics.hpp spatial/MultiLineStringGraphics.hpp
-                        spatial/PolygonGraphics.hpp spatial/MultiPolygonGraphics.hpp
                         spatial/EditAttributesValuesDialog.hpp
                         spatial/EditAttributeNameDialog.hpp
                         spatial/AddUnitDialog.hpp spatial/AddUnitsClassDialog.hpp spatial/AddUnitToClassDialog.hpp
@@ -328,6 +316,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-tools
                       openfluid-utils
                       openfluid-ui-common
+                      openfluid-ui-spatial
                       openfluid-ui-builderext
                       openfluid-ui-waresdev
                       openfluid-waresdev

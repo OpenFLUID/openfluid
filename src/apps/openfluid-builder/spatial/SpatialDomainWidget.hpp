@@ -46,9 +46,9 @@
 
 #include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
+#include <openfluid/ui/spatial/MapScene.hpp>
 
 #include "WorkspaceWidget.hpp"
-#include "MapScene.hpp"
 
 
 namespace Ui
@@ -125,7 +125,7 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     QString m_ActiveClass;
 
-    MapScene* mp_MapScene;
+    openfluid::ui::spatial::MapScene* mp_MapScene;
 
     void setActiveClass(const QString& ClassName);
 
