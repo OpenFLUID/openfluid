@@ -92,12 +92,12 @@ class SimParamsPrimitivesSimulator : public openfluid::ware::PluggableSimulator
       std::vector<double> ParamDoubleArray;
 
 
-      if (!OPENFLUID_IsSimulatorParameterExist(Params,"strparam"))
+      if (!OPENFLUID_IsWareParameterExist(Params,"strparam"))
       {
         OPENFLUID_RaiseError("missing parameter (strparam)");
       }
 
-      if (OPENFLUID_IsSimulatorParameterExist(Params,"fakestrparam"))
+      if (OPENFLUID_IsWareParameterExist(Params,"fakestrparam"))
       {
         OPENFLUID_RaiseError("unexpected parameter (fakestrparam)");
       }

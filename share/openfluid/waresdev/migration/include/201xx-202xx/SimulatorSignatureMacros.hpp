@@ -140,7 +140,7 @@
   Macro for declaration of a required variable
 */
 #define DECLARE_REQUIRED_VARIABLE(name,uclass,description,unit) \
-  Signature->SimulatorHandledData.RequiredVars\
+  Signature->HandledData.RequiredVars\
   .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
 
 /**
@@ -152,7 +152,7 @@
   Macro for declaration of an used variable
 */
 #define DECLARE_USED_VARIABLE(name,uclass,description,unit) \
-  Signature->SimulatorHandledData.UsedVars\
+  Signature->HandledData.UsedVars\
   .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
 
 /**
@@ -176,14 +176,14 @@
   Macro for declaration of a required attribute
 */
 #define DECLARE_REQUIRED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->SimulatorHandledData.RequiredAttribute\
+  Signature->HandledData.RequiredAttribute\
   .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used attribute
 */
 #define DECLARE_USED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->SimulatorHandledData.UsedAttribute\
+  Signature->HandledData.UsedAttribute\
   .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
 
 /**
@@ -207,13 +207,13 @@
   Macro for declaration of required file
 */
 #define DECLARE_REQUIRED_EXTRAFILE(name) \
-  Signature->SimulatorHandledData.RequiredExtraFiles.push_back(name);
+  Signature->HandledData.RequiredExtraFiles.push_back(name);
 
 /**
   Macro for declaration of used file
 */
 #define DECLARE_USED_EXTRAFILE(name) \
-  Signature->SimulatorHandledData.UsedExtraFiles.push_back(name);
+  Signature->HandledData.UsedExtraFiles.push_back(name);
 
 /**
   Macro for declaration of time scheduling as undefined

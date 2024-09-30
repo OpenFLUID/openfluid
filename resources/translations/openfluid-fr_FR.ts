@@ -7540,27 +7540,27 @@ Voulez-vous sauvegarder les modifications?</translation>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareStatusItemWidget.cpp" line="88"/>
         <source>No ID set in ware signature</source>
-        <translation>Pas d&apos;ID dans la sigature de ware</translation>
+        <translation>Pas d&apos;ID dans la signature de ware</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareStatusItemWidget.cpp" line="89"/>
         <source>No full ware name given in ware signature</source>
-        <translation>Pas de nom complet fourni dans la sigature de ware</translation>
+        <translation>Pas de nom complet fourni dans la signature de ware</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareStatusItemWidget.cpp" line="90"/>
         <source>No author defined in ware signature</source>
-        <translation>Pas d&apos;auteur défini dans la sigature de ware</translation>
+        <translation>Pas d&apos;auteur défini dans la signature de ware</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareStatusItemWidget.cpp" line="91"/>
         <source>No contact provided in ware signature</source>
-        <translation>Pas de contact fourni dans la sigature de ware</translation>
+        <translation>Pas de contact fourni dans la signature de ware</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareStatusItemWidget.cpp" line="92"/>
         <source>No license defined in ware signature</source>
-        <translation>Pas de licence définie dans la sigature de ware</translation>
+        <translation>Pas de licence définie dans la signature de ware</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareStatusItemWidget.cpp" line="93"/>
@@ -7575,7 +7575,7 @@ Voulez-vous sauvegarder les modifications?</translation>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareStatusItemWidget.cpp" line="95"/>
         <source>No description in ware signature</source>
-        <translation>Pas de description dans la sigature de ware</translation>
+        <translation>Pas de description dans la signature de ware</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareStatusItemWidget.cpp" line="96"/>

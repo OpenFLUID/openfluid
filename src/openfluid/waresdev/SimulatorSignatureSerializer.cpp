@@ -46,57 +46,6 @@
 namespace openfluid { namespace waresdev {
 
 
-openfluid::ware::SignatureSpatialDataItem readSpatialDataItemFromJSON(const openfluid::thirdparty::json& Item)
-{
-  openfluid::ware::SignatureSpatialDataItem Data;
-
-  Data.Name = Item.value("name","");
-  if (!openfluid::tools::isValidVariableName(Data.Name))
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing or invalid data name");
-  }
-
-  Data.UnitsClass = Item.value("unitsclass","");
-  if (Data.UnitsClass.empty())
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing or invalid units class for data");
-  }
-
-  Data.Description = Item.value("description","");
-  Data.SIUnit = Item.value("siunit","");
-  
-  openfluid::core::Value::Type VT;
-
-  if (openfluid::core::Value::getValueTypeFromString(Item.value("type",""),VT))
-  {
-    Data.DataType = VT;
-  }
-
-  return Data;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<openfluid::ware::SignatureSpatialDataItem> 
-readSpatialDataListFromJSON(const openfluid::thirdparty::json& Json)
-{
-  std::vector<openfluid::ware::SignatureSpatialDataItem> List;
-
-  if (Json.is_array())
-  {
-    for (const auto& I : Json)
-    {
-      List.push_back(readSpatialDataItemFromJSON(I));
-    }
-  }
-
-  return List;
-}
-
-
 // =====================================================================
 // =====================================================================
 
@@ -106,17 +55,7 @@ void SimulatorSignatureSerializer::unserializeAttributesFromJSON(const openfluid
 {
   if (Json.contains("produced"))
   {
-    Sign.SimulatorHandledData.ProducedAttribute = readSpatialDataListFromJSON(Json.at("produced"));
-  }
-
-  if (Json.contains("used"))
-  {
-    Sign.SimulatorHandledData.UsedAttribute = readSpatialDataListFromJSON(Json.at("used"));
-  }
-
-  if (Json.contains("required"))
-  {
-    Sign.SimulatorHandledData.RequiredAttribute = readSpatialDataListFromJSON(Json.at("required"));
+    Sign.SimulatorHandledData.ProducedAttribute = DataJsonConverter::readSpatialDataListFromJSON(Json.at("produced"));
   }
 }
 
@@ -130,22 +69,12 @@ void SimulatorSignatureSerializer::unserializeVariablesFromJSON(const openfluid:
 {
   if (Json.contains("produced"))
   {
-    Sign.SimulatorHandledData.ProducedVars = readSpatialDataListFromJSON(Json.at("produced"));
-  }
-
-  if (Json.contains("used"))
-  {
-    Sign.SimulatorHandledData.UsedVars = readSpatialDataListFromJSON(Json.at("used"));
-  }
-
-  if (Json.contains("required"))
-  {
-    Sign.SimulatorHandledData.RequiredVars = readSpatialDataListFromJSON(Json.at("required"));
+    Sign.SimulatorHandledData.ProducedVars = DataJsonConverter::readSpatialDataListFromJSON(Json.at("produced"));
   }
 
   if (Json.contains("updated"))
   {
-    Sign.SimulatorHandledData.UpdatedVars = readSpatialDataListFromJSON(Json.at("updated"));
+    Sign.SimulatorHandledData.UpdatedVars = DataJsonConverter::readSpatialDataListFromJSON(Json.at("updated"));
   }
 }
 
@@ -170,12 +99,12 @@ void SimulatorSignatureSerializer::unserializeExtrafilesFromJSON(const openfluid
 {
   if (Json.contains("used"))
   {
-    Sign.SimulatorHandledData.UsedExtraFiles = Json.at("used").get<std::vector<std::string>>();
+    Sign.HandledData.UsedExtraFiles = Json.at("used").get<std::vector<std::string>>();
   }
 
   if (Json.contains("required"))
   {
-    Sign.SimulatorHandledData.RequiredExtraFiles = Json.at("required").get<std::vector<std::string>>();
+    Sign.HandledData.RequiredExtraFiles = Json.at("required").get<std::vector<std::string>>();
   }
 
 }
@@ -195,11 +124,13 @@ void SimulatorSignatureSerializer::unserializeDataFromJSON(const openfluid::thir
 
   if (Json.contains("attributes"))
   {
+    DataJsonConverter::unserializeReadAttributesFromJSON(Json.at("attributes"),Sign);
     unserializeAttributesFromJSON(Json.at("attributes"),Sign);
   }
 
   if (Json.contains("variables"))
   {
+    DataJsonConverter::unserializeReadVariablesFromJSON(Json.at("variables"),Sign);
     unserializeVariablesFromJSON(Json.at("variables"),Sign);
   }
 
@@ -210,7 +141,7 @@ void SimulatorSignatureSerializer::unserializeDataFromJSON(const openfluid::thir
 
   if (Json.contains("extrafiles"))
   {
-    unserializeExtrafilesFromJSON(Json.at("extrafiles"),Sign);
+    DataJsonConverter::unserializeExtrafilesFromJSON(Json.at("extrafiles"),Sign);
   }
 }
 
@@ -297,47 +228,15 @@ SimulatorSignatureSerializer::fromJSON(const openfluid::thirdparty::json& Json) 
 // =====================================================================
 
 
-openfluid::thirdparty::json serializeSpatialDataItemToJSON(const openfluid::ware::SignatureSpatialDataItem& Item)
-{
-  openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
-
-  Json["name"] = Item.Name;
-  Json["unitsclass"] = Item.UnitsClass;
-  Json["description"] = Item.Description;
-  Json["siunit"] = Item.SIUnit;
-  Json["type"] = openfluid::core::Value::getStringFromValueType(Item.DataType);
-
-  return Json;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 openfluid::thirdparty::json
 SimulatorSignatureSerializer::serializeAttributesToJSON(const openfluid::ware::SimulatorSignature& Sign) const
 {
   openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
 
-  auto JsonReq = openfluid::thirdparty::json::array();
-  for (const auto& A : Sign.SimulatorHandledData.RequiredAttribute)
-  {
-    JsonReq.push_back(serializeSpatialDataItemToJSON(A));
-  }
-  Json["required"] = JsonReq;
-
-  auto JsonUs = openfluid::thirdparty::json::array();
-  for (const auto& A : Sign.SimulatorHandledData.UsedAttribute)
-  {
-    JsonUs.push_back(serializeSpatialDataItemToJSON(A));
-  }
-  Json["used"] = JsonUs;
-
   auto JsonProd = openfluid::thirdparty::json::array();
   for (const auto& A : Sign.SimulatorHandledData.ProducedAttribute)
   {
-    JsonProd.push_back(serializeSpatialDataItemToJSON(A));
+    JsonProd.push_back(DataJsonConverter::serializeSpatialDataItemToJSON(A));
   }
   Json["produced"] = JsonProd;
 
@@ -357,28 +256,14 @@ SimulatorSignatureSerializer::serializeVariablesToJSON(const openfluid::ware::Si
   auto JsonProd = openfluid::thirdparty::json::array();
   for (const auto& V : Sign.SimulatorHandledData.ProducedVars)
   {
-    JsonProd.push_back(serializeSpatialDataItemToJSON(V));
+    JsonProd.push_back(DataJsonConverter::serializeSpatialDataItemToJSON(V));
   }
   Json["produced"] = JsonProd;
-
-  auto JsonReq = openfluid::thirdparty::json::array();
-  for (const auto& V : Sign.SimulatorHandledData.RequiredVars)
-  {
-    JsonReq.push_back(serializeSpatialDataItemToJSON(V));
-  }
-  Json["required"] = JsonReq;
-
-  auto JsonUs = openfluid::thirdparty::json::array();
-  for (const auto& V : Sign.SimulatorHandledData.UsedVars)
-  {
-    JsonUs.push_back(serializeSpatialDataItemToJSON(V));
-  }
-  Json["used"] = JsonUs;
 
   auto JsonUp = openfluid::thirdparty::json::array();
   for (const auto& V : Sign.SimulatorHandledData.UpdatedVars)
   {
-    JsonUp.push_back(serializeSpatialDataItemToJSON(V));
+    JsonUp.push_back(DataJsonConverter::serializeSpatialDataItemToJSON(V));
   }
   Json["updated"] = JsonUp;
 
@@ -404,29 +289,26 @@ SimulatorSignatureSerializer::serializeEventsToJSON(const openfluid::ware::Simul
 
 
 openfluid::thirdparty::json
-SimulatorSignatureSerializer::serializeExtrafilesToJSON(const openfluid::ware::SimulatorSignature& Sign) const
-{
-  openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
-
-  Json["required"] = Sign.SimulatorHandledData.RequiredExtraFiles;
-  Json["used"] = Sign.SimulatorHandledData.UsedExtraFiles;
-
-  return Json;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::thirdparty::json
 SimulatorSignatureSerializer::serializeDataToJSON(const openfluid::ware::SimulatorSignature& Sign) const
 {
   openfluid::thirdparty::json Json = DataJsonConverter::serializeDataToJSON(Sign.HandledData);
-  Json["attributes"] = serializeAttributesToJSON(Sign);
-  Json["variables"] = serializeVariablesToJSON(Sign);
+  const auto& AttributesJson = serializeAttributesToJSON(Sign);
+  if (!AttributesJson.empty())
+  {
+    for (auto& SubJson : AttributesJson.items())
+    {
+      Json["attributes"][SubJson.key()] = SubJson.value();
+    }
+  }
+  const auto& VariablesJson = serializeVariablesToJSON(Sign);
+  if (!VariablesJson.empty())
+  {
+    for (auto& SubJson : VariablesJson.items())
+    {
+      Json["variables"][SubJson.key()] = SubJson.value();
+    }
+  }
   Json["events"] = serializeEventsToJSON(Sign);
-  Json["extrafiles"] = serializeExtrafilesToJSON(Sign);
 
   return Json;
 }
@@ -498,28 +380,6 @@ openfluid::thirdparty::json SimulatorSignatureSerializer::toJSON(const openfluid
 // =====================================================================
 
 
-std::string SimulatorSignatureSerializer::getCPPSpatialDataString(
-  const std::string Member,const std::vector<openfluid::ware::SignatureSpatialDataItem>& Data)
-{
-  std::string Str;
-  
-  for (const auto& D : Data)
-  {
-    Str += CppWriter::getCPPMethod(Member,"push_back",{"{"+CppWriter::getQuotedString(D.Name)+","+
-                                                CppWriter::getQuotedString(D.UnitsClass)+","+
-                                                CppWriter::getQuotedString(D.Description)+","+
-                                                CppWriter::getQuotedString(D.SIUnit)+","+
-                                                CppWriter::getCPPValueType(D.DataType)+"}"});
-  }
-
-  return Str;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 std::string SimulatorSignatureSerializer::toWareCPP(const openfluid::ware::SimulatorSignature& Sign) const
 {
   std::string CPP;
@@ -532,21 +392,22 @@ std::string SimulatorSignatureSerializer::toWareCPP(const openfluid::ware::Simul
   CPP += CppWriter::toWareCPPParams(Sign.HandledData);
 
   // Extrafiles
-  CPP += CppWriter::getCPPAssignment("SimulatorHandledData.UsedExtraFiles",
-                          CppWriter::getCPPVectorString(Sign.SimulatorHandledData.UsedExtraFiles,true));
-  CPP += CppWriter::getCPPAssignment("SimulatorHandledData.RequiredExtraFiles",
-                          CppWriter::getCPPVectorString(Sign.SimulatorHandledData.RequiredExtraFiles,true));
+  CPP += CppWriter::getCPPAssignment("HandledData.UsedExtraFiles",
+                          CppWriter::getCPPVectorString(Sign.HandledData.UsedExtraFiles,true));
+  CPP += CppWriter::getCPPAssignment("HandledData.RequiredExtraFiles",
+                          CppWriter::getCPPVectorString(Sign.HandledData.RequiredExtraFiles,true));
 
   // Attributes
-  CPP += getCPPSpatialDataString("SimulatorHandledData.UsedAttribute",Sign.SimulatorHandledData.UsedAttribute);
-  CPP += getCPPSpatialDataString("SimulatorHandledData.RequiredAttribute",Sign.SimulatorHandledData.RequiredAttribute);
-  CPP += getCPPSpatialDataString("SimulatorHandledData.ProducedAttribute",Sign.SimulatorHandledData.ProducedAttribute);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedAttribute",Sign.HandledData.UsedAttribute);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.RequiredAttribute",Sign.HandledData.RequiredAttribute);
+  CPP += CppWriter::getCPPSpatialDataString("SimulatorHandledData.ProducedAttribute",
+                                            Sign.SimulatorHandledData.ProducedAttribute);
 
   // Variables
-  CPP += getCPPSpatialDataString("SimulatorHandledData.UsedVars",Sign.SimulatorHandledData.UsedVars);
-  CPP += getCPPSpatialDataString("SimulatorHandledData.RequiredVars",Sign.SimulatorHandledData.RequiredVars);
-  CPP += getCPPSpatialDataString("SimulatorHandledData.UpdatedVars",Sign.SimulatorHandledData.UpdatedVars);
-  CPP += getCPPSpatialDataString("SimulatorHandledData.ProducedVars",Sign.SimulatorHandledData.ProducedVars);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedVars",Sign.HandledData.UsedVars);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.RequiredVars",Sign.HandledData.RequiredVars);
+  CPP += CppWriter::getCPPSpatialDataString("SimulatorHandledData.UpdatedVars",Sign.SimulatorHandledData.UpdatedVars);
+  CPP += CppWriter::getCPPSpatialDataString("SimulatorHandledData.ProducedVars",Sign.SimulatorHandledData.ProducedVars);
 
   // Events
   CPP += CppWriter::getCPPAssignment("SimulatorHandledData.UsedEventsOnUnits",

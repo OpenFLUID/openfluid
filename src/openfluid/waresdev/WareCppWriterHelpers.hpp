@@ -224,6 +224,28 @@ struct CppWriter {
   // =====================================================================
 
 
+  static std::string getCPPSpatialDataString(
+    const std::string Member,const std::vector<openfluid::ware::SignatureSpatialDataItem>& Data)
+  {
+    std::string Str;
+    
+    for (const auto& D : Data)
+    {
+      Str += getCPPMethod(Member,"push_back",{"{"+CppWriter::getQuotedString(D.Name)+","+
+                                                  CppWriter::getQuotedString(D.UnitsClass)+","+
+                                                  CppWriter::getQuotedString(D.Description)+","+
+                                                  CppWriter::getQuotedString(D.SIUnit)+","+
+                                                  CppWriter::getCPPValueType(D.DataType)+"}"});
+    }
+
+    return Str;
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
   static std::string getCPPTail()
   {
     return "\nreturn Signature;\n}\n}\n";
@@ -403,11 +425,104 @@ struct DataJsonConverter
   // =====================================================================
 
 
+  static openfluid::thirdparty::json serializeSpatialDataItemToJSON(const openfluid::ware::SignatureSpatialDataItem& 
+                                                                    Item)
+  {
+    openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
+
+    Json["name"] = Item.Name;
+    Json["unitsclass"] = Item.UnitsClass;
+    Json["description"] = Item.Description;
+    Json["siunit"] = Item.SIUnit;
+    Json["type"] = openfluid::core::Value::getStringFromValueType(Item.DataType);
+
+    return Json;
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static openfluid::thirdparty::json
+  serializeAttributesToJSON(const openfluid::ware::SignatureHandledData& HandledData)
+  {
+    openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
+
+    auto JsonReq = openfluid::thirdparty::json::array();
+    for (const auto& A : HandledData.RequiredAttribute)
+    {
+      JsonReq.push_back(serializeSpatialDataItemToJSON(A));
+    }
+    Json["required"] = JsonReq;
+
+    auto JsonUs = openfluid::thirdparty::json::array();
+    for (const auto& A : HandledData.UsedAttribute)
+    {
+      JsonUs.push_back(serializeSpatialDataItemToJSON(A));
+    }
+    Json["used"] = JsonUs;
+
+    return Json;
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static openfluid::thirdparty::json
+  serializeVariablesToJSON(const openfluid::ware::SignatureHandledData& HandledData)
+  {
+    openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
+
+    auto JsonReq = openfluid::thirdparty::json::array();
+    for (const auto& V : HandledData.RequiredVars)
+    {
+      JsonReq.push_back(serializeSpatialDataItemToJSON(V));
+    }
+    Json["required"] = JsonReq;
+
+    auto JsonUs = openfluid::thirdparty::json::array();
+    for (const auto& V : HandledData.UsedVars)
+    {
+      JsonUs.push_back(serializeSpatialDataItemToJSON(V));
+    }
+    Json["used"] = JsonUs;
+
+    return Json;
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static openfluid::thirdparty::json
+  serializeExtrafilesToJSON(const openfluid::ware::SignatureHandledData& HandledData)
+  {
+    openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
+
+    Json["required"] = HandledData.RequiredExtraFiles;
+    Json["used"] = HandledData.UsedExtraFiles;
+
+    return Json;
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
   static openfluid::thirdparty::json serializeDataToJSON(const openfluid::ware::SignatureHandledData& HandledData)
   {
     openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
 
     Json["parameters"] = serializeParametersToJSON(HandledData);
+    Json["attributes"] = serializeAttributesToJSON(HandledData);
+    Json["variables"] = serializeVariablesToJSON(HandledData);
+    Json["extrafiles"] = serializeExtrafilesToJSON(HandledData);
+
 
     return Json;
   }
@@ -429,6 +544,120 @@ struct DataJsonConverter
     {
       HandledData.RequiredParams = readDataListFromJSON(Json.at("required"));
     }
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static openfluid::ware::SignatureSpatialDataItem readSpatialDataItemFromJSON(const openfluid::thirdparty::json& Item)
+  {
+    openfluid::ware::SignatureSpatialDataItem Data;
+
+    Data.Name = Item.value("name","");
+    if (!openfluid::tools::isValidVariableName(Data.Name))
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing or invalid data name");
+    }
+
+    Data.UnitsClass = Item.value("unitsclass","");
+    if (Data.UnitsClass.empty())
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing or invalid units class for data");
+    }
+
+    Data.Description = Item.value("description","");
+    Data.SIUnit = Item.value("siunit","");
+    
+    openfluid::core::Value::Type VT;
+
+    if (openfluid::core::Value::getValueTypeFromString(Item.value("type",""),VT))
+    {
+      Data.DataType = VT;
+    }
+
+    return Data;
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static std::vector<openfluid::ware::SignatureSpatialDataItem> 
+  readSpatialDataListFromJSON(const openfluid::thirdparty::json& Json)
+  {
+    std::vector<openfluid::ware::SignatureSpatialDataItem> List;
+
+    if (Json.is_array())
+    {
+      for (const auto& I : Json)
+      {
+        List.push_back(readSpatialDataItemFromJSON(I));
+      }
+    }
+
+    return List;
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static void unserializeReadAttributesFromJSON(const openfluid::thirdparty::json& Json, 
+                                                                  openfluid::ware::DataWareSignature& Sign)
+  {
+
+    if (Json.contains("used"))
+    {
+      Sign.HandledData.UsedAttribute = readSpatialDataListFromJSON(Json.at("used"));
+    }
+
+    if (Json.contains("required"))
+    {
+      Sign.HandledData.RequiredAttribute = readSpatialDataListFromJSON(Json.at("required"));
+    }
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static void unserializeReadVariablesFromJSON(const openfluid::thirdparty::json& Json, 
+                                                                  openfluid::ware::DataWareSignature& Sign)
+  {
+    if (Json.contains("used"))
+    {
+      Sign.HandledData.UsedVars = readSpatialDataListFromJSON(Json.at("used"));
+    }
+
+    if (Json.contains("required"))
+    {
+      Sign.HandledData.RequiredVars = readSpatialDataListFromJSON(Json.at("required"));
+    }
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static void unserializeExtrafilesFromJSON(const openfluid::thirdparty::json& Json, 
+                                                                  openfluid::ware::DataWareSignature& Sign)
+  {
+    if (Json.contains("used"))
+    {
+      Sign.HandledData.UsedExtraFiles = Json.at("used").get<std::vector<std::string>>();
+    }
+
+    if (Json.contains("required"))
+    {
+      Sign.HandledData.RequiredExtraFiles = Json.at("required").get<std::vector<std::string>>();
+    }
+
   }
 
 };

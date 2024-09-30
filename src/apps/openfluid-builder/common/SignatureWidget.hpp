@@ -78,17 +78,22 @@ class SignatureWidget : public QWidget
     void updateExtrafilesCategory(const std::vector<std::string>* Infos,
                                   const QString& CatStr, unsigned int BaseIndex);
 
-    void updateExtrafiles(const openfluid::ware::SimulatorSignature* Signature);
+    void updateExtrafiles(const openfluid::ware::DataWareSignature* Signature);
 
     void updateVariablesCategory(const std::vector<openfluid::ware::SignatureSpatialDataItem>* Infos,
                                  const QString& CatStr,
                                  unsigned int BaseIndex);
+
+    void updateReadVariables(const openfluid::ware::DataWareSignature* Signature);
 
     void updateVariables(const openfluid::ware::SimulatorSignature* Signature);
 
     void updateAttributesCategory(const std::vector<openfluid::ware::SignatureSpatialDataItem>* Infos,
                                   const QString& CatStr,
                                   unsigned int BaseIndex);
+
+    
+    void updateReadAttributes(const openfluid::ware::DataWareSignature* Signature);
 
     void updateAttributes(const openfluid::ware::SimulatorSignature* Signature);
 

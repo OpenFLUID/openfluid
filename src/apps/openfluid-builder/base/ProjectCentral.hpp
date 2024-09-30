@@ -52,6 +52,7 @@
 
 class ProjectCentral : QObject
 {
+  // TODO Convert as non-Qt base class
   Q_OBJECT;
 
   private:
@@ -73,6 +74,17 @@ class ProjectCentral : QObject
       List of observer IDs involved in the monitoring
     */
     QStringList m_ObserversIDsList;
+
+    /**
+      List of updated attributes
+    */
+    std::set<std::pair<std::string, std::string> > m_AttrsUnits;
+
+    QStringList m_UpdatedUnitsClass;
+
+    std::set<std::pair<std::string, std::string> > m_VarsUnits;
+
+    std::set<std::pair<std::string,std::pair<std::string, openfluid::core::Value::Type> > > m_TypedVarsUnits;
 
     /**
       List of parameters by simulators involved in the model
