@@ -363,7 +363,8 @@ void Engine::checkParametersConsistency()
 void Engine::checkModelConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator SimIter;
-  openfluid::ware::SimulatorSignatureHandledData HData;
+  openfluid::ware::SignatureHandledData HData;
+  openfluid::ware::SimulatorSignatureHandledData SHData;
   ModelItemInstance* CurrentSimulator;
   unsigned int i;
 
@@ -381,19 +382,20 @@ void Engine::checkModelConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Container.signature()->SimulatorHandledData;
+    HData = CurrentSimulator->Container.signature()->HandledData;
+    SHData = CurrentSimulator->Container.signature()->SimulatorHandledData;
 
     // checking variables to create (produced)
-    for (i=0;i< HData.ProducedVars.size();i++)
+    for (i=0;i< SHData.ProducedVars.size();i++)
     {
-      createVariable(HData.ProducedVars[i].Name,HData.ProducedVars[i].DataType,HData.ProducedVars[i].UnitsClass,
+      createVariable(SHData.ProducedVars[i].Name,SHData.ProducedVars[i].DataType,SHData.ProducedVars[i].UnitsClass,
                      false,CurrentSimulator->Container.signature()->ID);
     }
 
     // checking variables to update
-    for (i=0;i<HData.UpdatedVars.size();i++)
+    for (i=0;i<SHData.UpdatedVars.size();i++)
     {
-      createVariable(HData.UpdatedVars[i].Name,HData.UpdatedVars[i].DataType,HData.UpdatedVars[i].UnitsClass,
+      createVariable(SHData.UpdatedVars[i].Name,SHData.UpdatedVars[i].DataType,SHData.UpdatedVars[i].UnitsClass,
                      true,CurrentSimulator->Container.signature()->ID);
     }
     ++SimIter;
@@ -405,7 +407,7 @@ void Engine::checkModelConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Container.signature()->SimulatorHandledData;
+    HData = CurrentSimulator->Container.signature()->HandledData;
 
     // checking required variables
     for (i=0;i< HData.RequiredVars.size();i++)
@@ -415,6 +417,16 @@ void Engine::checkModelConsistency()
     }
 
     ++SimIter;
+  }
+
+  // Cheching in observers
+  for (ObserverInstance* IInstance : m_MonitoringInstance.observers())
+  {
+    for (const auto& Var : IInstance->Container.signature()->HandledData.RequiredVars)
+    {
+      checkExistingVariable(Var.Name,HData.RequiredVars[i].DataType,
+                            Var.UnitsClass,CurrentSimulator->Container.signature()->ID);
+    }
   }
 
 }
@@ -427,7 +439,8 @@ void Engine::checkModelConsistency()
 void Engine::checkAttributesConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator SimIter;
-  openfluid::ware::SimulatorSignatureHandledData HData;
+  openfluid::ware::SignatureHandledData HData;
+  openfluid::ware::SimulatorSignatureHandledData SHData;
   ModelItemInstance* CurrentSimulator;
   unsigned int i;
 
@@ -437,7 +450,7 @@ void Engine::checkAttributesConsistency()
   while (SimIter != m_ModelInstance.items().end())
   {
     CurrentSimulator = (*SimIter);
-    HData = CurrentSimulator->Container.signature()->SimulatorHandledData;
+    HData = CurrentSimulator->Container.signature()->HandledData;
 
     // checking required attribute
     for(i=0; i < HData.RequiredAttribute.size();i++)
@@ -447,13 +460,25 @@ void Engine::checkAttributesConsistency()
     }
 
     // checking produced attribute
-    for(i=0; i < HData.ProducedAttribute.size();i++)
+    SHData = CurrentSimulator->Container.signature()->SimulatorHandledData;
+    for(i=0; i < SHData.ProducedAttribute.size();i++)
     {
-      createAttribute(HData.ProducedAttribute[i].Name,HData.ProducedAttribute[i].UnitsClass,
+      createAttribute(SHData.ProducedAttribute[i].Name,SHData.ProducedAttribute[i].UnitsClass,
                       CurrentSimulator->Container.signature()->ID);
     }
 
     ++SimIter;
+  }
+  
+
+  // Cheching in observers
+  for (ObserverInstance* IInstance : m_MonitoringInstance.observers())
+  {
+    for (const auto& Attribute : IInstance->Container.signature()->HandledData.RequiredAttribute)
+    {
+      checkExistingAttribute(Attribute.Name,Attribute.UnitsClass,
+                             CurrentSimulator->Container.signature()->ID);
+    }
   }
 
 }
@@ -465,13 +490,13 @@ void Engine::checkAttributesConsistency()
 
 void Engine::checkExtraFilesConsistency()
 {
-  openfluid::ware::SimulatorSignatureHandledData HData;
+  openfluid::ware::SignatureHandledData HData;
 
   // on each simulator
   for (const auto* Sim : m_ModelInstance.items())
   {
 
-    HData = Sim->Container.signature()->SimulatorHandledData;
+    HData = Sim->Container.signature()->HandledData;
 
     for (unsigned int i=0;i<HData.RequiredExtraFiles.size();i++)
     {
@@ -482,6 +507,24 @@ void Engine::checkExtraFilesConsistency()
                 OPENFLUID_CODE_LOCATION,
                 "File " + HData.RequiredExtraFiles[i] +
                 " required by " + Sim->Container.signature()->ID + " not found"
+              );
+      }
+    }
+  }
+  
+  
+  // Cheching in observers
+  for (ObserverInstance* IInstance : m_MonitoringInstance.observers())
+  {
+    for (const auto& ExtraFile : IInstance->Container.signature()->HandledData.RequiredExtraFiles)
+    {
+      if (!openfluid::tools::FilesystemPath(openfluid::base::RunContextManager::instance()
+                                            ->getInputFullPath(ExtraFile)).isFile())
+      {
+        throw openfluid::base::FrameworkException(
+                OPENFLUID_CODE_LOCATION,
+                "File " + ExtraFile +
+                " required by " + IInstance->Container.signature()->ID + " not found"
               );
       }
     }

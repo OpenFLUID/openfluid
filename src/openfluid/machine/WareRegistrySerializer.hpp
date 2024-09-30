@@ -332,9 +332,9 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
 
   if (!Data.UsedParams.empty() || !Data.RequiredParams.empty() ||
       !SimData.ProducedVars.empty() || !SimData.UpdatedVars.empty() || 
-      !SimData.RequiredVars.empty() || !SimData.UsedVars.empty() ||
-      !SimData.ProducedAttribute.empty() || !SimData.RequiredAttribute.empty() || !SimData.UsedAttribute.empty() ||
-      !SimData.RequiredExtraFiles.empty() || !SimData.UsedExtraFiles.empty() ||
+      !Data.RequiredVars.empty() || !Data.UsedVars.empty() ||
+      !SimData.ProducedAttribute.empty() || !Data.RequiredAttribute.empty() || !Data.UsedAttribute.empty() ||
+      !Data.RequiredExtraFiles.empty() || !Data.UsedExtraFiles.empty() ||
       !SimData.UsedEventsOnUnits.empty())
   {
     OutStm << getIndentedText(2,"Handled data") << "\n";
@@ -355,12 +355,12 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
     
     // ------ Attributes
 
-    for (const auto& Item : SimData.RequiredAttribute)
+    for (const auto& Item : Data.RequiredAttribute)
     {
       addSpatialDataForText(Item,"required attribute",OutStm);
     } 
 
-    for (const auto& Item : SimData.UsedAttribute)
+    for (const auto& Item : Data.UsedAttribute)
     {
       addSpatialDataForText(Item,"used attribute",OutStm);
     } 
@@ -373,12 +373,12 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
 
     // ------ Variables
 
-    for (const auto& Item : SimData.RequiredVars)
+    for (const auto& Item : Data.RequiredVars)
     {
       addTypedSpatialDataForText(Item,"required variable",OutStm);
     } 
 
-    for (const auto& Item : SimData.UsedVars)
+    for (const auto& Item : Data.UsedVars)
     {
       addTypedSpatialDataForText(Item,"used variable",OutStm);
     } 
@@ -415,12 +415,12 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
 
     // ------ Extrafiles
 
-    for (const auto& Item : SimData.RequiredExtraFiles)
+    for (const auto& Item : Data.RequiredExtraFiles)
     {
       OutStm << getIndentedText(3,"Required extra file",Item) << "\n";
     }
 
-    for (const auto& Item : SimData.UsedExtraFiles)
+    for (const auto& Item : Data.UsedExtraFiles)
     {
       OutStm << getIndentedText(3,"Used extra file",Item) << "\n";
     }

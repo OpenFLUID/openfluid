@@ -53,6 +53,21 @@ void ObserverSignatureSerializer::unserializeDataFromJSON(const openfluid::third
   {
     DataJsonConverter::unserializeParametersFromJSON(Json.at("parameters"),Sign.HandledData);
   }
+
+  if (Json.contains("attributes"))
+  {
+    DataJsonConverter::unserializeReadAttributesFromJSON(Json.at("attributes"),Sign);
+  }
+
+  if (Json.contains("variables"))
+  {
+    DataJsonConverter::unserializeReadVariablesFromJSON(Json.at("variables"),Sign);
+  }
+
+  if (Json.contains("extrafiles"))
+  {
+    DataJsonConverter::unserializeExtrafilesFromJSON(Json.at("extrafiles"),Sign);
+  }
 }
 
 
@@ -107,6 +122,20 @@ std::string ObserverSignatureSerializer::toWareCPP(const openfluid::ware::Observ
   CPP += toWareCPPBase(Sign);
 
   CPP += CppWriter::toWareCPPParams(Sign.HandledData);
+
+  // Extrafiles
+  CPP += CppWriter::getCPPAssignment("HandledData.UsedExtraFiles",
+                          CppWriter::getCPPVectorString(Sign.HandledData.UsedExtraFiles,true));
+  CPP += CppWriter::getCPPAssignment("HandledData.RequiredExtraFiles",
+                          CppWriter::getCPPVectorString(Sign.HandledData.RequiredExtraFiles,true));
+
+  // Attributes
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedAttribute",Sign.HandledData.UsedAttribute);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.RequiredAttribute",Sign.HandledData.RequiredAttribute);
+
+  // Variables
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedVars",Sign.HandledData.UsedVars);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.RequiredVars",Sign.HandledData.RequiredVars);
   
   CPP += CppWriter::getCPPTail();
 

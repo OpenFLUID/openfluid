@@ -62,34 +62,6 @@ typedef std::string SimDomain_t; // TOIMPL to remove, replaced by tags
 
 
 /**
-Class for storage of the definition of data handled by the simulator.
-*/
-class OPENFLUID_API SignatureSpatialDataItem : public SignatureDataItem
-{
-  public:
-
-    openfluid::core::UnitsClass_t UnitsClass;
-
-    SignatureSpatialDataItem() : SignatureDataItem()
-    { }
-
-    SignatureSpatialDataItem(const std::string& N, const openfluid::core::UnitsClass_t& U,
-                             const std::string& D, const std::string& SI) :
-      SignatureDataItem(N,D,SI),UnitsClass(U)
-    { }
-
-    SignatureSpatialDataItem(const std::string& N, const openfluid::core::UnitsClass_t& U,
-                             const std::string& D, const std::string& SI, openfluid::core::Value::Type T) :
-      SignatureDataItem(N,D,SI,T),UnitsClass(U)
-    { }
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
   Class for storage of the definition of the data handled by the simulator. This is part of the signature.
 */
 class OPENFLUID_API SimulatorSignatureHandledData
@@ -103,19 +75,7 @@ class OPENFLUID_API SimulatorSignatureHandledData
 
     std::vector<SignatureSpatialDataItem> UpdatedVars;
 
-    std::vector<SignatureSpatialDataItem> RequiredVars;
-
-    std::vector<SignatureSpatialDataItem> UsedVars;
-
     std::vector<SignatureSpatialDataItem> ProducedAttribute; // TOIMPL add plural
-
-    std::vector<SignatureSpatialDataItem> RequiredAttribute; // TOIMPL add plural
-
-    std::vector<SignatureSpatialDataItem> UsedAttribute; // TOIMPL add plural
-
-    std::vector<std::string> RequiredExtraFiles; // TOIMPL add description associated with each file?
-
-    std::vector<std::string> UsedExtraFiles; // TOIMPL add description associated with each file?
 
     std::vector<openfluid::core::UnitsClass_t> UsedEventsOnUnits; // TOIMPL add description to units class events?
 
@@ -130,13 +90,7 @@ class OPENFLUID_API SimulatorSignatureHandledData
     {
       ProducedVars.clear();
       UpdatedVars.clear();
-      RequiredVars.clear();
-      UsedVars.clear();
       ProducedAttribute.clear();
-      RequiredAttribute.clear();
-      UsedAttribute.clear();
-      RequiredExtraFiles.clear();
-      UsedExtraFiles.clear();
       UsedEventsOnUnits.clear();
     }
 

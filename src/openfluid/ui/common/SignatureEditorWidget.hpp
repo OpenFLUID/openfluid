@@ -92,17 +92,19 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     void initializeIssuesUIFromSignature(const openfluid::ware::WareSignature& Signature);
 
-    void injectParamData(const openfluid::ware::SignatureHandledData& Data);
-
     void initializeParametersUIFromSignature(const openfluid::ware::DataWareSignature& Signature);
 
-    void initializeExtrafilesUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
+    void initializeExtrafilesUIFromSignature(const openfluid::ware::DataWareSignature& Signature);
 
-    void initializeAttributesUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
+    void initializeInputAttributesUIFromSignature(const openfluid::ware::DataWareSignature& Signature, bool IsRW=true);
+    
+    void initializeAttributesUIFromSignature(const openfluid::ware::SimulatorSignature& Signature, bool IsRW=true);
 
     void initializeEventsUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
 
-    void initializeVariablesUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
+    void initializeInputVariablesUIFromSignature(const openfluid::ware::DataWareSignature& Signature, bool IsRW=true);
+
+    void initializeVariablesUIFromSignature(const openfluid::ware::SimulatorSignature& Signature, bool IsRW=true);
 
     void initializeDynamicsUIFromSignature(const openfluid::ware::SimulatorSignature& Signature);
 
@@ -112,11 +114,15 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     void updateSignatureFromParametersUI(openfluid::ware::DataWareSignature& Signature) const;
 
-    void updateSignatureFromExtrafilesUI(openfluid::ware::SimulatorSignature& Signature) const;
+    void updateSignatureFromExtrafilesUI(openfluid::ware::DataWareSignature& Signature) const;
+
+    void updateSignatureFromReadAttributesUI(openfluid::ware::DataWareSignature& Signature) const;
 
     void updateSignatureFromAttributesUI(openfluid::ware::SimulatorSignature& Signature) const;
 
     void updateSignatureFromEventsUI(openfluid::ware::SimulatorSignature& Signature) const;
+
+    void updateSignatureFromReadVariablesUI(openfluid::ware::DataWareSignature& Signature) const;
 
     void updateSignatureFromVariablesUI(openfluid::ware::SimulatorSignature& Signature) const;
 

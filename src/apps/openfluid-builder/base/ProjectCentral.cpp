@@ -476,12 +476,15 @@ void ProjectCentral::checkModel()
   openfluid::machine::SimulatorRegistry* Reg = openfluid::machine::SimulatorRegistry::instance();
   openfluid::base::RunContextManager* RunCtxt = openfluid::base::RunContextManager::instance();
 
-  QStringList UpdatedUnitsClass;
-  std::set<std::pair<std::string, std::string> > AttrsUnits;
   bool AtLeastOneEnabled = false;
 
   m_SimulatorsIDsList.clear();
   m_SimulatorsParamsLists.clear();
+  m_UpdatedUnitsClass.clear();
+  m_AttrsUnits.clear();
+  m_VarsUnits.clear();
+  m_TypedVarsUnits.clear();
+
 
   // Create non existing generators in registry
   for (const auto* Item : Model.items())
@@ -532,7 +535,7 @@ void ProjectCentral::checkModel()
 
         // check extrafiles
 
-        const auto& ReqFiles = Sign->SimulatorHandledData.RequiredExtraFiles;
+        const auto& ReqFiles = Sign->HandledData.RequiredExtraFiles;
 
         if (Item->isType(openfluid::ware::WareType::GENERATOR))
         {
@@ -676,17 +679,17 @@ void ProjectCentral::checkModel()
 
 
         // populate updated units classes (created, modified)
-        UpdatedUnitsClass.append(convertUpdatedUnitsClassesToQStringList(Sign->HandledUnitsGraph.UpdatedUnitsClass));
+        m_UpdatedUnitsClass.append(convertUpdatedUnitsClassesToQStringList(Sign->HandledUnitsGraph.UpdatedUnitsClass));
 
 
         // check required attributes
 
-        const auto& ReqData = Sign->SimulatorHandledData.RequiredAttribute;
+        const auto& ReqData = Sign->HandledData.RequiredAttribute;
 
         for (auto itReqData = ReqData.begin(); itReqData != ReqData.end(); ++itReqData)
         {
           if (!Domain.isClassNameExists(itReqData->UnitsClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itReqData->UnitsClass)))
+              !m_UpdatedUnitsClass.contains(QString::fromStdString(itReqData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
@@ -697,7 +700,7 @@ void ProjectCentral::checkModel()
                                             .arg(QString::fromStdString(ID)));
           }
           else if (!(Domain.getAttributesNames(itReqData->UnitsClass).count(itReqData->Name)
-              || AttrsUnits.count(std::make_pair(itReqData->UnitsClass, itReqData->Name))))
+              || m_AttrsUnits.count(std::make_pair(itReqData->UnitsClass, itReqData->Name))))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
@@ -717,7 +720,7 @@ void ProjectCentral::checkModel()
             itProdData != ProdData.end(); ++itProdData)
         {
           if (!Domain.isClassNameExists(itProdData->UnitsClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itProdData->UnitsClass)))
+              !m_UpdatedUnitsClass.contains(QString::fromStdString(itProdData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
@@ -728,9 +731,9 @@ void ProjectCentral::checkModel()
                                             .arg(QString::fromStdString(ID)));
           }
 
-          if (!AttrsUnits.count(std::make_pair(itProdData->UnitsClass, itProdData->Name)))
+          if (!m_AttrsUnits.count(std::make_pair(itProdData->UnitsClass, itProdData->Name)))
           {
-            AttrsUnits.insert(std::make_pair(itProdData->UnitsClass, itProdData->Name));
+            m_AttrsUnits.insert(std::make_pair(itProdData->UnitsClass, itProdData->Name));
           }
           else
           {
@@ -766,9 +769,6 @@ void ProjectCentral::checkModel()
 
   // ========== internal constraints
 
-  std::set<std::pair<std::string, std::string> > VarsUnits;
-  std::set<std::pair<std::string,std::pair<std::string, openfluid::core::Value::Type> > > TypedVarsUnits;
-
   /* Variables processing order is important
    A) first pass
      1) produced vars
@@ -797,7 +797,7 @@ void ProjectCentral::checkModel()
           m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->Name);
 
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
+              !m_UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
@@ -808,10 +808,10 @@ void ProjectCentral::checkModel()
                                         .arg(QString::fromStdString(ID)));
           }
 
-          if (!VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
+          if (!m_VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
           {
-            VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->Name));
-            TypedVarsUnits.insert(std::make_pair(itData->UnitsClass,
+            m_VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->Name));
+            m_TypedVarsUnits.insert(std::make_pair(itData->UnitsClass,
                                                  std::make_pair(itData->Name, itData->DataType)));
           }
           else
@@ -833,7 +833,7 @@ void ProjectCentral::checkModel()
           m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->Name);
 
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
+              !m_UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
@@ -844,10 +844,10 @@ void ProjectCentral::checkModel()
                                         .arg(QString::fromStdString(ID)));
           }
 
-          if (!VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
+          if (!m_VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
           {
-            VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->Name));
-            TypedVarsUnits.insert(
+            m_VarsUnits.insert(std::make_pair(itData->UnitsClass, itData->Name));
+            m_TypedVarsUnits.insert(
                 std::make_pair(itData->UnitsClass,
                                std::make_pair(itData->Name, itData->DataType)));
           }
@@ -870,14 +870,14 @@ void ProjectCentral::checkModel()
         const auto* Sign = Container.signature().get();
 
         // check required Vars
-        const auto& ReqVars = Sign->SimulatorHandledData.RequiredVars;
+        const auto& ReqVars = Sign->HandledData.RequiredVars;
 
         for (auto itData = ReqVars.begin(); itData != ReqVars.end(); ++itData)
         {
           m_VariablesNamesLists[QString::fromStdString(itData->UnitsClass)] << QString::fromStdString(itData->Name);
 
           if (!Domain.isClassNameExists(itData->UnitsClass) &&
-              !UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
+              !m_UpdatedUnitsClass.contains(QString::fromStdString(itData->UnitsClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALSTRUCT).updateStatus(
               ProjectStatusLevel::PRJ_ERROR);
@@ -889,8 +889,8 @@ void ProjectCentral::checkModel()
           }
 
           if ((itData->DataType == openfluid::core::Value::NONE
-              && !VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
-              || (itData->DataType != openfluid::core::Value::NONE && !TypedVarsUnits.count(
+              && !m_VarsUnits.count(std::make_pair(itData->UnitsClass, itData->Name)))
+              || (itData->DataType != openfluid::core::Value::NONE && !m_TypedVarsUnits.count(
                   std::make_pair(itData->UnitsClass,
                                  std::make_pair(itData->Name, itData->DataType)))))
           {
@@ -906,7 +906,7 @@ void ProjectCentral::checkModel()
         }
 
         // check used Vars
-        const auto& UsedVars = Sign->SimulatorHandledData.UsedVars;
+        const auto& UsedVars = Sign->HandledData.UsedVars;
 
         for (auto itData = UsedVars.begin(); itData != UsedVars.end(); ++itData)
         {
@@ -1051,6 +1051,87 @@ void ProjectCentral::checkMonitoring()
                                                   .arg(QString::fromStdString(ID)));
         }
       }
+
+      // required attributes
+      openfluid::fluidx::CoupledModelDescriptor& Model = m_FXDesc.model();
+      openfluid::fluidx::SpatialDomainDescriptor& Domain = m_FXDesc.spatialDomain();
+
+      for (const auto& Param : Sign->HandledData.RequiredAttribute)
+      {
+          if (!Domain.isClassNameExists(Param.UnitsClass) &&
+              !m_UpdatedUnitsClass.contains(QString::fromStdString(Param.UnitsClass)))
+          {
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
+                                .addMessage(tr("Unit class %1 does not exist for attribute %2 required by %3")
+                                            .arg(QString::fromStdString(Param.UnitsClass))
+                                            .arg(QString::fromStdString(Param.Name))
+                                            .arg(QString::fromStdString(ID)));
+          }
+        if (!(Domain.getAttributesNames(Param.UnitsClass).count(Param.Name)
+            || m_AttrsUnits.count(std::make_pair(Param.UnitsClass, Param.Name))))
+        {
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+            ProjectStatusLevel::PRJ_ERROR);
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                              .addMessage(tr("Attribute %1 required on %2 units by %3 does not exist")
+                                          .arg(QString::fromStdString(Param.Name))
+                                          .arg(QString::fromStdString(Param.UnitsClass))
+                                          .arg(QString::fromStdString(ID)));
+        }
+      }
+
+      // required vars
+      for (const auto& Param : Sign->HandledData.RequiredVars)
+      {
+        m_VariablesNamesLists[QString::fromStdString(Param.UnitsClass)] << QString::fromStdString(Param.Name);
+
+          if (!Domain.isClassNameExists(Param.UnitsClass) &&
+              !m_UpdatedUnitsClass.contains(QString::fromStdString(Param.UnitsClass)))
+          {
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                            .addMessage(tr("Unit class %1 does not exist for variable %2 required by %3")
+                                        .arg(QString::fromStdString(Param.UnitsClass))
+                                        .arg(QString::fromStdString(Param.Name))
+                                        .arg(QString::fromStdString(ID)));
+          }
+
+          if ((Param.DataType == openfluid::core::Value::NONE
+              && !m_VarsUnits.count(std::make_pair(Param.UnitsClass, Param.Name)))
+              || (Param.DataType != openfluid::core::Value::NONE && !m_TypedVarsUnits.count(
+                  std::make_pair(Param.UnitsClass,
+                                 std::make_pair(Param.Name, Param.DataType)))))
+          {
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                            .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
+                                           "by any simulator or generator")
+                                        .arg(QString::fromStdString(Param.Name))
+                                        .arg(QString::fromStdString(Param.UnitsClass))
+                                        .arg(QString::fromStdString(ID)));
+          }
+      }
+
+      // required extra files
+      openfluid::base::RunContextManager* RunCtxt = openfluid::base::RunContextManager::instance();
+      for (const auto& File : Sign->HandledData.RequiredExtraFiles)
+      {
+        if (!QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(File))).exists())
+        {
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
+            ProjectStatusLevel::PRJ_ERROR);
+          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
+                          .addMessage(tr("File %1 required by generator %2 does not exist")
+                                      .arg(QString::fromStdString(File))
+                                      .arg(QString::fromStdString(ID)));
+        }
+      }
+
+      // used data not displayed even as warning to avoid information overflow
     }
   }
 
