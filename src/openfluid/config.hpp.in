@@ -242,7 +242,10 @@ const std::string DEBUG_PREFIX = "@OPENFLUID_DEBUG_PREFIX@";
 
 // Symbols
 const std::string CHAR_JOKER = "*";
+const std::string CHAR_SPLIT_UNIT = "#"; 
+const std::string CHAR_SPLIT_VAR = ":"; 
 const std::string DEFAULT_MISSING_VALUE = "NA"; 
+const std::string DEFAULT_CHAR_SPLIT = ";"; 
 
 
 } } //namespaces
