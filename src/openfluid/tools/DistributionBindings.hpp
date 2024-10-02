@@ -48,6 +48,7 @@
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/VarHelpers.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -62,8 +63,8 @@ stringArrayToClassIDVarList(const std::vector<std::string>& StringArray, bool Re
   {
     const std::string& Column = StringArray[i];
     // parse and create CSVTriplet
-    std::size_t HashPosition = Column.find("#");  // TODO extract default chars
-    std::size_t ColonPosition = Column.find(":");  // TODO extract default chars
+    std::size_t HashPosition = Column.find(openfluid::config::CHAR_SPLIT_UNIT);
+    std::size_t ColonPosition = Column.find(openfluid::config::CHAR_SPLIT_VAR);
 
     if(HashPosition == std::string::npos || ColonPosition == std::string::npos)
     {

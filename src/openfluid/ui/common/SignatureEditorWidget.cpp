@@ -50,6 +50,7 @@
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
+#include <openfluid/config.hpp>
 
 #include "ui_SignatureEditorWidget.h"
 
@@ -178,7 +179,8 @@ void SignatureEditorWidget::initializeCommon(const openfluid::ware::WareSignatur
     i++;
   }
 
-  ui->TagsEdit->setText(QString::fromStdString(openfluid::tools::join(Signature->Tags, ";")));
+  ui->TagsEdit->setText(QString::fromStdString(openfluid::tools::join(Signature->Tags, 
+                                                                      openfluid::config::DEFAULT_CHAR_SPLIT)));
 
   mp_IssuesManager->loadContent(Signature->Issues);
 
@@ -898,7 +900,7 @@ void SignatureEditorWidget::updateSignatureFromCommonsUI(openfluid::ware::WareSi
 
   Signature.License = ui->LicenseEdit->text().toStdString();
 
-  Signature.Tags = openfluid::tools::split(ui->TagsEdit->text().toStdString(), ';');  // TOIMPL make split char generic
+  Signature.Tags = openfluid::tools::split(ui->TagsEdit->text().toStdString(), openfluid::config::DEFAULT_CHAR_SPLIT);
   
   Signature.Issues = mp_IssuesManager->getIssues();
 }

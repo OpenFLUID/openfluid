@@ -46,6 +46,7 @@
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -358,7 +359,7 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
   }
   catch(openfluid::base::FrameworkException& E)
   {
-    std::cout << E.what() << std::endl; //TOIMPL send in log file
+    openfluid::utils::log::error("BuilderExt", E.what());
     return std::string();
   }
 

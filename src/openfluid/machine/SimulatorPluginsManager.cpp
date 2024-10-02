@@ -39,6 +39,7 @@
 
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 
 
@@ -97,7 +98,7 @@ SimulatorPluginsManager::getAvailableGhosts(const std::string& IDPattern) const
     }
     catch (std::exception& E)
     {
-      std::cout << E.what() << std::endl;//TOIMPL ADD OUTPUT IN LOGS?
+      openfluid::utils::log::error("Ghosts", E.what());
     }
    
   }

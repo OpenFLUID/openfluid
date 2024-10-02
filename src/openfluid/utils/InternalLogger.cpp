@@ -37,6 +37,7 @@
 */
 
 
+#include <openfluid/core/DateTime.hpp>
 #include <openfluid/utils/InternalLogger.hpp>
 #include "openfluid/tools/FilesystemPath.hpp"
 #include "openfluid/tools/FileLogger.hpp"
@@ -122,10 +123,7 @@ void LoggingSystem::add(openfluid::tools::FileLogger::LogType LType, const std::
   {
     if (m_AsFile)
     {
-      auto Time = time(0);
-      std::string Timestamp = std::ctime(&Time);
-      Timestamp.pop_back();
-      m_Logger.add(LType, "\t"+Context, Timestamp+"\t"+Msg);
+      m_Logger.add(LType, Context,  openfluid::core::DateTime::now().getAsISOString() + "\t" + Msg);
       m_Logger.flush();  // TODO optimize flushing strategy
     }
     else

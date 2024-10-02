@@ -45,6 +45,7 @@
 #include <openfluid/fluidx/WareDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/machine/GeneratorSignature.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -141,7 +142,7 @@ openfluid::ware::WareID_t SimulatorRegistry::addGenerator(const GeneratorSpecs& 
     return Signature->ID;
   }
 
-  //TOIMPL add warning here that a ware without ID have been created
+  openfluid::utils::log::warning("Generator", "A ware without ID have been created");
 
   return openfluid::ware::WareID_t();
 }
