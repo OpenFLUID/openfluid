@@ -82,8 +82,9 @@ ObserverWidget::~ObserverWidget()
 
 void ObserverWidget::setEnabledWare(bool Enabled)
 {
-  WareWidget::setEnabled(Enabled);
-  getWareDescriptor()->setEnabled(Enabled);
+  mp_Desc->setEnabled(Enabled);
+  WareWidget::setEnabledWare(Enabled);
+  emit changed();
 }
 
 

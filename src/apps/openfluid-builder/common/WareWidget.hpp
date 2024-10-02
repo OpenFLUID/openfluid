@@ -72,7 +72,7 @@ class WareWidget : public QWidget
 
   protected slots:
 
-    void setEnabledWare(bool Enabled);
+    virtual void setEnabledWare(bool Enabled);
 
     void updateParameterValue(const QString& Name, const QString& Value);
 

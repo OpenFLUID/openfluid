@@ -692,7 +692,6 @@ void WareWidget::setEnabledWare(bool Enabled)
 {
   m_Enabled = Enabled;
   updateWidgetBackground();
-  emit changed();
 }
 
 
