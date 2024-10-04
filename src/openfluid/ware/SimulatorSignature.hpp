@@ -40,6 +40,8 @@
 #define __OPENFLUID_WARE_SIMULATORSIGNATURE_HPP__
 
 
+#include <string>
+
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
@@ -256,20 +258,20 @@ class OPENFLUID_API SimulatorSignature : public DataWareSignature
       return WareType::SIMULATOR;
     }
 
-    /**
-      Plugin domain (i.e. hydrology, pop, erosion, ...)
-    */
-    SimDomain_t Domain; // TOIMPL to remove, replaced by tags
+    // /**
+    //   Plugin domain (i.e. hydrology, pop, erosion, ...)
+    // */
+    // SimDomain_t Domain; // TOIMPL to remove, replaced by tags
 
-    /**
-      Plugin simulated process (i.e. surface rainfall-runoff production, ditch infiltration, ...)
-    */
-    SimProcess_t Process; // TOIMPL to remove, replaced by tags
+    // /**
+    //   Plugin simulated process (i.e. surface rainfall-runoff production, ditch infiltration, ...)
+    // */
+    // SimProcess_t Process; // TOIMPL to remove, replaced by tags
 
-    /**
-      Plugin involved method (i.e. morel-seytoux, hayami, ...)
-    */
-    SimMethod_t Method; // TOIMPL to remove, replaced by tags
+    // /**
+    //   Plugin involved method (i.e. morel-seytoux, hayami, ...)
+    // */
+    // SimMethod_t Method; // TOIMPL to remove, replaced by tags
 
     /**
       Handled units graph
@@ -292,12 +294,14 @@ class OPENFLUID_API SimulatorSignature : public DataWareSignature
     void clear()
     {
       DataWareSignature::clear();
-      Domain.clear(); // TOIMPL to remove
-      Process.clear(); // TOIMPL to remove
-      Method.clear(); // TOIMPL to remove
+      // Domain.clear(); // TOIMPL to remove
+      // Process.clear(); // TOIMPL to remove
+      // Method.clear(); // TOIMPL to remove
       HandledUnitsGraph.clear();
       TimeScheduling.setAsUndefined();
     }
+
+    std::vector<std::string> getTagsByType(std::string Type) const;
 
 };
 

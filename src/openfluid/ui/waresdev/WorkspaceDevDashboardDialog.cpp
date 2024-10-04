@@ -73,8 +73,7 @@ WorkspaceDevDashboardDialog::WorkspaceDevDashboardDialog(QWidget* Parent,
   ui->BuildCheckBox->setChecked(true);
   connect(ui->BuildCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildChanged()));
 
-  ui->DocCheckBox->setChecked(false); // HACK to set to true
-  ui->DocCheckBox->setEnabled(false); // HACK to remove
+  ui->DocCheckBox->setChecked(true);
   connect(ui->DocCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildChanged()));
 
   connect(ui->BuildDocRunButton,SIGNAL(clicked()),this,SLOT(runBuildDoc()));

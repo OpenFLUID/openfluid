@@ -124,22 +124,24 @@ class OPENFLUID_API WarePluginsManager
     */
     WareContainer<SignatureType> buildWareContainerFromFilename(const std::string& Filename,bool StrictABICheck = true)
     {
+      std::cout << "start buildWareContainerFromFilename" << std::endl;
+      std::cout << Filename << std::endl;
       WareContainer<SignatureType> Container = createContainer();
       std::string PluginFullPath = getPluginFullPath(Filename);
 
       if (!PluginFullPath.empty())
       {
         auto& PlugLib = loadPluginLibrary(PluginFullPath);
-
+        std::cout << "after loadPluginLibrary" << std::endl;
         if (PlugLib)
         {
           Container.setPath(PluginFullPath);
-
+          std::cout << "after setPath" << std::endl;
           if (PlugLib->isLoaded() || PlugLib->load())  
           {
             GetWareABIVersionProc ABIVersionProc = 
               PlugLib->template getSymbol<GetWareABIVersionProc>(WAREABIVERSION_PROC_NAME);
-
+            std::cout << "after getSymbol 1" << std::endl;
             bool Verified = false;
             if (ABIVersionProc)
             {
@@ -147,13 +149,14 @@ class OPENFLUID_API WarePluginsManager
               Verified = 
                 (openfluid::tools::compareOpenFLUIDVersions(openfluid::config::VERSION_FULL,*ABIPtr,
                                                             StrictABICheck) == 0);
+              std::cout << "after compareOpenFLUIDVersions" << std::endl;
             }
 
             if (Verified)
             {
               bool hasBodyProc = PlugLib->hasSymbol(WAREBODY_PROC_NAME);
               SignatureProc SProc = PlugLib->template getSymbol<SignatureProc>(WARESIGNATURE_PROC_NAME);
-
+              std::cout << "after getSymbol 2" << std::endl;
               // checks if the handle procs exist
               if (SProc && hasBodyProc)
               {
@@ -162,46 +165,53 @@ class OPENFLUID_API WarePluginsManager
                 if (SignPtr)
                 {
                   Verified = (Filename == buildPluginFilename(SignPtr->ID));
-
+                  std::cout << "after buildPluginFilename" << std::endl;
                   if (Verified)
                   {
                     Container.setSignature(SignPtr);
-
+                    std::cout << "after setSignature" << std::endl;
                     GetWareLinkUIDProc LinkUIDProc = 
                       PlugLib->template  getSymbol<GetWareLinkUIDProc>(WARELINKUID_PROC_NAME);
-
+                    std::cout << "after getSymbol 3" << std::endl;
                     if (LinkUIDProc)
                     {
                       std::unique_ptr<std::string> StrPtr(LinkUIDProc());
                       Container.setLinkUID(*StrPtr);
+                      std::cout << "after setLinkUID" << std::endl;
                     }
                   }
                   else
                   {
                     Container.setMessage("ID mismatch in signature");
+                    std::cout << "ID mismatch in signature" << std::endl;
                   }
                 }
                 else
                 {
                   Container.setMessage("signature cannot be instanciated");
+                  std::cout << "signature cannot be instanciated" << std::endl;
                 }
               }
               else
               {
                 Container.setMessage("plugin format error");
+                std::cout << "plugin format error" << std::endl;
               }
             }
             else
             {
               Container.setMessage("plugin ABI version mismatch");
+              std::cout << "plugin ABI version mismatch" << std::endl;
             }
           }
           else
           {
             Container.setMessage(PlugLib->getLatestErrorMsg());
+            std::cout << "error: "<< PlugLib->getLatestErrorMsg() << std::endl;
           }
 
           Container.validate();
+          std::cout << "after validate" << std::endl;
         }
         else
         {
@@ -215,6 +225,7 @@ class OPENFLUID_API WarePluginsManager
                                                   "empty path for plugin file " + Filename);
       }
 
+      std::cout << "end buildWareContainerFromFilename" << std::endl << std::endl;
       return Container;
     }
 

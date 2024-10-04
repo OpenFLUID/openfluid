@@ -41,6 +41,7 @@
 #include <QDir>
 
 #include <openfluid/ui/config.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 #include "ui_SignatureWidget.h"
 #include "SignatureWidget.hpp"
@@ -244,9 +245,12 @@ void SignatureWidget::updateGeneral(const openfluid::machine::WareContainer<open
   {
     Contents += "<hr>";
 
-    Contents += getGeneralInfoLine(tr("Domain(s)"),convertStdString(Container.signature()->Domain),false);
-    Contents += getGeneralInfoLine(tr("Process(es)"),convertStdString(Container.signature()->Process));
-    Contents += getGeneralInfoLine(tr("Methods(s)"),convertStdString(Container.signature()->Method));
+    Contents += getGeneralInfoLine(tr("Domain(s)"),convertStdString(openfluid::tools::join(
+                                                   Container.signature()->getTagsByType("domain"),";")), false);
+    Contents += getGeneralInfoLine(tr("Process(es)"),convertStdString(openfluid::tools::join(
+                                                     Container.signature()->getTagsByType("process"), ";")));
+    Contents += getGeneralInfoLine(tr("Methods(s)"),convertStdString(openfluid::tools::join(
+                                                    Container.signature()->getTagsByType("method"), ";")));
   }
 
   ui->GeneralLabel->setText(Contents);

@@ -96,10 +96,15 @@ void SimulatorRegistry::discoverWares(bool WithGhosts, const std::string IDPatte
   Man->unloadAll();
 
   auto CollectedPlugins = Man->loadPlugins(IDPattern);
+
+  std::cout << "after load plugins" << std::endl;
+
   for (auto& Item : CollectedPlugins)
   {
     WareRegistry<openfluid::ware::SimulatorSignature>::add(std::move(Item));
   }
+
+  std::cout << "after add sims signature" << std::endl;
 
   if (WithGhosts)
   {
@@ -109,6 +114,8 @@ void SimulatorRegistry::discoverWares(bool WithGhosts, const std::string IDPatte
       WareRegistry<openfluid::ware::SimulatorSignature>::add(std::move(Item));
     }
   }
+
+  std::cout << "end discover wares" << std::endl;
 }
 
 
