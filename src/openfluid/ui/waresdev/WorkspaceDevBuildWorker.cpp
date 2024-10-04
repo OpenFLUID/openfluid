@@ -240,7 +240,14 @@ void WorkspaceDevBuildWorker::processStdErr()
   {
     QString MsgLine = QString::fromUtf8(mp_Process->readLine()).simplified();
 
-    writeMessage("<font style='color: red;'>"+MsgLine+"</font>");
+    if(MsgLine.contains("error", Qt::CaseInsensitive)) //HACK Find a better way to check for errors ? 
+    {
+      writeMessage("<font style='color: red;'>"+MsgLine+"</font>");
+    }
+    else
+    {
+      writeMessage("<font style='color: orange;'>"+MsgLine+"</font>");
+    }
   }
 }
 

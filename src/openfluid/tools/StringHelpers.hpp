@@ -166,9 +166,10 @@ bool OPENFLUID_API endsWith(const std::string& Str,const std::string& SubStr);
   @snippet misc/strings.cpp str_contains
   @param[in] Str the string to check
   @param[in] SubStr the substring
+  @param[in] CaseSensitive true for case sensitive
   @return true if the string contains the substring, false otherwise
 */
-bool OPENFLUID_API contains(const std::string& Str,const std::string& SubStr);
+bool OPENFLUID_API contains(const std::string& Str,const std::string& SubStr, bool CaseSensitive = true);
 
 
 /**

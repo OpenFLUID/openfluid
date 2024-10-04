@@ -38,6 +38,7 @@
 
 
 #include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 
 
@@ -69,6 +70,26 @@ SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D,
                                               "Variable " + N + " with optional type is not well formatted.");
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> SimulatorSignature::getTagsByType(std::string Type) const
+{
+  std::vector<std::string> MatchingTags;
+  for(const auto& Tag : Tags)
+  {
+    if(openfluid::tools::contains(Tag, Type, false))
+    {
+      MatchingTags.push_back(openfluid::tools::replace(Tag, Type + "::", ""));
+    }
+  }
+
+  return MatchingTags;
+}
+
 
 } } //namespaces
 

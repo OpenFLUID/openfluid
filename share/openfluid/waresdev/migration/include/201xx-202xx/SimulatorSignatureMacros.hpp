@@ -41,6 +41,7 @@
 
 
 #include <201xx-202xx/WareSignatureMacros.hpp>
+#include <string>
 
 
 /**
@@ -69,19 +70,19 @@
   Macro for declaration of the simulator application domain
 */
 #define DECLARE_DOMAIN(domain) \
-  Signature->Tags.push_back(domain);
+  Signature->Tags.push_back("domain::" + std::string(domain));
 
 /**
   Macro for declaration of the simulator application processes
 */
 #define DECLARE_PROCESS(process) \
-  Signature->Tags.push_back(process);
+  Signature->Tags.push_back("process::" + std::string(process));
 
 /**
   Macro for declaration of the simulator application numerical method
 */
 #define DECLARE_METHOD(method) \
-  Signature->Tags.push_back(method);
+  Signature->Tags.push_back("method::" + std::string(method));
 
 
 // =====================================================================

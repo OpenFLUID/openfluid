@@ -118,9 +118,16 @@ bool endsWith(const std::string& Str,const std::string& SubStr)
 // =====================================================================
 
 
-bool contains(const std::string& Str,const std::string& SubStr)
+bool contains(const std::string& Str,const std::string& SubStr, bool CaseSensitive)
 {
-  return boost::algorithm::contains(Str,SubStr);
+  if(CaseSensitive)
+  {
+    return boost::algorithm::contains(Str,SubStr);
+  }
+  else
+  {
+    return boost::algorithm::icontains(Str,SubStr);
+  }
 }
 
 

@@ -201,9 +201,16 @@ template<class SignatureType>
 void WareRegistrySerializer<SignatureType>::addWareMetaForText(
   const openfluid::ware::SimulatorSignature* Sign, std::ostream& OutStm) const
 {  
-  OutStm << getIndentedText(2,"Domain",openfluid::tools::replaceEmptyString(Sign->Domain,"(unknown)")) << "\n";
-  OutStm << getIndentedText(2,"Process",openfluid::tools::replaceEmptyString(Sign->Process,"(unknown)")) << "\n";
-  OutStm << getIndentedText(2,"Method",openfluid::tools::replaceEmptyString(Sign->Method,"(unknown)")) << "\n";  
+  std::vector<std::string> DomainTags = Sign->getTagsByType("domain");
+  std::vector<std::string> ProcessTags = Sign->getTagsByType("process");
+  std::vector<std::string> MethodTags = Sign->getTagsByType("method");
+
+  OutStm << getIndentedText(2,"Domain",openfluid::tools::replaceEmptyString(openfluid::tools::join(DomainTags, ";"), 
+                                                                            "(unknown)")) << "\n";
+  OutStm << getIndentedText(2,"Process",openfluid::tools::replaceEmptyString(openfluid::tools::join(ProcessTags, ";"), 
+                                                                             "(unknown)")) << "\n";
+  OutStm << getIndentedText(2,"Method",openfluid::tools::replaceEmptyString(openfluid::tools::join(MethodTags, ";"), 
+                                                                            "(unknown)")) << "\n";
 }
 
 
