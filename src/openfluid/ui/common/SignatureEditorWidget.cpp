@@ -180,7 +180,7 @@ void SignatureEditorWidget::initializeCommon(const openfluid::ware::WareSignatur
   }
 
   ui->TagsEdit->setText(QString::fromStdString(openfluid::tools::join(Signature->Tags, 
-                                                                      openfluid::config::DEFAULT_CHAR_SPLIT)));
+                                                                      openfluid::config::CHAR_TAG_SEPARATOR)));
 
   mp_IssuesManager->loadContent(Signature->Issues);
 
@@ -1002,7 +1002,7 @@ void SignatureEditorWidget::updateSignatureFromCommonsUI(openfluid::ware::WareSi
 
   Signature.License = ui->LicenseEdit->text().toStdString();
 
-  Signature.Tags = openfluid::tools::split(ui->TagsEdit->text().toStdString(), openfluid::config::DEFAULT_CHAR_SPLIT);
+  Signature.Tags = openfluid::tools::split(ui->TagsEdit->text().toStdString(), openfluid::config::CHAR_TAG_SEPARATOR);
   
   Signature.Issues = mp_IssuesManager->getIssues();
 }

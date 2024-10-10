@@ -63,8 +63,8 @@ stringArrayToClassIDVarList(const std::vector<std::string>& StringArray, bool Re
   {
     const std::string& Column = StringArray[i];
     // parse and create CSVTriplet
-    std::size_t HashPosition = Column.find(openfluid::config::CHAR_SPLIT_UNIT);
-    std::size_t ColonPosition = Column.find(openfluid::config::CHAR_SPLIT_VAR);
+    std::size_t HashPosition = Column.find(openfluid::config::CHAR_SEPARATOR_UNIT);
+    std::size_t ColonPosition = Column.find(openfluid::config::CHAR_SEPARATOR_VAR);
 
     if(HashPosition == std::string::npos || ColonPosition == std::string::npos)
     {

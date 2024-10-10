@@ -162,18 +162,6 @@ bool SimulatorSignatureXMLReader::loadFromFile(const std::string& FilePath,
                 return false;
               }
             }
-            // else if (TagName == "domain")
-            // {
-            //   Signature.Domain = TagText;
-            // }
-            // else if (TagName == "process")
-            // {
-            //   Signature.Process = TagText;
-            // }
-            // else if (TagName == "method")
-            // {
-            //   Signature.Method = TagText;
-            // }
             else if (TagName == "version")
             {
               Signature.Version = TagText;

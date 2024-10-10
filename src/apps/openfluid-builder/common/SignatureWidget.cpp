@@ -246,11 +246,14 @@ void SignatureWidget::updateGeneral(const openfluid::machine::WareContainer<open
     Contents += "<hr>";
 
     Contents += getGeneralInfoLine(tr("Domain(s)"),convertStdString(openfluid::tools::join(
-                                                   Container.signature()->getTagsByType("domain"),";")), false);
+                                                   Container.signature()->getTagsByType("domain"), 
+                                                   openfluid::config::CHAR_TAG_SEPARATOR)), false);
     Contents += getGeneralInfoLine(tr("Process(es)"),convertStdString(openfluid::tools::join(
-                                                     Container.signature()->getTagsByType("process"), ";")));
+                                                     Container.signature()->getTagsByType("process"), 
+                                                     openfluid::config::CHAR_TAG_SEPARATOR)));
     Contents += getGeneralInfoLine(tr("Methods(s)"),convertStdString(openfluid::tools::join(
-                                                    Container.signature()->getTagsByType("method"), ";")));
+                                                    Container.signature()->getTagsByType("method"), 
+                                                    openfluid::config::CHAR_TAG_SEPARATOR)));
   }
 
   ui->GeneralLabel->setText(Contents);
