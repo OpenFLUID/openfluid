@@ -424,8 +424,8 @@ void Engine::checkModelConsistency()
   {
     for (const auto& Var : IInstance->Container.signature()->HandledData.RequiredVars)
     {
-      checkExistingVariable(Var.Name,HData.RequiredVars[i].DataType,
-                            Var.UnitsClass,CurrentSimulator->Container.signature()->ID);
+      checkExistingVariable(Var.Name,Var.DataType,
+                            Var.UnitsClass,IInstance->Container.signature()->ID);
     }
   }
 
@@ -477,7 +477,7 @@ void Engine::checkAttributesConsistency()
     for (const auto& Attribute : IInstance->Container.signature()->HandledData.RequiredAttribute)
     {
       checkExistingAttribute(Attribute.Name,Attribute.UnitsClass,
-                             CurrentSimulator->Container.signature()->ID);
+                             IInstance->Container.signature()->ID);
     }
   }
 
