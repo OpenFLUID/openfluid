@@ -98,13 +98,30 @@ void WorkspaceDevBuildWorker::run()
 
       Container.prepareBuildDirectory();
 
+      // Removal of warnings
+      std::map<std::string,std::string> ConfigVariables = Container.getConfigureVariables();
+      const std::string FlagsKey = "CMAKE_CXX_FLAGS";
+      if(ConfigVariables.find(FlagsKey) != ConfigVariables.end())
+      {
+        std::vector<std::string> FlagValues = openfluid::tools::split(ConfigVariables[FlagsKey], " ");
+        if(std::find(FlagValues.begin(), FlagValues.end(), "-w") == FlagValues.end())
+        {
+          FlagValues.push_back("-w");
+          ConfigVariables[FlagsKey] = "'" + openfluid::tools::join(FlagValues, " ") + "'";
+        }
+      }
+      else 
+      {
+        ConfigVariables.insert({FlagsKey, "-w"});
+      }
+
       QStringList ExtraOptionsList = 
         openfluid::ui::convertArgsStringToList(QString::fromStdString(Container.getConfigureExtraOptions()));
 
       auto ConfigCommand = 
       openfluid::utils::CMakeProxy::getConfigureCommand(Container.getBuildDirPath(),
                                                         Container.getAbsolutePath(),
-                                                        Container.getConfigureVariables(),
+                                                        ConfigVariables,
                                                         Container.getConfigureGenerator(),
                                                         openfluid::ui::toStdStringVector(ExtraOptionsList));
 
@@ -240,17 +257,8 @@ void WorkspaceDevBuildWorker::processStdErr()
   {
     QString MsgLine = QString::fromUtf8(mp_Process->readLine()).simplified();
 
-    if(MsgLine.contains("error", Qt::CaseInsensitive)) //HACK Find a better way to check for errors ? 
-    {
-      writeMessage("<font style='color: red;'>"+MsgLine+"</font>");
-    }
-    else
-    {
-      writeMessage("<font style='color: orange;'>"+MsgLine+"</font>");
-    }
+    writeMessage("<font style='color: red;'>"+MsgLine+"</font>");
   }
 }
 
-
 } } }  // namespaces
-

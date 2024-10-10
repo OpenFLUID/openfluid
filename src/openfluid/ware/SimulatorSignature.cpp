@@ -40,6 +40,7 @@
 #include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -76,14 +77,15 @@ SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D,
 // =====================================================================
 
 
-std::vector<std::string> SimulatorSignature::getTagsByType(std::string Type) const
+std::vector<std::string> SimulatorSignature::getTagsByType(const std::string& Type) const
 {
   std::vector<std::string> MatchingTags;
   for(const auto& Tag : Tags)
   {
-    if(openfluid::tools::contains(Tag, Type, false))
+    const std::string TagType = Type + openfluid::config::STR_SEPARATOR_TAG_TYPE;
+    if(openfluid::tools::startsWith(Tag, TagType))
     {
-      MatchingTags.push_back(openfluid::tools::replace(Tag, Type + "::", ""));
+      MatchingTags.push_back(openfluid::tools::replace(Tag, TagType, ""));
     }
   }
 

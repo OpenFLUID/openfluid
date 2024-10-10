@@ -52,17 +52,6 @@
 namespace openfluid { namespace ware {
 
 
-typedef std::string SimMethod_t; // TOIMPL to remove, replaced by tags
-
-typedef std::string SimProcess_t; // TOIMPL to remove, replaced by tags
-
-typedef std::string SimDomain_t; // TOIMPL to remove, replaced by tags
-
-
-// =====================================================================
-// =====================================================================
-
-
 /**
   Class for storage of the definition of the data handled by the simulator. This is part of the signature.
 */
@@ -258,21 +247,6 @@ class OPENFLUID_API SimulatorSignature : public DataWareSignature
       return WareType::SIMULATOR;
     }
 
-    // /**
-    //   Plugin domain (i.e. hydrology, pop, erosion, ...)
-    // */
-    // SimDomain_t Domain; // TOIMPL to remove, replaced by tags
-
-    // /**
-    //   Plugin simulated process (i.e. surface rainfall-runoff production, ditch infiltration, ...)
-    // */
-    // SimProcess_t Process; // TOIMPL to remove, replaced by tags
-
-    // /**
-    //   Plugin involved method (i.e. morel-seytoux, hayami, ...)
-    // */
-    // SimMethod_t Method; // TOIMPL to remove, replaced by tags
-
     /**
       Handled units graph
     */
@@ -294,14 +268,11 @@ class OPENFLUID_API SimulatorSignature : public DataWareSignature
     void clear()
     {
       DataWareSignature::clear();
-      // Domain.clear(); // TOIMPL to remove
-      // Process.clear(); // TOIMPL to remove
-      // Method.clear(); // TOIMPL to remove
       HandledUnitsGraph.clear();
       TimeScheduling.setAsUndefined();
     }
 
-    std::vector<std::string> getTagsByType(std::string Type) const;
+    std::vector<std::string> getTagsByType(const std::string& Type) const;
 
 };
 

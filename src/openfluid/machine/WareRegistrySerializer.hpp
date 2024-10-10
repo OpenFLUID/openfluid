@@ -47,6 +47,7 @@
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
 #include <openfluid/thirdparty/JSON.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -205,11 +206,14 @@ void WareRegistrySerializer<SignatureType>::addWareMetaForText(
   std::vector<std::string> ProcessTags = Sign->getTagsByType("process");
   std::vector<std::string> MethodTags = Sign->getTagsByType("method");
 
-  OutStm << getIndentedText(2,"Domain",openfluid::tools::replaceEmptyString(openfluid::tools::join(DomainTags, ";"), 
+  OutStm << getIndentedText(2,"Domain",openfluid::tools::replaceEmptyString(openfluid::tools::join(DomainTags, 
+                                                                            openfluid::config::CHAR_TAG_SEPARATOR), 
                                                                             "(unknown)")) << "\n";
-  OutStm << getIndentedText(2,"Process",openfluid::tools::replaceEmptyString(openfluid::tools::join(ProcessTags, ";"), 
+  OutStm << getIndentedText(2,"Process",openfluid::tools::replaceEmptyString(openfluid::tools::join(ProcessTags, 
+                                                                             openfluid::config::CHAR_TAG_SEPARATOR), 
                                                                              "(unknown)")) << "\n";
-  OutStm << getIndentedText(2,"Method",openfluid::tools::replaceEmptyString(openfluid::tools::join(MethodTags, ";"), 
+  OutStm << getIndentedText(2,"Method",openfluid::tools::replaceEmptyString(openfluid::tools::join(MethodTags, 
+                                                                            openfluid::config::CHAR_TAG_SEPARATOR), 
                                                                             "(unknown)")) << "\n";
 }
 

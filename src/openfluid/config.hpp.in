@@ -241,11 +241,14 @@ const std::string DEBUG_PREFIX = "@OPENFLUID_DEBUG_PREFIX@";
 
 
 // Symbols
+// TODO evaluate best location strategy for symbol families
 const std::string CHAR_JOKER = "*";
-const std::string CHAR_SPLIT_UNIT = "#"; 
-const std::string CHAR_SPLIT_VAR = ":"; 
+const std::string CHAR_SEPARATOR_UNIT = "#"; 
+const std::string CHAR_SEPARATOR_VAR = ":"; 
 const std::string DEFAULT_MISSING_VALUE = "NA"; 
-const std::string DEFAULT_CHAR_SPLIT = ";"; 
+const std::string CHAR_TAG_SEPARATOR = ";";
+const std::string CHAR_SEPARATOR_CSV_DEFAULT = ";";
+const std::string STR_SEPARATOR_TAG_TYPE = "::";
 
 
 } } //namespaces
