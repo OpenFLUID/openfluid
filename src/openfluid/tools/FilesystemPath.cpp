@@ -387,6 +387,10 @@ bool FilesystemPath::makeDirectory(const std::string& Path, std::error_code& Err
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
 bool FilesystemPath::removeDirectory(const std::string& Path, std::error_code& ErrorCode) const
 {
   if (m_Path.empty() && Path.empty())
