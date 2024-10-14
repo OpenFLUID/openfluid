@@ -130,6 +130,7 @@ apdx_generator_types
 \chapter{\-Working with submodules}\label{apdx_submodule}\hypertarget{apdx_submodule}{}\input{apdx_submodule}
 % TODO to be completed
 %\chapter{\-Observers parameters}\label{apdx_obsparams}\hypertarget{apdx_obsparams}{}\input{apdx_obsparams}
+\chapter{\-Usage of random in ware}\label{apdx_seedableware}\hypertarget{apdx_seedableware}{}\input{apdx_seedableware}
 
 \printindex
 

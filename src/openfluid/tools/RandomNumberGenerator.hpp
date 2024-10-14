@@ -54,16 +54,53 @@
 namespace openfluid { namespace tools {
 
 
+/**
+  @brief Class for management of random. It includes distribution utility functions.
+
+  Sources:
+  @li https://en.wikipedia.org/wiki/Random_number_generation
+  @li https://en.wikipedia.org/wiki/Mersenne_Twister
+
+
+  <I>Example : declaring an instance</I>
+  @snippet wares/RNG.cpp rng_decl
+
+  <I>Example : initializing with a custom seed</I>
+  @snippet wares/RNG.cpp rng_initialize_seed
+
+  <I>Example : initializing with a random seed</I>
+  @snippet wares/RNG.cpp rng_initialize_random_seed
+
+  <I>Example : getting a random generated number using normal distribution</I>
+  @snippet wares/RNG.cpp rng_log
+
+  <I>Example : getting randomized value using Bernoulli distribution</I>
+  @snippet wares/RNG.cpp rng_bernoulli
+*/
 class OPENFLUID_API RandomNumberGenerator
 {
   public:
 
+    /**
+      Constructor
+    */
     RandomNumberGenerator();
 
+    /**
+      Destructor
+    */
     ~RandomNumberGenerator() {}
 
+    /**
+      Set a seed for the generator
+      @param[in] CustomSeed The seed to set. If negative, random seed will be used
+    */
     void init(long int CustomSeed = -1);
 
+    /**
+      Returns the seed
+      @return an uint64_t
+    */
     uint64_t getSelectedSeed() const;
 
     /**
@@ -298,15 +335,31 @@ class OPENFLUID_API RandomNumberGenerator
 
   
   protected:
-  
+
+    /**
+      The Mersenne Twister generator 
+    */
     std::mt19937_64 m_Generator;
 
+    /**
+      The selected seed 
+    */
     uint64_t m_SelectedSeed;
 
+    /**
+      A boolean to check if we need to display the seed in logs 
+    */
     bool m_DisplaySeed;
 
+    /**
+      A string to display the seed in logs as "Seed: ${m_SelectedSeed}"
+    */
     const std::string m_DisplayNameInfo;
 
+    /**
+      Returns the generator
+      @return an std::mt19937_64&
+    */
     std::mt19937_64& getGenerator();
 
     virtual void displaySeedInfo();
