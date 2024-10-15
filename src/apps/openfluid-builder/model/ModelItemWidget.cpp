@@ -90,6 +90,7 @@ void ModelItemWidget::setEnabledWare(bool Enabled)
 {
   mp_Desc->setEnabled(Enabled);
   WareWidget::setEnabledWare(Enabled);
+  emit changed();
 }
 
 
