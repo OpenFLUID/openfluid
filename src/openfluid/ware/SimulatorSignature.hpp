@@ -68,7 +68,7 @@ class OPENFLUID_API SimulatorSignatureHandledData
 
     std::vector<SignatureSpatialDataItem> ProducedAttribute; // TOIMPL add plural
 
-    std::vector<openfluid::core::UnitsClass_t> UsedEventsOnUnits; // TOIMPL add description to units class events?
+    std::vector<openfluid::core::UnitsClass_t> UsedEventsOnUnits; // TODO add description to units class events?
 
 
     SimulatorSignatureHandledData()

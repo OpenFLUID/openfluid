@@ -150,7 +150,7 @@ class OPENFLUID_API WareSignatureSerializer
 
     const std::string m_LinkUID;
 
-    // TOIMPL review and refactor methods names, responsibilities and organization for better consistency
+    // TODO review and refactor methods names, responsibilities and organization for better consistency
 
 
     std::string toWareCPPBase(const SignatureType& Sign) const;

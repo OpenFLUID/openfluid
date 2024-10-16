@@ -95,7 +95,7 @@ QStringList BuilderextSetupWidget::getBuilderExtCategoryTexts()
 
 void BuilderextSetupWidget::initializeFromSignature(const openfluid::builderext::BuilderExtensionSignature& Signature)
 {
-  // TOIMPL find better way of applying index based on value for both comboboxes
+  // TODO find better way of applying index based on value for both comboboxes
   if (Signature.Mode == openfluid::builderext::ExtensionMode::MODAL)
   {
     ui->BextTypeComboBox->setCurrentIndex(0);
