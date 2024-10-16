@@ -77,7 +77,8 @@ WorkspaceDevDashboardDialog::WorkspaceDevDashboardDialog(QWidget* Parent,
   connect(ui->DocCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleBuildChanged()));
 
   connect(ui->BuildDocRunButton,SIGNAL(clicked()),this,SLOT(runBuildDoc()));
-
+  ui->BuildDocRunButton->setDefault(false);
+  ui->BuildDocRunButton->setAutoDefault(false);
 
   // Check tab
 
@@ -309,10 +310,11 @@ void WorkspaceDevDashboardDialog::handlePurgeChanged()
 
 void WorkspaceDevDashboardDialog::runBuildDoc()
 {
-  openfluid::waresdev::WareSrcContainer::ConfigMode ConfigM = m_WareBuildOptions.getConfigMode();
-  openfluid::waresdev::WareSrcContainer::BuildMode BuildM = m_WareBuildOptions.getBuildMode();
+  openfluid::waresdev::WareBuildOptions BuildOptions = getBuildOptions();
+  openfluid::waresdev::WareSrcContainer::ConfigMode ConfigM = BuildOptions.getConfigMode();
+  openfluid::waresdev::WareSrcContainer::BuildMode BuildM = BuildOptions.getBuildMode();
 
-  unsigned int BuildJ = m_WareBuildOptions.JobsNumber;
+  unsigned int BuildJ = BuildOptions.IsMultipleJobs ? BuildOptions.JobsNumber : 0;
 
   WorkspaceDevBuildWorker* Worker = new WorkspaceDevBuildWorker(getSelectionByType(),
                                                                 ui->BuildCheckBox->isChecked(),

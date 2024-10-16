@@ -49,6 +49,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/waresdev/WareSrcHelpers.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 #include <openfluid/config.hpp>
@@ -315,22 +316,21 @@ void WareSrcContainer::setConfigMode(ConfigMode Mode)
 {
   m_ConfigMode = Mode;
 
-  std::string ConfigTag;
+  std::string BuildFilename;
   switch (m_ConfigMode)
   {
     case ConfigMode::CONFIG_RELEASE:
-      ConfigTag = "-release";
+      BuildFilename = openfluid::utils::CMakeProxy::getBuildDir("release");
       break;
     case ConfigMode::CONFIG_DEBUG:
-      ConfigTag = "-debug";
+      BuildFilename = openfluid::utils::CMakeProxy::getBuildDir("debug");
       break;
     default:
-      ConfigTag = "";
+      BuildFilename = openfluid::utils::CMakeProxy::getBuildDir();
       break;
   }
 
- // TOIMPL use CMakeProxy.getBuildDir() instead
-  m_BuildDirPath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath,"_build"+ConfigTag+"-"+m_OFVersion});
+  m_BuildDirPath = openfluid::tools::Filesystem::joinPath({m_AbsolutePath, BuildFilename});
 }
 
 
