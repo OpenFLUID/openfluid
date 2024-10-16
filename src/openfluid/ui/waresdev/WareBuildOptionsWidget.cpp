@@ -63,6 +63,8 @@ WareBuildOptionsWidget::WareBuildOptionsWidget(QWidget* Parent):
   ui->ResetJobsButton->setText("");
   ui->ResetJobsButton->setIcon(openfluid::ui::common::getIcon("refresh","/ui/common"));
   ui->ResetJobsButton->setIconSize(QSize(16,16));
+  ui->ResetJobsButton->setDefault(false);
+  ui->ResetJobsButton->setAutoDefault(false);
 
   ui->JobsCheckBox->setChecked(true);
 
