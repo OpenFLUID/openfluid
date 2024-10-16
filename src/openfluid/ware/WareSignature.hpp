@@ -276,9 +276,9 @@ class OPENFLUID_API SignatureHandledData
 
     std::vector<SignatureSpatialDataItem> UsedAttribute; // TOIMPL add plural
 
-    std::vector<std::string> RequiredExtraFiles; // TOIMPL add description associated with each file?
+    std::vector<std::string> RequiredExtraFiles; // TODO add description associated with each file?
 
-    std::vector<std::string> UsedExtraFiles; // TOIMPL add description associated with each file?
+    std::vector<std::string> UsedExtraFiles; // TODO add description associated with each file?
     
 
     SignatureHandledData()

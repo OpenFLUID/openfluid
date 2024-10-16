@@ -140,7 +140,7 @@ void WareStatusDashboardWidget::refresh()
   // First clean existing data
   clear();
   
-  try // TOIMPL improve try/catch filtering
+  try // TODO improve try/catch filtering
   {
     auto Checker = openfluid::waresdev::WareSrcChecker(m_WarePath);
     auto Report = Checker.performCheck(true);
