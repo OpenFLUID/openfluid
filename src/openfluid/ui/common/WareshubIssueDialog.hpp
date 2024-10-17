@@ -132,8 +132,7 @@ class OPENFLUID_API WareshubIssueDialog: public openfluid::ui::common::MessageDi
 
     QString m_DefaultMessage;
 
-    //QStringList m_Types = { "", "bug", "feature", "review" }; TODO find new way of describing it, as tag
-    //TOIMPL Add tag list
+    //TODO Add tag list
 
     QStringList m_Statuses = { "open", "closed" };
 
