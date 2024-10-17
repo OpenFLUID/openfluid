@@ -40,6 +40,7 @@
 
 
 #include <QPushButton>
+
 #include <openfluid/ui/common/WareshubIssueDialog.hpp>
 #include <openfluid/ui/config.hpp>
 
@@ -88,9 +89,9 @@ WareshubIssueDialog::WareshubIssueDialog(const QList<unsigned int>& IDs, QWidget
     ui->IDLineEdit->setText(QString::number(I.m_ID));
   }
 #if (QT_VERSION_MAJOR < 6)
-  ui->IDLineEdit->setValidator(new QRegExpValidator(QRegExp("^[0-9a-zA-Z_-]*$"), this));
+  ui->IDLineEdit->setValidator(new QRegExpValidator(QRegExp("^[0-9]*$"), this));
 #else
-  ui->IDLineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9a-zA-Z_-]*$"), this));
+  ui->IDLineEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9]*$"), this));
 #endif
 
   ui->TitleLineEdit->setText(I.m_Title);
@@ -148,19 +149,26 @@ WareshubIssueDialog::Issue WareshubIssueDialog::getIssue()
 
 void WareshubIssueDialog::onChanged()
 {
+  if(ui->IDLineEdit->text().isEmpty())
+  {
+    setMessage(tr("Issue ID is empty"));
+    return;
+  }
+  
   unsigned int ID = ui->IDLineEdit->text().toUInt();
   if (m_IDs.contains(ID))
   {
     setMessage(tr("This ID already exists"));
-  }  
+    return;
+  } 
   if (ui->TitleLineEdit->text().isEmpty())
   {
     setMessage(tr("Title cannot be empty"));
+    return;
   }
-  else
-  {
-    setMessage();
-  }
+
+  setMessage();
+  
 }
 
 
