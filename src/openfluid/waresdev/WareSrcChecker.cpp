@@ -307,32 +307,37 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performMetainfoChec
 
 WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performCodeCheck(bool OKToRun) const
 {
-  auto Data = InitializeReportingItemList({"migration_isclean_no_comments"});
-
+  auto Data = InitializeReportingItemList({"migration_isclean_no_comments", "migration_isclean_no_sim2doc"});
 
   if (OKToRun)
   {
-    // [w] MIGRATION tag in C++ or CMake files
-    auto FindMigrationTagInFile = [&]()
+    bool HasMigrationTagInFile = false;
+    bool HasSim2DocTagInFile = false;
+
+    for (auto const& E : std::filesystem::recursive_directory_iterator{m_SrcPathObj.fromThis("src").stdPath()})
     {
-      for (auto const& E : std::filesystem::recursive_directory_iterator{m_SrcPathObj.fromThis("src").stdPath()})
+      auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
+      if (openfluid::waresdev::IsCppFile(FileObj) || openfluid::waresdev::IsCMakeFile(FileObj))
       {
-        auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
-        if (openfluid::waresdev::IsCppFile(FileObj) || openfluid::waresdev::IsCMakeFile(FileObj))
+        auto Content = openfluid::tools::Filesystem::readFile(FileObj);
+
+        // [w] MIGRATION tag in C++ or CMake files
+        if (openfluid::tools::contains(Content, openfluid::config::MIGRATION_STRING))
         {
-          auto Content = openfluid::tools::Filesystem::readFile(FileObj);
-          if (openfluid::tools::contains(Content, openfluid::config::MIGRATION_STRING))
-          {
-            return false;
-          }
+          HasMigrationTagInFile = true;
+        }
+
+        // [w] sim2doc tag in C++ files
+        if (openfluid::tools::contains(Content, openfluid::config::SIM2DOC_BEGIN_TAG) ||
+            openfluid::tools::contains(Content, openfluid::config::SIM2DOC_END_TAG))
+        {
+          HasSim2DocTagInFile = true;
         }
       }
-      return true;
-    };
-    processReportingItem(Data,"migration_isclean_no_comments",FindMigrationTagInFile);
-
-    // [w] sim2doc tag in C++ files
-    // TOIMPL to do
+    }
+    
+    processReportingItem(Data, "migration_isclean_no_comments", [&](){return !HasMigrationTagInFile;});
+    processReportingItem(Data, "migration_isclean_no_sim2doc", [&](){return !HasSim2DocTagInFile;});
   }
 
   return Data;
