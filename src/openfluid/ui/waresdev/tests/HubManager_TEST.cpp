@@ -272,8 +272,7 @@ BOOST_AUTO_TEST_CASE(ware_list_https_v1_ok)
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::OBSERVER).size(), 2);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::BUILDEREXT).size(), 1);
   BOOST_CHECK_EQUAL(M.getAvailableWaresWithDetails(openfluid::ware::WareType::UNDEFINED).size(), 0);
-
-  // TOIMPL ADD TESTS FOR FRAGMENTS IMPORT? for specific version
+  BOOST_CHECK_EQUAL(M.getAvailableFragmentsWithDetails().size(), 1);
 }
 
 

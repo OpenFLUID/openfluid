@@ -59,8 +59,6 @@ FragmentCreationDialog::FragmentCreationDialog(QWidget* Parent) :
 
   ui->FragmentNameLineEdit->setToolTip(tr("Accepts only letters, digits, dashes ('-'), "
                                           "underscores ('_') and dots ('.'). Must begin by a letter."));
-  
-  connect(buttonBox(), SIGNAL(accepted()), this, SLOT(createFragment()));
 
   check();
 }
