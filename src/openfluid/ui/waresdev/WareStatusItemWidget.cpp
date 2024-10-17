@@ -77,6 +77,7 @@ void WareStatusItemWidget::populateReportItemLabels()
 
   ErrorReports.push_back({"file_iscorrect", tr("Metadata can not be read")});
   WarningReports.push_back({"migration_isclean_no_comments", tr("Comments from migration remain in code")});
+  WarningReports.push_back({"migration_isclean_no_sim2doc", tr("Documentation tags from migration remain in code")});
   ErrorReports.push_back({"rootdir_exists", tr("")});
   ErrorReports.push_back({"version_iscorrect", tr("Ware version is below current OpenFLUID version")});
   WarningReports.push_back({"no_migration_files", 
@@ -113,8 +114,13 @@ void WareStatusItemWidget::populateReportItemLabels()
       std::pair<QString, QString>("migration", tr("Try to migrate the ware"));
   ms_ActionForReportItem[std::make_pair<const std::string, const ReportingStatus>(
     "migration_isclean_no_comments", ReportingStatus::WARNING)] = \
-      std::pair<QString, QString>("", tr("Look for '%1' comments in CMakeLists.txt and main cpp file.").arg(
+      std::pair<QString, QString>("", tr("Look for '%1' comments in CMakeLists.txt and cpp file(s).").arg(
         QString::fromStdString(openfluid::config::MIGRATION_STRING)));
+  ms_ActionForReportItem[std::make_pair<const std::string, const ReportingStatus>(
+    "migration_isclean_no_sim2doc", ReportingStatus::WARNING)] = \
+      std::pair<QString, QString>("", tr("Look for '%1%2' comments in cpp file(s).").arg(
+        QString::fromStdString(openfluid::config::SIM2DOC_BEGIN_TAG), 
+        QString::fromStdString(openfluid::config::SIM2DOC_END_TAG)));
   ms_ActionForReportItem[std::make_pair<const std::string, const ReportingStatus>(
     "no_migration_files", ReportingStatus::ERROR_STATUS)] = \
       std::pair<QString, QString>("revert-migration", tr("Revert migration"));

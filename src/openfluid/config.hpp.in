@@ -192,6 +192,8 @@ const std::string WARESDEV_DOCALYZER_WORK_DIRROOT = "_docalyzer";
 const std::string WARESDEV_BRANCH_INFO_FILE = "branch-info.txt";
 
 const std::string MIGRATION_STRING = "[MIGRATION]";
+const std::string SIM2DOC_BEGIN_TAG = "<sim2doc>";
+const std::string SIM2DOC_END_TAG = "</sim2doc>";
 
 
 // Project

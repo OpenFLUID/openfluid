@@ -465,28 +465,52 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
     }
   }
 
+  openfluid::base::Listener::Status Status = openfluid::base::Listener::Status::OK_STATUS;
+
   // 3rd pass for simulators only : search for sim2doc
   if (Info.WareType == openfluid::ware::WareType::SIMULATOR)
   {
+    std::vector<std::string> Sim2DocFilesNotMigrated;
     for (const auto& FileObj : SrcFilesObjs)
     {
-      if (Info.DocContent.empty() && openfluid::waresdev::IsCppFile(FileObj))
+      if(openfluid::waresdev::IsCppFile(FileObj))
       {
         auto Content = openfluid::tools::Filesystem::readFile(FileObj);
-        Info.DocContent = openfluid::tools::trim(extractBetweenTags(Content,"<sim2doc>","</sim2doc>"));
+        std::string DocContent = openfluid::tools::trim(extractBetweenTags(Content, 
+                                                                           openfluid::config::SIM2DOC_BEGIN_TAG, 
+                                                                           openfluid::config::SIM2DOC_END_TAG));
+        if(DocContent.empty())
+        {
+          continue;
+        }
+
+        if(!Info.DocContent.empty())
+        {
+          Sim2DocFilesNotMigrated.push_back(FileObj.filename());
+          continue;
+        }
+        
+        Info.DocFile = FileObj;
+        Info.DocContent = DocContent;
       }
+    }
+
+    if(!Sim2DocFilesNotMigrated.empty())
+    {
+      mp_Listener->stageMessage("multiple files with sim2doc tags where found. Converted file: " + 
+                                Info.DocFile.filename() +
+                                ". Unconverted file(s): " + openfluid::tools::join(Sim2DocFilesNotMigrated, ", "));
+      Status = openfluid::base::Listener::Status::WARNING_STATUS;
     }
   }
 
-  
   if (Info.WareType == openfluid::ware::WareType::UNDEFINED)
   {
     mp_Listener->onPrepareEnd(openfluid::base::Listener::Status::ERROR_STATUS);
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Unable to determine ware type");    
   }
 
-
-  mp_Listener->onPrepareEnd(openfluid::base::Listener::Status::OK_STATUS);
+  mp_Listener->onPrepareEnd(Status);
 
   return Info;
 }
@@ -724,6 +748,31 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
         openfluid::tools::Filesystem::writeFile(CxxFileContent,CxxFileObj);
       }
     }
+  }
+
+  // ==== add migration tag around sim2doc
+
+  // documentation of the ware
+  if (!Info.DocContent.empty())
+  {
+    mp_Listener->stageMessage("deprecating ware sim2doc");
+
+    auto DocFileObj = m_DestPathObj.fromThis({openfluid::config::WARESDEV_SRC_DIR,
+                                              Info.DocFile.relativeTo(m_SrcPathObj.toGeneric())});
+    auto DocFileContent = openfluid::tools::Filesystem::readFile(DocFileObj);
+    std::string DocContentWithTags = openfluid::tools::trim(extractBetweenTags(DocFileContent, 
+                                                                               openfluid::config::SIM2DOC_BEGIN_TAG, 
+                                                                               openfluid::config::SIM2DOC_END_TAG, 
+                                                                               true));
+
+    std::string ReplStr = generateMigrationBlock("//",
+                                                 "// Here is located the former sim2doc of the ware. "
+                                                 "Ensure the doc content is correctly migrated in doc folder. \n" +
+                                                 DocContentWithTags);
+
+    DocFileContent = openfluid::tools::replace(DocFileContent, DocContentWithTags, ReplStr);
+
+    openfluid::tools::Filesystem::writeFile(DocFileContent, DocFileObj);
   }
 
   // ==== fix builderext includes and namespaces
