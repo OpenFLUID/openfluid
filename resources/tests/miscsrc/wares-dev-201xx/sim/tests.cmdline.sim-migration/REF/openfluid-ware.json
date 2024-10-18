@@ -1,0 +1,150 @@
+{
+  "id": "tests.cmdline.sim-migration",
+  "name": "Simulator 2.1.x for migration",
+  "description": "This is a simulator 2.1.x for migration",
+  "version": "2022-09",
+  "status": "beta",
+  "authors": [
+    {
+      "name": "John Doe",
+      "email": "john.doe@foo.org"
+    },
+    {
+      "name": "Jane Doe",
+      "email": "jane.doe@foo.org"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "bob",
+      "email": "bob@thewailers.org"
+    }
+  ],
+  "license": "Apache-2.0",
+  "tags": [
+    "domain::testing",
+    "process::migration",
+    "method::conversion",
+    "tagX",
+    "tagY"
+  ],
+  "links": [],
+  "issues": [
+    {
+      "id": 2,
+      "title": "Add method to create fluidx",
+      "description": "",
+      "tags": [
+        "urgency::normal",
+        "type::feature"
+      ],
+      "creator": "R",
+      "created_at": "2014-11-01 00:00:00",
+      "updated_at": "2014-11-01 00:00:00",
+      "state": "closed"
+    },
+    {
+      "id": 3,
+      "title": "Add checking method",
+      "description": "",
+      "tags": [
+        "urgency::high",
+        "type::feature"
+      ],
+      "creator": "A",
+      "created_at": "2014-11-01 00:00:00",
+      "updated_at": "2014-11-01 00:00:00",
+      "state": "closed"
+    },
+    {
+      "id": 4,
+      "title": "Add additional error catchs",
+      "description": "",
+      "tags": [
+        "urgency::low",
+        "type::feature"
+      ],
+      "creator": "M",
+      "created_at": "2014-11-01 00:00:00",
+      "updated_at": "2014-11-01 00:00:00",
+      "state": "closed"
+    }
+  ],
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [],
+        "used": [
+          {
+            "name": "param1",
+            "description": "parameter for nothing",
+            "siunit": "x/x",
+            "type": ""
+          }
+        ]
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": [
+          {
+            "name": "attr1",
+            "unitsclass": "TUA",
+            "description": "attribute 1",
+            "siunit": "",
+            "type": ""
+          }
+        ]
+      },
+      "variables": {
+        "required": [],
+        "used": [],
+        "produced": [
+          {
+            "name": "varA",
+            "unitsclass": "TUA",
+            "description": "variable A",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "varA",
+            "unitsclass": "TUB",
+            "description": "variable A",
+            "siunit": "m",
+            "type": ""
+          },
+          {
+            "name": "varB",
+            "unitsclass": "TUA",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "updated": []
+      },
+      "extrafiles": {
+        "required": [],
+        "used": []
+      },
+      "events": [
+        "TUA"
+      ]
+    },
+    "spatial_graph": {
+      "description": "update of the spatial units graph",
+      "details": [
+        {
+          "unitsclass": "TUA",
+          "description": "modification of from-to connections"
+        }
+      ]
+    },
+    "scheduling": {
+      "type": "default",
+      "min": 0,
+      "max": 0
+    }
+  }
+}
