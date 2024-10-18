@@ -525,7 +525,9 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulator
                    PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/sim/tests.cmdline.sim-migration"
                                            "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/"
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/doc/doc.tex")
+                   POST_TEST CHECK_FILE_IDENTICAL "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/"
+                                                  "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/REF/"
+                                                  "openfluid-ware.json")
 SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulator
              APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
 
