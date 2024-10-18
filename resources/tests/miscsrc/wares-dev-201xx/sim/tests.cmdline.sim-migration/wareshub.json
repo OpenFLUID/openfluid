@@ -4,16 +4,33 @@
   "status": "experimental",
   "license": "Apache-2.0",
   "external-deps": [],
-  "issues": [
-    {
-      "id":19,
-      "title": "An issue",
-      "creator": "john",
-      "date": "2023-01-13",
+  "issues":   {
+    "3": {
+      "title": "Add checking method",
+      "creator": "A",
+      "date": "2014-11-13",
       "type": "feature",
-      "state": "open",
-      "description": "This is an issue",
+      "state": "closed",
+      "description": "",
+      "urgency": "high"
+    },
+    "2": {
+      "title": "Add method to create fluidx",
+      "creator": "R",
+      "date": "2014-11-13",
+      "type": "feature",
+      "state": "closed",
+      "description": "",
       "urgency": "normal"
+    },
+    "foo": {
+      "title": "Add additional error catchs",
+      "creator": "M",
+      "date": "2014-11-18",
+      "type": "feature",
+      "state": "closed",
+      "description": "",
+      "urgency": "low"
     }
-  ]
+  }
 }
