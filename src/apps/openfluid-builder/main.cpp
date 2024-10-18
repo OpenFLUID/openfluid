@@ -68,10 +68,10 @@ int main(int argc, char** argv)
 
     INIT_OPENFLUID_QT_APPLICATION_WITH_GUI(argc,argv);
 
-    openfluid::utils::log::setup();
-
     do
     {
+      openfluid::utils::log::setup();
+      
       openfluid::ui::common::OpenFLUIDSplashScreen Splash(
         openfluid::ui::common::getImage("openfluid_splash_builder","builder")
       );

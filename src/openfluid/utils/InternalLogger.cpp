@@ -37,6 +37,7 @@
 */
 
 
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/utils/InternalLogger.hpp>
 #include "openfluid/tools/FilesystemPath.hpp"
@@ -77,9 +78,15 @@ void LoggingSystem::setup(bool DefaultAsFallback, std::string LogPath)
   if (LogPath == "")
   {
     char* LogPathChar = std::getenv("OPENFLUID_LOG_PATH");
+    std::string CurrentWorkspace = openfluid::base::PreferencesManager::instance()->getCurrentWorkspacePath();
     if (LogPathChar != NULL)
     {
       LogPath = openfluid::tools::FilesystemPath({std::string(LogPathChar), 
+                                                  openfluid::config::INTERNAL_LOG_FILE}).toGeneric();
+    }
+    else if(CurrentWorkspace != "")
+    {
+      LogPath = openfluid::tools::FilesystemPath({CurrentWorkspace, 
                                                   openfluid::config::INTERNAL_LOG_FILE}).toGeneric();
     }
     else if (DefaultAsFallback)
