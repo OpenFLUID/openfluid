@@ -45,6 +45,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace core {
@@ -409,6 +410,12 @@ bool DateTime::isStrictlyBetween(const DateTime& FirstDT, const DateTime& Second
 
 RawTime_t DateTime::diffInSeconds(const DateTime& DT) const
 {
+  if(*this < DT)
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, 
+                                              "Time difference computation failed: begin date greater than end date");
+  }
+
   return (m_RawTime - DT.getRawTime());
 }
 

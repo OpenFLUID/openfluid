@@ -69,11 +69,8 @@ RunConfigurationWidget::RunConfigurationWidget(QWidget* Parent, openfluid::fluid
 
   refresh();
 
-
-  connect(ui->PeriodWidget,SIGNAL(beginChanged(const QDateTime&)),
-          this,SLOT(updateBeginDateFXDesc(const QDateTime&)));
-  connect(ui->PeriodWidget,SIGNAL(endChanged(const QDateTime&)),
-          this,SLOT(updateEndDateFXDesc(const QDateTime&)));
+  connect(ui->PeriodWidget,SIGNAL(datesChanged(const QDateTime&, const QDateTime&)),
+          this,SLOT(updateDatesFXDesc(const QDateTime&, const QDateTime&)));
 
   connect(ui->DeltaTSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateDeltaTFXDesc(int)));
   connect(ui->ConstraintComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(updateConstraintFXDesc(int)));
@@ -191,26 +188,16 @@ void RunConfigurationWidget::updateDeltaTFXDesc(int Value)
 // =====================================================================
 
 
-void RunConfigurationWidget::updateBeginDateFXDesc(const QDateTime& QDT)
+void RunConfigurationWidget::updateDatesFXDesc(const QDateTime& BeginQDT, const QDateTime& EndQDT)
 {
-  openfluid::core::DateTime DT;
-  DT.setFromString(QDT.toString("yyyy-MM-dd HH:mm:ss").toStdString(),"%Y-%m-%d %H:%M:%S");
+  openfluid::core::DateTime BeginDT;
+  openfluid::core::DateTime EndDT;
 
-  m_FluidxDesc.runConfiguration().setBeginDate(DT);
-  runConfigChange();
-}
+  BeginDT.setFromString(BeginQDT.toString("yyyy-MM-dd HH:mm:ss").toStdString(),"%Y-%m-%d %H:%M:%S");
+  EndDT.setFromString(EndQDT.toString("yyyy-MM-dd HH:mm:ss").toStdString(),"%Y-%m-%d %H:%M:%S");
 
-
-// =====================================================================
-// =====================================================================
-
-
-void RunConfigurationWidget::updateEndDateFXDesc(const QDateTime& QDT)
-{
-  openfluid::core::DateTime DT;
-  DT.setFromString(QDT.toString("yyyy-MM-dd HH:mm:ss").toStdString(),"%Y-%m-%d %H:%M:%S");
-
-  m_FluidxDesc.runConfiguration().setEndDate(DT);
+  m_FluidxDesc.runConfiguration().setBeginDate(BeginDT);
+  m_FluidxDesc.runConfiguration().setEndDate(EndDT);
   runConfigChange();
 }
 

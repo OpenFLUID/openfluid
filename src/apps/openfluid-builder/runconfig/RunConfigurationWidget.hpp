@@ -67,9 +67,7 @@ class RunConfigurationWidget : public WorkspaceWidget
 
       void updateDeltaTFXDesc(int Value);
 
-      void updateBeginDateFXDesc(const QDateTime& QDT);
-
-      void updateEndDateFXDesc(const QDateTime& QDT);
+      void updateDatesFXDesc(const QDateTime& BeginQDT, const QDateTime& EndQDT);
 
       void updateMemoryFXDesc(bool On);
 
