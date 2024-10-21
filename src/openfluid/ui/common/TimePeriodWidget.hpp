@@ -84,9 +84,7 @@ class OPENFLUID_API TimePeriodWidget : public QWidget
 
   signals:
 
-    void beginChanged(const QDateTime&);
-
-    void endChanged(const QDateTime&);
+    void datesChanged(const QDateTime&, const QDateTime&);
 
     void linkModeChanged(bool);
 

@@ -215,8 +215,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   DiffInSeconds = DTResult.diffInSeconds(DT);
   BOOST_REQUIRE_EQUAL(DiffInSeconds,457837);
 
-  DiffInSeconds = DT.diffInSeconds(DTResult);
-  BOOST_REQUIRE_EQUAL(DiffInSeconds,-457837);
+  // begin date greater than end date
+  BOOST_REQUIRE_THROW(DT.diffInSeconds(DTResult), openfluid::base::FrameworkException);
 
   BOOST_REQUIRE_EQUAL(openfluid::core::DateTime::isLeapYear(2004),true);
 

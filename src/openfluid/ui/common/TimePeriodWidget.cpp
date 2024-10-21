@@ -34,6 +34,7 @@
   @file TimePeriodWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -59,6 +60,12 @@ TimePeriodWidget::TimePeriodWidget(QWidget* Parent):
 
   ui->LinkButton->setIcon(m_UnlinkedIcon);
 
+  // The function setTimeSpec() is scheduled for deprecation in Qt version 6.9. 
+  // Use setTimeZone() instead
+  // cf https://doc.qt.io/qt-6/qdatetime.html#setTimeSpec 
+  ui->BeginDateEdit->setTimeSpec(Qt::LocalTime);
+  ui->EndDateEdit->setTimeSpec(Qt::LocalTime);
+
   connect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(handleBeginChanged(const QDateTime&)));
   connect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(handleEndChanged(const QDateTime&)));
   connect(ui->LinkButton,SIGNAL(clicked()),this,SLOT(handleLinkModeChanged()));
@@ -81,19 +88,27 @@ TimePeriodWidget::~TimePeriodWidget()
 
 void TimePeriodWidget::handleBeginChanged(const QDateTime& DT)
 {
-  emit beginChanged(DT);
-
   if (m_LinkMode)
   {
+    disconnect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+              this, SLOT(handleEndChanged(const QDateTime&)));
     ui->EndDateEdit->setDateTime(DT.addSecs(m_FixedDiff));
+    connect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+            this, SLOT(handleEndChanged(const QDateTime&)));
   }
   else
   {
     if (ui->EndDateEdit->dateTime() <= DT)
     {
+      disconnect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+                 this, SLOT(handleEndChanged(const QDateTime&)));
       ui->EndDateEdit->setDateTime(DT.addSecs(1));
+      connect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+              this, SLOT(handleEndChanged(const QDateTime&)));
     }
   }
+
+  emit datesChanged(DT, getEndDateTime());
 }
 
 
@@ -103,19 +118,27 @@ void TimePeriodWidget::handleBeginChanged(const QDateTime& DT)
 
 void TimePeriodWidget::handleEndChanged(const QDateTime& DT)
 {
-  emit endChanged(DT);
-
   if (m_LinkMode)
   {
+    disconnect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+               this,SLOT(handleBeginChanged(const QDateTime&)));
     ui->BeginDateEdit->setDateTime(DT.addSecs(-m_FixedDiff));
+    connect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+            this,SLOT(handleBeginChanged(const QDateTime&)));
   }
   else
   {
     if (ui->BeginDateEdit->dateTime() >= DT)
     {
+      disconnect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+                 this,SLOT(handleBeginChanged(const QDateTime&)));
       ui->BeginDateEdit->setDateTime(DT.addSecs(-1));
+      connect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+              this,SLOT(handleBeginChanged(const QDateTime&)));
     }
   }
+
+  emit datesChanged(getBeginDateTime(), DT);
 }
 
 
