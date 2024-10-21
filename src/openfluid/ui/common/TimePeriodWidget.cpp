@@ -34,6 +34,7 @@
   @file TimePeriodWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -58,6 +59,12 @@ TimePeriodWidget::TimePeriodWidget(QWidget* Parent):
   ui->DownCornerLabel->setPixmap(openfluid::ui::common::getImage("corner_downleft","ui/common"));
 
   ui->LinkButton->setIcon(m_UnlinkedIcon);
+
+  // The function setTimeSpec() is scheduled for deprecation in Qt version 6.9. 
+  // Use setTimeZone() instead
+  // cf https://doc.qt.io/qt-6/qdatetime.html#setTimeSpec 
+  ui->BeginDateEdit->setTimeSpec(Qt::LocalTime);
+  ui->EndDateEdit->setTimeSpec(Qt::LocalTime);
 
   connect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(handleBeginChanged(const QDateTime&)));
   connect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(handleEndChanged(const QDateTime&)));
@@ -85,13 +92,13 @@ void TimePeriodWidget::handleBeginChanged(const QDateTime& DT)
 
   if (m_LinkMode)
   {
-    ui->EndDateEdit->setDateTime(DT.addSecs(m_FixedDiff));
+    emit endChanged(DT.addSecs(m_FixedDiff));
   }
   else
   {
     if (ui->EndDateEdit->dateTime() <= DT)
     {
-      ui->EndDateEdit->setDateTime(DT.addSecs(1));
+      emit endChanged(DT.addSecs(1));
     }
   }
 }
@@ -107,13 +114,13 @@ void TimePeriodWidget::handleEndChanged(const QDateTime& DT)
 
   if (m_LinkMode)
   {
-    ui->BeginDateEdit->setDateTime(DT.addSecs(-m_FixedDiff));
+    emit beginChanged(DT.addSecs(-m_FixedDiff));
   }
   else
   {
     if (ui->BeginDateEdit->dateTime() >= DT)
     {
-      ui->BeginDateEdit->setDateTime(DT.addSecs(-1));
+      emit beginChanged(DT.addSecs(-1));
     }
   }
 }
@@ -146,7 +153,10 @@ QDateTime TimePeriodWidget::getBeginDateTime() const
 
 void TimePeriodWidget::setBeginDateTime(const QDateTime& DT)
 {
+  disconnect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),
+             this,SLOT(handleBeginChanged(const QDateTime&)));
   ui->BeginDateEdit->setDateTime(DT);
+  connect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(handleBeginChanged(const QDateTime&)));
 }
 
 
@@ -166,7 +176,9 @@ QDateTime TimePeriodWidget::getEndDateTime() const
 
 void TimePeriodWidget::setEndDateTime(const QDateTime& DT)
 {
+  disconnect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(handleEndChanged(const QDateTime&)));
   ui->EndDateEdit->setDateTime(DT);
+  connect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(handleEndChanged(const QDateTime&)));
 }
 
 
