@@ -375,7 +375,7 @@
        <item row="0" column="1">
         <widget class="QLineEdit" name="TagsEdit">
          <property name="placeholderText">
-          <string>Tag 1;Tag 2</string>
+          <string>domain::water;process::transfer;Tag 1</string>
          </property>
         </widget>
        </item>

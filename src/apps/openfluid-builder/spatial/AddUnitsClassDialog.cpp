@@ -34,12 +34,14 @@
   @file AddUnitsClassDialog.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
 #include <QPushButton>
 
 #include <openfluid/ui/config.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 
 #include "ui_AddUnitDialog.h"
 #include "AddUnitsClassDialog.hpp"
@@ -93,10 +95,9 @@ void AddUnitsClassDialog::checkGlobal()
   {
     setMessage(tr("Units class name already exists"));
   }
-  else if (ui->ClassEdit->text().toStdString().find("#") != std::string::npos || 
-           ui->ClassEdit->text().toStdString().find(":") != std::string::npos)
+  else if (!openfluid::tools::isValidUnitsClassName(ui->ClassEdit->text().toStdString()))
   {
-    setMessage(tr("'#' and ':' are forbidden for units class name"));
+    setMessage(tr("'#', ':' and ';' are forbidden for units class name"));
   }
   else if (ui->UnitIDEdit->text().isEmpty())
   {

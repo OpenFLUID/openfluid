@@ -35,6 +35,7 @@
 
   @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -47,6 +48,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/thirdparty/XML.hpp>
@@ -473,6 +475,12 @@ class FluidXReaderImplementation
         std::string ID = openfluid::thirdparty::getXMLAttribute(UnitElt,"ID");
         std::string UnitsClass = openfluid::thirdparty::getXMLAttribute(UnitElt,"class");
         std::string PcsOrd = openfluid::thirdparty::getXMLAttribute(UnitElt,"pcsorder");
+        
+        if(!openfluid::tools::isValidUnitsClassName(UnitsClass))
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+              "wrong format for units class '" + UnitsClass + "' in unit definition (" + m_CurrentFile + ")");
+        }
 
         if (!ID.empty() && !UnitsClass.empty() && !PcsOrd.empty())
         {
