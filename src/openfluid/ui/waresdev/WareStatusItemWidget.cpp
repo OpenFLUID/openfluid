@@ -81,7 +81,7 @@ void WareStatusItemWidget::populateReportItemLabels()
   ErrorReports.push_back({"rootdir_exists", tr("")});
   ErrorReports.push_back({"version_iscorrect", tr("Ware version is below current OpenFLUID version")});
   WarningReports.push_back({"no_migration_files", 
-                            tr("Migration folders remain in ware source path. Remove them or")}); 
+    tr("Migration folders remain in ware source path. Remove them manually or revert migration")}); 
                             // TODO : Find more consistent display
   ErrorReports.push_back({"no_migration_files", tr("Ware migration failed")});
 
