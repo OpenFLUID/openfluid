@@ -356,6 +356,15 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
       return;
     }
 
+    if (QMessageBox::question(nullptr, tr("Revert migration"),
+                            tr("Reverting the migration will result in the loss of all post-migration "
+                            "changes and will reset the ware to the pre-migration state.") + "\n\n" +
+                            tr("Proceed anyway?"),
+                            QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
+    {
+      return;
+    }
+
     if(!requestWareTabClosing(it.value()))
     {
       return;
