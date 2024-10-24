@@ -33,6 +33,7 @@
   @file SignatureDataEditorWidget.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -42,9 +43,12 @@
 
 #include <QWidget>
 #include <QTableWidget>
+#include <QTableWidgetItem>
 #include <QList>
+#include <QSet>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ui/common/SignatureDataEditDefs.hpp>
 
 
 namespace Ui
@@ -72,12 +76,20 @@ class OPENFLUID_API SignatureDataEditorWidget : public QWidget
                                   PRODUCED = 2, UPDATED = 3,
                                   UNKNOWN = 99};
 
+    bool areAllCellsValid(const QString& Header, const DataTableType& HandledDataType);
 
   private slots:
 
     void removeDataLine();
 
     void addDataLine();
+
+    void onItemChanged(QTableWidgetItem*);
+
+
+  signals:
+
+    void dataTableChanged();
 
 
   private:
@@ -86,6 +98,15 @@ class OPENFLUID_API SignatureDataEditorWidget : public QWidget
 
     QList<DataColumns> m_Columns;
 
+    QMap<QString, int> m_ColHeadersValuesMap;
+    QSet<QString> m_AvailableHeaders;
+
+    QString m_DataIDHeader;
+    QString m_UnitsClassHeader;
+    QString m_IOConditionHeader;
+    QString m_TypeHeader;
+    QString m_DescriptionHeader;
+    QString m_SIUnitHeader;
 
   public:
 

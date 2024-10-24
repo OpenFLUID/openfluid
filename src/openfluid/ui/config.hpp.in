@@ -34,6 +34,7 @@
  
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -59,7 +60,9 @@ const QString WARETOOLBAR_BGCOLOR = "#DDDDDD";
 const QString TOOLTIP_BGCOLOR = "#393F3F";
 const QString TOOLTIP_BORDERCOLOR = "#676767";
 
-const char* const PLACEHOLDER_REQUIRED = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
+const char* const PLACEHOLDER_REQUIRED    = QT_TRANSLATE_NOOP("openfluid::ui::config","required");
+const char* const WAREID_MESSAGE_EMPTY    = QT_TRANSLATE_NOOP("openfluid::ui::config","Ware ID is empty");
+const char* const WAREID_MESSAGE_EXISTING = QT_TRANSLATE_NOOP("openfluid::ui::config","Ware ID already exists");
 
 const QString LINEMARKER_ERRCOLOR = "#FFA3A3";
 const QString LINEMARKER_WARNCOLOR = "#FFD6A3";

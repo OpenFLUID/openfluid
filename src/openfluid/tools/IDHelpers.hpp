@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -72,6 +73,8 @@ constexpr auto FragmentNameRuleString("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
 //   authorized chars: a to z, A to Z, 0 to 9, -, ., _
 //   must start by an alphabetic char
 constexpr auto VariableNameRuleString("[A-Za-z]+([A-Za-z0-9_\\.\\-]*)");
+
+constexpr auto UnitsClassNameRuleString("^[^;:#]*$");
 
 
 /**
@@ -111,6 +114,15 @@ bool OPENFLUID_API isValidDatasetName(const std::string& Name);
   @return true if the ID is valid
 */
 bool OPENFLUID_API isValidWareID(const openfluid::ware::WareID_t& ID, bool Template=false);
+
+
+/**
+  Checks whether a units classe name is valid or not.\n
+  To be valid, a units class name must not contain any of ';', ':' and '#' characters,
+  @param[in] UnitsClass the units class name to check
+  @return true if the name is valid
+*/
+bool OPENFLUID_API isValidUnitsClassName(const openfluid::core::UnitsClass_t& Name);
 
 
 /**

@@ -92,12 +92,6 @@ class OPENFLUID_API NewWareDialog : public openfluid::ui::common::MessageDialog
     static QRegularExpression getClassnameRegExp(QString& Tooltip);
 #endif
 
-#if (QT_VERSION_MAJOR < 6)
-    static QRegExp getWareIdRegExp(QString& Tooltip);
-#else
-    static QRegularExpression getWareIdRegExp(QString& Tooltip);
-#endif
-
     static QStringList getBuilderExtTypeTexts();
 
     static QStringList getBuilderExtCategoryTexts();

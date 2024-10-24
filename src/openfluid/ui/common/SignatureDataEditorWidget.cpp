@@ -34,12 +34,16 @@
   @file SignatureDataEditorWidget.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
 #include <QComboBox>
 
+#include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/ui/config.hpp>
 #include <openfluid/core/Value.hpp>
 
 #include "ui_SignatureDataEditorWidget.h"
@@ -54,6 +58,20 @@ SignatureDataEditorWidget::SignatureDataEditorWidget(QWidget* Parent):
 {
   ui->setupUi(this);
 
+  m_DataIDHeader = QApplication::translate("openfluid::ui::common", DataTablesHeader::NAME);
+  m_UnitsClassHeader = QApplication::translate("openfluid::ui::common", DataTablesHeader::UNITS_CLASS);
+  m_IOConditionHeader = QApplication::translate("openfluid::ui::common", DataTablesHeader::IO_CONDITION);
+  m_TypeHeader = QApplication::translate("openfluid::ui::common", DataTablesHeader::TYPE);
+  m_DescriptionHeader = QApplication::translate("openfluid::ui::common", DataTablesHeader::DESCRIPTION);
+  m_SIUnitHeader = QApplication::translate("openfluid::ui::common", DataTablesHeader::SIUNIT);
+
+  m_ColHeadersValuesMap = {{m_DataIDHeader, 0},
+                           {m_UnitsClassHeader, 1},
+                           {m_IOConditionHeader, 2},
+                           {m_TypeHeader, 3},
+                           {m_DescriptionHeader, 4},
+                           {m_SIUnitHeader, 5}};
+
   ui->AddButton->setText("");
   ui->AddButton->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
   ui->AddButton->setIconSize(QSize(20,20));
@@ -64,6 +82,8 @@ SignatureDataEditorWidget::SignatureDataEditorWidget(QWidget* Parent):
 
   connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addDataLine()));
   connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(removeDataLine()));
+  connect(ui->DataTableWidget, SIGNAL(itemChanged(QTableWidgetItem*)),
+          this, SLOT(onItemChanged(QTableWidgetItem*)));
 }
 
 
@@ -103,30 +123,36 @@ void SignatureDataEditorWidget::initialize(const QList<DataColumns>& Columns)
   {
     if (Col == DataColumns::DATAID)
     {
-      ColHeaders << tr("Name");
+      ColHeaders << m_DataIDHeader;
+      m_AvailableHeaders.insert(m_DataIDHeader);
     }
     else if (Col == DataColumns::UNITSCLASS)
     {
-      ColHeaders << tr("Units class");
+      ColHeaders << m_UnitsClassHeader;
+      m_AvailableHeaders.insert(m_UnitsClassHeader);
     }
     else if (Col == DataColumns::ROCONDITION || 
              Col == DataColumns::RWCONDITION || 
              Col == DataColumns::RWUCONDITION)
     {
-      ColHeaders << tr("I/O condition");
+      ColHeaders << m_IOConditionHeader;
+      m_AvailableHeaders.insert(m_IOConditionHeader);
     }
     else if (Col == DataColumns::DATATYPE)
     {
-      ColHeaders << tr("Type");
+      ColHeaders << m_TypeHeader;
+      m_AvailableHeaders.insert(m_TypeHeader);
     }
     else if (Col == DataColumns::DESCRIPTION)
     {
-      ColHeaders << tr("Description");
+      ColHeaders << m_DescriptionHeader;
+      m_AvailableHeaders.insert(m_DescriptionHeader);
       StretchedCol = i;
     }
     else if (Col == DataColumns::SIUNIT)
     {
-      ColHeaders << tr("SI unit");
+      ColHeaders << m_SIUnitHeader;
+      m_AvailableHeaders.insert(m_SIUnitHeader);
     }
 
     i++;
@@ -144,8 +170,66 @@ void SignatureDataEditorWidget::initialize(const QList<DataColumns>& Columns)
 // =====================================================================
 
 
+bool SignatureDataEditorWidget::areAllCellsValid(const QString& Header, 
+                                                 const DataTableType& HandledDataType)
+{
+  if(!m_ColHeadersValuesMap.contains(Header))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Header " + Header.toStdString() + 
+                                              " not found for the SignatureDataEditorWidget");
+  }
+
+  for (int Row = 0; Row < ui->DataTableWidget->rowCount(); ++Row) 
+  {
+    QTableWidgetItem* Item = ui->DataTableWidget->item(Row, m_ColHeadersValuesMap[Header]);
+    if(Header == m_UnitsClassHeader)
+    {
+      if(!openfluid::tools::isValidUnitsClassName(Item->text().toStdString()))
+      {
+        return false;
+      }
+    }
+    else if(Header == m_DataIDHeader)
+    {
+      if(HandledDataType == DataTableType::VARIABLES)
+      {
+        if(!openfluid::tools::isValidVariableName(Item->text().toStdString()))
+        {
+          return false;
+        }
+      }
+      else if(HandledDataType == DataTableType::ATTRIBUTES)
+      {
+        if(!openfluid::tools::isValidAttributeName(Item->text().toStdString()))
+        {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureDataEditorWidget::onItemChanged(QTableWidgetItem*)
+{
+  emit dataTableChanged();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
 {
+  disconnect(ui->DataTableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(onItemChanged(QTableWidgetItem*)));
+
   int RowCount = ui->DataTableWidget->rowCount();
   ui->DataTableWidget->setRowCount(RowCount+1);
   int i = 0;
@@ -240,6 +324,7 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
     }
     i++;
   }
+  connect(ui->DataTableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(onItemChanged(QTableWidgetItem*)));
 }
 
 
@@ -267,6 +352,7 @@ void SignatureDataEditorWidget::removeDataLine()
   if (Row >= 0)
   {
     ui->DataTableWidget->removeRow(Row);
+    emit dataTableChanged();
   }
 }
 

@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -44,6 +45,7 @@
 #include <openfluid/ui/common/SignatureEditorWidget.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
@@ -92,6 +94,9 @@ SignatureEditorWidget::SignatureEditorWidget(QWidget* Parent):
   connect(ui->AddContactButton,SIGNAL(clicked()),this,SLOT(addContactLine()));
   connect(ui->RemoveContactButton,SIGNAL(clicked()),this,SLOT(removeContactLine()));
 
+  connect(ui->VariablesDataWidget,SIGNAL(dataTableChanged()), this, SIGNAL(dataTableChanged()));
+  connect(ui->AttributesDataWidget,SIGNAL(dataTableChanged()), this, SIGNAL(dataTableChanged()));
+
 }
 
 
@@ -119,17 +124,44 @@ void SignatureEditorWidget::notifyChanged()
 // =====================================================================
 
 
+bool SignatureEditorWidget::areAllCellsValid(const QString& Header, const DataTableType& HandledDataType)
+{
+  if(HandledDataType == DataTableType::VARIABLES)
+  {
+    return ui->VariablesDataWidget->areAllCellsValid(Header, HandledDataType);
+  }
+  if(HandledDataType == DataTableType::ATTRIBUTES)
+  {
+    return ui->AttributesDataWidget->areAllCellsValid(Header, HandledDataType);
+  }
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SignatureEditorWidget::initializeID(const QString& ID)
 {
   if (ID.isEmpty())
-   {
-     ui->IDLabel->setVisible(false);
-     ui->IDEdit->setVisible(true);
-     ui->IDEdit->setText("");
-     ui->IDEdit->setPlaceholderText(QApplication::translate("openfluid::ui::config",
+  {
+    ui->IDLabel->setVisible(false);
+    ui->IDEdit->setVisible(true);
+    ui->IDEdit->setText("");
+    ui->IDEdit->setPlaceholderText(QApplication::translate("openfluid::ui::config",
                                                             openfluid::ui::config::PLACEHOLDER_REQUIRED));
-     m_StaticID = false;
-     connect(ui->IDEdit,SIGNAL(textEdited(const QString&)),this,SLOT(notifyChanged()));
+    QString IDTooltip;
+    ui->IDEdit->setValidator(
+#if (QT_VERSION_MAJOR < 6)
+      new QRegExpValidator(openfluid::ui::common::getWareIdRegExp(IDTooltip), this));
+#else
+      new QRegularExpressionValidator(openfluid::ui::common::getWareIdRegExp(IDTooltip), this));
+#endif
+    ui->IDEdit->setToolTip(IDTooltip);
+    m_StaticID = false;
+    connect(ui->IDEdit,SIGNAL(textEdited(const QString&)),this,SLOT(notifyChanged()));
    }
    else
    {
@@ -1149,14 +1181,9 @@ void SignatureEditorWidget::removeContactLine()
 // =====================================================================
 
 
-bool SignatureEditorWidget::isValidID() const
+bool SignatureEditorWidget::isEmptyID() const
 {
-  if (m_StaticID)
-  {
-    return true;
-  }
-
-  return openfluid::tools::isValidWareID(ui->IDEdit->text().toStdString(), true);
+  return (getEditedID().isEmpty() && !m_StaticID);
 }
 
 
