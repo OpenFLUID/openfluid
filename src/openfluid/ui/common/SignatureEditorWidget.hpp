@@ -34,6 +34,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -43,13 +44,22 @@
 
 #include <QTabWidget>
 #include <QTableWidget>
+#include <QRegularExpressionValidator>
+#if (QT_VERSION_MAJOR < 6)
+#include <QRegExp>
+#else
+#include <QRegularExpression>
+#endif
 
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/ui/common/WareIssuesManagerWidget.hpp>
+#include <openfluid/ui/common/SignatureDataEditDefs.hpp>
+#include <openfluid/ui/common/SignatureDataEditorWidget.hpp>
 #include <openfluid/waresdev/WareSignatureSerializer.hpp>
 
 
@@ -135,6 +145,8 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     void changed();
 
+    void dataTableChanged();
+
 
   public:
 
@@ -154,12 +166,34 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     bool exportSignature(const QString& SignaturePath) const;
 
-    bool isValidID() const;
+    bool isEmptyID() const;
 
     QString getEditedID() const;
 
+    bool areAllCellsValid(const QString& Header, const DataTableType& HandledDataType);
+
+    bool areAllCellsEmpty(const QString& Header, const DataTableType& HandledDataType);
+
 };
 
+
+// =====================================================================
+// =====================================================================
+
+
+#if (QT_VERSION_MAJOR < 6)
+inline QRegExp getWareIdRegExp(QString& Tooltip)
+#else
+inline QRegularExpression getWareIdRegExp(QString& Tooltip)
+#endif
+{
+  Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
+#if (QT_VERSION_MAJOR < 6)
+  return QRegExp(QString::fromStdString(openfluid::tools::WareIDRuleStringAndTpl));
+#else
+  return QRegularExpression(QString::fromStdString(openfluid::tools::WareIDRuleStringAndTpl));
+#endif
+}
 
 } } } // namespaces
 

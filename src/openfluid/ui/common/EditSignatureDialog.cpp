@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -42,6 +43,8 @@
 
 #include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/config.hpp>
+#include <openfluid/ui/common/SignatureDataEditDefs.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 
 #include "ui_EditSignatureDialog.h"
 
@@ -79,6 +82,8 @@ void EditSignatureDialog::initialize(const QStringList& ExistingIDs)
   checkGlobally();
 
   connect(ui->SignatureWidget,SIGNAL(changed()),this,SLOT(checkGlobally()));
+
+  connect(ui->SignatureWidget,SIGNAL(dataTableChanged()), this, SLOT(checkDataTable()));
 }
 
 
@@ -88,16 +93,72 @@ void EditSignatureDialog::initialize(const QStringList& ExistingIDs)
 
 void EditSignatureDialog::checkGlobally()
 {
-  if (!ui->SignatureWidget->isValidID())
+  if (ui->SignatureWidget->isEmptyID())
   {
-    setMessage(tr("ID is not valid"));
+    setMessage(QApplication::translate("openfluid::ui::config", openfluid::ui::config::WAREID_MESSAGE_EMPTY));
   }
   else if (m_ExistingIDs.contains(ui->SignatureWidget->getEditedID()))
   {
-   setMessage(tr("ID already exists"));
+   setMessage(QApplication::translate("openfluid::ui::config", openfluid::ui::config::WAREID_MESSAGE_EXISTING));
   }  
   else
   {
+    setMessage();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void EditSignatureDialog::checkDataTable()
+{
+  QString NameHeader = QApplication::translate("openfluid::ui::common", DataTablesHeader::NAME);
+  QString UnitsClassHeader = QApplication::translate("openfluid::ui::common", DataTablesHeader::UNITS_CLASS);
+
+  try
+  {
+    if (ui->SignatureWidget->areAllCellsEmpty(NameHeader, DataTableType::VARIABLES))
+    {
+      setMessage(tr("Empty name in variables table"));
+    } 
+    else if (ui->SignatureWidget->areAllCellsEmpty(NameHeader, DataTableType::ATTRIBUTES))
+    {
+      setMessage(tr("Empty name in attributes table"));
+    }  
+    else if(ui->SignatureWidget->areAllCellsEmpty(UnitsClassHeader, DataTableType::VARIABLES))
+    {
+      setMessage(tr("Empty units class in variables table"));
+    }
+    else if(ui->SignatureWidget->areAllCellsEmpty(UnitsClassHeader, DataTableType::ATTRIBUTES))
+    {
+      setMessage(tr("Empty units class in attributes table"));
+    }
+    else if (!ui->SignatureWidget->areAllCellsValid(NameHeader, DataTableType::VARIABLES))
+    {
+      setMessage(tr("Wrong name format in variables table"));
+    }
+    else if (!ui->SignatureWidget->areAllCellsValid(NameHeader, DataTableType::ATTRIBUTES))
+    {
+      setMessage(tr("Wrong name format in attributes table"));
+    }  
+    else if(!ui->SignatureWidget->areAllCellsValid(UnitsClassHeader, DataTableType::VARIABLES))
+    {
+      setMessage(tr("Wrong units class format in variables table"));
+    }
+    else if(!ui->SignatureWidget->areAllCellsValid(UnitsClassHeader, DataTableType::ATTRIBUTES))
+    {
+      setMessage(tr("Wrong units class format in attributes table"));
+    }
+    else
+    {
+      setMessage();
+    }
+  }
+  catch(const openfluid::base::FrameworkException& E)
+  {
+    openfluid::utils::log::warning("Signature edit", E.what());
     setMessage();
   }
 }

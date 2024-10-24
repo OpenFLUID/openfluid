@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -93,6 +94,16 @@ bool isValidWareID(const openfluid::ware::WareID_t& ID, bool Template)
   {
     return std::regex_match(ID,std::regex(WareIDRuleString));
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool isValidUnitsClassName(const openfluid::core::UnitsClass_t& Name)
+{
+  return std::regex_match(Name,std::regex(UnitsClassNameRuleString));
 }
 
 
