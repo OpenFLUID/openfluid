@@ -33,6 +33,7 @@
   @file EditSignatureDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -67,6 +68,8 @@ class OPENFLUID_API EditSignatureDialog : public MessageDialog
   protected slots:
 
     void checkGlobally();
+
+    void checkDataTable();
 
 
   private:

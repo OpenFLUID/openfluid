@@ -36,6 +36,7 @@
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -48,6 +49,7 @@
 #include <QRegularExpression>
 #endif
 
+#include <openfluid/ui/common/SignatureEditorWidget.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/waresdev/NewWareDialog.hpp>
 #include <openfluid/tools/Filesystem.hpp>
@@ -112,9 +114,9 @@ NewWareDialog::NewWareDialog(openfluid::ware::WareType Type, QWidget* Parent) :
 
   ui->IdEdit->setValidator(
 #if (QT_VERSION_MAJOR < 6)
-      new QRegExpValidator(getWareIdRegExp(IDTooltip), this));
+      new QRegExpValidator(openfluid::ui::common::getWareIdRegExp(IDTooltip), this));
 #else
-      new QRegularExpressionValidator(getWareIdRegExp(IDTooltip), this));
+      new QRegularExpressionValidator(openfluid::ui::common::getWareIdRegExp(IDTooltip), this));
 #endif
   ui->IdEdit->setToolTip(IDTooltip);
   ui->IdEdit->setPlaceholderText(PlaceholderStr);
@@ -192,38 +194,17 @@ QRegularExpression NewWareDialog::getClassnameRegExp(QString& Tooltip)
 // =====================================================================
 
 
-#if (QT_VERSION_MAJOR < 6)
-QRegExp NewWareDialog::getWareIdRegExp(QString& Tooltip)
-#else
-QRegularExpression NewWareDialog::getWareIdRegExp(QString& Tooltip)
-#endif
-{
-  // TODO see openfluid::tools::isValidWareID() for refactoring
-
-  Tooltip = QObject::tr("Accepts only letters, digits, dashes ('-'), underscores ('_') and dots ('.').");
-#if (QT_VERSION_MAJOR < 6)
-  return QRegExp(QString::fromStdString(openfluid::tools::WareIDRuleStringAndTpl));
-#else
-  return QRegularExpression(QString::fromStdString(openfluid::tools::WareIDRuleString));
-#endif
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void NewWareDialog::onInformationChanged()
 {
   QString WarningMsg = "";
 
   if (!ui->IdEdit->hasAcceptableInput())
   {
-    WarningMsg = tr("Ware ID is empty");
+    WarningMsg = QApplication::translate("openfluid::ui::config", openfluid::ui::config::WAREID_MESSAGE_EMPTY);
   }
   else if (m_WareTypeDir.exists(ui->IdEdit->text()))
   {
-    WarningMsg = tr("Ware ID already exists");
+    WarningMsg = QApplication::translate("openfluid::ui::config", openfluid::ui::config::WAREID_MESSAGE_EXISTING);
   }
   else if (!ui->ClassNameEdit->hasAcceptableInput())
   {
