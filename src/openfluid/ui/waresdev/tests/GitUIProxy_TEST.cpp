@@ -107,34 +107,15 @@ class F
       DestDir.setPath(DestPath);
 #endif
 
-      forceRemove(QString::fromStdString(TestPath));
+      openfluid::ui::waresdev::forceRemove(QString::fromStdString(TestPath));
 
       CurrentOFBranchName = openfluid::ui::waresdev::GitUIProxy::getCurrentOpenFLUIDBranchName().toStdString();
     }
 
     ~F()
     {
-      forceRemove(QString::fromStdString(TestPath));
     }
 
-    void forceRemove(const QString& Path)
-    {
-      QDir Dir(Path);
-
-      for (const auto& SubFile : Dir.entryList(QDir::Files | QDir::System | QDir::Hidden))
-      {
-        QFile f(QString("%1/%2").arg(Path).arg(SubFile));
-        f.setPermissions(QFile::WriteUser);
-        f.remove();
-      }
-
-      for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::System | QDir::Hidden))
-      {
-        forceRemove(QString("%1/%2").arg(Path).arg(SubDir));
-      }
-
-      Dir.rmdir(Path);
-    }
 
     bool checkWareshub(const std::string& TestName)
     {

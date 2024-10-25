@@ -45,6 +45,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 
 
 // =====================================================================
@@ -374,7 +375,7 @@ bool FilesystemPath::exists(const std::string& Path) const
 // =====================================================================
 
 
-bool FilesystemPath::makeDirectory(const std::string& Path) const
+bool FilesystemPath::makeDirectory(const std::string& Path, std::error_code& ErrorCode) const
 {
   if (m_Path.empty() && Path.empty())
   {
@@ -382,16 +383,11 @@ bool FilesystemPath::makeDirectory(const std::string& Path) const
   }
 
   const auto CompPath = composeWithSubPath(m_Path,Path);
-  std::error_code TmpErr;
-  return (std::filesystem::is_directory(CompPath) || std::filesystem::create_directories(CompPath,TmpErr));
+  return (std::filesystem::is_directory(CompPath) || std::filesystem::create_directories(CompPath,ErrorCode));
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-bool FilesystemPath::removeDirectory(const std::string& Path) const
+bool FilesystemPath::removeDirectory(const std::string& Path, std::error_code& ErrorCode) const
 {
   if (m_Path.empty() && Path.empty())
   {
@@ -401,8 +397,7 @@ bool FilesystemPath::removeDirectory(const std::string& Path) const
   if (isDirectory(Path))
   {  
     const auto CompPath = composeWithSubPath(m_Path,Path);
-    std::error_code TmpErr;
-    std::filesystem::remove_all(CompPath,TmpErr);  
+    std::filesystem::remove_all(CompPath,ErrorCode);
   }
   return !exists(Path);
 }
@@ -430,7 +425,6 @@ bool FilesystemPath::makeFile(const std::string& Path) const
     }
   }
 
-  std::error_code TmpErr;  
   return (std::filesystem::is_regular_file(CompPath) || std::filesystem::is_symlink(CompPath));
 }
 
@@ -439,7 +433,7 @@ bool FilesystemPath::makeFile(const std::string& Path) const
 // =====================================================================
 
 
-bool FilesystemPath::removeFile(const std::string& Path) const
+bool FilesystemPath::removeFile(const std::string& Path, std::error_code& ErrorCode) const
 {
   if (m_Path.empty() && Path.empty())
   {
@@ -449,8 +443,7 @@ bool FilesystemPath::removeFile(const std::string& Path) const
   if (isFile(Path))
   {
     const auto CompPath = composeWithSubPath(m_Path,Path);
-    std::error_code TmpErr;
-    return std::filesystem::remove(CompPath,TmpErr);
+    std::filesystem::remove(CompPath,ErrorCode);
   }
   return !exists(Path); 
 }
@@ -460,9 +453,9 @@ bool FilesystemPath::removeFile(const std::string& Path) const
 // =====================================================================
 
 
-bool FilesystemPath::remove(const std::string& Path) const
+bool FilesystemPath::remove(const std::string& Path, std::error_code& ErrorCode) const
 {
-  return (removeFile(Path) || removeDirectory(Path));
+  return (removeFile(Path, ErrorCode) || removeDirectory(Path, ErrorCode));
 }
 
 
