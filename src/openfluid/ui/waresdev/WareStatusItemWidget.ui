@@ -98,7 +98,7 @@
       <widget class="QLabel" name="HelpLabel">
        <property name="styleSheet">
         <string notr="true">color: rgb(136, 138, 133);
-font: italic 11pt;</string>
+font: italic;</string>
        </property>
        <property name="text">
         <string>TextLabel</string>
