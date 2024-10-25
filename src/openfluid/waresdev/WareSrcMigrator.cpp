@@ -272,25 +272,28 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
               }
             }
 
-            // set valid IDs to unvalid issues
-            unsigned int HighestIssueID = *(--CorrectIssuesIDs.end());
-            int CurrentValidID = HighestIssueID + 1;
-            for(auto& NewValidIssue : UnvalidIssues)
+            if(!Issues.empty())
             {
-              NewValidIssue.ID = CurrentValidID;
-              ValidIssues.push_back(NewValidIssue);
-              CurrentValidID++;
-            }
-
-            for(const auto& Iss : ValidIssues)
-            {
-              try
+              // set valid IDs to unvalid issues
+              unsigned int HighestIssueID = *(--CorrectIssuesIDs.end());
+              int CurrentValidID = HighestIssueID + 1;
+              for(auto& NewValidIssue : UnvalidIssues)
               {
-                Signature.Issues.add(Iss); 
+                NewValidIssue.ID = CurrentValidID;
+                ValidIssues.push_back(NewValidIssue);
+                CurrentValidID++;
               }
-              catch (openfluid::base::Exception& E)
+
+              for(const auto& Iss : ValidIssues)
               {
-                Messages.push_back(E.what());
+                try
+                {
+                  Signature.Issues.add(Iss); 
+                }
+                catch (openfluid::base::Exception& E)
+                {
+                  Messages.push_back(E.what());
+                }
               }
             }
           }
