@@ -54,6 +54,7 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
+bool OPENFLUID_API forceRemove(const QString& Path);
 
 // removal of submodule directory in .git via explicit rm operation
 bool cleanModuleDir(QString RootPath, openfluid::tools::FilesystemPath DestSubPath);

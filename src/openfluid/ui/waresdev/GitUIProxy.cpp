@@ -260,6 +260,32 @@ bool GitUIProxy::addSubmodule(const QString& FromUrl, const QString& ToPath, con
 // =====================================================================
 
 
+// Local dedicated function to adjust permissions before operating on git files
+bool forceRemove(const QString& Path)
+{
+  QDir Dir(Path);
+
+  for (const auto& SubFile : Dir.entryList(QDir::Files | QDir::System | QDir::Hidden))
+  {
+    QFile f(QString("%1/%2").arg(Path).arg(SubFile));
+    f.setPermissions(QFile::WriteUser);
+    f.remove();
+  }
+
+  for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::System | QDir::Hidden))
+  {
+    forceRemove(QString("%1/%2").arg(Path).arg(SubDir));
+  }
+
+  Dir.rmdir(Path);
+  return !Dir.exists(Path);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool cleanModuleDir(QString RootPath, openfluid::tools::FilesystemPath ModuleSubPath)
 {
   // returns true if submodule was really deleted
@@ -267,7 +293,7 @@ bool cleanModuleDir(QString RootPath, openfluid::tools::FilesystemPath ModuleSub
         {RootPath.toStdString(), ".git", "modules", ModuleSubPath.toGeneric()});
   if (GitSubmoduleTargetDirectory.isDirectory())
   {
-    return GitSubmoduleTargetDirectory.removeDirectory();
+    return forceRemove(QString::fromStdString(GitSubmoduleTargetDirectory.toGeneric()));
   }
   return false;
 }
@@ -323,6 +349,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
     SubmoduleFileStream.open(SubmoduleFile.toGeneric(), std::ifstream::in);
     if (SubmoduleFileStream.peek() == std::ifstream::traits_type::eof())
     {
+      SubmoduleFileStream.close();
       // file empty, can be removed
       QProcess* Process = new QProcess();
       Process->setWorkingDirectory(MainPathString);
@@ -338,10 +365,12 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
       }
       delete Process;
       Process = nullptr;
-      if (!SubmoduleFile.removeFile())
+      std::error_code TmpErr;
+      if (!SubmoduleFile.removeFile("", TmpErr))
       {
         SummaryStatusCode = 1;
         StandardOutput += tr("Submodule file removal failed\n");
+        openfluid::utils::log::error("Git", "Submodule file removal failed: "+TmpErr.message());
       }
     }
   }
