@@ -516,6 +516,32 @@ ENDIF()
 
 ###########################################################################
 
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulatorEmptyIssues
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "migrate-ware"
+                           "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration-empty-issues"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration-empty-issues"
+                   PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/sim/tests.cmdline.sim-migration-empty-issues"
+                                           "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration-empty-issues/src/CMakeLists.txt")
+SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulatorEmptyIssues
+             APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulatorInvalidIssues
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "migrate-ware"
+                           "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration-invalid-issues"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration-invalid-issues"
+                   PRE_TEST COPY_DIRECTORY "${OFBUILD_TESTS_INPUT_MISCSRC_DIR}/wares-dev-201xx/sim/tests.cmdline.sim-migration-invalid-issues"
+                                           "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration-invalid-issues/src/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_IDENTICAL "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration-invalid-issues/"
+                                                  "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration-invalid-issues/src/REF/"
+                                                  "openfluid-ware.json")
+SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulatorInvalidIssues
+             APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
+
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"

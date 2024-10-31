@@ -1,0 +1,9 @@
+{
+  "tags": ["tagX","tagY"],
+  "contacts": ["bob@thewailers.org"],
+  "status": "experimental",
+  "license": "Apache-2.0",
+  "external-deps": [],
+  "issues":   {
+  }
+}
