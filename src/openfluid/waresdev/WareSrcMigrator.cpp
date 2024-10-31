@@ -228,7 +228,7 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
           {
             std::set<unsigned int> CorrectIssuesIDs;
             std::vector<openfluid::ware::WareIssue> ValidIssues;
-            std::vector<openfluid::ware::WareIssue> UnvalidIssues;
+            std::vector<openfluid::ware::WareIssue> InvalidIssues;
             for (const auto& [ID,Info] : Issues.items())
             {
               openfluid::ware::WareIssue Iss;
@@ -239,7 +239,7 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
                 Iss.Title = Title;
                 Iss.Description = Info.value("description","");
                 Iss.Creator = Info.value("creator","");
-                Iss.CreatedAt = openfluid::core::DateTime::fromString(Info.value("date",""),"%Y-%m-d");
+                Iss.CreatedAt = openfluid::core::DateTime::fromString(Info.value("date",""),"%Y-%m-%d");
                 Iss.UpdatedAt = Iss.CreatedAt;
                 Iss.IsOpen = (Info.value("state","") != "closed");
 
@@ -257,27 +257,34 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
                   Iss.Tags.push_back("type::" + Type);
                 }
 
-                // handle unvalid issues IDs
+                // handle invalid issues IDs
                 int IntegerID;
                 if (!openfluid::tools::toNumeric(ID, IntegerID))
                 {
-                  UnvalidIssues.push_back(Iss);
+                  InvalidIssues.push_back(Iss);
                 }
                 else
                 {
-                  CorrectIssuesIDs.insert(IntegerID);
-                  Iss.ID = IntegerID;
-                  ValidIssues.push_back(Iss);
+                  if(IntegerID <= 0)
+                  {
+                    InvalidIssues.push_back(Iss);
+                  }
+                  else
+                  {
+                    CorrectIssuesIDs.insert(IntegerID);
+                    Iss.ID = IntegerID;
+                    ValidIssues.push_back(Iss);
+                  }
                 }
               }
             }
 
             if(!Issues.empty())
             {
-              // set valid IDs to unvalid issues
-              unsigned int HighestIssueID = *(--CorrectIssuesIDs.end());
+              // set valid IDs to invalid issues
+              unsigned int HighestIssueID = CorrectIssuesIDs.empty() ? 0 : *(--CorrectIssuesIDs.end());
               int CurrentValidID = HighestIssueID + 1;
-              for(auto& NewValidIssue : UnvalidIssues)
+              for(auto& NewValidIssue : InvalidIssues)
               {
                 NewValidIssue.ID = CurrentValidID;
                 ValidIssues.push_back(NewValidIssue);

@@ -1,0 +1,45 @@
+{
+  "tags": ["tagX","tagY"],
+  "contacts": ["bob@thewailers.org"],
+  "status": "experimental",
+  "license": "Apache-2.0",
+  "external-deps": [],
+  "issues":   {
+    "toto": {
+      "title": "Wrong ID",
+      "creator": "A",
+      "date": "2014-11-13",
+      "type": "feature",
+      "state": "closed",
+      "description": "",
+      "urgency": "high"
+    },
+    "2": {
+      "title": "Add method to create fluidx",
+      "creator": "R",
+      "date": "2014-11-01",
+      "type": "feature",
+      "state": "closed",
+      "description": "",
+      "urgency": "normal"
+    },
+    "-1": {
+      "title": "Negative ID",
+      "creator": "M",
+      "date": "2014-11-18",
+      "type": "feature",
+      "state": "closed",
+      "description": "",
+      "urgency": "low"
+    },
+    "0": {
+      "title": "Null ID",
+      "creator": "M",
+      "date": "2014-11-18",
+      "type": "feature",
+      "state": "closed",
+      "description": "",
+      "urgency": "high"
+    }
+  }
+}
