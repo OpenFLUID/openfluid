@@ -13,11 +13,11 @@
   "contacts": [],
   "license": "",
   "tags": [
-    "fire",
-    "production",
-    "spreading",
-    "wind",
-    "stock"
+    "domain::fire",
+    "process::production",
+    "process::spreading",
+    "method::wind",
+    "method::stock"
   ],
   "links": [],
   "issues": [],
