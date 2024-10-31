@@ -13,10 +13,9 @@
   "contacts": [],
   "license": "",
   "tags": [
-    "fire",
-    "spatial",
-    "connections",
-    "wind"
+    "domain::fire",
+    "process::spatial connections",
+    "method::wind"
   ],
   "links": [],
   "issues": [],
