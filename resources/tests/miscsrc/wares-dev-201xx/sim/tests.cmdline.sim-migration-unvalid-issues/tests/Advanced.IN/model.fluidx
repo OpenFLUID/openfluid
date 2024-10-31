@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <model>
+        <generator varname="var.example" unitsclass="UnitsA" method="random" enabled="true">
+            <param name="max" value="1"/>
+            <param name="min" value="0"/>
+        </generator>
+    </model>
+</openfluid>

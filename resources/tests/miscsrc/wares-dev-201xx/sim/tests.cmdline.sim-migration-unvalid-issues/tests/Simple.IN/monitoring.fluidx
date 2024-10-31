@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <monitoring>
+        <observer ID="export.vars.files.csv" enabled="false">
+            <param name="format.auto.colsep" value=";"/>
+            <param name="format.auto.date" value="ISO"/>
+            <param name="format.auto.header" value="colnames-as-comment"/>
+            <param name="set.autoUnitsA.format" value="auto"/>
+            <param name="set.autoUnitsA.unitsIDs" value="*"/>
+            <param name="set.autoUnitsA.unitsclass" value="UnitsA"/>
+            <param name="set.autoUnitsA.vars" value="*"/>
+            <param name="set.autoUnitsB.format" value="auto"/>
+            <param name="set.autoUnitsB.unitsIDs" value="*"/>
+            <param name="set.autoUnitsB.unitsclass" value="UnitsB"/>
+            <param name="set.autoUnitsB.vars" value="*"/>
+        </observer>
+    </monitoring>
+</openfluid>

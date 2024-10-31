@@ -1,5 +1,5 @@
 {
-  "id": "tests.cmdline.sim-migration",
+  "id": "tests.cmdline.sim-migration-unvalid-issues",
   "name": "Simulator 2.1.x for migration",
   "description": "This is a simulator 2.1.x for migration",
   "version": "2022-09",
@@ -39,13 +39,13 @@
         "type::feature"
       ],
       "creator": "R",
-      "created_at": "2014-11-13 00:00:00",
-      "updated_at": "2014-11-13 00:00:00",
+      "created_at": "2014-11-01 00:00:00",
+      "updated_at": "2014-11-01 00:00:00",
       "state": "closed"
     },
     {
       "id": 3,
-      "title": "Add checking method",
+      "title": "Wrong ID",
       "description": "",
       "tags": [
         "urgency::high",
@@ -58,10 +58,23 @@
     },
     {
       "id": 4,
-      "title": "Add additional error catchs",
+      "title": "Negative ID",
       "description": "",
       "tags": [
         "urgency::low",
+        "type::feature"
+      ],
+      "creator": "M",
+      "created_at": "2014-11-18 00:00:00",
+      "updated_at": "2014-11-18 00:00:00",
+      "state": "closed"
+    },
+    {
+      "id": 5,
+      "title": "Null ID",
+      "description": "",
+      "tags": [
+        "urgency::high",
         "type::feature"
       ],
       "creator": "M",

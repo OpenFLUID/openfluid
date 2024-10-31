@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <domain>
+        <definition>
+            <unit class="UnitsA" ID="1" pcsorder="1">
+                <to class="UnitsA" ID="5"/>
+            </unit>
+            <unit class="UnitsA" ID="5" pcsorder="2"/>
+            <unit class="UnitsA" ID="17" pcsorder="1">
+                <to class="UnitsA" ID="5"/>
+                <to class="UnitsB" ID="2"/>
+            </unit>
+            <unit class="UnitsB" ID="1" pcsorder="2">
+                <to class="UnitsB" ID="2"/>
+            </unit>
+            <unit class="UnitsB" ID="2" pcsorder="2">
+                <to class="UnitsB" ID="3"/>
+            </unit>
+            <unit class="UnitsB" ID="3" pcsorder="4"/>
+        </definition>
+        <attributes unitsclass="UnitsA" colorder="area;slope"><![CDATA[
+1	97.5	0.01
+5	400	0.01
+17	789	0.07
+]]></attributes>
+        <attributes unitsclass="UnitsB" colorder="length;slope"><![CDATA[
+1	7.5	0.1
+2	25.3	0.02
+3	1.0	0.01
+]]></attributes>
+        <calendar/>
+    </domain>
+</openfluid>

@@ -239,7 +239,7 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
                 Iss.Title = Title;
                 Iss.Description = Info.value("description","");
                 Iss.Creator = Info.value("creator","");
-                Iss.CreatedAt = openfluid::core::DateTime::fromString(Info.value("date",""),"%Y-%m-d");
+                Iss.CreatedAt = openfluid::core::DateTime::fromString(Info.value("date",""),"%Y-%m-%d");
                 Iss.UpdatedAt = Iss.CreatedAt;
                 Iss.IsOpen = (Info.value("state","") != "closed");
 
@@ -265,9 +265,16 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
                 }
                 else
                 {
-                  CorrectIssuesIDs.insert(IntegerID);
-                  Iss.ID = IntegerID;
-                  ValidIssues.push_back(Iss);
+                  if(IntegerID <= 0)
+                  {
+                    UnvalidIssues.push_back(Iss);
+                  }
+                  else
+                  {
+                    CorrectIssuesIDs.insert(IntegerID);
+                    Iss.ID = IntegerID;
+                    ValidIssues.push_back(Iss);
+                  }
                 }
               }
             }
@@ -275,7 +282,7 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
             if(!Issues.empty())
             {
               // set valid IDs to unvalid issues
-              unsigned int HighestIssueID = *(--CorrectIssuesIDs.end());
+              unsigned int HighestIssueID = CorrectIssuesIDs.empty() ? 0 : *(--CorrectIssuesIDs.end());
               int CurrentValidID = HighestIssueID + 1;
               for(auto& NewValidIssue : UnvalidIssues)
               {
