@@ -130,6 +130,13 @@ struct F
     appendRealDirFile("ware_empty2");
     appendRealDirFile("ware_empty2/subdir","src/"+openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
 
+    // add openfluid-ware.json files
+    for (const auto& Str : {"ware_ok", "ware_wrongcmake", "ware_nomaincpp", "ware_nocmake", "ware_nocpp", "ware_empty", 
+                            "ware_empty2"})
+    {
+      appendRealDirFile(Str, openfluid::config::WARESDEV_WAREMETA_FILE);
+    }
+
     for (const auto& DF : m_RealDirsFiles)
     {
       const auto DirPath = openfluid::tools::Path(DF.second.AbsolutePath);
