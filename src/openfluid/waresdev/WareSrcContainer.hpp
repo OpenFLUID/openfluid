@@ -77,11 +77,6 @@ class OPENFLUID_API WareSrcContainer
     openfluid::ware::WareID_t m_ID;
 
     /**
-      Absolute path of the CMake config file if it exists, otherwise an empty string
-    */
-    std::string m_AbsoluteCMakeConfigPath;
-
-    /**
       Absolute path of the main .cpp as set in the CMake config file, if this .cpp file exists,
       otherwise an empty string
     */
@@ -143,6 +138,8 @@ class OPENFLUID_API WareSrcContainer
       return m_ID;
     }
 
+    std::string searchMainCppFileName(const std::string& CMakeConfigContent);
+
     /**
       Return the absolute paths of:
       - the CMake config file if it exists on disk,
@@ -167,12 +164,6 @@ class OPENFLUID_API WareSrcContainer
       if this .cpp file exists, otherwise an empty string
     */
     std::string getUiParamCppPath() const;
-
-    /**
-      Returns the absolute path of the CMake config file, if this file exists,
-      otherwise an empty string
-    */
-    std::string getCMakeConfigPath() const;
 
     /**
       Returns the absolute path of the CMakeLists.txt file, if this file exists,
