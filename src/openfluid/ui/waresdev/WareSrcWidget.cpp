@@ -813,6 +813,11 @@ void WareSrcWidget::editSignature(QString Path)
   if (Dlg.exec() == QDialog::Accepted)
   {
     Dlg.exportSignature(Path);
+    // Check if should trigger configuration
+    if (Dlg.askConfigure())
+    {
+      configure();
+    }
     mp_Board->refresh();
   }
 }

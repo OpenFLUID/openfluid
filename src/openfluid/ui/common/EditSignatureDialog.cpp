@@ -210,5 +210,16 @@ bool EditSignatureDialog::exportSignature(QString Path) const
   return ui->SignatureWidget->exportSignature(Path);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool EditSignatureDialog::askConfigure() const
+{
+  return ui->ReconfigureWareCheckBox->isChecked();
+}
+
+
 } } } // namespaces
 

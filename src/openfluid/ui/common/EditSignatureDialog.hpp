@@ -34,6 +34,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -94,6 +95,8 @@ class OPENFLUID_API EditSignatureDialog : public MessageDialog
     openfluid::ware::SimulatorSignature getSignature() const;
 
     bool exportSignature(QString Path) const;
+
+    bool askConfigure() const;
 };
 
 
