@@ -47,6 +47,16 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QCheckBox" name="ReconfigureWareCheckBox">
+       <property name="text">
+        <string>Reconfigure ware after edit</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
