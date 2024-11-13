@@ -832,6 +832,18 @@ BOOST_AUTO_TEST_CASE(check_inject_multi)
     TS.addGenerator(Specs, Params);
     BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
   }
+  {
+    // Unit class not present in spatial domain
+    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL, 
+                                          openfluid::tools::deserializeVarTriplets("SU#*:var.a;SU#*:var.b;RS#*:var.a")};
+    openfluid::ware::WareParams_t Params = {{"datafile", 
+                                          CONFIGTESTS_INPUT_MISCDATA_DIR+"/MultiInjectData/multi_wrong_unitclass.csv"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
 
   // BAD DATA
   {

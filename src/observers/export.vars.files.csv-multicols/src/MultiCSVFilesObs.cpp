@@ -64,7 +64,7 @@ class CSVMulticolsSetFile
     
     std::string ColumnsHeaders;
 
-    CSVMulticolsSetFile() : Format(nullptr)
+    CSVMulticolsSetFile() : Format(nullptr), File(nullptr)
     { }
 };
 
@@ -370,8 +370,11 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
     {
       for (auto& SetFiles : m_SetsFiles)
       {
-        delete SetFiles.second.File;
-        SetFiles.second.File = 0; // avoid double delete issues
+        if(SetFiles.second.File)
+        {
+          delete SetFiles.second.File;
+          SetFiles.second.File = 0; // avoid double delete issues
+        }
       }
     }
 
