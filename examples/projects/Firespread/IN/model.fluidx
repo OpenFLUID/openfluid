@@ -4,7 +4,9 @@
         <generator variables="AU#*:gas.atm.V.windspeed;AU#*:gas.atm.degree.mainwinddir" method="inject-multicol" enabled="true">
             <param name="datafile" value="multi_inject.csv"/>
         </generator>
-        <simulator ID="spatial.atm.grid.connection-dynamics" enabled="true"/>
+        <simulator ID="spatial.atm.grid.connection-dynamics" enabled="true">
+            <param name="seed" value="-1"/>
+        </simulator>
         <simulator ID="fire.surf.prod-spread" enabled="true">
             <param name="ignitionunits" value="1237;387"/>
         </simulator>

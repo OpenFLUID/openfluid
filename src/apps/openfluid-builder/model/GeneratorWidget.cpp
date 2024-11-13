@@ -81,7 +81,7 @@ void GeneratorWidget::updateParametersList()
 
   if (Container.isValid() && Container.hasSignature())
   {
-    createParamWidgetsFromSignature(Container.signature().get());
+    updateParametersListWithSignature(Container.signature().get());
   }
 }
 

@@ -413,10 +413,12 @@ void RunSimulationWorker::run()
   }
   catch (std::exception& E)
   {
+    std::cout << E.what() << std::endl;
     emit error(QString(E.what()),openfluid::base::ExceptionContext());
   }
   catch (...)
   {
+    std::cout << "Undetermined error" << std::endl;
     emit error(QString("Undetermined error"),openfluid::base::ExceptionContext());
   }
 
