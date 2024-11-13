@@ -129,6 +129,10 @@ void GeneratorSignature::setRandomInfo()
         openfluid::ware::SignatureDataItem("max","Upper bound of the random range for the value to produce","-"));
   }
 
+
+  HandledData.UsedParams.push_back(
+    openfluid::ware::SignatureDataItem("seed", "Random seed as integer. if negative, seed will change each time","-"));
+
   if (!VariableDimensions.isScalar())
   {
     HandledData.UsedParams.push_back(
