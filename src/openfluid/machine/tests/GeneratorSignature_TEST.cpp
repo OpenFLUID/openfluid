@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);
-  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),2);
+  BOOST_CHECK_EQUAL(Sign.HandledData.UsedParams.size(),3);
 }
 
 

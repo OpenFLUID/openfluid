@@ -43,6 +43,7 @@
 #include <openfluid/base/OtherException.hpp>
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
@@ -413,12 +414,12 @@ void RunSimulationWorker::run()
   }
   catch (std::exception& E)
   {
-    std::cout << E.what() << std::endl;
+    openfluid::utils::log::error("Simulation run", E.what());
     emit error(QString(E.what()),openfluid::base::ExceptionContext());
   }
   catch (...)
   {
-    std::cout << "Undetermined error" << std::endl;
+    openfluid::utils::log::error("Simulation run", "Undetermined error");
     emit error(QString("Undetermined error"),openfluid::base::ExceptionContext());
   }
 

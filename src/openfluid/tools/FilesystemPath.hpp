@@ -263,6 +263,7 @@ class OPENFLUID_API FilesystemPath
       Creates the directory of the path. It creates all parent directories necessary to create the directory.
       If the directory already exists, it does nothing.
       @param[in] Path a relative path added to the to the base path (optional, none by default)
+      @param[in] ErrorCode the storage variable for eventual Error code returned by operation
       @return true if the directory has been successfully created or if it already exists, false otherwise
     */
     bool makeDirectory(const std::string& Path = "", std::error_code& ErrorCode=DefaultErrorCode) const;
@@ -270,6 +271,7 @@ class OPENFLUID_API FilesystemPath
     /**
       Removes the directory of the path. It recursively deletes all contents of the directory.
       @param[in] Path a relative path added to the to the base path (optional, none by default)
+      @param[in] ErrorCode the storage variable for eventual Error code returned by operation
       @return true if the directory has been successfully deleted, false otherwise
     */
     bool removeDirectory(const std::string& Path = "", std::error_code& ErrorCode=DefaultErrorCode) const;
@@ -285,6 +287,7 @@ class OPENFLUID_API FilesystemPath
     /**
       Removes the file of the path.
       @param[in] Path a relative path added to the to the base path (optional, none by default)
+      @param[in] ErrorCode the storage variable for eventual Error code returned by operation
       @return true if the file was successfully deleted, false otherwise
     */
     bool removeFile(const std::string& Path = "", std::error_code& ErrorCode=DefaultErrorCode) const;
@@ -292,6 +295,7 @@ class OPENFLUID_API FilesystemPath
     /**
       Removes the file or directory of the path.
       @param[in] Path a relative path added to the to the base path (optional, none by default)
+      @param[in] ErrorCode the storage variable for eventual Error code returned by operation
       @return true if the file was successfully deleted, false otherwise
     */
     bool remove(const std::string& Path = "", std::error_code& ErrorCode=DefaultErrorCode) const;

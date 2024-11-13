@@ -657,7 +657,7 @@ int WareTasks::processPurge() const
     openfluid::tools::Console::resetAttributes();
   };
 
-  PurgeHandler.purge(WarePath, WriteMessageFunc, [](bool Status) {});
+  PurgeHandler.purge(WarePath, WriteMessageFunc, [](bool /*Status*/) {});
 
   return 0;
 }
