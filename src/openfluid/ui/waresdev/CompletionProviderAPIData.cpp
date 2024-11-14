@@ -847,7 +847,7 @@ addRule(
       CompletionProvider::tr("Loops")
     },
     CompletionProvider::tr("Ordered loop on all spatial units"),
-    "OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtrList%%SEL_END%%)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
+    "OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtr%%SEL_END%%)\n%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"
   )
 );
 

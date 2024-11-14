@@ -103,7 +103,7 @@
     "contexts" : ["SIMULATOR", "OBSERVER"],
     "menupath" : ["Loops"],
     "title" : "Ordered loop on all spatial units",
-    "text" : ["OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtrList%%SEL_END%%)\n",
+    "text" : ["OPENFLUID_ALLUNITS_ORDERED_LOOP(%%SEL_START%%UnitPtr%%SEL_END%%)\n",
               "%%INDENT%%{\n%%INDENT%%\n%%INDENT%%}"]
   }
   @endcond
