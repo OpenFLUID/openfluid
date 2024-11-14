@@ -320,7 +320,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureSimulator
                            "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                            "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                            "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                           "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+                           "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
 SET_PROPERTY(TEST cmdline-openfluid-ConfigureSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
 
 
@@ -375,7 +375,7 @@ IF(OFBUILD_ENABLE_GUI)
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                              "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                             "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+                             "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
   SET_PROPERTY(TEST cmdline-openfluid-ConfigureSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulatorParamsUI)
 
 
@@ -416,7 +416,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureObserver
                            "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                            "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                            "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                           "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+                           "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
 SET_PROPERTY(TEST cmdline-openfluid-ConfigureObserver APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareObserver)
 
 
@@ -449,7 +449,7 @@ IF(OFBUILD_ENABLE_GUI)
                             "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                             "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                             "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                            "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                            "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
                     POST_TEST CHECK_DIRECTORY_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/obs/tests.cmdline.obs-ui/_build-release-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}")
   SET_PROPERTY(TEST cmdline-openfluid-ConfigureObserverParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareObserverParamsUI)
 
@@ -492,7 +492,7 @@ IF(OFBUILD_ENABLE_GUI)
                    "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                    "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                    "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                   "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+                   "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
   SET_PROPERTY(TEST cmdline-openfluid-ConfigureBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareBuilderext)
 
 
@@ -576,7 +576,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ConfigureMigratedSimulator
                            "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                            "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                            "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                           "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+                           "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
 SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulator)
 set_tests_properties(cmdline-openfluid-ConfigureMigratedSimulator PROPERTIES FIXTURES_REQUIRED SimulatorMigrated)
 
@@ -627,7 +627,7 @@ IF(OFBUILD_ENABLE_GUI)
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                              "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                             "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+                             "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
   SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateSimulatorParamsUI)
 
 
@@ -685,7 +685,7 @@ COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
         "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
         "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
         "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-        "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+        "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
 SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedObserver APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateObserver)
 
 
@@ -730,7 +730,7 @@ IF(OFBUILD_ENABLE_GUI)
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                              "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                             "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+                             "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
   SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedObserverParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateObserverParamsUI)
 
 
@@ -781,7 +781,7 @@ IF(OFBUILD_ENABLE_GUI)
                              "-DOpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR}"
                              "-DOpenFLUID_ROOT_DIR=${OFBUILD_DIST_DIR}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                             "-DWARE_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
+                             "-DWARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")
   SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-MigrateBuilderext)
 
 

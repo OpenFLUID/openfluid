@@ -2,7 +2,7 @@ FIND_PACKAGE(GDAL REQUIRED)
 
 # set this to add include directories
 # ex: SET(WARE_INCLUDE_DIRS /path/to/include/A/ /path/to/include/B/)
-SET(WARE_INCLUDE_DIRS ${WARE_INCLUDE_DIRS} ${GDAL_INCLUDE_DIRS})
+SET(WARE_INCLUDE_DIRS ${GDAL_INCLUDE_DIRS})
 
 # set this to add libraries directories
 # ex: SET(WARE_LIBRARY_DIRS /path/to/libA/ /path/to/libB/)
