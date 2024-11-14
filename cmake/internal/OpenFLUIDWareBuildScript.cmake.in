@@ -60,7 +60,7 @@ EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}"
                         -DOpenFLUID_DIR=@OFBUILD_DIST_CMAKE_MODULES_DIR@
                         -DOpenFLUID_ROOT_DIR=@OFBUILD_DIST_DIR@
                         -DOpenFLUID_EXTRA_SEARCH_PATHS=@CMAKE_BINARY_DIR@/src
-                        -DWARE_INCLUDE_DIRS=@CMAKE_SOURCE_DIR@/src
+                        -DWARE_INTERNAL_INCLUDE_DIRS=@CMAKE_SOURCE_DIR@/src
                         -DWARE_WITH_PARAMSUI=@OFBUILD_ENABLE_GUI@
                         -DCMAKE_BUILD_TYPE=@CMAKE_BUILD_TYPE@
                         ${_INSTALL_PARAMS}
