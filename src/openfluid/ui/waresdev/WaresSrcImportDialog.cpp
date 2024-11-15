@@ -104,6 +104,7 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
   for (const auto& Pair : m_ListWidgetsByWareType)
   {
     connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
+    connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(updateWareSelectionCount()));
   }
 
   for (const auto& Pair : m_FilterWidgetsByWareType)
@@ -139,6 +140,8 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
     Widget->setVisible(false);
   }
 
+  updateWareSelectionCount();
+
   check();
 }
 
@@ -157,11 +160,46 @@ WaresSrcImportDialog::~WaresSrcImportDialog()
 // =====================================================================
 
 
+void WaresSrcImportDialog::updateWareSelectionCount()
+{
+  ui->SelectionCountLabel->setText(tr("%1 ware(s) selected").arg(getSelectedWares().size()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::setItemChangedConnection(bool Connect)
+{
+  for (const auto& Pair : m_ListWidgetsByWareType)
+  {
+    if(Connect)
+    {
+      connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
+      connect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(updateWareSelectionCount()));
+    }
+    else
+    {
+      disconnect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(check()));
+      disconnect(Pair.second, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(updateWareSelectionCount()));
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WaresSrcImportDialog::clearListWidgets()
 {
   for (const auto& WidgetPair : m_ListWidgetsByWareType)
   {
-    WidgetPair.second->clear();
+    for (QListWidgetItem* Item : WidgetPair.second->findItems("*", Qt::MatchWildcard))
+    {
+      Item->setHidden(true);
+    }
   }
 }
 
@@ -172,12 +210,17 @@ void WaresSrcImportDialog::clearListWidgets()
 
 void WaresSrcImportDialog::updateHubElementsList()
 {
+  // Store selected wares
+  QStringList SelectedWareIDs = getSelectedWares();
+
   clearListWidgets();
 
   auto Mgr = openfluid::base::WorkspaceManager::instance();
 
   QString UserName = QString::fromStdString(m_HubManager.getUsername());
   QString ErrStr;
+
+  setItemChangedConnection(false);
 
   for (const auto& Pair : m_ListWidgetsByWareType)
   {
@@ -192,22 +235,28 @@ void WaresSrcImportDialog::updateHubElementsList()
                                                                    WarePair.second.ROUsers, 
                                                                    WarePair.second.RWUsers); 
 
+      QListWidgetItem* Item = m_MapWidgetHub[Type][WareId.toStdString()];
+      QString WareUrl = QString::fromStdString(WarePair.second.GitUrl);
       if (isWareDisplayed(Type, WareId, WareInWorkspace, WareNotAuthorized))
       {
-        // ware display
-
-        QString WareUrl = QString::fromStdString(WarePair.second.GitUrl);
-        QListWidgetItem* Item = new QListWidgetItem(WareId);
-        Item->setData(Qt::UserRole, WareUrl);
+        if(!Item)
+        {
+          Item = new QListWidgetItem(WareId);
+          Item->setData(Qt::UserRole, WareUrl);
+          m_MapWidgetHub[Type][WareId.toStdString()] = Item;
+          m_ListWidgetsByWareType[Type]->addItem(Item);
+        }
 
         bool AlreadyDisplayed = wareItemDisplay(Type, WareId, Item);
         genericItemDisplay(AlreadyDisplayed, WareNotAuthorized, Item, WareId);
-
-        m_ListWidgetsByWareType[Type]->addItem(Item);
+        Item->setHidden(false);
       }
     }
   }
 
+  setItemChangedConnection(true);
+  toggleCheckSelectedWares(SelectedWareIDs, true);
+  updateWareSelectionCount();
   check();
 }
 
@@ -363,6 +412,8 @@ bool WaresSrcImportDialog::check()
 
 void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
 {
+  toggleCheckSelectedWares(getSelectedWares(), false);
+
   if (ClickedButton == ui->PackageRadioButton)
   {
     ui->WaresGroupBox->setTitle(tr("Available wares in package"));
@@ -473,6 +524,40 @@ void WaresSrcImportDialog::onHubConnectButtonClicked()
 // =====================================================================
 
 
+void WaresSrcImportDialog::toggleCheckSelectedWares(const QStringList& SelectedWares, bool Check)
+{
+  setItemChangedConnection(false);
+
+  for (const auto& SelectedWare : SelectedWares)
+  {
+    for (const auto& Pair : m_ListWidgetsByWareType)
+    {
+      for (int i = 0; i < Pair.second->count(); ++i) 
+      {
+        QListWidgetItem* Item = Pair.second->item(i);
+        if (Item->data(Qt::UserRole) == SelectedWare) 
+        {
+          if(Check)
+          {
+            Item->setCheckState(Qt::Checked);
+          }
+          else
+          {
+            Item->setCheckState(Qt::Unchecked);
+          }
+        }
+      }
+    }
+  }
+
+  setItemChangedConnection(true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WaresSrcImportDialog::onWaresListRefreshAsked()
 {
   if (ui->PackageRadioButton->isChecked())
@@ -537,15 +622,17 @@ bool WaresSrcImportDialog::isWareDisplayed(const openfluid::ware::WareType& Type
 
 void WaresSrcImportDialog::updatePackageWaresList()
 {
-  for (const auto& Pair : m_ListWidgetsByWareType)
-  {
-    Pair.second->clear();
-  }
+  // Store selected wares
+  QStringList SelectedWareIDs = getSelectedWares();
+
+  clearListWidgets();
 
   if (!mp_ImportFilePkg)
   {
     return;
   }
+
+  setItemChangedConnection(false);
 
   QDir WaresDevDir(QString::fromStdString(openfluid::base::WorkspaceManager::instance()->getWaresPath()));
   QDir PackageTempDir = mp_ImportFilePkg->getPackageTempDir();
@@ -559,30 +646,40 @@ void WaresSrcImportDialog::updatePackageWaresList()
 
     bool WareInWorkspace = WaresDevDir.exists(PackageTempDir.relativeFilePath(WarePath));
 
+    QListWidgetItem* Item = m_MapWidgetPackage[m_WareTypeConverter[WareTypeName]][WareName.toStdString()];
+
     if (isWareDisplayed(m_WareTypeConverter[WareTypeName], WareName, WareInWorkspace, false))
     {
-      QListWidgetItem* Item = new QListWidgetItem(WareName);
-      Item->setData(Qt::UserRole, WareFileInfo.absoluteFilePath());
+      if(!Item)
+      {
+        Item = new QListWidgetItem(WareName);
+        Item->setData(Qt::UserRole, WareFileInfo.absoluteFilePath());
+        if (m_WareTypeConverter.count(WareTypeName))
+        {
+          m_ListWidgetsByWareType[m_WareTypeConverter[WareTypeName]]->addItem(Item);
+        }
+        m_MapWidgetPackage[m_WareTypeConverter[WareTypeName]][WareName.toStdString()] = Item;
+      }
 
       if (WareInWorkspace)
       {
         Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-        Item->setCheckState(Qt::Unchecked);
         Item->setToolTip(QString(tr("\"%1\" already exists in the workspace")).arg(WareName));
       }
       else
       {
-        Item->setCheckState(Qt::Checked);
+        Item->setFlags(Item->flags() | Qt::ItemIsEnabled);
         Item->setToolTip("");
       }
 
-      if (m_WareTypeConverter.count(WareTypeName))
-      {
-        m_ListWidgetsByWareType[m_WareTypeConverter[WareTypeName]]->addItem(Item);
-      }
+      Item->setCheckState(Qt::Unchecked);
+      Item->setHidden(false);
     }
   }
 
+  setItemChangedConnection(true);
+  toggleCheckSelectedWares(SelectedWareIDs, true);
+  updateWareSelectionCount();
   check();
 }
 

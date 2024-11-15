@@ -256,6 +256,12 @@ void AbstractSrcImportDialog::genericItemDisplay(bool AlreadyDisplayed,
         Item->setToolTip(tr("You are not authorized to access to \"%1\"").arg(ElementId));
         Item->setForeground(QColor("orange"));
       }
+      else
+      {
+        Item->setFlags(Item->flags() | Qt::ItemIsEnabled);
+        Item->setToolTip("");
+        Item->setForeground(QBrush());
+      }
     }
     else
     {

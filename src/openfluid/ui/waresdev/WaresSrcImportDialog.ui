@@ -303,6 +303,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QLabel" name="SelectionCountLabel">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QCheckBox" name="CheckoutCurrentVersionCheckBox">
           <property name="layoutDirection">
            <enum>Qt::LeftToRight</enum>

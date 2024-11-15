@@ -82,9 +82,14 @@ class OPENFLUID_API WaresSrcImportDialog: public AbstractSrcImportDialog
 
     void onWaresListRefreshAsked();
 
+    void updateWareSelectionCount();
+
 
   private:
     std::map<openfluid::ware::WareType, QListWidget*> m_ListWidgetsByWareType;
+
+    std::map<openfluid::ware::WareType, std::map<openfluid::ware::WareID_t, QListWidgetItem*>> m_MapWidgetHub;
+    std::map<openfluid::ware::WareType, std::map<openfluid::ware::WareID_t, QListWidgetItem*>> m_MapWidgetPackage;
 
     Ui::WaresSrcImportDialog* ui;
 
@@ -108,6 +113,10 @@ class OPENFLUID_API WaresSrcImportDialog: public AbstractSrcImportDialog
 
     void updatePackageWaresList();
 
+    void setItemChangedConnection(bool Connect);
+
+    void toggleCheckSelectedWares(const QStringList& SelectedWares, bool Check);
+
     QStringList getSelectedWares();
 
     std::map<openfluid::ware::WareType, QStringList> getSelectedWaresByType();
@@ -116,7 +125,6 @@ class OPENFLUID_API WaresSrcImportDialog: public AbstractSrcImportDialog
 
     bool isWareDisplayed(const openfluid::ware::WareType& Type, const QString WareId, const bool WareInWorkspace, 
                          const bool WareNotAuthorized);
-
 
   protected slots:
 
