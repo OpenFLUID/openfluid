@@ -3,10 +3,10 @@ SET(CPACK_SOURCE_GENERATOR "TGZ")
 SET(OFPACK_DEPEND_DEB "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev,
                        libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libgdal-dev, libcurl4, gcc,
                        g++, cmake (>= 3.1), 
-                       gnuplot (>= 4.2), p7zip-full, graphviz, git, pandoc")
+                       gnuplot (>= 4.2), p7zip-full, graphviz, git")
 SET(OFPACK_DEPEND_RPM_FEDORA "make, gcc-c++, gcc-gfortran, cmake, boost-devel >= 1.54, gdal-devel, libcurl, p7zip,
-                              gnuplot, graphviz, doxygen, git, pandoc, texlive-scheme-full")  # FIXME texlive-scheme-full too heavy, find underlying necessary packages (pdflatex...)
-SET(OFPACK_DEPEND_RPM_CENTOS "gcc-c++, boost-devel >= 1.40, gdal-devel, libcurl, git, pandoc")
+                              gnuplot, graphviz, doxygen, git, texlive-scheme-full")  # FIXME texlive-scheme-full too heavy, find underlying necessary packages (pdflatex...)
+SET(OFPACK_DEPEND_RPM_CENTOS "gcc-c++, boost-devel >= 1.40, gdal-devel, libcurl, git")
 
 IF(OFBUILD_ENABLE_GUI)
 
@@ -24,6 +24,12 @@ IF(OFBUILD_ENABLE_GUI)
     SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt6-qttools-devel, qt6-qtbase-devel, qt6-qtsvg-devel, 
                                   qt6-qtwebengine-devel")
   ENDIF()
+ENDIF()
+
+IF (OFBUILD_ENABLE_DOCALYZER)
+  SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, pandoc")
+  SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, pandoc")
+  SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, pandoc")
 ENDIF()
 
 

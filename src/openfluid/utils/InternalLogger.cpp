@@ -69,7 +69,7 @@ LoggingSystem::~LoggingSystem()
 // =====================================================================
 
 
-void LoggingSystem::setup(bool DefaultAsFallback, std::string LogPath)
+void LoggingSystem::setup(bool DefaultAsFallback, std::string LogPath, bool Verbose)
 {
   // FALLBACK LOG PATH: 
   //    1) direct param 
@@ -111,8 +111,10 @@ void LoggingSystem::setup(bool DefaultAsFallback, std::string LogPath)
     
     // Creates path if necessary
     openfluid::tools::FilesystemPath(openfluid::tools::FilesystemPath(m_LogPath).dirname()).makeDirectory();
-
-    std::cout << "Initializing internal OpenFLUID logs at: "+m_LogPath << std::endl;
+    if (Verbose)
+    {
+      std::cout << "Initializing internal OpenFLUID logs at: "+m_LogPath << std::endl;
+    }
     // FIXME should not be displayed in some cases 
     // (interference risk with version detection for now, eg regex L142 in OpenFLUIDConfig.cmake.in)
     m_Logger.init(m_LogPath, false);
@@ -162,9 +164,9 @@ void LoggingSystem::close()
 namespace log {
 
 
-void setup(bool DefaultAsFallback, std::string LogPath)
+void setup(bool DefaultAsFallback, std::string LogPath, bool Verbose)
 {
-  LoggingSystem::instance()->setup(DefaultAsFallback, LogPath);
+  LoggingSystem::instance()->setup(DefaultAsFallback, LogPath, Verbose);
 }
 
 

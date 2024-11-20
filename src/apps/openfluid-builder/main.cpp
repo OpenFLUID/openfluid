@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 
     do
     {
-      openfluid::utils::log::setup();
+      openfluid::utils::log::setup(true, "", true);
       
       openfluid::ui::common::OpenFLUIDSplashScreen Splash(
         openfluid::ui::common::getImage("openfluid_splash_builder","builder")
