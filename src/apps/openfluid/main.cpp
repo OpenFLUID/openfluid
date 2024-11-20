@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
   // CMD app generates no internal log by default, since it can be used in pipelines that shoud not impact standard 
   // log file, use LOG_PATH env var to generate an internal log recording
-  openfluid::utils::log::setup(false);  
+  openfluid::utils::log::setup(false, "", false);  
 
 #if defined OPENFLUID_OS_WINDOWS
   std::string PathSepText = "semicolon";

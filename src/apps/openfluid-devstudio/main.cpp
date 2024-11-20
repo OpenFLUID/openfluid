@@ -65,7 +65,7 @@ int main(int argc, char** argv)
 
     INIT_OPENFLUID_QT_APPLICATION_WITH_GUI(argc, argv);
 
-    openfluid::utils::log::setup();
+    openfluid::utils::log::setup(true, "", true);
 
     do
     {

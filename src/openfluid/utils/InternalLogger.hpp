@@ -79,7 +79,7 @@ class OPENFLUID_API LoggingSystem
 
   public:
 
-    void setup(bool DefaultAsFallback=true, std::string LogPath="");
+    void setup(bool DefaultAsFallback=true, std::string LogPath="", bool Verbose=false);
 
     void close();
 
@@ -114,7 +114,7 @@ class OPENFLUID_API LoggingSystem
 
 namespace log {
 
-void OPENFLUID_API setup(bool DefaultAsFallback=true, std::string LogPath="");
+void OPENFLUID_API setup(bool DefaultAsFallback=true, std::string LogPath="", bool Verbose=false);
 
 void OPENFLUID_API debug(const std::string& Context, const std::string& Msg);
 
