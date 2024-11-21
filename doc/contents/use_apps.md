@@ -63,26 +63,6 @@ See @ref apdx_optenv_cmdopt or run `openfluid --help` to get the list of availab
 @image latex screenshot_cmdline.png "OpenFLUID simulation using command line" width=10cm
 
 
-# Within the GNU R environment : ROpenFLUID {#use_apps_R}
-
-OpenFLUID can be used from within the GNU R environment through the ROpenFLUID package.
-This package allows to load an input dataset, parameterize and run a simulation, 
-then use and process simulation results.  
-It is really useful for taking benefit of all R features and packages for sensitivity analysis, 
-optimization, uncertainty propagation analysis, and more.
-
-_Example of a simulation launch in R using the ROpenFLUID package:_
-```
-library('ROpenFLUID')
-ofsim = OpenFLUID.loadDataset('/path/to/dataset')
-OpenFLUID.setCurrentOutputDir('/path/to/results')
-OpenFLUID.runSimulation(ofsim)
-data = OpenFLUID.loadResult(ofsim,'TestUnits',15,'var.name')
-```
-
-More details are available in the dedicated ROpenFLUID documentation, available on the OpenFLUID community site (<https://community.openfluid-project.org/>).
-
-
 # Development environment : OpenFLUID-DevStudio {#use_apps_devstudio}
 
 The OpenFLUID-Devstudio is the part of the software environment dedicated to development of simulators, observers 
@@ -102,3 +82,23 @@ The OpenFLUID-DevStudio environment proposes the following facilities:
 * Common features of a source code editor   
 
 More informations about OpenFLUID-Devstudio are available in the @ref dev_createsim part.
+
+
+# Within the GNU R environment : ROpenFLUID {#use_apps_R}
+
+OpenFLUID can be used from within the GNU R environment through the ROpenFLUID package.
+This package allows to load an input dataset, parameterize and run a simulation, 
+then use and process simulation results.  
+It is really useful for taking benefit of all R features and packages for sensitivity analysis, 
+optimization, uncertainty propagation analysis, and more.
+
+_Example of a simulation launch in R using the ROpenFLUID package:_
+```
+library('ROpenFLUID')
+ofsim = OpenFLUID.loadDataset('/path/to/dataset')
+OpenFLUID.setCurrentOutputDir('/path/to/results')
+OpenFLUID.runSimulation(ofsim)
+data = OpenFLUID.loadResult(ofsim,'TestUnits',15,'var.name')
+```
+
+More details are available in the dedicated ROpenFLUID documentation, available on the OpenFLUID community site (<https://community.openfluid-project.org/>).

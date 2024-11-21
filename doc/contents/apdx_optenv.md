@@ -1,4 +1,4 @@
-# Environment variables and command line usage {#apdx_optenv}
+# Command line usage and environment variables {#apdx_optenv}
 
 [TOC]
 

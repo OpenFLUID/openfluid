@@ -1,8 +1,8 @@
 DOXYFILE_ENCODING      = UTF-8
 
-PROJECT_NAME           = 
+PROJECT_NAME           = OpenFLUID
 PROJECT_NUMBER         = @OPENFLUID_VERSION_FULL@
-PROJECT_LOGO           = @OFBUILD_DOC_CONTENTS_DIR@/images/openfluid_logo_banner_html.png
+PROJECT_LOGO           = @OFBUILD_DOC_CONTENTS_DIR@/images/openfluid_official_nosubtitle.svg
 
 OUTPUT_DIRECTORY       = @OFBUILD_DIST_MAIN_DOC_DIR@
 
@@ -45,17 +45,23 @@ GENERATE_HTML     	   = YES
 GENERATE_HTMLHELP      = NO
 GENERATE_RTF           = NO
 GENERATE_XML           = NO
-SEARCHENGINE           = NO
+GENERATE_TREEVIEW      = YES
 PDF_HYPERLINKS         = NO
 USE_PDFLATEX           = NO
 STRIP_CODE_COMMENTS    = NO
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
 
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = @CMAKE_CURRENT_BINARY_DIR@/layout/header.html
 HTML_FOOTER            = @OFBUILD_DOC_LAYOUT_DIR@/footer.html
-HTML_EXTRA_STYLESHEET  = @OFBUILD_DOC_LAYOUT_DIR@/doxyopenfluid.css
+HTML_EXTRA_STYLESHEET  = @OFBUILD_DOC_LAYOUT_DIR@/css/doxygen-awesome.css \
+                         @OFBUILD_DOC_LAYOUT_DIR@/css/doxyopenfluid.css
 HTML_COLORSTYLE        = LIGHT
 HTML_OUTPUT            = html
+HTML_EXTRA_FILES       = @OFBUILD_DOC_LAYOUT_DIR@/js/doxygen-awesome-darkmode-toggle.js \
+                         @OFBUILD_DOC_LAYOUT_DIR@/js/doxygen-awesome-fragment-copy-button.js \
+                         @OFBUILD_DOC_LAYOUT_DIR@/js/doxygen-awesome-interactive-toc.js
 
 SEARCHENGINE		       = YES
 SERVER_BASED_SEARCH    = NO

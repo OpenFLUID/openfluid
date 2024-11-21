@@ -1,0 +1,57 @@
+html
+{   
+    --content-maxwidth: 1300px;
+    --searchbar-width: 300px;
+    --page-font-size: 18px;
+    --navigation-font-size: 16px;
+    --toc-font-size: 15px;
+    --toc-width: 300px;
+}
+
+div.summary
+{
+    font-size: 10pt;
+}
+
+.contents
+{
+    column-gap: 5em;
+}
+
+div.contents div.dyncontent img
+{
+    max-width: none;
+}
+
+.toc
+{
+    border: 1px solid var(--separator-color) !important;
+    background-color: var(--side-nav-background) !important;
+    border-radius: 0.5em !important;
+}
+
+#projectnumber 
+{
+    font-weight: 600;
+    font-size: 80%;
+}
+
+iframe#MSearchResults .SRPage .SREntry 
+{
+    font-size: 10pt;
+    padding: var(--spacing-small) var(--spacing-medium);
+}
+
+doxygen-awesome-fragment-copy-button 
+{
+    transition: 0.2s;
+    opacity: 0.3;
+    border: none;
+}
+
+doxygen-awesome-fragment-copy-button:hover
+{
+    transition: 0.2s;
+    opacity: 0.6;
+    background-color: #e1e1e1;
+}

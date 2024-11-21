@@ -1,6 +1,6 @@
-<!-- HTML header for doxygen 1.8.6-->
+<!-- HTML header for doxygen 1.9.1-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" class="light-mode">
   <head>
     <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
@@ -19,13 +19,25 @@
     <title>Manual for OpenFLUID @OPENFLUID_VERSION_FULL@ : $title</title>
     <link href="$relpath^tabs.css" rel="stylesheet" type="text/css"/>
 @OFBUILD_GA_SNIPPET@
-    <script type="text/javascript" src="$relpath^jquery.js"></script>
     <script type="text/javascript" src="$relpath^dynsections.js"></script>
+    <script type="text/javascript" src="$relpath^jquery.js"></script>
     $treeview
     $search
     $mathjax
     <link href="$relpath^$stylesheet" rel="stylesheet" type="text/css" />
     $extrastylesheet
+    <script type="text/javascript" src="$relpath^doxygen-awesome-darkmode-toggle.js"></script>
+    <script type="text/javascript">
+      DoxygenAwesomeDarkModeToggle.init()
+    </script>
+    <script type="text/javascript" src="$relpath^doxygen-awesome-fragment-copy-button.js"></script>
+    <script type="text/javascript">
+        DoxygenAwesomeFragmentCopyButton.init()
+    </script>
+    <script type="text/javascript" src="$relpath^doxygen-awesome-interactive-toc.js"></script>
+    <script type="text/javascript">
+        DoxygenAwesomeInteractiveToc.init()
+    </script>
   </head>
 <body>
   <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -38,9 +50,12 @@
             <!--BEGIN PROJECT_LOGO-->
             <td id="projectlogo"><img alt="Logo" src="$relpath^$projectlogo"/></td>
             <!--END PROJECT_LOGO-->
-            <td style="padding-left: 150px;">
-             <h2>Manual for OpenFLUID @OPENFLUID_VERSION_FULL@</h2>
+            <td id="projectalign" style="padding-left: 0.5em;">
+              <div id="projectname">Documentation for OpenFLUID
+                <span id="projectnumber">@OPENFLUID_VERSION_FULL@</span>
+              </div>
             </td>
+
             <!--BEGIN DISABLE_INDEX-->
             <!--BEGIN SEARCHENGINE-->
             <td>$searchbox</td>
