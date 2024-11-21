@@ -1,30 +1,32 @@
-@mainpage Main Page
+@mainpage User Documentation
 
+
+## Getting started
+
+* @ref foreword
+* @subpage use_apps
 
 @if TodoIsDone
-### Introduction to OpenFLUID
+## Introduction to OpenFLUID
 
 * @subpage intro_oview
 * @subpage intro_soft
 * @subpage intro_inst
 
-<br/>
 @endif
 
+## Running simulations with OpenFLUID
 
-### Running simulations with OpenFLUID
-
-* @ref use_apps
-* @ref use_fluidx
+* @subpage apdx_prj
+* @subpage use_fluidx
+* @subpage apdx_optenv
 @if TodoIsDone  
 * @subpage use_buddies
 * @subpage use_examples
 @endif  
 
-<br/>
 
-
-### Development of OpenFLUID simulators
+## Development of OpenFLUID simulators
 
 * @subpage dev_oviewsim
 * @subpage dev_createsim
@@ -33,22 +35,22 @@
 * @subpage dev_fragment
 * @subpage dev_sim2doc
 
-<br/>
 
+## Work with OpenFLUID data
 
-### Other information
-
-* @subpage apdx_optenv
 * @subpage apdx_datetime
 * @subpage apdx_values
 * @subpage apdx_generators
 * @subpage apdx_multicolumn-generators
-* @subpage apdx_prj
+
+
+## Advanced uses
+
 * @subpage apdx_workspace
-@if TodoIsDone  
-* @subpage apdx_obsparams
-@endif
-* @subpage apdx_seedableware  
+* @subpage apdx_tpl_signature
+* @subpage apdx_submodule "Working with submodules (French)"
+* @subpage apdx_seedableware 
+
 
 
 

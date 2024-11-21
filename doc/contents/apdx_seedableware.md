@@ -7,7 +7,7 @@
 OpenFLUID provides tools to use randomness inside your wares.
 To do so, a parameter with the key *seed* must be specified inside a ware tags in the *model.fluidx* file:
 
-``` xml
+```.xml
 <simulator ID="SimulatorTest">
     <param name="seed" value="1" />
 </simulator>
@@ -22,7 +22,7 @@ Create a class variable of type `openfluid::ware::WareRNG RNG`.
 This variable will handle the randomness and provide few utility functions.
 To construct this variable, call its constructor by passing as argument the ware object
 
-``` c++
+```.cpp
 SimulatorTest() : PluggableSimulator(), Rng(this)
 {
 	// constructor
@@ -31,7 +31,7 @@ SimulatorTest() : PluggableSimulator(), Rng(this)
 
 In order to use the seed value provided in the *model.fluidx*, we need to initialize the variable in the `initParams(const openfluid::ware::WareParams_t& Params)` function by adding the line : `Rng.init(Params);
 `
-``` c++
+```.cpp
 void initParams(const openfluid::ware::WareParams_t& Params)
 {
 	Rng.init(Params);
@@ -46,7 +46,7 @@ Utility functions can now be used in order to generate random numbers.
 
 The example below shows the use of randomness in ware.
 
-``` c++
+```.cpp
 // HPP
 
 #include <openfluid/ware/WareRNG.hpp>
