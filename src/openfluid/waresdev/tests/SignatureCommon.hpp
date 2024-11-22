@@ -131,6 +131,13 @@ void compareSignaturesBase(const SignatureType& Sign1,const SignatureType& Sign2
 
     compareIssues(S1.second, S2);
   }
+
+  BOOST_REQUIRE_EQUAL(Sign1.Dependencies.size(),Sign2.Dependencies.size());
+  for (const auto& D : Sign1.Dependencies)
+  {
+    BOOST_REQUIRE_NO_THROW(Sign2.Dependencies.at(D.first));
+    BOOST_REQUIRE_EQUAL(D.second, Sign2.Dependencies.at(D.first));
+  }
 }
 
 
@@ -190,6 +197,10 @@ void compareJSONBase(const openfluid::thirdparty::json& Json1, const openfluid::
   {
     compareIssuesJSON(IssuesArr1[i], IssuesArr2[i]);
   }
+
+  openfluid::thirdparty::json Deps1 = Json1.value("dependencies", openfluid::thirdparty::json::array());
+  openfluid::thirdparty::json Deps2 = Json2.value("dependencies", openfluid::thirdparty::json::array());
+  // TOIMPL check dependencies
 }
 
 

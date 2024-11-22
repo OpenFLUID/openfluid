@@ -64,6 +64,8 @@ class OPENFLUID_API WareSignature
 
     using LinksList_t = std::vector<Link_t>;
 
+    using DependenciesMap_t = std::map<std::string, std::string>;
+
 
     /**
       Information about build context
@@ -111,11 +113,15 @@ class OPENFLUID_API WareSignature
     */
     LinksList_t Links;
 
-
     /**
       Issues
     */ 
     WareIssues Issues;
+
+    /**
+      Dependencies
+    */
+    DependenciesMap_t Dependencies;
     
 
     WareSignature()

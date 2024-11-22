@@ -79,6 +79,8 @@ openfluid::ware::SimulatorSignature getRefSignature()
                    openfluid::core::DateTime(),
                    false});
 
+  Sign.Dependencies["otherLib"] = ">=1.0";
+
   Sign.HandledData.UsedParams.push_back({"coeff","coefficient",""});
   Sign.HandledData.RequiredParams.push_back({"speedl","speed limit","m/s",openfluid::core::Value::DOUBLE});
   Sign.HandledData.RequiredParams.push_back({"forcefield","field of force","n/m2",openfluid::core::Value::MATRIX});

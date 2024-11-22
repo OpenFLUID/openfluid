@@ -70,6 +70,7 @@
       "state": "closed"
     }
   ],
+  "dependencies": {},
   "simulator": {
     "data": {
       "parameters": {
