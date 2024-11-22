@@ -306,6 +306,17 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
           }
         }
 
+        // dependencies
+        openfluid::thirdparty::json  DependenciesMap = WHubDoc.value("external-deps",
+                                                                     openfluid::thirdparty::json::object());
+        if (DependenciesMap.is_object())
+        {
+          for (const auto& D : DependenciesMap.items())
+          {
+            Signature.Dependencies.insert({D.key(), D.value()});
+          }
+        }
+
         S().writeToJSONFile(Signature,SignFileObj.toGeneric());
       }
       catch (openfluid::thirdparty::json::parse_error&)

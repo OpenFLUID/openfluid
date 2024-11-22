@@ -1,6 +1,7 @@
 {
   "id": "unit.test.simulator-signature",
   "name": "Simulator signature for unit testing",
+  "dependencies": {"otherLib": ">=1.0"},
   "description": "This is a simulator signature\n that should be used for **unit testing only**",
   "version": "2022.07",
   "status": "beta",

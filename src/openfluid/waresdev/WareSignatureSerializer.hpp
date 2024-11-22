@@ -299,6 +299,18 @@ SignatureType WareSignatureSerializer<SignatureType>::fromJSONBase(const openflu
     }
   }
 
+  // dependencies
+  {
+    openfluid::thirdparty::json DependenciesMap = Json.value("dependencies",openfluid::thirdparty::json::object());
+    if (DependenciesMap.is_object())
+    {
+      for (const auto& D : DependenciesMap.items())
+      {
+        Sign.Dependencies.insert({D.key(), D.value()});
+      }
+    }
+  }
+
   return Sign;
 }
 
@@ -373,6 +385,15 @@ openfluid::thirdparty::json WareSignatureSerializer<SignatureType>::toJSONBase(c
     }
     Json["issues"] = IssArr;
   }
+
+  // dependencies
+  auto Deps = openfluid::thirdparty::json::object();
+  for (const auto& D : Sign.Dependencies)
+  {
+    Deps[D.first] = D.second;
+  }
+  Json["dependencies"] = Deps;
+
 
   return Json;
 }
