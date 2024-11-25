@@ -48,9 +48,13 @@
 #include <QFileDialog>
 #include <QInputDialog>
 
+
+#include <openfluid/base/Environment.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/tools/TemplateProcessor.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorer.hpp>
 #include <openfluid/ui/waresdev/WareSrcExplorerModel.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -497,14 +501,33 @@ void WareSrcExplorer::createFragment(std::string WarePath, std::string FragmentI
                                                     FragmentID});
   NewFragmentPath.makeDirectory();
   
-  // Create file if wanted
+  // Create default files if wanted
   if (IsFileCreation)
   {
+    // Create empty hpp file
     std::string FragmentFilename = FragmentID+".hpp";
     NewFragmentPath.makeFile(FragmentFilename);
     openfluid::tools::FilesystemPath FragmentFilePath({NewFragmentPath.toGeneric(),
                                                        FragmentFilename});
     emit fileOpeningAsked(QString::fromStdString(FragmentFilePath.toGeneric()));
+
+    // Create fragment signature
+    auto SignTplPath = openfluid::tools::Path({openfluid::base::Environment::getInstallPrefix(),
+                                                  openfluid::config::SHARE_WARESDEV_INSTALL_PATH,
+                                                  "templates"});
+
+    openfluid::tools::TemplateProcessor TplProc("${","}");
+    const openfluid::tools::TemplateProcessor::Data TplData = {{"ID",FragmentID}};
+    openfluid::tools::TemplateProcessor::Errors TplErrors;
+    NewFragmentPath.makeFile(openfluid::config::WARESDEV_WAREMETA_FILE_FRAGMENT);
+    TplProc.renderFile(SignTplPath.fromThis("openfluid-fragment.json.tpl").toGeneric(),
+                       NewFragmentPath.fromThis(openfluid::config::WARESDEV_WAREMETA_FILE_FRAGMENT).toGeneric(),
+                       TplData, TplErrors);
+
+    // Create fragment README
+    std::string ReadmeFilename = "README.md"; // TODO Generalise readme filename
+    NewFragmentPath.makeFile(ReadmeFilename);
+    openfluid::tools::Filesystem::writeFile("# " + FragmentID + " fragment", NewFragmentPath.fromThis(ReadmeFilename));
   }
 }
 

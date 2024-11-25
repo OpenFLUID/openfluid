@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>366</width>
-    <height>94</height>
+    <width>371</width>
+    <height>95</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string notr="true"/>
@@ -46,7 +52,7 @@
         <item>
          <widget class="QCheckBox" name="createFileCheckBox">
           <property name="text">
-           <string>Automatically create an empty .hpp file</string>
+           <string>Create default files (.hpp, metadata, README)</string>
           </property>
           <property name="checked">
            <bool>true</bool>
