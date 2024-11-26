@@ -56,6 +56,7 @@ For operations such as:
 see the dedicated page for direct console git operations (in french for now: @ref apdx_submodule)
 
 ### Good practices
+- Metadata: a `openfluid-fragment.json` file should be added at root directory of the fragment to describe useful information, especially the field `openfluid-components` in `fragment` sub-dictionary to inform the simulator developer to add any required OpenFLUID components to ware `CMakeLists.txt` file.
 - Namespace: it is advised to use a two level namespace to encapsulate the code with "fragment" as first level. For example:
 ```
 namespace fragment { namespace hydro

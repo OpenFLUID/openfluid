@@ -45,15 +45,25 @@ _experimental_, _beta_ or _stable_
 See the @ref dev_signature_exmpl part for detailed example. 
 
 
+## Dependencies
+
+A specific field `dependencies` can be filled (it was previously known as `external-deps` in `wareinfo.json`). This field should contain any system dependency required by the ware to be built or run.
+
+This field value must be a dictionary, eg `{"lib1":">=1.2", "tool2":"*"}`.
+For now, it is purely informative since there is not any control is done internally to check that these requirements are filled by the compilation environment.
+
+It is advised to use the same version syntax than here: https://docs.npmjs.com/cli/v10/configuring-npm/package-json#dependencies
+
+
 ## Informations about scientific application {#dev_signature_sci}
 
 The informations about scientific applications are only indicative.
 It has no effects on simulator consistency or computational code.
 They are stored as string list with key **tags**. These informations can be:
 
-* the domain in which the simulator can be applied, eg `"domain:urban"`
-* the processes simulated by the simulator, eg `"process:traffic"`
-* the numerical methods used by the simulator, eg `"method:mseytoux"`
+* the domain in which the simulator can be applied, eg `"domain::urban"`
+* the processes simulated by the simulator, eg `"process::traffic"`
+* the numerical methods used by the simulator, eg `"method::mseytoux"`
 
 or other relevant tags. 
 
@@ -302,11 +312,14 @@ The signature code below shows an example of a signature for a simulator.
   "license": "",
   "tags": [
     "examples",
-    "traffic",
-    "urban"
+    "process::traffic",
+    "domain::urban"
   ],
   "links": [],
   "issues": [],
+  "dependencies": {
+    "gdal": ">=3.2"
+  },
   "simulator": {
     "data": {
       "parameters": {
