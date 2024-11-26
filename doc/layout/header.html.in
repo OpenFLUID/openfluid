@@ -16,7 +16,7 @@
     <meta property="twitter:image" content="@OPENFLUID_URL_OFFICIAL@/images/meta/openfluid_og.png" />
     <meta property="twitter:site" content="Manual for OpenFLUID @OPENFLUID_VERSION_FULL@" />
     <meta property="twitter:creator" content="@OpenFLUID" />
-    <title>Manual for OpenFLUID @OPENFLUID_VERSION_FULL@ : $title</title>
+    <title>Documentation for OpenFLUID @OPENFLUID_VERSION_FULL@ : $title</title>
     <link href="$relpath^tabs.css" rel="stylesheet" type="text/css"/>
 @OFBUILD_GA_SNIPPET@
     <script type="text/javascript" src="$relpath^dynsections.js"></script>
