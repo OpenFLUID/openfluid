@@ -537,6 +537,27 @@ void Filesystem::writeFile(const std::string& Content, const openfluid::tools::P
 // =====================================================================
 
 
+void Filesystem::appendToFile(const std::string& Content, const openfluid::tools::Path& FileObj)
+{
+  std::ofstream File(FileObj.toGeneric(),std::ios::app);
+
+  if (File.is_open())
+  {
+    File << Content << "\n";
+    File.close();
+  }
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                             "File opening failed: "+FileObj.toGeneric());
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<std::string> Filesystem::findFiles(const std::string& Path, bool WithPath, const std::string& Pattern)
 {
   std::vector<std::string> FilesList;
