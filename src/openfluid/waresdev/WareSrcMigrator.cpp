@@ -186,10 +186,10 @@ std::string generateMigrationBlock(const std::string& LineComment, const std::st
 
 
 template<class S>
-std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj,
-                                                      const openfluid::tools::Path& SignFileObj)
+std::map<openfluid::base::Listener::Status, std::vector<std::string>> 
+mergeWareshubInSignatureFile(const openfluid::tools::Path& WHFileObj, const openfluid::tools::Path& SignFileObj)
 {
-  std::vector<std::string> Messages;
+  std::map<openfluid::base::Listener::Status, std::vector<std::string>> Messages;
   if (WHFileObj.isFile())
   {
     std::ifstream WHFileStream;
@@ -202,11 +202,33 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
         auto WHubDoc = openfluid::thirdparty::json::parse(WHFileStream);
         auto Signature = S().readFromJSONFile(SignFileObj.toGeneric());
 
+        std::regex TagValidRegex("^[a-zA-Z0-9]+(?:::[a-zA-Z0-9]+)?$");
+
         // tags
         auto Tags = WHubDoc.value("tags",std::vector<std::string>());
         for (const auto& T : Tags)
         {
+          // Check that tags does not contain non-alphanum character
+          if(!std::regex_match(T, TagValidRegex))
+          {
+            Messages[openfluid::base::Listener::Status::WARNING_STATUS]
+                    .push_back("tag \"" + T + "\" contains non-alphanum character(s)");
+          }
           Signature.Tags.push_back(T);
+        }
+
+        // Check that domain, process or method tags do not contain non-alphanum character
+        for (const auto& Group : {"domain", "process", "method"})
+        {
+          std::vector<std::string> GroupTags = Signature.getTagsByType(Group);
+          for (const auto& T : GroupTags)
+          {
+            if(!std::regex_match(T, TagValidRegex))
+            {
+              Messages[openfluid::base::Listener::Status::WARNING_STATUS]
+                      .push_back(std::string(Group) + " tag \"" + T + "\" contains non-alphanum character(s)");
+            }
+          }
         }
 
         // contacts
@@ -247,6 +269,11 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
                 std::string Urgency = Info.value("urgency","");
                 if (!Urgency.empty())
                 {
+                  if(!std::regex_match(Urgency, TagValidRegex))
+                  {
+                    Messages[openfluid::base::Listener::Status::WARNING_STATUS]
+                            .push_back("issue urgency \"" + Urgency + "\" contains non-alphanum character(s)");
+                  }
                   Iss.Tags.push_back("urgency::" + Urgency);
                 }
 
@@ -254,6 +281,11 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
                 std::string Type = Info.value("type","");
                 if (!Type.empty())
                 {
+                  if(!std::regex_match(Type, TagValidRegex))
+                  {
+                    Messages[openfluid::base::Listener::Status::WARNING_STATUS]
+                            .push_back("issue type \"" + Type + "\" contains non-alphanum character(s)");
+                  }
                   Iss.Tags.push_back("type::" + Type);
                 }
 
@@ -299,7 +331,7 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
                 }
                 catch (openfluid::base::Exception& E)
                 {
-                  Messages.push_back(E.what());
+                  Messages[openfluid::base::Listener::Status::WARNING_STATUS].push_back(E.what());
                 }
               }
             }
@@ -322,7 +354,7 @@ std::vector<std::string> mergeWareshubInSignatureFile(const openfluid::tools::Pa
       catch (openfluid::thirdparty::json::parse_error&)
       {
         // failure is not an error
-        Messages.push_back("Json can not bet read");
+        Messages[openfluid::base::Listener::Status::WARNING_STATUS].push_back("Json can not be read");
       }
     }
   }
@@ -646,11 +678,12 @@ void WareSrcMigrator::processSignature(const WareSrcMigrator::WareMigrationInfo&
   
   // integration of the wareshub.json content (if file exists) 
   auto WHubFileObj = m_SrcPathObj.fromThis(openfluid::config::WARESDEV_WARESHUB_FILE);
+  openfluid::base::Listener::Status SignatureProcessStatus = openfluid::base::Listener::Status::OK_STATUS;
   if (WHubFileObj.isFile())
   {
     mp_Listener->stageMessage("processing wareshub file");
 
-    std::vector<std::string> transmittedMessages;
+    std::map<openfluid::base::Listener::Status, std::vector<std::string>> transmittedMessages;
 
     if (Info.WareType == openfluid::ware::WareType::SIMULATOR)
     {
@@ -667,14 +700,39 @@ void WareSrcMigrator::processSignature(const WareSrcMigrator::WareMigrationInfo&
       transmittedMessages = mergeWareshubInSignatureFile<openfluid::waresdev::BuilderextSignatureSerializer>(
         WHubFileObj,ExportedSignFileObj);
     }
-    for (const auto& M : transmittedMessages)
+
+    std::string MigrationLogFilename = "conversion.log";
+    WorkPathObj.makeFile(MigrationLogFilename);
+    
+    std::string WarningTagsMsg = "";
+    if(transmittedMessages.count(openfluid::base::Listener::Status::ERROR_STATUS) > 0)
     {
-      mp_Listener->stageMessage(M);
+      SignatureProcessStatus = openfluid::base::Listener::Status::ERROR_STATUS;
+      WarningTagsMsg = "Error(s) in wareinfo.json";
+    }
+    else if(transmittedMessages.count(openfluid::base::Listener::Status::WARNING_STATUS) > 0)
+    {
+      SignatureProcessStatus = openfluid::base::Listener::Status::WARNING_STATUS;
+      WarningTagsMsg = "Issue(s) in wareinfo.json";
+    }
+
+    if(!WarningTagsMsg.empty())
+    {
+      openfluid::tools::Filesystem::appendToFile("Processing wareinfo.json",WorkPathObj.fromThis(MigrationLogFilename));
+      openfluid::tools::Filesystem::appendToFile(WarningTagsMsg, WorkPathObj.fromThis(MigrationLogFilename));
+    }
+
+    for (const auto& [MessagesStatus, Messages] : transmittedMessages)
+    {
+      for(const auto& M : Messages)
+      {
+        mp_Listener->stageMessage(M);
+        openfluid::tools::Filesystem::appendToFile(M, WorkPathObj.fromThis(MigrationLogFilename));
+      }
     }
   }
 
-
-  mp_Listener->onProcessSignatureEnd(openfluid::base::Listener::Status::OK_STATUS);
+  mp_Listener->onProcessSignatureEnd(SignatureProcessStatus);
 }
 
 

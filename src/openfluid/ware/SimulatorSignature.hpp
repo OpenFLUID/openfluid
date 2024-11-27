@@ -271,9 +271,6 @@ class OPENFLUID_API SimulatorSignature : public DataWareSignature
       HandledUnitsGraph.clear();
       TimeScheduling.setAsUndefined();
     }
-
-    std::vector<std::string> getTagsByType(const std::string& Type) const;
-
 };
 
 

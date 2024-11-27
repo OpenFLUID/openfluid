@@ -38,9 +38,11 @@
 
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/config.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/ware/WareIssues.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/StringHelpers.hpp>
 
 
 #ifndef __OPENFLUID_WARE_WARESIGNATURE_HPP__
@@ -142,6 +144,21 @@ class OPENFLUID_API WareSignature
     */ 
 
     virtual ~WareSignature() = default;
+
+    std::vector<std::string> getTagsByType(const std::string& Type) const
+    {
+      std::vector<std::string> MatchingTags;
+      for(const auto& Tag : Tags)
+      {
+        const std::string TagType = Type + openfluid::config::STR_SEPARATOR_TAG_TYPE;
+        if(openfluid::tools::startsWith(Tag, TagType))
+        {
+          MatchingTags.push_back(openfluid::tools::replace(Tag, TagType, ""));
+        }
+      }
+
+      return MatchingTags;
+    }
 
 
     // =====================================================================

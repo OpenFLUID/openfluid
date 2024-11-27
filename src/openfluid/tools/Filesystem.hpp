@@ -184,6 +184,13 @@ class OPENFLUID_API Filesystem
     static void writeFile(const std::string& Content, const openfluid::tools::FilesystemPath& FileObj);
 
     /**
+      Appends content on a new line into a file
+      @param[in] Content the content to append
+      @param[in] FileObj the given path for the file
+    */
+    static void appendToFile(const std::string& Content, const openfluid::tools::FilesystemPath& FileObj);
+
+    /**
       Copies a file from source to destination.
       @param[in] SrcPath the source path
       @param[in] DestPath the destination path

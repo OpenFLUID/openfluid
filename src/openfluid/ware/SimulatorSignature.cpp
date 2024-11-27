@@ -40,7 +40,6 @@
 #include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
-#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -71,27 +70,6 @@ SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D,
                                               "Variable " + N + " with optional type is not well formatted.");
   }
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::vector<std::string> SimulatorSignature::getTagsByType(const std::string& Type) const
-{
-  std::vector<std::string> MatchingTags;
-  for(const auto& Tag : Tags)
-  {
-    const std::string TagType = Type + openfluid::config::STR_SEPARATOR_TAG_TYPE;
-    if(openfluid::tools::startsWith(Tag, TagType))
-    {
-      MatchingTags.push_back(openfluid::tools::replace(Tag, TagType, ""));
-    }
-  }
-
-  return MatchingTags;
-}
-
 
 } } //namespaces
 
