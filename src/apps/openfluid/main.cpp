@@ -274,7 +274,8 @@ int main(int argc, char **argv)
                                                                             "("+openfluid::config::VERSION_FULL+")"); 
   MigrateWareCmd.addOptions({{"src-path","s","path to the ware sources",true},
                              {"dest-path","d","destination path of the migrated ware sources",true},
-                             {"verbose","v","enable verbose mode"}});
+                             {"verbose","v","enable verbose mode"},
+                             {"force","f","force migration"}});
   Parser.addCommand(MigrateWareCmd, &WareSection);
 
   // ---

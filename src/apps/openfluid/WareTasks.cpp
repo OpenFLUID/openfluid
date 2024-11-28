@@ -296,6 +296,22 @@ int WareTasks::processMigrate() const
     auto Listener = std::make_unique<DefaultMigrationListener>();
     Listener->setVerbose(m_Cmd.isOptionActive("verbose"));
 
+    // Check if dest-path contains files and dest-path different from src-path
+    if(!m_Cmd.isOptionActive("force"))
+    {
+      if(m_Cmd.isOptionActive("dest-path") && !m_Cmd.getOptionValue("dest-path").empty())
+      {
+        openfluid::tools::Path DestPath(m_Cmd.getOptionValue("dest-path"));
+        if(DestPath.toGeneric() != m_Cmd.getOptionValue("src-path"))
+        {
+          if(DestPath.exists() && !DestPath.empty())
+          {
+            return error("Destination path is not empty. Use --force to migrate anyway");
+          }
+        }
+      }
+    }
+
     auto Migrator = openfluid::waresdev::WareSrcMigrator(m_Cmd.getOptionValue("src-path"),
                                                          Listener.get(),
                                                          m_Cmd.getOptionValue("dest-path"));
