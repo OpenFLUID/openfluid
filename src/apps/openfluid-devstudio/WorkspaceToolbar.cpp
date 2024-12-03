@@ -149,7 +149,7 @@ void WorkspaceToolbar::createActions()
                                  openfluid::ui::common::getIcon("dashboard","/ui/common",true),tr("Dashboard"), this);
 
   m_Actions["APIDoc"] = new openfluid::ui::common::DefaultAction(
-                              openfluid::ui::common::getIcon("generate-doc","/ui/common",true),tr("API doc"), this);
+                              openfluid::ui::common::getIcon("generate-doc","/ui/common",true),tr("User doc"), this);
 }
 
 
