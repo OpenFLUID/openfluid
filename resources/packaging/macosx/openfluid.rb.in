@@ -16,14 +16,15 @@ cask 'openfluid@TOKEN_VERSION@' do
   # external dependencies
   depends_on formula: 'boost'
   depends_on formula: 'gdal'
-  depends_on formula: 'qt5'
+  depends_on formula: 'qt6'
   depends_on formula: 'p7zip'
   depends_on formula: 'gnuplot'
   depends_on formula: 'cmake'
+  depends_on formula: 'pandoc'
 
 
   # system dependencies
-  depends_on macos: '>= :yosemite'
+  depends_on macos: '>= :big_sur'
 
 
   # variables used during installation process

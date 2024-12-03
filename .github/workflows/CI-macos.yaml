@@ -12,15 +12,23 @@ jobs:
   ci-macos-debug:
     strategy:
       matrix:
-        os: [macos-13]
+        os: [macos-13, macos-14, macos-15]
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Installation of dependencies
         run: | 
           brew install \
-            boost gdal curl qt6 \
-            gnuplot
+          boost gdal curl qt6 \
+          gnuplot
+      - name: Installation of pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+      - name: Installation of latex
+        uses: teatimeguest/setup-texlive-action@v3
+        with:
+          packages: |
+            scheme-full
+            bibtex
       - name: Checkout of source code
         uses: actions/checkout@v3
       - name: Preparation
@@ -32,7 +40,7 @@ jobs:
         working-directory: ./_build
       - name: Build
         run: make -j 2
-        working-directory: ./_build
+        working-directory: ./_build      
       - name: Testing
         run: ctest --output-on-failure
         working-directory: ./_build
@@ -44,15 +52,17 @@ jobs:
   ci-macos-release:
     strategy:
       matrix:
-        os: [macos-13]
+        os: [macos-13, macos-14, macos-15]
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Installation of dependencies
         run: | 
           brew install \
-            boost gdal curl qt6 \
-            gnuplot
+          boost gdal curl qt6 \
+          gnuplot
+      - name: Installation of pandoc
+        uses: r-lib/actions/setup-pandoc@v2
       - name: Checkout of source code
         uses: actions/checkout@v3
       - name: Preparation
