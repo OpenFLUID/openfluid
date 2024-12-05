@@ -1,4 +1,5 @@
 % Name
+\newcommand{\frenchname}{Distribution de pluie sur les SU}
 \newcommand{\englishname}{Distribution of rainfall on SU}
 
 % FileID
@@ -13,15 +14,13 @@
 
 
 \begin{abstract}
-\input{./english/RainSUFiles_abstract.tex}
+\iflanguage{english}\input{./english/RainSUFiles_abstract.tex}\input{./french/RainSUFiles_resume.tex}
 \end{abstract}
 
 %******************************
 % Scientific concepts
-\section{Scientific concepts}
-\input{./english/RainSUFiles_scientific_concept.tex}
+\iflanguage{english}\input{./english/RainSUFiles_scientific_concept.tex}\input{./french/RainSUFiles_concept_scientifique.tex}
 
 %******************************
 % Functional description
-\section{Functional description}
-\input{./english/RainSUFiles_functional_description.tex}
+\iflanguage{english}\input{./english/RainSUFiles_functional_description.tex}\input{./french/RainSUFiles_notice_utilisation.tex}

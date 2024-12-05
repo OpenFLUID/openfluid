@@ -34,6 +34,7 @@
   @brief header of tools for Hayami propagation method
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author David CREVOISIER <david.crevoisier@inrae.fr>
 */
 
 
@@ -47,6 +48,10 @@
 
 #include <openfluid/core/TypeDefs.hpp>
 
+#define _PI_ 3.1415926536
+
+namespace fragments {
+  namespace hydro { //TOIMPL double-check namespace name relevance
 
 typedef std::vector<double> t_HayamiKernel;
 typedef std::map<int, t_HayamiKernel> IDKernelMap;
@@ -93,7 +98,7 @@ inline void ComputeHayamiKernel(double Celerity, double Sigma, double Length,
   }
 
 
-  Value1 = pow((Theta * Zed / 3.1411592654),0.5);
+  Value1 = pow((Theta * Zed / _PI_),0.5);
   if (Theta > (0.1*TimeStep))
   {
     for (i=0;i<MaxSteps;i++)
@@ -137,25 +142,23 @@ inline float DoHayamiPropagation(const t_HayamiKernel& Kernel,
                                  int CurrentStep, const openfluid::core::SerieOfDoubleValue* QInput,
                                  int MaxSteps, int TimeStep)
 {
+  /* QInput.size() = Kernel.size() = MaxSteps */
+
   float QOutput;
   int ZeEnd;
 
-
   ZeEnd = MaxSteps;
-  if (CurrentStep < ZeEnd)
-  {
-    ZeEnd = CurrentStep;
-  }
-
   QOutput = 0;
 
   for (int i=0;i<ZeEnd;i++)
   {
-    QOutput = QOutput + (Kernel[i] * QInput->at(CurrentStep - i) * TimeStep);
+   QOutput = QOutput + (Kernel[i] * QInput->at(ZeEnd - 1 - i) * TimeStep);
   }
-
 
   return QOutput;
 }
 
 #endif // __HAYAMITOOLS_H__
+
+}
+}

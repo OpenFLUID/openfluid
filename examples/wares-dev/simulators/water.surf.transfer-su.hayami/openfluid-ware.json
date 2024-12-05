@@ -2,7 +2,7 @@
   "id": "water.surf.transfer-su.hayami",
   "name": "Water transfer on surface units using hayami propagation method",
   "description": "Calculation of discharge routing through the channel network using diffusive wave equation resolved with Hayami method",
-  "version": "19.06",
+  "version": "24.12",
   "status": "stable",
   "authors": [
     {
@@ -22,15 +22,36 @@
       "email": "louchart@supagro.inra.fr"
     }
   ],
-  "contacts": [],
-  "license": "",
+  "contacts": [
+    {
+      "name": "D. Crevoisier",
+      "email": "david.crevoisier@inrae.fr"
+    }
+  ],
+  "license": "GPL-3.0",
   "tags": [
-    "hydrology",
-    "transfer",
-    "Hayami"
+    "domain::hydrology",
+    "process::transfer",
+    "method::Hayami",
+    "water",
+    "surface"
   ],
   "links": [],
-  "issues": [],
+  "issues": [
+    {
+      "id": 616102928,
+      "title": "Description of variables",
+      "description": "Review description of variables\nIn particular, water.surf.Q.downstream-su variable\nshould be described as \"discharge\" instead of \"volume\"\n",
+      "tags": [
+        "urgency::normal",
+        "type::review"
+      ],
+      "creator": "fabrejc",
+      "created_at": "2014-07-01 00:00:00",
+      "updated_at": "2014-07-01 00:00:00",
+      "state": "open"
+    }
+  ],
   "simulator": {
     "data": {
       "parameters": {

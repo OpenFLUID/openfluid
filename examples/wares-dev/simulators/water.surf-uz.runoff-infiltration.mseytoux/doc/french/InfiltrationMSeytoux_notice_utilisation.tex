@@ -1,0 +1,84 @@
+\subsection{Nom de la fonction}
+Le nom (fileID) de la fonction de simulation est \texttt{\FileID}.
+
+\subsection{Paramètres de la fonction}
+La ``\frenchname'' doit être utilisée et renseignée avec le paramètre suivant :\\
+
+
+\hspace{-0.5cm}
+\begin{tabular}{|llcc|}
+ \hline
+\it Symbole & \it Nom & \it Valeurs & \it Unité \\
+ \hline
+$Res Step$ & \texttt{\ParamA} & $>0$ & $m$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+La syntaxe correcte de déclaration d'utilisation de la fonction dans le fichier \texttt{model.xml} doit ressembler à l'exemple illustré ci-après :
+
+\begin{verbatim}
+<function fileID="water.surf-uz.runoff
+          -infiltration.mseytoux">
+    <param name="resstep"
+           value="0.000005" />
+</function>
+\end{verbatim}
+
+
+\subsection{Propriétés distribuées}
+La ``\frenchname'' requiert les propriétés distribuées suivantes :
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|llcc|}
+ \hline
+\it Symbole & \it Nom & \it Valeurs & \it Unité \\
+ \hline
+$K_s$ & \texttt{\PropDisA} & $\geq 0$ & $m/s$ \\
+$\theta_r $ & \texttt{\PropDisB} & $0 \le \theta_r \le 1$ & $m\up{3}/m\up{3}$ \\
+$\theta_s$ & \texttt{\PropDisC} & $0 \le \theta_s \le 1$ & $m\up{3}/m\up{3}$ \\
+$\beta_{MS}$ & \texttt{\PropDisD} & $>0$ & $-$ \\
+$H_c$ & \texttt{\PropDisE} & $\geq 0$ & $m$ \\
+$A_{SU}$ & \texttt{\PropDisF} & $>0$ & $m\up2$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+La condition $\theta_r \le \theta_s$ devra être vérifiée.\\
+
+
+\subsection{Conditions initiales}
+Pour chaque SU, une condition initiale est nécessaire et doit être présente dans le fichier \texttt{SUini.ddata.xml}. Cette condition initiale est la suivante :
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|llcc|}
+ \hline
+\it Symbole & \it Nom & \it Valeurs & \it Unité \\
+ \hline
+$\theta_i$ & \texttt{\InitA} & $0 \le \theta_i \le 1$ & $m\up{3}/m\up{3}$ \\
+\hline
+\end{tabular} 
+\vspace{1em}
+
+La condition $\theta_r \le \theta_i \le \theta_s$ devra être vérifiée.\\
+
+
+\subsection{Variables}
+Les variables produites, utilisées et requises par cette fonction sont listées dans le tableau ci-après :
+\vspace{1em}
+
+\hspace{-0.5cm}
+\begin{tabular}{|lll|}
+ \hline
+\it Symbole & \it Nom & \it Unité \\
+ \hline
+$R$ & \texttt{\VarProdA} & $m$ \\
+$I$ & \texttt{\VarProdB} & $m$ \\
+$Q_{SU}$ & \texttt{\VarUsedA} & $m\up{3}/s$ \\
+$K_s$ & \texttt{\VarUsedB} & $m/s$ \\
+$P$ & \texttt{\VarRequirA} & $m$ \\
+\hline
+\end{tabular} 
+\vspace{1em}

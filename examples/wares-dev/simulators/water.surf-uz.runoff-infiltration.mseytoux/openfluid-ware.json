@@ -22,15 +22,25 @@
       "email": "louchart@supagro.inra.fr"
     }
   ],
-  "contacts": [],
-  "license": "",
+  "contacts": [
+    {
+      "name": "D. Crevoisier",
+      "email": "david.crevoisier@inrae.fr"
+    }
+  ],
+  "license": "GPL-3.0",
   "tags": [
-    "hydrology",
-    "runoff / infiltration partition",
-    "Morel-Seytoux"
+    "domain::hydrology",
+    "process::runoff",
+    "process::infiltration partition",
+    "method::Morel-Seytoux",
+    "water",
+    "surface",
+    "unsaturated zone"
   ],
   "links": [],
   "issues": [],
+  "dependencies": {},
   "simulator": {
     "data": {
       "parameters": {

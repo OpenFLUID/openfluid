@@ -18,13 +18,22 @@
       "email": "louchart@supagro.inra.fr"
     }
   ],
-  "contacts": [],
-  "license": "",
+  "contacts": [
+    {
+      "name": "D. Crevoisier",
+      "email": "david.crevoisier@inrae.fr"
+    }
+  ],
+  "license": "GPL-3.0",
   "tags": [
-    "meteo"
+    "domain::meteo",
+    "process::rain",
+    "method::files",
+    "water"
   ],
   "links": [],
   "issues": [],
+  "dependencies": {},
   "simulator": {
     "data": {
       "parameters": {
@@ -44,6 +53,8 @@
         "produced": []
       },
       "variables": {
+        "required": [],
+        "used": [],
         "produced": [
           {
             "name": "water.atm-surf.H.rain",
@@ -53,18 +64,16 @@
             "type": ""
           }
         ],
-        "required": [],
-        "used": [],
         "updated": []
       },
-      "events": [],
       "extrafiles": {
         "required": [
           "SUraindistri.dat",
           "rainsources.xml"
         ],
         "used": []
-      }
+      },
+      "events": []
     },
     "spatial_graph": {
       "description": "",

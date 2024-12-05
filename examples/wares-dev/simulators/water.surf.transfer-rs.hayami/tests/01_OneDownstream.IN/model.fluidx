@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+ <model>
+  <generator varname="water.surf.Q.downstream-su" unitsclass="SU" method="inject" enabled="1">
+   <param name="distribution" value="SUdistri.dat"/>
+   <param name="sources" value="downstream.xml"/>
+  </generator>
+  <simulator ID="water.surf.transfer-rs.hayami" enabled="1">
+   <param name="maxsteps" value="100"/>
+   <param name="meancel" value="0.045"/>
+   <param name="meansigma" value="500"/>
+   <param name="calibstep" value="0.01"/>
+   <param name="rsbuffer" value="1.2"/>
+  </simulator>
+ </model>
+
+
+</openfluid>
+

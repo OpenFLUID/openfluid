@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+ <monitoring>
+  <observer ID="export.vars.files.csv" enabled="1">
+   <param name="format.fmt.colsep" value=" "/>
+   <param name="format.fmt.commentchar" value="#"/>
+   <param name="format.fmt.date" value="ISOEXT"/>
+   <param name="format.fmt.float-format" value="auto"/>
+   <param name="format.fmt.header" value="colnames-as-comment"/>
+   <param name="format.fmt.precision" value="5"/>
+   <param name="set.OUT.format" value="fmt"/>
+   <param name="set.OUT.unitsIDs" value="1"/>
+   <param name="set.OUT.unitsclass" value="RS"/>
+   <param name="set.OUT.vars" value="water.surf.H.level-rs;water.surf.Q.downstream-rs"/>
+  </observer>
+ </monitoring>
+
+
+</openfluid>
+

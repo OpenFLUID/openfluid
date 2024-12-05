@@ -73,7 +73,7 @@ ENDIF()
 FIND_PROGRAM(PYTHON3_EXECUTABLE NAMES python3)
 IF(PYTHON3_EXECUTABLE)
 
-  SET(STYLE_EXCLUDE_LIST "share/openfluid/waresdev/templates,resources/tests/miscsrc/cmdline-check")
+  SET(STYLE_EXCLUDE_LIST "share/openfluid/waresdev/templates,resources/tests/miscsrc/cmdline-check,examples/wares-dev")
 # checkstyle tool
   ADD_CUSTOM_TARGET(stylecheck
                     COMMENT "Checking source code style"

@@ -122,8 +122,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
         if (Modulo!=0)
         {
           ID = TLU->getID();
-          std::string IDStr;
-          openfluid::tools::convertValue(ID,&IDStr);
+          std::string IDStr = std::to_string(ID);
           OPENFLUID_RaiseError("The Duration coefficient of TLU " + IDStr +
                                " should be compatible with the Simulation Scheduling.");
 

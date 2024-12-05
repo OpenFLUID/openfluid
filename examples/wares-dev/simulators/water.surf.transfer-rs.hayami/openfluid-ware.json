@@ -2,7 +2,7 @@
   "id": "water.surf.transfer-rs.hayami",
   "name": "Water transfer on reach segments using hayami propagation method",
   "description": "Calculation of discharge routing through the ditch network using diffusive wave equation resolved with Hayami method and discharge convertion to water height",
-  "version": "19.06",
+  "version": "24.12",
   "status": "stable",
   "authors": [
     {
@@ -22,15 +22,51 @@
       "email": "lalauze@supagro.inra.fr"
     }
   ],
-  "contacts": [],
-  "license": "",
+  "contacts": [
+    {
+      "name": "D. Crevoisier",
+      "email": "david.crevoisier@inrae.fr"
+    }
+  ],
+  "license": "GPL-3.0",
   "tags": [
-    "hydrology",
-    "transfer",
-    "Hayami"
+    "domain::hydrology",
+    "process::transfer",
+    "method::Hayami",
+    "water",
+    "surface",
+    "network"
   ],
   "links": [],
-  "issues": [],
+  "issues": [
+    {
+      "id": 616102928,
+      "title": "Variables descriptions",
+      "description": "Review description of variables\nIn particular, water.surf.Q.downstream-rs variable\nshould be described as \"discharge\" instead of \"volume\"\n",
+      "tags": [
+        "urgency::normal",
+        "type::review"
+      ],
+      "creator": "fabrejc",
+      "created_at": "2014-07-01 00:00:00",
+      "updated_at": "2014-07-01 00:00:00",
+      "state": "open"
+    },
+    {
+      "id": 616102929,
+      "title": "Regroup Hayami doc in fragment",
+      "description": "Use relative path to fragment doc to populate shared part of doc between hayami simulators",
+      "tags": [
+        "urgency::normal",
+        "doc"
+      ],
+      "creator": "athoni",
+      "created_at": "2024-06-01 00:00:00",
+      "updated_at": "2024-06-01 00:00:00",
+      "state": "open"
+    }
+  ],
+  "dependencies": {},
   "simulator": {
     "data": {
       "parameters": {

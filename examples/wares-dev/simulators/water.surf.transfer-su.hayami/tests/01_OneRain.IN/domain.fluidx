@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+ <domain>
+  <definition>
+   <unit class="SU" ID="1" pcsorder="1">
+   </unit>
+  </definition>
+  <attributes unitsclass="SU" colorder="area;flowdist;nmanning;slope">
+1	60.0	50.0	0.1	0.1
+  </attributes>
+  <calendar>
+  </calendar>
+ </domain>
+
+
+</openfluid>
