@@ -1,5 +1,7 @@
 # Gestion directe de simulateur avec fragments de code  {#apdx_submodule}
 
+[TOC]
+
 Cette page explique comment manipuler les simulateurs contenant des fragments en ligne de commande. La partie d'ajout/suppression de fragment peut être faite depuis DevStudio.
 
 <br>

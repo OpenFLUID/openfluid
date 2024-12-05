@@ -1,4 +1,7 @@
 # Parametric signature {#apdx_tpl_signature}
+
+[TOC]
+
 Even if compiled simulators require an explicit definition of variable and unit class, the underlying code and signature can be templated. Before json signature, such change was possible through precompilation blocks around signature lines. 
 
 Since json signature we provide a new workflow to handle parametric information both in code and documentation.
