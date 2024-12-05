@@ -1,39 +1,36 @@
 /*
 
-  This file is part of OpenFLUID software
+  This file is part of MHYDAS simulators for OpenFLUID software
   Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
-  OpenFLUID is free software: you can redistribute it and/or modify
+  This part of MHYDAS is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  OpenFLUID is distributed in the hope that it will be useful,
+  This part of MHYDAS is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  along with this part of MHYDAS. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
-  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  Other Usage means a use of MHYDAS that is inconsistent with the GPL
   license, and requires a written agreement between You and INRA.
-  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  Licensees for Other Usage of MHYDAS may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
-
 /**
-  @file WareMain.cpp
-  
-  @author Armel THONI <armel.thoni@inra.fr>
+  @file HayamiRSSim.cpp
  */
 
 
@@ -43,12 +40,9 @@
 #include <openfluid/tools/DataHelpers.hpp>
 #include <openfluid/scientific/FloatingPoint.hpp>
 
-#include "HayamiTools.hpp"
+#include "fragments/hayami.kernel/HayamiTools.hpp"
 
 
-/**
-
- */
 class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
 {
   private:
@@ -72,10 +66,10 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
           Calibration step for height-discharge relation (meters)
      */
     float m_CalibrationStep;
-    
+
     float m_RSBuffer;
 
-    IDKernelMap m_RSKernel;
+    fragments::hydro::IDKernelMap m_RSKernel;
 
     bool m_UseUpSUOutput;
 
@@ -254,8 +248,7 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(RS,"width",RSwidth);
 
         // Checking parameters consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
         if (RSmanning <= 0)
         {
           OPENFLUID_RaiseError("The Manning roughness coefficient of RS " + IDStr + " should be positive.");
@@ -328,7 +321,7 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
       {
         ID = RS->getID();
 
-        m_Input[ID] = new openfluid::core::SerieOfDoubleValue();
+        m_Input[ID] = new openfluid::core::SerieOfDoubleValue(m_MaxSteps,openfluid::core::DoubleValue(0.0));
         m_HeightDischarge[ID] = new openfluid::core::SerieOfDoubleValue();
         m_CurrentInputSum[ID] = 0;
 
@@ -354,8 +347,8 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(RS,"length",RSlength);
         Cel = m_MeanCelerity * (m_MeanManning / RSmanning) * (sqrt((RSslope / m_MeanSlope)));
         Sigma = m_MeanSigma * (RSmanning/ m_MeanManning) * (m_MeanSlope / RSslope);
-        m_RSKernel[RS->getID()] = t_HayamiKernel();
-        ComputeHayamiKernel(Cel, Sigma,RSlength,m_MaxSteps,OPENFLUID_GetDefaultDeltaT(), m_RSKernel[RS->getID()]);
+        m_RSKernel[RS->getID()] = fragments::hydro::t_HayamiKernel();
+        fragments::hydro::ComputeHayamiKernel(Cel, Sigma,RSlength,m_MaxSteps,OPENFLUID_GetDefaultDeltaT(), m_RSKernel[RS->getID()]);
 
       }
 
@@ -410,12 +403,11 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
       unsigned int CurrentStep;
       unsigned int DeltaT;
       float UpSrcSUsOutputsSum;
-      float UpLatSUsOutputsSum;
       float UpRSsOutputsSum;
       float UpGUsOutputsSum;
       openfluid::core::DoubleValue QOutput;
       openfluid::core::DoubleValue QInput;
-      openfluid::core::DoubleValue TmpValue, TmpInterflow;
+      openfluid::core::DoubleValue TmpValue, TmpInterflow = 0.0;
 
       openfluid::core::SpatialUnit* RS;
       openfluid::core::SpatialUnit* UpRS;
@@ -446,17 +438,23 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
           UpSUsList = RS->fromSpatialUnits("SU");
           OPENFLUID_UNITSLIST_LOOP(UpSUsList,UpSU)
           {
-            OPENFLUID_GetVariable(UpSU,"water.surf.Q.downstream-su",TmpValue);
+            if(OPENFLUID_IsVariableExist(UpSU,"water.surf.Q.downstream-su",OPENFLUID_GetCurrentTimeIndex()))
+            {
+               OPENFLUID_GetVariable(UpSU,"water.surf.Q.downstream-su",TmpValue);
+            }
+            
             TmpInterflow = 0;
             if (m_UseInterflowVar)
             {
-              OPENFLUID_GetVariable(UpSU,"water.uz.Q.interflow",TmpInterflow);
+              if(OPENFLUID_IsVariableExist(UpSU,"water.uz.Q.interflow",OPENFLUID_GetCurrentTimeIndex()))
+              {
+                OPENFLUID_GetVariable(UpSU,"water.uz.Q.interflow",TmpInterflow);
+              }
             }
             UpSrcSUsOutputsSum = UpSrcSUsOutputsSum + TmpValue + TmpInterflow;
 
             // Checking used variable consistency
-            std::string UpSUStr;
-            openfluid::tools::convertValue(UpSU,&UpSUStr);
+            std::string UpSUStr = std::to_string(UpSU->getID());
             if (TmpValue < 0)
             {
               OPENFLUID_RaiseError("The used variable output volume at the outlet of the upstream SU " + UpSUStr + 
@@ -465,39 +463,20 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
           }
         }
 
-
-        // 1.b Computation of stream coming from side SU units
-        //TODO check if the lateral contributions must be computed here
-        UpLatSUsOutputsSum = 0;
-        /*
-          if (m_UseUpSUOutput)
-          {
-            UpSUsList = RS->getLatUpstreamSUs();
-
-            for(UpSUiter=UpSUsList->begin(); UpSUiter != UpSUsList->end(); UpSUiter++)
-            {
-              UpSU = *UpSUiter;
-
-              OPENFLUID_GetVariable(UpSU,("water.surf.Q.downstream-su"),CurrentStep,&TmpValue);
-              UpLatSUsOutputsSum = UpLatSUsOutputsSum + TmpValue;// / UpSU->getUsrArea();
-
-            }
-          }*/
-
-
         // 2.a Computation of stream coming from up RS units
         UpRSsOutputsSum = 0;
         UpRSsList = RS->fromSpatialUnits("RS");
 
         OPENFLUID_UNITSLIST_LOOP(UpRSsList,UpRS)
         {
-
-          OPENFLUID_GetVariable(UpRS,"water.surf.Q.downstream-rs",TmpValue);
+          if(OPENFLUID_IsVariableExist(UpRS,"water.surf.Q.downstream-rs",OPENFLUID_GetCurrentTimeIndex()))
+          {
+            OPENFLUID_GetVariable(UpRS,"water.surf.Q.downstream-rs",TmpValue);
+          }
           UpRSsOutputsSum = UpRSsOutputsSum + TmpValue;
 
           // Checking used variable consistency
-          std::string UpRSStr;
-          openfluid::tools::convertValue(UpRS,&UpRSStr);
+          std::string UpRSStr = std::to_string(UpRS->getID());
           if (TmpValue < 0)
           {
             OPENFLUID_RaiseError("The used variable output volume at the outlet of the upstream RS " + UpRSStr + 
@@ -516,7 +495,10 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
 
             OPENFLUID_UNITSLIST_LOOP(DownGUsList,DownGU)
             {
-              OPENFLUID_GetVariable(DownGU,"water.sz-surf.Q.baseflow",TmpValue);
+              if(OPENFLUID_IsVariableExist(DownGU,"water.sz-surf.Q.baseflow",OPENFLUID_GetCurrentTimeIndex()))
+              {
+                OPENFLUID_GetVariable(DownGU,"water.sz-surf.Q.baseflow",TmpValue);
+              }
               UpGUsOutputsSum = UpGUsOutputsSum + TmpValue;
             }
           }
@@ -527,28 +509,26 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
         QInput = UpRSsOutputsSum + UpSrcSUsOutputsSum + UpGUsOutputsSum;
         m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
         m_Input[ID]->push_back(QInput);
+        m_Input[ID]->erase(m_Input[ID]->begin());
 
         QOutput = 0;
         if (m_CurrentInputSum[ID] > 0)
         {
-          QOutput = DoHayamiPropagation(m_RSKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
+          QOutput = fragments::hydro::DoHayamiPropagation(m_RSKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
         }
 
-        QOutput = QOutput + UpLatSUsOutputsSum;
         OPENFLUID_AppendVariable(RS,"water.surf.Q.downstream-rs",QOutput);
 
         if (!computeWaterHeightFromDischarge(ID,QOutput,TmpValue))
         {
-          std::string IDStr;
-          openfluid::tools::convertValue(ID,&IDStr);
+          std::string IDStr = std::to_string(ID);
           OPENFLUID_RaiseWarning("cannot compute water height on RS " + IDStr);
         }
 
         OPENFLUID_AppendVariable(RS,"water.surf.H.level-rs",TmpValue);
 
         // Checking produced variables consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
         if (TmpValue < 0)
         {
           OPENFLUID_RaiseError("The produced variable water height at the outlet of the RS " + IDStr + 

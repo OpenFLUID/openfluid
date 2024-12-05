@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+  <monitoring>
+    <observer ID="export.vars.files.csv-multicols" enabled="1">
+      <param name="format.f1.colsep" value=";" />
+      <param name="format.f1.commentchar" value="#" />
+      <param name="format.f1.date" value="ISO" />
+      <param name="format.f1.float-format" value="auto" />
+      <param name="format.f1.header" value="colnames-as-comment" />
+      <param name="format.f1.missingvalue" value="NA" />
+      <param name="format.f1.precision" value="14" />
+      <param name="set.OUT.format" value="f1" />
+      <param name="set.OUT.selection" value="SU#*:water.atm-surf.H.rain" />
+    </observer>
+  </monitoring>
+</openfluid>

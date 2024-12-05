@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+ <model>
+  <generator varname="water.surf.H.runoff" unitsclass="SU" method="inject" enabled="1">
+   <param name="distribution" value="SUdistri.dat"/>
+   <param name="sources" value="rainsources.xml"/>
+  </generator>
+  <simulator ID="water.surf.transfer-su.hayami" enabled="1">
+   <param name="maxsteps" value="50"/>
+   <param name="meancel" value="0.045"/>
+   <param name="meansigma" value="500"/>
+  </simulator>
+ </model>
+
+
+</openfluid>

@@ -60,7 +60,7 @@ done
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
-$REPO_ROOT/resources/tools/ofsrc-stylecheck.py $REPO_ROOT --disable=UNRT --exclude=share/openfluid/waresdev/templates,resources/tests/miscsrc/cmdline-check
+$REPO_ROOT/resources/tools/ofsrc-stylecheck.py $REPO_ROOT --disable=UNRT --exclude=share/openfluid/waresdev/templates,resources/tests/miscsrc/cmdline-check,examples/wares-dev
 
 
 # Capture the return value

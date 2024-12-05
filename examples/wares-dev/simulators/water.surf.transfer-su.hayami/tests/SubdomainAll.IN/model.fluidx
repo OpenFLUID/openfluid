@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+  <model>
+    <generator
+      variables="SU#127:water.surf.H.runoff;SU#132:water.surf.H.runoff;SU#135:water.surf.H.runoff;SU#198:water.surf.H.runoff"
+      method="inject-multicol" enabled="true">
+      <param name="datafile" value="multi-inject.csv" />
+    </generator>
+    <simulator ID="water.surf.transfer-su.hayami" enabled="true">
+      <param name="maxsteps" value="100" />
+      <param name="meancel" value="0.045" />
+      <param name="meansigma" value="500" />
+    </simulator>
+  </model>
+</openfluid>

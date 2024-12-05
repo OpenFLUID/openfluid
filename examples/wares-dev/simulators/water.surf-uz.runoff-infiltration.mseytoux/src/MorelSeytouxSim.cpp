@@ -1,39 +1,38 @@
 /*
 
-  This file is part of OpenFLUID software
+  This file is part of MHYDAS simulators for OpenFLUID software
   Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
-  OpenFLUID is free software: you can redistribute it and/or modify
+  This part of MHYDAS is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  OpenFLUID is distributed in the hope that it will be useful,
+  This part of MHYDAS is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  along with this part of MHYDAS. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
-  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  Other Usage means a use of MHYDAS that is inconsistent with the GPL
   license, and requires a written agreement between You and INRA.
-  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  Licensees for Other Usage of MHYDAS may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 
 /**
-  @file WareMain.cpp
+  @file MorelSeytouxSim.cpp
   
-  @author Armel THONI <armel.thoni@inra.fr>
  */
 
 
@@ -197,8 +196,7 @@ class MorelSeytouxSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(SU,"area",Area);
 
         // Checking parameters consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
         if (ThetaR < 0 || ThetaR > 1)
         {
           OPENFLUID_RaiseError("The residual soil water content of the SU " + IDStr + 
@@ -263,8 +261,7 @@ class MorelSeytouxSimulator : public openfluid::ware::PluggableSimulator
         ThetaI = ThetaI * m_CoeffMultiThetaIni; // default value of Coeff = 1
 
         // Checking parameters consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
         if ((ThetaI - ThetaR) < 0)
         {
           if (m_UseCoeffThetaIni)
@@ -525,8 +522,7 @@ class MorelSeytouxSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_AppendVariable(SU,"water.surf.H.infiltration", CurrentInfiltration);
 
         // Checking produced variables consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
 
         if (CurrentRunoff < 0)
         {

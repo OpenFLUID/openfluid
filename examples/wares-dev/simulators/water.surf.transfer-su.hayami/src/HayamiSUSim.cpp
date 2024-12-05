@@ -1,38 +1,36 @@
 /*
 
-  This file is part of OpenFLUID software
+  This file is part of MHYDAS simulators for OpenFLUID software
   Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
-  OpenFLUID is free software: you can redistribute it and/or modify
+  This part of MHYDAS is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  OpenFLUID is distributed in the hope that it will be useful,
+  This part of MHYDAS is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+  along with this part of MHYDAS. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
-  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  Other Usage means a use of MHYDAS that is inconsistent with the GPL
   license, and requires a written agreement between You and INRA.
-  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  Licensees for Other Usage of MHYDAS may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
-  @file WareMain.cpp
-  
-  @author Armel THONI <armel.thoni@inra.fr>
+  @file HayamiSUSim.cpp
  */
 
 
@@ -41,7 +39,7 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/DataHelpers.hpp>
 
-#include "HayamiTools.hpp"
+#include "fragments/hayami.kernel/HayamiTools.hpp"
 
 
 class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
@@ -57,7 +55,7 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
 
     double m_MeanManning;
 
-    IDKernelMap m_SUKernel;
+    fragments::hydro::IDKernelMap m_SUKernel;
 
     openfluid::core::IDSerieOfDoubleValuePtrMap m_Input;
 
@@ -169,8 +167,7 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(SU,("area"),SUarea);
 
         // Checking parameters consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
         if (SUmanning <= 0) 
         {
           OPENFLUID_RaiseError("The Manning roughness coefficient of SU " + IDStr + " should be positive.");
@@ -221,7 +218,7 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
 
         ID = SU->getID();
 
-        m_Input[ID] = new openfluid::core::SerieOfDoubleValue();
+        m_Input[ID] = new openfluid::core::SerieOfDoubleValue(m_MaxSteps,openfluid::core::DoubleValue(0.0));
         m_CurrentInputSum[ID] = 0;
 
         OPENFLUID_GetAttribute(SU,"slope",TmpValue);
@@ -246,9 +243,9 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
         Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / Area);
 
         // Computing Hayami kernel
-        m_SUKernel[SU->getID()] = t_HayamiKernel();
+        m_SUKernel[SU->getID()] = fragments::hydro::t_HayamiKernel();
         OPENFLUID_GetAttribute(SU,"flowdist",TmpValue);
-        ComputeHayamiKernel(Cel, Sigma,TmpValue,m_MaxSteps,DeltaT, m_SUKernel[SU->getID()]);
+        fragments::hydro::ComputeHayamiKernel(Cel, Sigma,TmpValue,m_MaxSteps,DeltaT, m_SUKernel[SU->getID()]);
       }
 
 
@@ -289,6 +286,7 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
       {
         ID = SU->getID();
 
+        CurrentRunoff = 0.0;
         CurrentExfiltration = 0;
         CurrentExfiltrationUZ = 0;
         CurrentExfiltrationSZ = 0;
@@ -297,14 +295,17 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(SU,"area",Area);
 
         // Getting water input
-        OPENFLUID_GetVariable(SU,"water.surf.H.runoff",CurrentRunoff);
-
+        if(OPENFLUID_IsVariableExist(SU, "water.surf.H.runoff",OPENFLUID_GetCurrentTimeIndex()))
+        {
+           OPENFLUID_GetVariable(SU,"water.surf.H.runoff",CurrentRunoff);
+        }
+        
 
         /************************************************************************************************************
           Adding exfiltration from soil
          ************************************************************************************************************/
         // Exfiltration from SU (simple model)
-        if (m_UseExfiltrationUZFromSUVar)
+        if (m_UseExfiltrationUZFromSUVar && OPENFLUID_IsVariableExist(SU,"water.uz-surf.Q.exfiltration",OPENFLUID_GetCurrentTimeIndex()))
         {
           OPENFLUID_GetVariable(SU,"water.uz-surf.Q.exfiltration",CurrentExfiltration);
         }
@@ -319,11 +320,11 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
             {
 
               OPENFLUID_GetAttribute(GU,"area",AreaGU);
-              if (m_UseExfiltrationSZVar)
+              if (m_UseExfiltrationSZVar && OPENFLUID_IsVariableExist(SU,"water.sz-surf.H.exfiltration",OPENFLUID_GetCurrentTimeIndex()))
               {
                 OPENFLUID_GetVariable(GU,"water.sz-surf.H.exfiltration",CurrentExfiltrationSZ);
               }
-              if (m_UseExfiltrationUZFromGUVar)
+              if (m_UseExfiltrationUZFromGUVar && OPENFLUID_IsVariableExist(SU,"water.uz-surf.H.exfiltration",OPENFLUID_GetCurrentTimeIndex()))
               {
                 OPENFLUID_GetVariable(GU,"water.uz-surf.H.exfiltration",CurrentExfiltrationUZ);
               }
@@ -339,9 +340,8 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
          ************************************************************************************************************/
         QInput = (CurrentRunoff * Area / DeltaT) + CurrentExfiltration;
         m_CurrentInputSum[ID] = m_CurrentInputSum[ID] + QInput;
-        //TODO check m_Input size growth
         m_Input[ID]->push_back(QInput);
-
+        m_Input[ID]->erase(m_Input[ID]->begin());
 
         /************************************************************************************************************
           Doing Hayami propagation
@@ -350,13 +350,12 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
         if (m_CurrentInputSum[ID] > 0)
         {
           //TODO check given CurrentStep
-          QOutput = DoHayamiPropagation(m_SUKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
+          QOutput = fragments::hydro::DoHayamiPropagation(m_SUKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
         }
         OPENFLUID_AppendVariable(SU,"water.surf.Q.downstream-su",QOutput);
 
         // Checking produced variable consistency
-        std::string IDStr;
-        openfluid::tools::convertValue(ID,&IDStr);
+        std::string IDStr = std::to_string(ID);
         if (QOutput < 0)
         {
           OPENFLUID_RaiseError("The produced variable output volume at the outlet of the SU " + IDStr + 
