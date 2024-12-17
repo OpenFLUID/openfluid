@@ -166,12 +166,12 @@ ENDIF()
 IF(OFBUILD_ENABLE_GUI)
   # Detection of external translations tools and setup of common translations targets
   IF (QT_VERSION_MAJOR LESS 6)
-    FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease lrelease-qt5)
-    FIND_PROGRAM(LUPDATE_EXECUTABLE NAMES lupdate lupdate-qt5)
+    FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease-qt5 lrelease-qt5.exe lrelease lrelease.exe)
+    FIND_PROGRAM(LUPDATE_EXECUTABLE NAMES lupdate-qt5 lrelease-qt5.exe lupdate lupdate.exe)
   ELSE()
     FIND_PACKAGE(Qt6 COMPONENTS LinguistTools) # WARNING requires qtchoose manual setup externally FIXME see how to make it automatic
-    SET(LRELEASE_EXECUTABLE lrelease)
-    SET(LUPDATE_EXECUTABLE lupdate)
+    FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease-qt6 lrelease-qt6.exe lrelease lrelease.exe)
+    FIND_PROGRAM(LUPDATE_EXECUTABLE NAMES lupdate-qt6 lupdate-qt6.exe lupdate lupdate.exe)
   ENDIF()
   
   ADD_CUSTOM_TARGET(update-translations-strings)

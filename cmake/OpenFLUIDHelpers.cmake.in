@@ -489,10 +489,11 @@ FUNCTION(_OPENFLUID_WAREPLUGIN_BUILD)
     # ====== release ======
 
     IF (QT_VERSION_MAJOR LESS 6)
-      FIND_PROGRAM(_LRELEASE_EXECUTABLE NAMES lrelease lrelease-qt5)
+      FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease-qt5 lrelease-qt5.exe lrelease lrelease.exe)
+      FIND_PROGRAM(LUPDATE_EXECUTABLE NAMES lupdate-qt5 lrelease-qt5.exe lupdate lupdate.exe)
     ELSE()
-      FIND_PACKAGE(Qt6 COMPONENTS LinguistTools)
-      SET(_LRELEASE_EXECUTABLE lrelease)
+      FIND_PACKAGE(Qt6 COMPONENTS LinguistTools) # WARNING requires qtchoose manual setup externally FIXME see how to make it automatic
+      FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease-qt6 lrelease-qt6.exe lrelease lrelease.exe)
     ENDIF()
 
     IF(_LRELEASE_EXECUTABLE)
