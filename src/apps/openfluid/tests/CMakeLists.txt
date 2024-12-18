@@ -220,6 +220,8 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorMissing
                            "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simmis" "-f"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simmis"
                   )
+set_tests_properties(cmdline-openfluid-InstallExamplesSimulatorMissing PROPERTIES WILL_FAIL TRUE)
+
 
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesProjectsSelection

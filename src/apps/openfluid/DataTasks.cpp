@@ -256,7 +256,7 @@ int DataTasks::processInstallExamples() const
       bool AllIsOK = true;
       for (const auto& S : Selection)
       {
-        AllIsOK += openfluid::base::ExamplesManager::installSimulator(S,ResPath,InstPath,m_Cmd.isOptionActive("force"));
+        AllIsOK &= openfluid::base::ExamplesManager::installSimulator(S,ResPath,InstPath,m_Cmd.isOptionActive("force"));
       }
       return (AllIsOK ? 0 : error("problems occurred during installation"));
     }
@@ -276,7 +276,7 @@ int DataTasks::processInstallExamples() const
       bool AllIsOK = true;
       for (const auto& S : Selection)
       {
-        AllIsOK += openfluid::base::ExamplesManager::installProject(S,ResPath,InstPath,m_Cmd.isOptionActive("force"));
+        AllIsOK &= openfluid::base::ExamplesManager::installProject(S,ResPath,InstPath,m_Cmd.isOptionActive("force"));
       }
       return (AllIsOK ? 0 : error("problems occurred during installation"));
     }
