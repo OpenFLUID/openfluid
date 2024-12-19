@@ -38,8 +38,8 @@ ELSE()
 ENDIF()
 
 
- IF(OFBUILD_ENABLE_GUI)
-# Qt
+IF(OFBUILD_ENABLE_GUI)
+  # Qt
   SET(WINDEPLOYQT_TARGETS)
 
   IF (QT_VERSION_MAJOR LESS 6)
@@ -55,20 +55,25 @@ ENDIF()
     LIST(APPEND WINDEPLOYQT_TARGETS openfluid-devstudio)
   ENDIF()
 
-FOREACH(CURRENT_TARGET ${WINDEPLOYQT_TARGETS})
-  INSTALL(CODE 
-          "
-          FILE(READ \"${CMAKE_BINARY_DIR}/${CURRENT_TARGET}_path.txt\" CURRENT_TARGET_PATH)
-          EXECUTE_PROCESS(COMMAND ${WINDEPLOYQT_COMMAND}
+  FOREACH(CURRENT_TARGET ${WINDEPLOYQT_TARGETS})
+    INSTALL(CODE
+            "
+            FILE(READ \"${CMAKE_BINARY_DIR}/${CURRENT_TARGET}_path.txt\" CURRENT_TARGET_PATH)
+            EXECUTE_PROCESS(COMMAND ${WINDEPLOYQT_COMMAND}
                                         \"\${CURRENT_TARGET_PATH}\"
                                         --dir \"\${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}\" 
                                         --libdir \"\${CMAKE_INSTALL_PREFIX}/${OFBUILD_BIN_INSTALL_PATH}\"
-                                        --compiler-runtime --release
+                                        --compiler-runtime
                                         -xml -network -concurrent
+                                        --release
                                         --verbose 1
                                 WORKING_DIRECTORY \"${CMAKE_BINARY_DIR}\"
                                 OUTPUT_FILE windeployqt_exec_${CURRENT_TARGET}.log 
-                                ERROR_FILE windeployqt_exec_${CURRENT_TARGET}.err)
-          ")
-ENDFOREACH()
+                                ERROR_FILE windeployqt_exec_${CURRENT_TARGET}.err
+                                RESULT_VARIABLE WDEPLOYQT_RESULT)
+            IF(WDEPLOYQT_RESULT)
+              MESSAGE(WARNING \"windeployqt failed for target: \${CURRENT_TARGET}. Check logs for details.\")
+            ENDIF()
+            ")
+  ENDFOREACH()
 ENDIF()

@@ -365,7 +365,7 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
       return;
     }
 
-    if(!requestWareTabClosing(it.value()))
+    if (!requestWareTabClosing(it.value()))
     {
       return;
     }
@@ -380,20 +380,20 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
 
     openfluid::tools::Path UnderscorePaths = openfluid::tools::Path({WarePath.toStdString(), "_*"});
 
-    if(OriginalFolderPath.exists() && MigrationFolderPath.exists())   
+    if (OriginalFolderPath.exists() && MigrationFolderPath.exists())   
     {  
       openfluid::tools::Path BranchInfoFile = openfluid::tools::Path({MigrationFolderPath.toGeneric(),
                                                                       openfluid::config::WARESDEV_BRANCH_INFO_FILE});
-      if(BranchInfoFile.exists())
+      if (BranchInfoFile.exists())
       {
         std::string GitBranchNameFromFile = openfluid::tools::Filesystem::readFile(BranchInfoFile);
         GitUIProxy Git;
         try
         {
           std::string CurrentBranchName = GitUIProxy::getCurrentBranchName(WarePath.toStdString());
-          if(CurrentBranchName != GitBranchNameFromFile)
+          if (CurrentBranchName != GitBranchNameFromFile)
           {
-            if(Git.checkout(WarePath, QString::fromStdString(GitBranchNameFromFile), false))
+            if (Git.checkout(WarePath, QString::fromStdString(GitBranchNameFromFile), false))
             {
               QProcess Process; 
               Process.setWorkingDirectory(WarePath);
@@ -420,7 +420,7 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
             }
           }
         }
-        catch(const std::exception& E)
+        catch (const std::exception& E)
         {
           QMessageBox::warning(nullptr, tr("Revert migration failure"), 
                                   tr(E.what()), QMessageBox::Close);
@@ -437,9 +437,17 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
       openfluid::tools::Filesystem::copyDirectoryContent(std::filesystem::path(OriginalFolderPath.toGeneric()),
                                                         std::filesystem::path(WarePath.toStdString()));
 
-      OriginalFolderPath.removeDirectory();
-      MigrationFolderPath.removeDirectory();
-      openPath(WarePath);    
+      for (auto& Path : {OriginalFolderPath, MigrationFolderPath})
+      {
+        if (!Path.removeDirectory())
+        {
+          openfluid::utils::log::error("Migration:revert", "Directory removal failed: "+Path.toGeneric());
+        }  
+      }
+      if (!openPath(WarePath))
+      {
+        openfluid::utils::log::error("Migration:revert", "Ware reopening failed: "+WarePath.toStdString());
+      }
     }   
     else 
     {

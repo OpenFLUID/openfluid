@@ -75,11 +75,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.1"),0);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.2"),1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.2","1.6.1"),-1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("3.1.2","2.1.11"),-1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6"),-1);
-  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.a"),-2);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.2","1.6.1"),1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.1","1.6.2"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("2.1.11", "3.1.2"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6","1.6.1"),-1);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("1.6.a","1.6.1"),-2);
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("a","1.6"),-2);
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("","1.6"),-2);
   BOOST_REQUIRE_EQUAL(openfluid::tools::compareVersions("",""),-2);
