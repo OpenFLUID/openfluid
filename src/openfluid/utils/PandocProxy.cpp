@@ -39,6 +39,7 @@
 
 #include <openfluid/utils/PandocProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/config.hpp>
@@ -58,12 +59,22 @@ void PandocProxy::findPandocProgram()
     {
       Process P(m_ExecutablePath,{"--version"});
       P.run();
+      const auto& ExitCode = P.getExitCode();
+      if (ExitCode != 0)
+      {
+        openfluid::utils::log::error("Pandoc", "Version check failed. Exit code: "+std::to_string(ExitCode));
+      }
       const auto OutLines = P.stdOutLines();
 
-      if (!OutLines.empty() && openfluid::tools::startsWith(OutLines[0],"pandoc "))
+      if (!OutLines.empty() && openfluid::tools::startsWith(OutLines[0],"pandoc"))
       {
         m_Version = OutLines[0];
         m_Version.erase(0,7);
+      }
+      else
+      {
+        openfluid::utils::log::error("Pandoc", "Version parsing failed. Output was: \n" + \
+                                                openfluid::tools::join(OutLines, "\n"));
       }
     }
   }
@@ -111,7 +122,7 @@ Process::Command PandocProxy::getCommand(const std::string& InputFormat, const s
 
   if (WithCiteproc)
   {
-    bool IsFilter = (openfluid::tools::compareVersions(m_Version,"2.11") > 0);
+    bool IsFilter = (openfluid::tools::compareVersions("2.11", m_Version) > 0);
 
     if (IsFilter)
     {

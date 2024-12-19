@@ -180,11 +180,11 @@ int compareVersions(const std::string& VersionA, const std::string& VersionB)
   {
     if (NumVectA[i] > NumVectB[i])
     {
-      return -1;
+      return 1;
     }
     else if (NumVectA[i] < NumVectB[i])
     {
-      return 1;
+      return -1;
     }
   }
 

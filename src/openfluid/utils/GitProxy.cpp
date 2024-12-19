@@ -42,6 +42,8 @@
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/utils/Process.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/config.hpp>
 
@@ -128,6 +130,12 @@ bool GitProxy::isPathGitRepo(const std::string& Path)
 
 const std::string GitProxy::getCurrentBranchName(const std::string& Path)
 {
+  if (openfluid::tools::compareVersions(m_Version, "2.21") < 0) // show-current option exists since Git 2.21
+  {
+    std::string ErrorMsg = "Error with git branch command: Git version not supported (" + m_Version + ")";
+    openfluid::utils::log::error("Git", ErrorMsg);
+    throw GitOperationException(ErrorMsg);
+  }
   openfluid::utils::Process::Command Cmd{
     .Program = "git",
     .Args = {"branch", "--show-current"},
@@ -135,13 +143,16 @@ const std::string GitProxy::getCurrentBranchName(const std::string& Path)
   };
   openfluid::utils::Process Process(Cmd);
   Process.run();
-  if(Process.getExitCode() == 0)
+  const auto& OutLines = Process.stdOutLines();
+  if (Process.getExitCode() == 0 && OutLines.size() > 0)
   {
-    return Process.stdOutLines()[0];
+    return OutLines[0];
   }
   else
   {
-    throw GitOperationException("Error with git branch command in path : " + Path);
+    std::string ErrorMsg = "Error with git branch command in path : " + Path;
+    openfluid::utils::log::error("Git", ErrorMsg);
+    throw GitOperationException(ErrorMsg);
   }
 }
 
