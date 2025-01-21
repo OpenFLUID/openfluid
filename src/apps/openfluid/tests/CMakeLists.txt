@@ -2,13 +2,13 @@
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-Help
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" "-h")
 SET_TESTS_PROPERTIES(cmdline-openfluid-Help
-                     PROPERTIES PASS_REGULAR_EXPRESSION "openfluid \\[<command>\\] \\[<options>\\] \\[<args>\\]")
+                     PROPERTIES PASS_REGULAR_EXPRESSION "openfluid \\[<command>\\] \\[<options>\\]")
 
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-HelpWhenNothing
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}")
 SET_TESTS_PROPERTIES(cmdline-openfluid-HelpWhenNothing
-                     PROPERTIES PASS_REGULAR_EXPRESSION "openfluid \\[<command>\\] \\[<options>\\] \\[<args>\\]")
+                     PROPERTIES PASS_REGULAR_EXPRESSION "openfluid \\[<command>\\] \\[<options>\\]")
 
 
 ###########################################################################
@@ -329,7 +329,7 @@ SET_PROPERTY(TEST cmdline-openfluid-ConfigureSimulator APPEND PROPERTY DEPENDS c
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "build" "--build-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim/_build-release-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}"
-                           "-t" "install" "-j" "2")
+                           "--target=install" "-j" "2")
 SET_PROPERTY(TEST cmdline-openfluid-BuildSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureSimulator)
 
 
@@ -586,7 +586,7 @@ set_tests_properties(cmdline-openfluid-ConfigureMigratedSimulator PROPERTIES FIX
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedSimulator
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration"
-                           "-t" "install" "-j" "2")
+                           "--target=install" "-j" "2")
 SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedSimulator)
 set_tests_properties(cmdline-openfluid-BuildMigratedSimulator PROPERTIES FIXTURES_REQUIRED SimulatorMigrated)
 
@@ -636,7 +636,7 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedSimulatorParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-ui-migrated"
-                             "-t" "install" "-j" "2")
+                             "--target=install" "-j" "2")
   SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulatorParamsUI APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedSimulatorParamsUI)
 
   IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
@@ -694,7 +694,7 @@ SET_PROPERTY(TEST cmdline-openfluid-ConfigureMigratedObserver APPEND PROPERTY DE
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedObserver
 COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
         "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-migrated"
-        "-t" "install" "-j" "2")
+        "--target=install" "-j" "2")
 SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedObserver APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedObserver)
 
 
@@ -739,7 +739,7 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedObserverParamsUI
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/obs/tests.cmdline.obs-ui-migration"
-                             "-t" "install" "-j" "2")
+                             "--target=install" "-j" "2")
   SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedSimulator APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedObserverParamsUI)
 ENDIF()
 
@@ -790,7 +790,7 @@ IF(OFBUILD_ENABLE_GUI)
   OPENFLUID_ADD_TEST(NAME cmdline-openfluid-BuildMigratedBuilderext
                      COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                              "build" "--src-path=${OFBUILD_TMP_DIR}/cmdline/migrate-ware/bext/tests.cmdline.bext-migration"
-                             "-t" "install" "-j" "2")
+                             "--target=install" "-j" "2")
   SET_PROPERTY(TEST cmdline-openfluid-BuildMigratedBuilderext APPEND PROPERTY DEPENDS cmdline-openfluid-ConfigureMigratedBuilderext)
 ENDIF()
 

@@ -149,13 +149,15 @@ int main(int argc, char **argv)
     RunCmd.addOption(Opt);
   } 
 
+  RunCmd.addArgs({{"input-path", false}});
+
   Parser.addCommand(RunCmd, &SimulationSection);
 
   // ---
 
   auto CreateDataCmd = openfluid::utils::CommandLineCommand("create-data","Create project or dataset");
-  CreateDataCmd.addOptions({{"type","t","type of the data to create (project or dataset)",true},
-                            {"name","n","name of the project or dataset to create",true},
+  CreateDataCmd.addOptions({{"type","t","type of the data to create (project or dataset) (required)",true},
+                            {"name","n","name of the project or dataset to create (required)",true},
                             {"parent-path","p","parent path where to create the dataset or project",true},
                             {"with-sample-data","s","generate sample data"}});
   Parser.addCommand(CreateDataCmd, &SimulationSection);  
@@ -163,7 +165,7 @@ int main(int argc, char **argv)
   // ---
 
   auto ReportCmd = openfluid::utils::CommandLineCommand("report", "Display report about available wares");
-  ReportCmd.addOptions({{"ware-type","t","type of ware to report (simulators|observers)", true},
+  ReportCmd.addOptions({{"ware-type","t","type of ware to report (simulators|observers) (required)", true},
                         {"list","l","display as simple list of wares IDs"},
                         {"with-errors","e","report errors if any"},
                         {"format","","output format (text|json, default is text)",true}});
@@ -188,8 +190,8 @@ int main(int argc, char **argv)
   // ---
 
   auto CreateWareCmd = openfluid::utils::CommandLineCommand("create-ware","Create ware sources");
-  CreateWareCmd.addOptions({{"type","t","type of the ware sources to create",true},
-                            {"id","i","ID of the ware sources to create",true},
+  CreateWareCmd.addOptions({{"type","t","type of the ware sources to create (required)",true},
+                            {"id","i","ID of the ware sources to create (required)",true},
                             {"main-class","m","name to use for the main C++ class",true},
                             {"parent-path","p","parent path where to create the ware sources",true},
                             {"with-paramsui","w","generate the C++ class of the parameterization UI "
@@ -206,7 +208,7 @@ int main(int argc, char **argv)
   // ---
 
   auto CheckCmd = openfluid::utils::CommandLineCommand("check","Checks ware sources for potential issues"); 
-  CheckCmd.addOptions({{"src-path","s","path to the ware sources",true}, 
+  CheckCmd.addOptions({{"src-path","s","path to the ware sources (required)",true}, 
                        {"ignore","i","ignore checks (comma separated list)"},
                        {"pedantic","p","check for additional potential issues"},
                        {"warnings-as-failures","w","consider warnings as failures"},
@@ -220,11 +222,11 @@ int main(int argc, char **argv)
   auto ConfigureCmd = openfluid::utils::CommandLineCommand("configure",
                                                            "Configure ware sources for build",
                                                            "Configure ware sources for build. "
-                                                           "If the build-path option is not provided, an automatic "
+                                                           "If the <build-path> option is not provided, an automatic "
                                                            "build directory is created in the sources tree. "
                                                            "Arguments can be passed to the configure tool "
                                                            "after the --- switch.");
-  ConfigureCmd.addOptions({{"src-path","s","path to the ware sources",true},
+  ConfigureCmd.addOptions({{"src-path","s","path to the ware sources (required)",true},
                            {"build-path","b","path to the build directory",true},
                            {"build-type","t","CMake build mode (Debug|Release|..., default is Release)",true},
                            {"generator","g","CMake generator to use (default is CMake default)",true}});
@@ -237,33 +239,39 @@ int main(int argc, char **argv)
                                                        "Build configured ware sources. "
                                                        "If the build-path option is not provided, it tries to "
                                                        "automatically detect the build directory in the sources tree "
-                                                       "using the src-path option. "
+                                                       "using the <src-path> and <build-type> options. "
                                                        "Arguments can be passed to the build tool "
                                                        "after the --- switch.");
-  BuildCmd.addOptions({{"build-path","b","path to the build directory",true},
-                       {"src-path","s","path to the sources directory (build directory is deduced)",true},
+  BuildCmd.addOptions({{"build-path","b","path to the build directory",
+                       true},
+                       {"src-path","s","path to the sources directory", true},
+                       {"build-type","t","CMake build mode (Debug|Release|..., default is Release) "
+                       "(Relevant with <src-path> option)", true},
                        {"with-install","i","install ware if built is successful (replaces the given target if any)"}, 
-                       {"target","t","target to build (default is empty)",true},
+                       {"target", "","target to build (default is empty)",true},
                        {"jobs","j","number of jobs during build (default is 1)",true}});
   Parser.addCommand(BuildCmd, &WareSection);
 
   // ---
 
   auto DocCmd = openfluid::utils::CommandLineCommand("docalyze","Build documentation of a ware");
-  DocCmd.addOptions({{"src-path","s","path to the ware sources",true},
+  DocCmd.addOptions({{"src-path","s","path to the ware sources (required)",true},
+                     {"output-path","d","path where is put the built documentation (required)",true},
                      {"input-format","i","input format of documentation sources "
                       "(tex|Rmd|md|readme|auto, auto is default)",true},
-                     {"output-path","d","path where is put the built documentation",true},
                      {"include-empty-fields","e","include empty fields of the signature in the built documentation"},
                      {"keep-data","k","keep docalyze data once finished (default is disabled)"}});
   Parser.addCommand(DocCmd, &WareSection);
 
   // ---
 
-  auto PurgeCmd = openfluid::utils::CommandLineCommand("purge","purge build outputs on ware sources");
-  PurgeCmd.addOptions({{"src-path","s","path to the ware sources",true},
-                       {"build-type","t","CMake build type (debug|release, Use '+' char as separator when both)", 
-                       true},
+  auto PurgeCmd = openfluid::utils::CommandLineCommand("purge",
+                                                       "Purge build outputs on ware sources.",
+                                                       "Purge build outputs on ware sources. "
+                                                       "At least one option between <build-type> or "
+                                                       "<build-version> is required");
+  PurgeCmd.addOptions({{"src-path","s","path to the ware sources (required)",true},
+                       {"build-type","t","CMake build type (debug|release, Use '+' char as separator when both)", true},
                        {"build-version","","OpenFLUID build version (current|other, "
                         "Use '+' char as separator when both)", true}});
   Parser.addCommand(PurgeCmd, &WareSection);
@@ -272,7 +280,7 @@ int main(int argc, char **argv)
 
   auto MigrateWareCmd = openfluid::utils::CommandLineCommand("migrate-ware","Migrate ware sources to current version "
                                                                             "("+openfluid::config::VERSION_FULL+")"); 
-  MigrateWareCmd.addOptions({{"src-path","s","path to the ware sources",true},
+  MigrateWareCmd.addOptions({{"src-path","s","path to the ware sources (required)",true},
                              {"dest-path","d","destination path of the migrated ware sources",true},
                              {"verbose","v","enable verbose mode"},
                              {"force","f","force migration"}});
@@ -283,8 +291,8 @@ int main(int argc, char **argv)
   auto MigrateGhostCmd = openfluid::utils::CommandLineCommand("migrate-ghostsim",
                                                               "Migrate ghost simulator to current version "
                                                               "("+openfluid::config::VERSION_FULL+")"); 
-  MigrateGhostCmd.addOptions({{"parent-path","p","parent path to the ghost simulator to migrate",true},
-                              {"id","i","ID of the ghost simulator to migrate",true}});
+  MigrateGhostCmd.addOptions({{"id","i","ID of the ghost simulator to migrate (required)",true},
+                              {"parent-path","p","parent path to the ghost simulator to migrate",true}});
   Parser.addCommand(MigrateGhostCmd, &WareSection);
 
   // ---
@@ -292,8 +300,9 @@ int main(int argc, char **argv)
   auto Info2BuildCmd = openfluid::utils::CommandLineCommand("info2build","Generate build files from ware information");
   Info2BuildCmd.addOptions({{"src-path","s","source path containing the " +
                                             openfluid::config::WARESDEV_WAREMETA_FILE +
-                                            " file",true},
-                            {"dest-path","d","destination path where build information will be generated",true}});
+                                            " file (required)",true},
+                            {"dest-path","d","destination path where build information will be generated (required)",
+                            true}});
   Parser.addCommand(Info2BuildCmd, &WareSection);
 
   // ---

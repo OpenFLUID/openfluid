@@ -249,6 +249,55 @@ class CommandLineOption
 // =====================================================================
 
 
+class CommandLineArg
+{
+  private:
+
+    std::string m_Name;
+    bool m_Required;
+
+  public:
+
+    /**
+      Instanciates an argument with the given parameters
+      @param[in] Name The long name of the option
+      @param[in] Required True if the argument is required (true is default)
+    */
+    CommandLineArg(const std::string& Name, bool Required = true):
+      m_Name(Name), m_Required(Required)
+    { }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Returns the name of the arg
+      @return The name
+    */
+    std::string getName() const
+    { 
+      return m_Name; 
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Returns if the arg is required
+      @return the required predicate 
+    */
+    bool isRequired() const
+    { 
+      return m_Required; 
+    }
+
+};
+
+
 class CommandLineCommand
 {
   private:
@@ -264,6 +313,8 @@ class CommandLineCommand
     std::map<std::string,CommandLineOption*> m_ShortOptions;
 
     std::vector<CommandLineOption> m_OptionsOrdered;
+
+    std::vector<CommandLineArg> m_Args;
 
 
   public:
@@ -533,6 +584,52 @@ class CommandLineCommand
       }
     }
 
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Adds an argument to the command
+      @param[in] Arg The argument to add
+      @param[in] Required True if the arg is required
+    */
+    void addArg(const CommandLineArg& Arg)
+    {
+      m_Args.push_back(Arg);
+    }
+
+    
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Adds many args to the command
+      @param[in] Arg The argument list to add
+    */
+    void addArgs(const std::vector<CommandLineArg>& Args)
+    {
+      for (const auto& Arg : Args)
+      {
+        addArg(Arg);
+      }
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    /**
+      Returns the args registered for the command
+      @return The args
+    */
+    const std::vector<CommandLineArg>& args()
+    { 
+      return m_Args; 
+    }
+
 };
 
 
@@ -669,6 +766,29 @@ class CommandLineParser
     // =====================================================================
 
 
+    std::string getArgsDisplay()
+    {
+      std::string Args = "";
+      for (auto& Arg : m_Commands[m_ActiveCommand].args())
+      { 
+        if(Arg.isRequired())
+        {
+          Args += "<" + Arg.getName() + "> ";
+        }
+        else
+        {
+          Args += "[<" + Arg.getName() + ">] ";
+        }
+      }
+
+      return Args;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
     void displayUsageMessage(std::ostream& OutStm)
     {
       std::string CmdName = m_ActiveCommand;
@@ -678,7 +798,7 @@ class CommandLineParser
         CmdName = "[<command>]";
       }
 
-      OutStm << "Usage : " << m_ProgramName << " " << CmdName << " [<options>] [<args>]\n";
+      OutStm << "Usage : " << m_ProgramName << " " << CmdName << " [<options>] " << getArgsDisplay() << "\n";
     }
 
 

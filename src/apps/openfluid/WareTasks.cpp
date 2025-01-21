@@ -236,8 +236,16 @@ int WareTasks::processBuild() const
   {
     if (m_Cmd.isOptionActive("src-path") && !m_Cmd.getOptionValue("src-path").empty())
     {
-      BuildFSP = openfluid::tools::Path({m_Cmd.getOptionValue("src-path"),
-                                         openfluid::utils::CMakeProxy::getBuildDir()});
+      if(m_Cmd.isOptionActive("build-type") && !m_Cmd.getOptionValue("build-type").empty())
+      {
+        BuildFSP = openfluid::tools::Path({m_Cmd.getOptionValue("src-path"),
+                                      openfluid::utils::CMakeProxy::getBuildDir(m_Cmd.getOptionValue("build-type"))});
+      }
+      else
+      {
+        BuildFSP = openfluid::tools::Path({m_Cmd.getOptionValue("src-path"),
+                                           openfluid::utils::CMakeProxy::getBuildDir()});
+      }
     }
     else
     {
@@ -719,9 +727,9 @@ int WareTasks::process() const
   }
   else if (m_Cmd.getName() == "migrate-ghostsim")
   {
-    if (!m_Cmd.isOptionActive("type"))
+    if (!m_Cmd.isOptionActive("id"))
     {
-      return error("missing ware type");
+      return error("missing ware ID");
     }
 
     const auto ID = m_Cmd.getOptionValue("id");
