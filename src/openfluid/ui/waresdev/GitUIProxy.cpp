@@ -408,19 +408,37 @@ bool GitUIProxy::clone(const QString& FromUrl, const QString& ToPath,
 
 bool GitUIProxy::checkout(const QString& Path, const QString& BranchName, bool New)
 {
+  std::pair<int, QString> ExitData;
   if (New)
   {
     QStringList Args = {"checkout", "-b", BranchName, "--progress"};
-    launchLocalCommand(Path, Args);
+    ExitData = launchLocalCommand(Path, Args);
   }
   else
   {
     QStringList Args = {"checkout", BranchName, "--progress"};
-    launchLocalCommand(Path, Args);
+    ExitData = launchLocalCommand(Path, Args);
   }
-  
-  std::string CurrentBranch = GitUIProxy::getCurrentBranchName(Path.toStdString());
-  return (QString::fromStdString(CurrentBranch) == BranchName);
+  if (canGetBranch())
+  {
+    std::string CurrentBranch = GitUIProxy::getCurrentBranchName(Path.toStdString());
+    if (QString::fromStdString(CurrentBranch) != BranchName)
+    {
+      openfluid::utils::log::debug("Git", ExitData.second.toStdString());
+      return 0;
+    }
+    return 1;
+  }
+  else
+  {
+    // rely on exitcode
+    if (ExitData.first != 0)
+    {
+      openfluid::utils::log::debug("Git", ExitData.second.toStdString());
+      return 0;
+    }
+    return 1;
+  }
 }
 
 

@@ -130,7 +130,7 @@ bool GitProxy::isPathGitRepo(const std::string& Path)
 
 const std::string GitProxy::getCurrentBranchName(const std::string& Path)
 {
-  if (openfluid::tools::compareVersions(m_Version, "2.21") < 0) // show-current option exists since Git 2.21
+  if (!canGetBranch())
   {
     std::string ErrorMsg = "Error with git branch command: Git version not supported (" + m_Version + ")";
     openfluid::utils::log::error("Git", ErrorMsg);
