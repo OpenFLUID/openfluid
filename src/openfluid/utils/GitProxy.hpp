@@ -44,6 +44,7 @@
 
 
 #include <openfluid/base/OtherException.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/utils/ProgramProxy.hpp>
 #include <openfluid/dllexport.hpp>
 
@@ -71,9 +72,16 @@ class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
 
     static bool isPathGitRepo(const std::string& Path);
 
-    static const std::string getCurrentBranchName(const std::string& Path);   
+    static bool canGetBranch()
+    {
+      // show-current option exists since Git 2.21
+      return (openfluid::tools::compareVersions(m_Version, "2.21") >= 0);
+    }
+
+    static const std::string getCurrentBranchName(const std::string& Path);
 
 };
+
 
 class GitOperationException : public openfluid::base::Exception
 {

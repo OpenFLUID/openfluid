@@ -80,7 +80,10 @@ BOOST_AUTO_TEST_CASE(check_ops)
   BOOST_CHECK_EQUAL(P.getExitCode(),0);
   BOOST_REQUIRE(Git.isPathGitRepo(RepoPath.toGeneric()));
 
-  BOOST_REQUIRE_EQUAL(Git.getCurrentBranchName(RepoPath.toGeneric()), "master");
+  if (Git.canGetBranch())
+  {
+    BOOST_REQUIRE_EQUAL(Git.getCurrentBranchName(RepoPath.toGeneric()), "master");
+  }
 
 
   openfluid::utils::Process::Command CmdCheckout{
@@ -91,7 +94,10 @@ BOOST_AUTO_TEST_CASE(check_ops)
   openfluid::utils::Process PCheckout(CmdCheckout);
   BOOST_CHECK(PCheckout.run());
   BOOST_CHECK_EQUAL(PCheckout.getExitCode(),0);
-  BOOST_REQUIRE_EQUAL(Git.getCurrentBranchName(RepoPath.toGeneric()), "foo");
+  if (Git.canGetBranch())
+  {
+    BOOST_REQUIRE_EQUAL(Git.getCurrentBranchName(RepoPath.toGeneric()), "foo");
+  }
 
   RepoPath.removeDirectory();
 }

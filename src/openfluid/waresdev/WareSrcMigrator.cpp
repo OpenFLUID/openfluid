@@ -442,7 +442,7 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
   m_WorkPathObj = openfluid::tools::Path({m_DestPathObj.toGeneric(),openfluid::config::WARESDEV_MIGRATION_WORK_DIR});
   m_WorkPathObj.makeDirectory();
 
-  if(openfluid::utils::GitProxy::isPathGitRepo(m_SrcPathObj.toGeneric()))
+  if(openfluid::utils::GitProxy::isPathGitRepo(m_SrcPathObj.toGeneric()) && openfluid::utils::GitProxy::canGetBranch())
   {
     try
     {
