@@ -312,7 +312,7 @@ void SpatialDomainDescriptor::addUnit(const openfluid::fluidx::SpatialUnitDescri
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "unable to add spatial unit " +
-                                              openfluid::tools::classIDToString(ClassName,ID) + "that already exists");
+                                              openfluid::tools::classIDToString(ClassName,ID) + " that already exists");
   }
 
   auto itInserted = (m_SpatialUnits[ClassName].insert(std::make_pair(ID, UnitDesc))).first;
