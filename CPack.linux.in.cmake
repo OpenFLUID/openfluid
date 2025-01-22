@@ -4,8 +4,9 @@ SET(OFPACK_DEPEND_DEB "libboost${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev
                        libboost-test${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev, libgdal-dev, libcurl4, gcc,
                        g++, cmake (>= 3.1), 
                        gnuplot (>= 4.2), p7zip-full, graphviz, git")
-SET(OFPACK_DEPEND_RPM_FEDORA "make, gcc-c++, gcc-gfortran, cmake, boost-devel >= 1.54, gdal-devel, libcurl, p7zip,
-                              gnuplot, graphviz, doxygen, git, texlive-scheme-full")  # FIXME texlive-scheme-full too heavy, find underlying necessary packages (pdflatex...)
+SET(OFPACK_DEPEND_RPM_FEDORA "make, gcc-c++, gcc-gfortran, cmake, boost-devel >= 1.54, gdal-devel, libcurl, p7zip, \
+gnuplot, graphviz, doxygen, git, texlive-scheme-full")  # FIXME texlive-scheme-full too heavy, find underlying necessary packages (pdflatex...)
+
 SET(OFPACK_DEPEND_RPM_CENTOS "gcc-c++, boost-devel >= 1.40, gdal-devel, libcurl, git")
 
 IF(OFBUILD_ENABLE_GUI)
@@ -13,14 +14,14 @@ IF(OFBUILD_ENABLE_GUI)
   IF (QT_VERSION_MAJOR LESS 6)
     SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qtbase5-dev-tools, qttools5-dev-tools, libqt5svg5-dev, 
                            libqt5webkit5-dev")
-    SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, 
-                                  qt5-qtwebkit-devel")
+    SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, \
+qt5-qtwebkit-devel")
     SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, 
                                   qt5-qtwebkit-devel")
   ELSE()
     SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qt6-base-dev, qt6-tools-dev, libqt6svg6-dev")
-    SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt6-qttools-devel, qt6-qtbase-devel, qt6-qtsvg-devel, 
-                                  qt6-qtwebengine-devel")
+    SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt6-qttools-devel, qt6-qtbase-devel, qt6-qtsvg-devel, \
+qt6-qtwebengine-devel")
     SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt6-qttools-devel, qt6-qtbase-devel, qt6-qtsvg-devel, 
                                   qt6-qtwebengine-devel")
   ENDIF()
