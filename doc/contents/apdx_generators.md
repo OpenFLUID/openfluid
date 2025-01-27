@@ -28,7 +28,7 @@ Eg with a vector of 4 double:
 - same value disabled: t0: [4.5, 2.0, 22.1, 1.7], t1: [10.2, 2.3, 7,4, 9.9]
 
 ## Boolean
-Currently the random generator for boolean gives a balanced probability between true and false
+Currently the random generator for boolean gives a balanced probability between true and false (50% each)
 
 # File formats for generators
 

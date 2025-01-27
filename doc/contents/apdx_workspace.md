@@ -14,4 +14,4 @@ A workspace directory is organized as following:
 * a `project` directory containing OpenFLUID projects
 * a `wares-dev` directory containing source code of wares 
   in which there are the `simulators`, `observers` and `builder-extensions` directories for each ware category.
-* an `openfluid-waresdev.conf` file containing the workspace configuration for wares development
+* an `openfluid-waresdev.json` file containing the workspace configuration for wares development

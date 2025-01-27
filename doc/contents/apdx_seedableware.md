@@ -2,9 +2,9 @@
 
 [TOC]
 
-## Setup random {#apdx_seedableware_setup}
+## Setup stochasticity {#apdx_seedableware_setup}
 
-OpenFLUID provides tools to use randomness inside your wares.
+OpenFLUID provides tools to use stochasticity inside your wares.
 To do so, a parameter with the key *seed* must be specified inside a ware tags in the *model.fluidx* file:
 
 ```.xml
@@ -44,7 +44,7 @@ Utility functions can now be used in order to generate random numbers.
 
 ## Example {#apdx_seedableware_example}
 
-The example below shows the use of randomness in ware.
+The example below shows the use of stochasticity in ware.
 
 ```.cpp
 // HPP

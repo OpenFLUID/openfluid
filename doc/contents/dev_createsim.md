@@ -26,7 +26,7 @@ Even if simulators can be developped using any text editor, the OpenFLUID-DevStu
 
 ## Creation of a simulator using OpenFLUID-DevStudio {#dev_createsim_ds}
 
-The OpenFLUID-DevStudio application is made of a main toolbar located on top, 
+The OpenFLUID-DevStudio application is made of a main toolbar located on left, 
 a file navigator on the left side and a file editor on the right side.
 
 @image html screenshot_devstudio_overview.png "Screenshot of OpenFLUID-DevStudio workspace"

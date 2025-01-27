@@ -13,22 +13,24 @@ openfluid run /absolute/path/to/workdir/a_dummy_project
 
 An OpenFLUID project is made of a directory which includes:
 
-* an `openfluid-project.conf` file containing informations about the project,
+* an `openfluid-project.json` file containing informations about the project,
 * an `IN` subdirectory containing the input dataset,
 * an `OUT` subdirectory as the default output directory, containing the simulation results if any.
 
-The `openfluid-project.conf` contains the name of the project, the description, the authors,
+The `openfluid-project.json` contains the name of the project, the description, the authors,
 the creation date, the date of the latest modification, and a flag for
 incremental output directory (this feature is currently disabled). 
 
 ```
-[OpenFLUID Project]
-Name=a dummy project
-Description=
-Authors=John Doe
-IncOutput=false
-CreationDate=20110527T121530
-LastModDate=20110530T151431
+{
+  "name": "a dummy project",
+  "description": "",
+  "authors": "John Doe",
+  "created_at": "2013-09-16 17:00:00",
+  "updated_at": "2013-09-16 17:00:00",
+  "inc_outdir": false,
+  "context": {}
+}
 ```
 
-The `openfluid-project.conf` may also contain contextual informations added by OpenFLUID software applications such as OpenFLUID-Builder. These informations can be colors of shapes in map view, placement of models in model view, ...
+The `openfluid-project.json` may also contain contextual informations added by OpenFLUID software applications such as OpenFLUID-Builder. These informations can be colors of shapes in map view, placement of models in model view, ...

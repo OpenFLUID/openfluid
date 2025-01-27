@@ -53,15 +53,9 @@ Cette commande clonera le simulateur ainsi que tout les submodules (tous les fra
     `.../Simulator$ git submodule update --recursive --remote`
 
 2. Puis `.../Simulator$ git add` du dossier contenant le submodule, ce qui donne pour l'exemple utilisé :  
-    `.../Simulator$ git add watsfar`  
+    `.../Simulator$ git add fragments/MyFragment`  
 		Il devrait être visible en tant que changement dans le `.../Simulator$ git status` avant l'opération.
 
-3. Commit ces changements du repo du *simulateur* (`.../Simulator$ git commit`) pour que le repo distant 
+3. Commit ces changements du repo du *simulateur* (`.../Simulator$ git commit`) pour que le dépôt distant récupère ces informations
 
-Si on a choisi de modifier le code du fragment dans le repo du simulateur et qu'on a plusieurs simulateurs concernés, il faut se souvenir dans quel simulateur on a modifié le code pour savoir lesquels réaligner
-
-<br>
-
-# Facilitation par DevStudio
-
-Certaines procédures présentées ci-dessus peuvent être déclenchées depuis DevStudio.
+Si l'on a choisi de modifier le code du fragment dans le dossier du simulateur et qu'on a plusieurs simulateurs concernés, il faut se souvenir dans quel simulateur on a modifié le code et penser à réaligner les autres.
