@@ -81,7 +81,7 @@ jobs:
       - name: Upload of OpenFLUID package
         uses: actions/upload-artifact@v4
         with:
-          name: deb-package-${{ matrix.os }}-qt6
+          name: deb-package-ubuntu-22.04-qt6
           path: ./_build/openfluid*.deb
           retention-days: 3
 
@@ -90,17 +90,14 @@ jobs:
 
 
   ci-linux-install-qt6:
-    strategy:
-      matrix:
-        os: [ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
     needs: ci-linux-release-qt6
 
     steps:
       - name: Download of OpenFLUID package
         uses: actions/download-artifact@v4
         with:
-          name: deb-package-${{ matrix.os }}-qt6
+          name: deb-package-ubuntu-22.04-qt6
       - name: Installation of OpenFLUID package
         run: | 
           sudo apt update && sudo apt install -y ./openfluid*.deb
