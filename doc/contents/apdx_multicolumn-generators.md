@@ -1,4 +1,4 @@
-# Multicolumn generators : setup and use {#apdx_multicolumn-generators}
+# Multi-column generators : setup and use {#apdx_multicolumn-generators}
 
 [TOC]
 
@@ -15,7 +15,7 @@ The first row of these columns are labelled using the format `UnitClass#UnitID:V
 If you want to define the same variable for all the units in a given class, you can use the format 
 `UnitClass#*:VarName` as a column label, where `*` replace all unit classes.
 
-```csv
+```.csv
 #datetime;            UnitClass1#1:var1;      UnitClass2#*:var2;      UnitClass2#5:var2;
 19910812T090000;      25;                     5;                      10;
 19910812T100000;      30;                     NA;                     15;
@@ -35,13 +35,15 @@ the *UnitClass2* class. The last column override the third one for the spatial u
 
 # Usage {#apdx_multicolumn-generators_usage}
 
-In OpenFLUID-Builder, the multicolumn CSV can be set with the same dialog than for other generators. 
-It will use a chosen multicolumn csv file.
+## Builder
+
+In OpenFLUID-Builder, the multi-column CSV can be set with the same dialog than for other generators. 
+It will use a chosen multi-column csv file.
 You can either use all the variables defined in the file or specify just a selection of them. 
 The generator will produce all selected variables from the csv file.
 
 @image html extract-columns.png
-@image latex extract-columns.png "Multicolumn generator setup tab" width=11.5cm
+@image latex extract-columns.png "Multi-column generator setup tab" width=11.5cm
 
 In this example (taken from *Firespread example*), we are importing the file *multi_inject.csv* which defines 
 2 variables for all spatial units in the unit class *AU* : `AU#*gas.atm.V.windspeed` and 
@@ -52,3 +54,24 @@ In this example (taken from *Firespread example*), we are importing the file *mu
 
 In this image, we can see that the generators produces the selected variables *gas.atm.V.windspeed*
 and *gas.atm.degree.mainwinddir*. 
+
+## FluidX format
+
+Here is an example of model.fluidx file containing a multi-column generator:
+
+```.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <model>
+        <generator variables="AU#*:gas.atm.V.windspeed;AU#*:gas.atm.degree.mainwinddir" method="inject-multicol" enabled="true">
+            <param name="datafile" value="multi_inject.csv"/>
+        </generator>
+        ...
+    </model>
+</openfluid>
+```
+
+The generator `method` is `inject-multicol` and there is also has a mandatory attribute `variables` where the selected 
+columns headers are specified.
+The multi-column generator block contains a single parameter called `datafile` indicating the path of 
+csv file used for injection. 

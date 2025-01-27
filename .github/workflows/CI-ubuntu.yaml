@@ -76,7 +76,7 @@ jobs:
         run: cpack && ls -l *.deb
         working-directory: ./_build
       - name: Upload of OpenFLUID package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deb-package-${{ matrix.os }}
           path: ./_build/openfluid*.deb
@@ -120,7 +120,7 @@ jobs:
         run: cpack && ls -l *.deb
         working-directory: ./_build
       - name: Upload of OpenFLUID package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deb-package-${{ matrix.os }}-qt6
           path: ./_build/openfluid*.deb
@@ -139,7 +139,7 @@ jobs:
 
     steps:
       - name: Download of OpenFLUID package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: deb-package-${{ matrix.os }}
       - name: Installation of OpenFLUID package
@@ -183,7 +183,7 @@ jobs:
         run: cpack && ls -l *.deb
         working-directory: ./_build
       - name: Upload of OpenFLUID package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deb-package-no-ui-${{ matrix.os }}
           path: ./_build/openfluid*.deb
@@ -202,7 +202,7 @@ jobs:
 
     steps:
       - name: Download of OpenFLUID package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: deb-package-no-ui-${{ matrix.os }}
       - name: Installation of OpenFLUID package
