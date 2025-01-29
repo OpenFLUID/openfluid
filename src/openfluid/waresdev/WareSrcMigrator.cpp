@@ -38,6 +38,9 @@
  */
 
 
+// OpenFLUID:stylecheck:!brac
+
+
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
@@ -638,7 +641,13 @@ void WareSrcMigrator::processSignature(const WareSrcMigrator::WareMigrationInfo&
                                                                         WorkPathObj.toGeneric(),CMakeVars);
   ConfigureCmd.OutFile = WorkPathObj.fromThis("configure_log.out").toGeneric();
   ConfigureCmd.ErrFile = WorkPathObj.fromThis("configure_log.err").toGeneric();
-  if (openfluid::utils::Process::execute(ConfigureCmd) != 0)
+#if defined OPENFLUID_OS_WINDOWS
+  openfluid::utils::Process::Environment Env;
+  Env.Vars = {{"CMAKE_GENERATOR","MinGW Makefiles"}};
+  if (openfluid::utils::Process::execute(ConfigureCmd, Env) != 0)
+#else
+  if(openfluid::utils::Process::execute(ConfigureCmd) != 0)
+#endif
   {
     mp_Listener->onProcessSignatureEnd(openfluid::base::Listener::Status::ERROR_STATUS);
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error configuring signature export program");

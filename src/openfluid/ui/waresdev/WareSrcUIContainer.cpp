@@ -354,6 +354,7 @@ void WareSrcUIContainer::runCommand(const openfluid::utils::Process::Command& Cm
   mp_Stream->write(CommandMessage);
 
   mp_Process->setProcessEnvironment(Env);
+  mp_Process->setWorkingDirectory(QString::fromStdString(Cmd.WorkDir));
   mp_Process->start(QString::fromStdString(Cmd.Program),openfluid::ui::toQStringList(Cmd.Args));
 }
 

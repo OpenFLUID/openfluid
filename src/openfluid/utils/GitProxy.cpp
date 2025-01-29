@@ -72,6 +72,16 @@ GitProxy::~GitProxy()
 // =====================================================================
 
 
+std::string GitProxy::getExecutablePath()
+{
+  return m_ExecutablePath;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void GitProxy::findGitProgram()
 {
   if (m_ExecutablePath.empty())
@@ -114,7 +124,7 @@ bool GitProxy::isAvailable()
 bool GitProxy::isPathGitRepo(const std::string& Path)
 {
   openfluid::utils::Process::Command Cmd{
-    .Program = "git",
+    .Program = m_ExecutablePath,
     .Args = {"rev-parse", "--is-inside-work-tree"},
     .WorkDir = Path
   };
@@ -137,7 +147,7 @@ const std::string GitProxy::getCurrentBranchName(const std::string& Path)
     throw GitOperationException(ErrorMsg);
   }
   openfluid::utils::Process::Command Cmd{
-    .Program = "git",
+    .Program = m_ExecutablePath,
     .Args = {"branch", "--show-current"},
     .WorkDir = Path
   };
