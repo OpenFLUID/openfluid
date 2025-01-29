@@ -169,13 +169,8 @@ bool Process::run()
     {
         WorkDir = m_Cmd.WorkDir;
     }
-    std::string Program = m_Cmd.Program;
-    // Process with space must be surrounded by quotes (works for windows and linux)
-    if ((Program.find(' ') != std::string::npos) && (Program[0] != '"'))
-    {
-        Program = "\""+Program+"\"";
-    }
-    boost::process::child BPC(boost::process::exe = Program,
+    
+    boost::process::child BPC(boost::process::exe = m_Cmd.Program,
                               boost::process::args = m_Cmd.Args,
                               boost::process::start_dir = WorkDir,
                               boost::process::std_out > StdOutStr, boost::process::std_err > StdErrStr,

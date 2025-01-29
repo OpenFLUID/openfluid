@@ -115,8 +115,8 @@ Process::Command CMakeProxy::getConfigureCommand(const std::string& BuildDir, co
 
   Cmd.Program = m_ExecutablePath;
 
-  Cmd.Args << "-E" << "chdir" << BuildDir; // cd to build directory
-  Cmd.Args << m_ExecutablePath << SrcDir;  // cmake configure command with the sources directory 
+  Cmd.WorkDir = BuildDir;
+  Cmd.Args << SrcDir; // cmake configure command with the sources directory
 
   if (!Generator.empty())
   {
@@ -156,8 +156,8 @@ Process::Command CMakeProxy::getBuildCommand(const std::string& BuildDir,
 
   Cmd.Program = m_ExecutablePath;
 
-  Cmd.Args << "-E" << "chdir" << BuildDir; // cd to build directory
-  Cmd.Args << m_ExecutablePath << "--build" << "."; // build command in the current directory 
+  Cmd.WorkDir = BuildDir;
+  Cmd.Args << "--build" << "."; // build command in the current directory 
 
   if (!Target.empty())
   {
@@ -207,6 +207,7 @@ Process::Command CMakeProxy::getTarCompressCommand(const std::string& WorkDir,
 
   Cmd.Program = m_ExecutablePath;
 
+  // #FIXME Use command workdir instead
   Cmd.Args << "-E" << "chdir" << WorkDir; // cd to work directory
   Cmd.Args << m_ExecutablePath << "-E" << "tar"; // tar command
   Cmd.Args << "cf"+Options;
@@ -233,6 +234,7 @@ Process::Command CMakeProxy::getTarUncompressCommand(const std::string& WorkDir,
 
   Cmd.Program = m_ExecutablePath;
 
+  // #FIXME Use command workdir instead
   Cmd.Args << "-E" << "chdir" << WorkDir; // cd to work directory
   Cmd.Args << m_ExecutablePath << "-E" << "tar"; // tar command
   Cmd.Args << "xf"+Options;

@@ -68,6 +68,8 @@ class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
 
     virtual ~GitProxy();
 
+    static std::string getExecutablePath();
+
     static bool isAvailable();
 
     static bool isPathGitRepo(const std::string& Path);

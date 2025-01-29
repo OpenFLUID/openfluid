@@ -127,11 +127,24 @@ class MigrationWorker : public QObject
         if (m_CheckoutNew)
         {
           GitUIProxy Git;
-          if (Git.checkout(m_WarePath, GitUIProxy::getCurrentOpenFLUIDBranchName(), true))
+          bool SuccessfulCheckout = false;
+          if (Git.checkout(m_WarePath, GitUIProxy::getCurrentOpenFLUIDBranchName(), false))
+          {
+            SuccessfulCheckout = true;
+          }
+          else
+          {
+            if (Git.checkout(m_WarePath, GitUIProxy::getCurrentOpenFLUIDBranchName(), true))
+            {
+              SuccessfulCheckout = true;
+            }
+          }
+
+          if(SuccessfulCheckout)
           {
             emit info(tr("Successful checkout of the current OpenFLUID version branch"));
           }
-          else
+          else 
           {
             emit error(tr("Unable to checkout branch corresponding to current OpenFLUID version branch."));
           }

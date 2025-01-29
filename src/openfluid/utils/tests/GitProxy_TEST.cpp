@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(check_ops)
   BOOST_REQUIRE(!Git.isPathGitRepo(RepoPath.toGeneric()));
 
   openfluid::utils::Process::Command Cmd{
-    .Program = "git",
+    .Program = Git.getExecutablePath(),
     .Args = {"init"},
     .WorkDir = RepoPath.toGeneric()
   };
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(check_ops)
 
 
   openfluid::utils::Process::Command CmdCheckout{
-    .Program = "git",
+    .Program = Git.getExecutablePath(),
     .Args = {"checkout", "-b", "foo"},
     .WorkDir = RepoPath.toGeneric()
   };
