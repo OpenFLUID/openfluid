@@ -45,47 +45,6 @@ jobs:
 ##########################################
 
 
-  ci-linux-release:
-    strategy:
-      matrix:
-        os: [ubuntu-20.04,ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Installation of dependencies
-        run: | 
-          sudo apt update && sudo apt install -y \
-            libboost-dev libgdal-dev libcurl4-gnutls-dev \
-            qtbase5-dev-tools qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev \
-            gnuplot p7zip-full graphviz
-
-      - name: Checkout of source code
-        uses: actions/checkout@v3
-      - name: Preparation
-        run: mkdir ./_build
-      - name: Configuration
-        run: cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
-        working-directory: ./_build
-      - name: Style check
-        run: make stylecheck
-        working-directory: ./_build
-      - name: Build
-        run: make -j 2
-        working-directory: ./_build
-      - name: Packaging
-        run: cpack && ls -l *.deb
-        working-directory: ./_build
-      - name: Upload of OpenFLUID package
-        uses: actions/upload-artifact@v4
-        with:
-          name: deb-package-${{ matrix.os }}
-          path: ./_build/openfluid*.deb
-          retention-days: 3
-
-
-##########################################
-
-
   ci-linux-release-qt6:
     runs-on: ubuntu-22.04
 
@@ -130,18 +89,18 @@ jobs:
 ##########################################
 
 
-  ci-linux-install:
+  ci-linux-install-qt6:
     strategy:
       matrix:
-        os: [ubuntu-20.04,ubuntu-22.04]
+        os: [ubuntu-22.04]
     runs-on: ${{ matrix.os }}
-    needs: ci-linux-release
+    needs: ci-linux-release-qt6
 
     steps:
       - name: Download of OpenFLUID package
         uses: actions/download-artifact@v4
         with:
-          name: deb-package-${{ matrix.os }}
+          name: deb-package-${{ matrix.os }}-qt6
       - name: Installation of OpenFLUID package
         run: | 
           sudo apt update && sudo apt install -y ./openfluid*.deb
@@ -157,7 +116,7 @@ jobs:
   ci-linux-release-no-ui:
     strategy:
       matrix:
-        os: [ubuntu-20.04,ubuntu-22.04]
+        os: [ubuntu-20.04,ubuntu-24.04]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -196,7 +155,7 @@ jobs:
   ci-linux-install-no-ui:
     strategy:
       matrix:
-        os: [ubuntu-20.04,ubuntu-22.04]
+        os: [ubuntu-20.04,ubuntu-24.04]
     runs-on: ${{ matrix.os }}
     needs: ci-linux-release-no-ui
 

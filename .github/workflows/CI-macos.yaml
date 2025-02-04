@@ -12,7 +12,7 @@ jobs:
   ci-macos-debug:
     strategy:
       matrix:
-        os: [macos-13, macos-14, macos-15]
+        os: [macos-15]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -52,7 +52,7 @@ jobs:
   ci-macos-release:
     strategy:
       matrix:
-        os: [macos-13, macos-14, macos-15]
+        os: [macos-15]
     runs-on: ${{ matrix.os }}
 
     steps:
