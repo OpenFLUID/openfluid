@@ -135,7 +135,9 @@ int main(int argc, char **argv)
 
   // ---
 
-  auto RunCmd = openfluid::utils::CommandLineCommand("run","Run a simulation");
+  auto RunCmd = openfluid::utils::CommandLineCommand("run","Run a simulation", 
+                                                          "Other usage: "
+                                                          "openfluid run [<options>] [<dataset-path>] [<output-path>]");
   RunCmd.addOptions({{"clean-output-dir","c","clean output directory before simulation"},
                      {"quiet","q","quiet display during simulation"},
                      {"verbose","v","enable verbose mode"},
@@ -149,7 +151,7 @@ int main(int argc, char **argv)
     RunCmd.addOption(Opt);
   } 
 
-  RunCmd.addArgs({{"input-path", false}});
+  RunCmd.addArgs({{"project-path", false}});
 
   Parser.addCommand(RunCmd, &SimulationSection);
 
