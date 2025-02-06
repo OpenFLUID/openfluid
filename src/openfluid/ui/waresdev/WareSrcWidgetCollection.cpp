@@ -1235,20 +1235,20 @@ void WareSrcWidgetCollection::newSimulatorFromGhost(const openfluid::ware::Simul
     Config.MainClassName = Dialog.getClassName();
     Config.WithParamsUI = Dialog.isWareUI();
 
-    auto WarePath =
+    try
+    {
+      auto WarePath =
       openfluid::waresdev::WareSrcFactory::createSimulator(
         Signature,Config,
         openfluid::base::WorkspaceManager::instance()->getWaresPath(openfluid::ware::WareType::SIMULATOR)
       );
 
-    if (!WarePath.empty())
-    {
       openWarePath(WarePath, Dialog.openSignature());
     }
-    else
+    catch(const openfluid::base::FrameworkException&)
     {
       QMessageBox::critical(nullptr, tr("Create simulator"), tr("Error creating simulator %1 from ghost")
-                                                             .arg(QString::fromStdString(Signature.ID)));
+                                                              .arg(QString::fromStdString(Signature.ID)));
     }
   }
 }
@@ -1315,16 +1315,16 @@ void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
       Config.MainClassName = Dialog.getClassName();
       Config.WithParamsUI = Dialog.isWareUI();
 
-      auto WarePath =
-        openfluid::waresdev::WareSrcFactory::createSimulator(
-          Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
-        );
-
-      if (!WarePath.empty())
+      try
       {
+        auto WarePath =
+          openfluid::waresdev::WareSrcFactory::createSimulator(
+            Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
+          );
+
         openWarePath(WarePath, Dialog.openSignature());
       }
-      else
+      catch(const openfluid::base::FrameworkException&)
       {
         errorMessage(Type,Sign.ID);
       }
@@ -1338,16 +1338,16 @@ void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
       Config.MainClassName = Dialog.getClassName();
       Config.WithParamsUI = Dialog.isWareUI();
 
-      auto WarePath = 
-        openfluid::waresdev::WareSrcFactory::createObserver(
-          Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
-        );
-
-      if (!WarePath.empty())
+      try
       {
+        auto WarePath = 
+          openfluid::waresdev::WareSrcFactory::createObserver(
+            Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
+          );
+
         openWarePath(WarePath, Dialog.openSignature());
       }
-      else
+      catch(const openfluid::base::FrameworkException&)
       {
         errorMessage(Type,Sign.ID);
       }
@@ -1363,16 +1363,16 @@ void WareSrcWidgetCollection::newWare(openfluid::ware::WareType Type)
       openfluid::waresdev::WareSrcFactory::Configuration Config;
       Config.MainClassName = Dialog.getClassName();
 
-      auto WarePath = 
-        openfluid::waresdev::WareSrcFactory::createBuilderext(
-          Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
-        );
-
-      if (!WarePath.empty())
+      try
       {
+        auto WarePath = 
+          openfluid::waresdev::WareSrcFactory::createBuilderext(
+            Sign,Config,openfluid::base::WorkspaceManager::instance()->getWaresPath(Type)
+          );
+
         openWarePath(WarePath, Dialog.openSignature());
       }
-      else
+      catch(const openfluid::base::FrameworkException&)
       {
         errorMessage(Type,Sign.ID);
       }

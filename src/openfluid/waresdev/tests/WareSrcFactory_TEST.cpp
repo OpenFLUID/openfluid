@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim)
   SimsPath.removeDirectory(Sign.ID); 
   BOOST_CHECK(!SimsPath.exists(Sign.ID));
 
-  openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,SimsPath.toGeneric());
+  BOOST_CHECK_NO_THROW(openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,SimsPath.toGeneric()));
 
   BOOST_CHECK(SimsPath.isDirectory(Sign.ID));
   BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(create_files_sim_withui)
   SimsPath.removeDirectory(Sign.ID); 
   BOOST_CHECK(!SimsPath.exists(Sign.ID));
 
-  openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,SimsPath.toGeneric());
+  BOOST_CHECK_NO_THROW(openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,SimsPath.toGeneric()));
 
   BOOST_CHECK(SimsPath.isDirectory(Sign.ID));
   BOOST_CHECK(SimsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(create_files_obs)
   ObssPath.removeDirectory(Sign.ID); 
   BOOST_CHECK(!ObssPath.exists(Sign.ID));
 
-  openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ObssPath.toGeneric());
+  BOOST_CHECK_NO_THROW(openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ObssPath.toGeneric()));
 
   BOOST_CHECK(ObssPath.isDirectory(Sign.ID));
   BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(create_files_obs_withui)
   ObssPath.removeDirectory(Sign.ID); 
   BOOST_CHECK(!ObssPath.exists(Sign.ID));
 
-  openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ObssPath.toGeneric());
+  BOOST_CHECK_NO_THROW(openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ObssPath.toGeneric()));
 
   BOOST_CHECK(ObssPath.isDirectory(Sign.ID));
   BOOST_CHECK(ObssPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));
@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE(create_files_bext)
   BextsPath.removeDirectory(Sign.ID); 
   BOOST_CHECK(!BextsPath.exists(Sign.ID));
 
-  openfluid::waresdev::WareSrcFactory::createBuilderext(Sign,Config,BextsPath.toGeneric());
+  BOOST_CHECK_NO_THROW(openfluid::waresdev::WareSrcFactory::createBuilderext(Sign,Config,BextsPath.toGeneric()));
 
   BOOST_CHECK(BextsPath.isDirectory(Sign.ID));
   BOOST_CHECK(BextsPath.isDirectory(Sign.ID+"/"+openfluid::config::WARESDEV_SRC_DIR));

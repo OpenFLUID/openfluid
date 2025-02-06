@@ -34,6 +34,7 @@
   @file TemplateProcessor.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -150,7 +151,7 @@ class OPENFLUID_API TemplateProcessor
       @param[in] OutFile The rendered file path
       @param[in] D The data to resolve the template
       @param[inout] E The unresolved patterns if any
-      @throw openfluid::base::FrameworkException if the output file is an existing directory
+      @throw openfluid::base::FrameworkException if the output file is an existing directory or if rendering fails
     */
     void renderFile(const std::string& InFile, const std::string& OutFile,const Data& D,Errors& E);
 
@@ -160,7 +161,7 @@ class OPENFLUID_API TemplateProcessor
       @param[in] OutDir The rendered directory path
       @param[in] D The data to resolve the template
       @param[inout] E The unresolved patterns if any
-      @throw openfluid::base::FrameworkException if the output directory is an existing file
+      @throw openfluid::base::FrameworkException if the output directory is an existing file or if rendering fails
     */
     void renderDirectory(const std::string& InDir,const std::string& OutDir,const Data& D,Errors& E);
 

@@ -34,6 +34,7 @@
   @file TemplateProcessor.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -182,6 +183,11 @@ void TemplateProcessor::renderFile(const std::string& InFile, const std::string&
   {
     OFS << RenderedStr;
   }
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Error while writing to file " + OutFile);
+  }
+
 }
 
 
@@ -205,7 +211,11 @@ void TemplateProcessor::renderDirectory(const std::string& InDir,const std::stri
 
     if (InPath.isDirectory())
     {
-      OutPath.makeDirectory();
+      if(!OutPath.makeDirectory())
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, 
+                                                  "Error while creating " + OutPath.toGeneric() + " directory");
+      }
     }
     else
     {

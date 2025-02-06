@@ -192,7 +192,8 @@ int main(int argc, char **argv)
   // ---
 
   auto CreateWareCmd = openfluid::utils::CommandLineCommand("create-ware","Create ware sources");
-  CreateWareCmd.addOptions({{"type","t","type of the ware sources to create (required)",true},
+  CreateWareCmd.addOptions({{"type","t","type of the ware sources to create (simulator|observer|builderext) (required)",
+                             true},
                             {"id","i","ID of the ware sources to create (required)",true},
                             {"main-class","m","name to use for the main C++ class",true},
                             {"parent-path","p","parent path where to create the ware sources",true},
