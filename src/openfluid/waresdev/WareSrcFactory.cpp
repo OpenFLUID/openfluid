@@ -35,6 +35,7 @@
 
   @author Aline LIBRES <aline.libres@gmail.com>
   @author Jean-Christophe Fabre <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -259,9 +260,9 @@ std::string WareSrcFactory::createSimulator(const openfluid::ware::SimulatorSign
      renderParamsUIFiles(WareSrcPathObj,Data);
     }
   }
-  catch(openfluid::base::FrameworkException& E)
+  catch(const openfluid::base::FrameworkException&)
   {
-    return std::string();
+    throw;
   }
 
   return WareSrcPathObj.toGeneric(); 
@@ -305,9 +306,9 @@ std::string WareSrcFactory::createObserver(const openfluid::ware::ObserverSignat
      renderParamsUIFiles(WareSrcPathObj,Data);
     }
   }
-  catch(openfluid::base::FrameworkException& E)
+  catch(const openfluid::base::FrameworkException&)
   {
-    return std::string();
+    throw;
   }
 
   return WareSrcPathObj.toGeneric();
@@ -357,10 +358,10 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
       TplProc.renderFile(CommonFile.toGeneric(),WareSrcSrcFile.toGeneric(),Data,Errors);
     }
   }
-  catch(openfluid::base::FrameworkException& E)
+  catch(const openfluid::base::FrameworkException& E)
   {
     openfluid::utils::log::error("BuilderExt", E.what());
-    return std::string();
+    throw;
   }
 
   return WareSrcPathObj.toGeneric();

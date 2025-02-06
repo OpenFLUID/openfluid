@@ -100,15 +100,29 @@ int WareTasks::processCreate() const
   {
     openfluid::ware::SimulatorSignature Sign;
     Sign.ID = ID;
-    return (openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,ParentPath).empty() ? 
-            error("problem occurred during creation of simulator sources") : 0);
+    try
+    {
+      openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,ParentPath);
+      return 0;
+    }
+    catch(const openfluid::base::FrameworkException& E)
+    {
+      return error("problem occurred during creation of simulator sources. " + std::string(E.what()));
+    }
   }
   else if (TypeStr == "observer")
   {
     openfluid::ware::ObserverSignature Sign;
     Sign.ID = ID;
-    return (openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ParentPath).empty() ? 
-            error("problem occurred during creation of observer sources") : 0);
+    try
+    {
+      openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ParentPath);
+      return 0;
+    }
+    catch(const openfluid::base::FrameworkException& E)
+    {
+      return error("problem occurred during creation of observer sources. " + std::string(E.what()));
+    }
   }
   else if (TypeStr == "builderext")
   {
@@ -149,8 +163,15 @@ int WareTasks::processCreate() const
     Sign.MenuText = (m_Cmd.getOptionValue("bext-menutext").empty() ? 
                      "NewExtension" : m_Cmd.getOptionValue("bext-menutext"));
 
-    return (openfluid::waresdev::WareSrcFactory::createBuilderext(Sign,Config,ParentPath).empty() ? 
-            error("problem occurred during creation of builder-extension sources") : 0);
+    try
+    {
+      openfluid::waresdev::WareSrcFactory::createBuilderext(Sign,Config,ParentPath);
+      return 0;
+    }
+    catch(const openfluid::base::FrameworkException& E)
+    {
+      return error("problem occurred during creation of builder-extension sources. " + std::string(E.what()));
+    }
   }
   else
   {
