@@ -79,14 +79,14 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
 
   createActions();
   
+  addAction(mp_ActionsCollection->action("EditSignature"));
+  addSeparator();
   addAction(mp_ActionsCollection->action("NewFile"));
   addAction(mp_ActionsCollection->action("OpenFile"));
   addAction(mp_ActionsCollection->action("SaveFile"));
   addAction(mp_ActionsCollection->action("SaveAsFile"));
   addSeparator();
   addAction(mp_ActionsCollection->action("FindReplace"));
-  addSeparator();
-  addAction(mp_ActionsCollection->action("EditSignature"));
   addSeparator();
   addAction(mp_ActionsCollection->action("ConfigureWare"));
   addAction(mp_ActionsCollection->action("BuildWare"));
