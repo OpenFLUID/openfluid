@@ -26,23 +26,32 @@ Even if simulators can be developped using any text editor, the OpenFLUID-DevStu
 
 ## Creation of a simulator using OpenFLUID-DevStudio {#dev_createsim_ds}
 
+
+@note As the OpenFLUID-DevStudio UI is multilingual, the items cited below such as menu names or labels can be in another language than english for you installation.
+
 The OpenFLUID-DevStudio application is made of a main toolbar located on left, 
 a file navigator on the left side and a file editor on the right side.
 
 @image html screenshot_devstudio_overview.png "Screenshot of OpenFLUID-DevStudio workspace"
 @image latex screenshot_devstudio_overview.png "Screenshot of OpenFLUID-DevStudio workspace" width=11.5cm
 
-To create a new simulator, go to menu _File > New ware > Simulator..._ This opens the new simulator dialog dox. 
-In this dialog box, set the simulator ID and source files names then click _OK_. 
+To create a new simulator, go to menu _File > New ware > Simulator..._ This opens the new simulator dialog. 
+In this dialog, set the simulator ID and source files names then click _OK_. 
 The Source code of a new simulator is created.  
 
 @image html screenshot_devstudio_newware.png "Screenshot of new simulator dialog"
 @image latex screenshot_devstudio_newware.png "Screenshot of new simulator dialog" width=5.5cm
 
-Once created, click on the _Configure_ button of the main toolbar. Once the configure process is completed, 
-click on the _Build_ button to effectively build the simulator. Once the build process is completed, 
-the simulator is ready to use for simulations. The build process must be run each time 
-the simulator source code is modified to take into account these modifications.
+### Configuration phase
+Once created, the configuration phase must be performed at least once. Click on the _Configure_ button of the main toolbar. 
+This phase checks the dependencies (tools and libraries) required to build the simulator. It can be performed either in _Release_ mode for performance optimization (mode by default, recommended) or in _Debug_ mode to be used with an external debugger.
+
+### Build phase
+The build phase must be performed each time the source code has been modified. Once the configure process is completed, 
+click on the _Build_ button to effectively build the simulator. 
+
+This phase builds thes simulator source code into a binary plugin for the OpenFLUID platform. It can be performed either in _Build and install_ mode to make the simulator immediately available for simulations (mode by default, recommended) or in _Build only_ mode for intermediate builds for example.
+
 
 
 ## Complete source code example {#dev_createsim_exmpl}
@@ -64,3 +73,4 @@ including source code and build configuration using the OpenFLUID CMake module.
 ### File src/CMakeLists.txt defining the plugin build {#dev_createsim_exmpl_src_cmakelists}
  
 @include wares/src.CMakeLists.txt.snippet
+
