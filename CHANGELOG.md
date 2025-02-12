@@ -1,3 +1,56 @@
+## 2.2.0
+
+  * Added git user injection in gitaskpass
+  * Added internal logging system for openfluid operations debug
+  * Added Qt6 compatibility, Qt5 compatibility kept but to be deprecated 
+  * Added CLI commands for ware operations
+  * Added multi-column generator
+  * Added capabilities about types and dimensions in single-column generator (integer, boolean, string)
+  * Added parameter structure to other wares than simulator (API get function, check in DevStudio)
+  * Added RNG seed as optional parameter for random generator
+  * Added constraints in data name characters (variables, unit class, attributes)
+  * Added functions to filesystem API
+  * Added template processing utility
+  * Added wheel event to clickable label
+  * Added build information to targets
+  * Added tools and workflows for automatic conversion of wares and ghosts to 2.2
+  * Added folder operations in DevStudio: git init, remove folder, remove fragment, add fragment
+  * Added code fragment feature to share code between wares
+  * Added search paths for code fragments (fragments subdir in ware, at workspace level, at userdata level)
+  * Added internal simulation test structure
+  * Added ware qualtiy checks
+  * Added ware status board in DevStudio for info and actions
+  * Added fluidx format version (current is 4)
+  * Added code tag types: HACK, TOIMPL
+  * Added tinyxml as third party library
+  * Added spatial display classes to API in ui/spatial
+  * Updated signature format from inline C++ macros to standalone interoperable json file
+  * Updated ghost file from xml to json
+  * Updated settings files format from conf to json (openfluid, project...)
+  * Updated C++ standard from 14 to 17
+  * Updated every enum to enum class
+  * Updated CMake minimum version to 3.10
+  * Updated DevStudio UX by splitting main toolbar
+  * Updated packaging stack for Windows to Msys2
+  * Updated example Firespread model to use multi-column generator
+  * Replaced sim2doc by docalyze utility to handle LaTeX, markdown and Rmd (uses pandoc, pdflatex and bibtex) 
+  * Replaced CLI buddies by generic commands
+  * Replaced rapidjson by nlohmannjson as third party library for json handling
+  * Updated ghost signature edition dialog for signature in DevStudio
+  * Updated chronological series classes to template
+  * Updated help of CLI commands (content and structure)
+  * Updated infra quality checks (more tests, prehook checks, quicker stylecheck)
+  * Updated packaging for Linux, Windows and MacOS
+  * Updated user documentation template and content
+  * Updated example simulators to 2.2
+  * Updated CI workflow with GitHub actions
+  * Updated translations
+  * Fixed GetUnit and diffInSeconds API functions
+  * Fixed simulation mode result discrepency
+  * Removed Qt from all non-UI libraries
+  * Removed landr library from repository (was disabled since 2.1.10)
+
+
 ## 2.1.11
 
   * Added display of help when openfluid command line is launched 
