@@ -19,7 +19,10 @@ qt5-qtwebkit-devel")
     SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt5-qttools-devel, qt5-qtbase-devel, qt5-qtsvg-devel, 
                                   qt5-qtwebkit-devel")
   ELSE()
-    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qt6-base-dev, qt6-tools-dev, libqt6svg6-dev")
+    SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, qt6-base-dev, qt6-tools-dev, libqt6svg6-dev, qt6-tools-dev-tools, 
+                           qt6-l10n-tools")
+#NOTE qt6-tools-dev-tools used for lprodump, needed for translation
+#NOTE qt6-l10n-tools used for lconvert, needed for translation 
     SET(OFPACK_DEPEND_RPM_FEDORA "${OFPACK_DEPEND_RPM_FEDORA}, qt6-qttools-devel, qt6-qtbase-devel, qt6-qtsvg-devel, \
 qt6-qtwebengine-devel")
     SET(OFPACK_DEPEND_RPM_CENTOS "${OFPACK_DEPEND_RPM_CENTOS}, qt6-qttools-devel, qt6-qtbase-devel, qt6-qtsvg-devel, 
