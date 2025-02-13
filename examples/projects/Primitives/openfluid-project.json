@@ -2,8 +2,8 @@
   "name": "Primitives",
   "description": "Example project, showing usage of OpenFLUID primitives",
   "authors": "Jean-Christophe Fabre",
-  "created_at": "2013-03-12 08:57:54",
-  "updated_at": "2013-03-12 08:57:54",
+  "created_at": "2013-03-12T08:57:54",
+  "updated_at": "2013-03-12T08:57:54",
   "inc_outdir": false,
   "context": {
     "builder": {

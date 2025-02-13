@@ -2,8 +2,8 @@
   "name": "Firespread",
   "description": "Example of OpenFLUID usage for simulating fire spreading. It uses a simplified fire spreading model based on wind direction and wind speed, stock quantity and stock type.",
   "authors": "Michael Rabotin, David Crevoisier, Jean-Christophe Fabre",
-  "created_at": "2013-09-16 17:00:00",
-  "updated_at": "2013-09-16 17:00:00",
+  "created_at": "2013-09-16T17:00:00",
+  "updated_at": "2013-09-16T17:00:00",
   "inc_outdir": false,
   "context": {
     "builder": {

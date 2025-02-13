@@ -320,6 +320,21 @@ std::string DateTime::getAsISOString() const
 // =====================================================================
 
 
+std::string DateTime::getAsISOEXTString() const
+{
+  char pCh[80];
+  std::string Str;
+
+  strftime(pCh,80,"%Y-%m-%dT%H:%M:%S",&m_TM);
+
+  return std::string(pCh,strlen(pCh));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::string  DateTime::getAsString(const std::string& Format) const
 {
   char pCh[80];

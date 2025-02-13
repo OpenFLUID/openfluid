@@ -269,7 +269,15 @@ class OPENFLUID_API DateTime
       Returns date-time as string, using format YYYT-MM-DD hh:mm:ss
       @return a string
     */
-    std::string getAsISOString() const;
+    std::string getAsISOString() const; //FIXME It is not ISO format (should be YYYTMMDDThh:mm:ss)
+ 
+
+    /**
+      Returns date-time as string, using format YYYT-MM-DDThh:mm:ss
+      @return a string
+    */
+    std::string getAsISOEXTString() const;
+
 
     /**
       Returns date-time as string, using strftime() format string

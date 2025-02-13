@@ -58,9 +58,9 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
                                                        Name, Description, Authors, CreationDate, LastModDate))
   {
     openfluid::core::DateTime TmpDate;
-    TmpDate.setFromString(CreationDate,"%Y%m%dT%H%M%S");
+    TmpDate.setFromString(CreationDate,"%Y-%m-%dT%H:%M:%S");
     CreationDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
-    TmpDate.setFromString(LastModDate,"%Y%m%dT%H%M%S");
+    TmpDate.setFromString(LastModDate,"%Y-%m-%dT%H:%M:%S");
     LastModDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
 
     InfosStr += "<table><tr><td valign='middle' width='74px' style='padding: 5px;'>"
