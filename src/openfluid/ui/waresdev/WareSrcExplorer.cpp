@@ -215,33 +215,40 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   QMenu GitMenu;
   GitMenu.setTitle("Git");
 
-  QAction* InitAction = new QAction("Init", this);
-  QAction* StatusAction = new QAction("Status", this);
-  QAction* LogAction = new QAction("Log", this);
-  GitMenu.addAction(InitAction);
-  GitMenu.addAction(StatusAction);
-  GitMenu.addAction(LogAction);
-  connect(InitAction, SIGNAL(triggered()), this, SLOT(onGitInitAsked()));
-  connect(StatusAction, SIGNAL(triggered()), this, SLOT(onGitStatusAsked()));
-  connect(LogAction, SIGNAL(triggered()), this, SLOT(onGitLogAsked()));
-  
-  Menu.addMenu(&GitMenu);
-
-  QString WarePath = getWarePath();
-
-  GitUIProxy Git;
-  GitUIProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
-    
-  if (openfluid::utils::GitProxy::isAvailable() && TreeStatus.m_IsGitTracked)
+  if(!openfluid::utils::GitProxy::isAvailable())
   {
-    InitAction->setEnabled(false);
+    QAction* GitMissingAction = new QAction("Git not available", this);
+    GitMissingAction->setEnabled(false);
+    GitMenu.addAction(GitMissingAction);
   }
   else
   {
-    StatusAction->setEnabled(false);
-    LogAction->setEnabled(false);
-  }
+    QAction* InitAction = new QAction("Init", this);
+    QAction* StatusAction = new QAction("Status", this);
+    QAction* LogAction = new QAction("Log", this);
+    GitMenu.addAction(InitAction);
+    GitMenu.addAction(StatusAction);
+    GitMenu.addAction(LogAction);
+    connect(InitAction, SIGNAL(triggered()), this, SLOT(onGitInitAsked()));
+    connect(StatusAction, SIGNAL(triggered()), this, SLOT(onGitStatusAsked()));
+    connect(LogAction, SIGNAL(triggered()), this, SLOT(onGitLogAsked()));
 
+    GitUIProxy Git;
+    QString WarePath = getWarePath();
+    GitUIProxy::TreeStatusInfo TreeStatus = Git.status(WarePath);
+
+    if (TreeStatus.m_IsGitTracked)
+    {
+      InitAction->setEnabled(false);
+    }
+    else
+    {
+      StatusAction->setEnabled(false);
+      LogAction->setEnabled(false);
+    }
+  }
+  
+  Menu.addMenu(&GitMenu); 
   Menu.exec(viewport()->mapToGlobal(Point));
 }
 
