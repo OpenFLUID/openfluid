@@ -194,12 +194,12 @@ void RunContextManager::updateProjectFile(const std::string& ProjectFilePath)
             else if (openfluid::tools::toLowerCase(Key) == "creationdate")
             {
               SB.setValue("/","created_at",
-                          openfluid::core::DateTime::fromString(Value,"%Y%m%dT%H%M%S").getAsISOString());
+                          openfluid::core::DateTime::fromString(Value,"%Y%m%dT%H%M%S").getAsISOEXTString());
             }
             else if (openfluid::tools::toLowerCase(Key) == "lastmoddate")
             {
               SB.setValue("/","updated_at",
-                          openfluid::core::DateTime::fromString(Value,"%Y%m%dT%H%M%S").getAsISOString());
+                        openfluid::core::DateTime::fromString(Value,"%Y%m%dT%H%M%S").getAsISOEXTString());
             }
             else if (openfluid::tools::toLowerCase(Key) == "incoutput")
             {
@@ -459,7 +459,7 @@ bool RunContextManager::createProject(const std::string& Path,
     m_ProjectDescription = Description;
     m_ProjectAuthors = Authors;
     m_ProjectIncOutputDir = Inc;
-    m_ProjectCreationDate = openfluid::tools::getNowAsString("%Y%m%dT%H%M%S");
+    m_ProjectCreationDate = openfluid::tools::getNowAsString("%Y-%m-%dT%H:%M:%S");
 
     updateWaresEnvironment();
 
@@ -483,7 +483,7 @@ bool RunContextManager::saveProject()
     return false;
   }
 
-  m_ProjectLastModDate = openfluid::tools::getNowAsString("%Y%m%dT%H%M%S");
+  m_ProjectLastModDate = openfluid::tools::getNowAsString("%Y-%m-%dT%H:%M:%S");
 
   mp_ProjectFile->setValue("/","name",m_ProjectName);
   mp_ProjectFile->setValue("/","description",m_ProjectDescription);
