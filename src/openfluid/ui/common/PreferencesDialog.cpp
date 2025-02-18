@@ -139,8 +139,8 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent, DisplayMode Mode):
 
 
   connect(ui->DeltaTSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateDeltaT(int)));
-  connect(ui->PeriodWidget,SIGNAL(beginChanged(const QDateTime&)),this,SLOT(updatePeriodBegin(const QDateTime&)));
-  connect(ui->PeriodWidget,SIGNAL(endChanged(const QDateTime&)),this,SLOT(updatePeriodEnd(const QDateTime&)));
+  connect(ui->PeriodWidget,SIGNAL(datesChanged(const QDateTime&, const QDateTime&)),
+          this, SLOT(updatePeriodDates(const QDateTime&, const QDateTime&)));
 
   connect(ui->SyntaxHLCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableSyntaxHighlighting(bool)));
   connect(ui->CurrentLineHLCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableCurrentLineHighlighting(bool)));
@@ -442,19 +442,10 @@ void PreferencesDialog::updateDeltaT(int Val)
 // =====================================================================
 
 
-void PreferencesDialog::updatePeriodBegin(const QDateTime& DT)
+void PreferencesDialog::updatePeriodDates(const QDateTime& BeginDT, const QDateTime& EndDT)
 {
-  mp_PrefsMan->setBuilderBeginDate(DT.toString("yyyy-MM-dd HH:mm:ss").toStdString());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::updatePeriodEnd(const QDateTime& DT)
-{
-  mp_PrefsMan->setBuilderEndDate(DT.toString("yyyy-MM-dd HH:mm:ss").toStdString());
+  mp_PrefsMan->setBuilderBeginDate(BeginDT.toString("yyyy-MM-dd HH:mm:ss").toStdString());
+  mp_PrefsMan->setBuilderEndDate(EndDT.toString("yyyy-MM-dd HH:mm:ss").toStdString());
 }
 
 
