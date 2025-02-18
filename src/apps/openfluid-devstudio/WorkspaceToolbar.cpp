@@ -109,6 +109,7 @@ WorkspaceToolbar::WorkspaceToolbar(QWidget* Parent) :
   addAction(m_Actions["ImportWare"]);
 
   addSeparator();
+  addAction(m_Actions["BuildOptions"]);
   addAction(m_Actions["Dashboard"]);
   addAction(m_Actions["APIDoc"]);
 }
@@ -150,6 +151,9 @@ void WorkspaceToolbar::createActions()
 
   m_Actions["APIDoc"] = new openfluid::ui::common::DefaultAction(
                               openfluid::ui::common::getIcon("generate-doc","/ui/common",true),tr("User doc"), this);
+
+  m_Actions["BuildOptions"] = new openfluid::ui::common::DefaultAction(
+                              openfluid::ui::common::getIcon("settings","/ui/common",true),tr("Build options"), this);
 }
 
 

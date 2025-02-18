@@ -246,6 +246,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   connect(mp_Toolbar->action("APIDoc"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(openAPIDoc()));
   connect(mp_Toolbar->action("ImportWare"), SIGNAL(triggered()), this, SLOT(onImportWareSourcesAsked()));
   connect(mp_Toolbar->action("Dashboard"), SIGNAL(triggered()), this, SLOT(onDevDashboardAsked()));
+  connect(mp_Toolbar->action("BuildOptions"), SIGNAL(triggered()), this, SLOT(displayBuildOptionsDialog()));
 
   for (auto Action : m_ExternalToolsActions)
   {
@@ -311,7 +312,6 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   statusBar()->addPermanentWidget(mp_BuildStatusWidget);  
 
-  connect(mp_BuildStatusWidget, SIGNAL(settingsButtonClicked()), this, SLOT(displayBuildOptionsDialog()));
   connect(mp_BuildStatusWidget, SIGNAL(settingsChanged(openfluid::waresdev::WareBuildOptions)), 
           this, SLOT(onBuildOptionsChanged(openfluid::waresdev::WareBuildOptions)));
 

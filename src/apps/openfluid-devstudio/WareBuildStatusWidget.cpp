@@ -49,10 +49,6 @@ WareBuildStatusWidget::WareBuildStatusWidget(QWidget* Parent):
 {
   ui->setupUi(this);
 
-  ui->buildOptionsButton->setText("");
-  ui->buildOptionsButton->setIcon(openfluid::ui::common::getIcon("settings","/ui/common"));
-
-  connect(ui->buildOptionsButton, SIGNAL(clicked()), this, SIGNAL(settingsButtonClicked()));
   connect(ui->jobStatus, SIGNAL(scrolled(bool)), this, SLOT(onJobsScrolled(bool)));
   connect(ui->configStatus,SIGNAL(clicked()),this,SLOT(onConfigureModeClicked()));
   connect(ui->buildStatus,SIGNAL(clicked()),this,SLOT(onBuildModeClicked()));
