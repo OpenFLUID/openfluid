@@ -114,9 +114,7 @@ class OPENFLUID_API PreferencesDialog : public MessageDialog
 
     void updateDeltaT(int Val);
 
-    void updatePeriodBegin(const QDateTime& DT);
-
-    void updatePeriodEnd(const QDateTime& DT);
+    void updatePeriodDates(const QDateTime& BeginDT, const QDateTime& EndDT);
 
     void enableSyntaxHighlighting(bool Enable);
 
