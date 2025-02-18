@@ -204,13 +204,13 @@ QToolButton {
 
   // BOARD TAB
   mp_Board = new openfluid::ui::waresdev::WareStatusDashboardWidget(this, m_Container.getAbsolutePath());
-  m_TabIndexByName["Board"] = ui->tabWidget->addTab(mp_Board, "Board");
+  m_TabIndexByName["Board"] = ui->tabWidget->addTab(mp_Board, tr("Ware status"));
   
   connect(mp_Board, SIGNAL(operationRequested(const QString&)), this, SLOT(onOperationRequested(const QString&)));
 
   // MESSAGES TAB
   mp_MessagesWidget = new openfluid::ui::waresdev::WareSrcMsgViewer(this);
-  m_TabIndexByName["Messages"] = ui->tabWidget->addTab(mp_MessagesWidget, "Messages");
+  m_TabIndexByName["Messages"] = ui->tabWidget->addTab(mp_MessagesWidget, tr("Messages"));
 
   mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(mp_MessagesWidget);
   m_Container.setMsgStream(*mp_TextEditMsgStream);
