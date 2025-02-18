@@ -180,8 +180,8 @@ void AbstractSrcImportDialog::onHubConnectButtonClicked()
       else
       {
         hubUsernameLabel()->setText(tr("User ID"));
-        hubUsernameLabel()->setToolTip("User ID for Hub can be the user email or user uid from LDAP");
-        usernameLineEdit()->setPlaceholderText("Email / LDAP uid");
+        hubUsernameLabel()->setToolTip(tr("User ID for Hub can be the user email or username uid from LDAP"));
+        usernameLineEdit()->setPlaceholderText(tr("Email or username"));
       }
     }
   

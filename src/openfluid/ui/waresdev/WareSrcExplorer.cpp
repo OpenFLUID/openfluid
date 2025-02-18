@@ -140,9 +140,9 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
   }
   else
   {
-    FragmentMenu.setTitle("Add fragment");
-    FragmentMenu.addAction("New...", this, SLOT(onNewFragmentAsked()));
-    FragmentMenu.addAction("From remote repository...", this, SLOT(onRemoteFragmentAsked()));
+    FragmentMenu.setTitle(tr("Add fragment"));
+    FragmentMenu.addAction(tr("New..."), this, SLOT(onNewFragmentAsked()));
+    FragmentMenu.addAction(tr("From remote repository..."), this, SLOT(onRemoteFragmentAsked()));
     Menu.addMenu(&FragmentMenu);
   }
 
@@ -175,7 +175,7 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
 
   // Custom tools menu
   QMenu ExtToolMenu;
-  ExtToolMenu.setTitle("Open in external tool");
+  ExtToolMenu.setTitle(tr("Open in external tool"));
   ExtToolMenu.setEnabled(false);
 
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::instance();
