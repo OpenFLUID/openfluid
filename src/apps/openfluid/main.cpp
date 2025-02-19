@@ -232,7 +232,14 @@ int main(int argc, char **argv)
   ConfigureCmd.addOptions({{"src-path","s","path to the ware sources (required)",true},
                            {"build-path","b","path to the build directory",true},
                            {"build-type","t","CMake build mode (Debug|Release|..., default is Release)",true},
-                           {"generator","g","CMake generator to use (default is CMake default)",true}});
+                           {"generator","g","CMake generator to use (default is the default one of CMake)"
+#if defined OPENFLUID_OS_WINDOWS
+                           " In cases where OpenFLUID was built with MinGW "
+                           "(eg in Windows package on official website), configure step would require generator arg "
+                           "set as follows: -g \"MinGW Makefiles\""
+#endif
+                           , true}});
+
   Parser.addCommand(ConfigureCmd, &WareSection);
 
   // ---
