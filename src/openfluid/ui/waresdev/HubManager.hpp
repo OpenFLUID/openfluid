@@ -67,6 +67,8 @@ class OPENFLUID_API HubManager: public QObject
     std::string m_Username = "";
     std::string m_Password = "";
 
+    bool m_IsLoggedIn;
+
     WaresDetailsByIDByType_t m_AvailableWaresDetailsByIDByType;
 
     openfluid::utils::FluidHubAPIClient::WaresDetailsByID_t m_AvailableFragmentsDetails;

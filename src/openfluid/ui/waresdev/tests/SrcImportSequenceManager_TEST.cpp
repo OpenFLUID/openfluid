@@ -70,7 +70,8 @@ BOOST_FIXTURE_TEST_CASE(clone_https_wrongauth_v0_fails,HubTestFixture)
   openfluid::ui::waresdev::HubManager M(UrlHttpsV0.toStdString());
   openfluid::ui::waresdev::SrcImportSequenceManager W;
   M.connectToHub();
-  M.login("wrongname", "wrongpass");
+
+  BOOST_CHECK(!M.login("wrongname", "wrongpass"));
 
   W.setSelectedWaresUrl( { { openfluid::ware::WareType::SIMULATOR, { getFirstAvailSimUrl(M) } } });
 

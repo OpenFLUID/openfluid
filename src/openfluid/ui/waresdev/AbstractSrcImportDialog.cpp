@@ -216,6 +216,7 @@ void AbstractSrcImportDialog::onHubLoginButtonClicked()
     setMessage();
     if (m_HubManager.isConnected())
     {
+      QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
       if (m_HubManager.login(usernameLineEdit()->text().toStdString(), passwordLineEdit()->text().toStdString()))
       {
         hubLoginButton()->setText(m_HubButtonLogoutLabel);
@@ -231,7 +232,9 @@ void AbstractSrcImportDialog::onHubLoginButtonClicked()
       else
       {
         QMessageBox::warning(this, tr("Login error"), tr("Unable to log in with given information"));
+        updateHubElementsList();
       }
+      QApplication::restoreOverrideCursor();
     }
   }
 }

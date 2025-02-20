@@ -38,6 +38,9 @@
 */
 
 
+#include <sstream>
+#include <iostream>
+
 #include <openfluid/config.hpp>
 #include <openfluid/thirdparty/JSON.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -439,6 +442,25 @@ std::string FluidHubAPIClient::getUserUnixname(const std::string& Email, const s
     return unixname;
   }
   return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool FluidHubAPIClient::areCredentialsValid(const std::string& UserUnixname, const std::string& Password)
+{
+  if (!m_IsV0ofAPI && isConnected())
+  {
+    std::string Body = "{\"unixname\":\""+UserUnixname+"\",\"password\":\""+Password+"\"}";
+    std::string IsValidStr = fetchFieldFromEndpoint(m_RESTClient, "POST", "/auth/check", "valid", Body);
+    bool IsValid = false;
+    std::istringstream(IsValidStr) >> std::boolalpha >> IsValid;
+    return IsValid;
+  }
+
+  return false;
 }
 
 
