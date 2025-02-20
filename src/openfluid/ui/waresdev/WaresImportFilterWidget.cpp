@@ -112,6 +112,16 @@ QString WaresImportFilterWidget::getFilteringText()
 // =====================================================================
 
 
+void WaresImportFilterWidget::resetFilteringText()
+{
+  return ui->nameFilterLineEdit->setText("");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WaresImportFilterWidget::showAuthorizationFilterCheckbox(bool Showing)
 {
   ui->showUnauthorizedCheckbox->setVisible(Showing);

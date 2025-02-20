@@ -198,6 +198,12 @@ class OPENFLUID_API FluidHubAPIClient
     std::string getUserUnixname(const std::string& Email, const std::string& Password);
 
     /**
+      Returns true if login credentials are valid
+      @return True if login credentials are valid, false otherwise
+    */
+    bool areCredentialsValid(const std::string& Unixname, const std::string& Password);
+
+    /**
       Returns the list of all available wares in the current FluidHub
       @return the list of wares categorized by ware type
     */

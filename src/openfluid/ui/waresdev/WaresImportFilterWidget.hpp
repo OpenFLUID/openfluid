@@ -85,6 +85,8 @@ class OPENFLUID_API WaresImportFilterWidget : public QWidget
 
     QString getFilteringText();
 
+    void resetFilteringText();
+
     void showAuthorizationFilterCheckbox(bool Showing);
 
 };

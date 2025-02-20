@@ -50,7 +50,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 HubManager::HubManager() : mp_HubClient(new openfluid::utils::FluidHubAPIClient()), 
-  m_HubUrl(""), m_Username(""), m_Password("")
+  m_HubUrl(""), m_Username(""), m_Password(""), m_IsLoggedIn(false)
 {
 
 }
@@ -113,7 +113,7 @@ bool HubManager::isConnected() const
 
 bool HubManager::isLoggedIn() const
 {
-  return !(m_Username.empty());
+  return m_IsLoggedIn;
 }
 
 
@@ -192,7 +192,10 @@ bool HubManager::login(const std::string& UserID, const std::string& Password)
     }
   }
 
-  return !m_Username.empty(); // returns true when username found
+  m_IsLoggedIn = !m_Username.empty() && mp_HubClient->areCredentialsValid(m_Username, Password);
+
+  return m_IsLoggedIn;
+  // returns true when username found and is valid login
 }
 
 
@@ -204,6 +207,7 @@ void HubManager::logout()
 {
   m_Username = "";
   m_Password = "";
+  m_IsLoggedIn = false;
   mp_HubClient->logout();
 }
 
