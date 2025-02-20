@@ -255,7 +255,17 @@ void WaresSrcImportDialog::updateHubElementsList()
   }
 
   setItemChangedConnection(true);
-  toggleCheckSelectedWares(SelectedWareIDs, true);
+  if (m_HubManager.isLoggedIn())
+  {
+    toggleCheckSelectedWares(SelectedWareIDs, true);
+  } 
+  else
+  {
+    for (const auto& Pair : m_FilterWidgetsByWareType)
+    {
+      Pair.second->resetFilteringText();
+    }
+  }
   updateWareSelectionCount();
   check();
 }
