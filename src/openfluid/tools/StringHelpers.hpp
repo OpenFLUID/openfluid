@@ -142,6 +142,15 @@ inline T toNumeric(const std::string& Str)
 
 
 /**
+  Converts a string into a boolean.
+  @param[in] Str the string to convert
+  @return the converted boolean value
+  @throws openfluid::base::FrameworkException Error during conversion
+*/
+bool OPENFLUID_API toBoolean(const std::string& Str);
+
+
+/**
   Checks if a string starts with a given substring
   @snippet misc/strings.cpp str_starts
   @param[in] Str the string to check

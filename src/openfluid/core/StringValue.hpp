@@ -49,6 +49,12 @@
 
 
 namespace openfluid { namespace core {
+
+
+bool OPENFLUID_API stringToBoolean(const std::string& Str);
+// first defined here and not in tools because of circular import issue
+
+
 /**
   StringValue is a container for a std::string value, with methods for conversion
   to other containers derived from Value.\n

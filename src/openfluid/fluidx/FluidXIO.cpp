@@ -100,7 +100,7 @@ class FluidXReaderImplementation
     {
       std::string Enabled = openfluid::thirdparty::getXMLAttribute(Elt,"enabled");
 
-      if (Enabled == "1" || Enabled == "true" || Enabled.empty())
+      if (Enabled.empty() || openfluid::tools::toBoolean(Enabled))
       {
         return true;
       }

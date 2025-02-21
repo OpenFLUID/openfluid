@@ -341,25 +341,47 @@ bool StringValue::toDoubleValue(DoubleValue& Val) const
 // =====================================================================
 
 
+bool stringToBoolean(const std::string& Str)
+{
+  if (Str == "true" || Str == "1")
+  {
+    return true;
+  }
+
+  if (Str == "false" || Str == "0")
+  {
+    return false;
+  }
+
+  bool Val = false;
+  std::istringstream iss(Str);
+  char c;
+  if (((iss >> Val) && !iss.get(c)))
+  {
+    return Val;
+  }
+  else
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error converting '"+Str+"' to boolean value");
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool StringValue::toBoolean(bool& Val) const
 {
-
-  if (m_Value == "true" || m_Value == "1")
+  try
   {
-    Val = true;
-    return true;
+   Val = stringToBoolean(m_Value);
+   return true;
   }
-
-  if (m_Value == "false" || m_Value == "0")
+  catch(const openfluid::base::FrameworkException& e)
   {
-    Val = false;
-    return true;
+    return false;
   }
-
-
-  std::istringstream iss(m_Value);
-  char c;
-  return ((iss >> Val) && !iss.get(c));
 }
 
 

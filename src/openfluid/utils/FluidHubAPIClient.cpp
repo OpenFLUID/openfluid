@@ -455,9 +455,7 @@ bool FluidHubAPIClient::areCredentialsValid(const std::string& UserUnixname, con
   {
     std::string Body = "{\"unixname\":\""+UserUnixname+"\",\"password\":\""+Password+"\"}";
     std::string IsValidStr = fetchFieldFromEndpoint(m_RESTClient, "POST", "/auth/check", "valid", Body);
-    bool IsValid = false;
-    std::istringstream(IsValidStr) >> std::boolalpha >> IsValid;
-    return IsValid;
+    return openfluid::tools::toBoolean(IsValidStr);
   }
 
   return false;

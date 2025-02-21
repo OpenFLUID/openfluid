@@ -42,6 +42,7 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include <openfluid/core/StringValue.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 
 
@@ -178,6 +179,16 @@ std::vector<std::string> split(const std::string& Str, const std::string& SepCha
 std::string join(const std::vector<std::string>& Vect, const std::string& Sep)
 {
   return boost::algorithm::join(Vect,Sep);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool toBoolean(const std::string& Str)
+{
+  return openfluid::core::stringToBoolean(Str);
 }
 
 
