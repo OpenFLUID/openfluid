@@ -217,7 +217,9 @@ void AbstractSrcImportDialog::onHubLoginButtonClicked()
     if (m_HubManager.isConnected())
     {
       QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-      if (m_HubManager.login(usernameLineEdit()->text().toStdString(), passwordLineEdit()->text().toStdString()))
+      bool OK = m_HubManager.login(usernameLineEdit()->text().toStdString(), passwordLineEdit()->text().toStdString());
+      QApplication::restoreOverrideCursor();
+      if (OK)
       {
         hubLoginButton()->setText(m_HubButtonLogoutLabel);
         for (auto& Widget : m_HubLoginWidgets)
@@ -234,7 +236,6 @@ void AbstractSrcImportDialog::onHubLoginButtonClicked()
         QMessageBox::warning(this, tr("Login error"), tr("Unable to log in with given information"));
         updateHubElementsList();
       }
-      QApplication::restoreOverrideCursor();
     }
   }
 }
@@ -268,8 +269,11 @@ void AbstractSrcImportDialog::genericItemDisplay(bool AlreadyDisplayed,
     }
     else
     {
-      Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
-      Item->setToolTip(tr("You must be logged in to clone a ware"));
+      if (NotAuthorized)
+      {
+        Item->setFlags(Item->flags() & ~Qt::ItemIsEnabled);
+        Item->setToolTip(tr("You must be logged in to clone a ware"));
+      }
     }
   }
 
