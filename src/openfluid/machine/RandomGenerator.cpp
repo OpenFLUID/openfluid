@@ -151,9 +151,7 @@ void DoubleRandomGenerator::initParams(const openfluid::ware::WareParams_t& Para
   std::string IdenticalCellsStr;
   if (OPENFLUID_GetWareParameter(Params,"identicalcells",IdenticalCellsStr))
   {
-    m_IdenticalCellValues = (IdenticalCellsStr == "1" || IdenticalCellsStr == "true");
-    // convert str to bool 
-    //TODO add to openfluid::tools::StringHelpers
+    m_IdenticalCellValues = openfluid::tools::toBoolean(IdenticalCellsStr);
   }
 
   NumericalRandomGenerator::initParams(Params);

@@ -127,6 +127,18 @@ BOOST_AUTO_TEST_CASE(check_string_functions)
 
 
   {
+    // --- string conversion to bool
+
+    BOOST_REQUIRE_EQUAL(openfluid::tools::toBoolean("1"),true);
+    BOOST_REQUIRE_EQUAL(openfluid::tools::toBoolean("true"),true);
+    BOOST_REQUIRE_EQUAL(openfluid::tools::toBoolean("0"),false);
+    BOOST_REQUIRE_EQUAL(openfluid::tools::toBoolean("false"),false);
+    BOOST_REQUIRE_THROW(openfluid::tools::toBoolean(""),openfluid::base::FrameworkException);
+    BOOST_REQUIRE_THROW(openfluid::tools::toBoolean("a"),openfluid::base::FrameworkException);
+  }
+
+
+  {
     // --- replace string parts
 
     std::string Str = "World is pink!";
