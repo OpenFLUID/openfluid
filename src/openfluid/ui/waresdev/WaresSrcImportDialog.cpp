@@ -230,10 +230,18 @@ void WaresSrcImportDialog::updateHubElementsList()
       QString WareId = QString::fromStdString(WarePair.first);
       std::string WarePath = Mgr->getWarePath(Type,WareId.toStdString());
       bool WareInWorkspace = openfluid::waresdev::isWareInCurrentWorkspace(WarePath);
+      bool WareNotAuthorized = true;
+      if (m_HubManager.isLoggedIn())
+      {
 
-      bool WareNotAuthorized = !openfluid::waresdev::hasUserAccess(UserName.toStdString(), 
-                                                                   WarePair.second.ROUsers, 
-                                                                   WarePair.second.RWUsers); 
+        WareNotAuthorized = !openfluid::waresdev::hasUserAccess(UserName.toStdString(), 
+                                                                     WarePair.second.ROUsers, 
+                                                                     WarePair.second.RWUsers); 
+      }
+      else // check if ware allows access even for unidentified users
+      {
+        WareNotAuthorized = !WarePair.second.ROUsers.count("**");
+      }
 
       QListWidgetItem* Item = m_MapWidgetHub[Type][WareId.toStdString()];
       QString WareUrl = QString::fromStdString(WarePair.second.GitUrl);
@@ -258,13 +266,6 @@ void WaresSrcImportDialog::updateHubElementsList()
   if (m_HubManager.isLoggedIn())
   {
     toggleCheckSelectedWares(SelectedWareIDs, true);
-  } 
-  else
-  {
-    for (const auto& Pair : m_FilterWidgetsByWareType)
-    {
-      Pair.second->resetFilteringText();
-    }
   }
   updateWareSelectionCount();
   check();
@@ -613,7 +614,7 @@ bool WaresSrcImportDialog::isWareDisplayed(const openfluid::ware::WareType& Type
   {
     return false;
   }
-  if (!m_FilterWidgetsByWareType[Type]->areUnauthorizedWaresEnabled() && WareNotAuthorized)
+  if (!m_FilterWidgetsByWareType[Type]->areUnauthorizedWaresEnabled() && WareNotAuthorized && m_HubManager.isLoggedIn())
   {
     return false;
   }

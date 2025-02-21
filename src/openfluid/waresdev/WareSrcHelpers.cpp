@@ -78,7 +78,7 @@ bool hasUserAccess(const std::string& UserName, const std::set<std::string>& ROU
 {
   std::set<std::string> Users = ROUsers;
   Users.insert(RWUsers.begin(), RWUsers.end());
-  return Users.count("*") || Users.count(UserName); 
+  return Users.count("**") || Users.count("*") || Users.count(UserName); 
 }
 
 
