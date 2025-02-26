@@ -119,39 +119,33 @@ void EditSignatureDialog::checkDataTable()
 
   try
   {
-    if (ui->SignatureWidget->areAllCellsEmpty(NameHeader, DataTableType::VARIABLES))
+    const std::map<DataTableType, QString> Types = {{DataTableType::VARIABLES,tr("in variables table")},
+                                                    {DataTableType::ATTRIBUTES,tr("in attributes table")}};
+    bool IsOK = true;
+    for (const auto& Type : Types)
     {
-      setMessage(tr("Empty name in variables table"));
-    } 
-    else if (ui->SignatureWidget->areAllCellsEmpty(NameHeader, DataTableType::ATTRIBUTES))
-    {
-      setMessage(tr("Empty name in attributes table"));
-    }  
-    else if(ui->SignatureWidget->areAllCellsEmpty(UnitsClassHeader, DataTableType::VARIABLES))
-    {
-      setMessage(tr("Empty units class in variables table"));
+      if (ui->SignatureWidget->areAllCellsEmpty(NameHeader, Type.first))
+      {
+        setMessage(tr("Empty name ")+Type.second);
+        IsOK = false;
+      } 
+      else if(ui->SignatureWidget->areAllCellsEmpty(UnitsClassHeader, Type.first))
+      {
+        setMessage(tr("Empty units class ")+Type.second);
+        IsOK = false;
+      }
+      else if (!ui->SignatureWidget->areAllCellsValid(NameHeader, Type.first))
+      {
+        setMessage(tr("Wrong name format ")+Type.second);
+        IsOK = false;
+      }
+      else if(!ui->SignatureWidget->areAllCellsValid(UnitsClassHeader, Type.first))
+      {
+        setMessage(tr("Wrong units class format ")+Type.second);
+        IsOK = false;
+      }
     }
-    else if(ui->SignatureWidget->areAllCellsEmpty(UnitsClassHeader, DataTableType::ATTRIBUTES))
-    {
-      setMessage(tr("Empty units class in attributes table"));
-    }
-    else if (!ui->SignatureWidget->areAllCellsValid(NameHeader, DataTableType::VARIABLES))
-    {
-      setMessage(tr("Wrong name format in variables table"));
-    }
-    else if (!ui->SignatureWidget->areAllCellsValid(NameHeader, DataTableType::ATTRIBUTES))
-    {
-      setMessage(tr("Wrong name format in attributes table"));
-    }  
-    else if(!ui->SignatureWidget->areAllCellsValid(UnitsClassHeader, DataTableType::VARIABLES))
-    {
-      setMessage(tr("Wrong units class format in variables table"));
-    }
-    else if(!ui->SignatureWidget->areAllCellsValid(UnitsClassHeader, DataTableType::ATTRIBUTES))
-    {
-      setMessage(tr("Wrong units class format in attributes table"));
-    }
-    else
+    if (IsOK)
     {
       setMessage();
     }

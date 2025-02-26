@@ -70,14 +70,15 @@ SignatureEditorWidget::SignatureEditorWidget(QWidget* Parent):
   setCurrentIndex(0);
   ui->IDLabel->setVisible(false);
 
-  for (auto* Button : std::vector<QPushButton*>({ui->AddAuthorButton, ui->AddContactButton}))
+  for (auto* Button : std::vector<QPushButton*>({ui->AddAuthorButton, ui->AddContactButton, ui->AddDependencyButton}))
   {
     Button->setText("");
     Button->setIcon(openfluid::ui::common::getIcon("add","/ui/common"));
     Button->setIconSize(QSize(20,20));
   }
 
-  for (auto* Button : std::vector<QPushButton*>({ui->RemoveAuthorButton, ui->RemoveContactButton}))
+  for (auto* Button : std::vector<QPushButton*>({ui->RemoveAuthorButton, ui->RemoveContactButton, 
+                                                 ui->RemoveDependencyButton}))
   {
     Button->setText("");
     Button->setIcon(openfluid::ui::common::getIcon("remove","/ui/common"));
@@ -93,6 +94,9 @@ SignatureEditorWidget::SignatureEditorWidget(QWidget* Parent):
 
   connect(ui->AddContactButton,SIGNAL(clicked()),this,SLOT(addContactLine()));
   connect(ui->RemoveContactButton,SIGNAL(clicked()),this,SLOT(removeContactLine()));
+
+  connect(ui->AddDependencyButton,SIGNAL(clicked()),this,SLOT(addDependencyLine()));
+  connect(ui->RemoveDependencyButton,SIGNAL(clicked()),this,SLOT(removeDependencyLine()));
 
   connect(ui->VariablesDataWidget,SIGNAL(dataTableChanged()), this, SIGNAL(dataTableChanged()));
   connect(ui->AttributesDataWidget,SIGNAL(dataTableChanged()), this, SIGNAL(dataTableChanged()));
@@ -232,6 +236,15 @@ void SignatureEditorWidget::initializeCommon(const openfluid::ware::WareSignatur
 
   ui->TagsEdit->setText(QString::fromStdString(openfluid::tools::join(Signature->Tags, 
                                                                       openfluid::config::CHAR_TAG_SEPARATOR)));
+
+  ui->DependenciesTableWidget->setRowCount(Signature->Dependencies.size());
+  i = 0;
+  for (auto& Dependency : Signature->Dependencies)
+  {
+    ui->DependenciesTableWidget->setItem(i,0,new QTableWidgetItem(QString::fromStdString(Dependency.first)));
+    ui->DependenciesTableWidget->setItem(i,1,new QTableWidgetItem(QString::fromStdString(Dependency.second)));
+    i++;
+  }
 
   mp_IssuesManager->loadContent(Signature->Issues);
 
@@ -1054,6 +1067,13 @@ void SignatureEditorWidget::updateSignatureFromCommonsUI(openfluid::ware::WareSi
   Signature.License = ui->LicenseEdit->text().toStdString();
 
   Signature.Tags = openfluid::tools::split(ui->TagsEdit->text().toStdString(), openfluid::config::CHAR_TAG_SEPARATOR);
+
+  for (int i=0; i < ui->DependenciesTableWidget->rowCount() ; i++)
+  {
+    Signature.Dependencies[ui->DependenciesTableWidget->item(i,0)->text().toStdString()] = 
+                                               ui->DependenciesTableWidget->item(i,1)->text().toStdString();
+    
+  }
   
   Signature.Issues = mp_IssuesManager->getIssues();
 }
@@ -1140,6 +1160,21 @@ bool SignatureEditorWidget::exportSignature(const QString& SignaturePath) const
 // =====================================================================
 
 
+void SignatureEditorWidget::removeLine(QTableWidget* Table)
+{
+  int Row = Table->currentRow();
+
+  if (Row >= 0)
+  {
+    Table->removeRow(Row);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SignatureEditorWidget::addAuthorLine()
 {
   int RowCount = ui->AuthorsTableWidget->rowCount();
@@ -1157,12 +1192,7 @@ void SignatureEditorWidget::addAuthorLine()
 
 void SignatureEditorWidget::removeAuthorLine()
 {
-  int Row = ui->AuthorsTableWidget->currentRow();
-
-  if (Row >= 0)
-  {
-    ui->AuthorsTableWidget->removeRow(Row);
-  }
+  removeLine(ui->AuthorsTableWidget);
 }
 
 
@@ -1187,12 +1217,32 @@ void SignatureEditorWidget::addContactLine()
 
 void SignatureEditorWidget::removeContactLine()
 {
-  int Row = ui->ContactsTableWidget->currentRow();
+  removeLine(ui->ContactsTableWidget);
+}
 
-  if (Row >= 0)
-  {
-    ui->ContactsTableWidget->removeRow(Row);
-  }
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureEditorWidget::addDependencyLine()
+{
+  int RowCount = ui->DependenciesTableWidget->rowCount();
+
+  ui->DependenciesTableWidget->setRowCount(RowCount+1);
+
+  ui->DependenciesTableWidget->setItem(RowCount,0,new QTableWidgetItem("name"));
+  ui->DependenciesTableWidget->setItem(RowCount,1,new QTableWidgetItem("*"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SignatureEditorWidget::removeDependencyLine()
+{
+  removeLine(ui->DependenciesTableWidget);
 }
 
 

@@ -88,9 +88,16 @@ class OPENFLUID_API SignatureEditorWidget : public QTabWidget
 
     void removeContactLine();
 
+    void addDependencyLine();
+
+    void removeDependencyLine();
+
   private:
 
+
     Ui::SignatureEditorWidget* ui;
+
+    void removeLine(QTableWidget* Table);
 
     bool m_StaticID;
 
