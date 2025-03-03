@@ -3,7 +3,7 @@
 [TOC]
 
 Since OpenFLUID 2.2.0, the signature is defined in a dedicated file called "openfluid-ware.json". It is located at the root of the simulator directory.
-**It is advised to use DevStudio dialog "Edit signature" to edit its information instead of working directly with json content.**
+**It is advised to use DevStudio dialog via "Signature" button to edit its information instead of working directly with json content.**
 This file contains the same information than before but in a tree structure:
 ```json
 {

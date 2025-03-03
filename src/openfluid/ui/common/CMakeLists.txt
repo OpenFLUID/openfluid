@@ -7,7 +7,7 @@ SET(OPENFLUID_UI_COMMON_CPP AppMainWindow.cpp OpenFLUIDDialog.cpp
                             RunCLISimulationDialog.cpp
                             SignatureDataEditorWidget.cpp
                             SignatureEditorWidget.cpp EditSignatureDialog.cpp
-                            ClickableLabel.cpp ActionLabel.cpp ElidedLabel.cpp 
+                            ClickableLabel.cpp ActionLabel.cpp ElidedLabel.cpp FocusWheelComboBox.cpp
                             TagLabel.cpp StatusIconLabel.cpp ExecutionStatusLabel.cpp
                             FocusableLineEdit.cpp
                             ShortcutCompleter.cpp
@@ -28,7 +28,7 @@ SET(OPENFLUID_UI_COMMON_HPP AppMainWindow.hpp OpenFLUIDDialog.hpp
                             SignatureDataEditorWidget.hpp
                             SignatureEditorWidget.hpp EditSignatureDialog.hpp
                             DefaultAction.hpp
-                            ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp 
+                            ClickableLabel.hpp ActionLabel.hpp ElidedLabel.hpp FocusWheelComboBox.hpp
                             TagLabel.hpp StatusIconLabel.hpp ExecutionStatusLabel.hpp
                             FocusableLineEdit.hpp
                             ShortcutCompleter.hpp
