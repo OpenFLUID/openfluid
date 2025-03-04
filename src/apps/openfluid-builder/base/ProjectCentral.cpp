@@ -1125,7 +1125,7 @@ void ProjectCentral::checkMonitoring()
           m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
             ProjectStatusLevel::PRJ_ERROR);
           m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
-                          .addMessage(tr("File %1 required by generator %2 does not exist")
+                          .addMessage(tr("File %1 required by simulator %2 does not exist")
                                       .arg(QString::fromStdString(File))
                                       .arg(QString::fromStdString(ID)));
         }
