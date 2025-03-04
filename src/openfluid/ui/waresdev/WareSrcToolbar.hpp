@@ -62,7 +62,6 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
 
     bool m_IsIncluded;
     openfluid::ui::waresdev::WareSrcActionsCollection* mp_ActionsCollection;
-    bool m_DisplayDocBuild;
 
     std::list<openfluid::base::PreferencesManager::ExternalTool_t> m_ExternalTools;
     
@@ -73,7 +72,7 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
 
     WareSrcToolbar(bool IsIncluded, 
                    openfluid::ui::waresdev::WareSrcActionsCollection* ActionsCollection, 
-                   bool DisplayDocBuild = false, QWidget* Parent = nullptr);
+                   QWidget* Parent = nullptr);
 
     virtual ~WareSrcToolbar();
 

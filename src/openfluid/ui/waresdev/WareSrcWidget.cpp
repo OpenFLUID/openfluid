@@ -79,11 +79,8 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcEnquirer::WarePat
   Sizes << 1000 << 180;
   ui->splitter->setSizes(Sizes);
 
-  bool IsSimulator = Info.WareType==openfluid::ware::WareType::SIMULATOR;
-
   mp_ActionsCollection = new openfluid::ui::waresdev::WareSrcActionsCollection(m_IsStandalone, m_IsStandalone, this);
-  mp_WareSrcToolBar = new WareSrcToolbar(m_IsStandalone, mp_ActionsCollection, IsSimulator, this);
-
+  mp_WareSrcToolBar = new WareSrcToolbar(m_IsStandalone, mp_ActionsCollection, this);
 
   mp_WareSrcToolBar->setObjectName("WareToolbar");
   
@@ -178,11 +175,7 @@ QToolButton {
 
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), this, SLOT(configure()));
   connect(mp_ActionsCollection->action("BuildWare"), SIGNAL(triggered()), this, SLOT(build()));
-  
-  if (IsSimulator)
-  {
-    connect(mp_ActionsCollection->action("GenerateDoc"), SIGNAL(triggered()), this, SLOT(generateDoc()));
-  }
+  connect(mp_ActionsCollection->action("GenerateDoc"), SIGNAL(triggered()), this, SLOT(generateDoc()));
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
   connect(ui->WareSrcFileCollection, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
@@ -683,15 +676,7 @@ void WareSrcWidget::generateDoc()
 
   try
   {
-    if (m_Container.getType() == openfluid::ware::WareType::SIMULATOR)
-    {
-      m_Container.generateDoc();
-    }
-    else
-    {
-      QMessageBox::warning(nullptr,tr("Generate documentation"),
-                           tr("Documentation generator only works with simulators"));
-    }
+    m_Container.generateDoc();
   }
   catch (openfluid::base::FrameworkException& E )
   {

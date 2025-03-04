@@ -44,6 +44,7 @@
 #include <openfluid/ui/QtHelpers.hpp>
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/OStreamMsgStream.hpp>
+#include <openfluid/utils/ExternalProgram.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -277,6 +278,14 @@ void WareSrcUIContainer::generateDoc()
                                               "CMake program not available");
   }
 
+  if(!openfluid::utils::ExternalProgram::getRegisteredProgram(
+    openfluid::utils::ExternalProgram::RegisteredPrograms::PdfLatex).isFound() ||
+    !openfluid::utils::ExternalProgram::getRegisteredProgram(
+    openfluid::utils::ExternalProgram::RegisteredPrograms::BibTex).isFound())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "PdfLatex or BibTex program not available");
+  }
 
   mp_Stream->clear();
   m_Messages.clear();
