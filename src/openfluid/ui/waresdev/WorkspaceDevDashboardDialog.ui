@@ -151,7 +151,7 @@
             <item>
              <widget class="QCheckBox" name="WareshubCheckBox">
               <property name="text">
-               <string>wareshub.json file</string>
+               <string>openfluid-ware.json file</string>
               </property>
              </widget>
             </item>

@@ -129,7 +129,7 @@ void WorkspaceDevBuildWorker::run()
       writeMessage("====== "+tr("Configuring %1").arg(WItem.ID)+" ======");
       writeMessage();
 
-
+      mp_Process->setWorkingDirectory(QString::fromStdString(Container.getBuildDirPath()));
       mp_Process->start(QString::fromStdString(ConfigCommand.Program),
                         openfluid::ui::toQStringList(ConfigCommand.Args));
 
