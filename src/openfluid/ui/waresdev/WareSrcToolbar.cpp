@@ -61,11 +61,9 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcToolbar::WareSrcToolbar(bool IsIncluded, 
-                               openfluid::ui::waresdev::WareSrcActionsCollection* ActionsCollection, 
-                               bool DisplayDocBuild,
+                               openfluid::ui::waresdev::WareSrcActionsCollection* ActionsCollection,
                                QWidget* Parent) :
-    QToolBar(Parent), m_IsIncluded(IsIncluded), mp_ActionsCollection(ActionsCollection), 
-    m_DisplayDocBuild(DisplayDocBuild)
+    QToolBar(Parent), m_IsIncluded(IsIncluded), mp_ActionsCollection(ActionsCollection)
 {
   if (!m_IsIncluded)
   {
@@ -90,10 +88,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
   addSeparator();
   addAction(mp_ActionsCollection->action("ConfigureWare"));
   addAction(mp_ActionsCollection->action("BuildWare"));
-  if (m_DisplayDocBuild)
-  {
-    addAction(mp_ActionsCollection->action("GenerateDoc"));
-  }
+  addAction(mp_ActionsCollection->action("GenerateDoc"));
 
   if (m_IsIncluded)
   {
@@ -123,10 +118,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
     SubMenu = Menu->addMenu(tr("Build"));
     SubMenu->addAction(mp_ActionsCollection->action("ConfigureWare"));
     SubMenu->addAction(mp_ActionsCollection->action("BuildWare"));
-    if (m_DisplayDocBuild)
-    {
-      SubMenu->addAction(mp_ActionsCollection->action("GenerateDoc"));
-    }
+    SubMenu->addAction(mp_ActionsCollection->action("GenerateDoc"));
     SubMenu->addSeparator();
     SubMenu->addAction(mp_ActionsCollection->action("OpenWareOptions"));
 
