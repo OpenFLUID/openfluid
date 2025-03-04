@@ -145,7 +145,6 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
   }
 
   // Manual check if .git/index.lock detected (meaning that another git process is already running)
-  // HACK see if removable for release
   if (!WorkingDirectory.isEmpty())
   {
     openfluid::tools::FilesystemPath GitIndexLockPath = 
@@ -156,12 +155,6 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
       openfluid::utils::log::error("Git", ErrorMsg);
       emit error(tr(ErrorMsg.c_str()));
       return false;
-    }
-    else // HACK for debugging purpose, to remove before release
-    {
-      openfluid::utils::log::debug("Git", 
-                                   "git lock not detected here: "+WorkingDirectory.toStdString());
-      emit info(tr("git lock not detected here:")+QString::fromStdString(WorkingDirectory.toStdString()));
     }
   }
 

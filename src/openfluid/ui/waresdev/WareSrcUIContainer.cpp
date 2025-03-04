@@ -278,13 +278,17 @@ void WareSrcUIContainer::generateDoc()
                                               "CMake program not available");
   }
 
-  if(!openfluid::utils::ExternalProgram::getRegisteredProgram(
-    openfluid::utils::ExternalProgram::RegisteredPrograms::PdfLatex).isFound() ||
-    !openfluid::utils::ExternalProgram::getRegisteredProgram(
-    openfluid::utils::ExternalProgram::RegisteredPrograms::BibTex).isFound())
+  std::map<std::string, openfluid::utils::ExternalProgram::RegisteredPrograms> Programs({
+    {std::string("PdfLatex"), openfluid::utils::ExternalProgram::RegisteredPrograms::PdfLatex},
+    {std::string("BibTex"), openfluid::utils::ExternalProgram::RegisteredPrograms::BibTex}
+  });
+  for (const auto& Program : Programs)
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "PdfLatex or BibTex program not available");
+    if(!openfluid::utils::ExternalProgram::getRegisteredProgram(Program.second).isFound())
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                Program.first+" program not available");
+    }
   }
 
   mp_Stream->clear();
