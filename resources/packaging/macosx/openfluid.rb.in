@@ -20,7 +20,8 @@ cask 'openfluid@TOKEN_VERSION@' do
   depends_on formula: 'p7zip'
   depends_on formula: 'gnuplot'
   depends_on formula: 'cmake'
-  depends_on formula: 'pandoc'
+  # depends_on formula: 'pandoc'
+  # also depends on LateX for ware documentation
 
 
   # system dependencies

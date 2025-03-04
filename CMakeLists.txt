@@ -37,6 +37,8 @@ OPTION(OFBUILD_TESTS_ENABLE_FORTRAN "enable build of test simulators inetegratin
 OPTION(OFBUILD_TESTS_ENABLE_EMBEDDING_R "enable build of test simulators embedding R code" OFF)
 OPTION(OFBUILD_TESTS_ALLOW_NETWORK_REQUESTS "allow network requests in tests" ON)
 
+OPTION(OFPACK_FULL_DEPENDENCIES "enable installation of all dependencies for cpack" OFF)
+
 
 ################## project configuration ##################
 
@@ -353,6 +355,11 @@ IF(OFBUILD_ENABLE_DOCS AND DOXYGEN_FOUND)
 ELSE()
   MESSAGE(STATUS "  html : no")
   MESSAGE(STATUS "  pdf : no")
+ENDIF()
+
+IF(OFPACK_FULL_DEPENDENCIES)
+  MESSAGE(STATUS "CPack options")
+  MESSAGE(STATUS "  full dependencies: yes")
 ENDIF()
 
 MESSAGE(STATUS "****************************************")
