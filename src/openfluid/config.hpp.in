@@ -166,7 +166,7 @@ const std::string ERROR_MESSAGE_MISSING_R_PACKAGE = "R package not installed";
 const int RETURN_CODE_DEPENDENCY_ISSUE = @OPENFLUID_RETURN_CODE_DEPENDENCY_ISSUE@;
 
 
-// Waresdev // TOIMPL harmonize var names (FILE, _FILE, ...)
+// Waresdev // TODO harmonize var names (FILE, _FILE, ...)
 const std::string WARESDEV_SRC_CMAKESTDFILE = "@OPENFLUID_WARESDEV_SRC_CMAKESTDFILE@";
 const std::string WARESDEV_SRC_MAINFILE = "@OPENFLUID_WARESDEV_SRC_MAINFILE@";
 const std::string WARESDEV_SRC_PARAMSUIFILE = "@OPENFLUID_WARESDEV_SRC_PARAMSUIFILE@";

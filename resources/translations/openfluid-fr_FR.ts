@@ -2829,7 +2829,6 @@ Continuer quand même?</translation>
         <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="571"/>
         <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="587"/>
         <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="602"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1128"/>
         <source>File %1 required by generator %2 does not exist</source>
         <translation>Le fichier %1 requis par le générateur %2 n&apos;existe pas</translation>
     </message>
@@ -2844,91 +2843,96 @@ Continuer quand même?</translation>
         <translation>Le paramètre %1 utilisé par le simulateur %2 n&apos;est pas renseigné</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="697"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1067"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="698"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1068"/>
         <source>Unit class %1 does not exist for attribute %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;attribut %2 requis par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="708"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1078"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="709"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1079"/>
         <source>Attribute %1 required on %2 units by %3 does not exist</source>
         <translation>L&apos;attribut %1 requis sur la classe d&apos;unité %2 par %3 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="728"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="729"/>
         <source>Unit class %1 does not exist for attribute %2 produced by %3</source>
         <translation>La classe d&apos;unité %1 n&apos;existe pas pour l&apos;attribut %2 produit par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="743"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="744"/>
         <source>Attribute %1 produced on %2 units by %3 is already produced by another simulator</source>
         <translation>L&apos;attribut %1 produit sur la classe d&apos;unité %2 par %3 est déjà produit par un autre simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="757"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="758"/>
         <source>Simulator %1 is not available</source>
         <translation>Le simulateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="762"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="763"/>
         <source>Generator %1 is not available</source>
         <translation>Le générateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="805"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="841"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="806"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="842"/>
         <source>Unit class %1 does not exist for variable %2 produced by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 produite par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="821"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="822"/>
         <source>Variable %1 on %2 produced by %3 is already produced by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 est déjà produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="885"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1096"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="886"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1097"/>
         <source>Unit class %1 does not exist for variable %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 requise par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="900"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="901"/>
         <source>Variable %1 on %2 required by %3 is not produced by another simulator or generator</source>
         <translation>La variable %1 sur la classe d&apos;unités %2 requise par %3 n&apos;est pas produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="923"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="924"/>
         <source>No simulator or generator is enabled in model</source>
         <translation>Aucun simulateur ou générateur n&apos;est actif dans le modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="984"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="985"/>
         <source>Unit class %1 does not exist for datastore item %2</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;élément du datastore %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1019"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1020"/>
         <source>Observer %1 is not available</source>
         <translation>L&apos;observateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1035"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1036"/>
         <source>Required parameter %1 for observer %2 is not set</source>
         <translation>Le paramètre %1 requis pour l&apos;observateur %2 n&apos;est pas défini</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1049"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1050"/>
         <source>Used parameter %1 for observer %2 is not set</source>
         <translation>Le paramètre %1 utilisé pour l&apos;observateur%2 n&apos;est pas défini</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1111"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1112"/>
         <source>Variable %1 on %2 required by %3 is not produced by any simulator or generator</source>
         <translation>La variable %1 sur la classe %2 requise par %3 n&apos;est produite par aucun simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1142"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1129"/>
+        <source>File %1 required by simulator %2 does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="1143"/>
         <source>No observer is enabled in monitoring</source>
         <translation>Aucun observateur n&apos;est actif dans le monitoring</translation>
     </message>
@@ -4445,8 +4449,8 @@ Continuer quand même?</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WorkspaceDevDashboardDialog.ui" line="154"/>
-        <source>wareshub.json file</source>
-        <translation>Fichier wareshub.json</translation>
+        <source>openfluid-ware.json file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WorkspaceDevDashboardDialog.ui" line="161"/>
@@ -6642,31 +6646,26 @@ Il est possible d&apos;initialiser le système de version via l&apos;option &apo
 <context>
     <name>openfluid::ui::waresdev::GitUIProxy</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="164"/>
-        <source>git lock not detected here:</source>
-        <translation>git lock non détecté ici :</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="333"/>
+        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="326"/>
         <source>Git rm command failed with error code %1
 </source>
         <translation>Échec de la commande git rm avec pour code d&apos;erreur %1</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="364"/>
+        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="357"/>
         <source>Git rm command for .gitmodules failed with error code %1
 </source>
         <translation>Echec de la commande Git rm pour .gitmodules avec pour code d&apos;erreur %1</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="372"/>
+        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="365"/>
         <source>Submodule file removal failed
 </source>
         <translation>Échec de suppression de fichier du submodule
 </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="381"/>
+        <location filename="../../src/openfluid/ui/waresdev/GitUIProxy.cpp" line="374"/>
         <source>Submodule successfully removed</source>
         <translation>Suppression du submodule réussie</translation>
     </message>
@@ -7180,37 +7179,37 @@ Tous les fichiers du dossier vont être fermés et supprimés, y compris ceux no
 <context>
     <name>openfluid::ui::waresdev::WareSrcToolbar</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="106"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="101"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="115"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="110"/>
         <source>Edit</source>
         <translation>Edition</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="123"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="118"/>
         <source>Build</source>
         <translation>Construire</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="133"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="125"/>
         <source>Ware</source>
         <translation>Ware</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="137"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="129"/>
         <source>Open in external tool</source>
         <translation>Ouvrir dans un outil externe</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="146"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="138"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="150"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="142"/>
         <source>Menu</source>
         <translation>Menu</translation>
     </message>
@@ -7218,83 +7217,73 @@ Tous les fichiers du dossier vont être fermés et supprimés, y compris ceux no
 <context>
     <name>openfluid::ui::waresdev::WareSrcWidget</name>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="698"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="683"/>
         <source>Generate doc error</source>
         <translation>Erreur de génération de doc</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="808"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="793"/>
         <source>In %1:
 </source>
         <translation>Dans %1 :
 </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="835"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="923"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="1097"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="820"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="908"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="1082"/>
         <source>No open file</source>
         <translation>Aucun fichier ouvert</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="369"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="362"/>
         <source>Do you want to save changes?</source>
         <translation>Voulez-vous enregistrer les changements ?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="207"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="200"/>
         <source>Ware status</source>
         <translation>Status du ware</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="213"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="206"/>
         <source>Messages</source>
         <translation>Messages</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="314"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="307"/>
         <source>Signature direct edit</source>
         <translation>Édition directe de signature</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="315"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="308"/>
         <source>Warning: you are editing the signature file of the ware.
 It is advised to use instead the dedicated dialog to avoid any issue.</source>
         <translation>Attention : vous êtes sur le point d&apos;éditer le fichier de signature du ware.
 Il est recommandé d&apos;utiliser à la place la fenêtre dédiée pour éviter tout problème.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="368"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="361"/>
         <source>The document %1 has been modified.</source>
         <translation>Le document %1 a été modifié.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="646"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="639"/>
         <source>Configure error</source>
         <translation>Erreur à la configuration</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="669"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="662"/>
         <source>Build error</source>
         <translation>Erreur à la construction</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="692"/>
-        <source>Generate documentation</source>
-        <translation>Genérer la documentation</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="693"/>
-        <source>Documentation generator only works with simulators</source>
-        <translation>Le générateur de documentation n&apos;est disponible que pour les simulateurs</translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="808"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="793"/>
         <source>Signature issue</source>
         <translation>Problème de signature</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="810"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="795"/>
         <source>
 
 To solve this issue, you can edit the json file with an external program.</source>
@@ -7303,32 +7292,32 @@ To solve this issue, you can edit the json file with an external program.</sourc
 Pour résoudre ce problème, vous pouvez éditer le fichier json avec un programme externe.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="835"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="820"/>
         <source>No file to save</source>
         <translation>Aucun fichier à enregistrer</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="902"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="887"/>
         <source>Delete file</source>
         <translation>Supprimer le fichier</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="902"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="887"/>
         <source>Are you sure you want to delete &quot;%1&quot;?</source>
         <translation>Etes-vous sûr de vouloir supprimer &quot;%1&quot; ?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="918"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="903"/>
         <source>Unable to remove the file &quot;%1&quot;</source>
         <translation>Impossible de supprimer le fichier &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="923"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="908"/>
         <source>No file to delete</source>
         <translation>Aucun fichier à supprimer</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="1097"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcWidget.cpp" line="1082"/>
         <source>No open editor</source>
         <translation>Aucun éditeur ouvert</translation>
     </message>
