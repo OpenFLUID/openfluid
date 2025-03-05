@@ -344,7 +344,7 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
   if (!Data.UsedParams.empty() || !Data.RequiredParams.empty() ||
       !SimData.ProducedVars.empty() || !SimData.UpdatedVars.empty() || 
       !Data.RequiredVars.empty() || !Data.UsedVars.empty() ||
-      !SimData.ProducedAttribute.empty() || !Data.RequiredAttribute.empty() || !Data.UsedAttribute.empty() ||
+      !SimData.ProducedAttributes.empty() || !Data.RequiredAttributes.empty() || !Data.UsedAttributes.empty() ||
       !Data.RequiredExtraFiles.empty() || !Data.UsedExtraFiles.empty() ||
       !SimData.UsedEventsOnUnits.empty())
   {
@@ -366,17 +366,17 @@ void WareRegistrySerializer<SignatureType>::addDataDetailsForText(
     
     // ------ Attributes
 
-    for (const auto& Item : Data.RequiredAttribute)
+    for (const auto& Item : Data.RequiredAttributes)
     {
       addSpatialDataForText(Item,"required attribute",OutStm);
     } 
 
-    for (const auto& Item : Data.UsedAttribute)
+    for (const auto& Item : Data.UsedAttributes)
     {
       addSpatialDataForText(Item,"used attribute",OutStm);
     } 
 
-    for (const auto& Item : SimData.ProducedAttribute)
+    for (const auto& Item : SimData.ProducedAttributes)
     {
       addSpatialDataForText(Item,"produced attribute",OutStm);
     } 
@@ -448,7 +448,7 @@ template<class SignatureType>
 void WareRegistrySerializer<SignatureType>::addGraphDetailsForText(
   const openfluid::ware::SimulatorSignature* Sign, std::ostream& OutStm) const
 {
-  if (!Sign->HandledUnitsGraph.UpdatedUnitsGraph.empty() || !Sign->HandledUnitsGraph.UpdatedUnitsClass.empty())
+  if (!Sign->HandledUnitsGraph.UpdatedUnitsGraph.empty() || !Sign->HandledUnitsGraph.UpdatedUnitsClasses.empty())
   {
     OutStm << getIndentedText(2,"Handled units graph") << "\n";
 
@@ -458,7 +458,7 @@ void WareRegistrySerializer<SignatureType>::addGraphDetailsForText(
       OutStm << getIndentedText(3,"Global units graph updates",Sign->HandledUnitsGraph.UpdatedUnitsGraph) << "\n";
     }
 
-    for (auto& UC : Sign->HandledUnitsGraph.UpdatedUnitsClass)
+    for (auto& UC : Sign->HandledUnitsGraph.UpdatedUnitsClasses)
     {
       OutStm << getIndentedText(3,"Units graph update on class "+UC.UnitsClass,UC.Description) << "\n";
     }

@@ -130,8 +130,8 @@ std::string ObserverSignatureSerializer::toWareCPP(const openfluid::ware::Observ
                           CppWriter::getCPPVectorString(Sign.HandledData.RequiredExtraFiles,true));
 
   // Attributes
-  CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedAttribute",Sign.HandledData.UsedAttribute);
-  CPP += CppWriter::getCPPSpatialDataString("HandledData.RequiredAttribute",Sign.HandledData.RequiredAttribute);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedAttributes",Sign.HandledData.UsedAttributes);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.RequiredAttributes",Sign.HandledData.RequiredAttributes);
 
   // Variables
   CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedVars",Sign.HandledData.UsedVars);

@@ -59,14 +59,12 @@ class OPENFLUID_API SimulatorSignatureHandledData
 {
   public:
 
-    // TODO use the same naming style for all members
-
 
     std::vector<SignatureSpatialDataItem> ProducedVars;
 
     std::vector<SignatureSpatialDataItem> UpdatedVars;
 
-    std::vector<SignatureSpatialDataItem> ProducedAttribute; // TOIMPL add plural
+    std::vector<SignatureSpatialDataItem> ProducedAttributes;
 
     std::vector<openfluid::core::UnitsClass_t> UsedEventsOnUnits; // TODO add description to units class events?
 
@@ -81,7 +79,7 @@ class OPENFLUID_API SimulatorSignatureHandledData
     {
       ProducedVars.clear();
       UpdatedVars.clear();
-      ProducedAttribute.clear();
+      ProducedAttributes.clear();
       UsedEventsOnUnits.clear();
     }
 
@@ -123,7 +121,7 @@ class OPENFLUID_API SignatureUnitsGraph
 
     std::string UpdatedUnitsGraph;
 
-    std::vector<SignatureUnitsClassItem> UpdatedUnitsClass; // TOIMPL add plural
+    std::vector<SignatureUnitsClassItem> UpdatedUnitsClasses;
 
 
     SignatureUnitsGraph()
@@ -135,7 +133,7 @@ class OPENFLUID_API SignatureUnitsGraph
     void clear()
     {
       UpdatedUnitsGraph.clear();
-      UpdatedUnitsClass.clear();
+      UpdatedUnitsClasses.clear();
     }
 };
 

@@ -285,15 +285,15 @@ bool SimulatorSignatureXMLReader::loadFromFile(const std::string& FilePath,
 
               if (Data.IOMode == "required")
               {
-                Signature.HandledData.RequiredAttribute.push_back(Attribute);
+                Signature.HandledData.RequiredAttributes.push_back(Attribute);
               }
               else if (Data.IOMode == "used")
               {
-                Signature.HandledData.UsedAttribute.push_back(Attribute);
+                Signature.HandledData.UsedAttributes.push_back(Attribute);
               }
               else if (Data.IOMode == "produced")
               {
-                Signature.SimulatorHandledData.ProducedAttribute.push_back(Attribute);
+                Signature.SimulatorHandledData.ProducedAttributes.push_back(Attribute);
               }
             }
           }
@@ -323,7 +323,7 @@ bool SimulatorSignatureXMLReader::loadFromFile(const std::string& FilePath,
               openfluid::ware::SignatureUnitsClassItem UnitsClassItem;
               UnitsClassItem.UnitsClass = NameStr;
               UnitsClassItem.Description = TagText;
-              Signature.HandledUnitsGraph.UpdatedUnitsClass.push_back(UnitsClassItem);
+              Signature.HandledUnitsGraph.UpdatedUnitsClasses.push_back(UnitsClassItem);
             }
           }
         }

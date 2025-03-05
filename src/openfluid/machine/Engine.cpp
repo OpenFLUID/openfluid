@@ -453,17 +453,17 @@ void Engine::checkAttributesConsistency()
     HData = CurrentSimulator->Container.signature()->HandledData;
 
     // checking required attribute
-    for(i=0; i < HData.RequiredAttribute.size();i++)
+    for(i=0; i < HData.RequiredAttributes.size();i++)
     {
-      checkExistingAttribute(HData.RequiredAttribute[i].Name,HData.RequiredAttribute[i].UnitsClass,
+      checkExistingAttribute(HData.RequiredAttributes[i].Name,HData.RequiredAttributes[i].UnitsClass,
                              CurrentSimulator->Container.signature()->ID);
     }
 
     // checking produced attribute
     SHData = CurrentSimulator->Container.signature()->SimulatorHandledData;
-    for(i=0; i < SHData.ProducedAttribute.size();i++)
+    for(i=0; i < SHData.ProducedAttributes.size();i++)
     {
-      createAttribute(SHData.ProducedAttribute[i].Name,SHData.ProducedAttribute[i].UnitsClass,
+      createAttribute(SHData.ProducedAttributes[i].Name,SHData.ProducedAttributes[i].UnitsClass,
                       CurrentSimulator->Container.signature()->ID);
     }
 
@@ -474,7 +474,7 @@ void Engine::checkAttributesConsistency()
   // Cheching in observers
   for (ObserverInstance* IInstance : m_MonitoringInstance.observers())
   {
-    for (const auto& Attribute : IInstance->Container.signature()->HandledData.RequiredAttribute)
+    for (const auto& Attribute : IInstance->Container.signature()->HandledData.RequiredAttributes)
     {
       checkExistingAttribute(Attribute.Name,Attribute.UnitsClass,
                              IInstance->Container.signature()->ID);

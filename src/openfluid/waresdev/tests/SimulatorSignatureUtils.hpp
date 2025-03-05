@@ -88,11 +88,11 @@ openfluid::ware::SimulatorSignature getRefSignature()
   Sign.HandledData.UsedExtraFiles = {"observed.csv","simulated.csv","randomized.csv"};
   Sign.HandledData.RequiredExtraFiles = {"forced_data1.csv","forced_data2.csv",};
 
-  Sign.HandledData.UsedAttribute.push_back({"venue_capacity[integer]","YU","the venue capacity",""});
-  Sign.HandledData.UsedAttribute.push_back({"venue_volume","YU","the venue volume","m3s"});
-  Sign.HandledData.RequiredAttribute.push_back(
+  Sign.HandledData.UsedAttributes.push_back({"venue_capacity[integer]","YU","the venue capacity",""});
+  Sign.HandledData.UsedAttributes.push_back({"venue_volume","YU","the venue volume","m3s"});
+  Sign.HandledData.RequiredAttributes.push_back(
     {"stage_area","ZU","the stage area","m2",openfluid::core::Value::DOUBLE});
-  Sign.SimulatorHandledData.ProducedAttribute.push_back(
+  Sign.SimulatorHandledData.ProducedAttributes.push_back(
     {"area_per_musician","ZU","the area for each musician on stage","m2",openfluid::core::Value::DOUBLE});
 
   Sign.SimulatorHandledData.ProducedVars.push_back(
@@ -109,7 +109,7 @@ openfluid::ware::SimulatorSignature getRefSignature()
   Sign.TimeScheduling.setAsRange(300,600);
 
   Sign.HandledUnitsGraph.UpdatedUnitsGraph = "Spatial graph is modified";
-  Sign.HandledUnitsGraph.UpdatedUnitsClass = {
+  Sign.HandledUnitsGraph.UpdatedUnitsClasses = {
     {"XU","XU units are created"},
     {"YU","YU units connections to XU units are updated"},
   };
@@ -152,15 +152,15 @@ void compareSignatures(const openfluid::ware::SimulatorSignature& Sign1,
   );
 
   // attributes
-  BOOST_CHECK(!Sign1.SimulatorHandledData.ProducedAttribute.empty());
-  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.ProducedAttribute.size(),
-                    Sign2.SimulatorHandledData.ProducedAttribute.size());
-  BOOST_CHECK(!Sign1.HandledData.RequiredAttribute.empty());  
-  BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredAttribute.size(),
-                    Sign2.HandledData.RequiredAttribute.size());
-  BOOST_CHECK(!Sign1.HandledData.RequiredAttribute.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredAttribute.size(),
-                    Sign2.HandledData.RequiredAttribute.size());
+  BOOST_CHECK(!Sign1.SimulatorHandledData.ProducedAttributes.empty());
+  BOOST_CHECK_EQUAL(Sign1.SimulatorHandledData.ProducedAttributes.size(),
+                    Sign2.SimulatorHandledData.ProducedAttributes.size());
+  BOOST_CHECK(!Sign1.HandledData.RequiredAttributes.empty());  
+  BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredAttributes.size(),
+                    Sign2.HandledData.RequiredAttributes.size());
+  BOOST_CHECK(!Sign1.HandledData.RequiredAttributes.empty());
+  BOOST_CHECK_EQUAL(Sign1.HandledData.RequiredAttributes.size(),
+                    Sign2.HandledData.RequiredAttributes.size());
 
   // variables
   BOOST_CHECK(!Sign1.SimulatorHandledData.ProducedVars.empty());
@@ -183,8 +183,9 @@ void compareSignatures(const openfluid::ware::SimulatorSignature& Sign1,
   // spatial graph
   BOOST_CHECK(!Sign1.HandledUnitsGraph.UpdatedUnitsGraph.empty());
   BOOST_CHECK_EQUAL(Sign1.HandledUnitsGraph.UpdatedUnitsGraph,Sign2.HandledUnitsGraph.UpdatedUnitsGraph);
-  BOOST_CHECK(!Sign1.HandledUnitsGraph.UpdatedUnitsClass.empty());
-  BOOST_CHECK_EQUAL(Sign1.HandledUnitsGraph.UpdatedUnitsClass.size(),Sign2.HandledUnitsGraph.UpdatedUnitsClass.size());
+  BOOST_CHECK(!Sign1.HandledUnitsGraph.UpdatedUnitsClasses.empty());
+  BOOST_CHECK_EQUAL(Sign1.HandledUnitsGraph.UpdatedUnitsClasses.size(),
+                    Sign2.HandledUnitsGraph.UpdatedUnitsClasses.size());
 
   // scheduling
   BOOST_CHECK(Sign1.TimeScheduling.Type == Sign2.TimeScheduling.Type);
