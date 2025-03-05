@@ -55,7 +55,7 @@ void SimulatorSignatureSerializer::unserializeAttributesFromJSON(const openfluid
 {
   if (Json.contains("produced"))
   {
-    Sign.SimulatorHandledData.ProducedAttribute = DataJsonConverter::readSpatialDataListFromJSON(Json.at("produced"));
+    Sign.SimulatorHandledData.ProducedAttributes = DataJsonConverter::readSpatialDataListFromJSON(Json.at("produced"));
   }
 }
 
@@ -168,7 +168,7 @@ void SimulatorSignatureSerializer::unserializeSpatialGraphFromJSON(const openflu
 
         if (!UC.empty())
         {
-          Sign.HandledUnitsGraph.UpdatedUnitsClass.push_back({UC,Desc});
+          Sign.HandledUnitsGraph.UpdatedUnitsClasses.push_back({UC,Desc});
         }
       }
     }
@@ -234,7 +234,7 @@ SimulatorSignatureSerializer::serializeAttributesToJSON(const openfluid::ware::S
   openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
 
   auto JsonProd = openfluid::thirdparty::json::array();
-  for (const auto& A : Sign.SimulatorHandledData.ProducedAttribute)
+  for (const auto& A : Sign.SimulatorHandledData.ProducedAttributes)
   {
     JsonProd.push_back(DataJsonConverter::serializeSpatialDataItemToJSON(A));
   }
@@ -326,7 +326,7 @@ SimulatorSignatureSerializer::serializeSpatialGraphToJSON(const openfluid::ware:
   Json["description"] = Sign.HandledUnitsGraph.UpdatedUnitsGraph;
 
   auto ClassesArr = openfluid::thirdparty::json::array();
-  for (const auto& UC : Sign.HandledUnitsGraph.UpdatedUnitsClass)
+  for (const auto& UC : Sign.HandledUnitsGraph.UpdatedUnitsClasses)
   {
     auto UCObj = openfluid::thirdparty::json::object();
     UCObj["unitsclass"] = UC.UnitsClass;
@@ -398,10 +398,10 @@ std::string SimulatorSignatureSerializer::toWareCPP(const openfluid::ware::Simul
                           CppWriter::getCPPVectorString(Sign.HandledData.RequiredExtraFiles,true));
 
   // Attributes
-  CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedAttribute",Sign.HandledData.UsedAttribute);
-  CPP += CppWriter::getCPPSpatialDataString("HandledData.RequiredAttribute",Sign.HandledData.RequiredAttribute);
-  CPP += CppWriter::getCPPSpatialDataString("SimulatorHandledData.ProducedAttribute",
-                                            Sign.SimulatorHandledData.ProducedAttribute);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedAttributes",Sign.HandledData.UsedAttributes);
+  CPP += CppWriter::getCPPSpatialDataString("HandledData.RequiredAttributes",Sign.HandledData.RequiredAttributes);
+  CPP += CppWriter::getCPPSpatialDataString("SimulatorHandledData.ProducedAttributes",
+                                            Sign.SimulatorHandledData.ProducedAttributes);
 
   // Variables
   CPP += CppWriter::getCPPSpatialDataString("HandledData.UsedVars",Sign.HandledData.UsedVars);
@@ -418,11 +418,11 @@ std::string SimulatorSignatureSerializer::toWareCPP(const openfluid::ware::Simul
                           CppWriter::getQuotedString(
                             openfluid::tools::escapeString(Sign.HandledUnitsGraph.UpdatedUnitsGraph)));
   std::vector<std::string> SpatialUpdateVect;
-  for (const auto& U : Sign.HandledUnitsGraph.UpdatedUnitsClass)
+  for (const auto& U : Sign.HandledUnitsGraph.UpdatedUnitsClasses)
   {
     SpatialUpdateVect.push_back(CppWriter::getCPPVectorString({U.UnitsClass,U.Description},true));
   }
-  CPP += CppWriter::getCPPAssignment("HandledUnitsGraph.UpdatedUnitsClass",
+  CPP += CppWriter::getCPPAssignment("HandledUnitsGraph.UpdatedUnitsClasses",
                                      CppWriter::getCPPVectorString(SpatialUpdateVect));
 
   // Scheduling

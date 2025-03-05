@@ -413,12 +413,12 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
       }
 
       // -- Attributes
-      if (!SimSignature.SimulatorHandledData.ProducedAttribute.empty() ||
-          !SimSignature.HandledData.RequiredAttribute.empty() ||
-          !SimSignature.HandledData.UsedAttribute.empty())
+      if (!SimSignature.SimulatorHandledData.ProducedAttributes.empty() ||
+          !SimSignature.HandledData.RequiredAttributes.empty() ||
+          !SimSignature.HandledData.UsedAttributes.empty())
       {
         TexDoc.startDataTable("Attributes","llllXr");
-        for (const auto& D : SimSignature.SimulatorHandledData.ProducedAttribute)
+        for (const auto& D : SimSignature.SimulatorHandledData.ProducedAttributes)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -427,7 +427,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
                                TexSignature::toFriendly(D.Description),
                                TexSignature::math(D.SIUnit)});
         }
-        for (const auto& D : SimSignature.HandledData.RequiredAttribute)
+        for (const auto& D : SimSignature.HandledData.RequiredAttributes)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -436,7 +436,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
                                TexSignature::toFriendly(D.Description),
                                TexSignature::math(D.SIUnit)});
         }
-        for (const auto& D : SimSignature.HandledData.UsedAttribute)
+        for (const auto& D : SimSignature.HandledData.UsedAttributes)
         {
           TexDoc.addDataEntry({TexSignature::tt(TexSignature::toFriendly(D.Name)),
                                openfluid::core::Value::getStringFromValueType(D.DataType),
@@ -507,7 +507,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
 
       // -- Spatial graph
       if (!SimSignature.HandledUnitsGraph.UpdatedUnitsGraph.empty() ||
-          !SimSignature.HandledUnitsGraph.UpdatedUnitsClass.empty())
+          !SimSignature.HandledUnitsGraph.UpdatedUnitsClasses.empty())
       {
         TexDoc.startDataTable("Spatial graph","lX");
         if (!SimSignature.HandledUnitsGraph.UpdatedUnitsGraph.empty())
@@ -515,7 +515,7 @@ void WareSrcDocalyzer::processSignature(bool IncludeEmptyFields)
           TexDoc.addMulticolumnDataEntry(2,"X",
                                          TexSignature::toFriendly(SimSignature.HandledUnitsGraph.UpdatedUnitsGraph));
         }
-        for (const auto& D : SimSignature.HandledUnitsGraph.UpdatedUnitsClass)
+        for (const auto& D : SimSignature.HandledUnitsGraph.UpdatedUnitsClasses)
         {
           TexDoc.addDataEntry({D.UnitsClass,TexSignature::toFriendly(D.Description)});
         }

@@ -679,12 +679,13 @@ void ProjectCentral::checkModel()
 
 
         // populate updated units classes (created, modified)
-        m_UpdatedUnitsClass.append(convertUpdatedUnitsClassesToQStringList(Sign->HandledUnitsGraph.UpdatedUnitsClass));
+        m_UpdatedUnitsClass.append(convertUpdatedUnitsClassesToQStringList(
+          Sign->HandledUnitsGraph.UpdatedUnitsClasses));
 
 
         // check required attributes
 
-        const auto& ReqData = Sign->HandledData.RequiredAttribute;
+        const auto& ReqData = Sign->HandledData.RequiredAttributes;
 
         for (auto itReqData = ReqData.begin(); itReqData != ReqData.end(); ++itReqData)
         {
@@ -714,7 +715,7 @@ void ProjectCentral::checkModel()
 
 
         // check produced attributes
-        const auto& ProdData = Sign->SimulatorHandledData.ProducedAttribute;
+        const auto& ProdData = Sign->SimulatorHandledData.ProducedAttributes;
 
         for (auto itProdData = ProdData.begin();
             itProdData != ProdData.end(); ++itProdData)
@@ -1056,7 +1057,7 @@ void ProjectCentral::checkMonitoring()
       openfluid::fluidx::CoupledModelDescriptor& Model = m_FXDesc.model();
       openfluid::fluidx::SpatialDomainDescriptor& Domain = m_FXDesc.spatialDomain();
 
-      for (const auto& Param : Sign->HandledData.RequiredAttribute)
+      for (const auto& Param : Sign->HandledData.RequiredAttributes)
       {
           if (!Domain.isClassNameExists(Param.UnitsClass) &&
               !m_UpdatedUnitsClass.contains(QString::fromStdString(Param.UnitsClass)))

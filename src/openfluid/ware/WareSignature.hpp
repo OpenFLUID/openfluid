@@ -295,9 +295,9 @@ class OPENFLUID_API SignatureHandledData
 
     std::vector<SignatureSpatialDataItem> UsedVars;
 
-    std::vector<SignatureSpatialDataItem> RequiredAttribute; // TOIMPL add plural
+    std::vector<SignatureSpatialDataItem> RequiredAttributes;
 
-    std::vector<SignatureSpatialDataItem> UsedAttribute; // TOIMPL add plural
+    std::vector<SignatureSpatialDataItem> UsedAttributes;
 
     std::vector<std::string> RequiredExtraFiles; // TODO add description associated with each file?
 
@@ -318,8 +318,8 @@ class OPENFLUID_API SignatureHandledData
       RequiredParams.clear();
       RequiredVars.clear();
       UsedVars.clear();
-      RequiredAttribute.clear();
-      UsedAttribute.clear();
+      RequiredAttributes.clear();
+      UsedAttributes.clear();
       RequiredExtraFiles.clear();
       UsedExtraFiles.clear();
     }

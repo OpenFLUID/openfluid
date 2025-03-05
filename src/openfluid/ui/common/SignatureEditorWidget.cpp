@@ -352,7 +352,7 @@ void SignatureEditorWidget::initializeInputAttributesUIFromSignature(
   DataMap.insert(static_cast<int>(WriteState),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::REQUIRED));
 
-  for (auto& Item : Signature.HandledData.RequiredAttribute)
+  for (auto& Item : Signature.HandledData.RequiredAttributes)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -368,7 +368,7 @@ void SignatureEditorWidget::initializeInputAttributesUIFromSignature(
   DataMap.insert(static_cast<int>(WriteState),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::USED));
 
-  for (auto& Item : Signature.HandledData.UsedAttribute)
+  for (auto& Item : Signature.HandledData.UsedAttributes)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -403,7 +403,7 @@ void SignatureEditorWidget::initializeAttributesUIFromSignature(const openfluid:
   DataMap.insert(static_cast<int>(WriteState),
                  static_cast<int>(SignatureDataEditorWidget::DataConditionsIndices::PRODUCED));
 
-  for (auto& Item : Signature.SimulatorHandledData.ProducedAttribute)
+  for (auto& Item : Signature.SimulatorHandledData.ProducedAttributes)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::DATAID),
                    QString::fromStdString(Item.Name));
@@ -586,7 +586,7 @@ void SignatureEditorWidget::initializeDynamicsUIFromSignature(const openfluid::w
 
   ui->SpatialDynDescEdit->setText(QString::fromStdString(Signature.HandledUnitsGraph.UpdatedUnitsGraph));
 
-  for (auto& Item : Signature.HandledUnitsGraph.UpdatedUnitsClass)
+  for (auto& Item : Signature.HandledUnitsGraph.UpdatedUnitsClasses)
   {
     DataMap.insert(static_cast<int>(SignatureDataEditorWidget::DataColumns::UNITSCLASS),
                    QString::fromStdString(Item.UnitsClass));
@@ -846,11 +846,11 @@ void SignatureEditorWidget::updateSignatureFromReadAttributesUI(openfluid::ware:
     {
       if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::USED)
       {
-        Signature.HandledData.UsedAttribute.push_back(Item);
+        Signature.HandledData.UsedAttributes.push_back(Item);
       }
       else if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::REQUIRED)
       {
-        Signature.HandledData.RequiredAttribute.push_back(Item);
+        Signature.HandledData.RequiredAttributes.push_back(Item);
       }
     }
   }
@@ -882,7 +882,7 @@ void SignatureEditorWidget::updateSignatureFromAttributesUI(openfluid::ware::Sim
     {
       if (CondIndex == SignatureDataEditorWidget::DataConditionsIndices::PRODUCED)
       {
-        Signature.SimulatorHandledData.ProducedAttribute.push_back(Item);
+        Signature.SimulatorHandledData.ProducedAttributes.push_back(Item);
       }
     }
   }
@@ -1017,7 +1017,7 @@ void SignatureEditorWidget::updateSignatureFromDynamicsUI(openfluid::ware::Simul
     openfluid::ware::SignatureUnitsClassItem Item;
     Item.UnitsClass = extractTableFieldToString(DataTableW,i,0);
     Item.Description = extractTableFieldToString(DataTableW,i,1);
-    Signature.HandledUnitsGraph.UpdatedUnitsClass.push_back(Item);
+    Signature.HandledUnitsGraph.UpdatedUnitsClasses.push_back(Item);
   }
 }
 

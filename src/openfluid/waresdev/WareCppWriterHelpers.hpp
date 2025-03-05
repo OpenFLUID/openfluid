@@ -450,14 +450,14 @@ struct DataJsonConverter
     openfluid::thirdparty::json Json = openfluid::thirdparty::json::object();
 
     auto JsonReq = openfluid::thirdparty::json::array();
-    for (const auto& A : HandledData.RequiredAttribute)
+    for (const auto& A : HandledData.RequiredAttributes)
     {
       JsonReq.push_back(serializeSpatialDataItemToJSON(A));
     }
     Json["required"] = JsonReq;
 
     auto JsonUs = openfluid::thirdparty::json::array();
-    for (const auto& A : HandledData.UsedAttribute)
+    for (const auto& A : HandledData.UsedAttributes)
     {
       JsonUs.push_back(serializeSpatialDataItemToJSON(A));
     }
@@ -612,12 +612,12 @@ struct DataJsonConverter
 
     if (Json.contains("used"))
     {
-      Sign.HandledData.UsedAttribute = readSpatialDataListFromJSON(Json.at("used"));
+      Sign.HandledData.UsedAttributes = readSpatialDataListFromJSON(Json.at("used"));
     }
 
     if (Json.contains("required"))
     {
-      Sign.HandledData.RequiredAttribute = readSpatialDataListFromJSON(Json.at("required"));
+      Sign.HandledData.RequiredAttributes = readSpatialDataListFromJSON(Json.at("required"));
     }
   }
 

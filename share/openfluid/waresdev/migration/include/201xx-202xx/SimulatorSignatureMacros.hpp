@@ -170,21 +170,21 @@
   Macro for declaration of a produced attribute
 */
 #define DECLARE_PRODUCED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->SimulatorHandledData.ProducedAttribute\
+  Signature->SimulatorHandledData.ProducedAttributes\
   .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required attribute
 */
 #define DECLARE_REQUIRED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.RequiredAttribute\
+  Signature->HandledData.RequiredAttributes\
   .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used attribute
 */
 #define DECLARE_USED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.UsedAttribute\
+  Signature->HandledData.UsedAttributes\
   .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
 
 /**
@@ -201,7 +201,7 @@
   Macro for declaration of units class creation or update
 */
 #define DECLARE_UPDATED_UNITSCLASS(uclass,description) \
-    Signature->HandledUnitsGraph.UpdatedUnitsClass\
+    Signature->HandledUnitsGraph.UpdatedUnitsClasses\
     .push_back(openfluid::ware::SignatureUnitsClassItem(uclass,description));
 
 /**
