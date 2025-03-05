@@ -6,6 +6,35 @@ on: [push, pull_request]
 jobs:
 
 
+##########################################
+
+
+  ci-linux-debug-qt5:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Installation of dependencies
+        run: | 
+          sudo apt update && sudo apt install -y \
+            libboost-all-dev libgdal-dev libcurl4-gnutls-dev libgeos++-dev rapidjson-dev \
+            libgl1-mesa-dev \
+            qtbase5-dev qtbase5-dev-tools qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev \
+            gnuplot p7zip-full graphviz \
+            doxygen texlive-latex-extra texlive-fonts-extra latex2html pandoc pandoc-citeproc
+      - name: Checkout of source code
+        uses: actions/checkout@v3
+      - name: Preparation
+        run: mkdir ./_build
+      - name: Configuration
+        run: cmake ..
+        working-directory: ./_build
+      - name: Build
+        run: make -j 2
+        working-directory: ./_build
+      - name: Testing
+        run: ctest -j 2 --output-on-failure
+        working-directory: ./_build
+
 
 ##########################################
 
