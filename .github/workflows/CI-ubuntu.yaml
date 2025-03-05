@@ -6,6 +6,7 @@ on: [push, pull_request]
 jobs:
 
 
+
 ##########################################
 
 
@@ -113,7 +114,7 @@ jobs:
   ci-linux-release-no-ui:
     strategy:
       matrix:
-        os: [ubuntu-20.04,ubuntu-24.04]
+        os: [ubuntu-22.04,ubuntu-24.04]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -152,7 +153,7 @@ jobs:
   ci-linux-install-no-ui:
     strategy:
       matrix:
-        os: [ubuntu-20.04,ubuntu-24.04]
+        os: [ubuntu-22.04,ubuntu-24.04]
     runs-on: ${{ matrix.os }}
     needs: ci-linux-release-no-ui
 
