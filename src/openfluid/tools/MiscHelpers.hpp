@@ -120,7 +120,7 @@ void OPENFLUID_API microsleep(const unsigned long USec);
   @param[in] Format an strftime()-like format string
   @return the formatted date-time
 */
-std::string OPENFLUID_API getNowAsString(const std::string& Format); // TOIMPL to replace by DateTime::now()
+std::string OPENFLUID_API getNowAsString(const std::string& Format); // TODO to replace by DateTime::now()
 
 
 /**

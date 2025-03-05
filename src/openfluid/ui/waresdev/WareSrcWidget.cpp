@@ -170,7 +170,7 @@ QToolButton {
   connect(mp_ActionsCollection->action("Cut"), SIGNAL(triggered()), this, SLOT(cutText()));
   connect(mp_ActionsCollection->action("Paste"), SIGNAL(triggered()), this, SLOT(pasteText()));
   connect(mp_ActionsCollection->action("FindReplace"), SIGNAL(triggered()), this, SIGNAL(findReplaceRequested()));
-  connect(mp_ActionsCollection->action("EditSignature"), SIGNAL(triggered()), this, SLOT(editSignature()));//TOIMPL
+  connect(mp_ActionsCollection->action("EditSignature"), SIGNAL(triggered()), this, SLOT(editSignature()));
   connect(mp_ActionsCollection->action("GoToLine"), SIGNAL(triggered()), this, SLOT(goToLine()));
 
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), this, SLOT(configure()));
@@ -766,7 +766,7 @@ void WareSrcWidget::saveCurrentEditor()
     ui->tabWidget->setCurrentIndex(m_TabIndexByName["Board"]);
     
     onWareChange();
-  // TOIMPL emit wareChanged for other ware changes through watcher
+  // TODO emit wareChanged for other ware changes through watcher
   }
 }
 

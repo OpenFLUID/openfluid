@@ -310,7 +310,6 @@ bool Filesystem::copyDirectoryContent(const std::filesystem::path& Source, const
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                              std::string("Directory content copy failed: ")+e.what());
-      //return false;  TOIMPL double check this part with windows
 
     }
   }

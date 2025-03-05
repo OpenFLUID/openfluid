@@ -207,7 +207,7 @@ Process::Command CMakeProxy::getTarCompressCommand(const std::string& WorkDir,
 
   Cmd.Program = m_ExecutablePath;
 
-  // #FIXME Use command workdir instead
+  // #TODO Use command workdir instead
   Cmd.Args << "-E" << "chdir" << WorkDir; // cd to work directory
   Cmd.Args << m_ExecutablePath << "-E" << "tar"; // tar command
   Cmd.Args << "cf"+Options;
@@ -234,7 +234,7 @@ Process::Command CMakeProxy::getTarUncompressCommand(const std::string& WorkDir,
 
   Cmd.Program = m_ExecutablePath;
 
-  // #FIXME Use command workdir instead
+  // #TODO Use command workdir instead
   Cmd.Args << "-E" << "chdir" << WorkDir; // cd to work directory
   Cmd.Args << m_ExecutablePath << "-E" << "tar"; // tar command
   Cmd.Args << "xf"+Options;
