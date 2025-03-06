@@ -178,11 +178,13 @@ bool OPENFLUID_API IsCMakeFile(const openfluid::tools::FilesystemPath& FileObj);
 /**
   Checks if a given user can do read operations on a ware based on the RO/RW lists
   @param[in] UserName the current user to check
+  @param[in] IsLoggedIn true if logged in to hub
   @param[in] ROUsers the set of users with read only access
   @param[in] RWUsers the set of users with read+write access
   @return true if user is allowed to access the corresponding ware
 */
-bool OPENFLUID_API hasUserAccess(const std::string& UserName, const std::set<std::string>& ROUsers, 
+bool OPENFLUID_API hasUserAccess(const std::string& UserName, bool IsLoggedIn, 
+                                 const std::set<std::string>& ROUsers, 
                                  const std::set<std::string>& RWUsers={});
 
 
