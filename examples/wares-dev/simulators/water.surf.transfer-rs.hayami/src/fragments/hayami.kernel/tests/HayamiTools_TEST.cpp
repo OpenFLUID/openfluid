@@ -13,7 +13,7 @@
 // =====================================================================
 // =====================================================================
 
-using namespace fragments::hydro;
+using namespace fragments::math::numerical;
 
 const std::string TestOutputDir = "./";
 

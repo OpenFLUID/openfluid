@@ -1,18 +1,23 @@
 {
-    "id": "hayami.kernel",
-    "name": "Hayami method",
-    "description": "diffusive wave equation resolved with Hayami method",
-    "version": "0.1",
-    "status": "alpha",
-    "authors": ["Moussa R.", "Fabre J.-C.", "Louchart X.", "Lalauze S"],
-    "contacts": [],
-    "license": "TO BE DETERMINED",
-    "tags":["propagation", "wave", "kernel"],
-    "links": [],
-    "issues" : [],
-    "dependencies": {},
-    "fragment": {
-      "openfluid-components": []
-    },
+  "id": "hayami.kernel",
+  "name": "Hayami method",
+  "description": "diffusive wave equation resolved with Hayami method",
+  "version": "0.1",
+  "status": "alpha",
+  "authors": [
+    {"name": "Moussa R."}, 
+    {"name": "Fabre J.-C."},
+    {"name": "Louchart X."},
+    {"name": "Lalauze S"}
+  ],
+  "contacts": [],
+  "license": "TO BE DETERMINED",
+  "tags":["propagation", "wave", "kernel"],
+  "links": [],
+  "issues" : [],
+  "dependencies": {},
+  "fragment": {
+    "openfluid-components": ["core"]
   }
+}
   
