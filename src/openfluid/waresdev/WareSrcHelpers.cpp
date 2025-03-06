@@ -73,12 +73,20 @@ bool IsCMakeFile(const openfluid::tools::FilesystemPath& FileObj)
 // =====================================================================
 
 
-bool hasUserAccess(const std::string& UserName, const std::set<std::string>& ROUsers, 
+bool hasUserAccess(const std::string& UserName, bool IsLoggedIn,
+                   const std::set<std::string>& ROUsers, 
                    const std::set<std::string>& RWUsers)
 {
   std::set<std::string> Users = ROUsers;
   Users.insert(RWUsers.begin(), RWUsers.end());
-  return Users.count("**") || Users.count("*") || Users.count(UserName); 
+  if(IsLoggedIn)
+  {
+    return Users.count("*") || Users.count(UserName);
+  }
+  else
+  {
+    return ROUsers.count("**");
+  }
 }
 
 

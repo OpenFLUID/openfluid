@@ -231,17 +231,10 @@ void WaresSrcImportDialog::updateHubElementsList()
       std::string WarePath = Mgr->getWarePath(Type,WareId.toStdString());
       bool WareInWorkspace = openfluid::waresdev::isWareInCurrentWorkspace(WarePath);
       bool WareNotAuthorized = true;
-      if (m_HubManager.isLoggedIn())
-      {
-
-        WareNotAuthorized = !openfluid::waresdev::hasUserAccess(UserName.toStdString(), 
-                                                                     WarePair.second.ROUsers, 
-                                                                     WarePair.second.RWUsers); 
-      }
-      else // check if ware allows access even for unidentified users
-      {
-        WareNotAuthorized = !WarePair.second.ROUsers.count("**");
-      }
+      WareNotAuthorized = !openfluid::waresdev::hasUserAccess(UserName.toStdString(), 
+                                                              m_HubManager.isLoggedIn(),
+                                                              WarePair.second.ROUsers, 
+                                                              WarePair.second.RWUsers); 
 
       QListWidgetItem* Item = m_MapWidgetHub[Type][WareId.toStdString()];
       QString WareUrl = QString::fromStdString(WarePair.second.GitUrl);
