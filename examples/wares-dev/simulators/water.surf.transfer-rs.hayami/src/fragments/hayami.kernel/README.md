@@ -4,6 +4,14 @@ For wave propagation
 By Moussa R., Fabre J.-C., Louchart X., Lalauze S.
 
 
+## Usage
+Simple use example: 
+```cpp
+fragments::math::numerical::ComputeHayamiKernel(...);
+float QOutput = fragments::math::numerical::DoHayamiPropagation(...);
+```
+
+
 ## Requirements
 - OpenFLUID 2.2
   - binaries directory

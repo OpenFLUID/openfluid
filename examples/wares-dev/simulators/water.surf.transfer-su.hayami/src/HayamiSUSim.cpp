@@ -55,7 +55,7 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
 
     double m_MeanManning;
 
-    fragments::hydro::IDKernelMap m_SUKernel;
+    fragments::math::numerical::IDKernelMap m_SUKernel;
 
     openfluid::core::IDSerieOfDoubleValuePtrMap m_Input;
 
@@ -243,9 +243,9 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
         Sigma = m_MeanSigma * (TmpValue / m_MeanManning) * (m_MeanSlope / Area);
 
         // Computing Hayami kernel
-        m_SUKernel[SU->getID()] = fragments::hydro::t_HayamiKernel();
+        m_SUKernel[SU->getID()] = fragments::math::numerical::t_HayamiKernel();
         OPENFLUID_GetAttribute(SU,"flowdist",TmpValue);
-        fragments::hydro::ComputeHayamiKernel(Cel, Sigma,TmpValue,m_MaxSteps,DeltaT, m_SUKernel[SU->getID()]);
+        fragments::math::numerical::ComputeHayamiKernel(Cel, Sigma,TmpValue,m_MaxSteps,DeltaT, m_SUKernel[SU->getID()]);
       }
 
 
@@ -350,7 +350,7 @@ class HayamiSUSimulator : public openfluid::ware::PluggableSimulator
         if (m_CurrentInputSum[ID] > 0)
         {
           //TODO check given CurrentStep
-          QOutput = fragments::hydro::DoHayamiPropagation(m_SUKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
+          QOutput = fragments::math::numerical::DoHayamiPropagation(m_SUKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
         }
         OPENFLUID_AppendVariable(SU,"water.surf.Q.downstream-su",QOutput);
 

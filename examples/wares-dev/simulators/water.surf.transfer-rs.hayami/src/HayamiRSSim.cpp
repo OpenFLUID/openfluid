@@ -69,7 +69,7 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
 
     float m_RSBuffer;
 
-    fragments::hydro::IDKernelMap m_RSKernel;
+    fragments::math::numerical::IDKernelMap m_RSKernel;
 
     bool m_UseUpSUOutput;
 
@@ -347,8 +347,8 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetAttribute(RS,"length",RSlength);
         Cel = m_MeanCelerity * (m_MeanManning / RSmanning) * (sqrt((RSslope / m_MeanSlope)));
         Sigma = m_MeanSigma * (RSmanning/ m_MeanManning) * (m_MeanSlope / RSslope);
-        m_RSKernel[RS->getID()] = fragments::hydro::t_HayamiKernel();
-        fragments::hydro::ComputeHayamiKernel(Cel, Sigma,RSlength,m_MaxSteps,OPENFLUID_GetDefaultDeltaT(), m_RSKernel[RS->getID()]);
+        m_RSKernel[RS->getID()] = fragments::math::numerical::t_HayamiKernel();
+        fragments::math::numerical::ComputeHayamiKernel(Cel, Sigma,RSlength,m_MaxSteps,OPENFLUID_GetDefaultDeltaT(), m_RSKernel[RS->getID()]);
 
       }
 
@@ -514,7 +514,7 @@ class HayamiRSSimulator : public openfluid::ware::PluggableSimulator
         QOutput = 0;
         if (m_CurrentInputSum[ID] > 0)
         {
-          QOutput = fragments::hydro::DoHayamiPropagation(m_RSKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
+          QOutput = fragments::math::numerical::DoHayamiPropagation(m_RSKernel[ID], CurrentStep-1, m_Input[ID], m_MaxSteps, DeltaT);
         }
 
         OPENFLUID_AppendVariable(RS,"water.surf.Q.downstream-rs",QOutput);

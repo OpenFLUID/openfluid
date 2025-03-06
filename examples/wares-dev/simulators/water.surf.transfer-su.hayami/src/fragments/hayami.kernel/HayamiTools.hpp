@@ -50,8 +50,8 @@
 
 #define _PI_ 3.1415926536
 
-namespace fragments {
-  namespace hydro { //TOIMPL double-check namespace name relevance
+namespace fragments { namespace math { namespace numerical {
+  
 
 typedef std::vector<double> t_HayamiKernel;
 typedef std::map<int, t_HayamiKernel> IDKernelMap;
@@ -158,7 +158,6 @@ inline float DoHayamiPropagation(const t_HayamiKernel& Kernel,
   return QOutput;
 }
 
-#endif // __HAYAMITOOLS_H__
+} } } //namespaces
 
-}
-}
+#endif // __HAYAMITOOLS_H__
