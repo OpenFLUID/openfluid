@@ -175,8 +175,9 @@ void FragmentsSrcImportDialog::updateHubElementsList()
                                                                    FragmentId.toStdString()});
 
     bool WareNotAuthorized = !openfluid::waresdev::hasUserAccess(UserName.toStdString(), 
-                                                                  FragmentPair.second.ROUsers, 
-                                                                  FragmentPair.second.RWUsers); 
+                                                                 m_HubManager.isLoggedIn(),
+                                                                 FragmentPair.second.ROUsers, 
+                                                                 FragmentPair.second.RWUsers); 
 
     // fragment display
 
