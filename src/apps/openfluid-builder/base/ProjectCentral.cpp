@@ -1014,122 +1014,125 @@ void ProjectCentral::checkMonitoring()
       const std::string ID = Item->getID();
       const auto& Container = Reg->wareContainer(ID);
       
-      if (!Container.hasSignature())
+      if (Container.isValid() && Container.hasSignature())
+      {
+
+        // Factorizing parameters with model check not efficient
+        const auto* Sign = Container.signature().get();
+
+        // required parameters
+
+        for (const auto& Param : Sign->HandledData.RequiredParams)
+        {
+          if (!isParamSet(Item, Param.Name))
+          {
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                                        .addMessage(tr("Required parameter %1 for observer %2 is not set")
+                                                    .arg(QString::fromStdString(Param.Name))
+                                                    .arg(QString::fromStdString(ID)));
+          }
+        }
+
+        // used  parameters
+        for (const auto& Param : Sign->HandledData.UsedParams)
+        {
+          if (!isParamSet(Item, Param.Name))
+          {
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+              ProjectStatusLevel::PRJ_WARNING);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                                        .addMessage(tr("Used parameter %1 for observer %2 is not set")
+                                                    .arg(QString::fromStdString(Param.Name))
+                                                    .arg(QString::fromStdString(ID)));
+          }
+        }
+
+        // required attributes
+        openfluid::fluidx::CoupledModelDescriptor& Model = m_FXDesc.model();
+        openfluid::fluidx::SpatialDomainDescriptor& Domain = m_FXDesc.spatialDomain();
+
+        for (const auto& Param : Sign->HandledData.RequiredAttributes)
+        {
+            if (!Domain.isClassNameExists(Param.UnitsClass) &&
+                !m_UpdatedUnitsClass.contains(QString::fromStdString(Param.UnitsClass)))
+            {
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
+                ProjectStatusLevel::PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
+                                  .addMessage(tr("Unit class %1 does not exist for attribute %2 required by %3")
+                                              .arg(QString::fromStdString(Param.UnitsClass))
+                                              .arg(QString::fromStdString(Param.Name))
+                                              .arg(QString::fromStdString(ID)));
+            }
+          if (!(Domain.getAttributesNames(Param.UnitsClass).count(Param.Name)
+              || m_AttrsUnits.count(std::make_pair(Param.UnitsClass, Param.Name))))
+          {
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                                .addMessage(tr("Attribute %1 required on %2 units by %3 does not exist")
+                                            .arg(QString::fromStdString(Param.Name))
+                                            .arg(QString::fromStdString(Param.UnitsClass))
+                                            .arg(QString::fromStdString(ID)));
+          }
+        }
+
+        // required vars
+        for (const auto& Param : Sign->HandledData.RequiredVars)
+        {
+          m_VariablesNamesLists[QString::fromStdString(Param.UnitsClass)] << QString::fromStdString(Param.Name);
+
+            if (!Domain.isClassNameExists(Param.UnitsClass) &&
+                !m_UpdatedUnitsClass.contains(QString::fromStdString(Param.UnitsClass)))
+            {
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+                ProjectStatusLevel::PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                              .addMessage(tr("Unit class %1 does not exist for variable %2 required by %3")
+                                          .arg(QString::fromStdString(Param.UnitsClass))
+                                          .arg(QString::fromStdString(Param.Name))
+                                          .arg(QString::fromStdString(ID)));
+            }
+
+            if ((Param.DataType == openfluid::core::Value::NONE
+                && !m_VarsUnits.count(std::make_pair(Param.UnitsClass, Param.Name)))
+                || (Param.DataType != openfluid::core::Value::NONE && !m_TypedVarsUnits.count(
+                    std::make_pair(Param.UnitsClass,
+                                  std::make_pair(Param.Name, Param.DataType)))))
+            {
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
+                ProjectStatusLevel::PRJ_ERROR);
+              m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
+                              .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
+                                            "by any simulator or generator")
+                                          .arg(QString::fromStdString(Param.Name))
+                                          .arg(QString::fromStdString(Param.UnitsClass))
+                                          .arg(QString::fromStdString(ID)));
+            }
+        }
+
+        // required extra files
+        openfluid::base::RunContextManager* RunCtxt = openfluid::base::RunContextManager::instance();
+        for (const auto& File : Sign->HandledData.RequiredExtraFiles)
+        {
+          if (!QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(File))).exists())
+          {
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
+              ProjectStatusLevel::PRJ_ERROR);
+            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
+                            .addMessage(tr("File %1 required by simulator %2 does not exist")
+                                        .arg(QString::fromStdString(File))
+                                        .arg(QString::fromStdString(ID)));
+          }
+        }
+      }
+      else
       {
         m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(ProjectStatusLevel::PRJ_ERROR);
         m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).addMessage(tr("Observer %1 is not available")
                                                                          .arg(QString::fromStdString(ID)));
-      }
-
-      // Factorizing parameters with model check not efficient
-      const auto* Sign = Container.signature().get();
-
-      // required parameters
-
-      for (const auto& Param : Sign->HandledData.RequiredParams)
-      {
-        if (!isParamSet(Item, Param.Name))
-        {
-          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
-            ProjectStatusLevel::PRJ_ERROR);
-          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
-                                      .addMessage(tr("Required parameter %1 for observer %2 is not set")
-                                                  .arg(QString::fromStdString(Param.Name))
-                                                  .arg(QString::fromStdString(ID)));
-        }
-      }
-
-      // used  parameters
-      for (const auto& Param : Sign->HandledData.UsedParams)
-      {
-        if (!isParamSet(Item, Param.Name))
-        {
-          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
-            ProjectStatusLevel::PRJ_WARNING);
-          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
-                                      .addMessage(tr("Used parameter %1 for observer %2 is not set")
-                                                  .arg(QString::fromStdString(Param.Name))
-                                                  .arg(QString::fromStdString(ID)));
-        }
-      }
-
-      // required attributes
-      openfluid::fluidx::CoupledModelDescriptor& Model = m_FXDesc.model();
-      openfluid::fluidx::SpatialDomainDescriptor& Domain = m_FXDesc.spatialDomain();
-
-      for (const auto& Param : Sign->HandledData.RequiredAttributes)
-      {
-          if (!Domain.isClassNameExists(Param.UnitsClass) &&
-              !m_UpdatedUnitsClass.contains(QString::fromStdString(Param.UnitsClass)))
-          {
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS).updateStatus(
-              ProjectStatusLevel::PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_SPATIALATTRS)
-                                .addMessage(tr("Unit class %1 does not exist for attribute %2 required by %3")
-                                            .arg(QString::fromStdString(Param.UnitsClass))
-                                            .arg(QString::fromStdString(Param.Name))
-                                            .arg(QString::fromStdString(ID)));
-          }
-        if (!(Domain.getAttributesNames(Param.UnitsClass).count(Param.Name)
-            || m_AttrsUnits.count(std::make_pair(Param.UnitsClass, Param.Name))))
-        {
-          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
-            ProjectStatusLevel::PRJ_ERROR);
-          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
-                              .addMessage(tr("Attribute %1 required on %2 units by %3 does not exist")
-                                          .arg(QString::fromStdString(Param.Name))
-                                          .arg(QString::fromStdString(Param.UnitsClass))
-                                          .arg(QString::fromStdString(ID)));
-        }
-      }
-
-      // required vars
-      for (const auto& Param : Sign->HandledData.RequiredVars)
-      {
-        m_VariablesNamesLists[QString::fromStdString(Param.UnitsClass)] << QString::fromStdString(Param.Name);
-
-          if (!Domain.isClassNameExists(Param.UnitsClass) &&
-              !m_UpdatedUnitsClass.contains(QString::fromStdString(Param.UnitsClass)))
-          {
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
-              ProjectStatusLevel::PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
-                            .addMessage(tr("Unit class %1 does not exist for variable %2 required by %3")
-                                        .arg(QString::fromStdString(Param.UnitsClass))
-                                        .arg(QString::fromStdString(Param.Name))
-                                        .arg(QString::fromStdString(ID)));
-          }
-
-          if ((Param.DataType == openfluid::core::Value::NONE
-              && !m_VarsUnits.count(std::make_pair(Param.UnitsClass, Param.Name)))
-              || (Param.DataType != openfluid::core::Value::NONE && !m_TypedVarsUnits.count(
-                  std::make_pair(Param.UnitsClass,
-                                 std::make_pair(Param.Name, Param.DataType)))))
-          {
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING).updateStatus(
-              ProjectStatusLevel::PRJ_ERROR);
-            m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MONITORING)
-                            .addMessage(tr("Variable %1 on %2 required by %3 is not produced "
-                                           "by any simulator or generator")
-                                        .arg(QString::fromStdString(Param.Name))
-                                        .arg(QString::fromStdString(Param.UnitsClass))
-                                        .arg(QString::fromStdString(ID)));
-          }
-      }
-
-      // required extra files
-      openfluid::base::RunContextManager* RunCtxt = openfluid::base::RunContextManager::instance();
-      for (const auto& File : Sign->HandledData.RequiredExtraFiles)
-      {
-        if (!QFileInfo(QString::fromStdString(RunCtxt->getInputFullPath(File))).exists())
-        {
-          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS).updateStatus(
-            ProjectStatusLevel::PRJ_ERROR);
-          m_CheckInfos.part(ProjectCheckInfos::PartInfo::PART_MODELPARAMS)
-                          .addMessage(tr("File %1 required by simulator %2 does not exist")
-                                      .arg(QString::fromStdString(File))
-                                      .arg(QString::fromStdString(ID)));
-        }
       }
 
       // used data not displayed even as warning to avoid information overflow
