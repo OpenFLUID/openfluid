@@ -334,39 +334,39 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
     StandardOutput += "Git manual removal of module failed\n";
   }
 
-  // 3. remove .gitmodules if empty
-  openfluid::tools::FilesystemPath SubmoduleFile({MainPathString.toStdString(), ".gitmodules"});
-  if (SubmoduleFile.isFile())
-  {
-    std::ifstream SubmoduleFileStream;
-    SubmoduleFileStream.open(SubmoduleFile.toGeneric(), std::ifstream::in);
-    if (SubmoduleFileStream.peek() == std::ifstream::traits_type::eof())
-    {
-      SubmoduleFileStream.close();
-      // file empty, can be removed
-      QProcess* Process = new QProcess();
-      Process->setWorkingDirectory(MainPathString);
+  // 3. remove .gitmodules if empty (disabled since may not be relevant)
+  // openfluid::tools::FilesystemPath SubmoduleFile({MainPathString.toStdString(), ".gitmodules"});
+  // if (SubmoduleFile.isFile())
+  // {
+  //   std::ifstream SubmoduleFileStream;
+  //   SubmoduleFileStream.open(SubmoduleFile.toGeneric(), std::ifstream::in);
+  //   if (SubmoduleFileStream.peek() == std::ifstream::traits_type::eof())
+  //   {
+  //     SubmoduleFileStream.close();
+  //     // file empty, can be removed
+  //     QProcess* Process = new QProcess();
+  //     Process->setWorkingDirectory(MainPathString);
 
-      Process->start(QString::fromStdString(m_LocalGitProgram),{"rm", "--cached", ".gitmodules"});
-      Process->waitForReadyRead(-1);
-      Process->waitForFinished(-1);
-      int ErrCode = Process->exitCode();
-      if (ErrCode != 0)
-      {
-        SummaryStatusCode = 1;
-        StandardOutput += tr("Git rm command for .gitmodules failed with error code %1\n").arg(ErrCode);
-      }
-      delete Process;
-      Process = nullptr;
-      std::error_code TmpErr;
-      if (!SubmoduleFile.removeFile("", TmpErr))
-      {
-        SummaryStatusCode = 1;
-        StandardOutput += tr("Submodule file removal failed\n");
-        openfluid::utils::log::error("Git", "Submodule file removal failed: "+TmpErr.message());
-      }
-    }
-  }
+  //     Process->start(QString::fromStdString(m_LocalGitProgram),{"rm", "--cached", ".gitmodules"});
+  //     Process->waitForReadyRead(-1);
+  //     Process->waitForFinished(-1);
+  //     int ErrCode = Process->exitCode();
+  //     if (ErrCode != 0)
+  //     {
+  //       SummaryStatusCode = 1;
+  //       StandardOutput += tr("Git rm command for .gitmodules failed with error code %1\n").arg(ErrCode);
+  //     }
+  //     delete Process;
+  //     Process = nullptr;
+  //     std::error_code TmpErr;
+  //     if (!SubmoduleFile.removeFile("", TmpErr))
+  //     {
+  //       SummaryStatusCode = 1;
+  //       StandardOutput += tr("Submodule file removal failed\n");
+  //       openfluid::utils::log::error("Git", "Submodule file removal failed: "+TmpErr.message());
+  //     }
+  //   }
+  // }
   
   StatusTxt = StatusTxt + "\n" + RmReturn.second;
   if (SummaryStatusCode == 0)
