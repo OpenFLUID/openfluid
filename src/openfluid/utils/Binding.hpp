@@ -576,6 +576,7 @@ class Binding
       try
       {
         init();
+        openfluid::base::RunContextManager::instance()->closeProject();
 
         openfluid::base::IOListener FluidXListener;
         

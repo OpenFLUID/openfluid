@@ -164,6 +164,9 @@ BOOST_AUTO_TEST_CASE(check_datasetsprojects)
   std::cout << "obsIDs: " << TB->getObserversIDs() << std::endl;
 
   openfluid::utils::Binding::destroy(TB);
+
+  // recall
+  BOOST_REQUIRE(openfluid::utils::Binding::openProject(PrjPath.c_str()) != 0);
 }
 
 
