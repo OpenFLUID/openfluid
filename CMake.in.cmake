@@ -253,7 +253,7 @@ SET(OFBUILD_TRANSLATIONS_DIRSTOSCAN "${CMAKE_SOURCE_DIR}/src/openfluid/ui"
                                     "${CMAKE_SOURCE_DIR}/src/apps/openfluid-builder"
                                     "${CMAKE_SOURCE_DIR}/src/apps/openfluid-devstudio")
 SET(OPENFLUID_TRANSLATIONS_FILEROOT openfluid)
-SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR)
+SET(OPENFLUID_TRANSLATIONS_LANGS fr_FR zh_CN)
 
 
 ################### tests configuration ###################
