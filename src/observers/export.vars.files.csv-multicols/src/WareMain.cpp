@@ -31,7 +31,7 @@
 
 
 /**
-  @file MultiCSVFilesObs.cpp
+  @file WareMain.cpp
 
   @author Armel THONI <armel.thoni@inra.fr>
 */

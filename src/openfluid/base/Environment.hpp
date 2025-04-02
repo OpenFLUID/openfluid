@@ -100,6 +100,8 @@ class OPENFLUID_API Environment
 
     static std::string m_UserExamplesDir;
     
+    static std::string m_UserExampleObserversDir;
+    
     static std::string m_UserExampleSimulatorsDir;
 
     static std::string m_TranslationsDir;
@@ -259,6 +261,15 @@ class OPENFLUID_API Environment
     static std::string getUserExampleSimulatorsDir()
     {
       return m_UserExampleSimulatorsDir;
+    }
+    
+    /**
+      Returns the full path of the example observers directory
+      @return the full path to the directory
+    */
+    static std::string getUserExampleObserversDir()
+    {
+      return m_UserExampleObserversDir;
     }
 
     /**

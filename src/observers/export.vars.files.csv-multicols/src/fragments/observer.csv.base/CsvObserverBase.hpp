@@ -45,6 +45,7 @@
 #include <vector>
 
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/core/Tree.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 

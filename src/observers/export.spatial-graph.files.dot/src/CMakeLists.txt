@@ -21,7 +21,7 @@
 
 OPENFLUID_ADD_WAREPLUGIN(
   # list of C++ files
-  CPP_FILES DotFilesObs.cpp
+  CPP_FILES WareMain.cpp
   # list of Fortran files
   #FORTRAN_FILES 
   # list of UI files (mainly for builderexts)

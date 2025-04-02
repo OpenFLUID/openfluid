@@ -141,6 +141,30 @@ bool ExamplesManager::installSimulator(const std::string& SimulatorDir,
 // =====================================================================
 
 
+bool ExamplesManager::installObserver(const std::string& ObserverDir,
+                                       const std::string& ResourcesPath, const std::string& InstallPath,
+                                       const bool Force)
+{
+  std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
+                                                                 openfluid::config::WARESDEV_PATH,
+                                                                 openfluid::config::OBSERVERS_PATH});
+  if (!openfluid::tools::FilesystemPath({FromPath,ObserverDir}).isDirectory())
+  {
+    // silent since called for every ware import
+    return false;
+  }
+  std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
+                                                               openfluid::config::WARESDEV_PATH,
+                                                               openfluid::config::OBSERVERS_PATH});
+  std::cout << "-- Installing observer " << ObserverDir << " from " << FromPath << " to " << ToPath << std::endl;
+  return installDirectory(FromPath,ToPath,ObserverDir,Force);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool ExamplesManager::installAllProjects(const std::string& ResourcesPath, const std::string& InstallPath, 
                                          const bool Force)
 {
@@ -156,7 +180,7 @@ bool ExamplesManager::installAllProjects(const std::string& ResourcesPath, const
     bool AllIsOK = true;
     for (const auto& Prj : FoundProjects)
     {
-      AllIsOK += installProject(Prj,ResPath,InstPath,Force);
+      AllIsOK &= installProject(Prj,ResPath,InstPath,Force);
     }
     return AllIsOK;
   }
@@ -179,19 +203,30 @@ bool ExamplesManager::installAllSimulators(const std::string& ResourcesPath, con
                                                                        openfluid::config::WARESDEV_PATH,
                                                                        openfluid::config::SIMULATORS_PATH});
   
+  bool AllIsOK = true;
   if (openfluid::tools::FilesystemPath(SimulatorsPath).isDirectory())
   {
     std::vector<std::string> FoundSimulators = openfluid::tools::Filesystem::findDirectories(SimulatorsPath);
 
-    bool AllIsOK = true;
     for (const auto& Sim : FoundSimulators)
     {
-      AllIsOK += installSimulator(Sim,ResPath,InstPath,Force);
+      AllIsOK &= installSimulator(Sim,ResPath,InstPath,Force);
     }
-    return AllIsOK;
   }
+  
+  std::string ObserversPath = openfluid::tools::Filesystem::joinPath({ResPath,
+                                                                       openfluid::config::WARESDEV_PATH,
+                                                                       openfluid::config::OBSERVERS_PATH});
+  if (openfluid::tools::FilesystemPath(ObserversPath).isDirectory())
+  {
+    std::vector<std::string> FoundObservers = openfluid::tools::Filesystem::findDirectories(ObserversPath);
 
-  return false;
+    for (const auto& Obs : FoundObservers)
+    {
+      AllIsOK &= installObserver(Obs,ResPath,InstPath,Force);
+    }
+  }
+  return AllIsOK;
 }
 
 

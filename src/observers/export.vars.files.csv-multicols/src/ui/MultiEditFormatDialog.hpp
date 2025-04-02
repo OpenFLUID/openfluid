@@ -44,7 +44,7 @@
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
-#include "MultiCSVObsTools.hpp"
+#include "../MultiCSVObsTools.hpp"
 
 
 namespace Ui

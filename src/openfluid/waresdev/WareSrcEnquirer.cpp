@@ -165,6 +165,14 @@ WareSrcEnquirer::WarePathInfo WareSrcEnquirer::getWareInfoFromPath(const std::st
         
         fillInfo(openfluid::base::Environment::getUserExamplesDir(),Info);
       }
+      // path is in examples observers directory
+      else if (openfluid::tools::Path(openfluid::base::Environment::getUserExampleObserversDir())
+                  .contains(Info.AbsolutePath))
+      {
+        Info.IsInExamples = true;
+       
+        fillInfo(openfluid::base::Environment::getUserExamplesDir(),Info);
+      }
     }
   }
 

@@ -42,7 +42,7 @@
 
 #include <openfluid/ui/builderext/PluggableParameterizationExtension.hpp>
 
-#include "GNUplotObsTools.hpp"
+#include "../GNUplotObsTools.hpp"
 
 
 class QListWidget;
