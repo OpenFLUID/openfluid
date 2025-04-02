@@ -31,38 +31,38 @@
 
 
 /**
-  @file MultiCSVObsParamsWidget.hpp
+  @file CSVObsParamsWidget.hpp
 
-  @author Armel THONI <armel.thoni@inra.fr>
+  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
 
-#ifndef __MULTICSVOBSPARAMSWIDGET_HPP__
-#define __MULTICSVOBSPARAMSWIDGET_HPP__
+#ifndef __CSVOBSPARAMSWIDGET_HPP__
+#define __CSVOBSPARAMSWIDGET_HPP__
 
 
 #include <openfluid/ui/builderext/PluggableParameterizationExtension.hpp>
 
-#include "MultiCSVObsTools.hpp"
+#include "../CSVObsTools.hpp"
 
 
 namespace Ui
 {
-  class MultiCSVObsParamsWidget;
+  class CSVObsParamsWidget;
 }
 
 
-class MultiCSVObsParamsWidget: public openfluid::ui::builderext::PluggableParameterizationExtension
+class CSVObsParamsWidget: public openfluid::ui::builderext::PluggableParameterizationExtension
 {
   Q_OBJECT;
 
   private:
 
-    Ui::MultiCSVObsParamsWidget* ui;
+    Ui::CSVObsParamsWidget* ui;
 
-    MultiFormatMap_t m_Formats;
+    FormatMap_t m_Formats;
 
-    MultiSetMap_t m_Sets;
+    SetMap_t m_Sets;
 
     void clearInternalDataAndWidgets();
 
@@ -70,7 +70,6 @@ class MultiCSVObsParamsWidget: public openfluid::ui::builderext::PluggableParame
 
     QString getParamValue(const QString& Str, const QString& Default = "");
 
-    QStringList getFormatNames();
 
   private slots:
 
@@ -91,13 +90,13 @@ class MultiCSVObsParamsWidget: public openfluid::ui::builderext::PluggableParame
 
   public:
 
-    MultiCSVObsParamsWidget();
+    CSVObsParamsWidget();
 
-    ~MultiCSVObsParamsWidget();
+    ~CSVObsParamsWidget();
 
     void update();
 
 };
 
 
-#endif /* __MULTICSVOBSPARAMSWIDGET_HPP__ */
+#endif /* __CSVOBSPARAMSWIDGET_HPP__ */

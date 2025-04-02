@@ -23,7 +23,7 @@ SET(WARE_LINK_LIBS ${GDAL_LIBRARIES})
 
 OPENFLUID_ADD_WAREPLUGIN(
   # list of C++ files
-  CPP_FILES GeoVectorFilesObs.cpp
+  CPP_FILES WareMain.cpp
   # list of Fortran files
   #FORTRAN_FILES 
   # list of UI files (mainly for builderexts)

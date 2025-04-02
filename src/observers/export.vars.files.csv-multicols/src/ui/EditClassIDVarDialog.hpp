@@ -43,7 +43,7 @@
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/ui/common/MessageDialog.hpp>
 
-#include "MultiCSVObsTools.hpp"
+#include "../MultiCSVObsTools.hpp"
 
 
 namespace Ui

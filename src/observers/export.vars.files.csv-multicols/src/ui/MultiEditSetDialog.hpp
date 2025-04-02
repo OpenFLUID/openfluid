@@ -31,72 +31,75 @@
 
 
 /**
-  @file CSVObsParamsWidget.hpp
+  @file MultiEditSetDialog.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
-#ifndef __CSVOBSPARAMSWIDGET_HPP__
-#define __CSVOBSPARAMSWIDGET_HPP__
+#ifndef __MULTIEDITSETDIALOG_HPP__
+#define __MULTIEDITSETDIALOG_HPP__
 
 
-#include <openfluid/ui/builderext/PluggableParameterizationExtension.hpp>
+#include <QStringList>
 
-#include "CSVObsTools.hpp"
+#include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+
+#include "../MultiCSVObsTools.hpp"
 
 
 namespace Ui
 {
-  class CSVObsParamsWidget;
+  class MultiEditSetDialog;
 }
 
 
-class CSVObsParamsWidget: public openfluid::ui::builderext::PluggableParameterizationExtension
+class MultiEditSetDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
-
-  private:
-
-    Ui::CSVObsParamsWidget* ui;
-
-    FormatMap_t m_Formats;
-
-    SetMap_t m_Sets;
-
-    void clearInternalDataAndWidgets();
-
-    void removeParamsStartingWith(const QString& Str);
-
-    QString getParamValue(const QString& Str, const QString& Default = "");
 
 
   private slots:
 
-    void addFormat();
+    void checkGlobal();
+    
+    void addTriplet();
+    
+    void editTriplet();
+    
+    void removeTriplet();
+    
+    void refreshTable();
+    
+    std::vector<size_t> selectedTripletsRows();
 
-    void editFormat();
 
-    void removeFormat();
+  private:
 
-    void addSet();
+    Ui::MultiEditSetDialog* ui;
 
-    void editSet();
-
-    void removeSet();
-
-    void generateAutomaticFormatAndSets();
+    QStringList m_ExistingSetsNames;
+    
+    QStringList m_ClassNames;
+    
+    std::vector<openfluid::tools::ClassIDVarPrecision> m_TripletList;
 
 
   public:
 
-    CSVObsParamsWidget();
+    MultiEditSetDialog(const QStringList& SetNames, const QStringList& FormatNames, const QStringList& SelectionStr,
+                       QWidget* Parent = nullptr);
 
-    ~CSVObsParamsWidget();
+    ~MultiEditSetDialog();
 
-    void update();
+    void initialize(const QString& Name, const QString& Format,
+                    const QString& Selection);
 
+    openfluid::ware::WareParams_t getMultiSetParams();
+    
 };
 
 
-#endif /* __CSVOBSPARAMSWIDGET_HPP__ */
+#endif /* __MULTIEDITSETDIALOG_HPP__ */

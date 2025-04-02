@@ -43,11 +43,11 @@
 #include <map>
 #include <vector>
 
+#include <fragments/observer.csv.base/CsvObserverBase.hpp>
+
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
 #include <openfluid/tools/VarHelpers.hpp>
-
-#include "../../CsvObserverBase.hpp"
 
 
 // =====================================================================

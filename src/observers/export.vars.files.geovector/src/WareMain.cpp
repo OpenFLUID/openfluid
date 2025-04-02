@@ -31,7 +31,7 @@
 
 
 /**
-  @file GeoVectorFilesObs.cpp
+  @file WareMain.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
  */

@@ -1,0 +1,22 @@
+{
+  "id": "observer.kml.base",
+  "name": "",
+  "description": "",
+  "version": "0.1",
+  "status": "alpha",
+  "authors": [
+    {
+      "name": "Jean-Christophe Fabre",
+      "email": "jean-christophe.fabre@inrae.fr"
+    }
+  ],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "dependencies": {},
+  "fragment": {
+    "openfluid-components": ["tools", "utils", "ware"]
+  }
+}

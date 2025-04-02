@@ -31,7 +31,7 @@
 
 
 /**
-  @file KmlFilesAnimObs.cpp
+  @file WareMain.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
@@ -42,10 +42,10 @@
 #include <iostream>
 #include <iomanip>
 
+#include <fragments/observer.kml.base/KmlObserverBase.hpp>
+
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
-
-#include "../../KmlObserverBase.hpp"
 
 
 class KmlAnimLayerInfo : public KmlLayerInfo<KmlUnitInfo>
