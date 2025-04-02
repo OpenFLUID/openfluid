@@ -31,7 +31,7 @@
 
 
 /**
-  @file KmlFilesPlotObs.cpp
+  @file WareMain.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
@@ -42,12 +42,12 @@
 #include <iostream>
 #include <iomanip>
 
+#include <fragments/observer.kml.base/KmlObserverBase.hpp>
+
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/WareParamsTree.hpp>
-
-#include "../../KmlObserverBase.hpp"
 
 
 class KmlUnitInfoExtra : public KmlUnitInfo

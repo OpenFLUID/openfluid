@@ -19,10 +19,9 @@ add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
 #SET(I18N_FILES_EXTRASCANS )
 
 
-
 OPENFLUID_ADD_WAREPLUGIN(
   # list of C++ files
-  CPP_FILES GNUplotObs.cpp GNUplotObsTools.cpp
+  CPP_FILES WareMain.cpp GNUplotObsTools.cpp
   # list of Fortran files
   #FORTRAN_FILES 
   # list of UI files (mainly for builderexts)
@@ -42,9 +41,9 @@ OPENFLUID_ADD_WAREPLUGIN(
   # enable build of parameterization UI (ON/OFF, OFF is default)
   WITH_PARAMSUI ON
   # list of C++ files for parametrization UI
-  PARAMSUI_CPP_FILES GNUplotObsParamsWidget.cpp GNUplotObsTools.cpp
+  PARAMSUI_CPP_FILES ui/GNUplotObsParamsWidget.cpp GNUplotObsTools.cpp
   # list of UI files for parametrization UI
-  PARAMSUI_UI_FILES GNUplotObsParamsWidget.ui
+  PARAMSUI_UI_FILES ui/GNUplotObsParamsWidget.ui
   # list of RC files for parametrization UI
   #PARAMSUI_RC_FILES 
   # list of languages for translation of parametrization UI

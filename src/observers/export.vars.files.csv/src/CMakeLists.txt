@@ -22,7 +22,7 @@ add_compile_definitions(QT_VERSION_MAJOR=${QT_VERSION_MAJOR})
 
 OPENFLUID_ADD_WAREPLUGIN(
   # list of C++ files
-  CPP_FILES CSVFilesObs.cpp CSVObsTools.cpp
+  CPP_FILES WareMain.cpp CSVObsTools.cpp
   # list of Fortran files
   #FORTRAN_FILES 
   # list of UI files (mainly for builderexts)
@@ -42,9 +42,9 @@ OPENFLUID_ADD_WAREPLUGIN(
   # enable build of parameterization UI (ON/OFF, OFF is default)
   WITH_PARAMSUI ON
   # list of C++ files for parametrization UI
-  PARAMSUI_CPP_FILES CSVObsParamsWidget.cpp EditFormatDialog.cpp EditSetDialog.cpp CSVObsTools.cpp
+  PARAMSUI_CPP_FILES ui/CSVObsParamsWidget.cpp ui/EditFormatDialog.cpp ui/EditSetDialog.cpp CSVObsTools.cpp
   # list of UI files for parametrization UI
-  PARAMSUI_UI_FILES CSVObsParamsWidget.ui EditFormatDialog.ui EditSetDialog.ui
+  PARAMSUI_UI_FILES ui/CSVObsParamsWidget.ui ui/EditFormatDialog.ui ui/EditSetDialog.ui
   # list of RC files for parametrization UI
   #PARAMSUI_RC_FILES 
   # list of languages for translation of parametrization UI

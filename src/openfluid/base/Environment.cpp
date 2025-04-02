@@ -79,6 +79,7 @@ std::vector<std::string> Environment::m_DefaultBuilderextsDirs;
 std::vector<std::string> Environment::m_ExtraBuilderextsDirs;
 std::string Environment::m_ProvidedExamplesDir;
 std::string Environment::m_UserExamplesDir;
+std::string Environment::m_UserExampleObserversDir;
 std::string Environment::m_UserExampleSimulatorsDir;
 std::string Environment::m_TranslationsDir;
 std::string Environment::m_CommonResourcesDir;
@@ -202,6 +203,9 @@ void Environment::init()
   m_UserExampleSimulatorsDir = openfluid::tools::Filesystem::joinPath({m_UserExamplesDir,
                                                                        openfluid::config::WARESDEV_PATH,
                                                                        openfluid::config::SIMULATORS_PATH});
+  m_UserExampleObserversDir = openfluid::tools::Filesystem::joinPath({m_UserExamplesDir,
+                                                                       openfluid::config::WARESDEV_PATH,
+                                                                       openfluid::config::OBSERVERS_PATH});
   m_ProvidedExamplesDir = openfluid::tools::Filesystem::joinPath({m_InstallPrefix,
                                                                   openfluid::config::EXAMPLES_STD_PATH});
 

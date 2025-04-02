@@ -93,6 +93,10 @@ class OPENFLUID_API ExamplesManager
                                  const std::string& ResourcesPath = "", const std::string& InstallPath = "",
                                  const bool Force = false);
 
+    static bool installObserver(const std::string& ObserverDir,
+                                       const std::string& ResourcesPath = "", const std::string& InstallPath = "",
+                                       const bool Force = false);
+
     /**
       Installs all example projects
       @param[in] ResourcesPath Path to the examples ressources, 
