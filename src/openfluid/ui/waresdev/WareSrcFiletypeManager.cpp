@@ -287,6 +287,7 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
             else if (TagName == "rule")
             {
               QString StyleName = QString::fromStdString(openfluid::thirdparty::getXMLAttribute(Elt,"style"));
+              QString RuleName = QString::fromStdString(openfluid::thirdparty::getXMLAttribute(Elt,"name"));
 
               if (m_Formats.contains(StyleName))
               {
@@ -304,6 +305,17 @@ WareSrcFiletypeManager::HighlightingRules_t WareSrcFiletypeManager::parseSyntaxF
                   
                   if (!SimplePatternValue.isEmpty())
                   {
+                    if(RuleName == "comment-singleline")
+                    {
+                      QRegularExpression CommentStringRegex(R"(^[^.]*)");
+                      const auto& Match = CommentStringRegex.match(SimplePatternValue);
+                      if (Match.hasMatch()) 
+                      {
+                        m_CommentStringByLangCode.insert(QString::fromStdString(
+                          openfluid::thirdparty::getXMLAttribute(LangElt,"name")), Match.captured(0));
+                      }
+                    }
+
 #if (QT_VERSION_MAJOR < 6)
                     Rules.append(HighlightingRule(StyleName, QRegExp(SimplePatternValue), Format));
 #else
@@ -393,6 +405,25 @@ QString WareSrcFiletypeManager::getFileLanguage(const QString& FilePath) const
   }
 
   return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFiletypeManager::getFileCommentString(const QString& FilePath) const
+{
+  const auto It = m_CommentStringByLangCode.find(getFileLanguage(FilePath));
+
+  if (It != m_CommentStringByLangCode.end()) 
+  {
+    return It.value();
+  } 
+  else 
+  {
+    return QString();
+  }
 }
 
 

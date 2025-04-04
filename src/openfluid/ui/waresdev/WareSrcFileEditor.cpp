@@ -330,9 +330,38 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
     {
       insertNewLine();
     }
+    else if ((Event->modifiers() & Qt::ShiftModifier) && Key == Qt::Key_Backtab)
+    {
+      // Unindentation
+      QTextCursor TextCursor = textCursor();
+      if(TextCursor.hasSelection())
+      {
+        removeMultilinePrefix(m_IndentString);
+      } 
+      else
+      {
+        removeLinePrefix(m_IndentString, TextCursor.block());
+      }
+    }
     else if (Key == Qt::Key_Tab)
     {
-      insertPlainText(m_IndentString);
+      // Indentation
+      QTextCursor TextCursor = textCursor();
+      int StartLine = document()->findBlock(TextCursor.selectionStart()).firstLineNumber();
+      int EndLine = document()->findBlock(TextCursor.selectionEnd()).firstLineNumber();
+      if(TextCursor.hasSelection() && (StartLine != EndLine))
+      {
+        addMultilinePrefix(m_IndentString);
+      } 
+      else
+      {
+        insertPlainText(m_IndentString);
+      }
+    }
+    else if ((Event->modifiers() & Qt::ControlModifier) && Key == Qt::Key_Slash)
+    {
+      // Comment / Uncomment
+      handleSelectionCommenting();
     }
     else if ((Event->modifiers() & Qt::ControlModifier) && Key == Qt::Key_I)
     {
@@ -399,6 +428,288 @@ void WareSrcFileEditor::keyPressEvent(QKeyEvent* Event)
   }
 
   mp_Completer->popup()->hide();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::handleSelectionCommenting()
+{
+  QString CommentStr = openfluid::ui::waresdev::WareSrcFiletypeManager::instance()
+                                                                            ->getFileCommentString(m_FilePath);
+  if(!CommentStr.isEmpty())
+  {
+    QTextCursor TextCursor = textCursor();
+    QTextBlock Block = TextCursor.block();
+    int EndPos = TextCursor.selectionEnd();
+    bool NeedComments = false;
+    QString PrettyCommentStr = CommentStr + CommentExtraSpaceString;
+    if(TextCursor.hasSelection())
+    {
+      while (Block.isValid() && (Block.position() < EndPos))
+      {
+        if(!Block.text().isEmpty() && !Block.text().trimmed().startsWith(CommentStr))
+        {
+          NeedComments = true;
+          break;
+        }
+        Block = Block.next();
+      }
+      if(NeedComments)
+      {
+        addMultilinePrefix(PrettyCommentStr);
+      }
+      else
+      {
+        removeMultilinePrefix(CommentStr);
+      }
+    }
+    else
+    {
+      if(!Block.text().isEmpty() && Block.text().trimmed().startsWith(CommentStr))
+      {
+        removeLinePrefix(CommentStr, Block);
+      }
+      else
+      {
+        addLinePrefix(PrettyCommentStr, Block);
+      }
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcFileEditor::hasCharInBlockBeforePos(int Pos)
+{
+  QTextCursor Cursor = textCursor();
+  Cursor.setPosition(Pos);
+  QTextBlock Block = Cursor.block();
+  if (Pos > Block.position()) 
+  {
+    Cursor.setPosition(Pos, QTextCursor::MoveAnchor);
+    Cursor.setPosition(Block.position(), QTextCursor::KeepAnchor);
+    return getLeadingSpacesCount(Cursor.selectedText()) != Cursor.selectedText().length();
+  } 
+  
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int WareSrcFileEditor::getLeadingSpacesCount(const QString& QStr)
+{
+  int Count = 0;
+  for (QChar Char : QStr) 
+  {
+    if (!Char.isSpace()) 
+    {
+      return Count;
+    }
+    Count++;
+  }
+
+  return Count;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+WareSrcFileEditor::SelectionData WareSrcFileEditor::createSelectionData()
+{
+  SelectionData Data;
+  Data.TextCursor = textCursor();
+  Data.CursorPos = Data.TextCursor.position();
+  Data.StartPos = Data.TextCursor.selectionStart();
+  Data.EndPos = Data.TextCursor.selectionEnd();
+  Data.FirstBlock = document()->findBlock(Data.StartPos);
+
+  return Data;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::selectText(int StartPos, int EndPos)
+{
+  QTextCursor TextCursor = textCursor();
+  TextCursor.setPosition(StartPos);
+  TextCursor.setPosition(EndPos, QTextCursor::KeepAnchor);
+  setTextCursor(TextCursor); 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::addLinePrefix(const QString& PrefixStr, const QTextBlock& Block)
+{
+  QTextCursor TextCursor = textCursor();
+  int CursorPos = TextCursor.position();
+  /* Indicates the start of a block of editing operations on the document 
+     that should appear as a single operation from an undo/redo point of view. */
+  TextCursor.beginEditBlock();
+
+  int LeadingSpacesCount = getLeadingSpacesCount(Block.text());
+  QString UpdatedText = Block.text().insert(LeadingSpacesCount, PrefixStr);
+  selectText(Block.position(), Block.position() + Block.length()-1);
+  insertPlainText(UpdatedText);
+  TextCursor.setPosition(CursorPos + (hasCharInBlockBeforePos(CursorPos) ? PrefixStr.length() : 0));
+  setTextCursor(TextCursor);
+
+  TextCursor.endEditBlock();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int WareSrcFileEditor::removeLinePrefix(const QString& PrefixStr, const QTextBlock& Block)
+{
+  QTextCursor TextCursor = textCursor();
+  int LeadingSpacesCount = getLeadingSpacesCount(Block.text());
+  int RemoveSize = 0;
+  bool ShouldRemove = false;
+  QString UpdatedText;
+  int CursorPos = TextCursor.position();
+  TextCursor.beginEditBlock();
+
+  // Specific use case for unindentation
+  if(PrefixStr == m_IndentString && LeadingSpacesCount > 0)
+  {
+    RemoveSize = (LeadingSpacesCount > m_IndentString.length()) ? m_IndentString.length() : LeadingSpacesCount;
+    UpdatedText = Block.text().remove(0, RemoveSize);
+    ShouldRemove = true;
+  }
+  else if(Block.text().trimmed().startsWith(PrefixStr))
+  {
+    int ExtraSpacePos = Block.position() + LeadingSpacesCount + PrefixStr.length();
+    TextCursor.setPosition(ExtraSpacePos);
+    TextCursor.setPosition(ExtraSpacePos + CommentExtraSpaceString.length(), QTextCursor::KeepAnchor);
+    setTextCursor(TextCursor);
+    // Remove extra first space after prefix
+    int ExtraSize = (!TextCursor.selectedText().isEmpty() && TextCursor.selectedText().trimmed().isEmpty()) ? 
+                                                             CommentExtraSpaceString.length() : 0;
+    UpdatedText = Block.text().remove(LeadingSpacesCount, PrefixStr.length() + ExtraSize);
+    RemoveSize = PrefixStr.length() + ExtraSize;
+    ShouldRemove = true;
+  }
+
+  if(ShouldRemove)
+  {
+    bool ShouldStepBackCursor = hasCharInBlockBeforePos(CursorPos) || PrefixStr == m_IndentString;
+    selectText(Block.position(), Block.position() + Block.length()-1);
+    insertPlainText(UpdatedText);
+    TextCursor.setPosition(std::max(CursorPos - (ShouldStepBackCursor ? RemoveSize : 0), Block.position()));
+    setTextCursor(TextCursor);
+  }
+  TextCursor.endEditBlock();
+
+  return RemoveSize;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::addMultilinePrefix(const QString& PrefixStr)
+{
+  SelectionData Data = createSelectionData();
+  Data.TextCursor.beginEditBlock();
+
+  Data.TextCursor.clearSelection();
+  QTextBlock CurrentBlock = Data.FirstBlock;
+  bool SelectionInWord = hasCharInBlockBeforePos(Data.StartPos);
+  int TotalUpdateSize = 0;
+
+  // Iterate through lines to indent
+  while (CurrentBlock.isValid() && (CurrentBlock.position() < (Data.EndPos + TotalUpdateSize)))
+  {
+    if(!CurrentBlock.text().isEmpty())
+    {
+      addLinePrefix(PrefixStr, CurrentBlock);
+      TotalUpdateSize += PrefixStr.length();
+    }
+    CurrentBlock = CurrentBlock.next();
+  }
+
+  // Restore selection
+  // Maintain anchor on indentation if the cursor is in leading spaces of first block
+  int StartPosUpdated = Data.StartPos + (SelectionInWord ? PrefixStr.size() : 0);
+  int EndPosUpdated = Data.EndPos + TotalUpdateSize;
+  //selectText(StartPosUpdated, EndPosUpdated, Data.CursorPos == Data.StartPos);
+  Data.CursorPos == Data.StartPos ? selectText(EndPosUpdated, StartPosUpdated) : 
+                                    selectText(StartPosUpdated, EndPosUpdated);
+
+  Data.TextCursor.endEditBlock();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::removeMultilinePrefix(const QString& PrefixStr)
+{
+  SelectionData Data = createSelectionData();
+  Data.TextCursor.beginEditBlock();
+
+  Data.TextCursor.clearSelection();
+  QTextBlock CurrentBlock = Data.FirstBlock;
+  bool IsFirstBlock = true;
+  int RemoveSizeFirstBlock = 0;
+  int TotalUpdateSize = 0;
+
+  // Iterate through lines to indent
+  while (CurrentBlock.isValid() && (CurrentBlock.position() < (Data.EndPos - TotalUpdateSize)))
+  {
+    if(!CurrentBlock.text().isEmpty())
+    {
+      int RemoveSize = removeLinePrefix(PrefixStr, CurrentBlock);
+      TotalUpdateSize += RemoveSize;
+      if(IsFirstBlock)
+      {
+        // Accurate removing size of first block  
+        RemoveSizeFirstBlock = RemoveSize;
+        IsFirstBlock = false;
+      }
+    }
+    CurrentBlock = CurrentBlock.next();
+  }
+
+  // Restore selection
+  int TempStartPosUpdated;
+  if(TotalUpdateSize == 0 || !hasCharInBlockBeforePos(Data.StartPos))
+  {
+    TempStartPosUpdated = Data.StartPos;
+  }
+  else
+  {
+    TempStartPosUpdated = Data.StartPos - RemoveSizeFirstBlock;
+  }
+  int StartPosUpdated = std::clamp(TempStartPosUpdated, Data.FirstBlock.position(), Data.EndPos);
+
+  int EndPosUpdated = Data.EndPos - TotalUpdateSize;
+  //selectText(StartPosUpdated, EndPosUpdated, Data.CursorPos == Data.StartPos);
+  Data.CursorPos == Data.StartPos ? selectText(EndPosUpdated, StartPosUpdated) : 
+                                    selectText(StartPosUpdated, EndPosUpdated);
+
+  Data.TextCursor.endEditBlock();
 }
 
 
@@ -497,6 +808,11 @@ void WareSrcFileEditor::resizeEvent(QResizeEvent* Event)
 void WareSrcFileEditor::contextMenuEvent(QContextMenuEvent* Event)
 {
   QMenu* Menu = createStandardContextMenu();
+
+  QAction *CommentingAction = new QAction("Comment/Uncomment", this);
+  CommentingAction->setShortcut(QKeySequence(tr("Ctrl+/")));
+  Menu->addAction(CommentingAction);
+  connect(CommentingAction, &QAction::triggered, this, &WareSrcFileEditor::handleSelectionCommenting);
   
   Menu->addSeparator();
 

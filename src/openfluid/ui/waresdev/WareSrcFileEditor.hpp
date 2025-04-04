@@ -41,9 +41,11 @@
 
 
 #include <QPlainTextEdit>
+#include <QTextBlock>
 #include <QCompleter>
 #include <QSignalMapper>
 #include <QMenu>
+#include <QStack>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/waresdev/CompletionProvider.hpp>
@@ -191,6 +193,21 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
 
     bool m_ShowLineMarkers = true;
 
+    struct SelectionData 
+    {
+      QTextCursor TextCursor;
+
+      QTextBlock FirstBlock;
+
+      int CursorPos;
+
+      int StartPos;
+
+      int EndPos;
+    };
+
+    QString CommentExtraSpaceString = " ";
+
     void writeString(const QString& Str, int InitialIndentInSpaceNb);
 
     void insertNewLine();
@@ -198,6 +215,31 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit, public WareFileEdi
     bool findString(const QString& StringToFind, QTextDocument::FindFlags Options);
 
     bool replaceString(const QString& StringToFind, const QString& StringForReplace, Qt::CaseSensitivity Cs);
+
+    int getLeadingSpacesCount(const QString& QStr);
+
+    bool hasCharInBlockBeforePos(int Pos);
+
+    void selectText(int StartPos, int EndPos);
+
+    SelectionData createSelectionData();
+
+    void addLinePrefix(const QString& PrefixStr, const QTextBlock& Block);
+
+    /**
+      Remove a prefix string from a block text. (It also removes one extra space (if found) after prefix string)
+      If the block text does not start with the prefix string (excluding spaces), it does nothing.
+      @param[in] PrefixStr The prefix string to remove from block text
+      @param[in] Block The block where to remove the prefix string
+      @return the number of characters removed from the block text
+    */
+    int removeLinePrefix(const QString& PrefixStr, const QTextBlock& Block);
+
+    void addMultilinePrefix(const QString& PrefixStr);
+
+    void removeMultilinePrefix(const QString& PrefixStr);
+
+    void handleSelectionCommenting();
 
 
   protected:
