@@ -483,7 +483,7 @@
           <pattern value="\'[^\']*\'" />
         </rule>
         
-        <rule name="comment" style="comment">
+        <rule name="comment-singleline" style="comment">
           <pattern value="#.*$" />
         </rule>
 
