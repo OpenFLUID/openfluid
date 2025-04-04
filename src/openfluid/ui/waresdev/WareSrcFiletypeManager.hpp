@@ -47,9 +47,8 @@
 #include <QMap>
 #if (QT_VERSION_MAJOR < 6)
 #include <QRegExp>
-#else
-#include <QRegularExpression>
 #endif
+#include <QRegularExpression>
 
 #include <openfluid/utils/SingletonMacros.hpp>
 #include <openfluid/dllexport.hpp>
@@ -134,6 +133,8 @@ class OPENFLUID_API WareSrcFiletypeManager
 
     QMap<QString, WareSrcFiletype> m_WareSrcFiletypes;
 
+    QMap<QString, QString> m_CommentStringByLangCode;
+
     WareSrcFiletypeManager();
 
     ~WareSrcFiletypeManager();
@@ -157,6 +158,8 @@ class OPENFLUID_API WareSrcFiletypeManager
     QString getFileType(const QString& FilePath) const;
 
     QString getFileLanguage(const QString& FilePath) const;
+
+    QString getFileCommentString(const QString& FilePath) const;
 
 };
 
