@@ -141,18 +141,19 @@ std::map<std::string, std::set<std::size_t>> searchInFolder(std::string Folder, 
   std::map<std::string, std::set<std::size_t>> OccurencesPosByFile;
   for (const auto& E : std::filesystem::recursive_directory_iterator{Folder})
   {
-    auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
+    const openfluid::tools::Path FileObj = openfluid::tools::Path::fromStdPath(E.path());
     const std::string FileContent = openfluid::tools::Filesystem::readFile(FileObj);
-    auto it = FileContent.find(String);
+    auto It = FileContent.find(String);
 
-    while (it != std::string::npos)
+    while (It != std::string::npos)
     {
-      if (OccurencesPosByFile.find(E.path()) == OccurencesPosByFile.end())
+      const std::string PathString = E.path().string();
+      if (OccurencesPosByFile.find(PathString) == OccurencesPosByFile.end())
       {
-        OccurencesPosByFile[E.path()] = {};
+        OccurencesPosByFile[PathString] = {};
       }
-      OccurencesPosByFile[E.path()].insert(it);
-      it = FileContent.find(String, it+String.size());
+      OccurencesPosByFile[PathString].insert(It);
+      It = FileContent.find(String, It+String.size());
     }
   }
   return OccurencesPosByFile;
@@ -166,6 +167,20 @@ std::map<std::string, std::set<std::size_t>> searchInFolder(std::string Folder, 
 std::string replace(const std::string& Str,const std::string& SearchStr, const std::string& ReplaceStr)
 {
   return boost::replace_all_copy(Str,SearchStr,ReplaceStr);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string replace_once(const std::string& Str,const std::string& SearchStr, const std::string& ReplaceStr, 
+                         std::size_t Pos)
+{
+  std::string Prefix = Str.substr(0,Pos);
+  std::string SubStr = Str.substr(Pos, Str.size());
+  std::string Res = boost::replace_first_copy(SubStr,SearchStr,ReplaceStr);
+  return Prefix+Res;
 }
 
 

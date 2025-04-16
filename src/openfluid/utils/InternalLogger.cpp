@@ -118,6 +118,8 @@ void LoggingSystem::setup(bool DefaultAsFallback, std::string LogPath, bool Verb
     // FIXME should not be displayed in some cases 
     // (interference risk with version detection for now, eg regex L142 in OpenFLUIDConfig.cmake.in)
     m_Logger.init(m_LogPath, false);
+    
+    // LoggingSystem::instance()->add(openfluid::tools::FileLogger::LogType::INFO_MSG, "Log", "Initiate logging");
   }
 }
 

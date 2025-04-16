@@ -171,7 +171,28 @@ const std::string GitProxy::getCurrentBranchName(const std::string& Path)
 // =====================================================================
 
 
-int GitProxy::setRemote(const std::string RepoPath, const std::string RemoteUrl, bool Verbose)
+int callRemoteProcess(openfluid::utils::Process::Command Cmd, std::string Context)
+{
+  openfluid::utils::Process P(Cmd);
+  P.run();
+  if (P.getExitCode() == 0)
+  {
+    openfluid::utils::log::debug("Git", Context+" OK");
+  }
+  else
+  {
+    openfluid::utils::log::debug("Git", Context+" out: "+openfluid::tools::join(P.stdOutLines(), "\n"));
+    openfluid::utils::log::error("Git", Context+" err: "+openfluid::tools::join(P.stdErrLines(), "\n"));
+  }
+  return P.getExitCode();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int GitProxy::setRemote(const std::string RepoPath, const std::string RemoteUrl)
 {
   if(isPathGitRepo(RepoPath))
   {
@@ -181,20 +202,7 @@ int GitProxy::setRemote(const std::string RepoPath, const std::string RemoteUrl,
       .Args = {"remote", "set-url", "origin", RemoteUrl},
       .WorkDir = RepoPath
     };
-    openfluid::utils::Process P(Cmd);
-    P.run();
-    if (Verbose)
-    {
-      for (const auto& L : P.stdOutLines())
-      {
-        std::cout << L << std::endl;
-      }
-      for (const auto& L : P.stdErrLines())
-      {
-        std::cout << L << std::endl;
-      }
-    }
-    return P.getExitCode();
+    return callRemoteProcess(Cmd, "Set remote for "+RepoPath);
   }
   else
   {
@@ -204,38 +212,17 @@ int GitProxy::setRemote(const std::string RepoPath, const std::string RemoteUrl,
       .Args = {"init"},
       .WorkDir = RepoPath
     };
-    openfluid::utils::Process PreP(CmdInit);
-    PreP.run();
-    if (Verbose)
+    int InitReturn = callRemoteProcess(CmdInit, "(Add remote context) Init for "+RepoPath);
+    if (InitReturn != 0)
     {
-      for (const auto& L : PreP.stdOutLines())
-      {
-        std::cout << L << std::endl;
-      }
-      for (const auto& L : PreP.stdErrLines())
-      {
-        std::cout << L << std::endl;
-      }
+      return InitReturn;
     }
     openfluid::utils::Process::Command Cmd{
       .Program = m_ExecutablePath,
       .Args = {"remote", "add", "origin", RemoteUrl},
       .WorkDir = RepoPath
     };
-    openfluid::utils::Process P(Cmd);
-    P.run();
-    if (Verbose)
-    {
-      for (const auto& L : P.stdOutLines())
-      {
-        std::cout << L << std::endl;
-      }
-      for (const auto& L : P.stdErrLines())
-      {
-        std::cout << L << std::endl;
-      }
-    }
-    return P.getExitCode();
+    return callRemoteProcess(Cmd, "Add remote for "+RepoPath);;
   }
 
 }

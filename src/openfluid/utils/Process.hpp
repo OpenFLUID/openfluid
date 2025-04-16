@@ -34,6 +34,7 @@
   @file Process.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -44,6 +45,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
 
 #include <openfluid/dllexport.hpp>
 
