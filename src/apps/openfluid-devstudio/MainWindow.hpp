@@ -129,6 +129,8 @@ class OPENFLUID_API MainWindow: public openfluid::ui::common::AppMainWindow
 
     void updateSaveButtonsStatus(bool FileModified, bool FileOpen, bool WareModified);
 
+    void onDuplicateWareRequested();
+
     void onDeleteWareRequested();
 
     void onCloseAllWaresRequested();

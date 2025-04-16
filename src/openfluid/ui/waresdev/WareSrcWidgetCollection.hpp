@@ -361,6 +361,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     bool isBuildNoInstallMode();
 
+    void duplicateWare(const QString& WarePath, const QString& NewWareName);
+
     void deleteWare(const QString& WarePath);
 
 };

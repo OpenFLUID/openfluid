@@ -201,6 +201,9 @@ std::map<std::string, std::set<std::size_t>> OPENFLUID_API searchInFolder(std::s
 */
 std::string OPENFLUID_API replace(const std::string& Str,const std::string& SearchStr, const std::string& ReplaceStr);
 
+std::string OPENFLUID_API replace_once(const std::string& Str,const std::string& SearchStr, 
+                                       const std::string& ReplaceStr, 
+                                       std::size_t Pos);
 
 /**
   Formats a string using a format and a variable number of arguments.  

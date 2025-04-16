@@ -130,6 +130,8 @@ class OPENFLUID_API WareSrcExplorer: public QTreeView
 
     void openPathAsked(const QString& FilePath);
 
+    void duplicateWareAsked();
+
     void deleteWareAsked();
 
     void fileDeleted(const QString& Path);
