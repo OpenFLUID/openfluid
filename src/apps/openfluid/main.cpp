@@ -197,6 +197,7 @@ int main(int argc, char **argv)
                             {"id","i","ID of the ware sources to create (required)",true},
                             {"main-class","m","name to use for the main C++ class",true},
                             {"parent-path","p","parent path where to create the ware sources",true},
+                            {"from", "", "ware to use as reference"},
                             {"with-paramsui","w","generate the C++ class of the parameterization UI "
                                                  "(simulators and observers only)"},
                             {"paramsui-class","u","name to use for the C++ class of the parameterization UI "
@@ -205,7 +206,9 @@ int main(int argc, char **argv)
                             {"bext-category","","category the Builder-Extension"
                                                  "(spatial|model|results|other, default is other)",true},
                             {"bext-mode","","mode of Builder-Extension (modal|modeless|workspace, default is modal)",
-                             true}});
+                             true},
+                            {"accept-all", "a", "say yes to any question (useful during ware duplication)"},
+                            {"set-remote", "", "define the URL of remote git repository"}});
   Parser.addCommand(CreateWareCmd, &WareSection);
 
   // ---

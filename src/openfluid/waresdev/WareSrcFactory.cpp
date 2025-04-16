@@ -45,10 +45,14 @@
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/utils/Process.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/config.hpp>
+#include "WareSrcFactory.hpp"
 
 
 namespace openfluid { namespace waresdev {
@@ -364,6 +368,102 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
     throw;
   }
 
+  return WareSrcPathObj.toGeneric();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void replaceInFolder(std::string Folder, std::string PreviousWareId, std::string NewWareId, bool AcceptAll=false)
+{
+  std::string Strategy = (AcceptAll ? "always" : "ask");
+  for (const auto& PosByFile : openfluid::tools::searchInFolder(Folder, PreviousWareId))
+  {
+    const auto PathParts = openfluid::tools::FilesystemPath(PosByFile.first).split();
+
+    // ignore .git folder and '_' prefixed folders
+    const auto WareIdPos = std::find(PathParts.begin(), PathParts.end(), NewWareId);
+    bool IgnoredSubDir = false;
+    for(auto it = WareIdPos; it <= PathParts.end(); it++ )
+    {
+      if ((*it)[0] == '_')
+      {
+        IgnoredSubDir = true;
+      }
+    }
+
+    if (std::find(PathParts.begin(), PathParts.end(), ".git") == PathParts.end() && 
+        !IgnoredSubDir)
+    {
+      std::cout << "In file " << PosByFile.first << std::endl; //TOIMPL better display management
+      const auto FileObj = openfluid::tools::Path::fromStdPath(PosByFile.first);
+      std::string FileContent = openfluid::tools::Filesystem::readFile(FileObj);
+      for (const auto& Pos : PosByFile.second)
+      {
+        //TOIMPL better line display: one line before and one line after
+        std::string DisplayedContext = FileContent.substr(std::max((std::size_t)0,(std::max(Pos, 
+            (std::size_t)10)-10)), 
+          std::min(PreviousWareId.size()+20, FileContent.size()-Pos));
+
+        std::cout << "  Occurence found: " << std::endl << DisplayedContext << std::endl;
+        bool Apply = false;
+        if (Strategy == "ask")
+        {
+          std::cout << "Replace this occurence? (yes/no/Always/Never) ";
+          std::string Choice;
+          std::cin >> Choice;
+          if (Choice.size() < 1)
+          {
+            // no content <=> no
+          }
+          else if (Choice[0] == 'y')
+          {
+            Apply = true;
+          }
+          else if (Choice[0] == 'A')
+          {
+            Apply = true;
+            Strategy = "always";
+          }
+          else if (Choice[0] == 'N')
+          {
+            Strategy = "never";
+          }
+        }
+        else if (Strategy == "always")
+        {
+          Apply = true;
+        }
+        if (Apply)
+        {
+          FileContent = openfluid::tools::replace(FileContent, PreviousWareId, NewWareId);
+          openfluid::tools::Filesystem::writeFile(FileContent,FileObj);
+        }
+      }
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string WareSrcFactory::duplicateWare(const std::string ID, const std::string& ParentPath,
+                                          const std::string& OriginDir, bool AcceptAll)
+{
+  std::string CleanedOriginDir = openfluid::tools::FilesystemPath::removeTrailingSeparators(OriginDir);
+
+  auto WareSrcPathObj = getSrcPathObject(ID,ParentPath,true);
+
+  // copy directory
+  std::string PreviousWareId = openfluid::tools::Path(CleanedOriginDir).filename();
+  WareSrcPathObj.makeDirectory();
+  openfluid::tools::Filesystem::copyDirectoryContent(CleanedOriginDir, WareSrcPathObj.toGeneric());
+
+  replaceInFolder(WareSrcPathObj.toGeneric(), PreviousWareId, ID, AcceptAll);
   return WareSrcPathObj.toGeneric();
 }
 

@@ -111,6 +111,8 @@ class OPENFLUID_API WareSrcFactory
                                         const std::string& ParentPath,
                                         bool WithIDSubDir = true);
 
+    static std::string duplicateWare(const std::string ID, const std::string& ParentPath,
+                                     const std::string& OriginDir, bool AcceptAll=false);
 };
 
 

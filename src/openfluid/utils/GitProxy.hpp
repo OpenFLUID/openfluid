@@ -82,6 +82,8 @@ class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
 
     static const std::string getCurrentBranchName(const std::string& Path);
 
+    static int setRemote(const std::string RepoPath, const std::string RemoteUrl, bool Verbose=false);
+
 };
 
 
