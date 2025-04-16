@@ -277,6 +277,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
             mp_WidgetsCollection, SLOT(openPath(const QString&)));
     connect(Explorer, SIGNAL(deleteWareAsked()),
             this, SLOT(onDeleteWareRequested()));
+    connect(Explorer, SIGNAL(duplicateWareAsked()),
+            this, SLOT(onDuplicateWareRequested()));
     connect(Explorer, SIGNAL(fileDeleted(const QString&)),
             mp_WidgetsCollection, SLOT(closeEditor(const QString&)));
     connect(Explorer, SIGNAL(folderDeleted(const QString&, const QString&, const bool)),
@@ -717,6 +719,61 @@ void MainWindow::updateSaveButtonsStatus(bool FileModified, bool FileOpen, bool 
   mp_ActionsCollection->action("SaveFile")->setEnabled(FileModified);
   mp_ActionsCollection->action("SaveAsFile")->setEnabled(FileOpen);
   mp_ActionsCollection->action("SaveAllFiles")->setEnabled(WareModified);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onDuplicateWareRequested()
+{
+  QWidget* CurrentWidget = ui->WaresTabWidget->currentWidget();
+  QString SelectedPath = "";
+
+  if (CurrentWidget == ui->SimPage)
+  {
+    SelectedPath = ui->SimExplorer->getCurrentPath();
+  }
+  else if (CurrentWidget == ui->ObsPage)
+  {
+    SelectedPath = ui->ObsExplorer->getCurrentPath();
+  }
+  else if (CurrentWidget == ui->ExtPage)
+  {
+    SelectedPath = ui->ExtExplorer->getCurrentPath();
+  }
+
+  if (SelectedPath != "")
+  {
+    const auto WareInfo = openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(SelectedPath.toStdString());
+    QString WarePath = 
+      QString::fromStdString(
+        WareInfo.AbsoluteWarePath);
+    if (WarePath != "")
+    {
+      // add dialog to know more information
+      bool OK;
+      QString NewWareName = QInputDialog::getText(this, "Ware name",
+                                                "Name of the new ware:",
+                                                QLineEdit::Normal,
+                                                QString::fromStdString(WareInfo.WareDirName+".duplicate"),
+                                                &OK);
+      // TOIMPL reuse here the filter checking if ware name OK (not existing + only accepted symbols)
+      if (OK && !NewWareName.isEmpty() && WareInfo.WareDirName != NewWareName.toStdString())
+      {
+        
+        mp_WidgetsCollection->duplicateWare(WarePath, NewWareName);
+        QMessageBox::warning(QApplication::activeWindow(),
+                            tr("Ware duplication warning"),
+                            tr("If this ware is versioned, change now the remote repository "
+                            "(using 'git remote set-url origin <newurl>'). "
+                            "It is currently the same than original ware and would "
+                            "generate conflict or data loss risk."),
+                            QMessageBox::Close);
+      }
+    }
+  }
 }
 
 

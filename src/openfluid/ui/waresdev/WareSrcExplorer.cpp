@@ -155,7 +155,9 @@ void WareSrcExplorer::onCustomContextMenuRequested(const QPoint& Point)
       if (getCurrentPath().toStdString() == 
           openfluid::waresdev::WareSrcEnquirer::getWareInfoFromPath(getCurrentPath().toStdString()).AbsoluteWarePath) 
       {
+        Menu.addAction(tr("Duplicate ware"), this, SIGNAL(duplicateWareAsked()));
         Menu.addAction(tr("Delete ware"), this, SIGNAL(deleteWareAsked()));
+        
       }
       else if (!IsRemoveFragment)  // "delete folder" is hidden when "remove this fragment" already there
       {

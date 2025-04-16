@@ -1172,6 +1172,36 @@ void WareSrcWidgetCollection::openWare(openfluid::ware::WareType Type, const QSt
 // =====================================================================
 
 
+void WareSrcWidgetCollection::duplicateWare(const QString& RefWarePath, const QString& NewWareName)
+{
+  // check if ware ID acceptable
+  if (!openfluid::tools::isValidWareID(NewWareName.toStdString())) //TOIMPL do this as validator in custom dialog
+  {
+    QMessageBox::critical(nullptr, tr("Duplicate simulator"), 
+                          tr("Error duplicating simulator: invalid characters in %1").arg(NewWareName));
+    return;
+  }
+  try
+    {
+      std::string WarePath = openfluid::waresdev::WareSrcFactory::duplicateWare(NewWareName.toStdString(), 
+        openfluid::tools::FilesystemPath(RefWarePath.toStdString()).dirname(),
+        RefWarePath.toStdString(), true
+      );
+
+      openWarePath(WarePath, false);
+    }
+    catch(const openfluid::base::FrameworkException& E)
+    {
+      QMessageBox::critical(nullptr, tr("Duplicate simulator"), tr("Error duplicating simulator %1: %2")
+                                                              .arg(RefWarePath).arg(E.what()));
+    }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcWidgetCollection::deleteWare(const QString& WarePath)
 {
   if (QMessageBox::warning(QApplication::activeWindow(), tr("Delete ware"),

@@ -44,6 +44,7 @@
 #include <openfluid/waresdev/ObserverSignatureSerializer.hpp>
 #include <openfluid/waresdev/BuilderextSignatureSerializer.hpp>
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
@@ -386,9 +387,9 @@ void replaceInFolder(std::string Folder, std::string PreviousWareId, std::string
     // ignore .git folder and '_' prefixed folders
     const auto WareIdPos = std::find(PathParts.begin(), PathParts.end(), NewWareId);
     bool IgnoredSubDir = false;
-    for(auto it = WareIdPos; it <= PathParts.end(); it++ )
+    for(auto It = WareIdPos; It <= PathParts.end(); It++ )
     {
-      if ((*it)[0] == '_')
+      if ((*It)[0] == '_')
       {
         IgnoredSubDir = true;
       }
@@ -400,14 +401,23 @@ void replaceInFolder(std::string Folder, std::string PreviousWareId, std::string
       std::cout << "In file " << PosByFile.first << std::endl; //TOIMPL better display management
       const auto FileObj = openfluid::tools::Path::fromStdPath(PosByFile.first);
       std::string FileContent = openfluid::tools::Filesystem::readFile(FileObj);
-      for (const auto& Pos : PosByFile.second)
+      // do from end to begin to avoid char pos shift
+      std::set<std::size_t>::reverse_iterator Rit;
+      for (Rit = PosByFile.second.rbegin(); Rit != PosByFile.second.rend(); Rit++)
       {
+        const auto& Pos = *Rit;
         //TOIMPL better line display: one line before and one line after
         std::string DisplayedContext = FileContent.substr(std::max((std::size_t)0,(std::max(Pos, 
             (std::size_t)10)-10)), 
           std::min(PreviousWareId.size()+20, FileContent.size()-Pos));
 
-        std::cout << "  Occurence found: " << std::endl << DisplayedContext << std::endl;
+        std::size_t BeforeBegin = std::max((std::size_t)0,(std::max(Pos, (std::size_t)10)-10));
+        std::size_t AfterBegin = Pos+PreviousWareId.size();
+        std::size_t AfterEnd = std::min(Pos+PreviousWareId.size()+20, FileContent.size());
+        auto Before = FileContent.substr(BeforeBegin, Pos-BeforeBegin);
+        auto After = FileContent.substr(AfterBegin, AfterEnd-AfterBegin);
+        std::cout << Before << "\033[1;31m"<< FileContent.substr(Pos, PreviousWareId.size()) << 
+                     "\033[0m" << After << std::endl;
         bool Apply = false;
         if (Strategy == "ask")
         {
@@ -438,7 +448,7 @@ void replaceInFolder(std::string Folder, std::string PreviousWareId, std::string
         }
         if (Apply)
         {
-          FileContent = openfluid::tools::replace(FileContent, PreviousWareId, NewWareId);
+          FileContent = openfluid::tools::replace_once(FileContent, PreviousWareId, NewWareId, Pos);
           openfluid::tools::Filesystem::writeFile(FileContent,FileObj);
         }
       }
@@ -460,6 +470,13 @@ std::string WareSrcFactory::duplicateWare(const std::string ID, const std::strin
 
   // copy directory
   std::string PreviousWareId = openfluid::tools::Path(CleanedOriginDir).filename();
+
+  // Check if directory does not already exist
+  if (WareSrcPathObj.exists())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                             "Ware duplication aborted: target location already exists");
+  }
   WareSrcPathObj.makeDirectory();
   openfluid::tools::Filesystem::copyDirectoryContent(CleanedOriginDir, WareSrcPathObj.toGeneric());
 
