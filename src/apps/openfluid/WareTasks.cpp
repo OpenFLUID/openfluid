@@ -52,6 +52,7 @@
 #include <openfluid/waresdev/WareSrcHelpers.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -64,16 +65,28 @@
 #include "DefaultDocalyzeListener.hpp"
 
 
+void WareTasks::postWareCreation(const std::string& WarePath) const
+{
+  if (m_Cmd.isOptionActive("set-remote"))
+  {
+    if (!openfluid::utils::GitProxy::isAvailable() || openfluid::utils::GitProxy::setRemote(WarePath, 
+                                                       m_Cmd.getOptionValue("set-remote")) != 0)
+    {
+      openfluid::utils::log::warning("Ware creation", "set-remote failed");
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int WareTasks::processCreate() const
 {
   if (!m_Cmd.isOptionActive("id"))
   {
     return error("missing ware ID");
-  }
-
-  if (!m_Cmd.isOptionActive("type"))
-  {
-    return error("missing ware type");
   }
   
   const auto ID = m_Cmd.getOptionValue("id");
@@ -82,8 +95,6 @@ int WareTasks::processCreate() const
   {
     return error("invalid ware ID");
   }
-
-  const auto TypeStr = m_Cmd.getOptionValue("type");
 
   const auto ParentPath = (m_Cmd.getOptionValue("parent-path").empty() ? openfluid::tools::Filesystem::currentPath() : 
                                                                           m_Cmd.getOptionValue("parent-path"));
@@ -96,13 +107,29 @@ int WareTasks::processCreate() const
   Config.MainClassName = (m_Cmd.getOptionValue("main-class").empty() ? Config.MainClassName : 
                                                                            m_Cmd.getOptionValue("main-class"));
 
+  if (m_Cmd.isOptionActive("from"))
+  {
+    const std::string WarePath = openfluid::waresdev::WareSrcFactory::duplicateWare(ID, ParentPath, 
+                                                       m_Cmd.getOptionValue("from"), 
+                                                       m_Cmd.isOptionActive("accept-all"));
+    postWareCreation(WarePath);
+    return 0;
+  }
+
+  if (!m_Cmd.isOptionActive("type"))
+  {
+    return error("missing ware type");
+  }
+  const auto TypeStr = m_Cmd.getOptionValue("type");
+
   if (TypeStr == "simulator")
   {
     openfluid::ware::SimulatorSignature Sign;
     Sign.ID = ID;
     try
     {
-      openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,ParentPath);
+      const std::string WarePath = openfluid::waresdev::WareSrcFactory::createSimulator(Sign,Config,ParentPath);
+      postWareCreation(WarePath);
       return 0;
     }
     catch(const openfluid::base::FrameworkException& E)
@@ -116,7 +143,8 @@ int WareTasks::processCreate() const
     Sign.ID = ID;
     try
     {
-      openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ParentPath);
+      const std::string WarePath = openfluid::waresdev::WareSrcFactory::createObserver(Sign,Config,ParentPath);
+      postWareCreation(WarePath);
       return 0;
     }
     catch(const openfluid::base::FrameworkException& E)
@@ -165,7 +193,8 @@ int WareTasks::processCreate() const
 
     try
     {
-      openfluid::waresdev::WareSrcFactory::createBuilderext(Sign,Config,ParentPath);
+      const std::string WarePath = openfluid::waresdev::WareSrcFactory::createBuilderext(Sign,Config,ParentPath);
+      postWareCreation(WarePath);
       return 0;
     }
     catch(const openfluid::base::FrameworkException& E)

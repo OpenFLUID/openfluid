@@ -166,4 +166,79 @@ const std::string GitProxy::getCurrentBranchName(const std::string& Path)
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+int GitProxy::setRemote(const std::string RepoPath, const std::string RemoteUrl, bool Verbose)
+{
+  if(isPathGitRepo(RepoPath))
+  {
+    // already versioned, use 'set-url'
+    openfluid::utils::Process::Command Cmd{
+      .Program = m_ExecutablePath,
+      .Args = {"remote", "set-url", "origin", RemoteUrl},
+      .WorkDir = RepoPath
+    };
+    openfluid::utils::Process P(Cmd);
+    P.run();
+    if (Verbose)
+    {
+      for (const auto& L : P.stdOutLines())
+      {
+        std::cout << L << std::endl;
+      }
+      for (const auto& L : P.stdErrLines())
+      {
+        std::cout << L << std::endl;
+      }
+    }
+    return P.getExitCode();
+  }
+  else
+  {
+    // not versioned, use 'git init+git remote add origin'
+    openfluid::utils::Process::Command CmdInit{
+      .Program = m_ExecutablePath,
+      .Args = {"init"},
+      .WorkDir = RepoPath
+    };
+    openfluid::utils::Process PreP(CmdInit);
+    PreP.run();
+    if (Verbose)
+    {
+      for (const auto& L : PreP.stdOutLines())
+      {
+        std::cout << L << std::endl;
+      }
+      for (const auto& L : PreP.stdErrLines())
+      {
+        std::cout << L << std::endl;
+      }
+    }
+    openfluid::utils::Process::Command Cmd{
+      .Program = m_ExecutablePath,
+      .Args = {"remote", "add", "origin", RemoteUrl},
+      .WorkDir = RepoPath
+    };
+    openfluid::utils::Process P(Cmd);
+    P.run();
+    if (Verbose)
+    {
+      for (const auto& L : P.stdOutLines())
+      {
+        std::cout << L << std::endl;
+      }
+      for (const auto& L : P.stdErrLines())
+      {
+        std::cout << L << std::endl;
+      }
+    }
+    return P.getExitCode();
+  }
+
+}
+
+
 } } // namespaces

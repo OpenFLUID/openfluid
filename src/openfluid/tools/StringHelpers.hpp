@@ -45,6 +45,7 @@
 #include <list>
 #include <sstream>
 #include <vector>
+#include <set>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/dllexport.hpp>
@@ -179,6 +180,15 @@ bool OPENFLUID_API endsWith(const std::string& Str,const std::string& SubStr);
   @return true if the string contains the substring, false otherwise
 */
 bool OPENFLUID_API contains(const std::string& Str,const std::string& SubStr, bool CaseSensitive = true);
+
+
+/**
+  Find all occurences of a substring in a folder, iterating on any subdirectory
+  @param[in] Folder the location to check
+  @param[in] String the string to look for
+  @return a map containing the file path associated with a set of string locations in this file
+*/
+std::map<std::string, std::set<std::size_t>> OPENFLUID_API searchInFolder(std::string Folder, std::string String);
 
 
 /**
