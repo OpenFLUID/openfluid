@@ -49,6 +49,8 @@ class WareTasks : public TasksBase
 {
   private:
 
+    void postWareCreation(const std::string& WarePath) const;
+
     int processCreate() const;
 
     int processConfigure() const;

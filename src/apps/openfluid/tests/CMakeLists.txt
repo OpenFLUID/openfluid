@@ -393,6 +393,24 @@ ENDIF()
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareSimulatorFromExisting
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "create-ware" "--id=tests.cmdline.sim.ilar"
+                           "-p" "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim"
+                           "--from=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/create-ware/sim/tests.cmdline.sim"
+                           "--set-remote=https://hub.foo.org/git-service/wares/simulators/tests.cmdline.sim.ilar"
+                           "-a"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim/tests.cmdline.sim.ilar"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim/tests.cmdline.sim.ilar/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_CONTAINS "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim/tests.cmdline.sim.ilar/openfluid-ware.json" "tests.cmdline.sim.ilar"
+                   POST_TEST CHECK_FILE_CONTAINS "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim/tests.cmdline.sim.ilar/.git/config" "hub.foo.org")
+
+SET_PROPERTY(TEST cmdline-openfluid-CreateWareSimulatorFromExisting APPEND PROPERTY DEPENDS cmdline-openfluid-CreateWareSimulator)
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareObserver
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "create-ware" "--type=observer" "--id=tests.cmdline.obs"

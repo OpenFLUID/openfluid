@@ -39,10 +39,10 @@
 
 #include <regex>
 #include <utility>
-
 #include <boost/algorithm/string.hpp>
 
 #include <openfluid/core/StringValue.hpp>
+#include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 
 
@@ -129,6 +129,33 @@ bool contains(const std::string& Str,const std::string& SubStr, bool CaseSensiti
   {
     return boost::algorithm::icontains(Str,SubStr);
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::map<std::string, std::set<std::size_t>> searchInFolder(std::string Folder, std::string String)
+{
+  std::map<std::string, std::set<std::size_t>> OccurencesPosByFile;
+  for (const auto& E : std::filesystem::recursive_directory_iterator{Folder})
+  {
+    auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
+    const std::string FileContent = openfluid::tools::Filesystem::readFile(FileObj);
+    auto it = FileContent.find(String);
+
+    while (it != std::string::npos)
+    {
+      if (OccurencesPosByFile.find(E.path()) == OccurencesPosByFile.end())
+      {
+        OccurencesPosByFile[E.path()] = {};
+      }
+      OccurencesPosByFile[E.path()].insert(it);
+      it = FileContent.find(String, it+String.size());
+    }
+  }
+  return OccurencesPosByFile;
 }
 
 
