@@ -111,6 +111,15 @@ IF(PYTHON3_EXECUTABLE)
           "${CMAKE_SOURCE_DIR}"
   )
 
+  # import ref wares from repositories
+  ADD_CUSTOM_TARGET(importwares
+                    COMMENT "Copying reference wares from their remote repository"
+                    COMMAND "${PYTHON3_EXECUTABLE}"
+                            "${CMAKE_CURRENT_SOURCE_DIR}/tools/ofsrc-importwares.py"
+                            "${CMAKE_CURRENT_SOURCE_DIR}/tools/wares-to-import.txt"
+                            "${CMAKE_SOURCE_DIR}"
+                    )
+
 ENDIF()
 
 
