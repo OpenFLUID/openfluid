@@ -1,0 +1,8 @@
+https://hub.openfluid-project.org/git-service/wares/simulators/water.surf.transfer-su.hayami#openfluid-2.2 examples/wares-dev/simulators/water.surf.transfer-su.hayami
+https://hub.openfluid-project.org/git-service/wares/simulators/water.surf.transfer-rs.hayami#openfluid-2.2 examples/wares-dev/simulators/water.surf.transfer-rs.hayami
+https://hub.openfluid-project.org/git-service/wares/simulators/water.atm-surf.rain-su.files#openfluid-2.2 examples/wares-dev/simulators/water.atm-surf.rain-su.files
+https://hub.openfluid-project.org/git-service/wares/simulators/water.surf-uz.runoff-infiltration.mseytoux#openfluid-2.2 examples/wares-dev/simulators/water.surf-uz.runoff-infiltration.mseytoux
+https://hub.openfluid-project.org/git-service/wares/observers/export.vars.files.csv#openfluid-2.2 src/observers/export.vars.files.csv
+https://hub.openfluid-project.org/git-service/wares/observers/export.vars.files.csv-multicols#openfluid-2.2 src/observers/export.vars.files.csv-multicols
+https://hub.openfluid-project.org/git-service/wares/observers/export.vars.files.kml-plot#openfluid-2.2 src/observers/export.vars.files.kml-plot
+https://hub.openfluid-project.org/git-service/wares/observers/export.vars.files.kml-anim#openfluid-2.2 src/observers/export.vars.files.kml-anim

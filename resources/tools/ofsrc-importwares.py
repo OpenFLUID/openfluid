@@ -32,13 +32,16 @@
 #  This scripts imports simulators in a destination folder by specifying the git url and branch.
 #  It will then remove all git related files in simualors and potential fragments
 #
-#  Usage: importsim.py /path/to/sims_text_file /path/to/destination_folder
+#  Usage: importwares.py /path/to/sims_text_file /path/to/destination_folder
 #
 #  - sims_text_file: Text file where we specify the simulators to import on each lines of the file.
 #                    A line must be written as follows : 
 #                    GitURL#branch_name clone_folder_name
 #  - /path/to/destination_folder: The destination folder path where all simulators are cloned
 #
+#  When in openfluid root dir: 
+#     `python3 resources/tools/ofsrc-importwares.py resources/tools/wares-to-import.txt .`
+
 ############################################################################
 
 
@@ -82,8 +85,10 @@ def clone_and_clean_repo(file_line, destination_path):
   repo_name = file_line_split[1]
   giturl_split = giturl_branch.split("#")
 
+  print("Processing "+repo_name.split("/")[-1]+"...")
+
   if(len(giturl_split) != 2):
-    print("[ERROR] Wrong file format")
+    print("  [ERROR] Wrong file format")
     return
 
   git_url, git_branch = giturl_split
@@ -92,7 +97,7 @@ def clone_and_clean_repo(file_line, destination_path):
   repo_path = os.path.join(destination_path, repo_name)
 
   if(delete_folder(repo_path)):
-    print(repo_path + " deleted")
+    print("  " + repo_path + " deleted")
 
 
   # Clone repo
@@ -103,10 +108,10 @@ def clone_and_clean_repo(file_line, destination_path):
                   text=True)
 
   if clone_process.returncode != 0:
-    print("[ERROR] Could not clone git repo " + git_url)
+    print("  [ERROR] Could not clone git repo " + git_url)
     return
 
-  print(repo_path + " successfullly cloned")
+  print("  " + repo_path + " successfully cloned")
 
 
   # Checkout branch
@@ -117,10 +122,10 @@ def clone_and_clean_repo(file_line, destination_path):
                    text=True)
   
   if branch_process.returncode != 0:
-    print("[ERROR] Could not checkout branch " + git_branch)
+    print("  [ERROR] Could not checkout branch " + git_branch)
     return
 
-  print(git_branch + " successfullly checkout")
+  print("  " + git_branch + " successfully checkout")
 
   # Update potential submodules
   subprocess.run(["git", "submodule", "update", "--init", "--recursive"],
@@ -131,16 +136,16 @@ def clone_and_clean_repo(file_line, destination_path):
   # Delete versionning files
   git_folder = os.path.join(repo_path, ".git")
   if(delete_folder(git_folder)):
-    print(git_folder + " deleted")
+    print("  " + git_folder + " deleted")
 
   gitignore_file = os.path.join(repo_path, ".gitignore")
   if(delete_file(gitignore_file)):
-    print(gitignore_file + " deleted")
+    print("  " + gitignore_file + " deleted")
 
   # Check for submodules
   git_submodules_file = os.path.join(repo_path, ".gitmodules")
   if(delete_file(git_submodules_file)):
-    print(git_submodules_file + " deleted")
+    print("  " + git_submodules_file + " deleted")
 
     # Loop through fragments
     fragments_path = os.path.join(repo_path, "src", "fragments")
@@ -148,11 +153,11 @@ def clone_and_clean_repo(file_line, destination_path):
       for fragment in os.listdir(fragments_path):
         fragment_git_file = os.path.join(fragments_path, fragment, ".git")
         if(delete_file(fragment_git_file)):
-          print(fragment_git_file + " deleted")
+          print("  " + fragment_git_file + " deleted")
 
         fragment_gitignore_file = os.path.join(fragments_path, fragment, ".gitignore")
         if(delete_file(fragment_gitignore_file)):
-          print(fragment_gitignore_file + " deleted")
+          print("  " + fragment_gitignore_file + " deleted")
 
 
 # ===========================================================
