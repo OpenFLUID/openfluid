@@ -144,7 +144,8 @@ void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
 
   for (const auto& Pair : CategoryByWaretype)
   {
-    if (Json.value(Pair.first, openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array())
+    if (Json.value(Pair.first, openfluid::thirdparty::json::array()) != openfluid::thirdparty::json::array() && 
+        Json.at(Pair.first).contains("data"))
     {
       openfluid::thirdparty::json DataJson = Json.at(Pair.first).at("data");
       if (DataJson != openfluid::thirdparty::json::array())
