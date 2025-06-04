@@ -34,7 +34,9 @@
   @file SimulatorSignature.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
+
 
 #ifndef __OPENFLUID_WARE_SIMULATORSIGNATURE_HPP__
 #define __OPENFLUID_WARE_SIMULATORSIGNATURE_HPP__
@@ -46,10 +48,33 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 
 
 namespace openfluid { namespace ware {
+
+class OPENFLUID_API SignatureVariableItem : public SignatureSpatialDataItem
+{
+  public:
+
+  SignatureVariableItem() : SignatureSpatialDataItem()
+    { }
+
+    SignatureVariableItem(const std::string& N, const openfluid::core::UnitsClass_t& U,
+                             const std::string& D, const std::string& SI) :
+      SignatureSpatialDataItem(N,U,D,SI,openfluid::tools::extractVariableNameAndType)
+    { }
+
+    SignatureVariableItem(const std::string& N, const openfluid::core::UnitsClass_t& U,
+                             const std::string& D, const std::string& SI, openfluid::core::Value::Type T) :
+      SignatureSpatialDataItem(N,U,D,SI,T,openfluid::tools::isValidVariableName)
+    { }
+};
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**

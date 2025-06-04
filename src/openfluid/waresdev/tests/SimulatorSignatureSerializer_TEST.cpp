@@ -94,7 +94,6 @@ BOOST_AUTO_TEST_CASE(read_json)
   auto Sign = 
     openfluid::waresdev::SimulatorSignatureSerializer()
                          .readFromJSONFile(WorkPath.fromThis(openfluid::config::WARESDEV_WAREMETA_FILE).toGeneric());
-
   compareSignatures(Sign,SignRef,"read_json");
 }
 

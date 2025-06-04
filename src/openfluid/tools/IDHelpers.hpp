@@ -47,7 +47,8 @@
 #include <string>
 
 #include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/ware/WareSignature.hpp>
+//#include <openfluid/ware/WareSignature.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools/VarHelpers.hpp>
 
@@ -84,6 +85,14 @@ constexpr auto UnitsClassNameRuleString("^[^;:#]+$");
   @return the generated string
 */
 std::string OPENFLUID_API classIDToString(const openfluid::core::UnitsClass_t& Class, openfluid::core::UnitID_t ID);
+
+
+/**
+  Checks whether a string is empty
+  @param[in] Str the string to check
+  @return true if the string is not empty
+*/
+bool OPENFLUID_API isNonEmpty(const std::string& Str);
 
 
 /**

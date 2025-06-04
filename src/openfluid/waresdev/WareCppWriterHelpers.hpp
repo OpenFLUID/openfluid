@@ -332,15 +332,16 @@ struct CppWriter {
 struct DataJsonConverter
 {
 
-  static openfluid::ware::SignatureDataItem readDataItemFromJSON(const openfluid::thirdparty::json& Item)
+  static openfluid::ware::SignatureDataItem readDataItemFromJSON(const openfluid::thirdparty::json& Item, 
+    std::function<bool(const std::string&)> Validator=openfluid::tools::isNonEmpty)
   {
     openfluid::ware::SignatureDataItem Data;
 
     Data.Name = Item.value("name","");
 
-    if (!openfluid::tools::isValidVariableName(Data.Name))
+    if (!Validator(Data.Name))
     {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing or invalid data name");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing or invalid data name: "+Data.Name);
     }
 
     Data.Description = Item.value("description","");
@@ -551,14 +552,16 @@ struct DataJsonConverter
   // =====================================================================
 
 
-  static openfluid::ware::SignatureSpatialDataItem readSpatialDataItemFromJSON(const openfluid::thirdparty::json& Item)
+  static openfluid::ware::SignatureSpatialDataItem readSpatialDataItemFromJSON(const openfluid::thirdparty::json& Item, 
+    std::function<bool(const std::string&)> Validator=openfluid::tools::isNonEmpty)
   {
     openfluid::ware::SignatureSpatialDataItem Data;
 
     Data.Name = Item.value("name","");
-    if (!openfluid::tools::isValidVariableName(Data.Name))
+    if (!Validator(Data.Name))
     {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Missing or invalid data name");
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+        "Missing or invalid spatial data name: "+Data.Name);
     }
 
     Data.UnitsClass = Item.value("unitsclass","");
@@ -586,7 +589,8 @@ struct DataJsonConverter
 
 
   static std::vector<openfluid::ware::SignatureSpatialDataItem> 
-  readSpatialDataListFromJSON(const openfluid::thirdparty::json& Json)
+  readSpatialDataListFromJSON(const openfluid::thirdparty::json& Json, 
+    std::function<bool(const std::string&)> Validator=openfluid::tools::isNonEmpty)
   {
     std::vector<openfluid::ware::SignatureSpatialDataItem> List;
 
@@ -594,11 +598,22 @@ struct DataJsonConverter
     {
       for (const auto& I : Json)
       {
-        List.push_back(readSpatialDataItemFromJSON(I));
+        List.push_back(readSpatialDataItemFromJSON(I, Validator));
       }
     }
 
     return List;
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  static std::vector<openfluid::ware::SignatureSpatialDataItem> 
+  readVariableListFromJSON(const openfluid::thirdparty::json& Json)
+  {
+    return readSpatialDataListFromJSON(Json, openfluid::tools::isValidVariableName);
   }
 
 
@@ -631,12 +646,12 @@ struct DataJsonConverter
   {
     if (Json.contains("used"))
     {
-      Sign.HandledData.UsedVars = readSpatialDataListFromJSON(Json.at("used"));
+      Sign.HandledData.UsedVars = readVariableListFromJSON(Json.at("used"));
     }
 
     if (Json.contains("required"))
     {
-      Sign.HandledData.RequiredVars = readSpatialDataListFromJSON(Json.at("required"));
+      Sign.HandledData.RequiredVars = readVariableListFromJSON(Json.at("required"));
     }
   }
 
