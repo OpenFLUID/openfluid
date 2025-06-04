@@ -10,7 +10,7 @@ jobs:
 
 
   ci-windows-debug:
-    runs-on: windows-2019
+    runs-on: windows-2025
     
     defaults:
       run:
