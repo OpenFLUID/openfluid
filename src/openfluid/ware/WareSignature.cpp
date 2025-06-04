@@ -31,45 +31,49 @@
 
 
 /**
-  @file SimulatorSignature.cpp
+  @file WareSignature.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
- */
+  @author Armel THÖNI <armel.thoni@inrae.fr>
+*/
 
 
-#include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/dllexport.hpp>
+#include <openfluid/config.hpp>
+#include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/ware/WareIssues.hpp>
+#include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
-#include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/ware/WareSignature.hpp>
 
 
 namespace openfluid { namespace ware {
 
-
-SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D,const std::string& SI,
-                                     openfluid::core::Value::Type T):
-  Name(N),Description(D),SIUnit(SI),DataType(T)
-{
-  if (!openfluid::tools::isValidVariableName(N))
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Variable " + N + " is not well formatted.");
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI):
+SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI, 
+  std::function<bool(const std::string&,std::string&,openfluid::core::Value::Type&)> Extractor):
   Description(D),SIUnit(SI)
 {
-  if (!openfluid::tools::extractVariableNameAndType(N,this->Name,this->DataType))
+  if (!Extractor(N,this->Name,this->DataType))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                               "Variable " + N + " with optional type is not well formatted.");
   }
 }
 
-} } //namespaces
+
+// =====================================================================
+// =====================================================================
+
+
+SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI,
+  openfluid::core::Value::Type T, std::function<bool(const std::string&)> Validator):
+  Name(N),Description(D),SIUnit(SI),DataType(T)
+{
+  if (!Validator(N))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Variable " + N + " is not well formatted.");
+  }
+}
+} };
 

@@ -69,12 +69,12 @@ void SimulatorSignatureSerializer::unserializeVariablesFromJSON(const openfluid:
 {
   if (Json.contains("produced"))
   {
-    Sign.SimulatorHandledData.ProducedVars = DataJsonConverter::readSpatialDataListFromJSON(Json.at("produced"));
+    Sign.SimulatorHandledData.ProducedVars = DataJsonConverter::readVariableListFromJSON(Json.at("produced"));
   }
 
   if (Json.contains("updated"))
   {
-    Sign.SimulatorHandledData.UpdatedVars = DataJsonConverter::readSpatialDataListFromJSON(Json.at("updated"));
+    Sign.SimulatorHandledData.UpdatedVars = DataJsonConverter::readVariableListFromJSON(Json.at("updated"));
   }
 }
 

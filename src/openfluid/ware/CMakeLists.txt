@@ -1,5 +1,5 @@
 
-SET(OPENFLUID_WARE_CPP WareIssues.cpp SimulatorSignature.cpp
+SET(OPENFLUID_WARE_CPP WareIssues.cpp WareSignature.cpp 
                        PluggableWare.cpp SimulationDrivenWare.cpp SimulationInspectorWare.cpp SimulationContributorWare.cpp
                        PluggableSimulator.cpp PluggableObserver.cpp
                        WareParamsTree.cpp

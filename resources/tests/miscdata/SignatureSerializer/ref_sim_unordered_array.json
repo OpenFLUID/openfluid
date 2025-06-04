@@ -93,6 +93,18 @@
             "description": "coefficient",
             "siunit": "",
             "type": ""
+          },
+          {
+            "name": "coeff 2",
+            "description": "coefficient with a space",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "coeff&3",
+            "description": "coefficient with weïrd char",
+            "siunit": "",
+            "type": ""
           }
         ]
       },

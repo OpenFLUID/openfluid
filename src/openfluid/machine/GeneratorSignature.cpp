@@ -88,7 +88,7 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
     {
       TypedVarName += "["+VarDimType+"]";
     } 
-    SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem(TypedVarName,
+    SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureVariableItem(TypedVarName,
                                                                                  VarPair.UnitsClass,"",""));
   }
 }

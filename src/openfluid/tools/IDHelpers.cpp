@@ -58,6 +58,16 @@ std::string classIDToString(const openfluid::core::UnitsClass_t& Class, openflui
 // =====================================================================
 
 
+bool isNonEmpty(const std::string& Str)
+{
+  return Str.length() > 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool isValidAlphaNumName(const std::string& Name)
 {
   // authorized chars: a to z, A to Z, 0 to 9
