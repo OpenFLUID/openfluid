@@ -243,7 +243,7 @@ bool compareJSONRecursive(openfluid::thirdparty::json& Json1,
   unsigned int Json2Size = Json2.size();
   if(WithCheck) 
   {
-    BOOST_CHECK_EQUAL(Json1Size, Json2Size);
+    BOOST_REQUIRE_EQUAL(Json1Size, Json2Size);
   }
   IsEqual = IsEqual && Json1Size == Json2Size;
 

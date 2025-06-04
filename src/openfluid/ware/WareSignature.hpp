@@ -42,6 +42,7 @@
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/ware/WareIssues.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 
 
@@ -227,6 +228,24 @@ class OPENFLUID_API WareSignature
 
 
 /**
+  Transmits a given variable name to container without changing type
+  @param[in] VO the string to use
+  @param[in] V the string to populate
+  @param[in] T the type to change (ignored)
+  @return true always
+*/
+static bool identityExtractor(const std::string& VO, std::string& V, openfluid::core::Value::Type&  /*T*/)
+{
+  V = VO;
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
 Class for storage of the definition of data handled by the simulator.
 */
 class OPENFLUID_API SignatureDataItem
@@ -241,10 +260,12 @@ class OPENFLUID_API SignatureDataItem
     SignatureDataItem()
     { }
 
-    SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI);
+    SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI, 
+      std::function<bool(const std::string&,std::string&,
+        openfluid::core::Value::Type&)> Extractor=identityExtractor);
 
     SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI,
-                      openfluid::core::Value::Type T);
+      openfluid::core::Value::Type T, std::function<bool(const std::string&)> Validator=openfluid::tools::isNonEmpty);
 };
 
 
@@ -265,13 +286,16 @@ class OPENFLUID_API SignatureSpatialDataItem : public SignatureDataItem
     { }
 
     SignatureSpatialDataItem(const std::string& N, const openfluid::core::UnitsClass_t& U,
-                             const std::string& D, const std::string& SI) :
-      SignatureDataItem(N,D,SI),UnitsClass(U)
+                             const std::string& D, const std::string& SI, 
+                             std::function<bool(const std::string&,std::string&,
+                               openfluid::core::Value::Type&)> Extractor=identityExtractor):
+      SignatureDataItem(N,D,SI,Extractor),UnitsClass(U)
     { }
 
     SignatureSpatialDataItem(const std::string& N, const openfluid::core::UnitsClass_t& U,
-                             const std::string& D, const std::string& SI, openfluid::core::Value::Type T) :
-      SignatureDataItem(N,D,SI,T),UnitsClass(U)
+                             const std::string& D, const std::string& SI, openfluid::core::Value::Type T, 
+                             std::function<bool(const std::string&)> Validator=openfluid::tools::isNonEmpty):
+      SignatureDataItem(N,D,SI,T,Validator),UnitsClass(U)
     { }
 };
 

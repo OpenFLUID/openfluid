@@ -82,13 +82,16 @@ openfluid::ware::SimulatorSignature getRefSignature()
   Sign.Dependencies["otherLib"] = ">=1.0";
 
   Sign.HandledData.UsedParams.push_back({"coeff","coefficient",""});
+  Sign.HandledData.UsedParams.push_back({"coeff 2","coefficient with a space",""});
+  Sign.HandledData.UsedParams.push_back({"coeff&3","coefficient with weïrd char",""});
   Sign.HandledData.RequiredParams.push_back({"speedl","speed limit","m/s",openfluid::core::Value::DOUBLE});
   Sign.HandledData.RequiredParams.push_back({"forcefield","field of force","n/m2",openfluid::core::Value::MATRIX});
 
   Sign.HandledData.UsedExtraFiles = {"observed.csv","simulated.csv","randomized.csv"};
   Sign.HandledData.RequiredExtraFiles = {"forced_data1.csv","forced_data2.csv",};
 
-  Sign.HandledData.UsedAttributes.push_back({"venue_capacity[integer]","YU","the venue capacity",""});
+  Sign.HandledData.UsedAttributes.push_back({"venue_capacity","YU","the venue capacity","", 
+    openfluid::core::Value::INTEGER});
   Sign.HandledData.UsedAttributes.push_back({"venue_volume","YU","the venue volume","m3s"});
   Sign.HandledData.RequiredAttributes.push_back(
     {"stage_area","ZU","the stage area","m2",openfluid::core::Value::DOUBLE});
@@ -97,7 +100,8 @@ openfluid::ware::SimulatorSignature getRefSignature()
 
   Sign.SimulatorHandledData.ProducedVars.push_back(
     {"venue.band.music.instruments","YU","the music","db",openfluid::core::Value::VECTOR});
-  Sign.SimulatorHandledData.ProducedVars.push_back({"venue.stage.light.system[map]","YU","the light","lm"});
+  Sign.SimulatorHandledData.ProducedVars.push_back({"venue.stage.light.system","YU","the light","lm",
+    openfluid::core::Value::MAP});
   Sign.SimulatorHandledData.UpdatedVars.push_back(
     {"venue.temperature.attendance","ZU","the venue temperature","K",openfluid::core::Value::DOUBLE});
   Sign.HandledData.RequiredVars.push_back(

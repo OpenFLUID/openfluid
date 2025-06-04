@@ -45,14 +45,15 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
-#include <openfluid/base/RunContextManager.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/tools/IDHelpers.hpp>
 
 #include "tests-config.hpp"
 
@@ -118,11 +119,11 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
-  BOOST_CHECK_THROW(openfluid::ware::SignatureSpatialDataItem("var1[toto]","UA","",""),
+  BOOST_CHECK_THROW(openfluid::ware::SignatureVariableItem("var1[toto]","UA","",""),
                     openfluid::base::FrameworkException);
-  BOOST_CHECK_THROW(openfluid::ware::SignatureSpatialDataItem("var1(double)","UA","",""),
+  BOOST_CHECK_THROW(openfluid::ware::SignatureVariableItem("var1(double)","UA","",""),
                     openfluid::base::FrameworkException);
-  BOOST_CHECK_THROW(openfluid::ware::SignatureSpatialDataItem("var1[double","UA","",""),
+  BOOST_CHECK_THROW(openfluid::ware::SignatureVariableItem("var1[double","UA","",""),
                     openfluid::base::FrameworkException);
 
   delete MachineListen;
@@ -159,8 +160,8 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> Cont1(openfluid::ware::WareType::SIMULATOR);
   auto Sign1 = new openfluid::ware::SimulatorSignature();
   Sign1->ID = "MySim1";
-  Sign1->HandledData.RequiredVars.push_back(openfluid::ware::SignatureSpatialDataItem("var1","UA","",""));
-  Sign1->SimulatorHandledData.UpdatedVars.push_back(openfluid::ware::SignatureSpatialDataItem("var5[]","UB","",""));
+  Sign1->HandledData.RequiredVars.push_back(openfluid::ware::SignatureVariableItem("var1","UA","",""));
+  Sign1->SimulatorHandledData.UpdatedVars.push_back(openfluid::ware::SignatureVariableItem("var5[]","UB","",""));
   Cont1.setSignature(Sign1);
   Cont1.validate();
 
@@ -179,7 +180,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> Cont2(openfluid::ware::WareType::SIMULATOR);
   auto Sign2 = new openfluid::ware::SimulatorSignature();
   Sign2->ID = "MySim0";
-  Sign2->SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem("var1","UA","",""));
+  Sign2->SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureVariableItem("var1","UA","",""));
   Cont2.setSignature(Sign2);
   Cont2.validate();
 
@@ -198,7 +199,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> Cont3(openfluid::ware::WareType::SIMULATOR);
   auto Sign3 = new openfluid::ware::SimulatorSignature();
   Sign3->ID = "MySim2";
-  Sign3->HandledData.RequiredVars.push_back(openfluid::ware::SignatureSpatialDataItem("var5[]","UB","",""));
+  Sign3->HandledData.RequiredVars.push_back(openfluid::ware::SignatureVariableItem("var5[]","UB","",""));
   Cont3.setSignature(Sign3);
   Cont3.validate();
 
@@ -217,7 +218,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> Cont4(openfluid::ware::WareType::SIMULATOR);
   auto Sign4 = new openfluid::ware::SimulatorSignature();
   Sign4->ID = "MySim0.5";
-  Sign4->HandledData.RequiredVars.push_back(openfluid::ware::SignatureSpatialDataItem("var1","UA","",""));
+  Sign4->HandledData.RequiredVars.push_back(openfluid::ware::SignatureVariableItem("var1","UA","",""));
   Cont4.setSignature(Sign4);
   Cont4.validate();
 
@@ -254,8 +255,8 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> Cont6(openfluid::ware::WareType::SIMULATOR);
   auto Sign6 = new openfluid::ware::SimulatorSignature();
   Sign6->ID = "MySim4";
-  Sign6->HandledData.RequiredVars.push_back(openfluid::ware::SignatureSpatialDataItem("var1","UA","",""));
-  Sign6->SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem("var7","UC","",""));
+  Sign6->HandledData.RequiredVars.push_back(openfluid::ware::SignatureVariableItem("var1","UA","",""));
+  Sign6->SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureVariableItem("var7","UC","",""));
   Cont6.setSignature(Sign6);
   Cont6.validate();
 
@@ -306,9 +307,9 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   auto Sign1 = new openfluid::ware::SimulatorSignature();
   Sign1->ID = "MySim1";
   Sign1->HandledData.RequiredVars.push_back(
-    openfluid::ware::SignatureSpatialDataItem("var1[double]","UA","",""));
+    openfluid::ware::SignatureVariableItem("var1[double]","UA","",""));
   Sign1->SimulatorHandledData.UpdatedVars.push_back(
-    openfluid::ware::SignatureSpatialDataItem("var5[vector]","UB","",""));
+    openfluid::ware::SignatureVariableItem("var5[vector]","UB","",""));
   Cont1.setSignature(Sign1);
   Cont1.validate();
 
@@ -328,7 +329,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   auto Sign2 = new openfluid::ware::SimulatorSignature();
   Sign2->ID = "MySim0";
   Sign2->SimulatorHandledData.ProducedVars.push_back(
-    openfluid::ware::SignatureSpatialDataItem("var1[double]","UA","",""));
+    openfluid::ware::SignatureVariableItem("var1[double]","UA","",""));
   Cont2.setSignature(Sign2);
   Cont2.validate();
 
@@ -348,7 +349,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   auto Sign3 = new openfluid::ware::SimulatorSignature();
   Sign3->ID = "MySim2";
   Sign3->HandledData.RequiredVars.push_back(
-    openfluid::ware::SignatureSpatialDataItem("var5[vector]","UB","",""));
+    openfluid::ware::SignatureVariableItem("var5[vector]","UB","",""));
   Cont3.setSignature(Sign3);
   Cont3.validate();
 
@@ -367,7 +368,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> Cont4(openfluid::ware::WareType::SIMULATOR);
   auto Sign4 = new openfluid::ware::SimulatorSignature();
   Sign4->ID = "MySim0.5";
-  Sign4->HandledData.RequiredVars.push_back(openfluid::ware::SignatureSpatialDataItem("var1","UA","",""));
+  Sign4->HandledData.RequiredVars.push_back(openfluid::ware::SignatureVariableItem("var1","UA","",""));
   Cont4.setSignature(Sign4);
   Cont4.validate();
 
@@ -404,8 +405,8 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   openfluid::machine::WareContainer<openfluid::ware::SimulatorSignature> Cont6(openfluid::ware::WareType::SIMULATOR);
   auto Sign6 = new openfluid::ware::SimulatorSignature();
   Sign6->ID = "MySim0.5";
-  Sign6->HandledData.RequiredVars.push_back(openfluid::ware::SignatureSpatialDataItem("var1","UA","",""));
-  Sign6->SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureSpatialDataItem("var7","UC","",""));
+  Sign6->HandledData.RequiredVars.push_back(openfluid::ware::SignatureVariableItem("var1","UA","",""));
+  Sign6->SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureVariableItem("var7","UC","",""));
   Cont6.setSignature(Sign6);
   Cont6.validate();
 
