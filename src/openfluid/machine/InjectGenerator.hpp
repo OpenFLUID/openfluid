@@ -54,7 +54,7 @@ namespace openfluid { namespace machine {
 
 class OPENFLUID_API InjectGenerator : public MonoGenerator
 {
-  private:
+  protected:
 
     bool m_IsMin;
     bool m_IsMax;
