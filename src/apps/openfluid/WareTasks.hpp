@@ -53,6 +53,8 @@ class WareTasks : public TasksBase
 
     int processCreate() const;
 
+    int processImport() const;
+
     int processConfigure() const;
 
     int processBuild() const;

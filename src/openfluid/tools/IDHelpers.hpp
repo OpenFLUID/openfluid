@@ -47,7 +47,6 @@
 #include <string>
 
 #include <openfluid/core/TypeDefs.hpp>
-//#include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools/VarHelpers.hpp>

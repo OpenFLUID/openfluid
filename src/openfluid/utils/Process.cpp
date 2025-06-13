@@ -170,6 +170,12 @@ bool Process::run()
         WorkDir = m_Cmd.WorkDir;
     }
     
+    if (!openfluid::tools::Path(WorkDir).isDirectory())
+    {
+      openfluid::utils::log::error("Process", "Working directory does not exist: "+WorkDir);
+      return false;
+    }
+    
     boost::process::child BPC(boost::process::exe = m_Cmd.Program,
                               boost::process::args = m_Cmd.Args,
                               boost::process::start_dir = WorkDir,

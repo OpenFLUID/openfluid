@@ -411,6 +411,20 @@ SET_PROPERTY(TEST cmdline-openfluid-CreateWareSimulatorFromExisting APPEND PROPE
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ImportSimulator
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "import-ware"
+                           "-p" "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim"
+                           "--id=tests.cmdline.sim.ported"
+                           "--git=${OFBUILD_TESTS_GITHELPER_URL}"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim/tests.cmdline.sim.ported"
+                   PRE_TEST CREATE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-ware/sim/tests.cmdline.sim.ported/master.txt")
+
+
+###########################################################################
+
+
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-CreateWareObserver
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "create-ware" "--type=observer" "--id=tests.cmdline.obs"

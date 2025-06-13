@@ -213,6 +213,17 @@ int main(int argc, char **argv)
 
   // ---
 
+  auto ImportWareCmd = openfluid::utils::CommandLineCommand("import-ware","Import ware sources from remote git or hub");
+  ImportWareCmd.addOptions({{"parent-path","p","parent path where to create the ware sources",true},
+                            {"git","","git URL"},
+                            {"hub","","hub URL"},
+                            {"id","i","ID of the ware sources to create"},
+                            {"type","t","type of the ware sources to create (simulator|observer|builderext), required "
+                            "when importing from hub"}});
+  Parser.addCommand(ImportWareCmd, &WareSection);
+
+  // ---
+
   auto CheckCmd = openfluid::utils::CommandLineCommand("check","Checks ware sources for potential issues"); 
   CheckCmd.addOptions({{"src-path","s","path to the ware sources (required)",true}, 
                        {"ignore","i","ignore checks (comma separated list)"},
@@ -375,6 +386,7 @@ int main(int argc, char **argv)
     return ReportTasks(Parser).process();
   }
   else if (ActiveCmdStr == "create-ware" ||
+           ActiveCmdStr == "import-ware" ||
            ActiveCmdStr == "check" ||
            ActiveCmdStr == "migrate-ware" ||
            ActiveCmdStr == "docalyze" ||
