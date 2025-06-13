@@ -51,6 +51,7 @@
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/dllexport.hpp>
 
 
@@ -212,6 +213,22 @@ bool OPENFLUID_API isWareInCurrentWorkspace(const std::string& WarePath);
 std::map<std::string,std::string> OPENFLUID_API initializeConfigureVariables();
 
 
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Clones a ware from remote git or hub URL
+  @param[in] SourceURL the ware path, the hub or git adress, may be optional
+  @param[in] SourceType either "hub" or "git" depending on source type
+  @param[in] ParentPath the path where clone will be run
+  @param[in] WareID the ware path, used for both local name and remote search on hub
+  @param[in] WareType the ware type, required for hub clone
+  @return exitcode of clone operation (0 means success)
+*/
+int OPENFLUID_API cloneWare(const std::string& SourceURL, const std::string& SourceType="hub", 
+                            const std::string& ParentPath=".", const std::string& WareID="", 
+                            const std::string& WareType="");
 } } // namespaces
 
 

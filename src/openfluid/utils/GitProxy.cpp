@@ -138,6 +138,42 @@ bool GitProxy::isPathGitRepo(const std::string& Path)
 // =====================================================================
 
 
+int callRemoteProcess(openfluid::utils::Process::Command Cmd, std::string Context)
+{
+  openfluid::utils::Process P(Cmd);
+  P.run();
+  if (P.getExitCode() == 0)
+  {
+    openfluid::utils::log::debug("Git", Context+" OK");
+  }
+  else
+  {
+    openfluid::utils::log::debug("Git", Context+" out: "+openfluid::tools::join(P.stdOutLines(), "\n"));
+    openfluid::utils::log::error("Git", Context+" err: "+openfluid::tools::join(P.stdErrLines(), "\n"));
+  }
+  return P.getExitCode();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int GitProxy::clone(const std::string& Path, const std::string& URL, const std::string& LocalName)
+{
+  openfluid::utils::Process::Command Cmd{
+    .Program = m_ExecutablePath,
+    .Args = {"clone", "--recurse-submodules", URL, LocalName},
+    .WorkDir = Path
+  };
+  return callRemoteProcess(Cmd, "Git clone "+URL+" at "+Path+" as "+LocalName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 const std::string GitProxy::getCurrentBranchName(const std::string& Path)
 {
   if (!canGetBranch())
@@ -164,27 +200,6 @@ const std::string GitProxy::getCurrentBranchName(const std::string& Path)
     openfluid::utils::log::error("Git", ErrorMsg);
     throw GitOperationException(ErrorMsg);
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-int callRemoteProcess(openfluid::utils::Process::Command Cmd, std::string Context)
-{
-  openfluid::utils::Process P(Cmd);
-  P.run();
-  if (P.getExitCode() == 0)
-  {
-    openfluid::utils::log::debug("Git", Context+" OK");
-  }
-  else
-  {
-    openfluid::utils::log::debug("Git", Context+" out: "+openfluid::tools::join(P.stdOutLines(), "\n"));
-    openfluid::utils::log::error("Git", Context+" err: "+openfluid::tools::join(P.stdErrLines(), "\n"));
-  }
-  return P.getExitCode();
 }
 
 
