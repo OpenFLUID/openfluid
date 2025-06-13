@@ -80,6 +80,8 @@ class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
       return (openfluid::tools::compareVersions(m_Version, "2.21") >= 0);
     }
 
+    int clone(const std::string& Path, const std::string& URL, const std::string& LocalName="");
+
     static const std::string getCurrentBranchName(const std::string& Path);
 
     static int setRemote(const std::string RepoPath, const std::string RemoteUrl);

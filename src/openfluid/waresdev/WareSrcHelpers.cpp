@@ -43,6 +43,7 @@
 #include <algorithm>
 
 #include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/SettingsBackend.hpp>
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/waresdev/WareSrcHelpers.hpp>
 #include <openfluid/config.hpp>
@@ -116,6 +117,35 @@ std::map<std::string,std::string> initializeConfigureVariables()
   }
 
   return Vars;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int OPENFLUID_API cloneWare(const std::string& SourceURL, const std::string& SourceType, const std::string& ParentPath, 
+              const std::string& WareID, const std::string& WareType)
+{
+  std::string GitURL;
+  if (SourceType=="hub")
+  {
+    std::string HubURL = SourceURL;
+    if (HubURL.length() == 0)
+    {
+      // try to deduce hub info from openfluid config (only working with fluidhub-like URLs)
+      openfluid::base::Environment::init();
+      const auto Settings = openfluid::tools::SettingsBackend(openfluid::base::Environment::getSettingsFile());
+      HubURL = Settings.getValue("/waresdev/ui/import/hub/url").get<std::string>();
+    }
+    GitURL = HubURL.substr(0,HubURL.length()-5)+"/git-service/wares/"+WareType+"s/"+WareID;
+  }
+  else
+  {
+    GitURL = SourceURL;
+  }
+  openfluid::utils::GitProxy Git;
+  return Git.clone(ParentPath, GitURL, WareID);
 }
 
 

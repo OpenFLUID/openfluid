@@ -215,6 +215,58 @@ int WareTasks::processCreate() const
 // =====================================================================
 
 
+int WareTasks::processImport() const
+{
+  const auto ParentPath = (m_Cmd.getOptionValue("parent-path").empty() ? openfluid::tools::Filesystem::currentPath() : 
+                                                                          m_Cmd.getOptionValue("parent-path"));
+
+  std::string ID = m_Cmd.getOptionValue("id");
+  std::string SourceType = "hub";
+  std::string SourceURL = "";
+
+  if (m_Cmd.isOptionActive("git"))
+  {
+    SourceType = "git";
+    SourceURL = m_Cmd.getOptionValue("git");
+    if (m_Cmd.isOptionActive("id"))
+    { 
+      ID = m_Cmd.getOptionValue("id");
+      if (!openfluid::tools::isValidWareID(ID))
+      {
+        return error("invalid ware ID");
+      }
+    }
+  }
+  else if (m_Cmd.isOptionActive("hub"))
+  {
+    if (!m_Cmd.isOptionActive("id"))
+    {
+      return error("missing ware ID");
+    }
+    ID = m_Cmd.getOptionValue("id");
+
+    if (!openfluid::tools::isValidWareID(ID))
+    {
+      return error("invalid ware ID");
+    }
+    if (!m_Cmd.isOptionActive("type"))
+    {
+      return error("missing ware type");
+    }
+    SourceURL = m_Cmd.getOptionValue("hub");
+  }
+  else
+  {
+    return error("remote URL missing: --git=<url> or --hub[=<url>] must be provided");
+  }
+  return openfluid::waresdev::cloneWare(SourceURL, SourceType, ParentPath, ID, m_Cmd.getOptionValue("type"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int WareTasks::processConfigure() const
 {
   if (!openfluid::utils::CMakeProxy::isAvailable())
@@ -746,6 +798,10 @@ int WareTasks::process() const
   if (m_Cmd.getName() == "create-ware")
   {
     return processCreate();
+  }
+  else if (m_Cmd.getName() == "import-ware")
+  {
+    return processImport();
   }
   else if (m_Cmd.getName() == "check")
   {
