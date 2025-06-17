@@ -9,7 +9,7 @@ SET(OPENFLUID_WARE_CPP WareIssues.cpp WareSignature.cpp
 SET(OPENFLUID_WARE_HPP WareIssues.hpp WareSignature.hpp SimulatorSignature.hpp ObserverSignature.hpp
                        PluggableWare.hpp SimulationDrivenWare.hpp SimulationInspectorWare.hpp SimulationContributorWare.hpp
                        PluggableSimulator.hpp PluggableObserver.hpp                       
-                       TypeDefs.hpp
+                       TypeDefs.hpp DataItemUtils.hpp
                        LoopMacros.hpp ThreadedLoopMacros.hpp
                        WareException.hpp
                        WareRNG.hpp

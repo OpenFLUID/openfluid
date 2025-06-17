@@ -87,14 +87,6 @@ std::string OPENFLUID_API classIDToString(const openfluid::core::UnitsClass_t& C
 
 
 /**
-  Checks whether a string is empty
-  @param[in] Str the string to check
-  @return true if the string is not empty
-*/
-bool OPENFLUID_API isNonEmpty(const std::string& Str);
-
-
-/**
   Checks whether an alphanumeric name is valid or not.\n
   To be valid, a name must only contain alphanumeric characters.
   @param[in] Name the name to check
