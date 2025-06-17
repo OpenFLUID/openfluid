@@ -48,6 +48,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
+#include <openfluid/ware/DataItemUtils.hpp>
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/waresdev/WareSignatureSerializer.hpp>
 
@@ -333,7 +334,7 @@ struct DataJsonConverter
 {
 
   static openfluid::ware::SignatureDataItem readDataItemFromJSON(const openfluid::thirdparty::json& Item, 
-    std::function<bool(const std::string&)> Validator=openfluid::tools::isNonEmpty)
+    std::function<bool(const std::string&)> Validator=openfluid::ware::isNonEmpty)
   {
     openfluid::ware::SignatureDataItem Data;
 
@@ -553,7 +554,7 @@ struct DataJsonConverter
 
 
   static openfluid::ware::SignatureSpatialDataItem readSpatialDataItemFromJSON(const openfluid::thirdparty::json& Item, 
-    std::function<bool(const std::string&)> Validator=openfluid::tools::isNonEmpty)
+    std::function<bool(const std::string&)> Validator=openfluid::ware::isNonEmpty)
   {
     openfluid::ware::SignatureSpatialDataItem Data;
 
@@ -590,7 +591,7 @@ struct DataJsonConverter
 
   static std::vector<openfluid::ware::SignatureSpatialDataItem> 
   readSpatialDataListFromJSON(const openfluid::thirdparty::json& Json, 
-    std::function<bool(const std::string&)> Validator=openfluid::tools::isNonEmpty)
+    std::function<bool(const std::string&)> Validator=openfluid::ware::isNonEmpty)
   {
     std::vector<openfluid::ware::SignatureSpatialDataItem> List;
 
