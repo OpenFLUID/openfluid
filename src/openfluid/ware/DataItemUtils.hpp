@@ -31,31 +31,35 @@
 
 
 /**
-  @file WareSignature.cpp
+  @file DataItemUtils.hpp
 
-  @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
+#pragma once
+
+
+#include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/config.hpp>
-#include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/ware/WareIssues.hpp>
-#include <openfluid/ware/WareSignature.hpp>
 
 
 namespace openfluid { namespace ware {
 
-SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI, 
-  std::function<bool(const std::string&,std::string&,openfluid::core::Value::Type&)> Extractor):
-  Description(D),SIUnit(SI)
+// contains minimal functions used by signature data item constructors
+
+
+/**
+  Transmits a given variable name to container without changing type
+  @param[in] VO the string to use
+  @param[in] V the string to populate
+  @param[in] T the type to change (ignored)
+  @return true always
+*/
+inline bool OPENFLUID_API identityExtractor(const std::string& VO, std::string& V, openfluid::core::Value::Type&  /*T*/)
 {
-  if (!Extractor(N,this->Name,this->DataType))
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Variable " + N + " with optional type is not well formatted.");
-  }
+  V = VO;
+  return true;
 }
 
 
@@ -63,15 +67,15 @@ SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D,
 // =====================================================================
 
 
-SignatureDataItem::SignatureDataItem(const std::string& N, const std::string& D, const std::string& SI,
-  openfluid::core::Value::Type T, std::function<bool(const std::string&)> Validator):
-  Name(N),Description(D),SIUnit(SI),DataType(T)
+/**
+  Checks whether a string is empty
+  @param[in] Str the string to check
+  @return true if the string is not empty
+*/
+inline bool OPENFLUID_API isNonEmpty(const std::string& Str)
 {
-  if (!Validator(N))
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "Variable " + N + " is not well formatted.");
-  }
+  return Str.length() > 0;
 }
-} };
 
+
+} } // namespaces
