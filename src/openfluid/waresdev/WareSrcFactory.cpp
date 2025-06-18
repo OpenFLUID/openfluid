@@ -387,8 +387,8 @@ void replaceInFolder(std::string Folder, std::string PreviousWareId, std::string
     // ignore .git folder and '_' prefixed folders
     const auto WareIdPos = std::find(PathParts.begin(), PathParts.end(), NewWareId);
     bool IgnoredSubDir = false;
-    for(auto It = WareIdPos; It <= PathParts.end(); It++ )
-    {
+    for(auto It = WareIdPos; It < PathParts.end(); It++ )
+    { 
       if ((*It)[0] == '_')
       {
         IgnoredSubDir = true;

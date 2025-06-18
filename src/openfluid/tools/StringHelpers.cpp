@@ -142,18 +142,21 @@ std::map<std::string, std::set<std::size_t>> searchInFolder(std::string Folder, 
   for (const auto& E : std::filesystem::recursive_directory_iterator{Folder})
   {
     const openfluid::tools::Path FileObj = openfluid::tools::Path::fromStdPath(E.path());
-    const std::string FileContent = openfluid::tools::Filesystem::readFile(FileObj);
-    auto It = FileContent.find(String);
-
-    while (It != std::string::npos)
+    if (FileObj.isFile())
     {
-      const std::string PathString = E.path().string();
-      if (OccurencesPosByFile.find(PathString) == OccurencesPosByFile.end())
+      const std::string FileContent = openfluid::tools::Filesystem::readFile(FileObj);
+      auto It = FileContent.find(String);
+
+      while (It != std::string::npos)
       {
-        OccurencesPosByFile[PathString] = {};
+        const std::string PathString = E.path().string();
+        if (OccurencesPosByFile.find(PathString) == OccurencesPosByFile.end())
+        {
+          OccurencesPosByFile[PathString] = {};
+        }
+        OccurencesPosByFile[PathString].insert(It);
+        It = FileContent.find(String, It+String.size());
       }
-      OccurencesPosByFile[PathString].insert(It);
-      It = FileContent.find(String, It+String.size());
     }
   }
   return OccurencesPosByFile;
