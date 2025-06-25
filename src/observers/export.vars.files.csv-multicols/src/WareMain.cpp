@@ -85,6 +85,8 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
     
     bool m_KeepNA;
 
+    bool m_FilesInitialized = false;
+
 
   public:
     
@@ -288,7 +290,8 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
         SetFiles.second.File = new BaseCSVFile();
         SetFiles.second.ColumnsHeaders = ColumnsHeaders;
       }
-
+      
+      m_FilesInitialized = true;
 
       for (auto& SetFiles : m_SetsFiles)
       {
@@ -368,12 +371,15 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
 
     void onFinalizedRun()
     {
-      for (auto& SetFiles : m_SetsFiles)
+      if (m_FilesInitialized)
       {
-        if(SetFiles.second.File)
+        for (auto& SetFiles : m_SetsFiles)
         {
-          delete SetFiles.second.File;
-          SetFiles.second.File = 0; // avoid double delete issues
+          if(SetFiles.second.File)
+          {
+            delete SetFiles.second.File;
+            SetFiles.second.File = 0; // avoid double delete issues
+          }
         }
       }
     }
