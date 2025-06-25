@@ -130,9 +130,7 @@ Simulator parameters, variables and attributes are declared in the "simulator" p
 ### Simulator parameters {#dev_signature_data_simparams}
 
 Simulator parameters are values provided to each simulator, 
-and are declared using the @if DocIsLaTeX **DECLARE_REQUIRED_PARAMETER** or **DECLARE_USED_PARAMETER**
-@else DECLARE_REQUIRED_PARAMETER or DECLARE_USED_PARAMETER @endif
- instructions.
+and are declared in three blocks: "required", "used" or "produced".
 These instructions takes 3 arguments
 
 * the name of the parameter
