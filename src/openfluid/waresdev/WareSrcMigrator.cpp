@@ -963,12 +963,14 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
   mp_Listener->stageMessage("processing " + openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
 
   auto CMakeWareVar = Info.CMakeDefaultWareVar;
+  std::vector<std::string> CMakeContentLines;
 
   auto CMakeFileObj = m_SrcPathObj.fromThis(openfluid::config::WARESDEV_SRC_CMAKESTDFILE);
   if (CMakeFileObj.isFile())
   {
     // search for correct variable name
     auto CMakeContent = openfluid::tools::Filesystem::readFile(CMakeFileObj);
+    CMakeContentLines = getFileLines(CMakeFileObj);
     if (!CMakeContent.empty())
     {
       // search for default
@@ -1020,6 +1022,36 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
                                          return (L.empty() || L[0] == '#');
                                        }), 
                         ConfigLines.end());
+      
+      std::vector<std::string> CustomContentLines;
+      bool IsCustomCMakeContent = false;
+      for (std::vector<std::string>::size_type i=0; i<CMakeContentLines.size();i++)
+      {
+        std::list<std::string> DefaultLineBegins = {"PROJECT(", "CMAKE_MINIMUM_REQUIRED(", "INCLUDE(CMake.in.config)", 
+                                                    "FIND_PACKAGE(OpenFLUIDHelpers REQUIRED)", "OPENFLUID_ADD_"};
+        bool IsDefault = false;
+        for (const auto& Begin : DefaultLineBegins)
+        {
+          if (CMakeContentLines[i].substr(0,Begin.length()) == Begin)
+          {
+            IsDefault = true;
+          }
+        }
+        if (!IsDefault)
+        {
+          CustomContentLines.push_back(CMakeContentLines[i]);
+          if (CMakeContentLines[i].size() > 0)
+          {
+            IsCustomCMakeContent = true;
+          }
+        }
+      }
+      if (IsCustomCMakeContent)
+      {
+        ConfigLines.push_back("");
+        ConfigLines.push_back("# Custom content from main CMakeLists.txt");
+        ConfigLines.insert(ConfigLines.end(), CustomContentLines.begin(), CustomContentLines.end() );
+      }
 
       const auto ConfigContent = openfluid::tools::join(ConfigLines," ");
       std::map<std::string,std::string> ConfigVariables;
