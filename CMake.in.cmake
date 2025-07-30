@@ -1,7 +1,8 @@
 #
 # Configuration file for CMakeLists.txt files
 #
-# Author : Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+# Authors : Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+#           Armel THÖNI <armel.thoni@inrae.fr>
 #
 # This file is included by the main CMakeLists.txt file, and defines variables
 # to configure the build and install
@@ -23,7 +24,7 @@ SET(OFBUILD_CUSTOM_CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.
 SET(OPENFLUID_VERSION_MAJOR 2)
 SET(OPENFLUID_VERSION_MINOR 2)
 SET(OPENFLUID_VERSION_PATCH 1)
-SET(OPENFLUID_VERSION_STATUS "alpha5") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
+SET(OPENFLUID_VERSION_STATUS "alpha6") # example: SET(OPENFLUID_VERSION_STATUS "rc1")
 
 SET(OPENFLUID_VERSION_FULL "${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}.${OPENFLUID_VERSION_PATCH}")
 
