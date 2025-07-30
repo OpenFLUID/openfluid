@@ -42,7 +42,21 @@
 #include <sstream>
 #include <iterator>
 
+#if (Boost_VERSION_MINOR > 85) && defined(OPENFLUID_OS_WINDOWS)
+#include <winsock2.h> // FIXME check if useful or necessary, theorically useful to respect include order
+#endif
+#if (Boost_VERSION_MINOR > 85)
+#include <unordered_map>
+#include <boost/asio/io_context.hpp>
+#include <boost/asio/readable_pipe.hpp>
+#include <boost/asio/read.hpp>
+#include <boost/process/v2/process.hpp>
+#include <boost/process/v2/environment.hpp>
+#include <boost/process/v2/stdio.hpp>
+#include <boost/process/v2/start_dir.hpp>
+#else
 #include <boost/process.hpp>
+#endif
 
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -136,6 +150,107 @@ bool Process::run()
 
   try
   {
+#if (Boost_VERSION_MINOR > 85)  
+    std::ofstream StdOutFile;
+    std::ofstream StdErrFile;
+    std::string LineOut;
+    std::string LineErr;
+    std::unordered_map<std::string, std::string> ProcessEnv;
+    boost::asio::io_context Ctx;
+    boost::asio::readable_pipe PipeOut{Ctx};
+    boost::asio::readable_pipe PipeErr{Ctx};
+
+    bool SinkOutToFile = !m_Cmd.OutFile.empty();
+    bool SinkErrToFile = !m_Cmd.ErrFile.empty();
+
+    // prepare environment
+    if (m_Env.Inherits)
+    {
+      for(const auto& InheritedVar : boost::process::v2::environment::current())
+      {
+        ProcessEnv[InheritedVar.key().string()] = InheritedVar.value().string();
+      }
+    }
+
+    for (const auto& Var : m_Env.Vars)
+    {
+      ProcessEnv[Var.first] = Var.second;
+    }
+    // Hotfix for windows bug when work dir is empty
+    std::string WorkDir;
+    if (m_Cmd.WorkDir.empty())
+    {
+      WorkDir = "."; // warning boost :  If your path is relative, it may fail on posix, 
+      //because the directory is changed before a call to execve. 
+    }
+    else
+    {
+        WorkDir = m_Cmd.WorkDir;
+    }
+
+    //                           boost::process::shell, <- not relevant in new system?
+    boost::process::v2::process Proc(Ctx, m_Cmd.Program, m_Cmd.Args, 
+                                     boost::process::v2::process_stdio{nullptr, PipeOut, PipeErr}, 
+                                     boost::process::v2::process_start_dir(WorkDir),
+                                     boost::process::v2::process_environment(ProcessEnv));
+
+    // if out is redirected, create out file
+    if (SinkOutToFile)
+    {
+      openfluid::tools::Path(openfluid::tools::Path(m_Cmd.OutFile).dirname()).makeDirectory();
+      StdOutFile.open(m_Cmd.OutFile,std::ios::out);
+    }
+
+    // if error is redirected, create error file
+    if (SinkErrToFile)
+    {
+      openfluid::tools::Path(openfluid::tools::Path(m_Cmd.ErrFile).dirname()).makeDirectory();
+      StdErrFile.open(m_Cmd.ErrFile,std::ios::out);
+    }
+
+    boost::system::error_code Ec;
+    boost::asio::read(PipeOut, boost::asio::dynamic_buffer(LineOut), Ec);
+    if (!Ec && (Ec != boost::asio::error::eof))
+    { 
+      std::cout << "Boost process reading error in out stream: " << Ec.message() << std::endl;
+      openfluid::base::log::error("Process",  "Boost process reading error in out stream");
+    }
+    boost::asio::read(PipeErr, boost::asio::dynamic_buffer(LineErr), Ec);
+    if (!Ec && (Ec != boost::asio::error::eof))
+    { 
+      std::cout << "Boost process reading error in err stream: " << Ec.message() << std::endl;
+      openfluid::base::log::error("Process",  "Boost process reading error in err stream");
+    }
+    
+    Proc.wait();
+    for (const auto& L : openfluid::tools::split(LineOut, "\n"))
+    {
+      if (SinkOutToFile)
+      {
+        // if out is redirected, sink out lines in file
+        StdOutFile << L << "\n";
+      }
+      else
+      {
+        m_OutLines.push_back(L);
+      }
+    }
+
+    for (const auto& L : openfluid::tools::split(LineErr, "\n"))
+    {
+      if (SinkErrToFile)
+      {
+        // if out is redirected, sink out lines in file
+        StdErrFile << L << "\n";
+      }
+      else
+      {
+        m_ErrLines.push_back(L);
+      }
+    }
+
+    m_ExitCode = Proc.exit_code();
+#else
     boost::process::environment ProcessEnv;
     boost::process::ipstream StdOutStr;
     boost::process::ipstream StdErrStr;
@@ -229,8 +344,9 @@ bool Process::run()
 
     BPC.wait();
     m_ExitCode = BPC.exit_code();
+#endif
   }
-  catch(const boost::process::process_error& E)
+  catch(const std::exception& E)
   {
     m_ErrorMsg = std::string(E.what());
     openfluid::base::log::error("Process", std::string("Boost process error: ")+E.what());
@@ -291,6 +407,38 @@ int Process::system(const std::string& Program, const std::vector<std::string>& 
 
 int Process::system(const Command& Cmd, const Environment& Env)
 {
+#if (Boost_VERSION_MINOR > 85)
+  boost::asio::io_context Ctx;
+  std::unordered_map<std::string, std::string> ProcessEnv;
+  // prepare environment
+  if (Env.Inherits)
+  {
+    for(const auto& InheritedVar : boost::process::v2::environment::current())
+    {
+      ProcessEnv[InheritedVar.key().string()] = InheritedVar.value().string();
+    }
+  }
+
+  for (const auto& Var : Env.Vars)
+  {
+    ProcessEnv[Var.first] = Var.second;
+  }
+  // Hotfix for windows bug when work dir is empty
+  std::string WorkDir;
+  if (Cmd.WorkDir.empty())
+  {
+    WorkDir = "."; // warning boost :  If your path is relative, it may fail on posix, 
+    //because the directory is changed before a call to execve. 
+  }
+  else
+  {
+    WorkDir = Cmd.WorkDir;
+  }
+  boost::process::v2::process Proc(Ctx, Cmd.Program, Cmd.Args, 
+                                     boost::process::v2::process_start_dir(WorkDir),
+                                     boost::process::v2::process_environment(ProcessEnv));
+  return Proc.wait();
+#else
   boost::process::environment ProcessEnv;
   
   // prepare environment
@@ -321,6 +469,7 @@ int Process::system(const Command& Cmd, const Environment& Env)
                                 boost::process::args = Cmd.Args,
                                 boost::process::start_dir = WorkDir,
                                 ProcessEnv);
+#endif
 }
 
 

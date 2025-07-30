@@ -20,6 +20,7 @@ test-of-unix-full:
     matrix:
       - TAG: ["debian-13-qt6",
               "ubuntu-24.10-qt6",
+              "ubuntu-26.04-qt6",
               "fedora-42-qt6"]
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/$TAG"
   script:
@@ -46,7 +47,8 @@ pkg-of-full-deb:
   parallel:
     matrix:
       - TAG: ["debian-13-qt6",
-              "ubuntu-24.10-qt6"]
+              "ubuntu-24.10-qt6",
+              "ubuntu-26.04-qt6"]
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/$TAG"
   script:
     - mkdir ./_build_release

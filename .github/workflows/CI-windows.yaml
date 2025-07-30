@@ -25,7 +25,7 @@ jobs:
           release: false
           install: >-
             mingw-w64-x86_64-toolchain mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-fortran
-            mingw-w64-x86_64-cmake mingw-w64-x86_64-doxygen
+            mingw-w64-x86_64-cmake mingw-w64-x86_64-doxygen make
             mingw-w64-x86_64-boost mingw-w64-x86_64-gdal mingw-w64-x86_64-curl-winssl
             mingw-w64-x86_64-qt5 mingw-w64-x86_64-openssl
             git p7zip mingw-w64-x86_64-gnuplot mingw-w64-x86_64-graphviz
