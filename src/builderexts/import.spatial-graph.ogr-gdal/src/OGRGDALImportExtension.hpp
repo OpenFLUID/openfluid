@@ -111,6 +111,8 @@ class OGRGDALImportExtension : public openfluid::ui::builderext::PluggableModalE
     void updateIsDatasetImportInfos();
 
     void handleCloseRequired();
+
+    void toggleSelectAll();
     
     void updateEmptyStringReplacement();
 
