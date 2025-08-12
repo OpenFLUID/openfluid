@@ -144,6 +144,7 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
   ui->ButtonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
   connect(ui->ButtonBox,SIGNAL(clicked(QAbstractButton*)),this,SLOT(processButtonBoxClicked(QAbstractButton*)));
   
+  connect(ui->SelectAllCheckBox,SIGNAL(toggled(bool)),this,SLOT(toggleSelectAll()));
   connect(ui->EmptyStringLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateEmptyStringReplacement()));
 
   ui->SourcesTableWidget->setFocus();
@@ -763,6 +764,19 @@ void OGRGDALImportExtension::updateIsDatasetImportInfos()
   ui->DatastoreIDCheckBox->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset ||
                                       ui->DatasetImportCheckBox->isChecked());
   ui->DatastoreIDLineEdit->setEnabled(ui->DatastoreIDCheckBox->isChecked());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OGRGDALImportExtension::toggleSelectAll()
+{
+  for (int i=0; i<ui->AttributesListWidget->count(); i++)
+  {
+    ui->AttributesListWidget->item(i)->setCheckState(ui->SelectAllCheckBox->isChecked() ? Qt::Checked : Qt::Unchecked);
+  }
 }
 
 
