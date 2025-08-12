@@ -1334,22 +1334,40 @@ void SpatialDomainWidget::editAttributesValues()
         {
           if (EditDlg.getEditMode() == EditAttributesValuesDialog::EditMode::EDIT_MULTIPLY)
           {
-            double MultValue = EditDlg.getMultiplyValue();
-            for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
+            try
             {
-              double Value = Item->text().toDouble();
-              Value *= MultValue;
-              Item->setText(QString("%1").arg(Value,0,'g',12));
+              double MultValue = EditDlg.getMultiplyValue();
+              for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
+              {
+                double Value = Item->text().toDouble();
+                Value *= MultValue;
+                Item->setText(QString("%1").arg(Value,0,'g',12));
+              }
+            }
+            catch (openfluid::base::FrameworkException& E)
+            {
+              QMessageBox::critical(this,"OpenFLUID-Builder",
+                                    tr("Conversion failed, check input formatting"),
+                                    QMessageBox::Close);
             }
           }
           else
           {
-            double AddValue = EditDlg.getAddValue();
-            for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
+            try
             {
-              double Value = Item->text().toDouble();
-              Value += AddValue;
-              Item->setText(QString("%1").arg(Value,0,'g',12));
+              double AddValue = EditDlg.getAddValue();
+              for (QTableWidgetItem* Item : ui->AttributesTableWidget->selectedItems())
+              {
+                double Value = Item->text().toDouble();
+                Value += AddValue;
+                Item->setText(QString("%1").arg(Value,0,'g',12));
+              }
+            }
+            catch (openfluid::base::FrameworkException& E)
+            {
+              QMessageBox::critical(this,"OpenFLUID-Builder",
+                                    tr("Conversion failed, check input formatting"),
+                                    QMessageBox::Close);
             }
           }
 
