@@ -48,7 +48,7 @@ namespace openfluid { namespace ui { namespace common {
 FocusWheelComboBox::FocusWheelComboBox(QWidget* Parent) :
   QComboBox(Parent)
 {
-  this->setFocusPolicy(Qt::StrongFocus);
+  this->setFocusPolicy(Qt::TabFocus);
 }
 
 

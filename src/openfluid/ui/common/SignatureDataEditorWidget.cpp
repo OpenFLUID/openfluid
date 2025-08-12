@@ -35,13 +35,13 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
   @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
-#include <QComboBox>
-
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
+#include <openfluid/ui/common/FocusWheelComboBox.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/core/Value.hpp>
@@ -308,7 +308,7 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
     }
     else if (Col == DataColumns::ROCONDITION)
     {
-      QComboBox* Combo = new QComboBox();
+      FocusWheelComboBox* Combo = new FocusWheelComboBox();
       Combo->addItem(tr("Used"),static_cast<int>(DataConditionsIndices::USED));
       Combo->addItem(tr("Required"),static_cast<int>(DataConditionsIndices::REQUIRED));
       if (DataLine.contains(static_cast<int>(DataColumns::ROCONDITION)))
@@ -319,7 +319,7 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
     }
     else if (Col == DataColumns::RWCONDITION)
     {
-      QComboBox* Combo = new QComboBox();
+      FocusWheelComboBox* Combo = new FocusWheelComboBox();
       Combo->addItem(tr("Used"),static_cast<int>(DataConditionsIndices::USED));
       Combo->addItem(tr("Required"),static_cast<int>(DataConditionsIndices::REQUIRED));
       Combo->addItem(tr("Produced"),static_cast<int>(DataConditionsIndices::PRODUCED));
@@ -331,7 +331,7 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
     }
     else if (Col == DataColumns::RWUCONDITION)
     {
-      QComboBox* Combo = new QComboBox();
+      FocusWheelComboBox* Combo = new FocusWheelComboBox();
       Combo->addItem(tr("Used"),static_cast<int>(DataConditionsIndices::USED));
       Combo->addItem(tr("Required"),static_cast<int>(DataConditionsIndices::REQUIRED));
       Combo->addItem(tr("Produced"),static_cast<int>(DataConditionsIndices::PRODUCED));
@@ -344,7 +344,7 @@ void SignatureDataEditorWidget::addDataLine(const QMap<int,QVariant>& DataLine)
     }
     else if (Col == DataColumns::DATATYPE)
     {
-      QComboBox* Combo = new QComboBox();
+      FocusWheelComboBox* Combo = new FocusWheelComboBox();
       for (int TypeInt = openfluid::core::Value::NONE; TypeInt <= openfluid::core::Value::NULLL; TypeInt++)
       {
         Combo->addItem(QString::fromStdString(
