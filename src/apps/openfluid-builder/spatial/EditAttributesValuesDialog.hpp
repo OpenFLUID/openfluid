@@ -47,6 +47,8 @@ namespace Ui
 }
 
 
+#include <QDoubleValidator>
+
 #include <openfluid/ui/common/MessageDialog.hpp>
 
 
@@ -64,6 +66,9 @@ class EditAttributesValuesDialog : public openfluid::ui::common::MessageDialog
   private:
 
     Ui::EditAttributesValuesDialog* ui;
+
+    QDoubleValidator* m_MultVal;
+    QDoubleValidator* m_AddVal;
 
 
   public:

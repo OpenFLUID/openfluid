@@ -38,8 +38,7 @@
 
 
 #include <QPushButton>
-#include <QDoubleValidator>
-
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/ui/config.hpp>
 
 #include "ui_EditAttributesValuesDialog.h"
@@ -55,9 +54,12 @@ EditAttributesValuesDialog::EditAttributesValuesDialog(QWidget* Parent):
 
   ui->ReplaceRadioButton->setChecked(true);
   ui->ReplaceEdit->setFocus();
-
-  ui->MultEdit->setValidator(new QDoubleValidator(ui->MultEdit));
-  ui->AddEdit->setValidator(new QDoubleValidator(ui->AddEdit));
+  m_MultVal = new QDoubleValidator(ui->MultEdit);
+  m_AddVal = new QDoubleValidator(ui->AddEdit);
+  m_MultVal->setLocale(QLocale::C);
+  m_AddVal->setLocale(QLocale::C);
+  ui->MultEdit->setValidator(m_MultVal);
+  ui->AddEdit->setValidator(m_AddVal);
 
   connect(ui->ReplaceRadioButton,SIGNAL(toggled(bool)),this,SLOT(checkGlobal()));
   connect(ui->ReplaceEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
@@ -123,18 +125,19 @@ void EditAttributesValuesDialog::checkGlobal()
     ui->AddEdit->setPlaceholderText("");
   }
 
-
   if (ui->ReplaceRadioButton->isChecked() && ui->ReplaceEdit->text().isEmpty())
   {
     setMessage(tr("Replacement value cannot be empty"));
   }
   else if (ui->MultRadioButton->isChecked() && ui->MultEdit->text().isEmpty())
   {
-    setMessage(tr("Multiply factor cannot be empty"));
+    QString DecimalPointInfo = tr(", decimal point is '%1'").arg(m_MultVal->locale().decimalPoint());
+    setMessage(tr("Multiply factor cannot be empty")+DecimalPointInfo);
   }
   else if (ui->AddRadioButton->isChecked() && ui->AddEdit->text().isEmpty())
   {
-    setMessage(tr("Added value cannot be empty"));
+    QString DecimalPointInfo = tr(", decimal point is '%1'").arg(m_AddVal->locale().decimalPoint());
+    setMessage(tr("Added value cannot be empty")+DecimalPointInfo);
   }
   else
   {
@@ -209,7 +212,15 @@ QString EditAttributesValuesDialog::getReplaceValue() const
 
 double EditAttributesValuesDialog::getMultiplyValue() const
 {
-  return ui->MultEdit->text().toDouble();
+  bool Ok;
+  double Res = ui->MultEdit->text().toDouble(&Ok);
+  // to use locale: double Res = QLocale().toDouble(ui->AddEdit->text(), &Ok);
+  if (!Ok)
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Conversion failed");
+  }
+  return Res;
 }
 
 
@@ -219,5 +230,13 @@ double EditAttributesValuesDialog::getMultiplyValue() const
 
 double EditAttributesValuesDialog::getAddValue() const
 {
-  return ui->AddEdit->text().toDouble();
+  bool Ok;
+  double Res = ui->AddEdit->text().toDouble(&Ok);
+  // to use locale: double Res = QLocale().toDouble(ui->AddEdit->text(), &Ok);
+  if (!Ok)
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Conversion failed");
+  }
+  return Res;
 }
