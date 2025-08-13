@@ -35,7 +35,7 @@
 
  @author Aline LIBRES <aline.libres@gmail.com>
  @author Jean-Christophe Fabre <jean-christophe.fabre@inra.fr>
- @author Armel Thoni <armel.thoni@inra.fr>
+ @author Armel Thöni <armel.thoni@inra.fr>
  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
@@ -56,6 +56,7 @@
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
@@ -570,7 +571,7 @@ void WareSrcWidgetCollection::openExplorer(const QString& Path)
 {
   QString FileToOpen = getContextualPath(Path);
 
-  QDesktopServices::openUrl(QUrl::fromLocalFile(FileToOpen));
+  openfluid::ui::common::openPath(FileToOpen.toStdString());
 }
 
 
@@ -1542,7 +1543,7 @@ void WareSrcWidgetCollection::checkModifiedStatus()
 
 void WareSrcWidgetCollection::openAPIDoc()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_DOC), QUrl::TolerantMode));
+  openfluid::ui::common::openPath(openfluid::config::URL_DOC, true);
 }
 
 

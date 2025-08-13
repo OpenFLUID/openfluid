@@ -55,6 +55,7 @@
 #include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/ui/common/AboutDialog.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/config.hpp>
 
@@ -841,7 +842,7 @@ void AppCoordinator::whenViewRestoreAsked()
 
 void AppCoordinator::whenOnlineWebAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_OFFICIAL), QUrl::TolerantMode));
+  openfluid::ui::common::openPath(openfluid::config::URL_OFFICIAL, true);
 }
 
 
@@ -851,7 +852,7 @@ void AppCoordinator::whenOnlineWebAsked()
 
 void AppCoordinator::whenOnlineCommunityAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_COMMUNITY), QUrl::TolerantMode));
+  openfluid::ui::common::openPath(openfluid::config::URL_COMMUNITY, true);
 }
 
 
@@ -861,7 +862,7 @@ void AppCoordinator::whenOnlineCommunityAsked()
 
 void AppCoordinator::whenEmailAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_EMAIL_CONTACT), QUrl::TolerantMode));
+  openfluid::ui::common::openPath(openfluid::config::URL_EMAIL_CONTACT, true);
 }
 
 

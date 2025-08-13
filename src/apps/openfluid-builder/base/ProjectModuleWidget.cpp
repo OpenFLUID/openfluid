@@ -51,6 +51,7 @@
 #include <openfluid/machine/ObserverRegistry.hpp>
 #include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/common/PreferencesDialog.hpp>
+#include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/waresdev/GhostsHelpers.hpp>
@@ -412,8 +413,8 @@ void ProjectModuleWidget::whenPropertiesAsked()
 void ProjectModuleWidget::whenExploreAsked()
 {
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  QDesktopServices::openUrl(QUrl::fromLocalFile(
-      QString(openfluid::base::RunContextManager::instance()->getProjectPath().c_str())));
+  std::string CurrentPath = openfluid::base::RunContextManager::instance()->getProjectPath().c_str();
+  openfluid::ui::common::openPath(CurrentPath);
   QApplication::restoreOverrideCursor();
 }
 
