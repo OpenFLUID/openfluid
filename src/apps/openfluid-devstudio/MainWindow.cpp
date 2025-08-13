@@ -652,7 +652,7 @@ void MainWindow::onDevDashboardAsked()
 
 void MainWindow::onOnlineWebAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_OFFICIAL), QUrl::TolerantMode));
+  openfluid::ui::common::openPath(openfluid::config::URL_OFFICIAL, true);
 }
 
 
@@ -662,7 +662,7 @@ void MainWindow::onOnlineWebAsked()
 
 void MainWindow::onOnlineCommunityAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString::fromStdString(openfluid::config::URL_COMMUNITY), QUrl::TolerantMode));
+  openfluid::ui::common::openPath(openfluid::config::URL_COMMUNITY, true);
 }
 
 
