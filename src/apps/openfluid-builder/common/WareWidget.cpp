@@ -413,7 +413,7 @@ void WareWidget::openDocFile()
   if (!m_DocFilePath.empty())
   {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(m_DocFilePath)));
+    openfluid::ui::common::openPath(m_DocFilePath);
     QApplication::restoreOverrideCursor();
   }
 }

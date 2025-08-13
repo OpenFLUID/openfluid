@@ -57,8 +57,11 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/utils/Process.hpp>
 
 
 namespace openfluid { namespace ui { namespace common {
@@ -242,6 +245,52 @@ inline QString createNewFile(QWidget* Parent, const QString& PathString)
     return FileToCreate;
   }
   return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline void openPath(std::string CurrentPath, bool IsRemote=false)
+{
+#if OPENFLUID_OS_ISWSL_FLAG == 10
+  std::string FullLocation = CurrentPath;
+  if (!IsRemote)
+  {
+    openfluid::utils::Process P("wslpath",{"-m", CurrentPath});
+    P.run();
+    const auto OutLines = P.stdOutLines();
+    CurrentPath = OutLines[0];
+    FullLocation = "file://"+CurrentPath;
+  }
+  openfluid::utils::Process PR("cmd.exe",{"/C", "start", FullLocation});
+  bool Success = PR.run();
+  if (!Success)
+  {
+    openfluid::utils::log::info("Path opening", "WSL context, path: "+CurrentPath);
+    openfluid::utils::log::info("Path opening", "status: "+std::to_string(Success));
+    for (const auto& L : PR.stdOutLines())
+    {
+      openfluid::utils::log::debug("Path opening", L);
+    }
+    for (const auto& L : PR.stdErrLines())
+    {
+      openfluid::utils::log::error("Path opening", L);
+    }
+  }
+#else
+  QUrl CurrentURL;
+  if (IsRemote)
+  {
+    CurrentURL = QUrl(QString::fromStdString(CurrentPath), QUrl::TolerantMode);
+  }
+  else
+  {
+    CurrentURL = QUrl::fromLocalFile(QString::fromStdString(CurrentPath));
+  }
+  QDesktopServices::openUrl(CurrentURL);
+#endif
 }
 
 

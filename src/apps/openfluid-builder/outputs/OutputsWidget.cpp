@@ -188,7 +188,7 @@ void OutputsWidget::tryToOpenFile(const QModelIndex& Index)
     else
     {
       QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-      QDesktopServices::openUrl(QUrl::fromLocalFile(SelectedFile));
+      openfluid::ui::common::openPath(SelectedFile.toStdString());
       QApplication::restoreOverrideCursor();
     }
   }
@@ -203,8 +203,7 @@ void OutputsWidget::tryToOpenFile(const QModelIndex& Index)
 void OutputsWidget::tryToExploreOutputDir()
 {
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  QDesktopServices::openUrl(QUrl::fromLocalFile(
-      QString(openfluid::base::RunContextManager::instance()->getOutputDir().c_str())));
+  openfluid::ui::common::openPath(openfluid::base::RunContextManager::instance()->getOutputDir().c_str());
   QApplication::restoreOverrideCursor();
 }
 
