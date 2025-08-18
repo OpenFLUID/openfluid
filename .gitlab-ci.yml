@@ -1,0 +1,15 @@
+stages:          # List of stages for jobs, and their order of execution
+  - test
+
+build-job:       # This job runs in the build stage, which runs first.
+  stage: test
+  before_script:
+    - apt update && apt install -y cmake build-essential lsb-release g++ 
+            libboost-all-dev libgdal-dev libcurl4-gnutls-dev
+            gnuplot p7zip-full graphviz
+  script:
+    - mkdir ./_build
+    - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
+    - make -j 2
+    - make stylecheck
+    - ctest -j 2 --output-on-failure
