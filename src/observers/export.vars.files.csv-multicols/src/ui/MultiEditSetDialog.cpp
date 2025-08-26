@@ -70,6 +70,11 @@ MultiEditSetDialog::MultiEditSetDialog(const QStringList& SetNames,
 
   ui->FormatComboBox->addItems(FormatNames);
   ui->SetNameEdit->setPlaceholderText(getPlaceholderRequired());
+#if (QT_VERSION_MAJOR < 6)
+  ui->SetNameEdit->setValidator(new QRegExpValidator(QRegExp("^[^.]*$"), this));
+#else
+  ui->SetNameEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^[^.]*$"), this));
+#endif
 
   connect(ui->SetNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->AddTripletButton,SIGNAL(clicked()),this,SLOT(addTriplet()));
