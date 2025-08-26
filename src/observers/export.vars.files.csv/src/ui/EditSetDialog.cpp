@@ -63,6 +63,11 @@ EditSetDialog::EditSetDialog(const QStringList& SetNames,
   ui->AllVariablesRadioButton->setChecked(true);
 
   ui->SetNameEdit->setPlaceholderText(getPlaceholderRequired());
+#if (QT_VERSION_MAJOR < 6)
+  ui->SetNameEdit->setValidator(new QRegExpValidator(QRegExp("^[^.]*$"), this));
+#else
+  ui->SetNameEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^[^.]*$"), this));
+#endif
 
   connect(ui->SetNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   connect(ui->UnitsClassComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(checkGlobal()));
