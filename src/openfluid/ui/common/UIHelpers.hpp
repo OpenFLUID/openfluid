@@ -254,7 +254,7 @@ inline QString createNewFile(QWidget* Parent, const QString& PathString)
 
 inline void openPath(std::string CurrentPath, bool IsRemote=false)
 {
-#if OPENFLUID_OS_ISWSL_FLAG == 10
+#if OPENFLUID_OS_ISWSL_FLAG == 1
   std::string FullLocation = CurrentPath;
   if (!IsRemote)
   {
