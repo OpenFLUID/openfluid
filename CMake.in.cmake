@@ -1,7 +1,8 @@
 #
 # Configuration file for CMakeLists.txt files
 #
-# Author : Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+# Authors : Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+#           Armel THÖNI <armel.thoni@inrae.fr>
 #
 # This file is included by the main CMakeLists.txt file, and defines variables
 # to configure the build and install

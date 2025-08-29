@@ -1,14 +1,26 @@
 
 INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR} ${CURL_INCLUDE_DIRS})
 
-# Hack for boost::process on Windows/MinGW only
+SET(BOOST_COMPONENTS )
+SET(BOOST_LINK_LIBRARIES Boost::boost)
+IF(Boost_VERSION_MINOR GREATER 85)
+  SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} process)
+  SET(BOOST_LINK_LIBRARIES ${BOOST_LINK_LIBRARIES} Boost::process)
+ENDIF()
+
+
 IF(MINGW)
-  FIND_PACKAGE(Boost REQUIRED filesystem)
+  SET(BOOST_COMPONENTS ${BOOST_COMPONENTS} filesystem system thread)
+  # Hack for boost::process on Windows/MinGW only
   IF(Boost_VERSION GREATER 107000)
     ADD_DEFINITIONS(-DBOOST_USE_WINDOWS_H -DWIN32_LEAN_AND_MEAN)
   ENDIF()
+  IF(Boost_VERSION_MINOR GREATER 85)
+    SET(BOOST_LINK_LIBRARIES ${BOOST_LINK_LIBRARIES} bcrypt)
+  ENDIF()
 ENDIF()
-
+FIND_PACKAGE(Boost REQUIRED ${BOOST_COMPONENTS})
+ADD_COMPILE_DEFINITIONS(Boost_VERSION_MINOR=${Boost_VERSION_MINOR})
 
 SET(OPENFLUID_UTILS_CPP GDALHelpers.cpp
                         Process.cpp
@@ -46,10 +58,9 @@ TARGET_LINK_LIBRARIES(openfluid-utils
                       openfluid-tools
                       ${GDAL_LIBRARIES}
                       ${CURL_LIBRARIES}
-                      Boost::boost 
+                      ${BOOST_LINK_LIBRARIES}
                       $<$<BOOL:${MINGW}>:Boost::filesystem> $<$<BOOL:${MINGW}>:ws2_32> # MinGW hack
                       )
-
 
 
 INSTALL(TARGETS openfluid-utils
