@@ -60,10 +60,12 @@ class MigrationSetupDialog : public QDialog
 
     Ui::MigrationSetupDialog* ui;
 
+    bool m_IsGit;
+
 
   public:
 
-    MigrationSetupDialog(QWidget* Parent = nullptr);
+    MigrationSetupDialog(QWidget* Parent = nullptr, bool IsGit=false);
 
     ~MigrationSetupDialog();
 

@@ -46,10 +46,16 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-MigrationSetupDialog::MigrationSetupDialog(QWidget* Parent):
-  QDialog(Parent), ui(new Ui::MigrationSetupDialog)
+MigrationSetupDialog::MigrationSetupDialog(QWidget* Parent, bool IsGit):
+  QDialog(Parent), ui(new Ui::MigrationSetupDialog), m_IsGit(IsGit)
 {
   ui->setupUi(this);
+
+  if (!m_IsGit)
+  {
+    ui->checkoutCheckbox->setChecked(false);
+    ui->checkoutCheckbox->setEnabled(false);
+  }
 }
 
 

@@ -280,7 +280,8 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
       return;
     }
 
-    MigrationSetupDialog MigrationSetup;
+    bool IsGit = GitUIProxy::isPathGitRepo(WarePath.toStdString());
+    MigrationSetupDialog MigrationSetup(nullptr, IsGit);
     bool Proceed = true;
     if (!MigrationSetup.exec())
     {
