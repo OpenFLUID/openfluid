@@ -468,10 +468,11 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
     }
   }
 
-  // 1st pass : search for simulator or observer
+  // 1st pass : search for simulator or observer, ignoring content in test folder
   for (const auto& FileObj : SrcFilesObjs)
   {
-    if (openfluid::waresdev::IsCppFile(FileObj))
+    if (openfluid::waresdev::IsCppFile(FileObj) && 
+        FileObj.toGeneric().find(m_SrcPathObj.fromThis("test").toGeneric()) == std::string::npos)
     {
       auto Content = openfluid::tools::Filesystem::readFile(FileObj);
       if (Info.WareType == openfluid::ware::WareType::UNDEFINED)
