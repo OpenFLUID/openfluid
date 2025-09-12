@@ -148,10 +148,12 @@ FUNCTION(OPENFLUID_ADD_TEST)
   ENDIF()
 
   #  log path
-  IF(_TEST_ENVVARS)
-    SET(_TEST_ENVVARS "${_TEST_ENVVARS}\;OPENFLUID_LOG_PATH=${OFBUILD_TESTS_OUTPUT_DATA_DIR}")
-  ELSE()
-    SET(_TEST_ENVVARS "OPENFLUID_LOG_PATH=${OFBUILD_TESTS_OUTPUT_DATA_DIR}")
+  IF (DEFINED OPENFLUID_LOG_PATH)
+    IF(_TEST_ENVVARS)
+      SET(_TEST_ENVVARS "${_TEST_ENVVARS}\;OPENFLUID_LOG_PATH=${OFBUILD_TESTS_OUTPUT_DATA_DIR}")
+    ELSE()
+      SET(_TEST_ENVVARS "OPENFLUID_LOG_PATH=${OFBUILD_TESTS_OUTPUT_DATA_DIR}")
+    ENDIF()
   ENDIF()
   
 
@@ -598,6 +600,43 @@ ENDFUNCTION()
 
 ###########################################################################
 
+FUNCTION(OPENFLUID_ADD_DATASETTEST _OPENFLUID_PATH _DATASET_PATH _METHOD _TESTPREFIX)
+  # Dataset comparison can use internal method or any script provided by the user.
+  # It can be set through OPENFLUID_COMPARE_TOOL variable with following precedence:
+  #   1) CMake variable (through `-DOPENFLUID_COMPARE_TOOL=foo` in cmake configure command)
+  #   2) Env variable (through `export OPENFLUID_COMPARE_TOOL=foo` in terminal)
+  #   3) None: will use internal comparison
+
+  SET(_TESTS_OUTPUT_DIR ${CMAKE_BINARY_DIR}/tests-output)
+  FILE(MAKE_DIRECTORY "${_TESTS_OUTPUT_DIR}")
+
+  GET_FILENAME_COMPONENT(_DATASET_NAME ${_DATASET_PATH} NAME_WLE)
+  IF("${_TESTPREFIX}" STREQUAL "")
+    SET(_TESTNAME "${_DATASET_NAME}")
+  ELSE()
+    SET(_TESTNAME "${_TESTPREFIX}-${_DATASET_NAME}")
+  ENDIF()
+  GET_FILENAME_COMPONENT(_DIRNAME ${_DATASET_PATH} DIRECTORY)
+
+  IF(${_METHOD} STREQUAL "custom_or_basic")
+    IF(NOT "${OPENFLUID_COMPARE_TOOL_CACHE}" STREQUAL "")
+      SET(_METHOD "${OPENFLUID_COMPARE_TOOL_CACHE}")
+      MESSAGE(STATUS "    using OPENFLUID_COMPARE_TOOL from CMake var: ${OPENFLUID_COMPARE_TOOL}")
+    ENDIF()
+  ENDIF()
+
+  # TOIMPL add option to activate automatic comparison with ref
+  OPENFLUID_ADD_TEST(NAME ${_TESTNAME}
+            COMMAND "${_OPENFLUID_PATH}" "run"
+                    "${_DATASET_PATH}"
+                    "${_TESTS_OUTPUT_DIR}/${_TESTNAME}.OUT"
+                    "-p" "${CMAKE_BINARY_DIR}"
+                    "-n" "${CMAKE_BINARY_DIR}"
+            POST_TEST COMPARE_DIRECTORIES "${_TESTS_OUTPUT_DIR}/${_TESTNAME}.OUT"
+                                          "${_DIRNAME}/${_DATASET_NAME}.REF"
+                                          "${_METHOD}")
+ENDFUNCTION()
+
 
 # Generates targets corresponding to provided test list or to any .IN folder in test folder if DISCOVER is active
 FUNCTION(OPENFLUID_ADD_WARETESTS)
@@ -616,21 +655,20 @@ FUNCTION(OPENFLUID_ADD_WARETESTS)
     ENDFOREACH()
   ENDIF()
 
-  SET(_TESTS_OUTPUT_DIR ${CMAKE_BINARY_DIR}/tests-output)
-  FILE(MAKE_DIRECTORY "${_TESTS_OUTPUT_DIR}")
-
   IF(_DATASETS)
     MESSAGE(STATUS "Adding simulation tests")
   ENDIF()
+
+  SET(_METHOD "custom_or_basic")
+  IF(NOT "${OPENFLUID_COMPARE_TOOL}" STREQUAL "")
+    SET(_METHOD "${OPENFLUID_COMPARE_TOOL}")
+    MESSAGE(STATUS "  (using OPENFLUID_COMPARE_TOOL from CMake var: ${OPENFLUID_COMPARE_TOOL})")
+  ENDIF()
+
   FOREACH(_CURRTEST ${_DATASETS})
-    GET_FILENAME_COMPONENT(_TESTNAME ${_CURRTEST} NAME)
-    ADD_TEST(NAME ${_CURRTEST}
-            COMMAND "${OpenFLUID_CMD_PROGRAM}" "run"
-                    "${CMAKE_CURRENT_SOURCE_DIR}/${_CURRTEST}"
-                    "${_TESTS_OUTPUT_DIR}/${_TESTNAME}.OUT"
-                    "-p" "${CMAKE_BINARY_DIR}"
-                    "-n" "${CMAKE_BINARY_DIR}")
     MESSAGE(STATUS "  ${_CURRTEST}")
+    OPENFLUID_ADD_DATASETTEST("${OpenFLUID_CMD_PROGRAM}" "${CMAKE_CURRENT_SOURCE_DIR}/${_CURRTEST}" "${_METHOD}"
+                              "dataset")
   ENDFOREACH()
 
 ENDFUNCTION()
