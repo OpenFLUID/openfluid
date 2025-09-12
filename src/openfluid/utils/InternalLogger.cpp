@@ -112,7 +112,7 @@ void LoggingSystem::setup(bool DefaultAsFallback, std::string LogPath, bool Verb
     // Creates path if necessary
     if (!openfluid::tools::FilesystemPath(openfluid::tools::FilesystemPath(m_LogPath).dirname()).makeDirectory())
     {
-      std::cout << "ERROR during initializing internal OpenFLUID logs at "+m_LogPath << ": can not create directory." << std::endl;
+      std::cout << "ERROR in OpenFLUID logs at "+m_LogPath << ": can not create directory." << std::endl;
     }
     if (Verbose || true)
     {
