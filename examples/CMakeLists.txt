@@ -14,8 +14,9 @@ OPENFLUID_ADD_TEST(NAME examples-Primitives
                               "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Primitives" 
                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Primitives"
                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Primitives/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Primitives/fullA_unitsA1_var1.csv"
-                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Primitives/fullB_unitsB2_var5.csv"
+                              COMPARE_DIRECTORIES "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Primitives" 
+                                                  "${CMAKE_CURRENT_SOURCE_DIR}/projects/Primitives/REF"
+                                                  "basic_output_check"
                    )
 
 OPENFLUID_ADD_TEST(NAME examples-Manhattan 
@@ -25,10 +26,13 @@ OPENFLUID_ADD_TEST(NAME examples-Manhattan
                               "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Manhattan" 
                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Manhattan"
                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Manhattan/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Manhattan/manhattan-anim.kmz"
                               CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Manhattan/examples.RU11.stock.pdf"
+                              COMPARE_DIRECTORIES "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Manhattan" 
+                                                  "${CMAKE_CURRENT_SOURCE_DIR}/projects/Manhattan/REF"
+                                                  "basic_output_check"
                    )
 
+# COMPARE_DIRECTORIES not done since random seed not fixed for pedagogical reasons
 OPENFLUID_ADD_TEST(NAME examples-Firespread 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                               "run"
@@ -36,7 +40,7 @@ OPENFLUID_ADD_TEST(NAME examples-Firespread
                               "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread"
                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Firespread"
                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread/firespread-anim.kmz"                                                            
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread/firespread-anim.kmz"
                    )
 
 OPENFLUID_ADD_TEST(NAME examples-MhydasRoujan
@@ -45,7 +49,10 @@ OPENFLUID_ADD_TEST(NAME examples-MhydasRoujan
                               "${CMAKE_CURRENT_SOURCE_DIR}/projects/MHYDAS_Roujan/IN"
                               "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan"
                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MHYDAS_Roujan"
-                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan/openfluid-messages.log"                                                           
+                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan/openfluid-messages.log"
+                              COMPARE_DIRECTORIES "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan" 
+                                                  "${CMAKE_CURRENT_SOURCE_DIR}/projects/MHYDAS_Roujan/REF"
+                                                  "basic_output_check"
                    )  
 
 
