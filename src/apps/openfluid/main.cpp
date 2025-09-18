@@ -217,9 +217,10 @@ int main(int argc, char **argv)
   ImportWareCmd.addOptions({{"parent-path","p","parent path where to create the ware sources",true},
                             {"git","","git URL"},
                             {"hub","","hub URL"},
-                            {"id","i","ID of the ware sources to create"},
-                            {"type","t","type of the ware sources to create (simulator|observer|builderext), required "
-                            "when importing from hub"}});
+                            {"id","i","ID of the ware sources to import", true},
+                            {"type","t","type of the ware sources to import (simulator|observer|builderext), "
+                                        "(required when importing from hub)", true}
+                            });
   Parser.addCommand(ImportWareCmd, &WareSection);
 
   // ---
