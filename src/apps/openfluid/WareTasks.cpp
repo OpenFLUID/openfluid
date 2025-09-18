@@ -38,6 +38,7 @@
 */
 
 
+#include <algorithm>
 #include <memory>
 
 #include <openfluid/ware/TypeDefs.hpp>
@@ -223,7 +224,12 @@ int WareTasks::processImport() const
   std::string ID = m_Cmd.getOptionValue("id");
   std::string SourceType = "hub";
   std::string SourceURL = "";
+  std::string WareType = "";
 
+  if (m_Cmd.isOptionActive("hub") && m_Cmd.isOptionActive("git"))
+  {
+    return error("extra remote URL: --git=<url> or --hub[=<url>] must be provided, not both");
+  }
   if (m_Cmd.isOptionActive("git"))
   {
     SourceType = "git";
@@ -254,12 +260,22 @@ int WareTasks::processImport() const
       return error("missing ware type");
     }
     SourceURL = m_Cmd.getOptionValue("hub");
+    WareType = m_Cmd.getOptionValue("type");
+    std::vector<std::string> ValidWareTypes = {"simulator", "observer", "builderext"};
+    if(std::find(ValidWareTypes.begin(), ValidWareTypes.end(), WareType) == ValidWareTypes.end())
+    {
+      return error("invalid ware type");
+    }
   }
   else
   {
     return error("remote URL missing: --git=<url> or --hub[=<url>] must be provided");
   }
-  return openfluid::waresdev::cloneWare(SourceURL, SourceType, ParentPath, ID, m_Cmd.getOptionValue("type"));
+  if (openfluid::waresdev::cloneWare(SourceURL, SourceType, ParentPath, ID, WareType) != 0)
+  {
+    return error("Error while cloning ware");
+  }
+  return 0;
 }
 
 
