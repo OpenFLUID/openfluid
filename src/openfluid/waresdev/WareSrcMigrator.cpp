@@ -1040,9 +1040,9 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
         }
         if (!IsDefault)
         {
-          CustomContentLines.push_back(CMakeContentLines[i]);
           if (CMakeContentLines[i].size() > 0)
           {
+            CustomContentLines.push_back(CMakeContentLines[i]);
             IsCustomCMakeContent = true;
           }
         }
@@ -1051,7 +1051,7 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
       {
         ConfigLines.push_back("");
         ConfigLines.push_back("# Custom content from main CMakeLists.txt");
-        ConfigLines.insert(ConfigLines.end(), CustomContentLines.begin(), CustomContentLines.end() );
+        ConfigLines.insert(ConfigLines.end(), CustomContentLines.begin(), CustomContentLines.end());
       }
 
       const auto ConfigContent = openfluid::tools::join(ConfigLines," ");
