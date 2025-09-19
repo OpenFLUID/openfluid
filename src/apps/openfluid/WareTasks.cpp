@@ -110,6 +110,11 @@ int WareTasks::processCreate() const
 
   if (m_Cmd.isOptionActive("from"))
   {
+    const std::string ReferenceWarePath = m_Cmd.getOptionValue("from");
+    if (!openfluid::tools::Path(ReferenceWarePath).exists())
+    {
+      return error("invalid reference ware path");
+    }
     const std::string WarePath = openfluid::waresdev::WareSrcFactory::duplicateWare(ID, ParentPath, 
                                                        m_Cmd.getOptionValue("from"), 
                                                        m_Cmd.isOptionActive("accept-all"));
