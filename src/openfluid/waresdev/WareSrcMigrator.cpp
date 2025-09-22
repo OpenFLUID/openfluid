@@ -1040,10 +1040,14 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
         }
         if (!IsDefault)
         {
-          if (CMakeContentLines[i].size() > 0)
+          const auto& CMakeContentLine = CMakeContentLines[i];
+          if ((!CMakeContentLine.empty()) || 
+              (CMakeContentLine.empty() && !CustomContentLines.empty() && !CustomContentLines.back().empty())) 
           {
-            CustomContentLines.push_back(CMakeContentLines[i]);
-            IsCustomCMakeContent = true;
+              CustomContentLines.push_back(CMakeContentLine);
+              if (!CMakeContentLine.empty()) {
+                  IsCustomCMakeContent = true;
+              }
           }
         }
       }
@@ -1146,6 +1150,16 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
   auto [TplData,CMakePrepend] = processCMakeFiles(Info);
 
 
+  // ==== process CMakelist from existing tests directory
+  auto CMakeFileTestsObj = m_SrcPathObj.fromThis({openfluid::config::WARESDEV_TESTS_DIR,
+                                                  openfluid::config::WARESDEV_SRC_CMAKESTDFILE});
+  std::string CMakeFileTestsPrepend = "";                                          
+  if (CMakeFileTestsObj.isFile())
+  {
+    CMakeFileTestsPrepend = openfluid::tools::Filesystem::readFile(CMakeFileTestsObj);
+  }
+
+
   // ====  create new structure using signature and CMake info
   
   mp_Listener->onCreateStructureStart();
@@ -1197,6 +1211,17 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
   auto NewCMakeContent = openfluid::tools::Filesystem::readFile(CMakeFileObj);
   openfluid::tools::Filesystem::writeFile(CMakePrepend+NewCMakeContent,CMakeFileObj);
 
+  // ==== update CMakeLists.txt file in tests directory
+
+  if (!CMakeFileTestsPrepend.empty())
+  {
+    mp_Listener->stageMessage("applying CMake configuration for tests");
+    auto CMakeFileTestsObj = m_DestPathObj.fromThis({openfluid::config::WARESDEV_TESTS_DIR,
+                                                     openfluid::config::WARESDEV_SRC_CMAKESTDFILE});
+    auto NewCMakeTestsContent = openfluid::tools::Filesystem::readFile(CMakeFileTestsObj);
+    openfluid::tools::Filesystem::writeFile(CMakeFileTestsPrepend+NewCMakeTestsContent,CMakeFileTestsObj);
+  }
+  
 
   // ==== clean any C++ files in src directory
 
