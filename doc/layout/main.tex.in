@@ -113,6 +113,7 @@
 \chapter{\-Creation of a simulator}\label{dev_createsim}\hypertarget{dev_createsim}{}\input{dev_createsim}
 \chapter{\-Declaration of the simulator signature}\label{dev_signature}\hypertarget{dev_signature}{}\input{dev_signature}
 \chapter{\-Development of the simulator source code}\label{dev_srccode}\hypertarget{dev_srccode}{}\input{dev_srccode}
+\chapter{\-Test a simulator}\label{dev_testsim}\hypertarget{dev_testsim}{}\input{dev_testsim}
 \chapter{\-Handling code redundancy}\label{dev_fragment}\hypertarget{dev_fragment}{}\input{dev_fragment}
 \chapter{\-Documenting simulators}\label{dev_sim2doc}\hypertarget{dev_sim2doc}{}\input{dev_sim2doc}
 
