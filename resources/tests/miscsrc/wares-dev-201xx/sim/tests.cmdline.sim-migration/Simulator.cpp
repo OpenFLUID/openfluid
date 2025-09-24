@@ -51,6 +51,11 @@
 // =====================================================================
 
 
+// [SKIP-2.2]>-------
+// TO BE SKIPPED A
+// -------<[SKIP-2.2]
+
+
 BEGIN_SIMULATOR_SIGNATURE("tests.cmdline.sim-migration")
 
   // Informations
@@ -114,7 +119,9 @@ class Simulator : public openfluid::ware::PluggableSimulator
     ~Simulator()
     {
   
-  
+      // [SKIP-2.2]>-------
+      // TO BE SKIPPED B
+      // -------<[SKIP-2.2]
     }
   
   
