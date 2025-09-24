@@ -1239,13 +1239,37 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
       FObj.removeFile();
     }
   }
-
-  mp_Listener->onCreateStructureEnd(openfluid::base::Listener::Status::OK_STATUS);
-
+  
 
   // ==== dispatch existing files
 
   dispatchExistingFiles(Info);
+
+  
+  // ==== remove skippable blocks
+  
+  mp_Listener->stageMessage("removing blocks to be skipped in 2.2");
+  
+  for (const auto& E : std::filesystem::recursive_directory_iterator{m_DestPathObj.stdPath()})
+  {
+    auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
+    auto FileContent = openfluid::tools::Filesystem::readFile(FileObj);
+      
+    auto Modified = false;
+    const std::regex re(R"([#/]* \[SKIP-2\.2]>-------[\S\s]*?<\[SKIP-2\.2])");
+    while (std::regex_search(FileContent, re)) {
+        FileContent = std::regex_replace(FileContent, re, "");
+        Modified = true;
+    }
+
+    if (Modified)
+    {
+      openfluid::tools::Filesystem::writeFile(FileContent, FileObj);
+    }
+  }
+
+  mp_Listener->onCreateStructureEnd(openfluid::base::Listener::Status::OK_STATUS);
+
 }
 
 
