@@ -114,7 +114,7 @@ void LoggingSystem::setup(bool DefaultAsFallback, std::string LogPath, bool Verb
     {
       std::cout << "ERROR in OpenFLUID logs at "+m_LogPath << ": can not create directory." << std::endl;
     }
-    if (Verbose || true)
+    if (Verbose)
     {
       std::cout << "Initializing internal OpenFLUID logs at: "+m_LogPath << std::endl;
     }
