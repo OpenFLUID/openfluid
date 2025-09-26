@@ -115,8 +115,11 @@ FUNCTION(EXECUTE_COMMAND CMD)
         FOREACH(_SUBPATH ${_SUBPATHS})
           GET_FILENAME_COMPONENT(_FILEEXT ${_SUBPATH} LAST_EXT)
           GET_FILENAME_COMPONENT(_FILENAME ${_SUBPATH} NAME)
-          IF (NOT ${_FILEEXT} STREQUAL ".log" AND NOT ${_FILEEXT} STREQUAL ".pdf" AND NOT ${_FILEEXT} STREQUAL ".kmz"
-              AND NOT ${_FILENAME} STREQUAL "script.gnuplot") #TOIMPl check format from any other builtin observers
+          IF (${_FILEEXT} STREQUAL ".pdf" OR ${_FILEEXT} STREQUAL ".kmz")
+            MESSAGE(STATUS "Skipping comparison of '${_FILENAME}' (binary)")
+          ELSEIF (${_FILEEXT} STREQUAL ".log" OR ${_FILENAME} STREQUAL "script.gnuplot") #TOIMPl check format from any other builtin observers
+            MESSAGE(STATUS "Skipping comparison of '${_FILENAME}' (timestamped file)")
+          ELSE()
             GET_FILENAME_COMPONENT(_FILENAME ${_SUBPATH} NAME)
             EXECUTE_COMMAND("CHECK_FILE_IDENTICAL" "${ARGV1}/" "${ARGV2}/" "${_SUBPATH}")
           ENDIF()
