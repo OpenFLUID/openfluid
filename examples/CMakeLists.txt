@@ -32,7 +32,6 @@ OPENFLUID_ADD_TEST(NAME examples-Manhattan
                                                   "basic_output_check"
                    )
 
-# COMPARE_DIRECTORIES not done since random seed not fixed for pedagogical reasons
 OPENFLUID_ADD_TEST(NAME examples-Firespread 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                               "run"
@@ -41,6 +40,19 @@ OPENFLUID_ADD_TEST(NAME examples-Firespread
                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Firespread"
                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread/openfluid-messages.log"
                               CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread/firespread-anim.kmz"
+                   )
+
+OPENFLUID_ADD_TEST(NAME examples-Firespread-seeded
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                              "run"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/projects/Firespread/IN_seeded"
+                              "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread_seeded"
+                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Firespread_seeded"
+                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread_seeded/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread_seeded/firespread-anim.kmz"
+                              COMPARE_DIRECTORIES "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread_seeded" 
+                                                  "${CMAKE_CURRENT_SOURCE_DIR}/projects/Firespread/REF_seeded"
+                                                  "basic_output_check"
                    )
 
 OPENFLUID_ADD_TEST(NAME examples-MhydasRoujan
