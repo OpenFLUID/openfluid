@@ -56,19 +56,19 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
 
   switch (Method)
   {
-    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED:
+    case openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED:
       setFixedInfo();
       break;
-    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM:
+    case openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM:
       setRandomInfo();
       break;
-    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP:
+    case openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP:
       setInterpolationInfo();
       break;
-    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT:
+    case openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT:
       setInjectionInfo();
       break;
-    case openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECTMULTICOL:
+    case openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL:
       setInjectionMulticolInfo();
       break;
     default:
@@ -180,10 +180,12 @@ void GeneratorSignature::setInjectionInfo()
   Name = "Values from file injection";
   Description = "Generates an injected value -no time interpolation- from given data series";
 
-
-  HandledData.UsedParams.push_back(openfluid::ware::SignatureDataItem("thresholdmin","Threshold min value", "-"));
-
-  HandledData.UsedParams.push_back(openfluid::ware::SignatureDataItem("thresholdmax","Threshold max value", "-"));
+  if ((VariableType == openfluid::core::Value::Type::INTEGER) || (VariableType == openfluid::core::Value::Type::DOUBLE))
+  {
+    HandledData.UsedParams.push_back(openfluid::ware::SignatureDataItem("thresholdmin","Threshold min value", "-"));
+    
+    HandledData.UsedParams.push_back(openfluid::ware::SignatureDataItem("thresholdmax","Threshold max value", "-"));
+  }
 
   HandledData.RequiredParams.push_back(
       openfluid::ware::SignatureDataItem("sources","Data sources filename for the value to produce","-"));

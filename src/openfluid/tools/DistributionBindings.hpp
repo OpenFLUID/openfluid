@@ -44,6 +44,10 @@
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/StringValue.hpp>
+#include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -218,11 +222,12 @@ class GenericDistributionBindings
 // =====================================================================
 
 
-class OPENFLUID_API DistributionBindings : public GenericDistributionBindings<double>
+template<typename DataType=double, typename TV=openfluid::core::DoubleValue>
+class SimpleDistributionBindings : public GenericDistributionBindings<DataType> 
 {
   public:
 
-    typedef std::map<openfluid::core::UnitID_t,ReaderNextValue<double>*> UnitIDReader_t;
+    typedef std::map<openfluid::core::UnitID_t,ReaderNextValue<DataType>*> UnitIDReader_t;
 
 
   protected:
@@ -231,14 +236,75 @@ class OPENFLUID_API DistributionBindings : public GenericDistributionBindings<do
 
   public:
 
-    DistributionBindings(const DistributionTables& DistriTables);
+    SimpleDistributionBindings(const DistributionTables& DistriTables) : GenericDistributionBindings<DataType>()
+    {
+      DistributionTables::SourceIDFile_t::const_iterator itb = DistriTables.SourcesTable.begin();
+      DistributionTables::SourceIDFile_t::const_iterator ite = DistriTables.SourcesTable.end();
+
+      for (DistributionTables::SourceIDFile_t::const_iterator it = itb; it != ite; ++it)
+      {
+        ReaderNextValue<DataType> RNV;
+        RNV.Reader = new ProgressiveChronFileReader<DataType>((*it).second);
+        this->m_ReadersNextValues.push_back(RNV);
+
+        DistributionTables::UnitIDSourceID_t::const_iterator itub = DistriTables.UnitsTable.begin();
+        DistributionTables::UnitIDSourceID_t::const_iterator itue = DistriTables.UnitsTable.end();
+
+        for (DistributionTables::UnitIDSourceID_t::const_iterator itu = itub; itu != itue; ++itu)
+        {
+          if ((*itu).second == (*it).first)
+          {
+            m_UnitIDReaders[(*itu).first] = &this->m_ReadersNextValues.back();
+          }
+        }
+      }
+    }
 
     bool getValue(const openfluid::core::UnitID_t& UnitID,
                   const openfluid::core::DateTime& DT,
-                  openfluid::core::DoubleValue& Value);
+                  TV& Value)
+    {
+      // if a value is available for DT : passes the value to caller, and returns true
+      // else returns false
+      typename UnitIDReader_t::iterator it = m_UnitIDReaders.find(UnitID);
+      if (it != m_UnitIDReaders.end() && (*it).second->isAvailable && (*it).second->NextValue.first == DT)
+      {
+        // Previous method for double, avoiding any precision issue from conversions: 
+        //    Value.set((*it).second->NextValue.second);
+        // Requires a dedicated function override at template level
+        openfluid::core::StringValue CurrentValueSV = openfluid::core::StringValue((*it).second->NextValue.second);
+        if (Value.getType() == openfluid::core::Value::STRING)
+        {
+          Value = CurrentValueSV;
+          return true;
+        }
+        else
+        {
+          return CurrentValueSV.convert(Value);
+        }
+      }
+      return false;
+    }
 
-    void displayBindings();
+    void displayBindings()
+    {
+      for (auto& IDReader : m_UnitIDReaders)
+      {
+        std::cout << IDReader.first << " -> " << IDReader.second->Reader->getFileName() << std::endl;
+      }
+    }
+};
 
+
+// =====================================================================
+// =====================================================================
+
+
+class OPENFLUID_API DistributionBindings : public SimpleDistributionBindings<double, openfluid::core::DoubleValue>
+{
+  public:
+    DistributionBindings(const DistributionTables& DistriTables) : SimpleDistributionBindings(DistriTables) {
+    }
 };
 
 

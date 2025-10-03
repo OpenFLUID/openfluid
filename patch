@@ -1,0 +1,90 @@
+diff --git a/resources/tests/datasets/OPENFLUID.IN.Generators/sourceDifferentTypes1.dat b/resources/tests/datasets/OPENFLUID.IN.Generators/sourceDifferentTypes1.dat
+new file mode 100644
+index 00000000..23278c06
+--- /dev/null
++++ b/resources/tests/datasets/OPENFLUID.IN.Generators/sourceDifferentTypes1.dat
+@@ -0,0 +1,7 @@
++1999-12-31T12:00:00 0
++1999-12-31T23:00:00 6.5
++2000-01-01T00:30:00 0
++2000-01-01T00:40:00 hello
++2000-01-01T01:00:00 1
++
++
+diff --git a/resources/tests/datasets/OPENFLUID.IN.Generators/sourceDifferentTypes2.dat b/resources/tests/datasets/OPENFLUID.IN.Generators/sourceDifferentTypes2.dat
+new file mode 100644
+index 00000000..9ec76780
+--- /dev/null
++++ b/resources/tests/datasets/OPENFLUID.IN.Generators/sourceDifferentTypes2.dat
+@@ -0,0 +1,7 @@
++1999-12-31T12:00:00 2
++1999-12-31T23:00:00 1
++2000-01-01T00:30:00 0
++2000-01-01T00:40:00 [1,2,3]
++2000-01-01T01:00:00 1
++
++
+diff --git a/resources/tests/datasets/OPENFLUID.IN.Generators/sourcesinject_different_types.xml b/resources/tests/datasets/OPENFLUID.IN.Generators/sourcesinject_different_types.xml
+new file mode 100644
+index 00000000..c68c9806
+--- /dev/null
++++ b/resources/tests/datasets/OPENFLUID.IN.Generators/sourcesinject_different_types.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" standalone="yes"?>
++<openfluid>
++  <datasources>
++    <filesource ID="1" file="sourceDifferentTypes1.dat" />
++    <filesource ID="2" file="sourceDifferentTypes2.dat" />
++  </datasources>
++</openfluid>
+diff --git a/src/openfluid/core/StringValue.cpp b/src/openfluid/core/StringValue.cpp
+index 38398c54..708b0074 100644
+--- a/src/openfluid/core/StringValue.cpp
++++ b/src/openfluid/core/StringValue.cpp
+@@ -81,7 +81,7 @@ StringValue::StringValue(int Val) :
+ 
+ 
+ StringValue::StringValue(double Val) :
+-  SimpleValue(), m_Value(openfluid::core::DoubleValue(Val).toString(15))
++  SimpleValue(), m_Value(openfluid::core::DoubleValue(Val).toString(17))
+ {
+ 
+ }
+diff --git a/src/openfluid/machine/tests/GeneratorFromFile_TEST.cpp b/src/openfluid/machine/tests/GeneratorFromFile_TEST.cpp
+index 1c456abd..f44447ce 100644
+--- a/src/openfluid/machine/tests/GeneratorFromFile_TEST.cpp
++++ b/src/openfluid/machine/tests/GeneratorFromFile_TEST.cpp
+@@ -210,6 +210,34 @@ BOOST_AUTO_TEST_CASE(check_inject)
+     BOOST_REQUIRE_CLOSE(TS.getLatestValue("TestUnits", 2, "tests.inject").value()->asMapValue().getDouble("3"), 18, 
+                                           0.00001);
+   }
++  {
++    // Multiple types in same sources
++    std::cout << "Checking injection of different types" << std::endl;
++    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT, 
++                                            {{"TestUnits","tests.inject"}},
++                                             openfluid::core::Value::BOOLEAN};
++    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinject_different_types.xml"}, 
++                                            {"distribution", "distri.dat"}};
++
++    TestSimulation TS;
++    TS.defaultSetup();
++    TS.addGenerator(Specs, Params);
++    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
++  }
++  {
++    // Wrong type
++    std::cout << "Checking injection of wrong type" << std::endl;
++    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT, 
++                                            {{"TestUnits","tests.inject"}},
++                                             openfluid::core::Value::BOOLEAN};
++    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinject_MAP.xml"}, 
++                                            {"distribution", "distri.dat"}};
++
++    TestSimulation TS;
++    TS.defaultSetup();
++    TS.addGenerator(Specs, Params);
++    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
++  }
+  }
+  

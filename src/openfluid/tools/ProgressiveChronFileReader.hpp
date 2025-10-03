@@ -117,6 +117,105 @@ inline bool OPENFLUID_API ProgressiveChronFileReader<double>::getNextValue(Chron
 
 
 template<>
+inline bool OPENFLUID_API ProgressiveChronFileReader<int>::getNextValue(ChronItem_t<int>& Value)
+{
+  std::vector<std::string> Values;
+  openfluid::core::DateTime DT;
+  int Val;
+
+  while (getNextLine(Values))
+  {
+    if (Values.size() == 2)
+    {
+      if (DT.setFromString(Values.front(),m_DateFormat) &&
+          openfluid::tools::toNumeric(Values.back(),Val))
+      {
+        Value.first = DT;
+        Value.second = Val;
+        return true;
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                  "wrong data in " + m_FileName);
+      }
+    }
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<>
+inline bool OPENFLUID_API ProgressiveChronFileReader<bool>::getNextValue(ChronItem_t<bool>& Value)
+{
+  std::vector<std::string> Values;
+  openfluid::core::DateTime DT;
+
+  while (getNextLine(Values))
+  {
+    if (Values.size() == 2)
+    {
+      if (DT.setFromString(Values.front(),m_DateFormat))
+      {
+        Value.first = DT;
+        Value.second = openfluid::core::stringToBoolean(Values.back());
+        return true;
+      }
+      else
+      {
+        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                                  "wrong data in " + m_FileName);
+      }
+    }
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<>
+inline bool OPENFLUID_API ProgressiveChronFileReader<std::string>::getNextValue(ChronItem_t<std::string>& Value)
+{
+  std::vector<std::string> Values;
+  openfluid::core::DateTime DT;
+
+  while (getNextLine(Values))
+  {
+    if (Values.size() == 1 || Values.size() == 2)
+    {
+      if (DT.setFromString(Values.front(), m_DateFormat))
+      {
+        Value.first = DT;
+        Value.second = (Values.size() == 2) ? Values.back() : "";
+        return true;
+      }
+    } 
+    else // FIXME warning: not same throw logic than line before, not applied to same if
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "wrong data in " + m_FileName);
+    }
+
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+template<>
 inline bool OPENFLUID_API ProgressiveChronFileReader<std::vector<std::string>>::getNextValue(
   ChronItem_t<std::vector<std::string>>& Value)
 {

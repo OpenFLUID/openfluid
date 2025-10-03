@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <model>
+        <generator varname="gas.atm.degree.mainwinddir" unitsclass="AU" type="integer" method="inject" enabled="true">
+            <param name="sources" value="AU-gas.atm.degree.mainwinddir-sources.xml"/>
+            <param name="distribution" value="AU-gas.atm.degree.mainwinddir-distribution.xml"/>
+        </generator>
+        <simulator ID="spatial.atm.grid.connection-dynamics" enabled="true">
+            <param name="seed" value="3"/>
+        </simulator>
+    </model>
+</openfluid>

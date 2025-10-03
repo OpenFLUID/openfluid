@@ -29,12 +29,13 @@ jobs:
             mingw-w64-x86_64-boost mingw-w64-x86_64-gdal mingw-w64-x86_64-curl-winssl
             mingw-w64-x86_64-qt5 mingw-w64-x86_64-openssl
             git p7zip mingw-w64-x86_64-gnuplot mingw-w64-x86_64-graphviz
+            mingw-w64-x86_64-make
       - name: Checkout of source code
         uses: actions/checkout@v3
       - name: Preparation
         run: mkdir ./_build
       - name: Configuration
-        run: cmake .. -G "MSYS Makefiles" -DOFBUILD_ENABLE_DOCS=OFF
+        run: cmake .. -G "MinGW Makefiles" -DOFBUILD_ENABLE_DOCS=OFF
         working-directory: ./_build
       - name: Build
         run: |

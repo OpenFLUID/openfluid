@@ -68,6 +68,36 @@
       <param name="distribution" value="distri.dat" />
     </generator>
 
+    <generator varname="tests.inject.int" unitsclass="TestUnits" vartype="integer" method="inject">
+      <param name="sources" value="sourcesinject_checktype.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.inject.bool" unitsclass="TestUnits" vartype="boolean" method="inject">
+      <param name="sources" value="sourcesinject_BOOL.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.inject.vector" unitsclass="TestUnits" vartype="vector" method="inject">
+      <param name="sources" value="sourcesinject_VECTOR.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.inject.matrix" unitsclass="TestUnits" vartype="matrix" method="inject">
+      <param name="sources" value="sourcesinject_MATRIX.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.inject.map" unitsclass="TestUnits" vartype="string" method="inject">
+      <param name="sources" value="sourcesinject_MAP.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.inject.map" unitsclass="TestUnits" vartype="map" method="inject">
+      <param name="sources" value="sourcesinject_MAP.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
     <generator varname="tests.injectasync" unitsclass="TestUnits" method="inject">
       <param name="sources" value="sourcesinjectasync.xml" />
       <param name="distribution" value="distri.dat" />
