@@ -23,12 +23,6 @@ jobs:
           gnuplot
       - name: Installation of pandoc
         uses: r-lib/actions/setup-pandoc@v2
-      - name: Installation of latex
-        uses: teatimeguest/setup-texlive-action@v3
-        with:
-          packages: |
-            scheme-full
-            bibtex
       - name: Checkout of source code
         uses: actions/checkout@v3
       - name: Preparation
@@ -36,7 +30,7 @@ jobs:
           echo "$(brew --prefix qt6)/bin" >> $GITHUB_PATH
           mkdir ./_build
       - name: Configuration
-        run: cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt6)/lib/cmake
+        run: cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt6)/lib/cmake -DOFBUILD_ENABLE_DOCS=OFF
         working-directory: ./_build
       - name: Build
         run: make -j 2

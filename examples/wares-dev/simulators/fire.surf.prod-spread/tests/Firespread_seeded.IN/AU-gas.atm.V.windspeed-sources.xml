@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <datasources>
+        <filesource ID="1" file="sources_files/source-AU-gas.atm.V.windspeed-1.dat"/>
+    </datasources>
+</openfluid>

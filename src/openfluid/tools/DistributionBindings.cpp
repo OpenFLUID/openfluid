@@ -39,77 +39,10 @@
 
 
 #include <openfluid/config.hpp>
-
 #include <openfluid/tools/DistributionBindings.hpp>
 
 
 namespace openfluid { namespace tools {
-
-
-DistributionBindings::DistributionBindings(const DistributionTables& DistriTables) : GenericDistributionBindings()
-{
-  {
-    DistributionTables::SourceIDFile_t::const_iterator itb = DistriTables.SourcesTable.begin();
-    DistributionTables::SourceIDFile_t::const_iterator ite = DistriTables.SourcesTable.end();
-
-    for (DistributionTables::SourceIDFile_t::const_iterator it = itb; it != ite; ++it)
-    {
-      ReaderNextValue<double> RNV;
-      RNV.Reader = new ProgressiveChronFileReader<double>((*it).second);
-      m_ReadersNextValues.push_back(RNV);
-
-      DistributionTables::UnitIDSourceID_t::const_iterator itub = DistriTables.UnitsTable.begin();
-      DistributionTables::UnitIDSourceID_t::const_iterator itue = DistriTables.UnitsTable.end();
-
-      for (DistributionTables::UnitIDSourceID_t::const_iterator itu = itub; itu != itue; ++itu)
-      {
-        if ((*itu).second == (*it).first)
-        {
-          m_UnitIDReaders[(*itu).first] = &m_ReadersNextValues.back();
-        }
-      }
-    }
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool DistributionBindings::getValue(const openfluid::core::UnitID_t& UnitID,
-                                    const openfluid::core::DateTime& DT,
-                                    openfluid::core::DoubleValue& Value)
-{
-  // if a value is available for DT : passes the value to caller, and returns true
-  // else returns false
-  typename UnitIDReader_t::iterator it = m_UnitIDReaders.find(UnitID);
-
-  if (it != m_UnitIDReaders.end() && (*it).second->isAvailable && (*it).second->NextValue.first == DT)
-  {
-    Value = (*it).second->NextValue.second;
-    return true;
-  }
-
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void DistributionBindings::displayBindings()
-{
-  for (auto& IDReader : m_UnitIDReaders)
-  {
-    std::cout << IDReader.first << " -> " << IDReader.second->Reader->getFileName() << std::endl;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
 
 
 MulticolDistributionBindings::MulticolDistributionBindings(const std::string& DataFile, 
