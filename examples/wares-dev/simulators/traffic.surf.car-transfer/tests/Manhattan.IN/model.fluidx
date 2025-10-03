@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <model>
+        <generator varname="examples.TLU.S.state" unitsclass="TLU" vartype="boolean" method="inject" enabled="true">
+            <param name="sources" value="TLU-examples.TLU.S.state-sources.xml"/>
+            <param name="distribution" value="TLU-examples.TLU.S.state-distribution.xml"/>
+        </generator>
+        <simulator ID="traffic.surf.car-transfer" enabled="true"/>
+    </model>
+</openfluid>

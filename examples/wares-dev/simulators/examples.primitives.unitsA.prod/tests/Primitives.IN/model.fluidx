@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <model>
+        <generator varname="var3" unitsclass="unitsA" vartype="double" method="inject">
+            <param name="sources" value="unitsA-var3-sources.xml"/>
+            <param name="distribution" value="unitsA-var3-distribution.xml"/>
+        </generator>
+
+        <simulator ID="examples.primitives.unitsA.prod" enabled="true"/>
+    </model>
+</openfluid>

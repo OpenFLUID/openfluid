@@ -442,7 +442,43 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
       }
       else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT)
       {
-        CurrentItem->Body.reset(new InjectGenerator());
+        if (GenSignature->VariableType == openfluid::core::Value::NULLL)
+        {
+          CurrentItem->Body.reset(new GenericInjectGenerator<std::string, openfluid::core::NullValue>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::INTEGER)
+        {
+          CurrentItem->Body.reset(new NumericalInjectGenerator<int, openfluid::core::IntegerValue>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::DOUBLE)
+        { 
+          CurrentItem->Body.reset(new InjectGenerator());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::BOOLEAN)
+        {
+          CurrentItem->Body.reset(new GenericInjectGenerator<bool, openfluid::core::BooleanValue>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::STRING)
+        {
+          CurrentItem->Body.reset(new GenericInjectGenerator<std::string, openfluid::core::StringValue>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::MAP)
+        {
+          CurrentItem->Body.reset(new GenericInjectGenerator<std::string, openfluid::core::MapValue>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::VECTOR)
+        {
+          CurrentItem->Body.reset(new GenericInjectGenerator<std::string, openfluid::core::VectorValue>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::MATRIX)
+        {
+          CurrentItem->Body.reset(new GenericInjectGenerator<std::string, openfluid::core::MatrixValue>());
+        }
+        else
+        {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+            "invalid generator value type in model instance");
+        }
       }
       else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
       {

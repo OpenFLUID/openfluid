@@ -49,7 +49,6 @@ OPENFLUID_ADD_TEST(NAME examples-Firespread-seeded
                               "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread_seeded"
                     PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Firespread_seeded"
                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread_seeded/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread_seeded/firespread-anim.kmz"
                               COMPARE_DIRECTORIES "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.Firespread_seeded" 
                                                   "${CMAKE_CURRENT_SOURCE_DIR}/projects/Firespread/REF_seeded"
                                                   "basic_output_check"

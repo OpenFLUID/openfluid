@@ -78,22 +78,6 @@
             <param name="terminal" value="pdfcairo size 11.7,8.3"/>
             <param name="tryopengnuplot" value="1"/>
         </observer>
-        <observer ID="export.vars.files.kml-anim" enabled="true">
-            <param name="kmzfilename" value="firespread-anim.kmz"/>
-            <param name="layers.anim.colorscale" value="BB222222;0.05;CC3E557D;0.2;CC0000A6;0.4;CC0000FF;0.5;CC0055FF;0.7;CC00AAFF;0.85;CC00F4FF;0.999;00000000"/>
-            <param name="layers.anim.linewidth" value="4"/>
-            <param name="layers.anim.sourcefile" value="shapefiles/mesh_orb_250_topo_wgs84.shp"/>
-            <param name="layers.anim.sourcetype" value="file"/>
-            <param name="layers.anim.unitsclass" value="LU"/>
-            <param name="layers.anim.varname" value="fire.surf.Q.stockratio"/>
-            <param name="layers.static.1.color" value="ffaaaaaa"/>
-            <param name="layers.static.1.linewidth" value="1"/>
-            <param name="layers.static.1.sourcefile" value="shapefiles/mesh_orb_250_topo_wgs84.shp"/>
-            <param name="layers.static.1.sourcetype" value="file"/>
-            <param name="layers.static.1.unitsclass" value="LU"/>
-            <param name="title" value="Fire spread over landscape"/>
-            <param name="tryopengearth" value="0"/>
-        </observer>
         <observer ID="export.vars.files.csv-multicols" enabled="true">
             <param name="format.auto.colsep" value=";"/>
             <param name="format.auto.date" value="ISO"/>

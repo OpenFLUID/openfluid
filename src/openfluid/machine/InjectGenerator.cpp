@@ -43,95 +43,7 @@
 
 namespace openfluid { namespace machine {
 
-
-InjectGenerator::InjectGenerator() : MonoGenerator(),
-  m_IsMin(false), m_IsMax(false), m_Min(0.0), m_Max(0.0),
-  m_SourcesFile(""),m_DistriFile(""), m_DistriBindings(nullptr)
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-InjectGenerator::~InjectGenerator()
-{
-  if (m_DistriBindings != nullptr)
-  {
-    delete m_DistriBindings;
-  }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void InjectGenerator::initParams(const openfluid::ware::WareParams_t& Params)
-{
-  if (!OPENFLUID_GetWareParameter(Params,"sources",m_SourcesFile))
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "missing sources value for generator");
-  }
-
-  if (!OPENFLUID_GetWareParameter(Params,"distribution",m_DistriFile))
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "missing distribution value for generator");
-  }
-
-
-  if (OPENFLUID_GetWareParameter(Params,"thresholdmin",m_Min))
-  {
-    m_IsMin = true;
-  }
-
-  if (OPENFLUID_GetWareParameter(Params,"thresholdmax",m_Max))
-  {
-    m_IsMax = true;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void InjectGenerator::prepareData()
-{
-  openfluid::tools::DistributionTables DistriTables;
-  std::string InputDir;
-
-  OPENFLUID_GetRunEnvironment("dir.input",InputDir);
-
-  DistriTables.build(InputDir,m_SourcesFile,m_DistriFile);
-  m_DistriBindings = new openfluid::tools::DistributionBindings(DistriTables);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void InjectGenerator::checkConsistency()
-{
-  if (m_IsMin && m_IsMax && m_Min > m_Max)
-  {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "threshold max value must be greater or equal "
-                                              "to threshold min value for generator");
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
+  
 openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
 {
   m_DistriBindings->advanceToTime(OPENFLUID_GetCurrentDate());
@@ -188,6 +100,7 @@ openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
 
 openfluid::base::SchedulingRequest InjectGenerator::runStep()
 {
+  // adapted to handle vector of double
   m_DistriBindings->advanceToTime(OPENFLUID_GetCurrentDate());
 
   openfluid::core::DoubleValue Value;
@@ -198,7 +111,6 @@ openfluid::base::SchedulingRequest InjectGenerator::runStep()
   {
     if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
-
       if (m_IsMax && Value > m_Max)
       {
         Value = m_Max;
@@ -207,7 +119,6 @@ openfluid::base::SchedulingRequest InjectGenerator::runStep()
       {
         Value = m_Min;
       }
-
       if (m_VarDimensions.isVector())
       {
         openfluid::core::VectorValue VV(m_VarDimensions.Rows,Value);

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <model>
+        <generator varname="gas.atm.V.windspeed" unitsclass="AU" type="integer" method="inject" enabled="true">
+            <param name="sources" value="AU-gas.atm.V.windspeed-sources.xml"/>
+            <param name="distribution" value="AU-gas.atm.V.windspeed-distribution.xml"/>
+        </generator>
+        <simulator ID="fire.surf.prod-spread" enabled="true">
+            <param name="ignitionunits" value="1237;387"/>
+        </simulator>
+    </model>
+</openfluid>

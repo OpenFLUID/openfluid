@@ -94,7 +94,7 @@ void Dimensions::applyDimensions(std::string SerializedVariableSize)
 {
   Rows = 1;
   Cols = 1;
-  
+
   if (SerializedVariableSize[0] != s_BeginningSymbol)
   {
     // compatibility with previous syntax S=1 <=> SCALAR, S>1 <=> VECTOR
