@@ -160,6 +160,13 @@ def clone_and_clean_repo(file_line, destination_path):
           print("  " + fragment_gitignore_file + " deleted")
 
 
+    # Manual filter of submodules to delete
+    remove_list = []#"tests/generator.file-injection.multi-type"]
+    for submodule in remove_list:
+      if(delete_folder(os.path.join(repo_path, submodule))):
+          print("  " + submodule + " deleted")
+
+
 # ===========================================================
 # ===========================================================
 

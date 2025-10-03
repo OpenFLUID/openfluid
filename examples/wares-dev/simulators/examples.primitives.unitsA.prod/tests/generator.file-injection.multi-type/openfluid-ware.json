@@ -1,0 +1,68 @@
+{
+  "id": "generator.file-injection.multi-type-${unitsclass}-${varname}",
+  "name": "",
+  "description": "",
+  "version": "",
+  "status": "experimental",
+  "authors": [],
+  "contacts": [],
+  "license": "",
+  "tags": [],
+  "links": [],
+  "issues": [],
+  "dependencies": {},
+  "simulator": {
+    "data": {
+      "parameters": {
+        "required": [
+          {
+            "name": "sources",
+            "description": "Sources file",
+            "siunit": "",
+            "type": ""
+          },
+          {
+            "name": "distribution",
+            "description": "Distribution file",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "used": []
+      },
+      "attributes": {
+        "required": [],
+        "used": [],
+        "produced": []
+      },
+      "variables": {
+        "required": [],
+        "used": [],
+        "produced": [
+          {
+            "name": "${varname}",
+            "unitsclass": "${unitsclass}",
+            "description": "",
+            "siunit": "",
+            "type": ""
+          }
+        ],
+        "updated": []
+      },
+      "extrafiles": {
+        "required": [],
+        "used": []
+      },
+      "events": []
+    },
+    "spatial_graph": {
+      "description": "",
+      "details": []
+    },
+    "scheduling": {
+      "type": "undefined",
+      "min": 0,
+      "max": 0
+    }
+  }
+}

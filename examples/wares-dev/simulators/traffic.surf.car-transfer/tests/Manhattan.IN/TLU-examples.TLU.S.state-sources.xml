@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <datasources>
+        <filesource ID="1" file="sources_files/source-TLU-examples.TLU.S.state-1.dat"/>
+        <filesource ID="2" file="sources_files/source-TLU-examples.TLU.S.state-2.dat"/>
+        <filesource ID="3" file="sources_files/source-TLU-examples.TLU.S.state-3.dat"/>
+        <filesource ID="4" file="sources_files/source-TLU-examples.TLU.S.state-4.dat"/>
+        <filesource ID="5" file="sources_files/source-TLU-examples.TLU.S.state-5.dat"/>
+        <filesource ID="6" file="sources_files/source-TLU-examples.TLU.S.state-6.dat"/>
+    </datasources>
+</openfluid>

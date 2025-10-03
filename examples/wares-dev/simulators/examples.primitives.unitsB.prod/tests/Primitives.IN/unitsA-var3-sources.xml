@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <datasources>
+        <filesource ID="1" file="sources_files/source-unitsA-var3-1.dat"/>
+        <filesource ID="2" file="sources_files/source-unitsA-var3-2.dat"/>
+        <filesource ID="3" file="sources_files/source-unitsA-var3-3.dat"/>
+        <filesource ID="5" file="sources_files/source-unitsA-var3-5.dat"/>
+        <filesource ID="6" file="sources_files/source-unitsA-var3-6.dat"/>
+        <filesource ID="7" file="sources_files/source-unitsA-var3-7.dat"/>
+        <filesource ID="8" file="sources_files/source-unitsA-var3-8.dat"/>
+        <filesource ID="9" file="sources_files/source-unitsA-var3-9.dat"/>
+    </datasources>
+</openfluid>

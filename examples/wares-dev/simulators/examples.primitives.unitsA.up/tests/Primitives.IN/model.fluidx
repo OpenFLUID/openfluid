@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid format="fluidx 4">
+    <model>
+        <simulator ID="generator.file-injection.multi-type-unitsA-var2" enabled="true" varname="var2" unitsclass="unitsA" type="DoubleValue">
+            <param name="sources" value="unitsA-var2-sources.xml"/>
+            <param name="distribution" value="unitsA-var2-distribution.xml"/>
+        </simulator>
+        <simulator ID="generator.file-injection.multi-type-unitsA-var11" enabled="true" varname="var11" unitsclass="unitsA" type="DoubleValue">
+            <param name="sources" value="unitsA-var11-sources.xml"/>
+            <param name="distribution" value="unitsA-var11-distribution.xml"/>
+        </simulator>
+        <simulator ID="generator.file-injection.multi-type-unitsA-var10" enabled="true" varname="var10" unitsclass="unitsA" type="DoubleValue">
+            <param name="sources" value="unitsA-var10-sources.xml"/>
+            <param name="distribution" value="unitsA-var10-distribution.xml"/>
+        </simulator>
+        <simulator ID="generator.file-injection.multi-type-unitsA-var1" enabled="true" varname="var1" unitsclass="unitsA" type="DoubleValue">
+            <param name="sources" value="unitsA-var1-sources.xml"/>
+            <param name="distribution" value="unitsA-var1-distribution.xml"/>
+        </simulator>
+        <simulator ID="examples.primitives.unitsA.up" enabled="true">
+            <param name="gmult" value="3"/>
+        </simulator>
+    </model>
+</openfluid>

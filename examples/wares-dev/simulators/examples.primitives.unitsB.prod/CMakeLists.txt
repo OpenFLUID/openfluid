@@ -5,6 +5,5 @@ PROJECT("examples.primitives.unitsB.prod")
 FIND_PACKAGE(OpenFLUID REQUIRED)
 
 ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(doc)
 ADD_SUBDIRECTORY(tests)
 

@@ -6,3 +6,6 @@ https://hub.openfluid-project.org/git-service/wares/observers/export.vars.files.
 https://hub.openfluid-project.org/git-service/wares/observers/export.vars.files.csv-multicols#openfluid-2.2 src/observers/export.vars.files.csv-multicols
 https://hub.openfluid-project.org/git-service/wares/observers/export.vars.files.kml-plot#openfluid-2.2 src/observers/export.vars.files.kml-plot
 https://hub.openfluid-project.org/git-service/wares/observers/export.vars.files.kml-anim#openfluid-2.2 src/observers/export.vars.files.kml-anim
+https://hub.openfluid-project.org/git-service/wares/simulators/examples.primitives.unitsA.prod#openfluid-2.2 examples/wares-dev/simulators/examples.primitives.unitsA.prod
+https://hub.openfluid-project.org/git-service/wares/simulators/examples.primitives.unitsA.up#openfluid-2.2 examples/wares-dev/simulators/examples.primitives.unitsA.up
+https://hub.openfluid-project.org/git-service/wares/simulators/examples.primitives.unitsB.prod#openfluid-2.2 examples/wares-dev/simulators/examples.primitives.unitsB.prod
