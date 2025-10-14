@@ -33,8 +33,11 @@
   @file DoubleValue.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
+
+#include <iomanip>
 
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/VectorValue.hpp>
@@ -89,6 +92,20 @@ bool DoubleValue::convert(Value& Val) const
   }
 
   return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string DoubleValue::toString(int Precision) const
+{
+  std::ostringstream OSS;
+  OSS << std::setprecision(Precision); 
+  writeToStream(OSS);
+
+  return OSS.str();
 }
 
 

@@ -81,7 +81,7 @@ StringValue::StringValue(int Val) :
 
 
 StringValue::StringValue(double Val) :
-  SimpleValue(), m_Value(openfluid::core::DoubleValue(Val).toString())
+  SimpleValue(), m_Value(openfluid::core::DoubleValue(Val).toString(17))
 {
 
 }

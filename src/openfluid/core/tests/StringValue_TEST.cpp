@@ -45,6 +45,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <iomanip>
+
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -99,8 +101,11 @@ BOOST_AUTO_TEST_CASE(check_string)
   BOOST_REQUIRE_EQUAL(openfluid::core::StringValue(false).get(),"false");
   BOOST_REQUIRE_EQUAL(openfluid::core::StringValue(true).get(),"true");
   double TmpDbl;
-  openfluid::core::StringValue(99.9).toDouble(TmpDbl);
-  BOOST_REQUIRE_CLOSE(TmpDbl,99.9,0.001);
+  openfluid::core::StringValue(9.8765432).toDouble(TmpDbl);
+  BOOST_REQUIRE_CLOSE(TmpDbl,9.8765432,0.0000001);
+  double TmpDbl2;
+  openfluid::core::StringValue("9.8765432").toDouble(TmpDbl2);
+  BOOST_REQUIRE_CLOSE(TmpDbl2,9.8765432,0.00000001);
 
   openfluid::core::StringValue Val3;
 
@@ -127,7 +132,7 @@ BOOST_AUTO_TEST_CASE(check_string)
   std::cout << NullV << std::endl;
 
   // to double
-  Val3.set("2.79");
+  Val3.set("1.2345678");
   BOOST_REQUIRE_EQUAL(Val3.guessTypeConversion(),openfluid::core::Value::DOUBLE);
   std::cout << Val3 << " -> ";
   BOOST_REQUIRE(!Val3.toNullValue(NullV));
@@ -137,8 +142,10 @@ BOOST_AUTO_TEST_CASE(check_string)
   BOOST_REQUIRE(Val3.toVectorValue(VectV));
   BOOST_REQUIRE(Val3.toMatrixValue(MatV));
   BOOST_REQUIRE(!Val3.toMapValue(MapV));
-  BOOST_REQUIRE_CLOSE(DoubleV.get(),2.79,0.000001);
+  BOOST_REQUIRE_CLOSE(DoubleV.get(),1.2345678,0.000001);
   BOOST_REQUIRE_EQUAL(VectV.getSize(),1);
+  BOOST_REQUIRE_CLOSE(VectV[0],1.2345678,0.000001);
+  
   std::cout << DoubleV << std::endl;
 
   // to int
