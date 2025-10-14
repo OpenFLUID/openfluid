@@ -62,17 +62,17 @@ BOOST_AUTO_TEST_CASE(check_double)
 
   std::cout << Val1 << std::endl;
   BOOST_REQUIRE(Val1.isDoubleValue());
-  BOOST_REQUIRE_CLOSE( Val1.get(), 0.0, 0.0001 );
+  BOOST_REQUIRE_CLOSE( Val1.get(), 0.0, 0.0000001 );
 
   BOOST_REQUIRE_EQUAL(Val1.isSimple(),true);
   BOOST_REQUIRE_EQUAL(Val1.isCompound(),false);
 
   Val1.set(17.3);
   std::cout << Val1 << std::endl;
-  BOOST_REQUIRE_CLOSE( Val1.get(), 17.3, 0.0001 );
+  BOOST_REQUIRE_CLOSE( Val1.get(), 17.3, 0.0000001 );
 
   openfluid::core::DoubleValue Val2 = Val1;
-  BOOST_REQUIRE_CLOSE( Val1.get(), Val2.get(), 0.0001 );
+  BOOST_REQUIRE_CLOSE( Val1.get(), Val2.get(), 0.0000001 );
 
   Val2.set(17.3*7.19/45.67);
   std::cout << Val2 << " " << Val2.get() << " " << Val2.toString() << std::endl;

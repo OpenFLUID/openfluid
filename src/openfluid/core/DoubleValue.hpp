@@ -165,6 +165,13 @@ class OPENFLUID_API DoubleValue : public SimpleValue
       writeToStream(OutStm);
     }
 
+    std::string toString() const
+    {
+      return Value::toString();
+    }
+
+    std::string toString(int Precision) const;
+
 };
 
 
