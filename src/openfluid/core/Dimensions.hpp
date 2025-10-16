@@ -85,8 +85,6 @@ class OPENFLUID_API Dimensions
     
     bool isMatrix() const;
 
-    // bool isMap() const;
-
     const std::string getSerializedVariableSize() const;
 };
 
