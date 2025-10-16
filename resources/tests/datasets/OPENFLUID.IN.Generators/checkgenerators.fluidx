@@ -88,7 +88,7 @@
       <param name="distribution" value="distri.dat" />
     </generator>
 
-    <generator varname="tests.inject.map" unitsclass="TestUnits" vartype="string" method="inject">
+    <generator varname="tests.inject.string" unitsclass="TestUnits" vartype="string" method="inject">
       <param name="sources" value="sourcesinject_MAP.xml" />
       <param name="distribution" value="distri.dat" />
     </generator>
