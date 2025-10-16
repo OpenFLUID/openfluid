@@ -140,12 +140,13 @@ AddGeneratorDialog::~AddGeneratorDialog()
 void AddGeneratorDialog::refresh()
 {
   if (m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED ||
-      m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM)
+      m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM || 
+      m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
   {
     ui->MatrixRadioButton->setEnabled(true);
     ui->IntegerRadioButton->setEnabled(true);
     ui->BooleanRadioButton->setEnabled(true);
-    ui->StringRadioButton->setEnabled(m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED);
+    ui->StringRadioButton->setEnabled(m_Method != openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM);
   }
   else
   {
