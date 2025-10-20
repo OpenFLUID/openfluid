@@ -85,7 +85,7 @@ void FragmentsImportWorker::setSubmoduleParameter(bool FragmentsAsSubmodule)
 
 bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& RootPath)
 {
-  if (m_Username.isEmpty() || m_Password.isEmpty() || RootPath.isEmpty())
+  if (RootPath.isEmpty())
   {
     emit error(tr("Missing mandatory information."));
     return false;
