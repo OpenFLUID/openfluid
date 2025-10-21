@@ -94,7 +94,7 @@ class OPENFLUID_API WareSrcExplorerModel: public QFileSystemModel
 
     QList<QString> m_GitDirties;
 
-    QFileSystemWatcher m_Watcher;
+    QFileSystemWatcher m_GitWatcher;
 
     void applyIconRecursively(const QString& CurrDir, const QString& IconPath);
 

@@ -57,6 +57,9 @@
     <file>icons/build_light.png</file>
     <file>icons/build_grayed.png</file>
     <file>icons/build_dark.png</file>
+    <file>icons/test_light.png</file>
+    <file>icons/test_grayed.png</file>
+    <file>icons/test_dark.png</file>
     <file>icons/generate-doc_light.png</file>
     <file>icons/generate-doc_grayed.png</file>
     <file>icons/generate-doc_dark.png</file>

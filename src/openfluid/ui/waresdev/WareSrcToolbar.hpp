@@ -80,6 +80,8 @@ class OPENFLUID_API WareSrcToolbar: public QToolBar
 
     const QMap<QString, QAction*> externalToolsActions();
 
+    void enableTestAction(bool Enabled);
+
 };
 
 

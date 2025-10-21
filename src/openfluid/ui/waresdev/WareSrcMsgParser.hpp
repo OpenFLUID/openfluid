@@ -70,7 +70,7 @@ class OPENFLUID_API WareSrcMsgParser
 
         enum class MessageType
         {
-          MSG_COMMAND, MSG_STANDARD, MSG_WARNING, MSG_ERROR,
+          MSG_COMMAND, MSG_STANDARD, MSG_WARNING, MSG_ERROR, MSG_SUCCESS
         };
 
         QByteArray m_OriginalMsgLine;
@@ -149,6 +149,29 @@ class OPENFLUID_API WareSrcMsgParserCMake: public WareSrcMsgParser
   public:
 
     WareSrcMsgParserCMake(const QString& AbsolutePath);
+
+    WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine,
+                                       WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class OPENFLUID_API WareSrcMsgParserCTest: public WareSrcMsgParser
+{
+  private:
+
+#if (QT_VERSION_MAJOR < 6)
+    QRegExp m_CMakeMsgParseRx = QRegExp("Failed|FAILED|failed|Error|error|Passed");
+#else
+    QRegularExpression m_CMakeMsgParseRx = QRegularExpression("Failed|FAILED|failed|Error|error|Passed");
+#endif
+
+    QDir m_AbsoluteDir;
+
+  public:
 
     WareSrcMsgParser::WareSrcMsg parse(const QString& MessageLine,
                                        WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType);

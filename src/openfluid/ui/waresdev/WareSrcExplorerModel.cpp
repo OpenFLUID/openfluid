@@ -62,8 +62,8 @@ WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
 
   connect(this, SIGNAL(directoryLoaded(const QString&)), this, SLOT(onDirectoryLoaded(const QString&)));
 
-  connect(&m_Watcher, SIGNAL(fileChanged(const QString&)), this, SLOT(onGitIndexFileChanged(const QString&)));
-  connect(&m_Watcher, SIGNAL(directoryChanged(const QString&)), this, SLOT(onGitDirObjectsChanged(const QString&)));
+  connect(&m_GitWatcher, SIGNAL(fileChanged(const QString&)), this, SLOT(onGitIndexFileChanged(const QString&)));
+  connect(&m_GitWatcher, SIGNAL(directoryChanged(const QString&)), this, SLOT(onGitDirObjectsChanged(const QString&)));
   //Warning: git refresh may interfere with active git operations
 
   setRootPath(Path);
@@ -110,9 +110,9 @@ void WareSrcExplorerModel::onDirectoryLoaded(const QString& Path)
           // we add the ware dir to the watcher right now, because in case of a cloned ware,
           // the ware directory is created with a temporary branch name, so display will have to be updated
           QString DirToWatch = QString("%1/.git/objects").arg(WarePath);
-          if (QFile(DirToWatch).exists() && !m_Watcher.directories().contains(DirToWatch))
+          if (QFile(DirToWatch).exists() && !m_GitWatcher.directories().contains(DirToWatch))
           {
-            m_Watcher.addPath(DirToWatch);
+            m_GitWatcher.addPath(DirToWatch);
           }
         }
       }
@@ -198,15 +198,15 @@ void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
     // watching git changes
 
     QString FileToWatch = QString("%1/.git/index").arg(WarePath);
-    if (QFile(FileToWatch).exists() && !m_Watcher.files().contains(FileToWatch))
+    if (QFile(FileToWatch).exists() && !m_GitWatcher.files().contains(FileToWatch))
     {
-      m_Watcher.addPath(FileToWatch);
+      m_GitWatcher.addPath(FileToWatch);
     }
 
     QString DirToWatch = QString("%1/.git/objects").arg(WarePath);
-    if (QFile(DirToWatch).exists() && !m_Watcher.directories().contains(DirToWatch))
+    if (QFile(DirToWatch).exists() && !m_GitWatcher.directories().contains(DirToWatch))
     {
-      m_Watcher.addPath(DirToWatch);
+      m_GitWatcher.addPath(DirToWatch);
     }
 
 

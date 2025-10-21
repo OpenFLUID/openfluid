@@ -186,6 +186,18 @@ void WareSrcActionsCollection::createActions()
 #endif
   }
 
+  // Test ware
+
+  m_Actions["TestWare"] = new openfluid::ui::common::DefaultAction(
+                                 openfluid::ui::common::getIcon("test","/ui/common",false),tr("Run tests"),this);
+  if (m_WithShortcuts)
+  {
+#if (QT_VERSION_MAJOR < 6)
+    m_Actions["TestWare"]->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+#else
+    m_Actions["TestWare"]->setShortcut(QKeySequence(Qt::CTRL| Qt::Key_T));
+#endif
+  }
 
   // Generate doc
   m_Actions["GenerateDoc"] = new openfluid::ui::common::DefaultAction(

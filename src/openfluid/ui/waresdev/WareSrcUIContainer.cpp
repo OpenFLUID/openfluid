@@ -45,6 +45,7 @@
 #include <openfluid/ui/waresdev/WareSrcUIContainer.hpp>
 #include <openfluid/ui/waresdev/OStreamMsgStream.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
+#include <openfluid/utils/CTestProxy.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -263,6 +264,43 @@ void WareSrcUIContainer::build()
     openfluid::utils::CMakeProxy::getBuildCommand(m_BuildDirPath,getBuildTarget(),m_BuildJobs);
 
   runCommand(Cmd, getBuildEnvironment(), WareSrcProcess::Type::BUILD);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcUIContainer::test()
+{
+  if (!openfluid::utils::CMakeProxy::isAvailable())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "CMake program not available");
+  }
+
+
+  mp_Stream->clear();
+  m_Messages.clear();
+
+
+  // run configure if build dir does not exist
+  if (!openfluid::tools::FilesystemPath(m_BuildDirPath).exists())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Build directory missing, ware needs to be built first");
+  }
+
+  delete mp_CurrentParser;
+  mp_CurrentParser = new WareSrcMsgParserCTest();
+
+
+  // === build and run command
+
+  openfluid::utils::Process::Command Cmd =
+    openfluid::utils::CTestProxy::getTestCommand(m_BuildDirPath,m_BuildJobs);
+
+  runCommand(Cmd, getBuildEnvironment(), WareSrcProcess::Type::TEST);
 }
 
 

@@ -93,6 +93,7 @@ ExtSet['rename-column'] = ['page-layout-header',False,True,False]
 
 BaseSet['configure'] = ['image','tune',True,True,True]
 BaseSet['build'] = ['action','build',True,True,True]
+ExtSet['test'] = ['flask-outline',True,True,True] # TOIMPL not working, repository not up to date?
 
 BaseSet['magic'] = ['image','flash_on',False,True,False]
 BaseSet['menu'] = ['navigation','menu',False,True,False]

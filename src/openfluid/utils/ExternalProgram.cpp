@@ -102,6 +102,16 @@ ExternalProgram ExternalProgram::getRegisteredProgram(RegisteredPrograms Prog,
     ProgNames << "cmake.exe";
 #endif
   }
+  else if (Prog == RegisteredPrograms::CTest)
+  {
+#if defined(OPENFLUID_OS_UNIX)
+    ProgNames << "ctest";
+#endif
+
+#if defined(OPENFLUID_OS_WINDOWS)
+    ProgNames << "ctest.exe";
+#endif
+  }
   else if (Prog == RegisteredPrograms::Zip)
   {
 #if defined(OPENFLUID_OS_UNIX)
