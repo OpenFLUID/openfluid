@@ -34,8 +34,9 @@
   @file DataHelpers.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 
-  @deprecated Since version 2.2.0. Include openfluid/tools/StringHelpers.hpp file instead
+  @deprecated Mostly deprecated since version 2.2.0. Include openfluid/tools/StringHelpers.hpp file instead 
  */
 
 
@@ -47,7 +48,10 @@
 #include <list>
 #include <sstream>
 #include <vector>
+#include <iomanip>
+#include <iostream>
 
+#include <openfluid/config.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/dllexport.hpp>
@@ -106,7 +110,7 @@ template<typename T>
   @param[in] ValueToConvert the value to convert
   @param[out] StrConverted the result of the conversion
   @return true if the conversion is correct
-  @deprecated Since version 2.2.0. Use std::to_string() instead
+  @deprecated Since version 2.2.0. Use std::to_string() instead except for floating types
 */
 template<typename T>
 [[deprecated]] inline bool convertValue(const T& ValueToConvert, std::string* StrConverted)
@@ -127,12 +131,35 @@ template<typename T>
 // =====================================================================
 
 
+inline bool convertValue(const double& ValueToConvert, std::string* StrConverted, 
+                         int Precision=openfluid::config::DEFAULT_INTERNAL_DOUBLE_PRECISION)
+{
+  std::ostringstream oss;
+  if (Precision >= 0)
+  {
+    oss << std::setprecision(Precision); 
+  }
+  bool IsOK = !(oss << ValueToConvert).fail();
+
+  if (IsOK)
+  {
+    (*StrConverted) = oss.str();
+  }
+
+  return IsOK;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 /**
   Converts a value to a string
   @param[in] ValueToConvert the value to convert
   @return the converted value
   @throws openfluid::base::FrameworkException Error in value conversion
-  @deprecated Since version 2.2.0. Use std::to_string() instead
+  @deprecated Since version 2.2.0. Use std::to_string() instead except for floating types
 */
 template<typename T>
 [[deprecated]] inline std::string convertValue(const T& ValueToConvert)
@@ -140,6 +167,24 @@ template<typename T>
   std::string Converted;
 
   if (convertValue(ValueToConvert,&Converted))
+  {
+    return Converted;
+  }
+
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Error in value conversion");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+inline std::string convertValue(const double& ValueToConvert, 
+                                int Precision=openfluid::config::DEFAULT_INTERNAL_DOUBLE_PRECISION)
+{
+  std::string Converted;
+
+  if (convertValue(ValueToConvert,&Converted, Precision))
   {
     return Converted;
   }

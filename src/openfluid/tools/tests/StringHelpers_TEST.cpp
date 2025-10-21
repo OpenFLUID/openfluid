@@ -34,6 +34,7 @@
   @file StringHelpers_TEST.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -46,6 +47,8 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/tools/StringHelpers.hpp>
+#include <openfluid/tools/DataHelpers.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 
 
 // =====================================================================
@@ -95,6 +98,7 @@ BOOST_AUTO_TEST_CASE(check_string_functions)
 
   {
     // --- string conversion to numeric
+    BOOST_REQUIRE_EQUAL(std::cout.precision(), 6);
 
     BOOST_REQUIRE_EQUAL(openfluid::tools::toNumeric<int>("1"),true);
     BOOST_REQUIRE_EQUAL(openfluid::tools::toNumeric<int>("0"),false);
@@ -109,7 +113,7 @@ BOOST_AUTO_TEST_CASE(check_string_functions)
 
     BOOST_REQUIRE_THROW(openfluid::tools::toNumeric<bool>("12.34"),openfluid::base::FrameworkException);
     BOOST_REQUIRE_THROW(openfluid::tools::toNumeric<int>("12.34"),openfluid::base::FrameworkException);
-    BOOST_REQUIRE_CLOSE(openfluid::tools::toNumeric<double>("12.34"),12.34,0.01);
+    BOOST_REQUIRE_CLOSE(openfluid::tools::toNumeric<double>("1.2345678"),1.2345678,0.000001);
     BOOST_REQUIRE_EQUAL(openfluid::tools::toNumeric<std::string>("12.34"),"12.34");
 
     BOOST_REQUIRE_THROW(openfluid::tools::toNumeric<bool>("abcdef"),openfluid::base::FrameworkException);
@@ -123,6 +127,22 @@ BOOST_AUTO_TEST_CASE(check_string_functions)
     BOOST_REQUIRE_CLOSE(Value,34.12,0.01);
 
     BOOST_REQUIRE(!openfluid::tools::toNumeric("34b.a12",Value));
+
+    double Va = 1.23456789;
+    double Vsc = 10e-9;
+    //double Vb = 1.23456782;
+    //BOOST_REQUIRE_NE(std::to_string(Va), std::to_string(Vb)); // FAILS std::to_string truncates the double
+    //BOOST_REQUIRE_EQUAL(std::to_string(Vsc), "1e-8");// FAILS, to_string uses fixed output format and returns 0.000000
+    //BOOST_REQUIRE_EQUAL(openfluid::tools::convertValue(Va), "1.23456789");// FAILS, convertValue generates many digits
+
+    // 2.2.0- behaviour
+    BOOST_REQUIRE_CLOSE(openfluid::tools::toNumeric<double>(openfluid::tools::convertValue(Va, -1)), 1.2345699999,
+                        0.00000001);
+    BOOST_REQUIRE_EQUAL(openfluid::tools::convertValue(Vsc, -1), "1e-08");
+
+    // with default precision of 17
+    BOOST_REQUIRE_CLOSE(openfluid::tools::toNumeric<double>(openfluid::tools::convertValue(Va)), Va, 0.00000001);
+    BOOST_REQUIRE_EQUAL(openfluid::tools::convertValue(Vsc), "1e-08");
   }
 
 
