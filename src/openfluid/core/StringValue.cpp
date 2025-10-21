@@ -34,6 +34,7 @@
   @file StringValue.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -43,6 +44,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/xpressive/xpressive.hpp>
 
+#include <openfluid/config.hpp>
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/BooleanValue.hpp>
@@ -81,7 +83,8 @@ StringValue::StringValue(int Val) :
 
 
 StringValue::StringValue(double Val) :
-  SimpleValue(), m_Value(openfluid::core::DoubleValue(Val).toString(17))
+  SimpleValue(), m_Value(openfluid::core::DoubleValue(Val).toString(
+    openfluid::config::DEFAULT_INTERNAL_DOUBLE_PRECISION))
 {
 
 }

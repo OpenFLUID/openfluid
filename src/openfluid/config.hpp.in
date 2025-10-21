@@ -253,6 +253,9 @@ const std::string CHAR_TAG_SEPARATOR = ";";
 const std::string CHAR_SEPARATOR_CSV_DEFAULT = ";";
 const std::string STR_SEPARATOR_TAG_TYPE = "::";
 
+// Data
+constexpr int DEFAULT_INTERNAL_DOUBLE_PRECISION = 17;
+
 
 } } //namespaces
 
