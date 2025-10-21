@@ -55,6 +55,8 @@
 #include <openfluid/ui/waresdev/WareExplorerDialog.hpp>
 #include <openfluid/ui/common/MessageFrame.hpp>
 #include <openfluid/ui/common/UIHelpers.hpp>
+#include <openfluid/tools/Filesystem.hpp>
+#include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/waresdev/WareBuildOptions.hpp>
 #include <openfluid/waresdev/WareSignatureSerializer.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
@@ -83,6 +85,16 @@ WareSrcWidget::WareSrcWidget(const openfluid::waresdev::WareSrcEnquirer::WarePat
   mp_WareSrcToolBar = new WareSrcToolbar(m_IsStandalone, mp_ActionsCollection, this);
 
   mp_WareSrcToolBar->setObjectName("WareToolbar");
+
+  // initial setup of test action
+  m_TestFolderPath = openfluid::tools::Path(wareSrcContainer().getAbsolutePath()).fromThis("tests").toGeneric();
+  updateTestAction();
+
+  // dynamic check of test action
+  QString DirToWatch = QString::fromStdString(wareSrcContainer().getAbsolutePath());
+  m_TestWatcher.addPath(DirToWatch);
+  connect(&m_TestWatcher, SIGNAL(fileChanged(const QString&)), this, SLOT(updateTestAction()));
+  connect(&m_TestWatcher, SIGNAL(directoryChanged(const QString&)), this, SLOT(updateTestAction()));
   
   if (m_IsStandalone)
   {
@@ -175,6 +187,7 @@ QToolButton {
 
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), this, SLOT(configure()));
   connect(mp_ActionsCollection->action("BuildWare"), SIGNAL(triggered()), this, SLOT(build()));
+  connect(mp_ActionsCollection->action("TestWare"), SIGNAL(triggered()), this, SLOT(test()));
   connect(mp_ActionsCollection->action("GenerateDoc"), SIGNAL(triggered()), this, SLOT(generateDoc()));
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this, SLOT(onCloseFileTabRequested(int)));
@@ -332,6 +345,22 @@ void WareSrcWidget::onOpenExternalToolRequested()
 void WareSrcWidget::onOperationRequested(const QString& OperationCode)
 {
   emit operationRequestedOnWare(OperationCode, QString::fromStdString(m_Container.getAbsolutePath()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::updateTestAction()
+{
+  bool Enabled = openfluid::tools::Filesystem::findFiles(m_TestFolderPath).size() + \
+                 openfluid::tools::Filesystem::findDirectories(m_TestFolderPath).size() > 1;
+  if (mp_WareSrcToolBar)
+  {
+    mp_WareSrcToolBar->enableTestAction(Enabled);
+  }
+  emit testStatusChanged(Enabled);
 }
 
 
@@ -660,6 +689,29 @@ void WareSrcWidget::build()
   catch (openfluid::base::FrameworkException& E )
   {
     QMessageBox::critical(nullptr, tr("Build error"), QString::fromStdString(E.getMessage()));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::test()
+
+{
+  ui->tabWidget->setCurrentIndex(m_TabIndexByName["Messages"]);
+
+  loadWareOptions();
+  clearEditorsMessages();
+
+  try
+  {
+    m_Container.test();
+  }
+  catch (openfluid::base::FrameworkException& E )
+  {
+    QMessageBox::critical(nullptr, tr("Test error"), QString::fromStdString(E.getMessage()));
   }
 }
 
@@ -1064,6 +1116,8 @@ void WareSrcWidget::checkModifiedStatus()
   }
 
   emit modifiedStatusChanged(IsCurrentEditorModified, IsFileOpen, IsWareModified);
+
+  updateTestAction();
 }
 
 

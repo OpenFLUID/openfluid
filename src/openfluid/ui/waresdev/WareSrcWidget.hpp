@@ -42,6 +42,7 @@
 
 
 #include <QWidget>
+#include <QFileSystemWatcher>
 
 #include <openfluid/waresdev/WareSrcEnquirer.hpp>
 #include <openfluid/ui/waresdev/WareStatusDashboardWidget.hpp>
@@ -117,6 +118,10 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     openfluid::ui::waresdev::TextEditMsgStream* mp_TextEditMsgStream;
 
+    std::string m_TestFolderPath;
+
+    QFileSystemWatcher m_TestWatcher;
+
     bool m_IsStandalone;
 
     WareSrcToolbar* mp_WareSrcToolBar = nullptr;
@@ -163,6 +168,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void modifiedStatusChanged(bool CurrentEditorModified, bool FileOpen, bool WareModified);
 
+    void testStatusChanged(bool Enabled);
+
     void openAPIDocRequested();
 
     void configureLaunched(openfluid::ware::WareType Type, const QString& ID);
@@ -176,6 +183,11 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void operationRequestedOnWare(const QString& OperationCode, const QString& WarePath);
 
 
+  private slots:
+
+    void updateTestAction();
+
+
   public slots:
 
     void setConfigureMode(openfluid::waresdev::WareSrcContainer::ConfigMode Mode);
@@ -187,6 +199,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void configure();
 
     void build();
+
+    void test();
 
     void generateDoc();
 

@@ -163,7 +163,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
   ui->SimExplorer->configure(QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::SIMULATOR)),true);
   ui->ObsExplorer->configure(QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::OBSERVER)),true);
   ui->ExtExplorer->configure(QString::fromStdString(Manager->getWaresPath(openfluid::ware::WareType::BUILDEREXT)),true);
-
+  updateTestButtonStatus(false);
   mp_WidgetsCollection = new openfluid::ui::waresdev::WareSrcWidgetCollection(ui->WareSrcCollection, false);
 
   mp_BuildStatusWidget = new WareBuildStatusWidget(this);
@@ -232,6 +232,7 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
 
   connect(mp_ActionsCollection->action("ConfigureWare"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(configure()));
   connect(mp_ActionsCollection->action("BuildWare"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(build()));
+  connect(mp_ActionsCollection->action("TestWare"), SIGNAL(triggered()), mp_WidgetsCollection, SLOT(test()));
 
   connect(mp_ActionsCollection->action("OpenWareOptions"), SIGNAL(triggered()),
           this, SLOT(displayBuildOptionsDialog()));
@@ -291,6 +292,8 @@ QToolButton::menu-button:pressed, QToolButton::menu-button:hover {
           this, SLOT(setCurrentPath(const QString&)));
   connect(mp_WidgetsCollection, SIGNAL(modifiedStatusChanged(bool, bool, bool)),
           this, SLOT(updateSaveButtonsStatus(bool, bool, bool)));
+  connect(mp_WidgetsCollection, SIGNAL(testStatusChanged(bool)),
+          this, SLOT(updateTestButtonStatus(bool)));
   connect(mp_WidgetsCollection, SIGNAL(editorSaved()),
           this, SLOT(updateExplorer()));
 
@@ -444,6 +447,7 @@ void MainWindow::createMenus()
   Menu = menuBar()->addMenu(tr("Build"));
   Menu->addAction(mp_ActionsCollection->action("ConfigureWare"));
   Menu->addAction(mp_ActionsCollection->action("BuildWare"));
+  Menu->addAction(mp_ActionsCollection->action("TestWare"));
   Menu->addAction(mp_ActionsCollection->action("GenerateDoc"));
 
   Menu->addSeparator();
@@ -719,6 +723,16 @@ void MainWindow::updateSaveButtonsStatus(bool FileModified, bool FileOpen, bool 
   mp_ActionsCollection->action("SaveFile")->setEnabled(FileModified);
   mp_ActionsCollection->action("SaveAsFile")->setEnabled(FileOpen);
   mp_ActionsCollection->action("SaveAllFiles")->setEnabled(WareModified);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::updateTestButtonStatus(bool Enabled)
+{
+  mp_ActionsCollection->action("TestWare")->setEnabled(Enabled);
 }
 
 

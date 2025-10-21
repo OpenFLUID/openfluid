@@ -62,7 +62,7 @@ class WareSrcProcess : public QProcess
 
   public:
 
-    enum class Type { NONE, CONFIGURE, BUILD};
+    enum class Type { NONE, CONFIGURE, BUILD, TEST};
 
     void setType(Type PT)
     { 
@@ -144,6 +144,8 @@ class OPENFLUID_API WareSrcUIContainer: public QObject,
     void configure();
 
     void build();
+
+    void test();
 
     void generateDoc();
 

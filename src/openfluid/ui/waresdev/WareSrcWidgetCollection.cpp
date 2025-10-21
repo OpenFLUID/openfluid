@@ -154,6 +154,9 @@ bool WareSrcWidgetCollection::openPath(const QString& Path)
       connect(Widget, SIGNAL(modifiedStatusChanged(bool, bool, bool)), 
               this, SIGNAL(modifiedStatusChanged(bool, bool, bool)));
 
+      connect(Widget, SIGNAL(testStatusChanged(bool)), 
+              this, SIGNAL(testStatusChanged(bool)));
+
       connect(Widget, SIGNAL(configureLaunched(openfluid::ware::WareType, const QString&)),
               this, SLOT(notifyConfigureLaunched(openfluid::ware::WareType, const QString&)));
 
@@ -832,6 +835,28 @@ void WareSrcWidgetCollection::build()
   else
   {
     QMessageBox::warning(nullptr, tr("Build"), tr("At least one ware must be open to perform this action"));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::test()
+{
+  if (WareSrcWidget* CurrentWare = currentWareWidget())
+  {
+    if (openfluid::base::PreferencesManager::instance()->isWaresdevAutomaticSaveBeforeBuild())
+    {
+      CurrentWare->saveAllFileTabs();
+    }
+
+    CurrentWare->test();
+  }
+  else
+  {
+    QMessageBox::warning(nullptr, tr("Test"), tr("At least one ware must be open to perform this action"));
   }
 }
 

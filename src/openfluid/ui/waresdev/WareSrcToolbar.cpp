@@ -88,6 +88,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
   addSeparator();
   addAction(mp_ActionsCollection->action("ConfigureWare"));
   addAction(mp_ActionsCollection->action("BuildWare"));
+  addAction(mp_ActionsCollection->action("TestWare"));
   addAction(mp_ActionsCollection->action("GenerateDoc"));
 
   if (m_IsIncluded)
@@ -118,6 +119,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded,
     SubMenu = Menu->addMenu(tr("Build"));
     SubMenu->addAction(mp_ActionsCollection->action("ConfigureWare"));
     SubMenu->addAction(mp_ActionsCollection->action("BuildWare"));
+    SubMenu->addAction(mp_ActionsCollection->action("TestWare"));
     SubMenu->addAction(mp_ActionsCollection->action("GenerateDoc"));
     SubMenu->addSeparator();
     SubMenu->addAction(mp_ActionsCollection->action("OpenWareOptions"));
@@ -183,5 +185,26 @@ const QMap<QString, QAction*> WareSrcToolbar::externalToolsActions()
   return m_ExternalToolsActions;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcToolbar::enableTestAction(bool Enabled)
+{
+  // if ware source contains tests
+  auto TestWidget = widgetForAction(mp_ActionsCollection->action("TestWare"));
+  TestWidget->setEnabled(Enabled);
+
+  //change tooltip when disabled to explain how to get info about test creation
+  if (Enabled)
+  {
+    TestWidget->setToolTip(tr("Runs ware tests"));
+  }
+  else
+  {
+    TestWidget->setToolTip(tr("tests folder is missing or empty, nothing to run."));
+  }
+}
 
 } } }  // namespaces
