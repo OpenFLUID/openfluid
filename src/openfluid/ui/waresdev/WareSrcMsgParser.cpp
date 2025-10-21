@@ -139,4 +139,48 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCMake::parse(const QString& Message
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCTest::parse(const QString& MessageLine,
+  WareSrcMsgParser::WareSrcMsg::MessageType DefaultMsgType)
+{
+  WareSrcMsgParser::WareSrcMsg Msg(MessageLine);
+
+  Msg.m_Type = DefaultMsgType;
+
+#if (QT_VERSION_MAJOR < 6)
+  if (m_CMakeMsgParseRx.indexIn(MessageLine) != -1)
+  {
+    if (MessageLine.contains("100%") || MessageLine.contains("Passed")) // not error in line "100% tests passed, 0 tests failed"
+    {
+      Msg.m_Type = WareSrcMsg::MessageType::MSG_SUCCESS;
+    } 
+    else
+    {
+      Msg.m_Type = WareSrcMsg::MessageType::MSG_ERROR;
+      //TODO select folder in default at click
+    }
+  }
+#else
+  const auto& Match = m_CMakeMsgParseRx.match(MessageLine);
+  if (Match.hasMatch())
+  {
+    if (MessageLine.contains("100%") || MessageLine.contains("Passed")) // not error in line "100% tests passed, 0 tests failed"
+    {
+      Msg.m_Type = WareSrcMsg::MessageType::MSG_SUCCESS;
+    } 
+    else
+    {
+      Msg.m_Type = WareSrcMsg::MessageType::MSG_ERROR;
+      //TODO select folder in default at click
+    }
+  }
+#endif
+
+  return Msg;
+}
+
+
 } } } // namespaces

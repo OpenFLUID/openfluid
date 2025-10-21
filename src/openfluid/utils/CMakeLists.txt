@@ -14,7 +14,7 @@ SET(OPENFLUID_UTILS_CPP GDALHelpers.cpp
                         Process.cpp
                         HTTPClient.cpp FluidHubAPIClient.cpp
                         ExternalProgram.cpp InternalLogger.cpp
-                        CMakeProxy.cpp GitProxy.cpp GrassGISProxy.cpp PandocProxy.cpp
+                        CMakeProxy.cpp CTestProxy.cpp GitProxy.cpp GrassGISProxy.cpp PandocProxy.cpp
                         )
 
 SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMachineListener.hpp
@@ -24,7 +24,7 @@ SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMach
                         Process.hpp
                         HTTPClient.hpp FluidHubAPIClient.hpp
                         ExternalProgram.hpp
-                        ProgramProxy.hpp CMakeProxy.hpp GitProxy.hpp GrassGISProxy.hpp PandocProxy.hpp
+                        ProgramProxy.hpp CMakeProxy.hpp CTestProxy.hpp GitProxy.hpp GrassGISProxy.hpp PandocProxy.hpp
                         CommandLineParser.hpp
                         InternalLogger.hpp
                         ReportingData.hpp
