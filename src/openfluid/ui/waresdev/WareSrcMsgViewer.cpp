@@ -35,6 +35,7 @@
  @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
+ @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -53,6 +54,8 @@ WareSrcMsgViewer::WareSrcMsgViewer(QWidget* Parent) :
   m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD].setForeground(QColor("black"));
   m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING].setForeground(QColor("orange"));
   m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_ERROR].setForeground(QColor("red"));
+  m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_SUCCESS].setForeground(QColor("green"));
+  m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_SUCCESS].setFontWeight(QFont::Bold);
 }
 
 
@@ -95,7 +98,98 @@ void WareSrcMsgViewer::writeMessage(const WareSrcMsgParser::WareSrcMsg& Msg)
     m_MessagesByBlockNumber.insert(Cursor.blockNumber(), Msg);
   }
 
-  Cursor.insertText(QString::fromUtf8(Msg.m_OriginalMsgLine));
+  const auto& MsgLine = QString::fromUtf8(Msg.m_OriginalMsgLine);
+
+  if (!MsgLine.contains('\033'))
+  {
+    Cursor.insertText(MsgLine);
+  }
+  else
+  {
+    bool LookingCode = false;
+    QString Code = "";
+
+    bool Flush = false;
+    QString CurrentChars = "";
+
+    for (const auto& C : MsgLine)
+    {
+      if (C == '\033')
+      {
+        LookingCode = true;
+        Flush = true;
+      }
+      else if (LookingCode)
+      {
+        if (C == 'm')
+        {
+          auto CharFormat = Cursor.charFormat();
+
+          bool ColorFound = false;
+          QColor ColorString;
+          bool WeightFound = false;
+          QFont::Weight Weight = QFont::Normal;
+          if (Code.contains("31"))
+          {
+            ColorString = QColor("red");
+            ColorFound = true;
+          }
+          else if (Code.contains("32"))
+          {
+            ColorString = QColor("green");
+            ColorFound = true;
+          }
+          else if (Code.contains("33"))
+          {
+            ColorString = QColor("orange");
+            ColorFound = true;
+          }
+          else if (Code.contains("39"))
+          {
+            ColorString = QColor("black");
+            ColorFound = true;
+          } 
+          else if (Code.contains("1"))
+          {
+            Weight = QFont::Bold;
+            WeightFound = true;
+          } 
+          else if(Code.isEmpty() || Code.contains("0"))
+          {
+            ColorString = QColor("black");
+            WeightFound = true;
+            ColorFound = true;
+          }
+          if (ColorFound)
+          {
+            CharFormat.setForeground(ColorString);
+          }
+          if (WeightFound)
+          {
+            CharFormat.setFontWeight(Weight);
+          }
+          Cursor.setCharFormat(CharFormat);
+          LookingCode = false;
+          Code = "";
+        }
+        else
+        {
+          Code += C;
+        }
+      }
+      else
+      {
+        CurrentChars += C;
+      }
+      if (Flush)
+      {
+        Cursor.insertText(CurrentChars);
+        Flush = false;
+        CurrentChars = "";
+      }
+    }
+    Cursor.insertText(CurrentChars);
+  }
 
   ensureCursorVisible();
 }
