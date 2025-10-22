@@ -150,10 +150,11 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCTest::parse(const QString& Message
 
   Msg.m_Type = DefaultMsgType;
 
+  // not error in line "100% tests passed, 0 tests failed"
 #if (QT_VERSION_MAJOR < 6)
   if (m_CMakeMsgParseRx.indexIn(MessageLine) != -1)
   {
-    if (MessageLine.contains("100%") || MessageLine.contains("Passed")) // not error in line "100% tests passed, 0 tests failed"
+    if (MessageLine.contains("100%") || MessageLine.contains("Passed"))
     {
       Msg.m_Type = WareSrcMsg::MessageType::MSG_SUCCESS;
     } 
@@ -167,7 +168,7 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCTest::parse(const QString& Message
   const auto& Match = m_CMakeMsgParseRx.match(MessageLine);
   if (Match.hasMatch())
   {
-    if (MessageLine.contains("100%") || MessageLine.contains("Passed")) // not error in line "100% tests passed, 0 tests failed"
+    if (MessageLine.contains("100%") || MessageLine.contains("Passed"))
     {
       Msg.m_Type = WareSrcMsg::MessageType::MSG_SUCCESS;
     } 
