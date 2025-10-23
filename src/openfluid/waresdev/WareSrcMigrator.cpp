@@ -1253,18 +1253,23 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
   for (const auto& E : std::filesystem::recursive_directory_iterator{m_DestPathObj.stdPath()})
   {
     auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
-    auto FileContent = openfluid::tools::Filesystem::readFile(FileObj);
-      
-    auto Modified = false;
-    const std::regex re(R"([#/]* \[SKIP-2\.2]>-------[\S\s]*?<\[SKIP-2\.2])");
-    while (std::regex_search(FileContent, re)) {
-        FileContent = std::regex_replace(FileContent, re, "");
-        Modified = true;
-    }
-
-    if (Modified)
+    
+    // ensure we exclude any _* folder
+    if (FileObj.toGeneric().find(m_DestPathObj.toGeneric()+"/_") == std::string::npos) 
     {
-      openfluid::tools::Filesystem::writeFile(FileContent, FileObj);
+      auto FileContent = openfluid::tools::Filesystem::readFile(FileObj);
+        
+      auto Modified = false;
+      const std::regex re(R"([#/]* \[SKIP-2\.2]>-------[\S\s]*?<\[SKIP-2\.2])");
+      while (std::regex_search(FileContent, re)) {
+          FileContent = std::regex_replace(FileContent, re, "");
+          Modified = true;
+      }
+  
+      if (Modified)
+      {
+        openfluid::tools::Filesystem::writeFile(FileContent, FileObj);
+      }
     }
   }
 
