@@ -1,3 +1,38 @@
+## 2.2.1
+  * Added ability to open internal observers code in Builder
+  * Added multiline indentation and comment in DevStudio
+  * Added capacity to duplicate a ware (CLI and DevStudio)
+  * Added script to fetch reference wares from dedicated repositories
+  * Added ability to inherit from InjectGenerator
+  * Added capacity to import a ware from CLI
+  * Added pragma once handling in stylecheck
+  * Added option to select all fields in spatial import builderext
+  * Added filter to forbid dot in set name field
+  * Added support of secundary wares in ware repository
+  * Added ability to compare dataset output to a reference
+  * Added env var and cmake var OPENFLUID_COMPARE_TOOL 
+  * Added skip block markup to ignore portions of code during ware migration
+    for custom OUT/REF comparison
+  * Added multitype to injection generator for all OpenFLUID types
+  * Added ware test integration in DevStudio
+  * Updated Windows Github action
+  * Updated test autodiscovery to automatically compare output to ref 
+    when available
+  * Updated internal datasets and simulators for integration test
+  * Updated cmake operations coloring in DevStudio to handle console symbols
+  * Fixed missing "data" case in ware signature
+  * Fixed wrong symbol check on signature attributes
+  * Fixed multicolumn CSV observer early delete segfault
+  * Fixed migration to keep custom content of main CMakeLists.txt
+  * Fixed accidental scroll in signature window comboboxes
+  * Fixed decimal point issue in attribute edit dialog (set to C locale)
+  * Fixed WSL path support
+  * Fixed dialog for migration when non versioned
+  * Fixed precision in string-related conversion functions 
+    (from 6 to 17 digits)
+  * Fixed fragment unauthenticated import
+
+
 ## 2.2.0
 
   * Added git user injection in gitaskpass
@@ -5,18 +40,24 @@
   * Added Qt6 compatibility, Qt5 compatibility kept but to be deprecated 
   * Added CLI commands for ware operations
   * Added multi-column generator
-  * Added capabilities about types and dimensions in single-column generator (integer, boolean, string)
-  * Added parameter structure to other wares than simulator (API get function, check in DevStudio)
+  * Added capabilities about types and dimensions in single-column generator 
+    (integer, boolean, string)
+  * Added parameter structure to other wares than simulator 
+    (API get function, check in DevStudio)
   * Added RNG seed as optional parameter for random generator
-  * Added constraints in data name characters (variables, unit class, attributes)
+  * Added constraints in data name characters 
+    (variables, unit class, attributes)
   * Added functions to filesystem API
   * Added template processing utility
   * Added wheel event to clickable label
   * Added build information to targets
-  * Added tools and workflows for automatic conversion of wares and ghosts to 2.2
-  * Added folder operations in DevStudio: git init, remove folder, remove fragment, add fragment
+  * Added tools and workflows for automatic conversion of wares and ghosts 
+    to 2.2
+  * Added folder operations in DevStudio: git init, remove folder, 
+    remove fragment, add fragment
   * Added code fragment feature to share code between wares
-  * Added search paths for code fragments (fragments subdir in ware, at workspace level, at userdata level)
+  * Added search paths for code fragments
+    (fragments subdir in ware, at workspace level, at userdata level)
   * Added internal simulation test structure
   * Added ware qualtiy checks
   * Added ware status board in DevStudio for info and actions
@@ -24,7 +65,8 @@
   * Added code tag types: HACK, TOIMPL
   * Added tinyxml as third party library
   * Added spatial display classes to API in ui/spatial
-  * Updated signature format from inline C++ macros to standalone interoperable json file
+  * Updated signature format from inline C++ macros 
+    to standalone interoperable json file
   * Updated ghost file from xml to json
   * Updated settings files format from conf to json (openfluid, project...)
   * Updated C++ standard from 14 to 17
@@ -33,13 +75,15 @@
   * Updated DevStudio UX by splitting main toolbar
   * Updated packaging stack for Windows to Msys2
   * Updated example Firespread model to use multi-column generator
-  * Replaced sim2doc by docalyze utility to handle LaTeX, markdown and Rmd (uses pandoc, pdflatex and bibtex) 
+  * Replaced sim2doc by docalyze utility to handle LaTeX, markdown and Rmd 
+    (uses pandoc, pdflatex and bibtex) 
   * Replaced CLI buddies by generic commands
   * Replaced rapidjson by nlohmannjson as third party library for json handling
   * Updated ghost signature edition dialog for signature in DevStudio
   * Updated chronological series classes to template
   * Updated help of CLI commands (content and structure)
-  * Updated infra quality checks (more tests, prehook checks, quicker stylecheck)
+  * Updated infra quality checks 
+    (more tests, prehook checks, quicker stylecheck)
   * Updated packaging for Linux, Windows and MacOS
   * Updated user documentation template and content
   * Updated example simulators to 2.2
