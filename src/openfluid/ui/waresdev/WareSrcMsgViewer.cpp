@@ -50,6 +50,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcMsgViewer::WareSrcMsgViewer(QWidget* Parent) :
     QPlainTextEdit(Parent)
 {
+  setReadOnly(true);
   m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_COMMAND].setForeground(QColor("blue"));
   m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD].setForeground(QColor("black"));
   m_FormatByMsgType[WareSrcMsgParser::WareSrcMsg::MessageType::MSG_WARNING].setForeground(QColor("orange"));

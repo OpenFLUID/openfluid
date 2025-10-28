@@ -54,10 +54,14 @@ EditAttributesValuesDialog::EditAttributesValuesDialog(QWidget* Parent):
 
   ui->ReplaceRadioButton->setChecked(true);
   ui->ReplaceEdit->setFocus();
+
+  QLocale Locale(QLocale::C);
+  Locale.setNumberOptions(QLocale::RejectGroupSeparator); // forbid comma in input
+
   m_MultVal = new QDoubleValidator(ui->MultEdit);
   m_AddVal = new QDoubleValidator(ui->AddEdit);
-  m_MultVal->setLocale(QLocale::C);
-  m_AddVal->setLocale(QLocale::C);
+  m_MultVal->setLocale(Locale);
+  m_AddVal->setLocale(Locale);
   ui->MultEdit->setValidator(m_MultVal);
   ui->AddEdit->setValidator(m_AddVal);
 
