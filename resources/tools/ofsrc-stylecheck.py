@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # 
 #   This file is part of OpenFLUID software
-#   Copyright(c) 2007, INRA - Montpellier SupAgro
+#   Copyright(c) 2021-2026, INRAE
 # 
 # 
 #  == GNU General Public License Usage ==
@@ -54,7 +54,7 @@ class SourceTreeChecker:
         self.LicenseHeader = """/*
 
   This file is part of OpenFLUID software
-  Copyright(c) 2007, INRA - Montpellier SupAgro
+  Copyright(c) 2021-2026, INRAE
 
 
  == GNU General Public License Usage ==
