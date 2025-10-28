@@ -223,7 +223,7 @@ class GenericDistributionBindings
 
 
 template<typename DataType=double, typename TV=openfluid::core::DoubleValue>
-class SimpleDistributionBindings : public GenericDistributionBindings<DataType> 
+class OPENFLUID_API SimpleDistributionBindings : public GenericDistributionBindings<DataType> 
 {
   public:
 
