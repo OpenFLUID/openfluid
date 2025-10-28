@@ -1,5 +1,5 @@
 OpenFLUID
-Copyright (c) 2007 INRA - Montpellier SupAgro
+Copyright(c) 2021-2026, INRAE
 Inter Deposit Digital Number : IDDN.FR.001.360006.000.R.P.2009.000.30100
 
 
@@ -37,6 +37,7 @@ OpenFLUID relies on third party libraries and content, under the following licen
   - Qt: http://qt-project.org/doc/qt-5/opensourcelicense.html (LGPL)
   - OGR/GDAL: http://trac.osgeo.org/gdal/wiki/FAQGeneral#WhatlicensedoesGDALOGRuse (X11/MIT)
   - Material design icons: https://material.io/icons/ (Apache 2.0) and https://materialdesignicons.com/ (OFL-1.1)
+  - Pandoc : https://pandoc.org/ (not mandatory, GPL)
   
   
   
