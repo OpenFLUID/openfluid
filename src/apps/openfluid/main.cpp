@@ -197,7 +197,7 @@ int main(int argc, char **argv)
                             {"id","i","ID of the ware sources to create (required)",true},
                             {"main-class","m","name to use for the main C++ class",true},
                             {"parent-path","p","parent path where to create the ware sources",true},
-                            {"from", "", "ware path to use as reference"},
+                            {"from", "", "absolute ware path to use as reference",true},
                             {"with-paramsui","w","generate the C++ class of the parameterization UI "
                                                  "(simulators and observers only)"},
                             {"paramsui-class","u","name to use for the C++ class of the parameterization UI "
