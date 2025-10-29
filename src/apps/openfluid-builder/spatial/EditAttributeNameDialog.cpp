@@ -67,7 +67,11 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
     ui->OriginalNameComboBox->addItems(AttrsList);
     ui->NewNameLabel->setText(tr("New attribute name:"));
     setupMessageUi(tr("Rename attribute"));
+#if (QT_VERSION_MAJOR < 6)
     connect(ui->OriginalNameComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(checkGlobal()));
+#else
+    connect(ui->OriginalNameComboBox,SIGNAL(currentTextChanged(const QString&)),this,SLOT(checkGlobal()));
+#endif
     connect(ui->NewNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
   }
   else if (m_Mode == EditMode::EDIT_REMOVE)
