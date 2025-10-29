@@ -121,8 +121,6 @@ Process::Command CTestProxy::getTestCommand(const std::string& BuildDir,
   // Add Jobs option
   if (Jobs || !OtherOptions.empty())
   {
-    Cmd.Args << "--";
-
     if (Jobs)
     {
       Cmd.Args << "-j" << std::to_string(Jobs);

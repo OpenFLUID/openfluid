@@ -114,6 +114,8 @@ class OPENFLUID_API WareSrcUIContainer: public QObject,
 
     QList<WareSrcMsgParser::WareSrcMsg> m_Messages;  
 
+    bool m_IsMsgFastMode;
+
     void runCommand(const openfluid::utils::Process::Command& Cmd, const QProcessEnvironment& Env,
                     WareSrcProcess::Type CmdType = WareSrcProcess::Type::NONE);
 

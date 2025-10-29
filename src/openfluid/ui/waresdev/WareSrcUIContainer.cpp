@@ -56,7 +56,8 @@ WareSrcUIContainer::WareSrcUIContainer(const QString& AbsolutePath,
   QObject(),
   openfluid::waresdev::WareSrcContainer(AbsolutePath.toStdString(),Type, WareID.toStdString()), 
   mp_Process(new WareSrcProcess()),mp_Stream(new OStreamMsgStream()),
-  mp_CurrentParser(new WareSrcMsgParserGcc())
+  mp_CurrentParser(new WareSrcMsgParserGcc()),
+  m_IsMsgFastMode(false)
 {
   connect(mp_Process, SIGNAL(readyReadStandardOutput()), this, SLOT(processStandardOutput()));
   connect(mp_Process, SIGNAL(readyReadStandardError()), this, SLOT(processErrorOutput()));
@@ -89,12 +90,17 @@ void WareSrcUIContainer::processStandardOutput()
 {
   mp_Process->setReadChannel(WareSrcProcess::StandardOutput);
 
-  while (mp_Process->canReadLine())
+  bool Fast = true;
+  QString Msg;
+  if (Fast)
   {
-    QString MsgLine = QString::fromUtf8(mp_Process->readLine());
+    while (mp_Process->canReadLine())
+    {
+      Msg += QString::fromUtf8(mp_Process->readLine());
 
+    }
     auto Message =
-        mp_CurrentParser->parse(MsgLine,WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD);
+        mp_CurrentParser->parse(Msg,WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD);
 
     mp_Stream->write(Message);
 
@@ -103,7 +109,23 @@ void WareSrcUIContainer::processStandardOutput()
       m_Messages.append(Message);
     }
   }
+  else
+  {
+    while (mp_Process->canReadLine())
+    {
+      QString MsgLine = QString::fromUtf8(mp_Process->readLine());
 
+      auto Message =
+          mp_CurrentParser->parse(MsgLine,WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD);
+
+      mp_Stream->write(Message);
+
+      if (Message.m_Type != WareSrcMsgParser::WareSrcMsg::MessageType::MSG_STANDARD)
+      {
+        m_Messages.append(Message);
+      }
+    }
+  }
 }
 
 
@@ -165,6 +187,7 @@ void WareSrcUIContainer::processFinishedOutput(int ExitCode)
   }
 
   mp_Process->setType(WareSrcProcess::Type::NONE);
+  m_IsMsgFastMode = false;
 }
 
 
@@ -236,6 +259,7 @@ void WareSrcUIContainer::build()
   m_Messages.clear();
 
 
+
   // run configure if build dir does not exist
   if (!openfluid::tools::FilesystemPath(m_BuildDirPath).exists())
   {
@@ -273,10 +297,10 @@ void WareSrcUIContainer::build()
 
 void WareSrcUIContainer::test()
 {
-  if (!openfluid::utils::CMakeProxy::isAvailable())
+  if (!openfluid::utils::CTestProxy::isAvailable())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "CMake program not available");
+                                              "CTest program not available");
   }
 
 
@@ -294,6 +318,7 @@ void WareSrcUIContainer::test()
   delete mp_CurrentParser;
   mp_CurrentParser = new WareSrcMsgParserCTest();
 
+  m_IsMsgFastMode = true;
 
   // === build and run command
 

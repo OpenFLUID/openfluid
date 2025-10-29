@@ -7235,7 +7235,7 @@ Tous les fichiers du dossier vont être fermés et supprimés, y compris ceux no
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="202"/>
         <source>Runs ware tests</source>
-        <translation>lancer les tests de ware</translation>
+        <translation>Lancer les tests de ware</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcToolbar.cpp" line="206"/>
