@@ -68,11 +68,13 @@
 
 void WareTasks::postWareCreation(const std::string& WarePath) const
 {
+  std::cout << "Ware successfully created at path " << WarePath << std::endl;
   if (m_Cmd.isOptionActive("set-remote"))
   {
     if (!openfluid::utils::GitProxy::isAvailable() || openfluid::utils::GitProxy::setRemote(WarePath, 
                                                        m_Cmd.getOptionValue("set-remote")) != 0)
     {
+      std::cout << "A warning was issued during ware creation, check OpenFLUID log file for details." << std::endl;
       openfluid::utils::log::warning("Ware creation", "set-remote failed");
     }
   }
