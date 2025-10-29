@@ -149,6 +149,10 @@ WareSrcMsgParser::WareSrcMsg WareSrcMsgParserCTest::parse(const QString& Message
   WareSrcMsgParser::WareSrcMsg Msg(MessageLine);
 
   Msg.m_Type = DefaultMsgType;
+  if (MessageLine.count("\n") > 1) // don't process multiline messages here
+  {
+    return Msg;
+  }
 
   // not error in line "100% tests passed, 0 tests failed"
 #if (QT_VERSION_MAJOR < 6)
