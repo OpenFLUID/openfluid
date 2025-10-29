@@ -219,7 +219,11 @@ class FluidXReaderImplementation
           std::string VarSize = openfluid::thirdparty::getXMLAttribute(Elt,"varsize");
           std::string VarType = openfluid::thirdparty::getXMLAttribute(Elt,"vartype");
           openfluid::core::Value::Type VarTypeReal = openfluid::core::Value::DOUBLE;
-          openfluid::core::Value::getValueTypeFromString(VarType, VarTypeReal);
+          if (VarType != "" && !openfluid::core::Value::getValueTypeFromString(VarType, VarTypeReal))
+          {
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                "unknown or missing datatype in model definition (" + m_CurrentFile + ")");
+          }
           openfluid::core::Dimensions VarDimensionsReal;
 
           openfluid::tools::UnitVarTriplets_t VarTriplets;
