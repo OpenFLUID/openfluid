@@ -33,6 +33,7 @@
   @file OGRGDALImportExtension.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -77,6 +78,8 @@ class OGRGDALImportExtension : public openfluid::ui::builderext::PluggableModalE
     void updateUI();
 
     void runPrecheck();
+
+    void refreshSelectAllCheckBox();
 
     void updateUnitsClassInfos();
 

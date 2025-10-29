@@ -34,6 +34,7 @@
   @file OGRGDALImportExtension.cpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
 
@@ -120,6 +121,9 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 
   connect(ui->AttributesListWidget,SIGNAL(itemChanged(QListWidgetItem*)),
           this,SLOT(updateImportedFieldsInfos(QListWidgetItem*)));
+
+  connect(ui->AttributesListWidget,SIGNAL(itemChanged(QListWidgetItem*)),
+          this,SLOT(refreshSelectAllCheckBox()));
 
   connect(ui->ComputeAreaCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateIsAreaComputeInfos()));
   connect(ui->ComputeAreaLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateAreaComputeAttrInfos()));
@@ -621,6 +625,34 @@ void OGRGDALImportExtension::updateUnitsChildofConnInfos()
 // =====================================================================
 
 
+void OGRGDALImportExtension::refreshSelectAllCheckBox()
+{
+  // update "all" checkbox
+  bool AllSelected = true;
+  for (int i=0; i<ui->AttributesListWidget->count(); i++)
+  {
+    if (ui->AttributesListWidget->item(i)->checkState() == Qt::Unchecked)
+    {
+      AllSelected = false;
+    }
+  }
+  disconnect(ui->SelectAllCheckBox,SIGNAL(toggled(bool)),this,SLOT(toggleSelectAll()));
+  if (AllSelected)
+  {
+    ui->SelectAllCheckBox->setCheckState(Qt::Checked);
+  }
+  else
+  {
+    ui->SelectAllCheckBox->setCheckState(Qt::Unchecked);
+  }
+  connect(ui->SelectAllCheckBox,SIGNAL(toggled(bool)),this,SLOT(toggleSelectAll()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void OGRGDALImportExtension::updateImportedFieldsInfos(QListWidgetItem* Item)
 {
   if (Item->checkState() == Qt::Unchecked)
@@ -773,10 +805,14 @@ void OGRGDALImportExtension::updateIsDatasetImportInfos()
 
 void OGRGDALImportExtension::toggleSelectAll()
 {
+  disconnect(ui->AttributesListWidget,SIGNAL(itemChanged(QListWidgetItem*)),
+        this,SLOT(refreshSelectAllCheckBox()));
   for (int i=0; i<ui->AttributesListWidget->count(); i++)
   {
     ui->AttributesListWidget->item(i)->setCheckState(ui->SelectAllCheckBox->isChecked() ? Qt::Checked : Qt::Unchecked);
   }
+  connect(ui->AttributesListWidget,SIGNAL(itemChanged(QListWidgetItem*)),
+        this,SLOT(refreshSelectAllCheckBox()));
 }
 
 
