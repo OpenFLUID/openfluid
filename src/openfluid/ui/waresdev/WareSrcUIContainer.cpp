@@ -259,7 +259,6 @@ void WareSrcUIContainer::build()
   m_Messages.clear();
 
 
-
   // run configure if build dir does not exist
   if (!openfluid::tools::FilesystemPath(m_BuildDirPath).exists())
   {
