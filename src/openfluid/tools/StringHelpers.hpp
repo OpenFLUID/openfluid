@@ -183,6 +183,16 @@ bool OPENFLUID_API contains(const std::string& Str,const std::string& SubStr, bo
 
 
 /**
+  Returns the number of substring occurence in the string
+  @snippet misc/strings.cpp str_contains
+  @param[in] Str the string to check
+  @param[in] SubChar the sub character
+  @return the number of sub character occurence in the string
+*/
+int OPENFLUID_API count(const std::string& Str, const char& SubChar);
+
+
+/**
   Find all occurences of a substring in a folder, iterating on any subdirectory
   @param[in] Folder the location to check
   @param[in] String the string to look for
