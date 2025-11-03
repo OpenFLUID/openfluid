@@ -124,7 +124,20 @@ class FluidXReaderImplementation
         if (!ID.empty())
         {
           auto OD = new openfluid::fluidx::ObserverDescriptor(ID);
-          OD->setParameters(extractParams(Elt));
+          auto MonitoringParams = extractParams(Elt);
+          if(ID == "export.vars.files.csv" or ID == "export.vars.files.csv-multicols")
+          {
+            for(const auto& Param : MonitoringParams) 
+            {
+              if (openfluid::tools::count(Param.first, '.') != 2)
+              {
+                throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                  "Invalid syntax in parameter name attribute. Name must contains 2 '.' only (" + m_CurrentFile+ ")");
+              }
+            }
+          }
+          
+          OD->setParameters(MonitoringParams);
           OD->setEnabled(extractWareEnabled(Elt));
           m_Descriptor.m_MonitoringDescriptor.appendItem(OD);
         }

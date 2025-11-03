@@ -37,6 +37,7 @@
  */
 
 
+#include <algorithm>
 #include <regex>
 #include <utility>
 #include <boost/algorithm/string.hpp>
@@ -112,6 +113,16 @@ bool startsWith(const std::string& Str,const std::string& SubStr)
 bool endsWith(const std::string& Str,const std::string& SubStr)
 {
   return boost::algorithm::ends_with(Str,SubStr);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+int count(const std::string& Str, const char& SubChar)
+{
+  return static_cast<int>(std::count(Str.begin(), Str.end(), SubChar));
 }
 
 
