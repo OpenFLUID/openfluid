@@ -123,7 +123,18 @@ void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
   }
 
   std::ifstream InFile(MetaFileObj.toGeneric(),std::ifstream::in);
-  auto Json = openfluid::thirdparty::json::parse(InFile);
+  openfluid::thirdparty::json Json;
+  try
+  {
+    Json = openfluid::thirdparty::json::parse(InFile);
+  }
+  catch(const std::exception& e)
+  {
+    processReportingItem(RepData.Categories["metainfo"], "file_iscorrect", [&](){return false;},
+                         ReportingData::ReportingStatus::ERROR_STATUS);
+    return;
+  }
+  
 
   // [w] non-empty description of ware
   processReportingItem(RepData.Categories["metainfo"],"ware_description_exists", 
@@ -199,7 +210,8 @@ void WareSrcChecker::updateWithPedanticCheck(ReportingData& RepData)
 WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performStructureCheck(bool OKToRun) const
 {
   auto Data = InitializeReportingItemList({"cmakelists_exists","readme_exists",
-                                           "srcdir_exists","docdir_exists","testsdir_exists"});
+                                           "srcdir_exists","docdir_exists",
+                                           "testsdir_exists", "testsref_exists"});
 
   if (OKToRun)
   { 
@@ -230,8 +242,38 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performStructureChe
                          [&](){return m_SrcPathObj.isDirectory(openfluid::config::WARESDEV_DOC_DIR);});
 
     // [w] tests dir exists
+    bool IsTestDir = m_SrcPathObj.isDirectory(openfluid::config::WARESDEV_TESTS_DIR);
     processReportingItem(Data,"testsdir_exists",
-                         [&](){return m_SrcPathObj.isDirectory(openfluid::config::WARESDEV_TESTS_DIR);});
+                         [&](){return IsTestDir;});
+
+    bool IsTestRef = true;
+    std::string TestInformation = "";
+    if (IsTestDir)
+    {
+      for (auto const& E : std::filesystem::recursive_directory_iterator{m_SrcPathObj.fromThis(openfluid::config::WARESDEV_TESTS_DIR).stdPath()})
+      {
+        auto PathObj = openfluid::tools::Path::fromStdPath(E.path());
+        if (PathObj.isDirectory() && PathObj.extension() == "IN")
+        {
+          if (!m_SrcPathObj.fromThis(openfluid::config::WARESDEV_TESTS_DIR).fromThis(PathObj.basename()+".REF").isDirectory())
+          {
+            if (TestInformation != "")
+            {
+              TestInformation += ", ";
+            }
+            else
+            {
+              TestInformation = "Test datasets without reference: ";
+            }
+            TestInformation += PathObj.filename();
+            IsTestRef = false;
+          }
+        }
+      }
+    }
+    // [w] test ref exists
+    processReportingItem(Data,"testsref_exists",
+                          [&](){return IsTestRef;}, ReportingData::ReportingStatus::WARNING, TestInformation);
   }
 
   return Data;
@@ -314,7 +356,10 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performCodeCheck(bo
   {
     bool HasMigrationTagInFile = false;
     bool HasSim2DocTagInFile = false;
-
+    if (!m_SrcPathObj.fromThis("src").isDirectory())
+    {
+      return Data;
+    }
     for (auto const& E : std::filesystem::recursive_directory_iterator{m_SrcPathObj.fromThis("src").stdPath()})
     {
       auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
