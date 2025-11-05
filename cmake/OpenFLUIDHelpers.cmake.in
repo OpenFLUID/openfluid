@@ -611,12 +611,22 @@ FUNCTION(OPENFLUID_ADD_DATASETTEST _OPENFLUID_PATH _DATASET_PATH _METHOD _TESTPR
   FILE(MAKE_DIRECTORY "${_TESTS_OUTPUT_DIR}")
 
   GET_FILENAME_COMPONENT(_DATASET_NAME ${_DATASET_PATH} NAME_WLE)
+  GET_FILENAME_COMPONENT(_DIRNAME ${_DATASET_PATH} DIRECTORY)
+  SET(IS_REF 0)
+  # IF REF FOUND
+  IF(EXISTS "${_DIRNAME}/${_DATASET_NAME}.REF")
+      SET(IS_REF 1)
+  ENDIF()
+
   IF("${_TESTPREFIX}" STREQUAL "")
     SET(_TESTNAME "${_DATASET_NAME}")
   ELSE()
-    SET(_TESTNAME "${_TESTPREFIX}-${_DATASET_NAME}")
+  SET(_TESTSUFFIX "-no-ref")
+    IF(IS_REF)
+      SET(_TESTSUFFIX "-with-ref")
+    ENDIF()
+    SET(_TESTNAME "${_TESTPREFIX}-${_DATASET_NAME}${_TESTSUFFIX}")
   ENDIF()
-  GET_FILENAME_COMPONENT(_DIRNAME ${_DATASET_PATH} DIRECTORY)
 
   IF(${_METHOD} STREQUAL "custom_or_basic")
     IF(NOT "${OPENFLUID_COMPARE_TOOL_CACHE}" STREQUAL "")
@@ -626,15 +636,25 @@ FUNCTION(OPENFLUID_ADD_DATASETTEST _OPENFLUID_PATH _DATASET_PATH _METHOD _TESTPR
   ENDIF()
 
   # TOIMPL add option to activate automatic comparison with ref
-  OPENFLUID_ADD_TEST(NAME ${_TESTNAME}
-            COMMAND "${_OPENFLUID_PATH}" "run"
-                    "${_DATASET_PATH}"
-                    "${_TESTS_OUTPUT_DIR}/${_TESTNAME}.OUT"
-                    "-p" "${CMAKE_BINARY_DIR}"
-                    "-n" "${CMAKE_BINARY_DIR}"
-            POST_TEST COMPARE_DIRECTORIES "${_TESTS_OUTPUT_DIR}/${_TESTNAME}.OUT"
-                                          "${_DIRNAME}/${_DATASET_NAME}.REF"
-                                          "${_METHOD}")
+  IF (IS_REF)
+    OPENFLUID_ADD_TEST(NAME ${_TESTNAME}
+              COMMAND "${_OPENFLUID_PATH}" "run"
+                      "${_DATASET_PATH}"
+                      "${_TESTS_OUTPUT_DIR}/${_TESTNAME}.OUT"
+                      "-p" "${CMAKE_BINARY_DIR}"
+                      "-n" "${CMAKE_BINARY_DIR}"
+                      "-q"
+              POST_TEST COMPARE_DIRECTORIES "${_TESTS_OUTPUT_DIR}/${_TESTNAME}.OUT"
+                                            "${_DIRNAME}/${_DATASET_NAME}.REF"
+                                            "${_METHOD}")
+  ELSE()
+    OPENFLUID_ADD_TEST(NAME ${_TESTNAME}
+              COMMAND "${_OPENFLUID_PATH}" "run"
+                      "${_DATASET_PATH}"
+                      "${_TESTS_OUTPUT_DIR}/${_TESTNAME}.OUT"
+                      "-p" "${CMAKE_BINARY_DIR}"
+                      "-n" "${CMAKE_BINARY_DIR}")
+  ENDIF()
 ENDFUNCTION()
 
 
