@@ -102,11 +102,7 @@ void Environment::init()
   // ====== System informations ======
 
   m_SystemArch = OPENFLUID_OS_STRLABEL;
-
-#if OPENFLUID_OS_ISWSL_FLAG == 1
-  m_SystemArch += " (WSL)";
-#endif
-
+  
 #if defined(OPENFLUID_OS_UNIX)
 
   char ChHostName[512];
