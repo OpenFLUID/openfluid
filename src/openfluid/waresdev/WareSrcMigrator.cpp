@@ -1239,6 +1239,8 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
       FObj.removeFile();
     }
   }
+
+  mp_Listener->onCreateStructureEnd(openfluid::base::Listener::Status::OK_STATUS);
   
 
   // ==== dispatch existing files
@@ -1254,8 +1256,10 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
   {
     auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
     
-    // ensure we exclude any _* folder
-    if (FileObj.toGeneric().find(m_DestPathObj.toGeneric()+"/_") == std::string::npos) 
+    // ensure we exclude any _* and .* folder
+    if (FileObj.isFile() && \
+        FileObj.toGeneric().find(m_DestPathObj.toGeneric()+"/_") == std::string::npos && \
+        FileObj.toGeneric().find(m_DestPathObj.toGeneric()+"/.") == std::string::npos) 
     {
       auto FileContent = openfluid::tools::Filesystem::readFile(FileObj);
         
@@ -1272,9 +1276,6 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
       }
     }
   }
-
-  mp_Listener->onCreateStructureEnd(openfluid::base::Listener::Status::OK_STATUS);
-
 }
 
 
