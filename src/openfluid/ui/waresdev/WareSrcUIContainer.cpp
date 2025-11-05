@@ -90,9 +90,8 @@ void WareSrcUIContainer::processStandardOutput()
 {
   mp_Process->setReadChannel(WareSrcProcess::StandardOutput);
 
-  bool Fast = true;
   QString Msg;
-  if (Fast)
+  if (m_IsMsgFastMode)
   {
     while (mp_Process->canReadLine())
     {
@@ -317,7 +316,7 @@ void WareSrcUIContainer::test()
   delete mp_CurrentParser;
   mp_CurrentParser = new WareSrcMsgParserCTest();
 
-  m_IsMsgFastMode = true;
+  m_IsMsgFastMode = false;
 
   // === build and run command
 
