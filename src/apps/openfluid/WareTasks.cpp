@@ -459,7 +459,7 @@ int WareTasks::processMigrate() const
     return error("unknown error");
   }
 
-  return 0;
+  return success("Ware migration successfully completed");
 }
 
 
@@ -576,7 +576,7 @@ int WareTasks::processCheck() const
                               openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::OK : 
                               openfluid::waresdev::WareSrcChecker::ReportingData::ReportingStatus::WARNING));
 
-    return (IsAccepted ? 0 : error("failed checks"));
+    return (IsAccepted ? success("No issue") : error("failed checks"));
   }
   catch(const openfluid::base::FrameworkException& E)
   {
@@ -587,7 +587,7 @@ int WareTasks::processCheck() const
     return error("unknown error");
   }
 
-  return 0;
+  return success("No issue");
 }
 
 
@@ -651,7 +651,7 @@ int WareTasks::processDocalyze() const
     return error("unknown error");
   }
 
-  return 0;
+  return success("Ware docalyze successfully completed");
 }
 
 
@@ -704,7 +704,7 @@ int WareTasks::processInfo2Build() const
     return error(openfluid::config::WARESDEV_WAREMETA_FILE + " file not found in source directory");
   }
 
-  return 0;
+  return success("Ware info2build successfully completed");
 }
 
 
@@ -808,7 +808,7 @@ int WareTasks::processPurge() const
 
   PurgeHandler.purge(WarePath, WriteMessageFunc, [](bool /*Status*/) {});
 
-  return 0;
+  return success("Ware purge successfully completed");
 }
 
 

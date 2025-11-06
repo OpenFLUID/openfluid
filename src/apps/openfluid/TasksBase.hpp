@@ -51,7 +51,7 @@ class TasksBase
 { 
   private:
 
-    static int taskResult(const std::string& Cat, const int CustomCode, const std::string& Msg = "")
+    static int taskResult(const std::string& Msg, const std::string& Cat, const int CustomCode)
     {
       std::cout << "\n";
 
@@ -105,7 +105,7 @@ class TasksBase
     static int error(const std::string& Msg = "", const std::string& Cat = s_Cat, 
                      const int CustomErrorCode = s_ErrorCode)
     {
-      return taskResult(Cat, CustomErrorCode, Msg);
+      return taskResult(Msg, Cat, CustomErrorCode);
     }
 
 
@@ -115,7 +115,7 @@ class TasksBase
 
     static int success(const std::string& Msg = "", const std::string& Cat = s_Ok_Cat)
     {
-      return taskResult(Cat, 0, Msg);
+      return taskResult(Msg, Cat, 0);
     }
 
 
