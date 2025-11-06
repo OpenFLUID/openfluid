@@ -48,7 +48,27 @@
 
 
 class TasksBase
-{
+{ 
+  private:
+
+    static int taskResult(const std::string& Cat, const int CustomCode, const std::string& Msg = "")
+    {
+      std::cout << "\n";
+
+      if (!Cat.empty())
+      {
+        CustomCode == 0 ? openfluid::tools::Console::setOKColor() :
+                          openfluid::tools::Console::setErrorColor();
+        std::cout << "[" << Cat << "]";
+        openfluid::tools::Console::resetAttributes();
+        std::cout << " ";
+      }
+      std::cout << Msg;
+      std::cout << std::endl;
+
+      return CustomCode;
+    }
+
   protected:
     
     const openfluid::utils::CommandLineCommand m_Cmd;
@@ -73,6 +93,7 @@ class TasksBase
     inline static const int s_ErrorCode = -1;
 
     static constexpr const char* s_Cat = "ERROR";
+    static constexpr const char* s_Ok_Cat = "OK";
 
     virtual int process() const = 0;
 
@@ -84,19 +105,17 @@ class TasksBase
     static int error(const std::string& Msg = "", const std::string& Cat = s_Cat, 
                      const int CustomErrorCode = s_ErrorCode)
     {
-      std::cout << "\n";
+      return taskResult(Cat, CustomErrorCode, Msg);
+    }
 
-      if (!Cat.empty())
-      {
-        openfluid::tools::Console::setErrorColor();
-        std::cout << "[" << Cat << "]";
-        openfluid::tools::Console::resetAttributes();
-        std::cout << " ";
-      }
-      std::cout << Msg;
-      std::cout << std::endl;
 
-      return CustomErrorCode;
+    // =====================================================================
+    // =====================================================================
+
+
+    static int success(const std::string& Msg = "", const std::string& Cat = s_Ok_Cat)
+    {
+      return taskResult(Cat, 0, Msg);
     }
 
 
