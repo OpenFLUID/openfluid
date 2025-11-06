@@ -72,7 +72,7 @@ class HubTestFixture
       TestWorkspacePath = QString::fromStdString(CONFIGTESTS_OUTPUT_DATA_DIR);
       TestWorkspacePath.append("/FluidHubWaresImport");
 
-      forceRemove(TestWorkspacePath);
+      openfluid::ui::waresdev::forceRemove(TestWorkspacePath.toStdString());
 
       auto Mgr = openfluid::base::WorkspaceManager::instance();
 
@@ -87,27 +87,8 @@ class HubTestFixture
 
     ~HubTestFixture()
     {
-      forceRemove(TestWorkspacePath);
+      openfluid::ui::waresdev::forceRemove(TestWorkspacePath.toStdString());
       openfluid::base::WorkspaceManager::kill();
-    }
-
-    void forceRemove(const QString& Path)
-    {
-      QDir Dir(Path);
-
-      for (const auto& SubFile : Dir.entryList(QDir::Files | QDir::System | QDir::Hidden))
-      {
-        QFile f(QString("%1/%2").arg(Path).arg(SubFile));
-        f.setPermissions(QFile::WriteUser);
-        f.remove();
-      }
-
-      for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::System | QDir::Hidden))
-      {
-        forceRemove(QString("%1/%2").arg(Path).arg(SubDir));
-      }
-
-      Dir.rmdir(Path);
     }
 
     QString getFirstAvailSimUrl(openfluid::ui::waresdev::HubManager& W)
