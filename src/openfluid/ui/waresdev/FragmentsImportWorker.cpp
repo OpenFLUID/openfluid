@@ -190,9 +190,9 @@ bool FragmentsImportWorker::importElement(const QString& GitUrl, const QString& 
     if (!m_AsSubmodule && FragmentGitPath.exists())
     {
       // removing .git/ folder to avoid potential git conflict with parent folder
-      if (!FragmentGitPath.removeDirectory())
+      if (!openfluid::ui::waresdev::forceRemove(FragmentGitPath.toGeneric()))
       {
-        emit error(tr("Unable to remove the git repository of the fragment."));
+        emit error(tr("Unable to remove the git repository of the fragment"));
       }
     }
   }

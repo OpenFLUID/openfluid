@@ -107,7 +107,7 @@ class F
       DestDir.setPath(DestPath);
 #endif
 
-      openfluid::ui::waresdev::forceRemove(QString::fromStdString(TestPath));
+      openfluid::ui::waresdev::forceRemove(TestPath);
 
       CurrentOFBranchName = openfluid::ui::waresdev::GitUIProxy::getCurrentOpenFLUIDBranchName().toStdString();
     }
