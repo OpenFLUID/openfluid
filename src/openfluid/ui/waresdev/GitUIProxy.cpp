@@ -254,8 +254,9 @@ bool GitUIProxy::addSubmodule(const QString& FromUrl, const QString& ToPath, con
 
 
 // Local dedicated function to adjust permissions before operating on git files
-bool forceRemove(const QString& Path)
+bool forceRemove(const std::string& StdPath)
 {
+  QString Path = QString::fromStdString(StdPath);
   QDir Dir(Path);
 
   for (const auto& SubFile : Dir.entryList(QDir::Files | QDir::System | QDir::Hidden))
@@ -267,7 +268,7 @@ bool forceRemove(const QString& Path)
 
   for (const auto& SubDir : Dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::System | QDir::Hidden))
   {
-    forceRemove(QString("%1/%2").arg(Path).arg(SubDir));
+    forceRemove(QString("%1/%2").arg(Path).arg(SubDir).toStdString());
   }
 
   Dir.rmdir(Path);
@@ -286,7 +287,7 @@ bool cleanModuleDir(QString RootPath, openfluid::tools::FilesystemPath ModuleSub
         {RootPath.toStdString(), ".git", "modules", ModuleSubPath.toGeneric()});
   if (GitSubmoduleTargetDirectory.isDirectory())
   {
-    return forceRemove(QString::fromStdString(GitSubmoduleTargetDirectory.toGeneric()));
+    return forceRemove(GitSubmoduleTargetDirectory.toGeneric());
   }
   return false;
 }

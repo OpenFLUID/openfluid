@@ -250,12 +250,14 @@ WareSrcChecker::ReportingData::ReportingList WareSrcChecker::performStructureChe
     std::string TestInformation = "";
     if (IsTestDir)
     {
-      for (auto const& E : std::filesystem::recursive_directory_iterator{m_SrcPathObj.fromThis(openfluid::config::WARESDEV_TESTS_DIR).stdPath()})
+      for (auto const& E : std::filesystem::recursive_directory_iterator{m_SrcPathObj.fromThis(
+            openfluid::config::WARESDEV_TESTS_DIR).stdPath()})
       {
         auto PathObj = openfluid::tools::Path::fromStdPath(E.path());
         if (PathObj.isDirectory() && PathObj.extension() == "IN")
         {
-          if (!m_SrcPathObj.fromThis(openfluid::config::WARESDEV_TESTS_DIR).fromThis(PathObj.basename()+".REF").isDirectory())
+          if (!m_SrcPathObj.fromThis(openfluid::config::WARESDEV_TESTS_DIR).fromThis(
+                PathObj.basename()+".REF").isDirectory())
           {
             if (TestInformation != "")
             {
