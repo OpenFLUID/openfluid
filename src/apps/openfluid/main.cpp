@@ -215,9 +215,9 @@ int main(int argc, char **argv)
 
   auto ImportWareCmd = openfluid::utils::CommandLineCommand("import-ware","Import ware sources from remote git or hub");
   ImportWareCmd.addOptions({{"parent-path","p","parent path where to create the ware sources",true},
-                            {"git","","git URL", true},
+                            {"git","","git URL of ware", true},
                             {"hub","","hub URL", true},
-                            {"id","i","ID of the ware sources to import", true},
+                            {"id","i","ID of the ware sources to import (required when importing from hub)", true},
                             {"type","t","type of the ware sources to import (simulator|observer|builderext), "
                                         "(required when importing from hub)", true}
                             });

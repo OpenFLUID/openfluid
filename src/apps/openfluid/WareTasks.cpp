@@ -282,7 +282,7 @@ int WareTasks::processImport() const
   {
     return error("Error while cloning ware");
   }
-  return 0;
+  return success("Ware import successfully completed");
 }
 
 
