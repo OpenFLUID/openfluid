@@ -54,7 +54,9 @@ class OPENFLUID_API Dimensions
 
   private:
 
-    void applyDimensions(std::string SerializedVariableSize);
+    bool splitDimensions(const std::string& DimsStr, const char& Separator);
+
+    void applyDimensions(const std::string& SerializedVariableSize);
 
 
   public:
