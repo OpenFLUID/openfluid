@@ -8,13 +8,14 @@ This appendix provides insight about use cases and set up of generators to provi
 
 The available data types depend from the kind of wanted generation:
 
-| Generator type                 | Double (scalar) | Double (vector) | Double (matrix) | Integer | Boolean | String |
-| ------------------------------ | ------ | ------ | ------ | ------- | ------- | ------ |
-| Fixed values                   | Yes    | Yes*   | Yes*   | Yes     | Yes     | Yes    |
-| Random values                  | Yes    | Yes    | Yes    | Yes     | Yes     | No     |
-| Values from file interpolation | Yes    | No     | No     | No      | No      | No     |
-| Values from file injection     | Yes    | No     | No     | No      | No      | No     |
+| Generator type                 | Double (scalar) | Double (vector) | Double (matrix) | Integer | Boolean | String | Map
+| ------------------------------ | ------ | ------ | ------ | ------- | ------- | ------ | ------ |
+| Fixed values                   | Yes    | Yes*   | Yes*   | Yes     | Yes     | Yes    | No     |
+| Random values                  | Yes    | Yes    | Yes    | Yes     | Yes     | No     | No     |
+| Values from file interpolation | Yes    | No     | No     | No      | No      | No     | No     |
+| Values from file injection     | Yes    | Yes    | Yes    | Yes     | Yes     | Yes    | Yes    |
 
+Note: expected format for Map is `(key: String, value: openfluid::core::Value)`
 
 ## Floating-point variables
 
@@ -32,12 +33,9 @@ Currently the random generator for boolean gives a balanced probability between 
 
 # File formats for generators
 
-
-
 @note Currently, these files formats are used by _interp_ and _inject_ generators only.
 
-
-# Sources file {#apdx_generators_sources}
+## Sources file {#apdx_generators_sources}
 
 The sources file format is an XML based format which defines a list of sources
 files associated to an unique ID.\n
@@ -82,7 +80,7 @@ of values in time. The first column is the date using the ISO format
 ```
 
 
-# Distribution file {#apdx_generators_distri}
+## Distribution file {#apdx_generators_distri}
 
 A distribution file is a two column file associating a unit ID
 (first column) to a source ID (second column).
@@ -93,4 +91,33 @@ A distribution file is a two column file associating a unit ID
 3 1
 4 2
 5 1
+```
+
+## Type-specific generator
+
+By default, the values injected by _inject_ generators are **Double** type. <br>
+To inject data of a specific type, add the `vartype` attribute to the `generator` element with appropriate type as value. <br>
+
+@warning String representation of values defined in source files must match the string representation of specified variable type. <br>
+See @ref apdx_values
+
+The available values for `vartype` depend from the openfluid::core::Value type:
+
+| OpenFLUID value                | vartype | 
+| ------------------------------ | ------- |
+| openfluid::core::StringValue   | string  |
+| openfluid::core::BooleanValue  | boolean |
+| openfluid::core::IntegerValue  | integer |
+| openfluid::core::VectorValue   | vector  |
+| openfluid::core::MatrixValue   | matrix  |
+| openfluid::core::MapValue      | map     |
+| openfluid::core::NullValue     | null    |
+
+Example of a boolean _inject_ generator:
+
+```xml
+<generator varname="gas.atm.V.windspeed.bool" unitsclass="AU" vartype="boolean" method="inject" enabled="true">
+    <param name="sources" value="sources.xml"/>
+    <param name="distribution" value="distribution.dat"/>
+</generator>
 ```
