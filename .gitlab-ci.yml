@@ -3,22 +3,28 @@ stages:
   - package
   - container
 
-# test-job:
-#   stage: package #test
-#   before_script:
-#     - apt update && apt install -y cmake build-essential lsb-release g++ git
-#             libboost-all-dev libgdal-dev libcurl4-gnutls-dev
-#             gnuplot p7zip-full graphviz
-#   script:
-#     - mkdir ./_build
-#     - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
-#     - make -j 2
-#     - make stylecheck
-#     - ctest -j 2 --output-on-failure
+test-of:
+  stage: package #test
+  parallel:
+    matrix:
+      - TAG: ["debian-12-qt6",
+              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6"]  
+  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
+  script:
+    - mkdir ./_build
+    - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
+    - make -j 3
+    - make stylecheck
+    - ctest -j 3 --output-on-failure
 
 
-.packaging-seq:
+pkg-of:
   stage: package
+  parallel:
+    matrix:
+      - TAG: ["debian-12-qt6",
+              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6"]  
+  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
   script:
     - mkdir ./_build
     - cd ./_build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
@@ -28,43 +34,24 @@ stages:
     paths:
       - /builds/openfluid/incubateur/openfluid/_build/*.deb
 
-build-job-ubuntu-22-04:
-  extends: .packaging-seq
-  image: registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/ubuntu-22.04-qt5
 
-
-build-job-ubuntu-24-04:
-  extends: .packaging-seq
-  image: registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/ubuntu-24.04-qt6
-
-
-build-job-ubuntu-25-10:
-  extends: .packaging-seq
-  image: registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/ubuntu-25.04-qt6
-
-
-build-job-debian-12:
-  extends: .packaging-seq
-  image: registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6
-
-
-build-of-container-ubuntu-22-04:
-  stage: container
-  image: docker:24.0.5-cli
-  services:
-    - docker:24.0.5-dind
-  variables:
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: tcp://docker:2375
-  script:
-    - |
-        cat > Dockerfile <<EOF
-        FROM ubuntu:22.04
-        COPY openfluid_2.2.1~beta2_jammy_amd64.deb /tmp/
-        RUN apt-get update && apt-get install -y /tmp/openfluid_2.2.1~beta2_jammy_amd64.deb && rm /tmp/openfluid_2.2.1~beta2_jammy_amd64.deb
-        EOF
-    - docker build -t registry.forge.inrae.fr/openfluid/incubateur/openfluid/openfluid:2.2.1b1-ubuntu-22.04-qt5 . 
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker push registry.forge.inrae.fr/openfluid/incubateur/openfluid/openfluid:2.2.1b1-ubuntu-22.04-qt5
+# build-of-container-ubuntu-22-04:
+#   stage: container
+#   image: docker:24.0.5-cli
+#   services:
+#     - docker:24.0.5-dind
+#   variables:
+#     DOCKER_TLS_CERTDIR: ""
+#     DOCKER_HOST: tcp://docker:2375
+#   script:
+#     - |
+#         cat > Dockerfile <<EOF
+#         FROM ubuntu:22.04
+#         COPY openfluid_2.2.1~beta2_jammy_amd64.deb /tmp/
+#         RUN apt-get update && apt-get install -y /tmp/openfluid_2.2.1~beta2_jammy_amd64.deb && rm /tmp/openfluid_2.2.1~beta2_jammy_amd64.deb
+#         EOF
+#     - docker build -t registry.forge.inrae.fr/openfluid/incubateur/openfluid/openfluid:2.2.1b1-ubuntu-22.04-qt5 . 
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - docker push registry.forge.inrae.fr/openfluid/incubateur/openfluid/openfluid:2.2.1b1-ubuntu-22.04-qt5
 
   
