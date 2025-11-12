@@ -43,7 +43,7 @@ LaTeX
 <br/>
 
 The final document can be generated using the OpenFLUID Sim2Doc buddy, 
-included in the OpenFLUID command line program. See also @ref apdx_optenv_cmdopt_buddies command line for available options.
+included in the OpenFLUID command line program.
 
 _Example of OpenFLUID command line to generate the PDF document using the Sim2Doc tool:_
 ```
