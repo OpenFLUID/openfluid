@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
-    <height>539</height>
+    <width>747</width>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -133,10 +133,38 @@
             <item>
              <widget class="QGroupBox" name="groupBox">
               <property name="title">
-               <string>Type</string>
+               <string>Produced variable type</string>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout">
-               <item>
+              <layout class="QGridLayout" name="gridLayout_5">
+               <item row="4" column="3">
+                <widget class="QRadioButton" name="MatrixRadioButton">
+                 <property name="text">
+                  <string>Matrix of double</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="5">
+                <widget class="QRadioButton" name="MapRadioButton">
+                 <property name="text">
+                  <string>Map</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QRadioButton" name="IntegerRadioButton">
+                 <property name="text">
+                  <string>Integer</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="5">
+                <widget class="QRadioButton" name="StringRadioButton">
+                 <property name="text">
+                  <string>String</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
                 <widget class="QRadioButton" name="DoubleRadioButton">
                  <property name="text">
                   <string>Double</string>
@@ -146,24 +174,17 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QRadioButton" name="IntegerRadioButton">
-                 <property name="text">
-                  <string>Integer</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
+               <item row="1" column="3">
                 <widget class="QRadioButton" name="BooleanRadioButton">
                  <property name="text">
                   <string>Boolean</string>
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QRadioButton" name="StringRadioButton">
+               <item row="4" column="1" colspan="2">
+                <widget class="QRadioButton" name="VectorRadioButton">
                  <property name="text">
-                  <string>String</string>
+                  <string>Vector of double</string>
                  </property>
                 </widget>
                </item>
@@ -171,75 +192,64 @@
              </widget>
             </item>
             <item>
-             <widget class="QGroupBox" name="DimensionsGroupBox">
+             <widget class="QGroupBox" name="SourceGroupBox">
               <property name="title">
-               <string>Dimensions</string>
+               <string/>
               </property>
               <layout class="QGridLayout" name="gridLayout_2">
-               <item row="0" column="1">
-                <widget class="QRadioButton" name="VectorRadioButton">
-                 <property name="styleSheet">
-                  <string notr="true"/>
+               <item row="1" column="1">
+                <spacer name="horizontalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
                  </property>
-                 <property name="text">
-                  <string>Vector:</string>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>80</width>
+                   <height>20</height>
+                  </size>
                  </property>
-                </widget>
-               </item>
-               <item row="2" column="3">
-                <widget class="QSpinBox" name="MatrixRowsSpinBox">
-                 <property name="toolTip">
-                  <string>Number of rows</string>
-                 </property>
-                 <property name="maximum">
-                  <number>10000</number>
-                 </property>
-                 <property name="value">
-                  <number>2</number>
-                 </property>
-                </widget>
+                </spacer>
                </item>
                <item row="0" column="0">
-                <widget class="QRadioButton" name="ScalarRadioButton">
+                <widget class="QCheckBox" name="IdenticalValueCheckbox">
                  <property name="text">
-                  <string>Scalar</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
+                  <string>Same value in whole vector/matrix</string>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="2">
-                <widget class="QRadioButton" name="MatrixRadioButton">
-                 <property name="text">
-                  <string>Matrix:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="2">
-                <widget class="QSpinBox" name="MatrixColsSpinBox">
-                 <property name="toolTip">
-                  <string>Number of columns</string>
-                 </property>
-                 <property name="minimum">
-                  <number>1</number>
-                 </property>
-                 <property name="maximum">
-                  <number>10000</number>
-                 </property>
-                 <property name="value">
-                  <number>2</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QSpinBox" name="VectorSpinBox">
-                 <property name="minimum">
-                  <number>2</number>
-                 </property>
-                 <property name="maximum">
-                  <number>16777215</number>
-                 </property>
+               <item row="1" column="0">
+                <widget class="QWidget" name="DimensionsGroupBox" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="label_10">
+                    <property name="text">
+                     <string>Vector/matrix dimensions: </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="DimensionsLineEdit">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maxLength">
+                     <number>20</number>
+                    </property>
+                    <property name="placeholderText">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </item>
               </layout>
@@ -270,7 +280,7 @@
             <item>
              <widget class="QStackedWidget" name="OptionsWidget">
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="FixedWidget">
                <layout class="QFormLayout" name="formLayout">
@@ -316,13 +326,6 @@
                    </item>
                    <item row="1" column="1">
                     <widget class="QLineEdit" name="MaxValueEdit"/>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QCheckBox" name="RandomIdenticalValueCheckbox">
-                     <property name="text">
-                      <string>Same value in whole vector/matrix</string>
-                     </property>
-                    </widget>
                    </item>
                   </layout>
                  </widget>
@@ -585,15 +588,6 @@
   <tabstop>InjectRadioButton</tabstop>
   <tabstop>VarNameEdit</tabstop>
   <tabstop>UnitsClassEdit</tabstop>
-  <tabstop>DoubleRadioButton</tabstop>
-  <tabstop>IntegerRadioButton</tabstop>
-  <tabstop>BooleanRadioButton</tabstop>
-  <tabstop>ScalarRadioButton</tabstop>
-  <tabstop>VectorRadioButton</tabstop>
-  <tabstop>VectorSpinBox</tabstop>
-  <tabstop>MatrixRadioButton</tabstop>
-  <tabstop>MatrixColsSpinBox</tabstop>
-  <tabstop>MatrixRowsSpinBox</tabstop>
   <tabstop>SourcesBrowseButton</tabstop>
   <tabstop>SourcesFileEdit</tabstop>
   <tabstop>ValueEdit</tabstop>
