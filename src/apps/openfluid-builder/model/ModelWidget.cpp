@@ -357,18 +357,6 @@ void ModelWidget::addGenerator()
   {
     auto VarType = AddGenDlg.getVarType();
     auto Dimensions = AddGenDlg.getDimensions();
-    if (AddGenDlg.getMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
-    {
-      if (Dimensions.isVector())
-      {
-        VarType = openfluid::core::Value::VECTOR;
-      }
-      else if (Dimensions.isMatrix())
-      {
-        VarType = openfluid::core::Value::MATRIX;
-      }
-      Dimensions = openfluid::core::Dimensions();
-    }
     openfluid::fluidx::GeneratorDescriptor* GenDesc =
         new openfluid::fluidx::GeneratorDescriptor(AddGenDlg.getVariableTriplets(),
                                                    AddGenDlg.getMethod(),

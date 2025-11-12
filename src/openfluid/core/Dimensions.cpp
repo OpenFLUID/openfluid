@@ -90,21 +90,50 @@ Dimensions::Dimensions(std::string SerializedVariableSize)
 // =====================================================================
 
 
-void Dimensions::applyDimensions(std::string SerializedVariableSize)
+bool Dimensions::splitDimensions(const std::string& DimsStr, const char& Separator)
+{
+  if (std::size_t P = DimsStr.find(Separator) != std::string::npos)
+  {
+    try
+    {
+      // Not using openfluid::tools::split since not reachable from core namespace
+      Cols = std::stoi(DimsStr.substr(0, P));
+      Rows = std::stoi(DimsStr.substr(P+1));
+      Type = DimensionType::MATRIX;
+      return true;
+    }
+    catch(const std::exception& e)
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+              "generator dimensions parsing failure: string to int conversion");
+    }
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Dimensions::applyDimensions(const std::string& SerializedVariableSize)
 {
   Rows = 1;
   Cols = 1;
 
   if (SerializedVariableSize[0] != s_BeginningSymbol)
   {
-    // compatibility with previous syntax S=1 <=> SCALAR, S>1 <=> VECTOR
-    if (SerializedVariableSize == "" || SerializedVariableSize == "1")
+    if (!splitDimensions(SerializedVariableSize, 'x')) // col x row syntax change in check
     {
-      Type = DimensionType::SCALAR;
-    }
-    else
-    {
-      applyDimensions(s_BeginningSymbol+SerializedVariableSize+s_EndSymbol);
+      // compatibility with previous syntax S=1 <=> SCALAR, S>1 <=> VECTOR
+      if (SerializedVariableSize == "" || SerializedVariableSize == "1")
+      {
+        Type = DimensionType::SCALAR;
+      }
+      else
+      {
+        applyDimensions(s_BeginningSymbol+SerializedVariableSize+s_EndSymbol);
+      }
     }
   }
   else  // String begins with a '['
@@ -124,20 +153,7 @@ void Dimensions::applyDimensions(std::string SerializedVariableSize)
     }
     else if (SplittedGroups == 1)
     {
-      Type = DimensionType::MATRIX;
-      std::size_t P = TrimmedStrDims.find(s_SeparatorSymbol);
-      
-      try
-      {
-        // Not using openfluid::tools::split since not reachable from core namespace
-        Cols = std::stoi(TrimmedStrDims.substr(0, P));
-        Rows = std::stoi(TrimmedStrDims.substr(P+1));
-      }
-      catch(const std::exception& e)
-      {
-        throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                "generator dimensions parsing failure: string to int conversion");
-      }
+      splitDimensions(TrimmedStrDims, s_SeparatorSymbol);
     }
     else
     {

@@ -312,9 +312,9 @@ BOOST_AUTO_TEST_CASE(check_random_vector)
 
     TestSimulation TS;
     TS.defaultSetup();
-    TS.addGenerator(Specs, Params);
     // pair INT / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
+    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
+    
   }
   {
     // TEST VECTOR BOOL
@@ -326,9 +326,8 @@ BOOST_AUTO_TEST_CASE(check_random_vector)
 
     TestSimulation TS;
     TS.defaultSetup();
-    TS.addGenerator(Specs, Params);
     // pair BOOL / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
+    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
   }
 
   // VECTOR OF DOUBLE
@@ -443,9 +442,8 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
 
     TestSimulation TS;
     TS.defaultSetup();
-    TS.addGenerator(Specs, Params);
     // pair INT / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
   }
   {
     // TEST VECTOR BOOL
@@ -457,9 +455,8 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
 
     TestSimulation TS;
     TS.defaultSetup();
-    TS.addGenerator(Specs, Params);
     // pair BOOL / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
+    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
   }
   {
     // TEST VECTOR STRING
@@ -471,12 +468,11 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
 
     TestSimulation TS;
     TS.defaultSetup();
-    TS.addGenerator(Specs, Params);
-    // pair INT / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+    // pair STRING / VECTOR not handled
+    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
   }
 
-  // VECTOR OF DOUBLE
+  // VECTOR OF DOUBLE (deprecated)
 
   openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
                                             {{"SU","a"}}, 
@@ -515,6 +511,48 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
     TestSimulation TS;
     TS.defaultSetup();
     TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+  }
+  
+  // OPENFLUID VECTOR
+
+  openfluid::machine::GeneratorSpecs SpecsVector{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
+                                            {{"SU","a"}}, 
+                                             openfluid::core::Value::VECTOR,
+                                             openfluid::core::Dimensions(3)};
+  {
+    // TEST VECTOR CELLS FROM VAL
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "2.4"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(SpecsVector, Params);
+    TS.wholeSimulation();
+    
+    const auto Vector = TS.getLatestValue("SU", 1, "a").value()->asVectorValue();
+    BOOST_REQUIRE_CLOSE(Vector.get(0), 2.4, 0.00001);
+    BOOST_REQUIRE_CLOSE(Vector.get(0), Vector.get(1), 0.00001);
+  }
+  {
+    // TEST VECTOR CELLS FROM VECTOR
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[1,5e-2,2.3]"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(SpecsVector, Params);
+    TS.wholeSimulation();
+    
+    const auto Vector = TS.getLatestValue("SU", 1, "a").value()->asVectorValue();
+    BOOST_REQUIRE_CLOSE(Vector.get(0), 1, 0.00001);
+    BOOST_REQUIRE_CLOSE(Vector.get(1), 0.05, 0.00001);
+  }
+  {
+    // TEST VECTOR CELLS FROM VECTOR OF WRONG DIM: 3 expected, 2 given
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[1,5e-2]"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(SpecsVector, Params);
     BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
   }
 }

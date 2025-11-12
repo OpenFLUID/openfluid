@@ -51,6 +51,11 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
                                        const openfluid::core::Dimensions& VD):
     SimulatorSignature(), Method(M), VariableTriplets(V), VariableType(VT), VariableDimensions(VD)
 {
+  if ((VariableType == openfluid::core::Value::INTEGER || VariableType == openfluid::core::Value::BOOLEAN || VariableType == openfluid::core::Value::STRING) && !VD.isScalar())
+  {
+          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+            "invalid generator dimension/type pair in signature");
+  }
   const auto VarPairs = openfluid::tools::deduceVarPairs(VariableTriplets);
   ID = openfluid::tools::buildGeneratorID(VarPairs, VariableDimensions.strType());
 

@@ -37,7 +37,9 @@
   @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
+ // OpenFLUID:stylecheck:!brac
 
+ 
 #include <openfluid/base/RunContextManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/MachineListener.hpp>
@@ -390,21 +392,13 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
               "invalid generator value type in model instance");
           }
         }
-        else if (GenSignature->VariableType == openfluid::core::Value::DOUBLE)
+        else if (GenSignature->VariableDimensions.isVector())
         {
-          if (GenSignature->VariableDimensions.isVector())
-          {
-            CurrentItem->Body.reset(new FixedGenerator<openfluid::core::VectorValue>());
-          }
-          else if (GenSignature->VariableDimensions.isMatrix())
-          {
-            CurrentItem->Body.reset(new FixedGenerator<openfluid::core::MatrixValue>());
-          }
-          else
-          {
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-              "invalid generator dimension type in model instance");
-          }
+          CurrentItem->Body.reset(new FixedGenerator<openfluid::core::VectorValue>());
+        }
+        else if (GenSignature->VariableDimensions.isMatrix())
+        {
+          CurrentItem->Body.reset(new FixedGenerator<openfluid::core::MatrixValue>());
         }
         else
         {
@@ -414,7 +408,9 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
       }
       else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM)
       {
-        if (GenSignature->VariableType == openfluid::core::Value::DOUBLE)
+        if (GenSignature->VariableType == openfluid::core::Value::DOUBLE || \
+            GenSignature->VariableType == openfluid::core::Value::VECTOR || \
+            GenSignature->VariableType == openfluid::core::Value::MATRIX)
         {
           CurrentItem->Body.reset(new DoubleRandomGenerator());
         }
