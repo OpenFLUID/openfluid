@@ -55,7 +55,7 @@
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
@@ -458,13 +458,13 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
       else 
       {
         mp_Listener->stageMessage("Error while creating branch info file");
-        openfluid::utils::log::error("Migration", "Error while creating branch info file");
+        openfluid::base::log::error("Migration", "Error while creating branch info file");
       }
     }
     catch(openfluid::utils::GitOperationException& E)
     {
       mp_Listener->stageMessage(E.what());
-      openfluid::utils::log::error("Migration", E.what());
+      openfluid::base::log::error("Migration", E.what());
     }
   }
 
@@ -781,7 +781,7 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
           catch (std::exception & E)
           {
             //TODO use listener more cleverly with internal logs
-            openfluid::utils::log::error("Migration", 
+            openfluid::base::log::error("Migration", 
                                        "Dispatch failure: "+std::string(E.what()));
             mp_Listener->onDispatchFilesEnd(openfluid::base::Listener::Status::ERROR_STATUS);
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, 
@@ -789,7 +789,7 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
           }
           catch (...)
           {
-            openfluid::utils::log::error("Migration", 
+            openfluid::base::log::error("Migration", 
                                        "Dispatch failure");
             mp_Listener->onDispatchFilesEnd(openfluid::base::Listener::Status::ERROR_STATUS);
             throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, "Dispatch failure");

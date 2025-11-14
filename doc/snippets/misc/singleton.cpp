@@ -42,7 +42,7 @@
 //! [singletonmacros_def]
 // .hpp file
 
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 class ClassicExample
 {

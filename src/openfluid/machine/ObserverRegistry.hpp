@@ -48,7 +48,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/WareRegistry.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace machine {

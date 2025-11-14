@@ -37,8 +37,8 @@
 */
 
 
-#ifndef __OPENFLUID_UTILS_INTERNALLOGGER_HPP__
-#define __OPENFLUID_UTILS_INTERNALLOGGER_HPP__
+#ifndef __OPENFLUID_BASE_INTERNALLOGGER_HPP__
+#define __OPENFLUID_BASE_INTERNALLOGGER_HPP__
 
 
 #include <iostream>
@@ -50,10 +50,10 @@
 #include <openfluid/config.hpp>
 #include <openfluid/tools/FileLogger.hpp>
 
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 
-namespace openfluid { namespace utils {
+namespace openfluid { namespace base {
 
 
 class OPENFLUID_API LoggingSystem
@@ -128,4 +128,4 @@ void OPENFLUID_API error(const std::string& Context, const std::string& Msg);
 } }  // namespaces
 
 
-#endif /* __OPENFLUID_UTILS_INTERNALLOGGER_HPP__ */
+#endif /* __OPENFLUID_BASE_INTERNALLOGGER_HPP__ */

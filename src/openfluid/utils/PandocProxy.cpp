@@ -39,7 +39,7 @@
 
 #include <openfluid/utils/PandocProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/config.hpp>
@@ -62,7 +62,7 @@ void PandocProxy::findPandocProgram()
       const auto& ExitCode = P.getExitCode();
       if (ExitCode != 0)
       {
-        openfluid::utils::log::error("Pandoc", "Version check failed. Exit code: "+std::to_string(ExitCode));
+        openfluid::base::log::error("Pandoc", "Version check failed. Exit code: "+std::to_string(ExitCode));
       }
       const auto OutLines = P.stdOutLines();
 
@@ -73,7 +73,7 @@ void PandocProxy::findPandocProgram()
       }
       else
       {
-        openfluid::utils::log::error("Pandoc", "Version parsing failed. Output was: \n" + \
+        openfluid::base::log::error("Pandoc", "Version parsing failed. Output was: \n" + \
                                                 openfluid::tools::join(OutLines, "\n"));
       }
     }

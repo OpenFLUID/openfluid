@@ -42,7 +42,7 @@
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
 #include <openfluid/utils/Process.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/config.hpp>
@@ -144,12 +144,12 @@ int callRemoteProcess(openfluid::utils::Process::Command Cmd, std::string Contex
   P.run();
   if (P.getExitCode() == 0)
   {
-    openfluid::utils::log::debug("Git", Context+" OK");
+    openfluid::base::log::debug("Git", Context+" OK");
   }
   else
   {
-    openfluid::utils::log::debug("Git", Context+" out: "+openfluid::tools::join(P.stdOutLines(), "\n"));
-    openfluid::utils::log::error("Git", Context+" err: "+openfluid::tools::join(P.stdErrLines(), "\n"));
+    openfluid::base::log::debug("Git", Context+" out: "+openfluid::tools::join(P.stdOutLines(), "\n"));
+    openfluid::base::log::error("Git", Context+" err: "+openfluid::tools::join(P.stdErrLines(), "\n"));
   }
   return P.getExitCode();
 }
@@ -179,7 +179,7 @@ const std::string GitProxy::getCurrentBranchName(const std::string& Path)
   if (!canGetBranch())
   {
     std::string ErrorMsg = "Error with git branch command: Git version not supported (" + m_Version + ")";
-    openfluid::utils::log::error("Git", ErrorMsg);
+    openfluid::base::log::error("Git", ErrorMsg);
     throw GitOperationException(ErrorMsg);
   }
   openfluid::utils::Process::Command Cmd{
@@ -197,7 +197,7 @@ const std::string GitProxy::getCurrentBranchName(const std::string& Path)
   else
   {
     std::string ErrorMsg = "Error with git branch command in path : " + Path;
-    openfluid::utils::log::error("Git", ErrorMsg);
+    openfluid::base::log::error("Git", ErrorMsg);
     throw GitOperationException(ErrorMsg);
   }
 }

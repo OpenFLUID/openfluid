@@ -52,7 +52,7 @@
 #include <openfluid/ui/common/UIHelpers.hpp>
 #include <openfluid/ui/common/OpenFLUIDSplashScreen.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 
 #include "BuilderApp.hpp"
 #include "builderconfig.hpp"
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 
     do
     {
-      openfluid::utils::log::setup(true, "", true);
+      openfluid::base::log::setup(true, "", true);
       
       openfluid::ui::common::OpenFLUIDSplashScreen Splash(
         openfluid::ui::common::getImage("openfluid_splash_builder","builder")

@@ -39,7 +39,7 @@
 
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/config.hpp>
 
@@ -69,7 +69,7 @@ void CMakeProxy::findCMakeProgram()
     else
     {
       //TODO transmit behaviour if path empty
-      openfluid::utils::log::warning("CMakeProxy", "CMake path is empty"); 
+      openfluid::base::log::warning("CMakeProxy", "CMake path is empty"); 
     }
   }
 }

@@ -43,7 +43,7 @@
 
 #include <QWidget>
 
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 #include "ExtensionPluginsManager.hpp"
 #include "ExtensionInstance.hpp"

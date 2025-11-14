@@ -48,7 +48,7 @@
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/utils/CommandLineParser.hpp>
 #include <openfluid/utils/StructuredCommandLineParser.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
 
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
   // CMD app generates no internal log by default, since it can be used in pipelines that shoud not impact standard 
   // log file, use LOG_PATH env var to generate an internal log recording
-  openfluid::utils::log::setup(false, "", false);  
+  openfluid::base::log::setup(false, "", false);  
 
 #if defined OPENFLUID_OS_WINDOWS
   std::string PathSepText = "semicolon";

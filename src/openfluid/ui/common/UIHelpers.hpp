@@ -60,7 +60,7 @@
 #include <QDesktopServices>
 
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/utils/Process.hpp>
 
 
@@ -268,15 +268,15 @@ inline void openPath(std::string CurrentPath, bool IsRemote=false)
   bool Success = PR.run();
   if (!Success)
   {
-    openfluid::utils::log::info("Path opening", "WSL context, path: "+CurrentPath);
-    openfluid::utils::log::info("Path opening", "status: "+std::to_string(Success));
+    openfluid::base::log::info("Path opening", "WSL context, path: "+CurrentPath);
+    openfluid::base::log::info("Path opening", "status: "+std::to_string(Success));
     for (const auto& L : PR.stdOutLines())
     {
-      openfluid::utils::log::debug("Path opening", L);
+      openfluid::base::log::debug("Path opening", L);
     }
     for (const auto& L : PR.stdErrLines())
     {
-      openfluid::utils::log::error("Path opening", L);
+      openfluid::base::log::error("Path opening", L);
     }
   }
 #else

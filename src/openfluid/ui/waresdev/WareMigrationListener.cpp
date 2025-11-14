@@ -42,7 +42,7 @@
 #include <iomanip>
 
 #include <openfluid/ui/waresdev/WareMigrationListener.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -308,7 +308,7 @@ void WareMigrationListener::onDocEnd(openfluid::base::Listener::Status Status)
 
 void WareMigrationListener::stageMessage(const std::string& Msg)
 {
-  openfluid::utils::log::info("Migration", Msg);
+  openfluid::base::log::info("Migration", Msg);
   if (m_Verbose)
   {
     if (!m_IsFirstStageMsg)

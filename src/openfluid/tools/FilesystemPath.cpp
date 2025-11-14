@@ -45,7 +45,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include <openfluid/tools/FilesystemPath.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 
 
 // =====================================================================
