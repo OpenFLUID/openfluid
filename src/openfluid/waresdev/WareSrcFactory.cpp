@@ -49,7 +49,7 @@
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/GitProxy.hpp>
 #include <openfluid/config.hpp>
@@ -365,7 +365,7 @@ std::string WareSrcFactory::createBuilderext(const openfluid::builderext::Builde
   }
   catch(const openfluid::base::FrameworkException& E)
   {
-    openfluid::utils::log::error("BuilderExt", E.what());
+    openfluid::base::log::error("BuilderExt", E.what());
     throw;
   }
 

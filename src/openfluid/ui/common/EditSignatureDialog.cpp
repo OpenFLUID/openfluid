@@ -44,7 +44,7 @@
 #include <openfluid/ui/common/EditSignatureDialog.hpp>
 #include <openfluid/ui/config.hpp>
 #include <openfluid/ui/common/SignatureDataEditDefs.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 
 #include "ui_EditSignatureDialog.h"
 
@@ -152,7 +152,7 @@ void EditSignatureDialog::checkDataTable()
   }
   catch(const openfluid::base::FrameworkException& E)
   {
-    openfluid::utils::log::warning("Signature edit", E.what());
+    openfluid::base::log::warning("Signature edit", E.what());
     setMessage();
   }
 }

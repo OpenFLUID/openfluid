@@ -44,7 +44,7 @@
 
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/tools/SettingsBackend.hpp>
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 #include <openfluid/dllexport.hpp>
 
 

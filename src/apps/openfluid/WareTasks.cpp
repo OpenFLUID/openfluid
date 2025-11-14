@@ -75,7 +75,7 @@ void WareTasks::postWareCreation(const std::string& WarePath) const
                                                        m_Cmd.getOptionValue("set-remote")) != 0)
     {
       std::cout << "A warning was issued during ware creation, check OpenFLUID log file for details." << std::endl;
-      openfluid::utils::log::warning("Ware creation", "set-remote failed");
+      openfluid::base::log::warning("Ware creation", "set-remote failed");
     }
   }
 }

@@ -46,7 +46,7 @@
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/machine/GeneratorSignature.hpp>
 #include <openfluid/machine/WareRegistry.hpp>
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 #include <openfluid/tools/VarHelpers.hpp>
 
 

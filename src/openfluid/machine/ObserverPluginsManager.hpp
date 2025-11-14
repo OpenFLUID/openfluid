@@ -46,7 +46,7 @@
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
 #include <openfluid/base/Environment.hpp>
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace machine {

@@ -47,7 +47,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -139,7 +139,7 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
   if (FromUrl.isEmpty() || ToPath.isEmpty())
   {
     std::string ErrorMsg = "Empty remote url or empty destination path";
-    openfluid::utils::log::error("Git", ErrorMsg);
+    openfluid::base::log::error("Git", ErrorMsg);
     emit error(tr(ErrorMsg.c_str()));
     return false;
   }
@@ -152,7 +152,7 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
     if (GitIndexLockPath.exists())
     {
       std::string ErrorMsg = "Can not operate, git lock detected.";
-      openfluid::utils::log::error("Git", ErrorMsg);
+      openfluid::base::log::error("Git", ErrorMsg);
       emit error(tr(ErrorMsg.c_str()));
       return false;
     }
@@ -205,13 +205,13 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
     GitCommand += " " + p.toStdString();
   }
 
-  openfluid::utils::log::info("Git", GitCommand);
+  openfluid::base::log::info("Git", GitCommand);
   mp_Process->start(QString::fromStdString(m_LocalGitProgram),Args);
   if (!mp_Process->waitForStarted())
   {
       delete mp_Process;
       mp_Process = nullptr;
-      openfluid::utils::log::error("Git", "Git failed start");
+      openfluid::base::log::error("Git", "Git failed start");
       return false;
   }
   mp_Process->waitForFinished(-1);
@@ -224,7 +224,7 @@ bool GitUIProxy::launchAuthCommand(QStringList Args, const QString& FromUrl, con
   {
     ResContent = "/EMPTY/";
   }
-  openfluid::utils::log::debug("Git", 
+  openfluid::base::log::debug("Git", 
                              "Git process content: "+ResContent);
   
   int ErrCode = mp_Process->exitCode();
@@ -364,7 +364,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
   //     {
   //       SummaryStatusCode = 1;
   //       StandardOutput += tr("Submodule file removal failed\n");
-  //       openfluid::utils::log::error("Git", "Submodule file removal failed: "+TmpErr.message());
+  //       openfluid::base::log::error("Git", "Submodule file removal failed: "+TmpErr.message());
   //     }
   //   }
   // }
@@ -374,7 +374,7 @@ std::pair<bool, QString>  GitUIProxy::removeSubmodule(const QString& MainPathStr
   {
     StandardOutput += tr("Submodule successfully removed");
   }
-  openfluid::utils::log::debug("Git", StandardOutput.toStdString());
+  openfluid::base::log::debug("Git", StandardOutput.toStdString());
   return std::pair(SummaryStatusCode, StandardOutput);
 }
 
@@ -418,7 +418,7 @@ bool GitUIProxy::checkout(const QString& Path, const QString& BranchName, bool N
     std::string CurrentBranch = GitUIProxy::getCurrentBranchName(Path.toStdString());
     if (QString::fromStdString(CurrentBranch) != BranchName)
     {
-      openfluid::utils::log::debug("Git", ExitData.second.toStdString());
+      openfluid::base::log::debug("Git", ExitData.second.toStdString());
       return 0;
     }
     return 1;
@@ -428,7 +428,7 @@ bool GitUIProxy::checkout(const QString& Path, const QString& BranchName, bool N
     // rely on exitcode
     if (ExitData.first != 0)
     {
-      openfluid::utils::log::debug("Git", ExitData.second.toStdString());
+      openfluid::base::log::debug("Git", ExitData.second.toStdString());
       return 0;
     }
     return 1;

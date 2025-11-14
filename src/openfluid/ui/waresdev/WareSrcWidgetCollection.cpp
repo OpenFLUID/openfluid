@@ -52,7 +52,7 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/WorkspaceManager.hpp>
 #include <openfluid/config.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
@@ -409,9 +409,9 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
                 QString gitBranchErrorMsg = tr("Error while deleting previous git branch");
                 QMessageBox::warning(nullptr, tr("Revert migration failure"), 
                                   gitBranchErrorMsg, QMessageBox::Close);
-                openfluid::utils::log::error("Migration:revert", gitBranchErrorMsg.toStdString());
-                openfluid::utils::log::debug("Migration:revert", Process.readAllStandardOutput().toStdString());
-                openfluid::utils::log::debug("Migration:revert", Process.readAllStandardError().toStdString());
+                openfluid::base::log::error("Migration:revert", gitBranchErrorMsg.toStdString());
+                openfluid::base::log::debug("Migration:revert", Process.readAllStandardOutput().toStdString());
+                openfluid::base::log::debug("Migration:revert", Process.readAllStandardError().toStdString());
                 return;
               }
             }
@@ -420,7 +420,7 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
               QString gitCheckoutErrorMsg = tr("Not able to checkout previous git branch");
               QMessageBox::warning(nullptr, tr("Revert migration failure"), 
                                   gitCheckoutErrorMsg, QMessageBox::Close);
-              openfluid::utils::log::error("Migration:revert", gitCheckoutErrorMsg.toStdString());
+              openfluid::base::log::error("Migration:revert", gitCheckoutErrorMsg.toStdString());
               return;
             }
           }
@@ -429,7 +429,7 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
         {
           QMessageBox::warning(nullptr, tr("Revert migration failure"), 
                                   tr(E.what()), QMessageBox::Close);
-          openfluid::utils::log::error("Migration:revert", E.what());
+          openfluid::base::log::error("Migration:revert", E.what());
           return;
         }
       }
@@ -446,12 +446,12 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
       {
         if (!Path.removeDirectory())
         {
-          openfluid::utils::log::error("Migration:revert", "Directory removal failed: "+Path.toGeneric());
+          openfluid::base::log::error("Migration:revert", "Directory removal failed: "+Path.toGeneric());
         }  
       }
       if (!openPath(WarePath))
       {
-        openfluid::utils::log::error("Migration:revert", "Ware reopening failed: "+WarePath.toStdString());
+        openfluid::base::log::error("Migration:revert", "Ware reopening failed: "+WarePath.toStdString());
       }
     }   
     else 

@@ -46,7 +46,7 @@
 
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/utils/Process.hpp>
 
 
@@ -172,7 +172,7 @@ bool Process::run()
     
     if (!openfluid::tools::Path(WorkDir).isDirectory())
     {
-      openfluid::utils::log::error("Process", "Working directory does not exist: "+WorkDir);
+      openfluid::base::log::error("Process", "Working directory does not exist: "+WorkDir);
       return false;
     }
     
@@ -233,13 +233,13 @@ bool Process::run()
   catch(const boost::process::process_error& E)
   {
     m_ErrorMsg = std::string(E.what());
-    openfluid::utils::log::error("Process", std::string("Boost process error: ")+E.what());
+    openfluid::base::log::error("Process", std::string("Boost process error: ")+E.what());
     return false;
   }
   catch(...)
   {
     // TODO for logging purposes
-    openfluid::utils::log::error("Process", "Boost process error");
+    openfluid::base::log::error("Process", "Boost process error");
     return false;
   }
 
