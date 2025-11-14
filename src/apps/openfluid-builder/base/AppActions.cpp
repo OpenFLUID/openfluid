@@ -225,6 +225,8 @@ void AppActions::createActions()
   m_Actions["HelpExamplesOpen"]->setIcon(openfluid::ui::common::getIcon("project-open-example","/builder"));
 
   m_Actions["HelpExamplesRestore"] = new openfluid::ui::common::DefaultAction( tr("Reinstall examples projects"), this);
+  m_Actions["HelpExamplesWaresRestore"] = new openfluid::ui::common::DefaultAction( tr("Reinstall examples wares"), 
+                                                                                    this);
 
   m_Actions["HelpAbout"] = new openfluid::ui::common::DefaultAction( tr("About"), this);
   m_Actions["HelpAbout"]->setMenuRole(QAction::AboutRole);
@@ -280,6 +282,7 @@ void AppActions::setProjectMode()
   }
 
   m_Actions["HelpExamplesRestore"]->setVisible(false);
+  m_Actions["HelpExamplesWaresRestore"]->setVisible(false);
 
 #ifdef ENABLE_WARESDEV_INTEGRATION
   mp_DevelopmentMenu->menuAction()->setVisible(true);
@@ -521,6 +524,7 @@ void AppActions::createMenus(MainWindow& MainWin)
   SubMenu = Menu->addMenu(tr("Examples"));
   SubMenu->addAction(action("HelpExamplesOpen"));
   SubMenu->addAction(action("HelpExamplesRestore"));
+  SubMenu->addAction(action("HelpExamplesWaresRestore"));
   Menu->addSeparator();
   Menu->addAction(action("HelpAbout"));
 

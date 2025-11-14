@@ -34,8 +34,11 @@
   @file DataTasks.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
+
+#include <functional>
 
 #include "TasksBase.hpp"
 
@@ -51,6 +54,14 @@ class DataTasks : public TasksBase
     int generateData(const std::string Path, bool WithExample) const;
 
     int processCreateData() const;
+
+    bool processInstall(const std::string& OptStr,
+                        std::function<bool(const std::string&, const std::string&, const std::string&, bool)> 
+                        InstallFunc,
+                        std::function<bool(const std::string&, const std::string&, bool)> InstallAllFunc,
+                        const std::string& ResPath,
+                        const std::string& InstPath,
+                        const bool Force) const;
 
     int processInstallExamples() const;
 

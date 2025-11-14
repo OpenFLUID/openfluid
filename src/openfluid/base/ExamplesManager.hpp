@@ -34,6 +34,7 @@
   @file ExamplesManager.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -53,6 +54,8 @@ class OPENFLUID_API ExamplesManager
 {
 
   private:
+
+    static void printSuccessStatus(const bool& Ok);
 
     static std::string buildRessourcesPath(const std::string& Path);
 
@@ -118,6 +121,28 @@ class OPENFLUID_API ExamplesManager
     */
     static bool installAllSimulators(const std::string& ResourcesPath = "", const std::string& InstallPath = "",
                                      const bool Force = false);
+
+    /**
+      Installs all example observers
+      @param[in] ResourcesPath Path to the examples ressources, 
+                               uses standard ressources path if empty (default is empty)
+      @param[in] InstallPath Path where to install the examples ressources, 
+                             uses user openfluid path if empty (default is empty)
+      @param[in] Force If true, the installation is forced even if it already exists (default is false)
+    */
+    static bool installAllObservers(const std::string& ResourcesPath = "", const std::string& InstallPath = "",
+                                    const bool Force = false);
+
+    /**
+      Installs all example wares (simulators and observers)
+      @param[in] ResourcesPath Path to the examples ressources, 
+                               uses standard ressources path if empty (default is empty)
+      @param[in] InstallPath Path where to install the examples ressources, 
+                             uses user openfluid path if empty (default is empty)
+      @param[in] Force If true, the installation is forced even if it already exists (default is false)
+    */
+    static bool installAllWares(const std::string& ResourcesPath = "", const std::string& InstallPath = "",
+                                const bool Force = false);
 
     /**
       Installs all example projects and simulators

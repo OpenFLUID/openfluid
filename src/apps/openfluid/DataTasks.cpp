@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
 */
 
 
@@ -242,52 +243,65 @@ int DataTasks::processCreateData() const
 // =====================================================================
 
 
+bool DataTasks::processInstall(const std::string& OptStr,
+                              std::function<bool(const std::string&, const std::string&, const std::string&, bool)> 
+                              InstallFunc,
+                              std::function<bool(const std::string&, const std::string&, bool)> InstallAllFunc,
+                              const std::string& ResPath,
+                              const std::string& InstPath,
+                              const bool Force) const
+{
+  if (!OptStr.empty() && OptStr != "*")
+  {
+    auto Selection = openfluid::tools::split(OptStr,",");
+    bool AllIsOK = true;
+    for (const auto& S : Selection)
+    {
+      AllIsOK &= InstallFunc(S,ResPath,InstPath,Force);
+    }
+    return AllIsOK;
+  }
+  else
+  {
+    return InstallAllFunc(ResPath,InstPath,Force);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 int DataTasks::processInstallExamples() const
 {
   std::string ResPath = m_Cmd.getOptionValue("resources-path");
   std::string InstPath = m_Cmd.getOptionValue("install-path");
 
-  if (m_Cmd.isOptionActive("simulators-only"))
+  if (m_Cmd.isOptionActive("simulators"))
   {
-    auto OptStr = m_Cmd.getOptionValue("simulators-only");
-    if (!OptStr.empty() && OptStr != "*")
-    {
-      auto Selection = openfluid::tools::split(OptStr,",");
-      bool AllIsOK = true;
-      for (const auto& S : Selection)
-      {
-        AllIsOK &= openfluid::base::ExamplesManager::installSimulator(S,ResPath,InstPath,m_Cmd.isOptionActive("force"));
-      }
-      return (AllIsOK ? 0 : error("problems occurred during installation"));
-    }
-    else
-    {
-      return (openfluid::base::ExamplesManager::installAllSimulators(ResPath,InstPath,m_Cmd.isOptionActive("force")) ?
-              0 : error("problems occurred during installation"));
-    }
+    return (processInstall(m_Cmd.getOptionValue("simulators"), openfluid::base::ExamplesManager::installSimulator,
+                           openfluid::base::ExamplesManager::installAllSimulators,
+                           ResPath, InstPath, m_Cmd.isOptionActive("force"))) ? 
+            0 : error("problems occurred during simulators installation");
+  }
+
+  if (m_Cmd.isOptionActive("observers"))
+  {
+    return (processInstall(m_Cmd.getOptionValue("observers"), openfluid::base::ExamplesManager::installObserver,
+                           openfluid::base::ExamplesManager::installAllObservers,
+                           ResPath, InstPath, m_Cmd.isOptionActive("force"))) ? 
+            0 : error("problems occurred during observers installation");
   }
   
-  if (m_Cmd.isOptionActive("projects-only"))
+  if (m_Cmd.isOptionActive("projects"))
   {
-    auto OptStr = m_Cmd.getOptionValue("projects-only");
-    if (!OptStr.empty() && OptStr != "*")
-    {
-      auto Selection = openfluid::tools::split(OptStr,",");
-      bool AllIsOK = true;
-      for (const auto& S : Selection)
-      {
-        AllIsOK &= openfluid::base::ExamplesManager::installProject(S,ResPath,InstPath,m_Cmd.isOptionActive("force"));
-      }
-      return (AllIsOK ? 0 : error("problems occurred during installation"));
-    }
-    else
-    {
-      return (openfluid::base::ExamplesManager::installAllProjects(ResPath,InstPath,m_Cmd.isOptionActive("force")) ?
-              0 : error("problems occurred during installation"));
-    }
+    return (processInstall(m_Cmd.getOptionValue("projects"), openfluid::base::ExamplesManager::installProject,
+                           openfluid::base::ExamplesManager::installAllProjects,
+                           ResPath, InstPath, m_Cmd.isOptionActive("force"))) ? 
+            0 : error("problems occurred during projects installation");
   }
   
-  if (!m_Cmd.isOptionActive("simulators-only") && !m_Cmd.isOptionActive("projects-only"))
+  if (!m_Cmd.isOptionActive("simulators") && !m_Cmd.isOptionActive("observers") && !m_Cmd.isOptionActive("projects"))
   {
     return (openfluid::base::ExamplesManager::installAll(ResPath,InstPath,m_Cmd.isOptionActive("force")) ?
             0 : error("problems occurred during installation"));
