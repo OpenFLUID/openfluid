@@ -50,7 +50,7 @@
 #endif
 #include <QRegularExpression>
 
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 #include <openfluid/dllexport.hpp>
 
 

@@ -4,6 +4,7 @@ SET (OPENFLUID_BASE_CPP Environment.cpp RunContextManager.cpp ExamplesManager.cp
                         SimulationStatus.cpp
                         SimulationLogger.cpp
                         PreferencesManager.cpp WorkspaceManager.cpp  
+                        InternalLogger.cpp
                         )
 
 SET (OPENFLUID_BASE_HPP Init.hpp
@@ -14,6 +15,8 @@ SET (OPENFLUID_BASE_HPP Init.hpp
                         SimulationStatus.hpp
                         SimulationLogger.hpp
                         PreferencesManager.hpp WorkspaceManager.hpp
+                        SingletonMacros.hpp
+                        InternalLogger.hpp
                         )
 
 

@@ -46,7 +46,7 @@
 #include <string>
 
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 #include <openfluid/tools/SettingsBackend.hpp>
 #include <openfluid/dllexport.hpp>
 

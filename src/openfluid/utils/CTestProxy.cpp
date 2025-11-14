@@ -39,7 +39,7 @@
 
 #include <openfluid/utils/CTestProxy.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
 #include <openfluid/config.hpp>
 
@@ -67,13 +67,13 @@ void CTestProxy::findCTestProgram()
       }
       else
       {
-        openfluid::utils::log::warning("CTestProxy", "Issue with ctest detection"); 
+        openfluid::base::log::warning("CTestProxy", "Issue with ctest detection"); 
       }
     }
     else
     {
       //TODO transmit behaviour if path empty
-      openfluid::utils::log::warning("CTestProxy", "CTest path is empty"); 
+      openfluid::base::log::warning("CTestProxy", "CTest path is empty"); 
     }
   }
 }

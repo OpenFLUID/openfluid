@@ -39,7 +39,7 @@
 
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 
 
@@ -98,7 +98,7 @@ SimulatorPluginsManager::getAvailableGhosts(const std::string& IDPattern) const
     }
     catch (std::exception& E)
     {
-      openfluid::utils::log::error("Ghosts", E.what());
+      openfluid::base::log::error("Ghosts", E.what());
     }
    
   }

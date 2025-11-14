@@ -46,7 +46,7 @@
 
 #include <openfluid/machine/WarePluginsManager.hpp>
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 #include "builderconfig.hpp"
 

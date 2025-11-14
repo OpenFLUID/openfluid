@@ -54,7 +54,7 @@
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/waresdev/WareCppWriterHelpers.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
@@ -98,7 +98,7 @@ inline openfluid::ware::WareType detectWareType(const std::string& Path)
   }
   catch (openfluid::thirdparty::json::exception& E)
   {
-    openfluid::utils::log::error("Waresdev", E.what());
+    openfluid::base::log::error("Waresdev", E.what());
     return openfluid::ware::WareType::UNDEFINED;
   }
 
@@ -131,7 +131,7 @@ inline std::pair<openfluid::ware::WareType,openfluid::ware::WareID_t> detectWare
   }
   catch (openfluid::thirdparty::json::exception& E)
   {
-    openfluid::utils::log::error("Waresdev", E.what());
+    openfluid::base::log::error("Waresdev", E.what());
     Type = openfluid::ware::WareType::UNDEFINED;
   }  
 

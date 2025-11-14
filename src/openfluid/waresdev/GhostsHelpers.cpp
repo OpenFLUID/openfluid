@@ -42,7 +42,7 @@
 #include <openfluid/waresdev/SimulatorSignatureXMLReader.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -76,7 +76,7 @@ bool migrateGhostSimulator(const std::string& ParentPath, const openfluid::ware:
 
   if (!OldPathObj.isFile())
   {
-    openfluid::utils::log::error("Ghost migration", 
+    openfluid::base::log::error("Ghost migration", 
                                  "Path is not a file: " + OldPathObj.toNative());
     return false;
   }
@@ -89,7 +89,7 @@ bool migrateGhostSimulator(const std::string& ParentPath, const openfluid::ware:
       const auto OldPathRenamed = oldSignaturePath(ParentPath, ID).toNative();
       if (!openfluid::tools::Filesystem::renameFile(OldPathObj.toNative(), OldPathRenamed))
       {
-        openfluid::utils::log::error("Ghost migration", 
+        openfluid::base::log::error("Ghost migration", 
           "Rename failed from "+OldPathObj.toNative()+" to "+OldPathRenamed);
       }
       return true;
@@ -97,12 +97,12 @@ bool migrateGhostSimulator(const std::string& ParentPath, const openfluid::ware:
     catch(const std::exception& e)
     {
       std::cout << "Error during ghost simulator JSON write: " << e.what() << std::endl;
-      openfluid::utils::log::error("Ghost migration", 
+      openfluid::base::log::error("Ghost migration", 
                                     "Error during ghost simulator JSON write: " + std::string(e.what()));
       return false;
     }
   }
-  openfluid::utils::log::error("Ghost migration", 
+  openfluid::base::log::error("Ghost migration", 
                                "XML loading failure for file " + OldPathObj.toGeneric());
   return false;
 }

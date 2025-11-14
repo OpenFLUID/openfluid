@@ -49,7 +49,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/tools/Filesystem.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 
 #include "tests-config.hpp"
 
@@ -60,18 +60,18 @@
 
 BOOST_AUTO_TEST_CASE(check_logging_setup)
 {
-  openfluid::utils::log::error("TEST", "foo");
-  BOOST_CHECK(!openfluid::utils::LoggingSystem::instance()->isActivated());
+  openfluid::base::log::error("TEST", "foo");
+  BOOST_CHECK(!openfluid::base::LoggingSystem::instance()->isActivated());
 
-  openfluid::utils::log::setup();
-  std::string PathDefault = openfluid::utils::LoggingSystem::instance()->getLogPath();
-  BOOST_CHECK(openfluid::utils::LoggingSystem::instance()->isActivated());
-  openfluid::utils::LoggingSystem::instance()->close();
+  openfluid::base::log::setup();
+  std::string PathDefault = openfluid::base::LoggingSystem::instance()->getLogPath();
+  BOOST_CHECK(openfluid::base::LoggingSystem::instance()->isActivated());
+  openfluid::base::LoggingSystem::instance()->close();
 
-  openfluid::utils::log::setup(true, "./bar");
-  std::string PathCustom = openfluid::utils::LoggingSystem::instance()->getLogPath();
+  openfluid::base::log::setup(true, "./bar");
+  std::string PathCustom = openfluid::base::LoggingSystem::instance()->getLogPath();
   BOOST_CHECK(PathDefault != PathCustom);
-  openfluid::utils::LoggingSystem::instance()->close();
+  openfluid::base::LoggingSystem::instance()->close();
 }
 
 
@@ -81,21 +81,21 @@ BOOST_AUTO_TEST_CASE(check_logging_setup)
 
 BOOST_AUTO_TEST_CASE(check_logging_output)
 {
-  openfluid::utils::log::setup();
-  openfluid::utils::log::error("TEST", "foo");
-  BOOST_CHECK(openfluid::utils::LoggingSystem::instance()->getLastLog() == "");
+  openfluid::base::log::setup();
+  openfluid::base::log::error("TEST", "foo");
+  BOOST_CHECK(openfluid::base::LoggingSystem::instance()->getLastLog() == "");
 
   // check redirection to vector of logs
-  openfluid::utils::LoggingSystem::instance()->setOutput(false);
-  openfluid::utils::log::error("TEST", "foo");
-  BOOST_CHECK(openfluid::utils::LoggingSystem::instance()->getLastLog() == "foo");
+  openfluid::base::LoggingSystem::instance()->setOutput(false);
+  openfluid::base::log::error("TEST", "foo");
+  BOOST_CHECK(openfluid::base::LoggingSystem::instance()->getLastLog() == "foo");
 
   // check log file output content
-  openfluid::utils::LoggingSystem::instance()->setOutput(true);
+  openfluid::base::LoggingSystem::instance()->setOutput(true);
   std::string ErrorContent = "foo written";
-  openfluid::utils::log::error("TEST", ErrorContent);
-  openfluid::utils::LoggingSystem::instance()->close();
-  std::string LogPath = openfluid::utils::LoggingSystem::instance()->getLogPath();
+  openfluid::base::log::error("TEST", ErrorContent);
+  openfluid::base::LoggingSystem::instance()->close();
+  std::string LogPath = openfluid::base::LoggingSystem::instance()->getLogPath();
   std::string LogContent = openfluid::tools::Filesystem::readFile(LogPath);
   BOOST_CHECK(LogContent.find(ErrorContent) != std::string::npos);
 }
