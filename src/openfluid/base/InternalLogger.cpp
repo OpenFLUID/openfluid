@@ -39,12 +39,12 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include "openfluid/tools/FilesystemPath.hpp"
 #include "openfluid/tools/FileLogger.hpp"
 
 
-namespace openfluid { namespace utils {
+namespace openfluid { namespace base {
 
 
 OPENFLUID_SINGLETON_INITIALIZATION(LoggingSystem)

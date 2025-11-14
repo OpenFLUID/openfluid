@@ -46,7 +46,7 @@
 #include <QString>
 #include <QTranslator>
 
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 
 class WaresTranslationsRegistry

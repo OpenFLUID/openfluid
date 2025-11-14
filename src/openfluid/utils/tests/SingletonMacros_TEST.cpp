@@ -47,7 +47,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 
 // =====================================================================

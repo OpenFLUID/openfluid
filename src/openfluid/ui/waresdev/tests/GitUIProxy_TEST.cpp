@@ -56,7 +56,7 @@
 #include <openfluid/ui/waresdev/GitUIProxy.hpp>
 #include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
-#include <openfluid/utils/InternalLogger.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 
 #include "tests-config.hpp"
 
@@ -735,7 +735,7 @@ int main(int argc, char *argv[])
 
   openfluid::base::Environment::init();
 
-  openfluid::utils::log::setup(false, CONFIGTESTS_OUTPUT_DATA_DIR+"/"+openfluid::config::INTERNAL_LOG_FILE);
+  openfluid::base::log::setup(false, CONFIGTESTS_OUTPUT_DATA_DIR+"/"+openfluid::config::INTERNAL_LOG_FILE);
   // TODO find a way to configure logging for all unit tests
 
   if (!CONFIGTESTS_ALLOW_NETWORK_REQUESTS)

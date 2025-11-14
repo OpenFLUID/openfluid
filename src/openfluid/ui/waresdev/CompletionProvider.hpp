@@ -50,7 +50,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {

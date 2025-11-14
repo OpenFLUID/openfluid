@@ -47,7 +47,7 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/core/MapValue.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
-#include <openfluid/utils/SingletonMacros.hpp>
+#include <openfluid/base/SingletonMacros.hpp>
 #include <openfluid/tools/MiscHelpers.hpp>
 #include <openfluid/tools/SettingsBackend.hpp>
 
