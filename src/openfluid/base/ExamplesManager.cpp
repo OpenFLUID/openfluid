@@ -35,6 +35,7 @@
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inrae.fr>
   @author Armel THÖNI <armel.thoni@inrae.fr>
+  @author Dorian GERARDIN <dorian.gerardin@inrae.fr>
  */
 
 
@@ -44,14 +45,36 @@
 #include <openfluid/base/Environment.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/tools/Console.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
+#include <openfluid/utils/InternalLogger.hpp>
 
 
 // TODO add unit tests
 
 
 namespace openfluid { namespace base {
+
+
+void ExamplesManager::printSuccessStatus(const bool& Ok)
+{
+  if (Ok)
+  {
+    openfluid::tools::Console::setOKColor();
+    std::cout << "[OK]" << std::endl;
+  }
+  else 
+  {
+    openfluid::tools::Console::setErrorColor();
+    std::cout << "[KO]" << std::endl;
+  }
+  openfluid::tools::Console::resetAttributes();
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 std::string ExamplesManager::buildRessourcesPath(const std::string& Path)
@@ -87,6 +110,8 @@ bool ExamplesManager::installDirectory(const std::string& FromPath, const std::s
                                                        ToPath,true,true);
   }
 
+  openfluid::utils::log::debug("Example installation", "Unable to create " + InstallTargetPathObj.toGeneric() + 
+                               "dir because it already exists and force option is set to false");
   return false;
 }
 
@@ -101,15 +126,20 @@ bool ExamplesManager::installProject(const std::string& ProjectDir,
 {
   std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
                                                                  openfluid::config::PROJECTS_PATH});
-  if (!openfluid::tools::FilesystemPath({FromPath,ProjectDir}).isDirectory())
+  
+  const auto& ProjectDirAbs = openfluid::tools::FilesystemPath({FromPath,ProjectDir});
+  if (!ProjectDirAbs.isDirectory())
   {
     // silent since called for every ware import
+    openfluid::utils::log::debug("Example installation", ProjectDirAbs.toGeneric() + "project dir does not exist");
     return false;
   }
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::PROJECTS_PATH});
-  std::cout << "-- Installing project " << ProjectDir << " from " << FromPath << " to " << ToPath << std::endl;
-  return installDirectory(FromPath, ToPath, ProjectDir, Force);
+  std::cout << "-- Installing project " << ProjectDir << " from " << FromPath << " to " << ToPath << " ";
+  bool Status = installDirectory(FromPath, ToPath, ProjectDir, Force);
+  printSuccessStatus(Status);
+  return Status;
 }
 
 
@@ -124,16 +154,21 @@ bool ExamplesManager::installSimulator(const std::string& SimulatorDir,
   std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
                                                                  openfluid::config::WARESDEV_PATH,
                                                                  openfluid::config::SIMULATORS_PATH});
-  if (!openfluid::tools::FilesystemPath({FromPath,SimulatorDir}).isDirectory())
+  
+  const auto& SimulatorDirAbs = openfluid::tools::FilesystemPath({FromPath,SimulatorDir});
+  if (!SimulatorDirAbs.isDirectory())
   {
     // silent since called for every ware import
+    openfluid::utils::log::debug("Example installation", SimulatorDirAbs.toGeneric() + "simulator dir does not exist");
     return false;
   }
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::WARESDEV_PATH,
                                                                openfluid::config::SIMULATORS_PATH});
-  std::cout << "-- Installing simulator " << SimulatorDir << " from " << FromPath << " to " << ToPath << std::endl;
-  return installDirectory(FromPath,ToPath,SimulatorDir,Force);
+  std::cout << "-- Installing simulator " << SimulatorDir << " from " << FromPath << " to " << ToPath << " ";
+  bool Status = installDirectory(FromPath,ToPath,SimulatorDir,Force);
+  printSuccessStatus(Status);
+  return Status;
 }
 
 
@@ -148,16 +183,21 @@ bool ExamplesManager::installObserver(const std::string& ObserverDir,
   std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
                                                                  openfluid::config::WARESDEV_PATH,
                                                                  openfluid::config::OBSERVERS_PATH});
-  if (!openfluid::tools::FilesystemPath({FromPath,ObserverDir}).isDirectory())
+  
+  const auto& ObserverDirAbs = openfluid::tools::FilesystemPath({FromPath,ObserverDir});
+  if (!ObserverDirAbs.isDirectory())
   {
     // silent since called for every ware import
+    openfluid::utils::log::debug("Example installation", ObserverDirAbs.toGeneric() + "observer dir does not exist");
     return false;
   }
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::WARESDEV_PATH,
                                                                openfluid::config::OBSERVERS_PATH});
-  std::cout << "-- Installing observer " << ObserverDir << " from " << FromPath << " to " << ToPath << std::endl;
-  return installDirectory(FromPath,ToPath,ObserverDir,Force);
+  std::cout << "-- Installing observer " << ObserverDir << " from " << FromPath << " to " << ToPath << " ";
+  bool Status = installDirectory(FromPath,ToPath,ObserverDir,Force);
+  printSuccessStatus(Status);
+  return Status;
 }
 
 
@@ -184,7 +224,11 @@ bool ExamplesManager::installAllProjects(const std::string& ResourcesPath, const
     }
     return AllIsOK;
   }
- 
+  else
+  {
+    openfluid::utils::log::debug("Example installation", "The resources project path does not exist");
+  }
+  
   return false;
 }
 
@@ -202,30 +246,72 @@ bool ExamplesManager::installAllSimulators(const std::string& ResourcesPath, con
   std::string SimulatorsPath = openfluid::tools::Filesystem::joinPath({ResPath,
                                                                        openfluid::config::WARESDEV_PATH,
                                                                        openfluid::config::SIMULATORS_PATH});
-  
-  bool AllIsOK = true;
+
   if (openfluid::tools::FilesystemPath(SimulatorsPath).isDirectory())
   {
     std::vector<std::string> FoundSimulators = openfluid::tools::Filesystem::findDirectories(SimulatorsPath);
 
+    bool AllIsOK = true;
     for (const auto& Sim : FoundSimulators)
     {
       AllIsOK &= installSimulator(Sim,ResPath,InstPath,Force);
     }
+    return AllIsOK;
+  }
+  else
+  {
+    openfluid::utils::log::debug("Example installation", "The resources simulators path does not exist");
   }
   
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ExamplesManager::installAllObservers(const std::string& ResourcesPath, const std::string& InstallPath,
+                                          const bool Force)
+{
+  auto ResPath = buildRessourcesPath(ResourcesPath);
+  auto InstPath = buildInstallPath(InstallPath);
+  
   std::string ObserversPath = openfluid::tools::Filesystem::joinPath({ResPath,
-                                                                       openfluid::config::WARESDEV_PATH,
-                                                                       openfluid::config::OBSERVERS_PATH});
+                                                                      openfluid::config::WARESDEV_PATH,
+                                                                      openfluid::config::OBSERVERS_PATH});
+  
   if (openfluid::tools::FilesystemPath(ObserversPath).isDirectory())
   {
     std::vector<std::string> FoundObservers = openfluid::tools::Filesystem::findDirectories(ObserversPath);
 
+    bool AllIsOK = true;
     for (const auto& Obs : FoundObservers)
     {
       AllIsOK &= installObserver(Obs,ResPath,InstPath,Force);
     }
+    return AllIsOK;
   }
+  else 
+  {
+    openfluid::utils::log::debug("Example installation", "The resources observers path does not exist");
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ExamplesManager::installAllWares(const std::string& ResourcesPath, const std::string& InstallPath, 
+                                      const bool Force)
+{ 
+  bool AllIsOK = true;
+  AllIsOK &= installAllSimulators(ResourcesPath,InstallPath,Force);
+  AllIsOK &= installAllObservers(ResourcesPath,InstallPath,Force);
+
   return AllIsOK;
 }
 
@@ -235,9 +321,12 @@ bool ExamplesManager::installAllSimulators(const std::string& ResourcesPath, con
 
 
 bool ExamplesManager::installAll(const std::string& ResourcesPath, const std::string& InstallPath, const bool Force)
-{
-  return (installAllProjects(ResourcesPath,InstallPath,Force) && 
-          installAllSimulators(ResourcesPath,InstallPath,Force));
+{ 
+  bool AllIsOK = true;
+  AllIsOK &= installAllProjects(ResourcesPath,InstallPath,Force);
+  AllIsOK &= installAllWares(ResourcesPath,InstallPath,Force);
+
+  return AllIsOK;
 }
 
 
