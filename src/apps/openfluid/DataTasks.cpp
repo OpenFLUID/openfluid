@@ -276,38 +276,56 @@ int DataTasks::processInstallExamples() const
 {
   std::string ResPath = m_Cmd.getOptionValue("resources-path");
   std::string InstPath = m_Cmd.getOptionValue("install-path");
-
+  bool Force = m_Cmd.isOptionActive("force");
+  
+  bool AllIsOk = true;
+  std::string ErrorString = ""; 
   if (m_Cmd.isOptionActive("simulators"))
   {
-    return (processInstall(m_Cmd.getOptionValue("simulators"), openfluid::base::ExamplesManager::installSimulator,
-                           openfluid::base::ExamplesManager::installAllSimulators,
-                           ResPath, InstPath, m_Cmd.isOptionActive("force"))) ? 
-            0 : error("problems occurred during simulators installation");
+    bool SimulatorInstall = processInstall(m_Cmd.getOptionValue("simulators"), 
+                                           openfluid::base::ExamplesManager::installSimulator,
+                                           openfluid::base::ExamplesManager::installAllSimulators,
+                                           ResPath, InstPath, Force);
+    if (!SimulatorInstall)
+    {
+      ErrorString += "problems occurred during simulators installation\n";
+    }
+    AllIsOk &= SimulatorInstall;
   }
 
   if (m_Cmd.isOptionActive("observers"))
   {
-    return (processInstall(m_Cmd.getOptionValue("observers"), openfluid::base::ExamplesManager::installObserver,
-                           openfluid::base::ExamplesManager::installAllObservers,
-                           ResPath, InstPath, m_Cmd.isOptionActive("force"))) ? 
-            0 : error("problems occurred during observers installation");
+    bool ObserverInstall = processInstall(m_Cmd.getOptionValue("observers"), 
+                                           openfluid::base::ExamplesManager::installObserver,
+                                           openfluid::base::ExamplesManager::installAllObservers,
+                                           ResPath, InstPath, Force);
+    if (!ObserverInstall)
+    {
+      ErrorString += "problems occurred during observers installation\n";
+    }
+    AllIsOk &= ObserverInstall;
   }
   
   if (m_Cmd.isOptionActive("projects"))
   {
-    return (processInstall(m_Cmd.getOptionValue("projects"), openfluid::base::ExamplesManager::installProject,
-                           openfluid::base::ExamplesManager::installAllProjects,
-                           ResPath, InstPath, m_Cmd.isOptionActive("force"))) ? 
-            0 : error("problems occurred during projects installation");
+    bool ProjectInstall = processInstall(m_Cmd.getOptionValue("projects"), 
+                                         openfluid::base::ExamplesManager::installProject,
+                                         openfluid::base::ExamplesManager::installAllProjects,
+                                         ResPath, InstPath, Force);
+    if (!ProjectInstall)
+    {
+      ErrorString += "problems occurred during projects installation\n";
+    }
+    AllIsOk &= ProjectInstall;                                   
   }
   
   if (!m_Cmd.isOptionActive("simulators") && !m_Cmd.isOptionActive("observers") && !m_Cmd.isOptionActive("projects"))
   {
-    return (openfluid::base::ExamplesManager::installAll(ResPath,InstPath,m_Cmd.isOptionActive("force")) ?
+    return (openfluid::base::ExamplesManager::installAll(ResPath,InstPath,Force) ?
             0 : error("problems occurred during installation"));
   }
 
-  return error();
+  return AllIsOk ? 0 : error(ErrorString);
 }
 
 
