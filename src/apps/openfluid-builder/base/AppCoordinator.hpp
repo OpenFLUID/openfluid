@@ -131,6 +131,8 @@ class AppCoordinator : public QObject
 
     void whenRestoreExamplesAsked();
 
+    void whenRestoreExamplesWaresAsked();
+
     void whenAboutAsked();
 
     void whenNewSimulatorSrcAsked();

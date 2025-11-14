@@ -144,6 +144,8 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
           this, SLOT(whenOpenExampleAsked()));
   connect(m_Actions.action("HelpExamplesRestore"), SIGNAL(triggered()),
           this, SLOT(whenRestoreExamplesAsked()));
+  connect(m_Actions.action("HelpExamplesWaresRestore"), SIGNAL(triggered()),
+          this, SLOT(whenRestoreExamplesWaresAsked()));
   connect(m_Actions.action("HelpAbout"), SIGNAL(triggered()),
           this, SLOT(whenAboutAsked()));
 
@@ -917,7 +919,7 @@ void AppCoordinator::whenRestoreExamplesAsked()
 {
   if (QMessageBox::question(&m_MainWindow,tr("Reinstall example projects"),
                             tr("Reinstalling will overwrite all modifications "
-                                "and delete simulations results associated to these examples.")+
+                               "and delete simulations results associated to these examples projects.")+
                             "\n\n"+
                             tr("Proceed anyway?"),
                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
@@ -927,11 +929,45 @@ void AppCoordinator::whenRestoreExamplesAsked()
     if (!openfluid::base::ExamplesManager::installAllProjects("","",true))
     {
       QApplication::restoreOverrideCursor();
-      QMessageBox::critical(&m_MainWindow,tr("Reinstall example projects"),tr("Error reinstalling example projects"));
+      QMessageBox::critical(&m_MainWindow,tr("Reinstall example projects"),
+                            tr("Error reinstalling example projects "
+                               "(Check logs for potential additional information)."));
     }
     else
     {
       QApplication::restoreOverrideCursor();
+      QMessageBox::information(&m_MainWindow,tr("Reinstall example wares"), 
+                               tr("All projects have been successfully reinstalled."));
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenRestoreExamplesWaresAsked()
+{
+  if (QMessageBox::question(&m_MainWindow,tr("Reinstall example wares"),
+                            tr("Reinstalling will overwrite all modifications associated to theses examples wares.")+
+                            "\n\n"+
+                            tr("Proceed anyway?"),
+                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+  {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    
+    if (!openfluid::base::ExamplesManager::installAllWares("","",true))
+    {
+      QApplication::restoreOverrideCursor();
+      QMessageBox::critical(&m_MainWindow,tr("Reinstall example wares"), 
+                            tr("Error reinstalling example wares (Check logs for potential additional information)."));
+    }
+    else
+    {
+      QApplication::restoreOverrideCursor();
+      QMessageBox::information(&m_MainWindow,tr("Reinstall example wares"), 
+                               tr("All wares have been successfully reinstalled."));
     }
   }
 }

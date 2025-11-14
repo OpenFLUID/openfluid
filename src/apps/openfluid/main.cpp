@@ -115,10 +115,15 @@ int main(int argc, char **argv)
 
   auto InstallExamplesCmd = openfluid::utils::CommandLineCommand("install-examples",
                                                                  "Install or reinstall examples in the user directory");
-  InstallExamplesCmd.addOptions({{"projects-only","p",
-                                  "install selected projects only (all projects if argument is * or empty)"},
-                                 {"simulators-only","s",
-                                  "install selected simulators only (all simulators if argument is * or empty)"},
+  InstallExamplesCmd.addOptions({{"projects","",
+                                  "install selected projects (seperated with colon) "
+                                  "(all projects if argument is * or empty)"},
+                                 {"simulators","",
+                                  "install selected simulators (seperated with colon) "
+                                  "(all simulators if argument is * or empty)"},
+                                 {"observers","",
+                                  "install selected observers (seperated with colon) "
+                                  "(all observers if argument is * or empty)"},
                                  {"resources-path","r",
                                   "path where references examples are located (default is standard path)",true},
                                  {"install-path","i",
