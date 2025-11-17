@@ -197,7 +197,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesHelp
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorsSelection
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "install-examples" "--simulators-only=fire.surf.prod-spread,water.atm-surf.rain-su.files"
+                           "install-examples" "--simulators=fire.surf.prod-spread,water.atm-surf.rain-su.files"
                            "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel" "-f"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel"
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simsel/wares-dev/simulators/fire.surf.prod-spread/src/WareMain.cpp"
@@ -207,7 +207,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorsSelection
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorsAll
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "install-examples" "--simulators-only"
+                           "install-examples" "--simulators"
                            "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall" "-f"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall"
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simall/wares-dev/simulators/examples.primitives.unitsA.prod/src/WareMain.cpp"
@@ -216,17 +216,39 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorsAll
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesSimulatorMissing
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "install-examples" "--simulators-only=fake.name"
+                           "install-examples" "--simulators=fake.name"
                            "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simmis" "-f"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/simmis"
                   )
 set_tests_properties(cmdline-openfluid-InstallExamplesSimulatorMissing PROPERTIES WILL_FAIL TRUE)
 
 
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesObserversSelection
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples" "--observers=export.vars.files.csv-multicols,export.vars.plot.gnuplot"
+                           "--resources-path=${OFBUILD_TESTS_TEMP_DIR}/obsel/examples" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/obssel" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/obssel"
+                            COPY_DIRECTORY "${OFBUILD_SOURCE_EXAMPLES_DIR}" "${OFBUILD_TESTS_TEMP_DIR}/obsel"
+                            COPY_DIRECTORY "${CMAKE_SOURCE_DIR}/src/observers" "${OFBUILD_TESTS_TEMP_DIR}/obsel/examples/wares-dev"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/obssel/wares-dev/observers/export.vars.files.csv-multicols/src/WareMain.cpp"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/obssel/wares-dev/observers/export.vars.plot.gnuplot/CMakeLists.txt"
+                  )
+
+
+OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesObserversAll
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
+                           "install-examples" "--observers"
+                           "--resources-path=${OFBUILD_TESTS_TEMP_DIR}/obsall/examples" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/obsall" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/obsall"
+                            COPY_DIRECTORY "${OFBUILD_SOURCE_EXAMPLES_DIR}" "${OFBUILD_TESTS_TEMP_DIR}/obsall"
+                            COPY_DIRECTORY "${CMAKE_SOURCE_DIR}/src/observers" "${OFBUILD_TESTS_TEMP_DIR}/obsall/examples/wares-dev"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/obsall/wares-dev/observers/export.vars.files.csv-multicols/src/WareMain.cpp"
+                  )
+
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesProjectsSelection
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "install-examples" "--projects-only=Firespread,Primitives"
+                           "install-examples" "--projects=Firespread,Primitives"
                            "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjsel" "-f"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjsel"
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjsel/projects/Firespread/IN/model.fluidx"
@@ -236,7 +258,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesProjectsSelection
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesProjectsAll
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
-                           "install-examples" "--projects-only"
+                           "install-examples" "--projects"
                            "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjall" "-f"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjall"
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/prjall/projects/Manhattan/IN/model.fluidx"
@@ -246,12 +268,16 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesProjectsAll
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-InstallExamplesAll
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "install-examples"
-                           "--resources-path=${OFBUILD_SOURCE_EXAMPLES_DIR}" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all" "-f"
-                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all"
+                           "--resources-path=${OFBUILD_TESTS_TEMP_DIR}/all/examples" "--install-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all" "-f"
+                   PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/install-examples/all" 
+                            COPY_DIRECTORY "${OFBUILD_SOURCE_EXAMPLES_DIR}" "${OFBUILD_TESTS_TEMP_DIR}/all"
+                            COPY_DIRECTORY "${CMAKE_SOURCE_DIR}/src/observers" "${OFBUILD_TESTS_TEMP_DIR}/all/examples/wares-dev"                        
                   )
 SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesSimulatorsSelection)
 SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesSimulatorsAll)
 SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesSimulatorMissing)
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesObserversSelection)
+SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesObserversAll)
 SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesProjectsSelection)
 SET_PROPERTY(TEST cmdline-openfluid-InstallExamplesAll APPEND PROPERTY DEPENDS cmdline-openfluid-InstallExamplesProjectsAll)
 
