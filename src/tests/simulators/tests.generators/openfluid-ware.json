@@ -48,16 +48,39 @@
             "type": "string"
           },
           {
-            "name": "tests.fixed-vector",
+            "name": "tests.fixed-vector-deprecated",
             "unitsclass": "TestUnits",
             "description": "fixed vector value from vector generators for tests",
             "siunit": "",
             "type": "vector"
           },
           {
-            "name": "tests.fixed-vector-unique",
+            "name": "tests.fixed-vector-full-deprecated",
             "unitsclass": "TestUnits",
-            "description": "fixed unique value from vector enerators for tests",
+            "description": "fixed vector value from vector generators for tests",
+            "siunit": "",
+            "type": "vector"
+
+          },
+
+          {
+            "name": "tests.fixed-vector-full-explicit",
+            "unitsclass": "TestUnits",
+            "description": "fixed unique value from vector generators for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.fixed-vector-full-explicit-redundant",
+            "unitsclass": "TestUnits",
+            "description": "fixed unique value from vector generators for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
+            "name": "tests.fixed-vector-unique-explicit",
+            "unitsclass": "TestUnits",
+            "description": "fixed unique value from vector generators for tests",
             "siunit": "",
             "type": "vector"
           },
@@ -68,11 +91,25 @@
             "siunit": ""
           },
           {
+            "name": "tests.random-vector-deprecated",
+            "unitsclass": "TestUnits",
+            "description": "random value from generators for tests",
+            "siunit": "",
+            "type": "vector"
+          },
+          {
             "name": "tests.random-vector",
             "unitsclass": "TestUnits",
             "description": "random value from generators for tests",
             "siunit": "",
             "type": "vector"
+          },
+          {
+            "name": "tests.random-matrix",
+            "unitsclass": "TestUnits",
+            "description": "random value from generators for tests",
+            "siunit": "",
+            "type": "matrix"
           },
           {
             "name": "tests.interp",

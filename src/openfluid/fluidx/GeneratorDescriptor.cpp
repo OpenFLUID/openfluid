@@ -48,15 +48,14 @@ namespace openfluid { namespace fluidx {
 
 GeneratorDescriptor::GeneratorDescriptor(openfluid::tools::UnitVarTriplets_t VarTriplets,
                         GeneratorMethod GenMethod, 
-                        openfluid::core::Value::Type VarType, 
-                        openfluid::core::Dimensions VarDimensions) :
-    ModelItemDescriptor(openfluid::tools::buildGeneratorID(deduceVarPairs(VarTriplets), VarDimensions.strType()))
+                        openfluid::core::Value::Type VarType): 
+    ModelItemDescriptor(openfluid::tools::buildGeneratorID(deduceVarPairs(VarTriplets), 
+                        openfluid::core::Value::getStringFromValueType(VarType)))
 {
   m_WareType = openfluid::ware::WareType::GENERATOR;
   m_VarTriplets = VarTriplets;
   m_GenMethod = GenMethod;
   m_VarType = VarType;
-  m_VarDimensions = VarDimensions;
 }
 
 

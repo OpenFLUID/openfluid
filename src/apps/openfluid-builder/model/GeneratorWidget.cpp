@@ -98,22 +98,14 @@ void GeneratorWidget::refresh()
   {
     setAvailableWare(true);
 
-    QString DimStr = "";
     const auto GenDescription = static_cast<const openfluid::fluidx::GeneratorDescriptor*>(mp_Desc);
-    const auto Dims = GenDescription->getVariableDimensions();
-    if (Dims.isVector() || GenDescription->getVariableType()==openfluid::core::Value::VECTOR)
-    {
-      DimStr = tr(" vector");
-    }
-    else if (Dims.isMatrix() || GenDescription->getVariableType()==openfluid::core::Value::MATRIX)
-    {
-      DimStr = tr(" matrix");
-    }
+    const auto VT = GenDescription->getVariableType();
+    const auto VTS = QString::fromStdString(VT != openfluid::core::Value::DOUBLE ? 
+                " "+openfluid::core::Value::getStringFromValueType(VT): "");
     if (GenDescription->getVariableTriplets().size() > 1)
     {
-    ui->NameLabel->setText(
-          tr("Produces%1 variable(s) %2 on %3 (%4)")
-          .arg(DimStr)
+      ui->NameLabel->setText(
+          tr("Produces variable(s) %1 on %2 (%3)")
           .arg(QString::fromStdString(GenDescription->getVariableName()))
           .arg(QString::fromStdString(GenDescription->getUnitsClass()))
           .arg(QString::fromStdString(Container.signature()->Name)));
@@ -122,7 +114,7 @@ void GeneratorWidget::refresh()
     {
       ui->NameLabel->setText(
           tr("Produces%1 variable %2 on %3 (%4)")
-          .arg(DimStr)
+          .arg(VTS)
           .arg(QString::fromStdString(GenDescription->getVariableName()))
           .arg(QString::fromStdString(GenDescription->getUnitsClass()))
           .arg(QString::fromStdString(Container.signature()->Name)));

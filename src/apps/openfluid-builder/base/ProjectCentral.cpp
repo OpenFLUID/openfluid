@@ -496,8 +496,7 @@ void ProjectCentral::checkModel()
       const auto* GenDesc = static_cast<const openfluid::fluidx::GeneratorDescriptor*>(Item);
       Reg->addGenerator({GenDesc->getGeneratorMethod(),
                           GenDesc->getVariableTriplets(),
-                          GenDesc->getVariableType(),
-                          GenDesc->getVariableDimensions()
+                          GenDesc->getVariableType()
                          });
     }
   }

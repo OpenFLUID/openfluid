@@ -34,6 +34,7 @@
   @file InterpGenerator.hpp
 
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
+  @author Armel THÖNI <armel.thoni@inrae.fr>
  */
 
 
@@ -49,7 +50,7 @@
 namespace openfluid { namespace machine {
 
 
-class OPENFLUID_API InterpGenerator : public MonoGenerator
+class OPENFLUID_API InterpGenerator : public MonoGenerator, public LinearGeneratorMixin
 {
   private:
 

@@ -217,6 +217,11 @@ class FluidXReaderImplementation
           std::string UnitsClass = openfluid::thirdparty::getXMLAttribute(Elt,"unitsclass");
           std::string Method = openfluid::thirdparty::getXMLAttribute(Elt,"method");
           std::string VarSize = openfluid::thirdparty::getXMLAttribute(Elt,"varsize");
+          if (VarSize != "")
+          {
+            std::cerr << "Varsize attribute in '"<< VarName << "' generator description is deprecated. "
+            "Use vector vartype instead and set varsize as parameter if needed." << std::endl;
+          }
           std::string VarType = openfluid::thirdparty::getXMLAttribute(Elt,"vartype");
           openfluid::core::Value::Type VarTypeReal = openfluid::core::Value::DOUBLE;
           if (VarType != "" && !openfluid::core::Value::getValueTypeFromString(VarType, VarTypeReal))
@@ -274,15 +279,18 @@ class FluidXReaderImplementation
                                                         "unknown or missing generator method (" + m_CurrentFile + ")");
             }
 
-            if (!VarSize.empty())
+            auto Params = extractParams(Elt);
+            // convert varsize info about dimension as parameter if present (to be deprecated)
+            if (VarTypeReal == openfluid::core::Value::DOUBLE && !VarSize.empty())
             {
-              VarDimensionsReal = openfluid::core::Dimensions(VarSize);
+              Params["varsize"] = VarSize;
+              const auto& Dimensions = openfluid::core::Dimensions(VarSize);
+              VarTypeReal = Dimensions.isVector() ? openfluid::core::Value::VECTOR : (
+                Dimensions.isMatrix() ? openfluid::core::Value::MATRIX : openfluid::core::Value::DOUBLE);
             }
-
             auto GD = new openfluid::fluidx::GeneratorDescriptor(VarTriplets,
-                                                                 GenMethod,VarTypeReal,
-                                                                 VarDimensionsReal);
-            GD->setParameters(extractParams(Elt));
+                                                                 GenMethod,VarTypeReal);
+            GD->setParameters(Params);
             GD->setEnabled(extractWareEnabled(Elt));
             m_Descriptor.m_ModelDescriptor.appendItem(GD);
           }
@@ -1019,14 +1027,10 @@ class FluidXWriterImplementation
           {
             GenElt->SetAttribute("varname",GenDesc->getVariableName().c_str());
 
-            if (!GenDesc->getVariableDimensions().isScalar())
-            {
-              GenElt->SetAttribute("varsize",GenDesc->getVariableDimensions().getSerializedVariableSize().c_str());
-            }
             openfluid::core::Value::Type VarType = GenDesc->getVariableType();
             
-            //FIXME disambiguate difference between implicit DOUBLE type and NONE type
-            if (VarType != openfluid::core::Value::DOUBLE && VarType != openfluid::core::Value::NONE)
+            //Warning: recent change making DOUBLE the only implicit type, now NONE must be explicit
+            if (VarType != openfluid::core::Value::DOUBLE)
             {
               GenElt->SetAttribute("vartype",openfluid::core::Value::getStringFromValueType(VarType).c_str());
             }

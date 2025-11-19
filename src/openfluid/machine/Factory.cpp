@@ -232,8 +232,7 @@ void Factory::buildModelInstanceFromDescriptor(const openfluid::fluidx::CoupledM
         auto GenID = SimulatorRegistry::instance()->addGenerator({
                        GenDesc->getGeneratorMethod(),
                        GenDesc->getVariableTriplets(),
-                       GenDesc->getVariableType(),
-                       GenDesc->getVariableDimensions()
+                       GenDesc->getVariableType()
                      });
 
         if (GenID.empty())

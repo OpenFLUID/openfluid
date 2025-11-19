@@ -66,8 +66,6 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     openfluid::core::Value::Type m_VarType;
 
-    openfluid::core::Dimensions m_VarDimensions;
-
     std::string m_GeneratedID;
 
 
@@ -80,8 +78,7 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 
     GeneratorDescriptor(openfluid::tools::UnitVarTriplets_t VarTriplets,
                         GeneratorMethod GenMethod, 
-                        openfluid::core::Value::Type VarType=openfluid::core::Value::Type::NONE, 
-                        openfluid::core::Dimensions VarDimensions=openfluid::core::Dimensions());
+                        openfluid::core::Value::Type VarType=openfluid::core::Value::Type::DOUBLE);
     
     openfluid::core::VariableName_t getVariableName() const;
 
@@ -90,16 +87,6 @@ class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
     const openfluid::tools::UnitVarTriplets_t& getVariableTriplets() const;
 
     GeneratorMethod getGeneratorMethod() const;
-
-    openfluid::core::Dimensions getVariableDimensions() const
-    {
-      return m_VarDimensions;
-    }
-
-    std::size_t getVariableSize() const
-    {
-      return m_VarDimensions.Cols*m_VarDimensions.Rows;
-    }
 
     openfluid::core::Value::Type getVariableType() const;
 };

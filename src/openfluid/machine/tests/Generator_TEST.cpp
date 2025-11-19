@@ -304,41 +304,44 @@ BOOST_AUTO_TEST_CASE(check_random_vector)
 {
   {
     // TEST VECTOR INTEGER
+    std::cout << "Checking VECTOR INTEGER" << std::endl;
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
                                             {{"SU","a"}}, 
-                                             openfluid::core::Value::INTEGER,
-                                             openfluid::core::Dimensions(3)};
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20000"}};
+                                             openfluid::core::Value::INTEGER};
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20000"}, {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
     // pair INT / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
+    TS.addGenerator(Specs, Params); 
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
     
   }
   {
     // TEST VECTOR BOOL
+    std::cout << "Checking VECTOR BOOL" << std::endl;
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
                                              {{"SU","a"}}, 
-                                             openfluid::core::Value::BOOLEAN,
-                                             openfluid::core::Dimensions(3)};
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}};
+                                             openfluid::core::Value::BOOLEAN};
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
     // pair BOOL / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
+    TS.addGenerator(Specs, Params); 
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
   }
 
   // VECTOR OF DOUBLE
 
   openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM, 
                                             {{"SU","a"}}, 
-                                             openfluid::core::Value::DOUBLE,
-                                             openfluid::core::Dimensions(3)};
+                                             openfluid::core::Value::VECTOR};
   {
     // TEST VECTOR CELLS NOT ID
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"identicalcells", "false"}};
+    std::cout << "Checking VECTOR CELLS NOT ID" << std::endl;
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"identicalcells", "false"}, 
+                                            {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
@@ -350,7 +353,9 @@ BOOST_AUTO_TEST_CASE(check_random_vector)
   }
   {
     // TEST VECTOR CELLS ID
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"identicalcells", "true"}};
+    std::cout << "Checking VECTOR CELLS ID" << std::endl;
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"min", "2"}, {"max","20"}, {"identicalcells", "true"}, 
+                                            {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
@@ -436,98 +441,56 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
     // TEST VECTOR INT
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
                                              {{"SU","a"}}, 
-                                             openfluid::core::Value::INTEGER,
-                                             openfluid::core::Dimensions(3)};
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "3"}};
+                                             openfluid::core::Value::INTEGER};
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "3"}, {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
     // pair INT / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
+    TS.addGenerator(Specs, Params);
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
   }
   {
     // TEST VECTOR BOOL
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
                                              {{"SU","a"}}, 
-                                             openfluid::core::Value::BOOLEAN,
-                                             openfluid::core::Dimensions(3)};
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "true"}};
+                                             openfluid::core::Value::BOOLEAN};
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "true"}, {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
     // pair BOOL / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
+    TS.addGenerator(Specs, Params); 
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
   }
   {
     // TEST VECTOR STRING
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
                                              {{"SU","a"}}, 
-                                             openfluid::core::Value::STRING,
-                                             openfluid::core::Dimensions(3)};
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "foo"}};
+                                             openfluid::core::Value::STRING};
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "foo"}, {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
     // pair STRING / VECTOR not handled
-    BOOST_REQUIRE_THROW(TS.addGenerator(Specs, Params), openfluid::base::FrameworkException); 
-  }
-
-  // VECTOR OF DOUBLE (deprecated)
-
-  openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
-                                            {{"SU","a"}}, 
-                                             openfluid::core::Value::DOUBLE,
-                                             openfluid::core::Dimensions(3)};
-  {
-    // TEST VECTOR CELLS FROM VAL
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "2.4"}};
-
-    TestSimulation TS;
-    TS.defaultSetup();
-    TS.addGenerator(Specs, Params);
-    TS.wholeSimulation();
-    
-    const auto Vector = TS.getLatestValue("SU", 1, "a").value()->asVectorValue();
-    BOOST_REQUIRE_CLOSE(Vector.get(0), 2.4, 0.00001);
-    BOOST_REQUIRE_CLOSE(Vector.get(0), Vector.get(1), 0.00001);
-  }
-  {
-    // TEST VECTOR CELLS FROM VECTOR
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[1,5e-2,2.3]"}};
-
-    TestSimulation TS;
-    TS.defaultSetup();
-    TS.addGenerator(Specs, Params);
-    TS.wholeSimulation();
-    
-    const auto Vector = TS.getLatestValue("SU", 1, "a").value()->asVectorValue();
-    BOOST_REQUIRE_CLOSE(Vector.get(0), 1, 0.00001);
-    BOOST_REQUIRE_CLOSE(Vector.get(1), 0.05, 0.00001);
-  }
-  {
-    // TEST VECTOR CELLS FROM VECTOR OF WRONG DIM: 3 expected, 2 given
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[1,5e-2]"}};
-
-    TestSimulation TS;
-    TS.defaultSetup();
-    TS.addGenerator(Specs, Params);
-    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
+    TS.addGenerator(Specs, Params); 
+    BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException); 
   }
   
   // OPENFLUID VECTOR
 
   openfluid::machine::GeneratorSpecs SpecsVector{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
                                             {{"SU","a"}}, 
-                                             openfluid::core::Value::VECTOR,
-                                             openfluid::core::Dimensions(3)};
+                                             openfluid::core::Value::VECTOR};
   {
     // TEST VECTOR CELLS FROM VAL
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "2.4"}};
+    std::cout << "checking TEST VECTOR CELLS FROM VAL" << std::endl;
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "2.4"}, {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
     TS.addGenerator(SpecsVector, Params);
-    TS.wholeSimulation();
+    TS.wholeSimulation(); 
     
     const auto Vector = TS.getLatestValue("SU", 1, "a").value()->asVectorValue();
     BOOST_REQUIRE_CLOSE(Vector.get(0), 2.4, 0.00001);
@@ -535,7 +498,8 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
   }
   {
     // TEST VECTOR CELLS FROM VECTOR
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[1,5e-2,2.3]"}};
+    std::cout << "checking TEST VECTOR CELLS FROM VECTOR" << std::endl;
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[1,5e-2,2.3]"}, {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();
@@ -548,7 +512,8 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
   }
   {
     // TEST VECTOR CELLS FROM VECTOR OF WRONG DIM: 3 expected, 2 given
-    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[1,5e-2]"}};
+    std::cout << "checking TEST VECTOR CELLS FROM VECTOR OF WRONG DIM: 3 expected, 2 given" << std::endl;
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[1,5e-2]"}, {"varsize","3"}};
 
     TestSimulation TS;
     TS.defaultSetup();

@@ -198,7 +198,6 @@ void AddGeneratorDialog::refresh()
   //(m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED ||
   ui->SourceGroupBox->setVisible(m_Method == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM && \
                                   (ui->VectorRadioButton->isChecked() || ui->MatrixRadioButton->isChecked()));
-  //ui->DimensionsGroupBox->setVisible(ui->IdenticalValueCheckbox->isChecked());
   ui->DimensionsLineEdit->setPlaceholderText(ui->VectorRadioButton->isChecked() ? "Example: 10" : 
         "Example: 2x4 (cols x rows)");
   if (ui->VectorRadioButton->isChecked() || ui->MatrixRadioButton->isChecked())
