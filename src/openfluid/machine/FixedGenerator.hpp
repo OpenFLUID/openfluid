@@ -52,24 +52,25 @@ namespace openfluid { namespace machine {
 template<class T=double>
 class OPENFLUID_API FixedGenerator : public MonoGenerator
 {
-  private:
+  protected:
 
+    T m_VarValueInit;
     T m_VarValue;
 
     openfluid::core::Duration_t m_DeltaT;
 
-    void processVarValue(const openfluid::ware::WareParams_t& Params);
+    virtual void processVarValue(const openfluid::ware::WareParams_t& Params);
 
-    void applyValue(openfluid::core::SpatialUnit* LU, bool init=false)
+    virtual void applyValue(openfluid::core::SpatialUnit* LU, bool init=false)
     {
-        if (init)
-        {
-          OPENFLUID_InitializeVariable(LU,m_VarName,(T)0);
-        }
-        else
-        {
-          OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
-        }
+      if (init)
+      {
+        OPENFLUID_InitializeVariable(LU,m_VarName,m_VarValueInit);
+      }
+      else
+      {
+        OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
+      }
     }
 
   public:
@@ -89,6 +90,25 @@ class OPENFLUID_API FixedGenerator : public MonoGenerator
     openfluid::base::SchedulingRequest runStep();
 
     void finalizeRun()
+    { }
+
+};
+
+template<class T>
+class OPENFLUID_API LinearFixedGenerator : public FixedGenerator<T>, public LinearGeneratorMixin
+{
+  private:
+
+    void processVarValue(const openfluid::ware::WareParams_t& Params) override;
+
+    void applyValue(openfluid::core::SpatialUnit* LU, bool init=false) override;
+
+
+  public:
+
+    LinearFixedGenerator();
+
+    ~LinearFixedGenerator()
     { }
 
 };

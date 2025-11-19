@@ -73,14 +73,9 @@ class OPENFLUID_API GeneratorSpecs
     openfluid::tools::UnitVarTriplets_t VarTriplets;
 
     /**
-      The type of the produced variable (at scalar level)
+      The type of the produced variable
     */
     openfluid::core::Value::Type VariableType = openfluid::core::Value::DOUBLE; // NONE?
-    
-    /**
-      The dmensions of the produced variable.
-    */
-    openfluid::core::Dimensions VariableDimensions = openfluid::core::Dimensions();
 };
 
 

@@ -75,19 +75,18 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(GenDesc1.getUnitsClass(),"test.unitclass");
   BOOST_REQUIRE_EQUAL(static_cast<int>(GenDesc1.getGeneratorMethod()), 
                       static_cast<int>(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED));
-  BOOST_REQUIRE_EQUAL(GenDesc1.getVariableSize(),1);
+  BOOST_REQUIRE_EQUAL(GenDesc1.getVariableType(),openfluid::core::Value::Type::DOUBLE);
   BOOST_REQUIRE_EQUAL(GenDesc1.getParameters().size(),0);
 
   openfluid::fluidx::GeneratorDescriptor GenDesc2({{"test.unitclass2","test.var2"}},
                                                   openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP,
-                                                  openfluid::core::Value::Type::DOUBLE,
-                                                  openfluid::core::Dimensions(13));
+                                                  openfluid::core::Value::Type::VECTOR);
 
   BOOST_REQUIRE_EQUAL(GenDesc2.getVariableName(),"test.var2");
   BOOST_REQUIRE_EQUAL(GenDesc2.getUnitsClass(),"test.unitclass2");
   BOOST_REQUIRE_EQUAL(static_cast<int>(GenDesc2.getGeneratorMethod()), 
                       static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
-  BOOST_REQUIRE_EQUAL(GenDesc2.getVariableSize(),13);
+  BOOST_REQUIRE_EQUAL(GenDesc2.getVariableType(),openfluid::core::Value::Type::VECTOR);
   BOOST_REQUIRE_EQUAL(GenDesc2.getParameters().size(),0);
 
   openfluid::fluidx::CoupledModelDescriptor ModelDesc;
@@ -112,8 +111,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::fluidx::GeneratorDescriptor GenDesc1({{"test.unitclass","test.var"}},
                                                   openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED,
-                                                  openfluid::core::Value::Type::DOUBLE,
-                                                  openfluid::core::Dimensions(7));
+                                                  openfluid::core::Value::Type::VECTOR);
   GenDesc1.setParameter("fixedvalue",std::string("20.5"));
 
   openfluid::fluidx::GeneratorDescriptor GenDesc2({{"test.unitclass2","test.var2"}},
@@ -144,7 +142,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(),"test.unitclass");
   BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
                       static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(),7);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableType(),
+                      openfluid::core::Value::Type::VECTOR);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),1);
 
   it++;
@@ -158,7 +157,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(),"test.unitclass2");
   BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
                       static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(),1);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableType(),
+                      openfluid::core::Value::Type::DOUBLE);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),2);
 
 }
@@ -206,21 +206,21 @@ BOOST_AUTO_TEST_CASE(check_construction_from_dataset)
 
   BOOST_CHECK_EQUAL(
       dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(&Model.itemAt(0))->getID(),
-      "tests.generator.interp.TU.genscalar");
+      "tests.generator.interp.TU.gendouble");
   BOOST_CHECK_EQUAL(
       dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(&Model.itemAt(4))->getID(),
       "tests.simulatorB");
   BOOST_CHECK_THROW(Model.itemAt(5), openfluid::base::FrameworkException);
 
   BOOST_CHECK_EQUAL(
-      Model.findFirstItem("tests.generator.interp.TU.genscalar"), 0);
+      Model.findFirstItem("tests.generator.interp.TU.gendouble"), 0);
   BOOST_CHECK_EQUAL(Model.findFirstItem("tests.simulatorB"), 4);
   BOOST_CHECK_EQUAL(Model.findFirstItem("tests.wrongsimulator"), -1);
 
   std::vector<std::string> IDs = Model.getOrderedIDs();
 
   BOOST_CHECK_EQUAL(IDs.size(), 5);
-  BOOST_CHECK_EQUAL(IDs.at(0), "tests.generator.interp.TU.genscalar");
+  BOOST_CHECK_EQUAL(IDs.at(0), "tests.generator.interp.TU.gendouble");
   BOOST_CHECK_EQUAL(IDs.at(4), "tests.simulatorB");
 }
 

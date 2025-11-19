@@ -114,7 +114,8 @@ void TestDataset(const std::string& DatasetPath, bool /*AggregatedAttributes*/ =
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR), true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),
                       "tests.generator.interp");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 1);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableType(),
+                       openfluid::core::Value::Type::DOUBLE);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
   BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
                       static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INTERP));
@@ -137,21 +138,25 @@ void TestDataset(const std::string& DatasetPath, bool /*AggregatedAttributes*/ =
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::ware::WareType::GENERATOR), true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),
                       "tests.generator.fixed");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 11);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableType(),
+                       openfluid::core::Value::Type::VECTOR);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
   BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
                       static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::FIXED));
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),
-                      1);
+                      2);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"].get(),
                       "20");
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["varsize"].get(),
+                      "11");
 
   ++it;
   BOOST_REQUIRE_EQUAL(
       (*it)->isType(openfluid::ware::WareType::GENERATOR), true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableName(),
                       "tests.generator.random");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableSize(), 1);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getVariableType(),
+                       openfluid::core::Value::Type::DOUBLE);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getUnitsClass(), "TU");
   BOOST_REQUIRE_EQUAL(static_cast<int>(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getGeneratorMethod()), 
                       static_cast<int>(openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::RANDOM));

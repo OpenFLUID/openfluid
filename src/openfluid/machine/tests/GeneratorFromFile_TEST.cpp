@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(check_inject)
     BOOST_REQUIRE_CLOSE(TS.getLatestValue("TestUnits", 2, "tests.inject").value()->asVectorValue()[2], 60, 0.00001);
   }
   {
-    // Inject vector - single value (KO)
+    // Inject vector - single value (wrong)
     std::cout << "Checking injection of vector - single value (wrong)" << std::endl;
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT, 
                                             {{"TestUnits","tests.inject"}},
@@ -193,29 +193,14 @@ BOOST_AUTO_TEST_CASE(check_inject)
     BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
   }
   {
-    // Inject vector - single value through double x Dimension
-    std::cout << "Checking injection of vector - single value through double x Dimension" << std::endl;
-    openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT, 
-                                            {{"TestUnits","tests.inject"}},
-                                             openfluid::core::Value::DOUBLE,
-                                             openfluid::core::Dimensions(30)};
-    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinject_checktype.xml"}, 
-                                            {"distribution", "distri.dat"}};
-
-    TestSimulation TS;
-    fileTestSetupAndRun(TS, Specs, Params);
-    BOOST_REQUIRE_CLOSE(TS.getLatestValue("TestUnits", 1, "tests.inject").value()->asVectorValue()[29], -5, 0.00001);
-    BOOST_REQUIRE_CLOSE(TS.getLatestValue("TestUnits", 2, "tests.inject").value()->asVectorValue()[0], 107, 0.00001);
-  }
-  {
     // Inject vector - vector through double x Dimension (wrong)
     std::cout << "Checking injection of vector - vector through double x Dimension (wrong)" << std::endl;
     openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT, 
                                             {{"TestUnits","tests.inject"}},
-                                             openfluid::core::Value::DOUBLE,
-                                             openfluid::core::Dimensions(30)};
-    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinject_VECTOR.xml"}, 
-                                            {"distribution", "distri.dat"}};
+                                             openfluid::core::Value::VECTOR};
+    openfluid::ware::WareParams_t Params = {{"sources", "sourcesinject_checktype.xml"}, 
+                                            {"distribution", "distri.dat"},
+                                            {"varsize", "30"}};
 
     TestSimulation TS;
     TS.defaultSetup();
