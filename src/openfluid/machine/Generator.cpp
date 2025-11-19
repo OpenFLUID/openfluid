@@ -45,12 +45,10 @@ namespace openfluid { namespace machine {
 
 
 void Generator::setInfos(openfluid::tools::UnitVarTriplets_t Triplets,
-                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
-                  openfluid::core::Dimensions VarDimensions)
+                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod)
 {
   m_VarTriplets = Triplets;
   m_GenMethod = GenMethod;
-  m_VarDimensions = VarDimensions;
 }
 
 
@@ -69,15 +67,14 @@ openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Generator::getGeneratorM
 
 
 void MonoGenerator::setInfos(openfluid::tools::UnitVarTriplets_t Triplets,
-              openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
-              openfluid::core::Dimensions VarDimensions)
+              openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod)
 {
   if (Triplets.size() != 1)
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                           "Wrong number of columns for this generator");  
   }
-  Generator::setInfos(Triplets, GenMethod, VarDimensions);
+  Generator::setInfos(Triplets, GenMethod);
   m_VarName = getVariableName();
   m_UnitsClass = getUnitsClass();
 }

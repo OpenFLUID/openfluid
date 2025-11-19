@@ -36,6 +36,8 @@
   @author Armel THÖNI <armel.thoni@inrae.fr>
 */
 
+// OpenFLUID:stylecheck:!brac
+
 
 #include <openfluid/machine/GeneratorSignature.hpp>
 #include <openfluid/tools/IDHelpers.hpp>
@@ -47,17 +49,12 @@ namespace openfluid { namespace machine {
 
 GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,
                                        const openfluid::tools::UnitVarTriplets_t& V,
-                                       const openfluid::core::Value::Type VT,
-                                       const openfluid::core::Dimensions& VD):
-    SimulatorSignature(), Method(M), VariableTriplets(V), VariableType(VT), VariableDimensions(VD)
+                                       const openfluid::core::Value::Type VT):
+    SimulatorSignature(), Method(M), VariableTriplets(V), VariableType(VT)
 {
-  if ((VariableType == openfluid::core::Value::INTEGER || VariableType == openfluid::core::Value::BOOLEAN || VariableType == openfluid::core::Value::STRING) && !VD.isScalar())
-  {
-          throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-            "invalid generator dimension/type pair in signature");
-  }
   const auto VarPairs = openfluid::tools::deduceVarPairs(VariableTriplets);
-  ID = openfluid::tools::buildGeneratorID(VarPairs, VariableDimensions.strType());
+  const auto TypeString = openfluid::core::Value::getStringFromValueType(VT);
+  ID = openfluid::tools::buildGeneratorID(VarPairs, TypeString);
 
   switch (Method)
   {
@@ -84,15 +81,7 @@ GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::G
   for (const auto& VarPair : VarPairs)
   {
     std::string TypedVarName = VarPair.VariableName;
-    std::string VarDimType = VariableDimensions.strType();
-    if (VarDimType == "scalar")
-    {
-      TypedVarName += "["+openfluid::core::Value::getStringFromValueType(VariableType)+"]";
-    }
-    else
-    {
-      TypedVarName += "["+VarDimType+"]";
-    } 
+    TypedVarName += "["+TypeString+"]";
     SimulatorHandledData.ProducedVars.push_back(openfluid::ware::SignatureVariableItem(TypedVarName,
                                                                                  VarPair.UnitsClass,"",""));
   }
@@ -138,7 +127,7 @@ void GeneratorSignature::setRandomInfo()
   HandledData.UsedParams.push_back(
     openfluid::ware::SignatureDataItem("seed", "Random seed as integer. if negative, seed will change each time","-"));
 
-  if (!VariableDimensions.isScalar())
+  if (VariableType == openfluid::core::Value::Type::VECTOR || VariableType == openfluid::core::Value::Type::MATRIX)
   {
     HandledData.UsedParams.push_back(
         openfluid::ware::SignatureDataItem("identicalcells","Vector cells contain identical values","bool"));
@@ -185,7 +174,9 @@ void GeneratorSignature::setInjectionInfo()
   Name = "Values from file injection";
   Description = "Generates an injected value -no time interpolation- from given data series";
 
-  if ((VariableType == openfluid::core::Value::Type::INTEGER) || (VariableType == openfluid::core::Value::Type::DOUBLE))
+  if ((VariableType == openfluid::core::Value::Type::INTEGER) || 
+      (VariableType == openfluid::core::Value::Type::DOUBLE)  || \
+      (VariableType == openfluid::core::Value::Type::VECTOR)  || (VariableType == openfluid::core::Value::Type::MATRIX))
   {
     HandledData.UsedParams.push_back(openfluid::ware::SignatureDataItem("thresholdmin","Threshold min value", "-"));
     

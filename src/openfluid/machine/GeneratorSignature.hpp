@@ -74,12 +74,9 @@ class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignatu
 
     const openfluid::core::Value::Type VariableType;
 
-    const openfluid::core::Dimensions VariableDimensions;
-
     GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod M,
                        const openfluid::tools::UnitVarTriplets_t& V,
-                       const openfluid::core::Value::Type VT=openfluid::core::Value::NONE, 
-                       const openfluid::core::Dimensions& VD=openfluid::core::Dimensions());
+                       const openfluid::core::Value::Type VT=openfluid::core::Value::NONE);
 
     virtual ~GeneratorSignature() = default;
 

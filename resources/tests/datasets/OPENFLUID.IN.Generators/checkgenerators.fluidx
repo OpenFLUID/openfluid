@@ -3,7 +3,11 @@
 
   <model>
 
-    <generator varname="tests.fixed" unitsclass="TestUnits" method="fixed">
+    <generator varname="tests.fixed" unitsclass="TestUnits" method="fixed" vartype="double">
+      <param name="fixedvalue" value="12.7" />
+    </generator>
+
+    <generator varname="tests.fixed-implicit" unitsclass="TestUnits" method="fixed">
       <param name="fixedvalue" value="12.7" />
     </generator>
 
@@ -11,13 +15,27 @@
       <param name="fixedvalue" value="foo" />
     </generator>
 
-    <generator varname="tests.fixed-vector" unitsclass="TestUnits" varsize="7" method="fixed">
+    <generator varname="tests.fixed-vector-deprecated" unitsclass="TestUnits" varsize="7" method="fixed">
       <param name="fixedvalue" value="12.7" />
     </generator>
 
-    <generator varname="tests.fixed-vector-unique" unitsclass="TestUnits" varsize="7" method="fixed">
+    <generator varname="tests.fixed-vector-full-deprecated" unitsclass="TestUnits" varsize="7" method="fixed">
       <param name="fixedvalue" value="[1,3,5,7,9,11,13]" />
     </generator>
+
+    <generator varname="tests.fixed-vector-full-explicit" unitsclass="TestUnits" vartype="vector" method="fixed">
+      <param name="fixedvalue" value="[1,3,5,7,9,11,13]" />
+    </generator>
+
+    <generator varname="tests.fixed-vector-full-explicit-redundant" unitsclass="TestUnits" vartype="vector" method="fixed">
+      <param name="fixedvalue" value="[1,3,5,7,9,11,13]" />
+      <param name="varsize" value="7" />
+    </generator>
+
+    <generator varname="tests.fixed-vector-unique-explicit" unitsclass="TestUnits" vartype="vector" method="fixed">
+      <param name="fixedvalue" value="11" />
+      <param name="varsize" value="7" />
+    </generator> 
 
     <generator varname="tests.fixeddt" unitsclass="TestUnits" method="fixed">
       <param name="fixedvalue" value="1.27" />
@@ -29,11 +47,25 @@
       <param name="max" value="50" />
     </generator>
 
-    <generator varname="tests.random-vector" unitsclass="TestUnits" varsize="9" method="random">
+    <generator varname="tests.random-vector-deprecated" unitsclass="TestUnits" varsize="9" method="random">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
     </generator>
     
+    <generator varname="tests.random-vector" unitsclass="TestUnits" method="random" vartype="vector">
+      <param name="min" value="20.53" />
+      <param name="max" value="50" />
+      <param name="varsize" value="9" />
+      <param name="identicalcells" value="false" />
+      <param name="seed" value="1" />
+    </generator>
+
+    <generator varname="tests.random-matrix" unitsclass="TestUnits" method="random" vartype="matrix">
+      <param name="min" value="20.53" />
+      <param name="max" value="50" />
+      <param name="varsize" value="[2,9]" />
+    </generator>
+
     <generator varname="tests.randomdt" unitsclass="TestUnits" method="random">
       <param name="min" value="2.53" />
       <param name="max" value="5" />
@@ -45,9 +77,15 @@
       <param name="distribution" value="distri.dat" />
     </generator>
 
-    <generator varname="tests.interp-vector" unitsclass="TestUnits" varsize="11" method="interp">
+    <generator varname="tests.interp-vector-deprecated" unitsclass="TestUnits" varsize="11" method="interp">
       <param name="sources" value="sourcesinterp.xml" />
       <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.interp-vector" unitsclass="TestUnits" vartype="vector" method="interp">
+      <param name="sources" value="sourcesinterp.xml" />
+      <param name="distribution" value="distri.dat" />
+      <param name="varsize" value="11" />
     </generator>
 
     <generator varname="tests.interpmin" unitsclass="TestUnits" method="interp">

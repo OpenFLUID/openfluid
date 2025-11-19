@@ -126,8 +126,7 @@ openfluid::ware::WareID_t SimulatorRegistry::addGenerator(const GeneratorSpecs& 
     auto Container = createGeneratorContainer();
     auto Signature = new openfluid::machine::GeneratorSignature(Specs.Method,
                                                                 Specs.VarTriplets,
-                                                                Specs.VariableType,
-                                                                Specs.VariableDimensions);  
+                                                                Specs.VariableType);
 
     Container.setSignature(Signature);
     Container.validate();
