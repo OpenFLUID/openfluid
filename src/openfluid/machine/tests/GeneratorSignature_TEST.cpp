@@ -70,8 +70,7 @@ BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
   openfluid::machine::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM,
-                                               {{"TU","var"}},openfluid::core::Value::DOUBLE, 
-                                               openfluid::core::Dimensions(5));
+                                               {{"TU","var"}},openfluid::core::Value::VECTOR);
 
   BOOST_CHECK(!Sign.ID.empty());
   BOOST_CHECK_EQUAL(Sign.HandledData.RequiredParams.size(),2);

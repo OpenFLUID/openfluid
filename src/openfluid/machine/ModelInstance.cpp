@@ -368,42 +368,34 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 
       if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED)
       {
-        if (GenSignature->VariableDimensions.isScalar())
+        if (GenSignature->VariableType == openfluid::core::Value::INTEGER)
         {
-          if (GenSignature->VariableType == openfluid::core::Value::INTEGER)
-          {
-            CurrentItem->Body.reset(new FixedGenerator<long int>());
-          }
-          else if (GenSignature->VariableType == openfluid::core::Value::DOUBLE)
-          {
-            CurrentItem->Body.reset(new FixedGenerator<double>());
-          }
-          else if (GenSignature->VariableType == openfluid::core::Value::BOOLEAN)
-          {
-            CurrentItem->Body.reset(new FixedGenerator<bool>());
-          }
-          else if (GenSignature->VariableType == openfluid::core::Value::STRING)
-          {
-            CurrentItem->Body.reset(new FixedGenerator<std::string>());
-          }
-          else
-          {
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-              "invalid generator value type in model instance");
-          }
+          CurrentItem->Body.reset(new FixedGenerator<long int>());
         }
-        else if (GenSignature->VariableDimensions.isVector())
+        else if (GenSignature->VariableType == openfluid::core::Value::DOUBLE)
         {
-          CurrentItem->Body.reset(new FixedGenerator<openfluid::core::VectorValue>());
+          CurrentItem->Body.reset(new FixedGenerator<double>());
         }
-        else if (GenSignature->VariableDimensions.isMatrix())
+        else if (GenSignature->VariableType == openfluid::core::Value::BOOLEAN)
         {
-          CurrentItem->Body.reset(new FixedGenerator<openfluid::core::MatrixValue>());
+          CurrentItem->Body.reset(new FixedGenerator<bool>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::STRING)
+        {
+          CurrentItem->Body.reset(new FixedGenerator<std::string>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::VECTOR)
+        {
+          CurrentItem->Body.reset(new LinearFixedGenerator<openfluid::core::VectorValue>());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::MATRIX)
+        {
+          CurrentItem->Body.reset(new LinearFixedGenerator<openfluid::core::MatrixValue>());
         }
         else
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-            "invalid generator dimension/type pair in model instance");
+            "invalid generator value type in model instance");
         }
       }
       else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::RANDOM)
@@ -414,26 +406,18 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
         {
           CurrentItem->Body.reset(new DoubleRandomGenerator());
         }
-        else if (GenSignature->VariableDimensions.isScalar())
+        else if (GenSignature->VariableType == openfluid::core::Value::INTEGER)
         {
-          if (GenSignature->VariableType == openfluid::core::Value::INTEGER)
-          {
-            CurrentItem->Body.reset(new IntRandomGenerator());
-          }
-          else if (GenSignature->VariableType == openfluid::core::Value::BOOLEAN)
-          {
-            CurrentItem->Body.reset(new BooleanRandomGenerator());
-          }
-          else
-          {
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-              "invalid generator value type in model instance");
-          }
+          CurrentItem->Body.reset(new IntRandomGenerator());
+        }
+        else if (GenSignature->VariableType == openfluid::core::Value::BOOLEAN)
+        {
+          CurrentItem->Body.reset(new BooleanRandomGenerator());
         }
         else
         {
           throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-            "invalid generator dimension/type pair in model instance");
+            "invalid generator value type in model instance");
         }
       }
       else if (GenSignature->Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECT)
@@ -493,15 +477,13 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
       {
         ((openfluid::machine::Generator*)
           (CurrentItem->Body.get()))->setInfos(GenSignature->VariableTriplets,
-                                               GenSignature->Method,
-                                               GenSignature->VariableDimensions);
+                                               GenSignature->Method);
       }
       else
       {
         ((openfluid::machine::MonoGenerator*)
           (CurrentItem->Body.get()))->setInfos(GenSignature->VariableTriplets,
-                                               GenSignature->Method,
-                                               GenSignature->VariableDimensions);
+                                               GenSignature->Method);
       }
     }
     else

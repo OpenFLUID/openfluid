@@ -69,7 +69,7 @@ NumericalRandomGenerator<T>::NumericalRandomGenerator() : RandomGenerator(), m_M
 
 
 DoubleRandomGenerator::DoubleRandomGenerator() :
-  NumericalRandomGenerator<openfluid::core::DoubleValue>()
+  NumericalRandomGenerator<openfluid::core::DoubleValue>(), LinearGeneratorMixin()
 {
 }
 
@@ -155,6 +155,11 @@ void DoubleRandomGenerator::initParams(const openfluid::ware::WareParams_t& Para
   }
 
   NumericalRandomGenerator::initParams(Params);
+  std::string VarSizeStr;
+  if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
+  {
+    LinearGeneratorMixin::processVarValue(VarSizeStr);
+  }
 }
 
 
@@ -165,6 +170,26 @@ void DoubleRandomGenerator::initParams(const openfluid::ware::WareParams_t& Para
 void IntRandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   NumericalRandomGenerator::initParams(Params);
+  std::string VarSizeStr;
+  if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s_VarsizeNotAcceptedString);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void BooleanRandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
+{
+  RandomGenerator::initParams(Params);
+  std::string VarSizeStr;
+  if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s_VarsizeNotAcceptedString);
+  }
 }
 
 
@@ -252,15 +277,7 @@ openfluid::base::SchedulingRequest IntRandomGenerator::initializeRun()
   openfluid::core::SpatialUnit* LU;
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
-    if (m_VarDimensions.isScalar())
-    {
-      OPENFLUID_InitializeVariable(LU,m_VarName,openfluid::core::IntegerValue(0));
-    }
-    else
-    {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "int non-scalar var not handled for generator");
-    }
+    OPENFLUID_InitializeVariable(LU,m_VarName,openfluid::core::IntegerValue(0));
   }
 
   return endOfStep();
@@ -337,16 +354,8 @@ openfluid::base::SchedulingRequest IntRandomGenerator::runStep()
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
-    if (m_VarDimensions.isScalar())
-    {
-      openfluid::core::IntegerValue Value(Rng.irunif(m_Min, m_Max));
-      OPENFLUID_AppendVariable(LU,m_VarName,Value);
-    }
-    else
-    {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "int non-scalar var not handled for generator");
-    }
+    openfluid::core::IntegerValue Value(Rng.irunif(m_Min, m_Max));
+    OPENFLUID_AppendVariable(LU,m_VarName,Value);
   }
 
   return endOfStep();
@@ -362,15 +371,7 @@ openfluid::base::SchedulingRequest BooleanRandomGenerator::initializeRun()
   openfluid::core::SpatialUnit* LU;
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
-    if (m_VarDimensions.isScalar())
-    {
-      OPENFLUID_InitializeVariable(LU,m_VarName,openfluid::core::BooleanValue(0));
-    }
-    else
-    {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "bool non-scalar var not handled for generator");
-    }
+    OPENFLUID_InitializeVariable(LU,m_VarName,openfluid::core::BooleanValue(0));
   }
 
   return endOfStep();
@@ -387,16 +388,8 @@ openfluid::base::SchedulingRequest BooleanRandomGenerator::runStep()
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitsClass,LU)
   {
-    if (m_VarDimensions.isScalar())
-    {
-      openfluid::core::BooleanValue Value(Rng.bernoulli(m_Probability));
-      OPENFLUID_AppendVariable(LU,m_VarName,Value);
-    }
-    else
-    {
-      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "bool non-scalar var not handled for generator");
-    }
+    openfluid::core::BooleanValue Value(Rng.bernoulli(m_Probability));
+    OPENFLUID_AppendVariable(LU,m_VarName,Value);
   }
 
   return endOfStep();

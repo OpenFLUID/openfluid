@@ -47,7 +47,7 @@
 namespace openfluid { namespace machine {
 
 
-InterpGenerator::InterpGenerator() : MonoGenerator(),
+InterpGenerator::InterpGenerator() : MonoGenerator(), LinearGeneratorMixin(), 
   m_IsMin(false), m_IsMax(false), m_Min(0.0), m_Max(0.0),
   m_SourcesFile(""),m_DistriFile(""),m_DistriBindings(nullptr)
 {
@@ -75,6 +75,11 @@ InterpGenerator::~InterpGenerator()
 
 void InterpGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
+  std::string VarSizeStr;
+  if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
+  {
+    LinearGeneratorMixin::processVarValue(VarSizeStr);
+  }
   if (!OPENFLUID_GetWareParameter(Params,"sources",m_SourcesFile))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,

@@ -55,10 +55,10 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
   protected:
 
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GenMethod;
-
-    openfluid::core::Dimensions m_VarDimensions;
     
     openfluid::tools::UnitVarTriplets_t m_VarTriplets;
+
+    std::string s_VarsizeNotAcceptedString = "varsize not accepted for this type of generator";
 
 
   public:
@@ -73,8 +73,7 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 
 
     void setInfos(openfluid::tools::UnitVarTriplets_t Triplets,
-                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
-                  openfluid::core::Dimensions VarDimensions=openfluid::core::Dimensions());
+                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod);
 
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod getGeneratorMethod() const;
 
@@ -110,8 +109,7 @@ class OPENFLUID_API MonoGenerator : public Generator
 
 
     void setInfos(openfluid::tools::UnitVarTriplets_t Triplets,
-                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod, 
-                  openfluid::core::Dimensions VarDimensions=openfluid::core::Dimensions());
+                  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod);
 
     openfluid::core::VariableName_t getVariableName() const;
 
@@ -121,6 +119,20 @@ class OPENFLUID_API MonoGenerator : public Generator
       @deprecated Since version 2.1.0. Use openfluid::machine::Generator::getUnitsClass() const instead
     */
     [[deprecated]] openfluid::core::UnitsClass_t getUnitClass() const;
+
+};
+
+
+class OPENFLUID_API LinearGeneratorMixin
+{
+  protected:
+
+    openfluid::core::Dimensions m_VarDimensions;
+
+    void processVarValue(std::string StringVarSize)
+    {
+      m_VarDimensions = openfluid::core::Dimensions(StringVarSize);
+    }
 
 };
 

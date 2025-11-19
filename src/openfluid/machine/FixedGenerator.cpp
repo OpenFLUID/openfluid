@@ -47,7 +47,7 @@ namespace openfluid { namespace machine {
 template <class T>
 FixedGenerator<T>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 {
-  m_VarValue = (T)0;
+
 }
 
 
@@ -56,7 +56,7 @@ FixedGenerator<T>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<double>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
+FixedGenerator<double>::FixedGenerator() : MonoGenerator(), m_VarValueInit(0), m_DeltaT(0)
 {
   m_VarValue = 0;
 }
@@ -67,7 +67,7 @@ FixedGenerator<double>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<long int>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
+FixedGenerator<long int>::FixedGenerator() : MonoGenerator(), m_VarValueInit(0), m_DeltaT(0)
 {
   m_VarValue = 0;
 }
@@ -78,7 +78,7 @@ FixedGenerator<long int>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<bool>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
+FixedGenerator<bool>::FixedGenerator() : MonoGenerator(), m_VarValueInit(false), m_DeltaT(0)
 {
   m_VarValue = false;
 }
@@ -89,7 +89,7 @@ FixedGenerator<bool>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<std::string>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
+FixedGenerator<std::string>::FixedGenerator() : MonoGenerator(), m_VarValueInit(""), m_DeltaT(0)
 {
   m_VarValue = "";
 }
@@ -100,8 +100,10 @@ FixedGenerator<std::string>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
 
 
 template <>
-FixedGenerator<openfluid::core::VectorValue>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
+LinearFixedGenerator<openfluid::core::VectorValue>::LinearFixedGenerator() : 
+  FixedGenerator<openfluid::core::VectorValue>(), LinearGeneratorMixin()
 {
+  m_VarValueInit = openfluid::core::VectorValue(1);
   m_VarValue = openfluid::core::VectorValue(1);
 }
 
@@ -111,8 +113,10 @@ FixedGenerator<openfluid::core::VectorValue>::FixedGenerator() : MonoGenerator()
 
 
 template <>
-FixedGenerator<openfluid::core::MatrixValue>::FixedGenerator() : MonoGenerator(), m_DeltaT(0)
+LinearFixedGenerator<openfluid::core::MatrixValue>::LinearFixedGenerator() : 
+  FixedGenerator<openfluid::core::MatrixValue>(), LinearGeneratorMixin()
 {
+  m_VarValueInit = openfluid::core::MatrixValue();
   m_VarValue = openfluid::core::MatrixValue();
 }
 
@@ -124,7 +128,12 @@ FixedGenerator<openfluid::core::MatrixValue>::FixedGenerator() : MonoGenerator()
 template <class T>
 void FixedGenerator<T>::processVarValue(const openfluid::ware::WareParams_t& Params)
 {
-  if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",m_VarValue))
+  std::string VarSizeStr;
+  if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s_VarsizeNotAcceptedString);
+  }
+  if (!this->OPENFLUID_GetWareParameter(Params,"fixedvalue",m_VarValue))
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing fixed value for generator");
   }
@@ -136,8 +145,15 @@ void FixedGenerator<T>::processVarValue(const openfluid::ware::WareParams_t& Par
 
 
 template <>
-void FixedGenerator<openfluid::core::VectorValue>::processVarValue(const openfluid::ware::WareParams_t& Params)
+void LinearFixedGenerator<openfluid::core::VectorValue>::processVarValue(const openfluid::ware::WareParams_t& Params)
 {
+  std::string VarSizeStr;
+  bool ExplicitSize = false;
+  if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
+  {
+    LinearGeneratorMixin::processVarValue(VarSizeStr);
+    ExplicitSize = true;
+  }
   std::string StringVarValue;
   if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",StringVarValue))
   {
@@ -151,7 +167,7 @@ void FixedGenerator<openfluid::core::VectorValue>::processVarValue(const openflu
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "badly formatted fixed vector value for generator");
     }
-    if (VV.size() != m_VarDimensions.Rows)
+    if (ExplicitSize && VV.size() != m_VarDimensions.Rows)
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "wrong size for fixed vector value for generator");
@@ -180,8 +196,13 @@ void FixedGenerator<openfluid::core::VectorValue>::processVarValue(const openflu
 
 
 template <>
-void FixedGenerator<openfluid::core::MatrixValue>::processVarValue(const openfluid::ware::WareParams_t& Params)
+void LinearFixedGenerator<openfluid::core::MatrixValue>::processVarValue(const openfluid::ware::WareParams_t& Params)
 {
+  std::string VarSizeStr;
+  if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
+  {
+    LinearGeneratorMixin::processVarValue(VarSizeStr);
+  }
   std::string StringVarValue;
   if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",StringVarValue))
   {
@@ -279,7 +300,7 @@ void FixedGenerator<std::string>::applyValue(openfluid::core::SpatialUnit* LU, b
 
 
 template <>
-void FixedGenerator<openfluid::core::VectorValue>::applyValue(openfluid::core::SpatialUnit* LU, bool init)
+void LinearFixedGenerator<openfluid::core::VectorValue>::applyValue(openfluid::core::SpatialUnit* LU, bool init)
 {
   if (init)
   {
@@ -298,7 +319,7 @@ void FixedGenerator<openfluid::core::VectorValue>::applyValue(openfluid::core::S
 
 
 template <>
-void FixedGenerator<openfluid::core::MatrixValue>::applyValue(openfluid::core::SpatialUnit* LU, bool init)
+void LinearFixedGenerator<openfluid::core::MatrixValue>::applyValue(openfluid::core::SpatialUnit* LU, bool init)
 {
   if (init)
   {

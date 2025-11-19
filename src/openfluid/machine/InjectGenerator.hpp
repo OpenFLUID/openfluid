@@ -160,15 +160,7 @@ class OPENFLUID_API GenericInjectGenerator : public MonoGenerator
       {
         if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
         {
-
-          if (m_VarDimensions.isVector())
-          {
-            // TOIMPL ERROR SINCE NOT IMPLEMENTED
-          }
-          else
-          {
-            OPENFLUID_AppendVariable(LU,m_VarName,Value);
-          }
+          OPENFLUID_AppendVariable(LU,m_VarName,Value);
         }
       }
 
@@ -254,15 +246,7 @@ class NumericalInjectGenerator : public GenericInjectGenerator<T,TV>
             Value = m_Min;
           }
 
-          if (this->m_VarDimensions.isVector())
-          {
-            openfluid::core::VectorValue VV(this->m_VarDimensions.Rows,Value);
-            this->OPENFLUID_AppendVariable(LU,this->m_VarName,VV);
-          }
-          else
-          {
-            this->OPENFLUID_AppendVariable(LU,this->m_VarName,Value);
-          }
+          this->OPENFLUID_AppendVariable(LU,this->m_VarName,Value);
         }
       }
 
@@ -281,7 +265,8 @@ class NumericalInjectGenerator : public GenericInjectGenerator<T,TV>
 };
 
 
-class InjectGenerator : public NumericalInjectGenerator<double, openfluid::core::DoubleValue>
+class InjectGenerator : 
+  public NumericalInjectGenerator<double, openfluid::core::DoubleValue>, public LinearGeneratorMixin
 {
   public: 
     

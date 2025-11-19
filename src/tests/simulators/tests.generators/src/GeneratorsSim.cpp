@@ -116,24 +116,83 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::core::DoubleValue SValue;
     openfluid::core::VectorValue VValue;
+    openfluid::core::MatrixValue MValue;
 
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
-
+      // FIXED
       OPENFLUID_GetVariable(TU,"tests.fixed",OPENFLUID_GetCurrentTimeIndex(),SValue);
       if (!openfluid::scientific::isCloseEnough<double>(SValue,12.7))
       {
         OPENFLUID_RaiseError("incorrect value for tests.fixed variable");
       }
 
+      //    VECTOR
+      OPENFLUID_GetVariable(TU,"tests.fixed-vector-deprecated",OPENFLUID_GetCurrentTimeIndex(),VValue);
+      for (const auto& V : VValue)
+      {
+        if (!openfluid::scientific::isCloseEnough<double>(V,12.7))
+        {
+          OPENFLUID_RaiseError("incorrect value for tests.fixed-vector-deprecated variable");
+        }
+      }
 
+      OPENFLUID_GetVariable(TU,"tests.fixed-vector-full-explicit",OPENFLUID_GetCurrentTimeIndex(),VValue);
+      if (!openfluid::scientific::isCloseEnough<double>(VValue[0],1))
+      {
+        OPENFLUID_RaiseError("incorrect value for tests.fixed-vector-full-explicit variable");
+      }
+
+      OPENFLUID_GetVariable(TU,"tests.fixed-vector-full-explicit",OPENFLUID_GetCurrentTimeIndex(),VValue);
+      if (!openfluid::scientific::isCloseEnough<double>(VValue[2],5))
+      {
+        OPENFLUID_RaiseError("incorrect value for tests.fixed-vector-full-explicit variable");
+      }
+
+
+      // RANDOM
       OPENFLUID_GetVariable(TU,"tests.random",OPENFLUID_GetCurrentTimeIndex(),SValue);
       if (!(SValue >= 20.53 && SValue<= 50.0))
       {
         OPENFLUID_RaiseError("incorrect value for tests.random variable");
       }
 
+      //    VECTOR
+      OPENFLUID_GetVariable(TU,"tests.random-vector-deprecated",OPENFLUID_GetCurrentTimeIndex(),VValue);
+      for (const auto& V : VValue)
+      {
+        if (!(V > 20.53 && V< 50.0))
+        {
+          OPENFLUID_RaiseError("incorrect value for tests.random-vector-deprecated variable");
+        }
+      }
+      if (VValue[0] != VValue[1])
+      {
+        OPENFLUID_RaiseError("different random values in tests.random-vector when supposed to be identical");
+      }
 
+      OPENFLUID_GetVariable(TU,"tests.random-vector",OPENFLUID_GetCurrentTimeIndex(),VValue);
+      for (const auto& V : VValue)
+      {
+        if (!(V > 20.53 && V< 50.0))
+        {
+          OPENFLUID_RaiseError("incorrect value for tests.random-vector variable");
+        }
+      }
+      if (VValue[0] == VValue[1])
+      {
+        OPENFLUID_RaiseError("identical random values in tests.random-vector when supposed to be different");
+      }
+
+      //    MATRIX
+      OPENFLUID_GetVariable(TU,"tests.random-matrix",OPENFLUID_GetCurrentTimeIndex(),MValue);
+      if (!(MValue.get(1,5) > 20.53 && MValue.get(1,5)< 50.0))
+      {
+        OPENFLUID_RaiseError("incorrect value for tests.random-matrix variable");
+      }
+
+
+      // INTERP
       OPENFLUID_GetVariable(TU,"tests.interp",OPENFLUID_GetCurrentTimeIndex(),SValue);
 
       if (TU->getID() % 2 != 0)
@@ -178,6 +237,7 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
       }
 
 
+      // INJECT
       OPENFLUID_GetVariable(TU,"tests.inject",OPENFLUID_GetCurrentTimeIndex(),SValue);
 
       if (TU->getID() % 2 != 0)

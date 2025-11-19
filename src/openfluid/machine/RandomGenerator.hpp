@@ -109,7 +109,7 @@ class NumericalRandomGenerator : public RandomGenerator
 // =====================================================================
 
 
-class DoubleRandomGenerator : public NumericalRandomGenerator<openfluid::core::DoubleValue>
+class DoubleRandomGenerator : public NumericalRandomGenerator<openfluid::core::DoubleValue>, public LinearGeneratorMixin
 {
 
   public:
@@ -158,6 +158,8 @@ class BooleanRandomGenerator : public RandomGenerator
   public:
 
     BooleanRandomGenerator();
+
+    void initParams(const openfluid::ware::WareParams_t& Params);
 
     openfluid::base::SchedulingRequest initializeRun();
 
