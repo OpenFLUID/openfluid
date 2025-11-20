@@ -8,7 +8,7 @@ This appendix provides insight about use cases and set up of generators to provi
 
 The available data types depend from the kind of wanted generation:
 
-| Generator type                 | Double (scalar) | Double (vector) | Double (matrix) | Integer | Boolean | String | Map
+| Generator type                 | Double | Vector (Double) | Matrix (Double) | Integer | Boolean | String | Map |
 | ------------------------------ | ------ | ------ | ------ | ------- | ------- | ------ | ------ |
 | Fixed values                   | Yes    | Yes*   | Yes*   | Yes     | Yes     | Yes    | No     |
 | Random values                  | Yes    | Yes    | Yes    | Yes     | Yes     | No     | No     |
