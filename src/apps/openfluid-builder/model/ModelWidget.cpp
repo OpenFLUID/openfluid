@@ -356,7 +356,6 @@ void ModelWidget::addGenerator()
   if (AddGenDlg.exec() == QDialog::Accepted)
   {
     auto VarType = AddGenDlg.getVarType();
-    //auto Dimensions = AddGenDlg.getDimensions();
     openfluid::fluidx::GeneratorDescriptor* GenDesc =
         new openfluid::fluidx::GeneratorDescriptor(AddGenDlg.getVariableTriplets(),
                                                    AddGenDlg.getMethod(),

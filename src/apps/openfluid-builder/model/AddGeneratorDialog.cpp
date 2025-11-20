@@ -274,6 +274,7 @@ QRegularExpression AddGeneratorDialog::getVariableSelectionRegExp()
 
 void AddGeneratorDialog::checkGlobal()
 {
+  QString IntermediateStyle = "background-color: #FFFFBB";
   if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INJECTMULTICOL)
   {
 #if (QT_VERSION_MAJOR < 6)
@@ -293,7 +294,7 @@ void AddGeneratorDialog::checkGlobal()
     {
       if (Validation == QValidator::Intermediate)
       {
-        ui->SelectionLineEdit->setStyleSheet("background-color: #FFFFBB");
+        ui->SelectionLineEdit->setStyleSheet(IntermediateStyle);
         setMessage(tr("Selection input may not be finished"));
       }
       else
@@ -358,7 +359,7 @@ void AddGeneratorDialog::checkGlobal()
         OK = false;
         if (Validation == QValidator::Intermediate)
         {
-          ui->DimensionsLineEdit->setStyleSheet("background-color: #FFFFBB");
+          ui->DimensionsLineEdit->setStyleSheet(IntermediateStyle);
           setMessage(tr("Container dimensions may not be finished"));
         }
         else

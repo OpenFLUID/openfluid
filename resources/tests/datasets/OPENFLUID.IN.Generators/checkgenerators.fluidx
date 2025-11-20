@@ -25,7 +25,6 @@
 
     <generator varname="tests.fixed-vector-full-explicit" unitsclass="TestUnits" vartype="vector" method="fixed">
       <param name="fixedvalue" value="[1,3,5,7,9,11,13]" />
-      <param name="varsize" value="7" />
     </generator>
 
     <generator varname="tests.fixed-vector-full-explicit-redundant" unitsclass="TestUnits" vartype="vector" method="fixed">

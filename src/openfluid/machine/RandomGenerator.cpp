@@ -173,8 +173,7 @@ void IntRandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
   std::string VarSizeStr;
   if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "varsize not accepted for this type of generator");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s_VarsizeNotAcceptedString);
   }
 }
 
@@ -189,8 +188,7 @@ void BooleanRandomGenerator::initParams(const openfluid::ware::WareParams_t& Par
   std::string VarSizeStr;
   if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "varsize not accepted for this type of generator");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s_VarsizeNotAcceptedString);
   }
 }
 

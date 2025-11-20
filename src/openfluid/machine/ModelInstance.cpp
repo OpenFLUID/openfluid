@@ -374,7 +374,6 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
         }
         else if (GenSignature->VariableType == openfluid::core::Value::DOUBLE)
         {
-          std::cout << "building double fixed generator!" << std::endl;
           CurrentItem->Body.reset(new FixedGenerator<double>());
         }
         else if (GenSignature->VariableType == openfluid::core::Value::BOOLEAN)

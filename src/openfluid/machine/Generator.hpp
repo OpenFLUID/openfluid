@@ -58,6 +58,8 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
     
     openfluid::tools::UnitVarTriplets_t m_VarTriplets;
 
+    std::string s_VarsizeNotAcceptedString = "varsize not accepted for this type of generator";
+
 
   public:
 

@@ -131,8 +131,7 @@ void FixedGenerator<T>::processVarValue(const openfluid::ware::WareParams_t& Par
   std::string VarSizeStr;
   if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                              "varsize not accepted for this type of generator");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, s_VarsizeNotAcceptedString);
   }
   if (!this->OPENFLUID_GetWareParameter(Params,"fixedvalue",m_VarValue))
   {
@@ -149,9 +148,11 @@ template <>
 void LinearFixedGenerator<openfluid::core::VectorValue>::processVarValue(const openfluid::ware::WareParams_t& Params)
 {
   std::string VarSizeStr;
+  bool ExplicitSize = false;
   if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
   {
     LinearGeneratorMixin::processVarValue(VarSizeStr);
+    ExplicitSize = true;
   }
   std::string StringVarValue;
   if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",StringVarValue))
@@ -166,7 +167,7 @@ void LinearFixedGenerator<openfluid::core::VectorValue>::processVarValue(const o
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "badly formatted fixed vector value for generator");
     }
-    if (VV.size() != m_VarDimensions.Rows)
+    if (ExplicitSize && VV.size() != m_VarDimensions.Rows)
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                                                 "wrong size for fixed vector value for generator");
