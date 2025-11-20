@@ -109,6 +109,7 @@ class CSVMultiColFilesObserver : public CSVFilesObserverBase
 
       try
       {
+        CSVFilesObserverBase::initParams(Params);
         ParamsTree.setParams(Params);
       }
       catch (openfluid::base::FrameworkException& E)

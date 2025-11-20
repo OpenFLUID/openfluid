@@ -66,6 +66,8 @@ class GNUplotObsParamsWidget: public openfluid::ui::builderext::PluggableParamet
 
     GNUplotInfo m_Plot;
 
+    bool m_WithFullUpdate = true;
+
     QString m_CurrentSerieName;
     QString m_CurrentGraphName;
 

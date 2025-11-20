@@ -122,6 +122,7 @@ class CSVFilesObserver : public CSVFilesObserverBase
 
       try
       {
+        CSVFilesObserverBase::initParams(Params);
         ParamsTree.setParams(Params);
       }
       catch (openfluid::base::FrameworkException& E)
