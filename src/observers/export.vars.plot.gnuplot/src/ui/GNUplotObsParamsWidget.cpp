@@ -499,8 +499,13 @@ void GNUplotObsParamsWidget::renameSerie(QListWidgetItem* Item)
   {
     QString NewSerieName = Item->text();
 
+    if (NewSerieName.count(".") >= 1)
+    {
+      QMessageBox::critical(this, tr("Serie renaming"),tr("A serie name cannot contains dots."), QMessageBox::Close);
+    }
+
     // Perform renaming only if the new serie name is not already used
-    if (ui->SeriesListWidget->findItems(NewSerieName,Qt::MatchExactly).size() == 1)
+    else if (ui->SeriesListWidget->findItems(NewSerieName,Qt::MatchExactly).size() == 1)
     {
       QString CurrentSeriePrefix = "serie." + m_CurrentSerieName + ".";
       QString NewSeriePrefix = "serie." + NewSerieName + ".";
@@ -627,8 +632,10 @@ void GNUplotObsParamsWidget::setCurrentSerie(int CurrentRow)
       }
       else
       {
+        m_WithFullUpdate = false; // to avoid infinite loop
         ui->UnitsClassComboBox->setCurrentIndex(0);
         setUnitsClass(ui->UnitsClassComboBox->currentText());
+        m_WithFullUpdate = true;
       }
     }
     else if (Serie.Type == SerieInfo::SerieType::SERIE_FILE)
@@ -767,7 +774,10 @@ void GNUplotObsParamsWidget::setUnitID(const QString& UnitID)
     mp_Params->insert({SeriePrefix + "unitID", UnitID.toStdString()});
 
     emit changed();
-    update();
+    if (m_WithFullUpdate)
+    {
+      update();
+    }
   }
 }
 
@@ -920,6 +930,11 @@ void GNUplotObsParamsWidget::renameGraph(QListWidgetItem* Item)
   if (!m_CurrentGraphName.isEmpty() and Item)
   {
     QString NewGraphName = Item->text();
+
+    if (NewGraphName.count(".") >= 1)
+    {
+      QMessageBox::critical(this, tr("Graph renaming"),tr("A graph name cannot contains dots."), QMessageBox::Close);
+    }
 
     // Perform renaming only if the new graph name is not already used
     if (ui->GraphsListWidget->findItems(NewGraphName,Qt::MatchExactly).size() == 1)

@@ -174,6 +174,30 @@ class CSVFilesObserverBase : public openfluid::ware::PluggableObserver
     // =====================================================================
 
 
+    void initParams(const openfluid::ware::WareParams_t& Params) override
+    {
+      for(const auto& Param : Params) 
+      {
+        const auto& ParamName = Param.first;
+        for (const auto& KeyName : std::initializer_list<std::string>{"set", "format"})
+        {
+          auto DotSep = '.';
+          if (openfluid::tools::startsWith(ParamName, KeyName + DotSep) && 
+              openfluid::tools::count(ParamName, DotSep) != 2)
+          {
+            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+              "Invalid " + ParamName + " attribute name format in parameter. "
+              "Sets must contain 2 dots only since they are separators");
+          }
+        }
+      }
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
     void onInitializedRun()
     {
       saveToFiles();
