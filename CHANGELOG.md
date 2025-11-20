@@ -1,4 +1,5 @@
 ## 2.2.1
+
   * Added ability to open internal observers code in Builder
   * Added multiline indentation and comment in DevStudio
   * Added capacity to duplicate a ware (CLI and DevStudio)
@@ -15,11 +16,15 @@
     for custom OUT/REF comparison
   * Added multitype to injection generator for all OpenFLUID types
   * Added ware test integration in DevStudio
+  * Added gitlab-ci pipelines for automatic test and packaging of OpenFLUID
   * Updated Windows Github action
   * Updated test autodiscovery to automatically compare output to ref 
     when available
   * Updated internal datasets and simulators for integration test
   * Updated cmake operations coloring in DevStudio to handle console symbols
+  * Updated multitype generator management by passing vartype to parameter
+  * Changed generator ID when double type from "genscalar" suffix to "gendouble"
+  * Changed internal logs location from 'utils' to 'base' library
   * Fixed missing "data" case in ware signature
   * Fixed wrong symbol check on signature attributes
   * Fixed multicolumn CSV observer early delete segfault
@@ -31,6 +36,7 @@
   * Fixed precision in string-related conversion functions 
     (from 6 to 17 digits)
   * Fixed fragment unauthenticated import
+  * Fixed examples installation operations (especially for observers)
 
 
 ## 2.2.0
@@ -59,7 +65,7 @@
   * Added search paths for code fragments
     (fragments subdir in ware, at workspace level, at userdata level)
   * Added internal simulation test structure
-  * Added ware qualtiy checks
+  * Added ware quality checks
   * Added ware status board in DevStudio for info and actions
   * Added fluidx format version (current is 4)
   * Added code tag types: HACK, TOIMPL
@@ -194,7 +200,7 @@
   * Added configurable auto-save mode in Devstudio
   * Added management of path and paths list separators in the Filesystem API,
     depending on operating system
-  * Added experimental support of embedded R code in sumlators
+  * Added experimental support of embedded R code in simulators
   * Added automatic build of documentation examples
   * Added french translation for completion menu
   * Updated management of completion in Devstudio
