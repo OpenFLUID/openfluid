@@ -30,9 +30,15 @@ IF(OFBUILD_SUPPORT_DIR)
   FILE(TO_CMAKE_PATH "$ENV{OFBUILD_SUPPORT_DIR}/bin" OFBUILD_SUPPORT_BINDIR_MOD)
   FILE(TO_CMAKE_PATH "$ENV{OFBUILD_SUPPORT_DIR}/lib" OFBUILD_SUPPORT_LIBDIR_MOD)
 
-  # GDAL  
-  INSTALL(DIRECTORY "${OFBUILD_SUPPORT_BINDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PATH} FILES_MATCHING PATTERN "libgdal*.dll") 
-  INSTALL(DIRECTORY "${OFBUILD_SUPPORT_LIBDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PATH} FILES_MATCHING PATTERN "libgdal*.dll") 
+  # TODO replace by cleaner way
+  FOREACH(PAT "libgdal*" "libcurl*" "libstdc++*" "libwinpthread*" "libboost_system*" "libboost_filesystem*" "libboost_process*" "libidn2*" "libicu*" "libmd4*" "libbrotlidec" "libcrypto-3-x64" "libnghttp2*" "libarchive-13" "libaec-0" "libparquet*" "libarrow*" "libmd4c*")
+    INSTALL(DIRECTORY "${OFBUILD_SUPPORT_BINDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PATH} FILES_MATCHING PATTERN "${PAT}.dll")
+  ENDFOREACH()
+  # GDAL
+  INSTALL(DIRECTORY "${OFBUILD_SUPPORT_LIBDIR_MOD}/" DESTINATION ${OFBUILD_BIN_INSTALL_PATH} FILES_MATCHING PATTERN "libgdal*.dll")
+
+  #INSTALL(DIRECTORY "C:/craftingDeps/mingw64/lib/" DESTINATION ${OFBUILD_LIB_INSTALL_PATH}) # TODO replace by proper deps installation system
+
 ELSE()
   MESSAGE(WARNING "environment variable OFBUILD_SUPPORT_DIR is not set!")
 ENDIF()
