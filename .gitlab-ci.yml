@@ -22,12 +22,11 @@ pkg-of:
   stage: package
   parallel:
     matrix:
-      - TAG: ["debian-12-qt6",
-              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6"]  
+      - TAG: ["ubuntu-22.04-qt5"]  
   image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
   script:
     - mkdir ./_build
-    - cd ./_build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+    - cd ./_build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DOFBUILD_ENABLE_GUI=OFF
     - make -j `nproc`
     - cpack -j `nproc`
   artifacts:
