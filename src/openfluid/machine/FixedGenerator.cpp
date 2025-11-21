@@ -263,43 +263,6 @@ void FixedGenerator<T>::initParams(const openfluid::ware::WareParams_t& Params)
 
 
 template <>
-void FixedGenerator<double>::applyValue(openfluid::core::SpatialUnit* LU, bool init)
-{
-  if (init)
-  {
-    OPENFLUID_InitializeVariable(LU,m_VarName,0.0);
-  }
-  else
-  {
-    OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-template <>
-void FixedGenerator<std::string>::applyValue(openfluid::core::SpatialUnit* LU, bool init)
-{
-  if (init)
-  {
-    std::string InitVar = "";
-    OPENFLUID_InitializeVariable(LU,m_VarName, InitVar);
-  }
-  else
-  {
-    OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-template <>
 void LinearFixedGenerator<openfluid::core::VectorValue>::applyValue(openfluid::core::SpatialUnit* LU, bool init)
 {
   if (init)
