@@ -35,6 +35,8 @@
   @author Jean-Christophe FABRE <jean-christophe.fabre@inra.fr>
 */
 
+// OpenFLUID:stylecheck:!brac
+
 
 #ifndef __OPENFLUID_UTILS_BINDING_HPP__
 #define __OPENFLUID_UTILS_BINDING_HPP__
@@ -863,6 +865,12 @@ class Binding
           if (pGenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECT)
           {
             mp_OutErr->printfOut("inject");
+          }
+
+          if (pGenDesc->getGeneratorMethod() == \
+                openfluid::fluidx::GeneratorDescriptor:: GeneratorMethod::INJECTMULTICOL)
+          {
+            mp_OutErr->printfOut("inject-multicol");
           }
 
           mp_OutErr->printfOut(" generator for variable %s on units %s\n",

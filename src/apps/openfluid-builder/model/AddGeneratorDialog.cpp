@@ -479,6 +479,7 @@ openfluid::ware::WareParams_t AddGeneratorDialog::getParams() const
     if (ui->VectorRadioButton->isChecked() || ui->MatrixRadioButton->isChecked())
     {
       Params["identicalcells"] = ui->IdenticalValueCheckbox->isChecked();
+      Params["varsize"] = getDimensions().getSerializedVariableSize();
     }
   }
   else if (m_Method == openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::INTERP)
