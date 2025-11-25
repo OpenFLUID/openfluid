@@ -1,37 +1,95 @@
 stages:
   - test
   - package
-  - container
+  - downstream
 
 test-of:
-  stage: package #test
+  stage: test
+  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6"
+  script:
+    - mkdir ./_build
+    - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
+    - make stylecheck
+    - make -j `nproc`
+    - ctest -j 4 --output-on-failure
+
+test-of-full:
+  stage: test
+  when: manual
   parallel:
     matrix:
-      - TAG: ["debian-12-qt6",
-              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6"]  
+      - TAG: ["debian-11-qt5", "debian-12-qt6", "debian-13-qt6",
+              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6",
+              "fedora-41-qt5", "fedora-42-qt6"]
   image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
   script:
     - mkdir ./_build
     - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
-    - make -j 3
-    - make stylecheck
-    - ctest -j 3 --output-on-failure
+    - make -j `nproc`
+    - ctest -j 4 --output-on-failure
 
-
-pkg-of:
+pkg-of-no-ui:
   stage: package
-  parallel:
-    matrix:
-      - TAG: ["ubuntu-22.04-qt5"]  
-  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
+  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6"
   script:
-    - mkdir ./_build
-    - cd ./_build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DOFBUILD_ENABLE_GUI=OFF
+    - mkdir ./_build_noui
+    - cd ./_build_noui && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DOFBUILD_ENABLE_GUI=OFF
     - make -j `nproc`
     - cpack -j `nproc`
   artifacts:
     paths:
-      - /builds/openfluid/incubateur/openfluid/_build/*.deb
+      - /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
+
+pkg-of-full:
+  stage: package
+  when: manual
+  parallel:
+    matrix:
+      - TAG: ["debian-11-qt5", "debian-12-qt6", "debian-13-qt6",
+              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6",
+              "fedora-41-qt5", "fedora-42-qt6"]
+  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
+  script:
+    - mkdir ./_build_release
+    - cd ./_build_release && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+    - make -j `nproc`
+    - cpack -j `nproc`
+  artifacts:
+    paths:
+      - /builds/openfluid/incubateur/openfluid/_build_release/*.deb
+
+pkg-bindings-r:
+  stage: downstream
+  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6"
+  before_script:
+    - sudo apt-get update && sudo apt-get install -y /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
+  script:
+    - mkdir downstream && cd downstream
+    - git clone https://forge.inrae.fr/openfluid/incubateur/ropenfluid.git
+    - cd ropenfluid
+    - cmake -P check.cmake
+    - cmake -P build.cmake
+  artifacts:
+    paths:
+      - /builds/openfluid/incubateur/openfluid/downstream/ropenfluid/_build/*.tar.gz
+
+
+pkg-bindings-py:
+  stage: downstream
+  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6"
+  before_script:
+    - sudo apt-get update && sudo apt-get install -y /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
+  script:
+    - mkdir downstream && cd downstream
+    - git clone https://github.com/OpenFLUID/pyopenfluid
+    - cd pyopenfluid
+    - python3 setup.py check
+    - python3 setup.py build
+    - python3 setup.py test
+    - python3 setup.py sdist bdist
+  artifacts:
+    paths:
+      - /builds/openfluid/incubateur/openfluid/downstream/pyopenfluid/dist/*.tar.gz
 
 
 # build-of-container-ubuntu-22-04:
