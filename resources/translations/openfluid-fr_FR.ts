@@ -339,7 +339,7 @@
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="363"/>
         <source>Container dimensions may not be finished</source>
-        <translation>Le dimensions du conteneur n'est peut-être pas terminée</translation>
+        <translation>Le dimensions du conteneur n&apos;est peut-être pas terminée</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="368"/>
@@ -347,32 +347,32 @@
         <translation>Format incorrect pour les dimensions du conteneur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="528"/>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="553"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="529"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="554"/>
         <source>Select sources file</source>
         <translation>Sélectionner le fichier des sources</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="530"/>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="555"/>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="580"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="531"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="556"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="581"/>
         <source>All files (*.*)</source>
         <translation>Tous les fichiers (*.*)</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="538"/>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="563"/>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="588"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="539"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="564"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="589"/>
         <source>Choosen file is not located in the input dataset of the project</source>
         <translation>Le fichier choisi n&apos;est pas dans le jeu de données d&apos;entrée du projet</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="578"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="579"/>
         <source>Select distribution file</source>
         <translation>Sélectionner le fichier de distribution</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="613"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="614"/>
         <source>Data file not working</source>
         <translation>Le fichier de données ne fonctionne pas</translation>
     </message>

@@ -19,8 +19,10 @@ Note: expected format for Map is `(key: String, value: openfluid::core::Value)`
 
 ## Floating-point variables
 
-*The non-scalar double generator can be used either with a single value for all, or a value for each cell of the container. Eg, for every time step and every unit of the given unit class, for a generator of vector of size 4 containing doubles: 
-- "3" will produce as variable value \[3.0, 3.0, 3.0, 3.0\] 
+*The non-scalar double generator can be used either with a single value for all, or a value for each cell of the container If a single value is given, a parameter `varsize` is required with expected dimension (eg "[3]" for a vector or "[2,4]" for a matrix). 
+
+An example for every time step and every unit of the given unit class, for a generator of vector of size 4 containing doubles: 
+- "3" with `varsize` parameter being `[4]` will produce as variable value \[3.0, 3.0, 3.0, 3.0\] 
 - "[1,4,2.2,3]" will produce as variable value \[1.0, 4.0, 2.2, 3.0\] 
 
 An option is available for the random generator, to be able to have identical or different values inside the container. 
