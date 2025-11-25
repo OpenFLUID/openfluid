@@ -761,8 +761,8 @@ _Example of call of the fortran subroutine from the initializeRun method (e.g. F
 
 
 The compilation and linking of Fortran source code is automatically done 
-when adding fortran source files to the SIM_FORTRAN variable in the CMake.in.config file 
-(See @ref dev_createsim_exmpl_config).
+when adding fortran source files to the `FORTRAN_FILES` variable in the src/CMakeLists.txt file 
+(See @ref dev_createsim_exmpl_src_cmakelists).
 
 
 ## Embedding R code {#dev_srccode_R}
