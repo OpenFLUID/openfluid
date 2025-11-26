@@ -199,14 +199,16 @@ template <>
 void LinearFixedGenerator<openfluid::core::MatrixValue>::processVarValue(const openfluid::ware::WareParams_t& Params)
 {
   std::string VarSizeStr;
+  bool ExplicitSize = false;
   if (OPENFLUID_GetWareParameter(Params,"varsize", VarSizeStr))
   {
     LinearGeneratorMixin::processVarValue(VarSizeStr);
+    ExplicitSize = true;
   }
   std::string StringVarValue;
   if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",StringVarValue))
   {
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing fixed vector value for generator");
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"missing fixed matrix value for generator");
   }
   if (openfluid::core::StringValue(StringVarValue).guessTypeConversion() == openfluid::core::Value::MATRIX)
   {
@@ -214,12 +216,12 @@ void LinearFixedGenerator<openfluid::core::MatrixValue>::processVarValue(const o
     if (!OPENFLUID_GetWareParameter(Params,"fixedvalue",MV))
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                "badly formatted fixed vector value for generator");
+                                                "badly formatted fixed matrix value for generator");
     }
-    if (MV.getRowsNbr() != m_VarDimensions.Rows || MV.getColsNbr() != m_VarDimensions.Cols)
+    if (ExplicitSize && (MV.getRowsNbr() != m_VarDimensions.Rows || MV.getColsNbr() != m_VarDimensions.Cols))
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                "wrong size for fixed vector value for generator");
+                                                "wrong size for fixed matrix value for generator");
     }
     m_VarValue = MV;
   }

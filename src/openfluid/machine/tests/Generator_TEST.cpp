@@ -521,3 +521,38 @@ BOOST_AUTO_TEST_CASE(check_fixed_vector)
     BOOST_REQUIRE_THROW(TS.wholeSimulation(), openfluid::base::FrameworkException);
   }
 }
+
+
+BOOST_AUTO_TEST_CASE(check_fixed_matrix)
+{
+  openfluid::machine::GeneratorSpecs Specs{openfluid::fluidx::GeneratorDescriptor::GeneratorMethod::FIXED, 
+                                           {{"SU","a"}}, 
+                                           openfluid::core::Value::MATRIX};
+  {
+    // TEST MATRIX
+    std::cout << "checking fixed matrix " << std::endl;
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "[[3,2],[5,4]]"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation(); 
+
+    const auto Matrix = TS.getLatestValue("SU", 1, "a").value()->asMatrixValue();
+    BOOST_REQUIRE_CLOSE(Matrix.get(1,1), 4, 0.00001);
+  }
+
+  {
+    // TEST VECTOR CELLS FROM VAL
+    std::cout << "checking fixed matrix CELLS FROM VAL" << std::endl;
+    openfluid::ware::WareParams_t Params = {{"deltat", "0"}, {"fixedvalue", "2.4"}, {"varsize","[3,6]"}};
+
+    TestSimulation TS;
+    TS.defaultSetup();
+    TS.addGenerator(Specs, Params);
+    TS.wholeSimulation(); 
+    
+    const auto Matrix = TS.getLatestValue("SU", 1, "a").value()->asMatrixValue();
+    BOOST_REQUIRE_CLOSE(Matrix.get(1,1), 2.4, 0.00001);
+  }
+}
