@@ -12,8 +12,8 @@
   * Added support of secundary wares in ware repository
   * Added ability to compare dataset output to a reference
   * Added env var and cmake var OPENFLUID_COMPARE_TOOL 
-  * Added skip block markup to ignore portions of code during ware migration
     for custom OUT/REF comparison
+  * Added skip block markup to ignore portions of code during ware migration
   * Added multitype to injection generator for all OpenFLUID types
   * Added ware test integration in DevStudio
   * Added gitlab-ci pipelines for automatic test and packaging of OpenFLUID
