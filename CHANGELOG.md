@@ -37,6 +37,7 @@
     (from 6 to 17 digits)
   * Fixed fragment unauthenticated import
   * Fixed examples installation operations (especially for observers)
+  * Fixed param change in ware param list not detected in Builder
 
 
 ## 2.2.0

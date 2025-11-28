@@ -473,13 +473,10 @@ void WareWidget::addParam(const std::string& ParamName, const std::string& Param
     connect(ParamWidget,SIGNAL(removeClicked(const QString&)),
             this, SLOT(removeParameterFromList(const QString&)));
   }
-  else
-  {
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
-            this, SLOT(updateParameterValue(const QString&,const QString&)));
-    ParamsInSign << QString::fromStdString(ParamName);
-  }
-
+  connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),
+          this, SLOT(updateParameterValue(const QString&,const QString&)));
+  ParamsInSign << QString::fromStdString(ParamName);
+  
   ((QBoxLayout*)(ui->ParamsListZoneWidget->layout()))->addWidget(ParamWidget);
 }
 
