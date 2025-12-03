@@ -56,12 +56,12 @@ class DataTasks : public TasksBase
     int processCreateData() const;
 
     bool processInstall(const std::string& OptStr,
-                        std::function<bool(const std::string&, const std::string&, const std::string&, bool)> 
+                        std::function<bool(const std::string&, const std::string&, const std::string&, bool, bool)> 
                         InstallFunc,
-                        std::function<bool(const std::string&, const std::string&, bool)> InstallAllFunc,
+                        std::function<bool(const std::string&, const std::string&, bool, bool)> InstallAllFunc,
                         const std::string& ResPath,
                         const std::string& InstPath,
-                        const bool Force) const;
+                        const bool Force, const bool Verbose=true) const;
 
     int processInstallExamples() const;
 

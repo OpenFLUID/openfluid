@@ -776,15 +776,16 @@ void MainWindow::onDuplicateWareRequested()
       // TOIMPL reuse here the filter checking if ware name OK (not existing + only accepted symbols)
       if (OK && !NewWareName.isEmpty() && WareInfo.WareDirName != NewWareName.toStdString())
       {
-        
-        mp_WidgetsCollection->duplicateWare(WarePath, NewWareName);
-        QMessageBox::warning(QApplication::activeWindow(),
-                            tr("Ware duplication warning"),
-                            tr("If this ware is versioned, change now the remote repository "
-                            "(using 'git remote set-url origin <newurl>'). "
-                            "It is currently the same than original ware and would "
-                            "generate conflict or data loss risk."),
-                            QMessageBox::Close);
+        if (mp_WidgetsCollection->duplicateWare(WarePath, NewWareName))
+        {
+          QMessageBox::warning(QApplication::activeWindow(),
+                               tr("Ware duplication warning"),
+                               tr("If this ware is versioned, change now the remote repository "
+                                 "(using 'git remote set-url origin <newurl>'). "
+                                 "It is currently the same than original ware and would "
+                                 "generate conflict or data loss risk."),
+                                 QMessageBox::Close);
+        }
       }
     }
   }

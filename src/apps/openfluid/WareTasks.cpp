@@ -113,15 +113,24 @@ int WareTasks::processCreate() const
   if (m_Cmd.isOptionActive("from"))
   {
     const std::string ReferenceWarePath = m_Cmd.getOptionValue("from");
-    if (!openfluid::tools::Path(ReferenceWarePath).exists())
+    if (!openfluid::tools::Path(ReferenceWarePath).exists() || (
+          !openfluid::tools::Path(ReferenceWarePath).fromThis(openfluid::config::WARESDEV_WAREMETA_FILE).exists() && 
+          !openfluid::tools::Path(ReferenceWarePath).fromThis(openfluid::config::WARESDEV_WARESHUB_FILE).exists()))
     {
       return error("invalid reference ware path");
     }
-    const std::string WarePath = openfluid::waresdev::WareSrcFactory::duplicateWare(ID, ParentPath, 
-                                                       m_Cmd.getOptionValue("from"), 
-                                                       m_Cmd.isOptionActive("accept-all"));
-    postWareCreation(WarePath);
-    return 0;
+    try
+    {
+      const std::string WarePath = openfluid::waresdev::WareSrcFactory::duplicateWare(ID, ParentPath, 
+                                                                                    m_Cmd.getOptionValue("from"), 
+                                                                                    m_Cmd.isOptionActive("accept-all"));
+      postWareCreation(WarePath);
+      return 0;
+    }
+    catch(const std::exception& e)
+    {
+      return error(e.what());
+    }
   }
 
   if (!m_Cmd.isOptionActive("type"))

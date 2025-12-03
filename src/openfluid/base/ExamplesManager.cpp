@@ -104,7 +104,11 @@ bool ExamplesManager::installDirectory(const std::string& FromPath, const std::s
 
   if (!InstallTargetPathObj.isDirectory() || Force)
   {
-    InstallTargetPathObj.makeDirectory();
+    if (!InstallTargetPathObj.makeDirectory())
+    {
+      openfluid::base::log::debug("Example installation", "Unable to create " + InstallTargetPathObj.toGeneric());    
+      return false;
+    }
 
     return openfluid::tools::Filesystem::copyDirectory(openfluid::tools::Filesystem::joinPath({FromPath,DirName}),
                                                        ToPath,true,true);
@@ -112,7 +116,8 @@ bool ExamplesManager::installDirectory(const std::string& FromPath, const std::s
 
   openfluid::base::log::debug("Example installation", "Unable to create " + InstallTargetPathObj.toGeneric() + 
                                "dir because it already exists and force option is set to false");
-  return false;
+  
+  return !std::filesystem::is_empty(InstallTargetPathObj.stdPath());
 }
 
     
@@ -122,7 +127,7 @@ bool ExamplesManager::installDirectory(const std::string& FromPath, const std::s
 
 bool ExamplesManager::installProject(const std::string& ProjectDir,
                                      const std::string& ResourcesPath, const std::string& InstallPath,
-                                     const bool Force)
+                                     const bool Force, const bool Verbose)
 {
   std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
                                                                  openfluid::config::PROJECTS_PATH});
@@ -136,9 +141,15 @@ bool ExamplesManager::installProject(const std::string& ProjectDir,
   }
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::PROJECTS_PATH});
-  std::cout << "-- Installing project " << ProjectDir << " from " << FromPath << " to " << ToPath << " ";
+  if (Verbose)
+  {
+    std::cout << "-- Installing project " << ProjectDir << " from " << FromPath << " to " << ToPath << " ";
+  }
   bool Status = installDirectory(FromPath, ToPath, ProjectDir, Force);
-  printSuccessStatus(Status);
+  if (Verbose)
+  {
+    printSuccessStatus(Status);
+  }
   return Status;
 }
 
@@ -149,7 +160,7 @@ bool ExamplesManager::installProject(const std::string& ProjectDir,
 
 bool ExamplesManager::installSimulator(const std::string& SimulatorDir,
                                        const std::string& ResourcesPath, const std::string& InstallPath,
-                                       const bool Force)
+                                       const bool Force, const bool Verbose)
 {
   std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
                                                                  openfluid::config::WARESDEV_PATH,
@@ -165,9 +176,15 @@ bool ExamplesManager::installSimulator(const std::string& SimulatorDir,
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::WARESDEV_PATH,
                                                                openfluid::config::SIMULATORS_PATH});
-  std::cout << "-- Installing simulator " << SimulatorDir << " from " << FromPath << " to " << ToPath << " ";
+  if (Verbose)
+  {
+    std::cout << "-- Installing simulator " << SimulatorDir << " from " << FromPath << " to " << ToPath << " ";
+  }
   bool Status = installDirectory(FromPath,ToPath,SimulatorDir,Force);
-  printSuccessStatus(Status);
+  if (Verbose)
+  {
+    printSuccessStatus(Status);
+  }
   return Status;
 }
 
@@ -178,7 +195,7 @@ bool ExamplesManager::installSimulator(const std::string& SimulatorDir,
 
 bool ExamplesManager::installObserver(const std::string& ObserverDir,
                                        const std::string& ResourcesPath, const std::string& InstallPath,
-                                       const bool Force)
+                                       const bool Force, const bool Verbose)
 {
   std::string FromPath = openfluid::tools::Filesystem::joinPath({buildRessourcesPath(ResourcesPath),
                                                                  openfluid::config::WARESDEV_PATH,
@@ -194,9 +211,16 @@ bool ExamplesManager::installObserver(const std::string& ObserverDir,
   std::string ToPath = openfluid::tools::Filesystem::joinPath({buildInstallPath(InstallPath),
                                                                openfluid::config::WARESDEV_PATH,
                                                                openfluid::config::OBSERVERS_PATH});
-  std::cout << "-- Installing observer " << ObserverDir << " from " << FromPath << " to " << ToPath << " ";
+  
+  if (Verbose)
+  {
+    std::cout << "-- Installing observer " << ObserverDir << " from " << FromPath << " to " << ToPath << " ";
+  }
   bool Status = installDirectory(FromPath,ToPath,ObserverDir,Force);
-  printSuccessStatus(Status);
+  if (Verbose)
+  {
+    printSuccessStatus(Status);
+  }
   return Status;
 }
 
@@ -206,7 +230,7 @@ bool ExamplesManager::installObserver(const std::string& ObserverDir,
 
 
 bool ExamplesManager::installAllProjects(const std::string& ResourcesPath, const std::string& InstallPath, 
-                                         const bool Force)
+                                         const bool Force, const bool Verbose)
 {
   auto ResPath = buildRessourcesPath(ResourcesPath);
   auto InstPath = buildInstallPath(InstallPath);
@@ -220,7 +244,7 @@ bool ExamplesManager::installAllProjects(const std::string& ResourcesPath, const
     bool AllIsOK = true;
     for (const auto& Prj : FoundProjects)
     {
-      AllIsOK &= installProject(Prj,ResPath,InstPath,Force);
+      AllIsOK &= installProject(Prj, ResPath, InstPath, Force, Verbose);
     }
     return AllIsOK;
   }
@@ -238,7 +262,7 @@ bool ExamplesManager::installAllProjects(const std::string& ResourcesPath, const
 
 
 bool ExamplesManager::installAllSimulators(const std::string& ResourcesPath, const std::string& InstallPath,
-                                           const bool Force)
+                                           const bool Force, const bool Verbose)
 {
   auto ResPath = buildRessourcesPath(ResourcesPath);
   auto InstPath = buildInstallPath(InstallPath);
@@ -254,7 +278,7 @@ bool ExamplesManager::installAllSimulators(const std::string& ResourcesPath, con
     bool AllIsOK = true;
     for (const auto& Sim : FoundSimulators)
     {
-      AllIsOK &= installSimulator(Sim,ResPath,InstPath,Force);
+      AllIsOK &= installSimulator(Sim, ResPath, InstPath, Force, Verbose);
     }
     return AllIsOK;
   }
@@ -272,7 +296,7 @@ bool ExamplesManager::installAllSimulators(const std::string& ResourcesPath, con
 
 
 bool ExamplesManager::installAllObservers(const std::string& ResourcesPath, const std::string& InstallPath,
-                                          const bool Force)
+                                          const bool Force, const bool Verbose)
 {
   auto ResPath = buildRessourcesPath(ResourcesPath);
   auto InstPath = buildInstallPath(InstallPath);
@@ -288,7 +312,7 @@ bool ExamplesManager::installAllObservers(const std::string& ResourcesPath, cons
     bool AllIsOK = true;
     for (const auto& Obs : FoundObservers)
     {
-      AllIsOK &= installObserver(Obs,ResPath,InstPath,Force);
+      AllIsOK &= installObserver(Obs, ResPath, InstPath, Force, Verbose);
     }
     return AllIsOK;
   }
@@ -306,11 +330,11 @@ bool ExamplesManager::installAllObservers(const std::string& ResourcesPath, cons
 
 
 bool ExamplesManager::installAllWares(const std::string& ResourcesPath, const std::string& InstallPath, 
-                                      const bool Force)
+                                      const bool Force, const bool Verbose)
 { 
   bool AllIsOK = true;
-  AllIsOK &= installAllSimulators(ResourcesPath,InstallPath,Force);
-  AllIsOK &= installAllObservers(ResourcesPath,InstallPath,Force);
+  AllIsOK &= installAllSimulators(ResourcesPath,InstallPath,Force,Verbose);
+  AllIsOK &= installAllObservers(ResourcesPath,InstallPath,Force,Verbose);
 
   return AllIsOK;
 }
@@ -320,11 +344,12 @@ bool ExamplesManager::installAllWares(const std::string& ResourcesPath, const st
 // =====================================================================
 
 
-bool ExamplesManager::installAll(const std::string& ResourcesPath, const std::string& InstallPath, const bool Force)
+bool ExamplesManager::installAll(const std::string& ResourcesPath, const std::string& InstallPath, const bool Force, 
+                                 const bool Verbose)
 { 
   bool AllIsOK = true;
-  AllIsOK &= installAllProjects(ResourcesPath,InstallPath,Force);
-  AllIsOK &= installAllWares(ResourcesPath,InstallPath,Force);
+  AllIsOK &= installAllProjects(ResourcesPath,InstallPath,Force,Verbose);
+  AllIsOK &= installAllWares(ResourcesPath,InstallPath,Force,Verbose);
 
   return AllIsOK;
 }

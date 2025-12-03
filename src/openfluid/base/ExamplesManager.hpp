@@ -81,7 +81,7 @@ class OPENFLUID_API ExamplesManager
     */
     static bool installProject(const std::string& ProjectDir,
                                const std::string& ResourcesPath = "", const std::string& InstallPath = "",
-                               const bool Force = false);
+                               const bool Force = false, const bool Verbose = false);
 
     /**
       Installs a single example simulator, using its directory name
@@ -94,11 +94,11 @@ class OPENFLUID_API ExamplesManager
     */
     static bool installSimulator(const std::string& SimulatorDir, 
                                  const std::string& ResourcesPath = "", const std::string& InstallPath = "",
-                                 const bool Force = false);
+                                 const bool Force = false, const bool Verbose = false);
 
     static bool installObserver(const std::string& ObserverDir,
                                        const std::string& ResourcesPath = "", const std::string& InstallPath = "",
-                                       const bool Force = false);
+                                       const bool Force = false, const bool Verbose = false);
 
     /**
       Installs all example projects
@@ -109,7 +109,7 @@ class OPENFLUID_API ExamplesManager
       @param[in] Force If true, the installation is forced even if it already exists (default is false)
     */
     static bool installAllProjects(const std::string& ResourcesPath = "", const std::string& InstallPath = "", 
-                                   const bool Force = false);
+                                   const bool Force = false, const bool Verbose = false);
 
     /**
       Installs all example simulators
@@ -120,7 +120,7 @@ class OPENFLUID_API ExamplesManager
       @param[in] Force If true, the installation is forced even if it already exists (default is false)
     */
     static bool installAllSimulators(const std::string& ResourcesPath = "", const std::string& InstallPath = "",
-                                     const bool Force = false);
+                                     const bool Force = false, const bool Verbose = false);
 
     /**
       Installs all example observers
@@ -131,7 +131,7 @@ class OPENFLUID_API ExamplesManager
       @param[in] Force If true, the installation is forced even if it already exists (default is false)
     */
     static bool installAllObservers(const std::string& ResourcesPath = "", const std::string& InstallPath = "",
-                                    const bool Force = false);
+                                    const bool Force = false, const bool Verbose = false);
 
     /**
       Installs all example wares (simulators and observers)
@@ -142,7 +142,7 @@ class OPENFLUID_API ExamplesManager
       @param[in] Force If true, the installation is forced even if it already exists (default is false)
     */
     static bool installAllWares(const std::string& ResourcesPath = "", const std::string& InstallPath = "",
-                                const bool Force = false);
+                                const bool Force = false, const bool Verbose = false);
 
     /**
       Installs all example projects and simulators
@@ -153,7 +153,7 @@ class OPENFLUID_API ExamplesManager
       @param[in] Force If true, the installation is forced even if it already exists (default is false)
     */
     static bool installAll(const std::string& ResourcesPath = "", const std::string& InstallPath = "",
-                           const bool Force = false);
+                           const bool Force = false, const bool Verbose = false);
 };
 
 
