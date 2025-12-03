@@ -234,7 +234,7 @@ void LinearFixedGenerator<openfluid::core::MatrixValue>::processVarValue(const o
     catch(const std::invalid_argument&)
     {
       throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
-                                                "unknown format for fixed vector value for generator");
+                                                "unknown format for fixed matrix value for generator");
     }
     openfluid::core::MatrixValue MV(m_VarDimensions.Cols, m_VarDimensions.Rows, d);
     m_VarValue = MV;

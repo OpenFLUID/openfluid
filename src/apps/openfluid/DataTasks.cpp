@@ -244,26 +244,27 @@ int DataTasks::processCreateData() const
 
 
 bool DataTasks::processInstall(const std::string& OptStr,
-                              std::function<bool(const std::string&, const std::string&, const std::string&, bool)> 
-                              InstallFunc,
-                              std::function<bool(const std::string&, const std::string&, bool)> InstallAllFunc,
-                              const std::string& ResPath,
-                              const std::string& InstPath,
-                              const bool Force) const
+                            std::function<bool(const std::string&, const std::string&, const std::string&, bool, bool)> 
+                            InstallFunc,
+                            std::function<bool(const std::string&, const std::string&, bool, bool)> InstallAllFunc,
+                            const std::string& ResPath,
+                            const std::string& InstPath,
+                            const bool Force, const bool Verbose) const
 {
+  std::cout << "Verbose:" << Verbose << std::endl;
   if (!OptStr.empty() && OptStr != "*")
   {
-    auto Selection = openfluid::tools::split(OptStr,",");
+    auto Selection = openfluid::tools::split(OptStr, ",");
     bool AllIsOK = true;
     for (const auto& S : Selection)
     {
-      AllIsOK &= InstallFunc(S,ResPath,InstPath,Force);
+      AllIsOK &= InstallFunc(S, ResPath, InstPath, Force, Verbose);
     }
     return AllIsOK;
   }
   else
   {
-    return InstallAllFunc(ResPath,InstPath,Force);
+    return InstallAllFunc(ResPath, InstPath, Force, Verbose);
   }
 }
 
@@ -321,7 +322,7 @@ int DataTasks::processInstallExamples() const
   
   if (!m_Cmd.isOptionActive("simulators") && !m_Cmd.isOptionActive("observers") && !m_Cmd.isOptionActive("projects"))
   {
-    return (openfluid::base::ExamplesManager::installAll(ResPath,InstPath,Force) ?
+    return (openfluid::base::ExamplesManager::installAll(ResPath,InstPath,Force,true) ?
             0 : error("problems occurred during installation"));
   }
 
