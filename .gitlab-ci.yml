@@ -40,14 +40,13 @@ pkg-of-no-ui:
     paths:
       - /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
 
-pkg-of-full:
+pkg-of-full-deb:
   stage: package
   when: manual
   parallel:
     matrix:
       - TAG: ["debian-11-qt5", "debian-12-qt6", "debian-13-qt6",
-              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6",
-              "fedora-41-qt5", "fedora-42-qt6"]
+              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6"]
   image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
   script:
     - mkdir ./_build_release
@@ -57,6 +56,24 @@ pkg-of-full:
   artifacts:
     paths:
       - /builds/openfluid/incubateur/openfluid/_build_release/*.deb
+
+
+pkg-of-full-rpm:
+  stage: package
+  when: manual
+  parallel:
+    matrix:
+      - TAG: ["fedora-41-qt5", "fedora-42-qt6"]
+  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
+  script:
+    - mkdir ./_build_release
+    - cd ./_build_release && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+    - export QA_SKIP_RPATHS=1
+    - make -j `nproc`
+    - cpack -j `nproc`
+  artifacts:
+    paths:
+      - /builds/openfluid/incubateur/openfluid/_build_release/*.rpm
 
 pkg-bindings-r:
   stage: downstream
