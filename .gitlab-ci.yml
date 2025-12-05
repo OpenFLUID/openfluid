@@ -13,7 +13,7 @@ test-of:
     - make -j `nproc`
     - ctest -j 4 --output-on-failure
 
-test-of-full:
+test-of-unix-full:
   stage: test
   when: manual
   parallel:
@@ -128,4 +128,25 @@ pkg-bindings-py:
 #     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 #     - docker push registry.forge.inrae.fr/openfluid/incubateur/openfluid/openfluid:2.2.1b1-ubuntu-22.04-qt5
 
+# Warning: relies on machine-dependant structure, especially custom buildOFwin_ci.ps1 and testOFwin_ci.ps1 scripts
+# TODO set automatic when build kill functional
+test-of-windows:
+  stage: test
+  when: manual
+  timeout: 20m
+  tags: [ windows ]
+  variables:
+    MINGW64_EXE: "C:\\msys64_for_ofbuild_qt6\\mingw64.exe"
+
+  script: 
+    - Start-Process -FilePath "$MINGW64_EXE" -ArgumentList "/usr/bin/bash", "./.gitlab/buildOFwin_ci.sh" -NoNewWindow -Wait
+    - find ./_build/build_out.log "Built target observer-export.vars.files.csv-multicols"
+    - Start-Process -FilePath "$MINGW64_EXE" -ArgumentList "/usr/bin/bash", "./.gitlab/testOFwin_ci.sh" -NoNewWindow -Wait
+    - find ./_build/test_out.log "100% tests passed"
   
+  artifacts:
+    when: always
+    paths:
+      - ./_build/*.log
+
+# TODO add Windows-package
