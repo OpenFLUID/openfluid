@@ -5,7 +5,7 @@ stages:
 
 test-of:
   stage: test
-  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6"
+  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
   script:
     - mkdir ./_build
     - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
@@ -18,10 +18,10 @@ test-of-unix-full:
   when: manual
   parallel:
     matrix:
-      - TAG: ["debian-11-qt5", "debian-12-qt6", "debian-13-qt6",
-              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6",
-              "fedora-41-qt5", "fedora-42-qt6"]
-  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
+      - TAG: ["debian-13-qt6",
+              "ubuntu-24.10-qt6",
+              "fedora-42-qt6"]
+  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/$TAG"
   script:
     - mkdir ./_build
     - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
@@ -30,7 +30,7 @@ test-of-unix-full:
 
 pkg-of-no-ui:
   stage: package
-  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6"
+  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
   script:
     - mkdir ./_build_noui
     - cd ./_build_noui && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DOFBUILD_ENABLE_GUI=OFF
@@ -45,9 +45,9 @@ pkg-of-full-deb:
   when: manual
   parallel:
     matrix:
-      - TAG: ["debian-11-qt5", "debian-12-qt6", "debian-13-qt6",
-              "ubuntu-22.04-qt5", "ubuntu-24.04-qt6", "ubuntu-24.10-qt6", "ubuntu-25.04-qt6"]
-  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
+      - TAG: ["debian-13-qt6",
+              "ubuntu-24.10-qt6"]
+  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/$TAG"
   script:
     - mkdir ./_build_release
     - cd ./_build_release && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
@@ -63,8 +63,8 @@ pkg-of-full-rpm:
   when: manual
   parallel:
     matrix:
-      - TAG: ["fedora-41-qt5", "fedora-42-qt6"]
-  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/$TAG"
+      - TAG: ["fedora-42-qt6"]
+  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/$TAG"
   script:
     - mkdir ./_build_release
     - cd ./_build_release && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
@@ -77,12 +77,12 @@ pkg-of-full-rpm:
 
 pkg-bindings-r:
   stage: downstream
-  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6"
+  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
   before_script:
     - sudo apt-get update && sudo apt-get install -y /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
   script:
     - mkdir downstream && cd downstream
-    - git clone https://forge.inrae.fr/openfluid/incubateur/ropenfluid.git
+    - git clone https://forge.inrae.fr/openfluid/ropenfluid.git
     - cd ropenfluid
     - cmake -P check.cmake
     - cmake -P build.cmake
@@ -93,12 +93,12 @@ pkg-bindings-r:
 
 pkg-bindings-py:
   stage: downstream
-  image: "registry.forge.inrae.fr/openfluid/incubateur/openfluid/ofbuild/debian-12-qt6"
+  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
   before_script:
     - sudo apt-get update && sudo apt-get install -y /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
   script:
     - mkdir downstream && cd downstream
-    - git clone https://github.com/OpenFLUID/pyopenfluid
+    - git clone https://forge.inrae.fr/openfluid/pyopenfluid.git
     - cd pyopenfluid
     - python3 setup.py check
     - python3 setup.py build
