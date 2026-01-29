@@ -937,8 +937,7 @@ IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
                    "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/obs"
                    "--input-format=md")
   SET_TESTS_PROPERTIES(cmdline-openfluid-DocalyzeFormatNoDoc PROPERTIES
-                       FAIL_REGULAR_EXPRESSION "cannot find main documentation file"
-                       WILL_FAIL TRUE)
+                       PASS_REGULAR_EXPRESSION "[Warning]")
   
   
   ADD_TEST(NAME cmdline-openfluid-DocalyzeFormatNoMarkdown
@@ -947,8 +946,7 @@ IF(OFBUILD_TESTS_ENABLE_DOCALYZER)
                    "--output-path=${OFBUILD_TESTS_OUTPUT_DATA_DIR}/cmdline/docalyze/sim"
                    "--input-format=md")
   SET_TESTS_PROPERTIES(cmdline-openfluid-DocalyzeFormatNoMarkdown PROPERTIES
-                       FAIL_REGULAR_EXPRESSION "cannot find main documentation file"
-                       WILL_FAIL TRUE)
+                       PASS_REGULAR_EXPRESSION "[Warning]")
 ENDIF()
 
 

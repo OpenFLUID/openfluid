@@ -6,7 +6,7 @@ the scientific concepts and methods applied in source code of simulators.
 In order to facilitate the writing and maintenance of these documentation,
 OpenFLUID provides the docalyzer system for simulators designers and developers.  
 
-The documentation can be provided inside a `README.md` file located at simulator root folder, or inside `doc/` directory. It can handle LateX (as before), but also markdown and Rmarkdown.
+The documentation can be provided inside a `README.md` file located at simulator root folder, or inside `doc/` directory. It can handle LateX (as before), but also markdown and Rmarkdown in GPL build (otherwise only LateX doc can be handled).
 
 These files will be converted into a pdf file by using the _pandoc_ tool.
 

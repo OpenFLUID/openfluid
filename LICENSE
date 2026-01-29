@@ -34,10 +34,7 @@ OpenFLUID relies on third party libraries and content, under the following licen
   - Boost: http://www.boost.org/users/license.html (Boost license)
   - JSON for Modern C++ : https://github.com/nlohmann/json (MIT license)
   - TinyXML2: https://github.com/leethomason/tinyxml2 (zlib license)
-  - Qt: http://qt-project.org/doc/qt-5/opensourcelicense.html (LGPL)
+  - Qt: https://www.qt.io/development/open-source-lgpl-obligations (LGPL)
   - OGR/GDAL: http://trac.osgeo.org/gdal/wiki/FAQGeneral#WhatlicensedoesGDALOGRuse (X11/MIT)
   - Material design icons: https://material.io/icons/ (Apache 2.0) and https://materialdesignicons.com/ (OFL-1.1)
   - Pandoc : https://pandoc.org/ (not mandatory, GPL)
-  
-  
-  

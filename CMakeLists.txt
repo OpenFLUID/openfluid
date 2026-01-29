@@ -19,7 +19,7 @@ PROJECT(OpenFLUID CXX)
 ################## build options ##################
 
 OPTION(OFBUILD_ENABLE_GUI "enable build of UI libs and apps" ON)
-
+OPTION(OFBUILD_ENABLE_GPL_COMPONENTS "enable build of GPL-licensed components: Pandoc" ON)
 OPTION(OFBUILD_ENABLE_DOCS "enable build of documentation" ON)
 
 OPTION(OFBUILD_ENABLE_APP_CMD "enable build of command line program" ON)
@@ -94,10 +94,12 @@ ENDIF()
 
 # Check of tools availability for docalyzer tests
 IF(OFBUILD_ENABLE_DOCALYZER)
-  FIND_PROGRAM(_DOCALYZER_PANDOC NAMES pandoc pandoc.exe)
+  IF(OFBUILD_ENABLE_GPL_COMPONENTS)
+    FIND_PROGRAM(_DOCALYZER_PANDOC NAMES pandoc pandoc.exe)
+  ENDIF()
   FIND_PROGRAM(_DOCALYZER_PDFLATEX NAMES pdflatex pdflatex.exe)
   FIND_PROGRAM(_DOCALYZER_BIBTEX NAMES bibtex bibtex.exe)
-  IF(NOT (_DOCALYZER_PANDOC AND _DOCALYZER_PDFLATEX AND _DOCALYZER_BIBTEX))
+  IF(NOT (_DOCALYZER_PDFLATEX AND _DOCALYZER_BIBTEX))
     SET(OFBUILD_ENABLE_DOCALYZER OFF)
   ENDIF()
 ENDIF()
@@ -162,6 +164,10 @@ ENDIF()
 IF(OFBUILD_ENABLE_DOCS)
   FIND_PACKAGE(Doxygen 1.8)
   FIND_PACKAGE(LATEX)
+ENDIF()
+
+IF(OFBUILD_ENABLE_GPL_COMPONENTS)
+  MESSAGE(STATUS "Using Pandoc (GPL)")
 ENDIF()
 
 

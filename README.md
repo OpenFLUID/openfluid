@@ -66,7 +66,7 @@ OpenFLUID relies on several tools and libraries
 * [Doxygen](https://www.doxygen.nl/) for technical documentation
 
 * [Qt6](https://www.qt.io/) for UI framework and applications (Qt5 deprecated)
-* [Pandoc](https://pandoc.org/) for user-generated documentation conversion
+* [Pandoc](https://pandoc.org/) for user-generated documentation conversion (not mandatory, available on GPL builds)
 
 
 # Getting started

@@ -14,8 +14,12 @@ SET(OPENFLUID_UTILS_CPP GDALHelpers.cpp
                         Process.cpp
                         HTTPClient.cpp FluidHubAPIClient.cpp
                         ExternalProgram.cpp
-                        CMakeProxy.cpp CTestProxy.cpp GitProxy.cpp GrassGISProxy.cpp PandocProxy.cpp
+                        CMakeProxy.cpp CTestProxy.cpp GitProxy.cpp GrassGISProxy.cpp
                         )
+
+IF(OFBUILD_ENABLE_GPL_COMPONENTS)
+  LIST(APPEND OPENFLUID_UTILS_CPP PandocProxy.cpp)
+ENDIF()
 
 SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMachineListener.hpp
                         GDALHelpers.hpp GDALCompatibility.hpp
@@ -24,11 +28,14 @@ SET(OPENFLUID_UTILS_HPP Binding.hpp BindingAbstractOutErr.hpp BindingVerboseMach
                         Process.hpp
                         HTTPClient.hpp FluidHubAPIClient.hpp
                         ExternalProgram.hpp
-                        ProgramProxy.hpp CMakeProxy.hpp CTestProxy.hpp GitProxy.hpp GrassGISProxy.hpp PandocProxy.hpp
+                        ProgramProxy.hpp CMakeProxy.hpp CTestProxy.hpp GitProxy.hpp GrassGISProxy.hpp
                         CommandLineParser.hpp
                         ReportingData.hpp
                         )
 
+IF(OFBUILD_ENABLE_GPL_COMPONENTS)
+  LIST(APPEND OPENFLUID_UTILS_HPP PandocProxy.hpp)
+ENDIF()
 
 ADD_LIBRARY(openfluid-utils SHARED ${OPENFLUID_UTILS_CPP} ${OPENFLUID_UTILS_HPP})
 

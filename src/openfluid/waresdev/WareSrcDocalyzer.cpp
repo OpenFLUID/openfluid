@@ -50,7 +50,9 @@
 #include <openfluid/tools/TemplateProcessor.hpp>
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/ExternalProgram.hpp>
-#include <openfluid/utils/PandocProxy.hpp>
+#ifdef ENABLE_GPL_COMPONENTS
+  #include <openfluid/utils/PandocProxy.hpp>
+#endif
 #include <openfluid/thirdparty/JSON.hpp>
 #include <openfluid/waresdev/WareSignatureSerializer.hpp>
 #include <openfluid/waresdev/SimulatorSignatureSerializer.hpp>
@@ -236,9 +238,25 @@ WareSrcDocalyzer::WareSrcDocalyzer(const std::string& SrcPath, const std::string
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Output path empty");
   }
+
+
+#ifdef ENABLE_GPL_COMPONENTS
+    std::vector<std::string> AcceptedInputFormats = {"tex","Rmd","md","readme"};
+#else
+    std::vector<std::string> AcceptedInputFormats = {"tex"};
+#endif
+
+  for (const auto& F : m_InputFormats)
+  {
+    if (std::find(AcceptedInputFormats.begin(), AcceptedInputFormats.end(), F) == AcceptedInputFormats.end())
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"Doc format not accepted");  
+    }
+  }
+
   if (m_InputFormats.empty())
   {
-    m_InputFormats = {"tex","Rmd","md","readme"};
+    m_InputFormats = AcceptedInputFormats;
   }
 
 }
@@ -667,8 +685,8 @@ void WareSrcDocalyzer::processRmarkdownContent()
 
 void WareSrcDocalyzer::processMarkdownContent()
 {
+  #ifdef ENABLE_GPL_COMPONENTS
   // Render content in LaTeX
-
   if (!openfluid::utils::PandocProxy::isAvailable())
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
@@ -690,6 +708,10 @@ void WareSrcDocalyzer::processMarkdownContent()
   }
 
   m_DocData.Content = openfluid::tools::Filesystem::readFile(getGeneratedFilePath("content"));
+#else
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                            "build options incompatible with Pandoc usage (GPL)");
+#endif
 }
 
 
@@ -699,6 +721,7 @@ void WareSrcDocalyzer::processMarkdownContent()
 
 void WareSrcDocalyzer::processReadmeContent()
 {
+  #ifdef ENABLE_GPL_COMPONENTS
   // Render README.md in LaTeX
 
   m_WorkPathObj.makeDirectory(openfluid::config::WARESDEV_DOC_DIR);
@@ -724,6 +747,10 @@ void WareSrcDocalyzer::processReadmeContent()
   }
 
   m_DocData.Content = openfluid::tools::Filesystem::readFile(getGeneratedFilePath("content"));
+#else
+  throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                            "build options incompatible with Pandoc usage (GPL)");
+#endif
 
 }
 
@@ -754,7 +781,7 @@ void WareSrcDocalyzer::processContent(const std::string& Format)
     mp_Listener->stageMessage("Processing README.md content");
     processReadmeContent();
   }
-  else
+  else if (Format != "")
   {
     throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"unknown content format");
   }
@@ -928,14 +955,16 @@ void WareSrcDocalyzer::performDocalyze(bool KeepWorkData, bool IncludeEmptyField
   mp_Listener->onDetectInputStart();
 
   // Detect input format
-  const auto Format = detectFormat();
+  std::string Format = detectFormat();
   if (Format.empty())
   {
-    mp_Listener->onDetectInputEnd(openfluid::waresdev::WareSrcOpsListener::Status::ERROR_STATUS);
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,"cannot find main documentation file");
+    mp_Listener->onDetectInputEnd(openfluid::waresdev::WareSrcOpsListener::Status::WARNING_STATUS);
+    // cannot find main documentation file
   }
-
-  mp_Listener->onDetectInputEnd(openfluid::waresdev::WareSrcOpsListener::Status::OK_STATUS);
+  else
+  {
+    mp_Listener->onDetectInputEnd(openfluid::waresdev::WareSrcOpsListener::Status::OK_STATUS);
+  }
 
 
   // ----------

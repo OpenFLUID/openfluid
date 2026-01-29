@@ -1,4 +1,7 @@
 
+IF(OFBUILD_ENABLE_GPL_COMPONENTS)
+  ADD_DEFINITIONS(-DENABLE_GPL_COMPONENTS)
+ENDIF()
 
 SET(OPENFLUID_WARESDEV_CPP WareSrcHelpers.cpp
                            WareSrcEnquirer.cpp 
