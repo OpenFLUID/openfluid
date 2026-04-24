@@ -30,6 +30,11 @@ qt6-qtwebengine-devel")
   ENDIF()
 ENDIF()
 
+# boost-specific dependencies
+IF(Boost_VERSION_MINOR GREATER 85)
+  SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, libboost-process${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}-dev")
+ENDIF()
+
 IF (OFBUILD_ENABLE_DOCALYZER AND OFPACK_FULL_DEPENDENCIES)
   SET(OFPACK_DEPEND_DEB "${OFPACK_DEPEND_DEB}, texlive-latex-base, texlive-fonts-extra")
   IF (OFBUILD_ENABLE_GPL_COMPONENTS)
