@@ -138,13 +138,21 @@ int OPENFLUID_API cloneWare(const std::string& SourceURL, const std::string& Sou
       const auto Settings = openfluid::tools::SettingsBackend(openfluid::base::Environment::getSettingsFile());
       HubURL = Settings.getValue("/waresdev/ui/import/hub/url").get<std::string>();
     }
-    GitURL = HubURL.substr(0,HubURL.length()-5)+"/git-service/wares/"+WareType+"s/"+WareID;
+    std::string AdjustedWareType = WareType;
+    const std::string Plural = "s";
+    if (AdjustedWareType.compare(AdjustedWareType.length()-1, 1, Plural) != 0)
+    {
+      AdjustedWareType += "s"; // set plural if not already there
+    } 
+      
+    GitURL = HubURL.substr(0,HubURL.length()-5)+"/git-service/wares/"+AdjustedWareType+"/"+WareID;
   }
   else
   {
     GitURL = SourceURL;
   }
   openfluid::utils::GitProxy Git;
+  std::cout << "cloning ware: " << GitURL << " at " << ParentPath << std::endl;//DIRTYCODE
   return Git.clone(ParentPath, GitURL, WareID);
 }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid format="fluidx 4">
+ <model>
+  <generator varname="water.atm-surf.H.rain" unitsclass="SU" method="random">
+    <param name="min" value="0" />
+    <param name="max" value="0.000005" />
+    <param name="seed" value="1" />
+  </generator>
+  <simulator ID="water.surf-uz.runoff-infiltration.mseytoux" enabled="1">
+  </simulator>
+ </model>
+
+
+</openfluid>

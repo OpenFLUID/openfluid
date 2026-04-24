@@ -538,6 +538,81 @@ FluidHubAPIClient::WaresDetailsByID_t FluidHubAPIClient::getAvailableWaresWithDe
 // =====================================================================
 
 
+std::map<std::string, std::string> FluidHubAPIClient::getWaresets() const
+{
+  HTTPClient::Response Resp = m_RESTClient.getResource({.Path="wares/sets"});
+  std::map<std::string, std::string> waresets;
+  if (Resp.isOK())
+  {
+    openfluid::thirdparty::json JSONDoc;
+
+    try
+    {
+      JSONDoc = openfluid::thirdparty::json::parse(Resp.Content);
+    }
+    catch (openfluid::thirdparty::json::parse_error&)
+    {
+      std::cout << "JSON ERROR" << std::endl; // TOIMPL better error
+    }
+    if (JSONDoc.is_array())
+    {
+      for (const auto& WaresetDetail : JSONDoc)
+      {
+        waresets[WaresetDetail["name"]] = WaresetDetail["wares"].dump();
+      }
+    }
+  }
+  else
+  {
+    std::cout << "RESP KO" << std::endl; // TOIMPL better error
+  }
+  return waresets;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string FluidHubAPIClient::getWareset(const std::string& Name) const
+{
+  HTTPClient::Response Resp = m_RESTClient.getResource({.Path="wares/sets/"+Name});
+  std::map<std::string, std::string> waresets;
+  if (Resp.isOK())
+  {
+    openfluid::thirdparty::json JSONDoc;
+
+    try
+    {
+      JSONDoc = openfluid::thirdparty::json::parse(Resp.Content);
+    }
+    catch (openfluid::thirdparty::json::parse_error&)
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "FLUIDhub API: Json error");
+    }
+    if (JSONDoc.is_object())
+    {
+      return JSONDoc["wares"].dump();
+    }
+    else
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "FLUIDhub API: Wrong json format");
+    }
+  }
+  else
+  {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "FLUIDhub API: Request failed");
+  }
+  return "";
+}
+
+// =====================================================================
+// =====================================================================
+
+
 std::string FluidHubAPIClient::getNews(const std::string& Lang) const
 {
   std::string Content;

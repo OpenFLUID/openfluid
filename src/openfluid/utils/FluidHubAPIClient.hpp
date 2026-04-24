@@ -225,6 +225,10 @@ class OPENFLUID_API FluidHubAPIClient
     */
     WaresDetailsByID_t getAvailableFragmentsWithDetails(const std::string& Username = "") const;
 
+    std::map<std::string, std::string> getWaresets() const;
+
+    std::string getWareset(const std::string& Name) const;
+
     /**
       Returns the news as an RSS string content
       @param[in] Lang Optional lang for news content

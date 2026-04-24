@@ -1,0 +1,39 @@
+{
+  "id": "custom-wareset",
+  "name": "",
+  "description": "",
+  "version": "fluidx-4",
+  "status": "",
+  "authors": [
+    {
+      "name": "Billy Corgan",
+      "email": "billy@smashingpumpkins.org"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "OpenFLUID contact",
+      "email": "contact@openfluid-project.org"
+    }
+  ],
+  "license": "BSD",
+  "tags": [
+  ],
+  "links": [
+    {
+      "label": "OpenFLUID",
+      "url": "www.openfluid-project.org"
+    }
+  ],
+  "issues": [],
+  "dataset": {
+    "ware-versions": [
+      {
+        "type": "simulators",
+        "git-url": "@OFBUILD_TESTS_GITHELPER_URL@",
+        "id": "water.surf-uz.runoff-infiltration.mseytoux",
+        "version": "for-test"
+      }
+    ]
+  }
+}

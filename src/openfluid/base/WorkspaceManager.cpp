@@ -217,7 +217,15 @@ void WorkspaceManager::prepareWorkspace(const std::string& Path)
     for (const auto& P: PathsToCheck)
     {
       auto PPath = openfluid::tools::FilesystemPath(P);
-      PPath.makeDirectory();
+      std::error_code EC = std::error_code();
+      if (!PPath.makeDirectory("", EC))
+      {
+        std::cout << "Error during directory creation " << EC.message() << std::endl;  // TOIMPL set in logs
+      }
+      else
+      {
+        std::cout << "Directory creation succeeded " << P << std::endl;  // TOIMPL set in logs
+      }
     }
   }
 }

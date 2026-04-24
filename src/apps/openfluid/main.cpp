@@ -231,6 +231,20 @@ int main(int argc, char **argv)
 
   // ---
 
+  auto SetupWaresetCmd = openfluid::utils::CommandLineCommand("setup-wareset","Setup ware set (fetch from remote hub, checkout, configure and compile)");
+  SetupWaresetCmd.addOptions({{"parent-path","p","parent path where to create the ware sources",true},
+                              {"wares-origin","o","either hub API URL or local waresdev folder", true},
+                              {"set", "s", "Wareset ID or local dataset path to deduce list from", true},
+                              {"jobs","j","Jobs number for build step", true},
+                              {"multi-builds","m","Wares will be built in parallel (incompatible with targets with identical names)"},
+                              {"tolerant", "t", "A failure during fetch/checkout/build step of a ware will not interrupt the process (blocking otherwise)"},
+                              {"no-build", "n", "Stops after git checkout, skipping configuration and build"},
+                              {"run", "r", "If set provided is a dataset, runs the simulation after the setup"}
+                            });
+  Parser.addCommand(SetupWaresetCmd, &WareSection);
+  
+  // ---
+
   auto CheckCmd = openfluid::utils::CommandLineCommand("check","Checks ware sources for potential issues"); 
   CheckCmd.addOptions({{"src-path","s","path to the ware sources (required)",true}, 
                        {"ignore","i","ignore checks (comma separated list)"},
@@ -394,6 +408,7 @@ int main(int argc, char **argv)
   }
   else if (ActiveCmdStr == "create-ware" ||
            ActiveCmdStr == "import-ware" ||
+           ActiveCmdStr == "setup-wareset" ||
            ActiveCmdStr == "check" ||
            ActiveCmdStr == "migrate-ware" ||
            ActiveCmdStr == "docalyze" ||

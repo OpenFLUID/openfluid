@@ -39,8 +39,14 @@
 
 
 #include <algorithm>
+#include <fstream>
 #include <memory>
 
+#include <openfluid/base/IOListener.hpp>
+#include <openfluid/base/Environment.hpp>
+#include <openfluid/base/WorkspaceManager.hpp>
+#include <openfluid/config.hpp>
+#include <openfluid/fluidx/FluidXIO.hpp>
 #include <openfluid/ware/TypeDefs.hpp>
 #include <openfluid/waresdev/WareSrcFactory.hpp>
 #include <openfluid/waresdev/GhostsHelpers.hpp>
@@ -54,6 +60,7 @@
 #include <openfluid/utils/Process.hpp>
 #include <openfluid/utils/CMakeProxy.hpp>
 #include <openfluid/utils/GitProxy.hpp>
+#include <openfluid/utils/FluidHubAPIClient.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -292,6 +299,446 @@ int WareTasks::processImport() const
     return error("Error while cloning ware");
   }
   return success("Ware import successfully completed");
+}
+
+// =====================================================================
+// =====================================================================
+//TOIMPL LOG OR COUT? TODO ADD UNDEF
+#define RETURN_ERROR_OR_PRINT(M)                      \
+{                                          \
+  if (IsStrict) \
+  { \
+    return error(M); \
+  } \
+  else \
+  { \
+    std::cout << M << std::endl; \
+  } \
+}
+
+int WareTasks::processSetup() const
+{
+  const auto ParentPathStr = (m_Cmd.getOptionValue("parent-path").empty() ? openfluid::tools::Filesystem::currentPath() : 
+                                                                          m_Cmd.getOptionValue("parent-path"));
+
+  std::string WaresOrigin = m_Cmd.getOptionValue("wares-origin");
+  std::string SetOption = m_Cmd.getOptionValue("set");
+
+  bool IsStrict = !m_Cmd.isOptionActive("tolerant");
+  
+  // set source is deduced from name, starting with http means a wareset distant resource
+  std::string WaresetSourceType = "dataset";
+  std::string WareSourceType = "local";
+  //BREAKPOINT
+  if (SetOption.empty())
+  {
+    return error("Set URL or path required");
+  }
+  if (SetOption.substr(0,4) == "http" || SetOption.find("/") == std::string::npos)
+  {
+    WaresetSourceType = "hub";
+  }
+  if (!WaresOrigin.empty() && WaresOrigin.substr(0,4) == "http")
+  {
+    WareSourceType = "hub";
+  }
+
+  std::string ID = "wareset";
+
+  std::string WaresetName;
+  std::string WaresetListJson;
+  openfluid::thirdparty::json JSONWareset;
+  
+  //DIRTYCODE split and dispatch ops from here to improve SOLIDity
+
+  if (WaresetSourceType == "hub")
+  { 
+    //curl http://147.100.175.211:8181/api/wares/sets -H "Accept: application/x.openfluid.fluidhub+json; version=1.0"
+    
+    // Define source URL
+    std::string SourceURL;
+    // 1) from set full URL
+    if (SetOption.substr(0,4) == "http")
+    {
+      SourceURL = openfluid::tools::split(SetOption, "/api/").front()+"/api/";
+    }
+    // 2) from wares origin
+    else if (WaresOrigin.substr(0,4) == "http")
+    {
+      SourceURL = WaresOrigin;
+    }
+    else
+    {
+      return error("Hub URL can not be deduced from provided information");
+    }
+
+    if (!SetOption.empty() && SetOption.find("/") == std::string::npos)
+    {
+      ID = SetOption;
+    }
+    else
+    {
+      ID = openfluid::tools::split(SetOption, "/").back();
+    }
+    //TOIMPL else with split on / and get last part
+    
+
+    openfluid::utils::FluidHubAPIClient FHClient;
+    try
+    {
+      if (FHClient.connect(SourceURL,false))
+      {
+        openfluid::tools::TemplateProcessor::Data Waresets;
+        WaresetListJson = FHClient.getWareset(ID);
+        bool Found = !WaresetListJson.empty();
+        if (!Found)
+        {
+          return error("Wareset not found on hub instance");
+        }
+      }
+      else
+      {
+        return error("Error during FluidHub connection");
+      }
+    }
+    catch(openfluid::base::FrameworkException& E)
+    {
+      return error("Wareset request failure ("+std::string(E.what())+")");
+    }
+
+    try
+    {
+      JSONWareset = openfluid::thirdparty::json::parse(WaresetListJson);
+    }
+    catch (openfluid::thirdparty::json::parse_error&)
+    {
+      std::cout << "JSON ERROR" << std::endl; // TOIMPL better error
+    }
+  }
+  else if (WaresetSourceType == "dataset")
+  {
+    //TOIMPL deduce ID from path: either last part or the one before if last is "IN"?
+
+    //TOIMPL check wares listed in given location
+    std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
+    openfluid::fluidx::FluidXIO FXIO(Listener.get());
+    auto FXDesc = FXIO.loadFromDirectory(SetOption);
+    for (const auto& i : FXDesc.model().items())
+    {
+      if (i->isType(openfluid::ware::WareType::SIMULATOR) && i->isEnabled()) 
+      {
+        openfluid::thirdparty::json WareJson = openfluid::thirdparty::json::object();
+        WareJson["type"] = "simulators";
+        WareJson["id"] = i->getID();
+        WareJson["version"] = "";
+        JSONWareset.push_back(WareJson);
+      }
+    }
+    for (const auto& i : FXDesc.monitoring().items())
+    {
+      if (i->isEnabled()) 
+      {
+        openfluid::thirdparty::json WareJson = openfluid::thirdparty::json::object();
+        WareJson["type"] = "observers";
+        WareJson["id"] = i->getID();
+        WareJson["version"] = "";
+        JSONWareset.push_back(WareJson);
+      }
+    }
+    // Use version data from potential openfluid-dataset.json
+    // TOIMPL this function should be in dataset processing class
+    std::ifstream FileStream;
+    FileStream.open(SetOption+"/openfluid-dataset.json",std::ifstream::in);//TOIMPL better path management
+    if (!FileStream.is_open())
+    {
+      std::cout << "No dataset metadata" << std::endl;//TOIMPL better error management
+    }
+    else
+    {
+      try
+      {
+        openfluid::thirdparty::json DatasetMetadataJson = openfluid::thirdparty::json::parse(FileStream);
+
+        for (const auto& Ware : DatasetMetadataJson["dataset"]["ware-versions"])
+        {
+          for (auto& WareFromFluidx : JSONWareset)
+          {
+            if (WareFromFluidx["id"] == Ware["id"] && WareFromFluidx["type"] == Ware["type"])//TOIMPL add tolerance singular/plural on ware type?
+            {
+              std::cout << "Ware precision found" << std::endl;
+              WareFromFluidx["version"] = Ware["version"];
+              if (Ware.contains("git-url"))
+              {
+                WareFromFluidx["git-url"] = Ware["git-url"];
+                WareSourceType = "git";
+              }
+            }
+          }
+        }
+      }
+      catch (openfluid::thirdparty::json::parse_error&)
+      {
+        RETURN_ERROR_OR_PRINT("dataset metadata json format parsing failed");
+      }
+    }
+  }
+  // format: [{"id":"export.vars.files.csv","type":"observers","version":"openfluid-2.2"},{"id":"water.atm-surf.rain-su.files","type":"simulators","version":"openfluid-2.2"},{"id":"water.surf.transfer-rs.hayami","type":"simulators","version":"openfluid-2.2"},{"id":"water.surf.transfer-su.hayami","type":"simulators","version":"openfluid-2.2"},{"id":"water.surf-uz.runoff-infiltration.mseytoux","type":"simulators","version":"openfluid-2.2"}]
+  
+  // 0- Setup userdata
+  std::cout << "setup userdata at " << ParentPathStr << std::endl;
+  
+  openfluid::tools::Path ParentPath(ParentPathStr);
+  if (!ParentPath.exists())
+  {
+    std::error_code ErrorCode;
+    if (!ParentPath.makeDirectory("", ErrorCode))
+    {
+      return error("Userdata creation failed: "+ErrorCode.message());
+    }
+  }
+  else
+  {
+    return error("Destination already exists");
+  }
+  openfluid::base::WorkspaceManager::prepareWorkspace(ParentPathStr);
+  
+  // 1- Fetching wares 
+  std::string WareSourceURL = WaresOrigin;
+
+  std::ofstream CallerCmake;
+  std::ofstream WaresetCmake;
+  CallerCmake.open(ParentPath.fromThis("wares-dev").fromThis("CMakeLists.txt").toGeneric());
+  WaresetCmake.open(ParentPath.fromThis("wares-dev").fromThis("CMake."+ID+".config").toGeneric());
+
+  CallerCmake << "# WARNING: FILE AUTOGENERATED, DONT EDIT IT DIRECTLY (it will be erased by next wareset command)\n";
+  CallerCmake << "cmake_minimum_required(VERSION 3.20)\n";
+  CallerCmake << "PROJECT(" << ID << ")\n";
+  CallerCmake << "SET(MULTI_WARE 1)\n";
+  CallerCmake << "INCLUDE(" << "CMake."+ID+".config" << ")\n";
+  CallerCmake.close();
+  for (const auto& Ware : JSONWareset)
+  {
+    //TODO in most cases, wares can be built in parallel, so handle it here? (redundant with "project cmakelists" strategy proposal that would handle it directly)
+    //   1.1- Checking presence/git (TOIMPL allow skip of this step to be independant from network access, using local ware repositories as reference)
+    std::string WareType = Ware["type"];
+    std::string WareID = Ware["id"];
+    std::string WareVersion = Ware["version"];
+    std::cout << WareID << ": " << WareVersion << " " << WareType << std::endl;
+    const auto WarePath = ParentPath.fromThis("wares-dev").fromThis(WareType).fromThis(WareID);//TOIMPL replace "wares-dev" by var
+    if (!WarePath.exists())
+    {
+      if (WareSourceType == "hub")
+      {
+        if (openfluid::waresdev::cloneWare(WareSourceURL, "hub", ParentPath.fromThis("wares-dev").fromThis(WareType).toGeneric(), WareID, WareType) != 0)
+        {
+          RETURN_ERROR_OR_PRINT("Error while cloning ware "+WareID);
+        }
+      }
+      else if (WareSourceType == "git") // TOIMPL merge with previous into source type == remote
+      {
+        if (Ware.contains("git-url")) // use git URL if provided
+        {
+          std::string GitUrl = Ware["git-url"];
+          if (openfluid::waresdev::cloneWare(GitUrl, "git", ParentPath.fromThis("wares-dev").fromThis(WareType).toGeneric(), WareID) != 0)
+          {
+            RETURN_ERROR_OR_PRINT("Error while cloning ware "+WareID+" from "+GitUrl);
+          }
+        }
+        else if (!WaresOrigin.empty()) // fallback on hub if provided
+        {
+          if (openfluid::waresdev::cloneWare(WareSourceURL, "hub", ParentPath.fromThis("wares-dev").fromThis(WareType).toGeneric(), WareID, WareType) != 0)
+          {
+            RETURN_ERROR_OR_PRINT("Error while cloning ware "+WareID);
+          }
+        }
+        else
+        {
+          return error("Neither git URL nor hub URL from which fetch ware");
+        }
+      }
+      else // copy local folder
+      {
+        openfluid::tools::Path OriginWarePath(WaresOrigin);
+        if (OriginWarePath.fromThis(WareType).fromThis(WareID).exists())
+        {
+          if (!WarePath.makeDirectory())
+          {
+            RETURN_ERROR_OR_PRINT("Error while creating temporary ware source dir");
+          }
+          if (!openfluid::tools::Filesystem::copyDirectoryContent(OriginWarePath.fromThis(WareType).fromThis(WareID).stdPath(), WarePath.stdPath()))
+          {
+            RETURN_ERROR_OR_PRINT("Error while copying ware source");
+          }
+        }
+        else
+        {
+          RETURN_ERROR_OR_PRINT("Unable to find given ware in origin folder: " + OriginWarePath.fromThis(WareType).fromThis(WareID).toGeneric());
+        }
+      }
+    }
+    else
+    {
+      std::cout << WarePath.toGeneric() << "already exists" << std::endl;//TOIMPL better handling of this case
+    }
+    if (WarePath.exists())
+    {
+      //1.3- Build centralized wareset CMakeLists.txt
+      WaresetCmake << "ADD_SUBDIRECTORY("<< WareType << "/" << WareID << ")\n";
+    }
+    else
+    {
+      RETURN_ERROR_OR_PRINT("Ware path not found: " + WarePath.toGeneric());
+    }
+    
+    //   1.2- Checking version/checkout 
+    if (!WareVersion.empty())
+    {
+      openfluid::utils::GitProxy Git;
+      openfluid::utils::Process::Command CmdCheckout{
+        .Program = Git.getExecutablePath(),
+        .Args = {"checkout", WareVersion},
+        .WorkDir = WarePath.toGeneric()
+      };
+      openfluid::utils::Process PCheckout(CmdCheckout);
+      if (!PCheckout.run() || !(PCheckout.getExitCode() == 0))//TOIMPL better logging
+      {
+        for (const auto& l : PCheckout.stdOutLines())
+        {
+          std::cout << l << std::endl;
+        }
+        for (const auto& l : PCheckout.stdErrLines())
+        {
+          std::cout << l << std::endl;
+        }
+        RETURN_ERROR_OR_PRINT("error during ware checkout");
+      }
+    }
+
+  }
+  WaresetCmake.close();
+  if (m_Cmd.isOptionActive("no-build"))
+  {
+    return success("Wareset setup successfully completed (without ware build)");
+  }
+  // 2- Building ware 
+  std::string BuildType = "Release";
+  std::string Target = "install";
+  unsigned int JobsNbr = openfluid::base::Environment::getIdealJobsCount();
+
+  if (m_Cmd.isOptionActive("jobs") && !m_Cmd.getOptionValue("jobs").empty())
+  {
+    JobsNbr = std::stoi(m_Cmd.getOptionValue("jobs"));
+  }
+
+  std::map<std::string,std::string> Vars = openfluid::waresdev::initializeConfigureVariables();
+
+  Vars["CMAKE_BUILD_TYPE"] = BuildType;
+  Vars["WARES_PREFIX_INSTALL_PATH"] = ParentPathStr+"/wares";
+  
+  const char* WareIncludeDirs = std::getenv("WARE_INTERNAL_INCLUDE_DIRS"); //FIXME find a cleaner way, probably useful only for test context
+  if (WareIncludeDirs != NULL) 
+  {
+    Vars["WARE_INTERNAL_INCLUDE_DIRS"] = std::string(WareIncludeDirs);
+  }
+    
+  bool BuildTogether = m_Cmd.isOptionActive("multi-builds");
+  if (BuildTogether)
+  {
+    const auto BuildPath = openfluid::tools::Path({ParentPath.fromThis("wares-dev").toGeneric(),openfluid::utils::CMakeProxy::getBuildDir(BuildType)});
+    if (BuildPath.isDirectory())
+    {
+      BuildPath.removeDirectory();
+    }
+    BuildPath.makeDirectory();
+    
+    auto CMakeCmd = openfluid::utils::CMakeProxy::getConfigureCommand(BuildPath.toGeneric(),ParentPath.fromThis("wares-dev").toGeneric(),
+                                                                      Vars);
+
+    if (openfluid::utils::Process::system(CMakeCmd) != 0)
+    {
+      RETURN_ERROR_OR_PRINT("Configure failure"); //TOIMPL send error signal at the end if one failed
+    }
+    
+    //   2.2- Build ware
+    std::cout << "Trying parallel ware build..." << std::endl;
+
+    auto CMakeCmdBuild = openfluid::utils::CMakeProxy::getBuildCommand(BuildPath.toGeneric(),Target,JobsNbr);
+
+    if (openfluid::utils::Process::system(CMakeCmdBuild) != 0)
+    {
+      RETURN_ERROR_OR_PRINT("Build failure"); //TOIMPL send error signal at the end if one failed
+    }          
+  }
+  else
+  {
+    for (const auto& Ware : JSONWareset)
+    {
+      //   2.1- Configure ware for installation 
+      std::string WareType = Ware["type"];
+      std::string WareID = Ware["id"];
+      const auto WarePath = ParentPath.fromThis("wares-dev").fromThis(WareType).fromThis(WareID);//TOIMPL replace "wares-dev" by var
+      // DIRTYCODE merge with other configure steps of this file
+      const auto BuildPath = openfluid::tools::Path({WarePath.toGeneric(),openfluid::utils::CMakeProxy::getBuildDir(BuildType)});
+      if (BuildPath.isDirectory())
+      {
+        BuildPath.removeDirectory();
+      }
+      BuildPath.makeDirectory();
+
+      auto CMakeCmd = openfluid::utils::CMakeProxy::getConfigureCommand(BuildPath.toGeneric(),WarePath.toGeneric(),
+                                                                        Vars);
+
+      if (openfluid::utils::Process::system(CMakeCmd) != 0)
+      {
+        RETURN_ERROR_OR_PRINT("Configure failure"); //TOIMPL send error signal at the end if one failed
+      }
+      
+      //   2.2- Build ware
+
+      auto CMakeCmdBuild = openfluid::utils::CMakeProxy::getBuildCommand(BuildPath.toGeneric(),Target,JobsNbr);
+
+      if (openfluid::utils::Process::system(CMakeCmdBuild) != 0)
+      {
+        RETURN_ERROR_OR_PRINT("Build failure"); //TOIMPL send error signal at the end if one failed
+      }          
+      // 3- Check if binary valid
+      //   3.1- check if Found in UD/wares/
+      // TODO
+      
+      //   3.2- ensure validity (via symbols?)
+      // TODO
+    }
+  }
+  //return error("Error during wareset setup");
+  if (WaresetSourceType == "dataset")
+  {
+    std::cout << "A simulation can be launched using this setup:"<< std::endl;
+    std::cout << "OPENFLUID_USERDATA_PATH="+ParentPathStr+" openfluid run "+SetOption+" "+ParentPathStr+"/OUT" << std::endl;//TOIMPL better path management
+  }
+  if (m_Cmd.isOptionActive("run"))
+  {
+    if (WaresetSourceType == "dataset")
+    {
+      // run simulation
+      openfluid::utils::Process::Environment Env;
+      Env.Vars["OPENFLUID_USERDATA_PATH"] = ParentPathStr;
+      for (const auto& V : Env.Vars)
+      {
+        std::cout << V.first << ":" << V.second << std::endl;
+      }
+      //TOIMPL find if other var contains openfluid executable 
+      int ReturnCode = openfluid::utils::Process::system(openfluid::config::INSTALL_PREFIX+"/bin/openfluid", {"run", SetOption, ParentPathStr+"/OUT"}, Env);  // TOIMPL better path management
+      if (ReturnCode != 0)
+      {
+        RETURN_ERROR_OR_PRINT("Simulation error (return code: "+std::to_string(ReturnCode)+")");  
+      }
+    }
+    else
+    {
+      RETURN_ERROR_OR_PRINT("Can't run simulation since set provided is not a dataset");
+    }
+  }
+  return success("Wareset setup successfully completed");
 }
 
 
@@ -834,6 +1281,10 @@ int WareTasks::process() const
   else if (m_Cmd.getName() == "import-ware")
   {
     return processImport();
+  }
+  else if (m_Cmd.getName() == "setup-wareset")
+  {
+    return processSetup();
   }
   else if (m_Cmd.getName() == "check")
   {

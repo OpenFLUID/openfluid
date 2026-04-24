@@ -440,7 +440,7 @@ int Process::system(const Command& Cmd, const Environment& Env)
   return Proc.wait();
 #else
   boost::process::environment ProcessEnv;
-  
+
   // prepare environment
   if (Env.Inherits)
   {
@@ -458,11 +458,11 @@ int Process::system(const Command& Cmd, const Environment& Env)
   std::string WorkDir;
   if (Cmd.WorkDir.empty())
   {
-      WorkDir = ".";
+    WorkDir = ".";
   }
   else
   {
-      WorkDir = Cmd.WorkDir;
+    WorkDir = Cmd.WorkDir;
   }
 
   return boost::process::system(boost::process::exe = Cmd.Program,
