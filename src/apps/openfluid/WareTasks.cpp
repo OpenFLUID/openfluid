@@ -727,7 +727,7 @@ int WareTasks::processSetup() const
         std::cout << V.first << ":" << V.second << std::endl;
       }
       //TOIMPL find if other var contains openfluid executable 
-      int ReturnCode = openfluid::utils::Process::system(openfluid::config::INSTALL_PREFIX+"/bin/openfluid", {"run", SetOption, ParentPathStr+"/OUT"}, Env);  // TOIMPL better path management
+      int ReturnCode = openfluid::utils::Process::system(openfluid::config::INSTALL_PREFIX+"/bin/openfluid", {"run", SetOption, ParentPathStr+"/OUT", "-q"}, Env);  // TOIMPL better path management
       if (ReturnCode != 0)
       {
         RETURN_ERROR_OR_PRINT("Simulation error (return code: "+std::to_string(ReturnCode)+")");  

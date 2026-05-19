@@ -145,6 +145,7 @@ int main(int argc, char **argv)
                                                           "openfluid run [<options>] [<dataset-path>] [<output-path>]");
   RunCmd.addOptions({{"clean-output-dir","c","clean output directory before simulation"},
                      {"quiet","q","quiet display during simulation"},
+                     {"compact","s", "rewrite progress on a single line"},
                      {"verbose","v","enable verbose mode"},
                      {"profiling","k","enable simulation profiling"},
                      {"auto-output-dir","a","create automatic output directory"},

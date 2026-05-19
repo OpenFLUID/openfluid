@@ -50,6 +50,7 @@
 
 #include "DefaultIOListener.hpp"
 #include "DefaultMachineListener.hpp"
+#include "CompactMachineListener.hpp"
 #include "VerboseMachineListener.hpp"
 #include "RunTasks.hpp"
 
@@ -163,6 +164,7 @@ void printEnvInfos()
 {
   bool IsVerbose = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.verbose");
   bool IsQuiet = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.quiet");
+  bool IsCompact = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.compact");
 
   printPaths(false);
 
@@ -174,6 +176,11 @@ void printEnvInfos()
   if (IsQuiet)
   {
     std::cout << "Quiet mode enabled" << std::endl;
+  }
+
+  if (IsCompact)
+  {
+    std::cout << "Compact mode enabled" << std::endl;
   }
 
   if (IsVerbose)
@@ -193,6 +200,7 @@ int RunTasks::process() const
 {
   openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.verbose",false);
   openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.quiet",false);
+  openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.compact",false);
 
   if (m_Cmd.isOptionActive("simulators-paths"))
   {
@@ -245,15 +253,23 @@ int RunTasks::process() const
     openfluid::base::RunContextManager::instance()->setClearOutputDir(true);
   }
 
-  if (m_Cmd.isOptionActive("quiet"))
+  if (m_Cmd.isOptionActive("quiet"))  // TODO revamp display properties
   {
     openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.quiet",true);
+    openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.compact",false);
     openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.verbose",false);
   }
 
+  if (m_Cmd.isOptionActive("compact"))
+  {
+    openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.verbose",false);
+    openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.compact",true);
+    openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.quiet",false);
+  }
   if (m_Cmd.isOptionActive("verbose"))
   {
     openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.verbose",true);
+    openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.compact",false);
     openfluid::base::RunContextManager::instance()->extraProperties().setBoolean("display.quiet",false);
   }
 
@@ -283,6 +299,7 @@ int RunTasks::process() const
 
     bool IsVerbose = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.verbose");
     bool IsQuiet = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.quiet");
+    bool IsCompact = openfluid::base::RunContextManager::instance()->extraProperties().getBoolean("display.compact");
 
 
     std::unique_ptr<openfluid::machine::MachineListener> MListener;
@@ -292,6 +309,10 @@ int RunTasks::process() const
     if (IsQuiet)
     {
       MListener = std::make_unique<openfluid::machine::MachineListener>();
+    }
+    else if (IsCompact)
+    {
+      MListener = std::make_unique<CompactMachineListener>();
     }
     else
     {
