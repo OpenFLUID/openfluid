@@ -142,7 +142,7 @@ int OPENFLUID_API cloneWare(const std::string& SourceURL, const std::string& Sou
     const std::string Plural = "s";
     if (AdjustedWareType.compare(AdjustedWareType.length()-1, 1, Plural) != 0)
     {
-      AdjustedWareType += "s"; // set plural if not already there
+      AdjustedWareType += Plural; // set plural if not already there
     } 
       
     GitURL = HubURL.substr(0,HubURL.length()-5)+"/git-service/wares/"+AdjustedWareType+"/"+WareID;
@@ -152,7 +152,6 @@ int OPENFLUID_API cloneWare(const std::string& SourceURL, const std::string& Sou
     GitURL = SourceURL;
   }
   openfluid::utils::GitProxy Git;
-  std::cout << "cloning ware: " << GitURL << " at " << ParentPath << std::endl;//DIRTYCODE
   return Git.clone(ParentPath, GitURL, WareID);
 }
 

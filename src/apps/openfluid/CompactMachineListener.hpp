@@ -34,7 +34,7 @@
   @file CompactMachineListener.hpp
 
   @author Armel THÖNI <armel.thoni@inrae.fr>
-  @author David Crevoisier <david.crevoisier@inrae.fr>
+  @author David CREVOISIER <david.crevoisier@inrae.fr>
 */
 
 
@@ -51,23 +51,27 @@
 #include <openfluid/tools/Console.hpp>
 
 
-void displayTime(int Seconds)
+void writeTime(std::ostream& Stream, int Seconds)
 {
-  auto timeSec        = Seconds;
-  auto timeMin        = (long)(std::floor((double)(Seconds)/60.0));
-  timeSec             = timeSec % 60;
-  auto timeHour   = (long)(std::floor((double)(timeMin)/60.0));
-  timeMin         = timeMin % 60;
-  if (timeHour != 0)
+  auto TimeSec        = Seconds;
+  auto TimeMin        = (long)(std::floor((double)(Seconds)/60.0));
+  TimeSec             = TimeSec % 60;
+  auto TimeHour   = (long)(std::floor((double)(TimeMin)/60.0));
+  TimeMin         = TimeMin % 60;
+  if (TimeHour != 0)
   {
-    std::cout << timeHour << "h ";
+    Stream << TimeHour << "h ";
   }
-  if (timeMin != 0)
+  if (TimeMin != 0)
   {
-    std::cout << timeMin << "min ";
+    Stream << TimeMin << "min ";
   }
-  std::cout << timeSec << "s";
+  Stream << TimeSec << "s";
 }
+
+
+// =====================================================================
+// =====================================================================
 
 
 class ProgressBar
@@ -82,7 +86,7 @@ class ProgressBar
     std::chrono::time_point<std::chrono::system_clock> m_BeginTime;
     double m_refreshBarInfo;
     
-    int m_CurrentPos = 0;
+    unsigned int m_CurrentPos = 0;
     std::string m_BarContent;
     std::map<int, openfluid::machine::MachineListener::Status> m_BarStatusLevels;
 
@@ -91,7 +95,7 @@ class ProgressBar
       m_BarContent = std::string(m_nBar, m_chBarTodo);
     }
 
-    void printColoredBarChar(const int Pos) const
+    void writeColoredBarChar(std::ostream& Stream, const int Pos)
     {
       bool CustomColor = false;
       if (m_BarStatusLevels.find(Pos) != m_BarStatusLevels.end())
@@ -110,7 +114,7 @@ class ProgressBar
         }
         CustomColor = true;
       }
-      std::cout << m_BarContent[Pos];
+      Stream << m_BarContent[Pos];
       if (CustomColor)
       {
         openfluid::tools::Console::resetAttributes();
@@ -124,44 +128,49 @@ class ProgressBar
         throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
                 "index overflow: "+std::to_string(Pos)+" over "+std::to_string(m_BarContent.size()));
       }
+      // For intermediate prints:
+      // if (m_CurrentPos != Pos && (m_CurrentPos*10/m_nBar != Pos*10/m_nBar))
+      // {
+      //   std::cout << std::endl;
+      // }
       m_CurrentPos = Pos;
     }
 
-    void printBar(const double RatioDone, const bool IsEnd=false, const std::string& DateString="") const
+    void writeBar(std::ostream& Stream, const double RatioDone, const bool IsEnd=false, const std::string& DateString="")
     {
-      std::cout << "\r  [";
+      Stream << "\r  [";
       
       for (unsigned int k=0;k!=m_nBar;k++)
       {
-        printColoredBarChar(k);
+        writeColoredBarChar(Stream, k);
       }          
-      std::cout << "] ";
+      Stream << "] ";
       if (IsEnd)
       {
-        std::cout << "      Processed all dates      " << std::endl;  
+        Stream << "      Processed all dates      " << std::endl;  
       }
       else
       {
-        std::cout << "Processing " << DateString << " ";
-        std::cout << " [" << std::setw(3) << std::fixed << std::setprecision(0) << 100.0 * RatioDone << "\% in ";
+        Stream << "Processing " << DateString << " ";
+        Stream << " [" << std::setw(3) << std::fixed << std::setprecision(0) << 100.0 * RatioDone << "\% in ";
 
         auto currentTime = std::chrono::system_clock::now();
         auto timeDoneSec    = std::chrono::duration_cast<std::chrono::seconds>(currentTime - m_BeginTime).count();
         auto timeLeftSec    = (long)(std::floor((double)((1.0-RatioDone)/RatioDone * timeDoneSec)));
         if (RatioDone > m_refreshBarInfo)
         {
-          displayTime(timeDoneSec);
-          std::cout << " < ";
-          displayTime(timeLeftSec);
-          std::cout << "]                     ";
+          writeTime(Stream, timeDoneSec);
+          Stream << " < ";
+          writeTime(Stream, timeLeftSec);
+          Stream << "]                     ";
         }
         else
         {
-          std::cout << "not available yet";
+          Stream << "not available yet";
         }
       }
 
-      std::cout << std::flush;
+      Stream << std::flush;
     }
 
     void applyStepStatus(const openfluid::base::Listener::Status& Status)
@@ -192,6 +201,10 @@ class ProgressBar
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
 class CompactMachineListener : public openfluid::machine::MachineListener
 {
 
@@ -209,11 +222,12 @@ class CompactMachineListener : public openfluid::machine::MachineListener
 
     virtual void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
     {
-      if (!m_Initiated) // hard to do in a previous step: simulation duration information is only available through SimulationStatus
+      if (!m_Initiated)  // hard to do in a previous step: sim duration is only available through SimulationStatus
       {
         m_ProgressBar.m_BeginTime = std::chrono::system_clock::now();
         openfluid::machine::MachineListener::onInitParams();
-        openfluid::core::Duration_t OneTimeBar = std::floor( double(SimStatus->getSimulationDuration()) / double(m_ProgressBar.m_nBar) );
+        openfluid::core::Duration_t OneTimeBar = std::floor( double(SimStatus->getSimulationDuration()) / 
+                                                             double(m_ProgressBar.m_nBar) );
         for (unsigned int k=1;k!=m_ProgressBar.m_nBar+1;++k) //TODO check if works with Windows OS
         {
           m_TimeBar.push_back(k*OneTimeBar);
@@ -225,11 +239,19 @@ class CompactMachineListener : public openfluid::machine::MachineListener
       }
       
       openfluid::core::TimeIndex_t CurrentIndex = SimStatus->getCurrentTimeIndex();      
-      for (unsigned int k=1;k!=m_ProgressBar.m_nBar+1;++k)
+      // for (unsigned int k=1;k!=m_ProgressBar.m_nBar+1;++k)
+      // {
+      //   if (CurrentIndex >= m_TimeBar[k])
+      //   {
+      //     m_ProgressBar.setCurrentPos(k);          
+      //   }
+      // }
+      for (unsigned int k=m_ProgressBar.m_nBar;k!=0;--k)
       {
         if (CurrentIndex >= m_TimeBar[k])
         {
-          m_ProgressBar.setCurrentPos(k);          
+          m_ProgressBar.setCurrentPos(k);
+          break;          
         }
       }
       double RatioDone = double(CurrentIndex) / double(SimStatus->getSimulationDuration());
@@ -247,7 +269,7 @@ class CompactMachineListener : public openfluid::machine::MachineListener
       }
       if (IsPrint)
       {
-        m_ProgressBar.printBar(RatioDone, false, SimStatus->getCurrentDate().getAsString("%Y-%m-%d %H:%M:%S"));
+        m_ProgressBar.writeBar(std::cout, RatioDone, false, SimStatus->getCurrentDate().getAsString("%Y-%m-%d %H:%M:%S"));
       }
     };
 
@@ -257,9 +279,10 @@ class CompactMachineListener : public openfluid::machine::MachineListener
       m_ProgressBar.applyStepStatus(Status);
     }
 
+
     virtual void onAfterRunSteps()
     {
-      m_ProgressBar.printBar(1, true);
+      m_ProgressBar.writeBar(std::cout, 1, true);
     }
 };
 

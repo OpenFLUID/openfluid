@@ -450,58 +450,60 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ImportSimulator
 
 ###########################################################################
 # TOIMPL declare as heavy test?
-
+# TOIMPL fix ambiguity: parent path or root path?
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-SetupWareset-FromLocal 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "setup-wareset"
-                           "-p" "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/" # TOIMPL fix ambiguity: parent path or root path?
-                           "--set=${CMAKE_SOURCE_DIR}/examples/projects/MHYDAS_Roujan/IN"
+                           "-p" "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/" 
+                           "--set=${CMAKE_SOURCE_DIR}/resources/tests/datasets/OPENFLUID.IN.FirespreadReduced/"
                            "--wares-origin=${CMAKE_SOURCE_DIR}/examples/wares-dev"
                            "-j" "3" "-m" "--tolerant" "-r"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/"
                    PRE_TEST CREATE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/wares-dev/simulators/water.atm-surf.rain-su.files/CMakeLists.txt"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/wares/simulators/water.surf-uz.runoff-infiltration.mseytoux${OPENFLUID_SIMULATORS_SUFFIX}.so" #DIRTYCODE VAR FOR EXT TYPE
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/OUT/SU_SU34_water.surf.Q.downstream-su.csv")
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/wares-dev/simulators/spatial.atm.grid.connection-dynamics/CMakeLists.txt"
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/wares/simulators/fire.surf.prod-spread_ofware20202-sim.so" 
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/OUT/autoAll.csv")
+#TOIMPL VAR FOR EXT TYPE
 
 SET_PROPERTY(TEST cmdline-openfluid-SetupWareset-FromLocal
                 APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};"
+                                            "OPENFLUID_LOG_PATH=${OFBUILD_TMP_DIR}/cmdline;"
                                             "OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};"
                                             "WARE_INTERNAL_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src\;${OFBUILD_DIST_DIR};")
 
 
 ###########################################################################
-
+# TOIMPL fix ambiguity: parent path or root path?
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-SetupWareset-FromLocal-Strict 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "setup-wareset"
-                           "-p" "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset-strict/" # TOIMPL fix ambiguity: parent path or root path?
+                           "-p" "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset-strict/" 
                            "--set=${CMAKE_SOURCE_DIR}/examples/projects/MHYDAS_Roujan/IN"
                            "--wares-origin=${CMAKE_SOURCE_DIR}/examples/wares-dev"
                            "-j" "3" "-m"
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset-strict/"
                    PRE_TEST CREATE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/"
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset-strict/wares-dev/simulators/water.atm-surf.rain-su.files/CMakeLists.txt"
-                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset-strict/wares/simulators/water.surf-uz.runoff-infiltration.mseytoux${OPENFLUID_SIMULATORS_SUFFIX}.so") #DIRTYCODE VAR FOR EXT TYPE
+                   POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset-strict/wares/simulators/water.surf-uz.runoff-infiltration.mseytoux${OPENFLUID_SIMULATORS_SUFFIX}.so")
+#TOIMPL VAR FOR EXT TYPE
 
 SET_PROPERTY(TEST cmdline-openfluid-SetupWareset-FromLocal-Strict APPEND PROPERTY WILL_FAIL TRUE)
 
 
 ###########################################################################
-
+# TOIMPL fix ambiguity: parent path or root path?
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-SetupWareset-FromGit-Strict 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "setup-wareset"
-                           "-p" "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-git-strict/" # TOIMPL fix ambiguity: parent path or root path?
+                           "-p" "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-git-strict/" 
                            "--set=${CMAKE_BINARY_DIR}/resources/tests/datasets/OPENFLUID.IN.CustomWareset"
                            "-j" "3" "-m" "--no-build" # no build since not a real simulator
                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-git-strict/"
                    PRE_TEST CREATE_DIRECTORY "${OFBUILD_TMP_DIR}/cmdline/"
                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-git-strict/wares-dev/simulators/water.surf-uz.runoff-infiltration.mseytoux/test.txt")
 
-#TOIMPL add dependency of test target to dataset.in change
 
 ###########################################################################
 
