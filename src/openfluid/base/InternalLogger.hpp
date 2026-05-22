@@ -123,6 +123,8 @@ void OPENFLUID_API info(const std::string& Context, const std::string& Msg);
 void OPENFLUID_API warning(const std::string& Context, const std::string& Msg);
 
 void OPENFLUID_API error(const std::string& Context, const std::string& Msg);
+
+std::string OPENFLUID_API path();
 }
 
 } }  // namespaces

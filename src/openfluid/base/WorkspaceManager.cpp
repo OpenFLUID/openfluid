@@ -41,6 +41,7 @@
 #include <boost/property_tree/ini_parser.hpp>
 
 #include <openfluid/base/Environment.hpp>
+#include <openfluid/base/InternalLogger.hpp>
 #include <openfluid/tools/Filesystem.hpp>
 #include <openfluid/tools/FilesystemPath.hpp>
 #include <openfluid/tools/StringHelpers.hpp>
@@ -220,11 +221,11 @@ void WorkspaceManager::prepareWorkspace(const std::string& Path)
       std::error_code EC = std::error_code();
       if (!PPath.makeDirectory("", EC))
       {
-        std::cout << "Error during directory creation " << EC.message() << std::endl;  // TOIMPL set in logs
+        openfluid::base::log::warning("Workspace setup", "Error during directory creation " + EC.message());
       }
       else
       {
-        std::cout << "Directory creation succeeded " << P << std::endl;  // TOIMPL set in logs
+        openfluid::base::log::debug("Workspace setup", "Directory creation succeeded "+ P);
       }
     }
   }

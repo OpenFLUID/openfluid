@@ -69,7 +69,7 @@ int main(int argc, char **argv)
   INIT_OPENFLUID_APPLICATION();
 
   // CMD app generates no internal log by default, since it can be used in pipelines that shoud not impact standard 
-  // log file, use LOG_PATH env var to generate an internal log recording
+  // log file, use OPENFLUID_LOG_PATH env var to generate an internal log recording
   openfluid::base::log::setup(false, "", false);  
 
 #if defined OPENFLUID_OS_WINDOWS

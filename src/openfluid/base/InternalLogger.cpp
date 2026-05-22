@@ -118,11 +118,8 @@ void LoggingSystem::setup(bool DefaultAsFallback, std::string LogPath, bool Verb
     {
       std::cout << "Initializing internal OpenFLUID logs at: "+m_LogPath << std::endl;
     }
-    // FIXME should not be displayed in some cases 
-    // (interference risk with version detection for now, eg regex L142 in OpenFLUIDConfig.cmake.in)
+    // should not be displayed in some cases
     m_Logger.init(m_LogPath, false);
-    
-    // LoggingSystem::instance()->add(openfluid::tools::FileLogger::LogType::INFO_MSG, "Log", "Initiate logging");
   }
 }
 
@@ -162,6 +159,7 @@ void LoggingSystem::close()
 }
 
 
+
 // =====================================================================
 // =====================================================================
 
@@ -174,6 +172,15 @@ void setup(bool DefaultAsFallback, std::string LogPath, bool Verbose)
   LoggingSystem::instance()->setup(DefaultAsFallback, LogPath, Verbose);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+std::string path()
+{
+  return LoggingSystem::instance()->getLogPath();
+}
 
 // =====================================================================
 // =====================================================================
