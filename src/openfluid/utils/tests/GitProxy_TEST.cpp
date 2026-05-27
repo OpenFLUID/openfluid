@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(check_ops)
 
   if (Git.canGetBranch())
   {
-    BOOST_REQUIRE_EQUAL(Git.getCurrentBranchName(RepoPath.toGeneric()), "master");
+    BOOST_REQUIRE_EQUAL(Git.getCurrentPosition(RepoPath.toGeneric()), "master");
   }
 
 
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(check_ops)
   BOOST_CHECK_EQUAL(PCheckout.getExitCode(),0);
   if (Git.canGetBranch())
   {
-    BOOST_REQUIRE_EQUAL(Git.getCurrentBranchName(RepoPath.toGeneric()), "foo");
+    BOOST_REQUIRE_EQUAL(Git.getCurrentPosition(RepoPath.toGeneric()), "foo");
   }
 
   RepoPath.removeDirectory();

@@ -10,6 +10,7 @@ SET(OPENFLUID_WARESDEV_CPP WareSrcHelpers.cpp
                            SimulatorSignatureSerializer.cpp ObserverSignatureSerializer.cpp BuilderextSignatureSerializer.cpp
                            SimulatorSignatureXMLReader.cpp
                            GhostsHelpers.cpp
+                           WareSetManager.cpp
                            )
 
 SET(OPENFLUID_WARESDEV_HPP WareSrcHelpers.hpp WareSrcOpsListener.hpp
@@ -21,6 +22,7 @@ SET(OPENFLUID_WARESDEV_HPP WareSrcHelpers.hpp WareSrcOpsListener.hpp
                            SimulatorSignatureSerializer.hpp ObserverSignatureSerializer.hpp BuilderextSignatureSerializer.hpp
                            SimulatorSignatureXMLReader.hpp
                            GhostsHelpers.hpp
+                           WareSetManager.hpp
                            )
 
 

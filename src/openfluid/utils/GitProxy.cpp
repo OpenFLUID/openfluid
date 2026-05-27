@@ -174,17 +174,22 @@ int GitProxy::clone(const std::string& Path, const std::string& URL, const std::
 // =====================================================================
 
 
-const std::string GitProxy::getCurrentBranchName(const std::string& Path)
+const std::string GitProxy::getCurrentPosition(const std::string& Path, bool AsBranch)
 {
-  if (!canGetBranch())
+  if (AsBranch && !canGetBranch())
   {
     std::string ErrorMsg = "Error with git branch command: Git version not supported (" + m_Version + ")";
     openfluid::base::log::error("Git", ErrorMsg);
     throw GitOperationException(ErrorMsg);
   }
+  std::vector<std::string> Args = {"branch", "--show-current"};
+  if (!AsBranch)
+  {
+    Args = {"rev-parse", "HEAD"}; // returns commit hash
+  }
   openfluid::utils::Process::Command Cmd{
     .Program = m_ExecutablePath,
-    .Args = {"branch", "--show-current"},
+    .Args = Args,
     .WorkDir = Path
   };
   openfluid::utils::Process Process(Cmd);

@@ -395,7 +395,7 @@ void WareSrcWidgetCollection::onOperationRequestedOnWare(const QString& Operatio
         GitUIProxy Git;
         try
         {
-          std::string CurrentBranchName = GitUIProxy::getCurrentBranchName(WarePath.toStdString());
+          std::string CurrentBranchName = GitUIProxy::getCurrentPosition(WarePath.toStdString());
           if (CurrentBranchName != GitBranchNameFromFile)
           {
             if (Git.checkout(WarePath, QString::fromStdString(GitBranchNameFromFile), false))

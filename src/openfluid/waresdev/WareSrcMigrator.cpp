@@ -449,7 +449,7 @@ WareSrcMigrator::WareMigrationInfo WareSrcMigrator::prepareMigration()
   {
     try
     {
-      std::string CurrentBranchName = openfluid::utils::GitProxy::getCurrentBranchName(m_SrcPathObj.toGeneric());
+      std::string CurrentBranchName = openfluid::utils::GitProxy::getCurrentPosition(m_SrcPathObj.toGeneric());
       if(m_WorkPathObj.makeFile(openfluid::config::WARESDEV_BRANCH_INFO_FILE)) 
       {
         openfluid::tools::Filesystem::writeFile(CurrentBranchName, 

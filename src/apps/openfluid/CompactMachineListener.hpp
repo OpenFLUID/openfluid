@@ -136,7 +136,8 @@ class ProgressBar
       m_CurrentPos = Pos;
     }
 
-    void writeBar(std::ostream& Stream, const double RatioDone, const bool IsEnd=false, const std::string& DateString="")
+    void writeBar(std::ostream& Stream, const double RatioDone, const bool IsEnd=false, 
+                  const std::string& DateString="")
     {
       Stream << "\r  [";
       
@@ -238,14 +239,7 @@ class CompactMachineListener : public openfluid::machine::MachineListener
         m_Initiated = true;
       }
       
-      openfluid::core::TimeIndex_t CurrentIndex = SimStatus->getCurrentTimeIndex();      
-      // for (unsigned int k=1;k!=m_ProgressBar.m_nBar+1;++k)
-      // {
-      //   if (CurrentIndex >= m_TimeBar[k])
-      //   {
-      //     m_ProgressBar.setCurrentPos(k);          
-      //   }
-      // }
+      openfluid::core::TimeIndex_t CurrentIndex = SimStatus->getCurrentTimeIndex();
       for (unsigned int k=m_ProgressBar.m_nBar;k!=0;--k)
       {
         if (CurrentIndex >= m_TimeBar[k])
@@ -269,7 +263,8 @@ class CompactMachineListener : public openfluid::machine::MachineListener
       }
       if (IsPrint)
       {
-        m_ProgressBar.writeBar(std::cout, RatioDone, false, SimStatus->getCurrentDate().getAsString("%Y-%m-%d %H:%M:%S"));
+        m_ProgressBar.writeBar(std::cout, RatioDone, false, 
+                               SimStatus->getCurrentDate().getAsString("%Y-%m-%d %H:%M:%S"));
       }
     };
 

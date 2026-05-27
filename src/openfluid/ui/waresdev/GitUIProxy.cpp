@@ -415,7 +415,7 @@ bool GitUIProxy::checkout(const QString& Path, const QString& BranchName, bool N
   }
   if (canGetBranch())
   {
-    std::string CurrentBranch = GitUIProxy::getCurrentBranchName(Path.toStdString());
+    std::string CurrentBranch = GitUIProxy::getCurrentPosition(Path.toStdString());
     if (QString::fromStdString(CurrentBranch) != BranchName)
     {
       openfluid::base::log::debug("Git", ExitData.second.toStdString());

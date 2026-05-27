@@ -552,7 +552,8 @@ std::map<std::string, std::string> FluidHubAPIClient::getWaresets() const
     }
     catch (openfluid::thirdparty::json::parse_error&)
     {
-      std::cout << "JSON ERROR" << std::endl; // TOIMPL better error
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "FLUIDhub API: Wrong json format");
     }
     if (JSONDoc.is_array())
     {
@@ -564,7 +565,8 @@ std::map<std::string, std::string> FluidHubAPIClient::getWaresets() const
   }
   else
   {
-    std::cout << "RESP KO" << std::endl; // TOIMPL better error
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "FLUIDhub API: Request failed");
   }
   return waresets;
 }
