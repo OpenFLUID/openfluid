@@ -33,6 +33,7 @@ OPENFLUID_ADD_TEST(NAME examples-Manhattan
                    )
 
 OPENFLUID_ADD_TEST(NAME examples-Firespread 
+                   HEAVY
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                               "run"
                               "${CMAKE_CURRENT_SOURCE_DIR}/projects/Firespread/IN"
@@ -43,6 +44,7 @@ OPENFLUID_ADD_TEST(NAME examples-Firespread
                    )
 
 OPENFLUID_ADD_TEST(NAME examples-Firespread-seeded
+                   HEAVY
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                               "run"
                               "${CMAKE_CURRENT_SOURCE_DIR}/projects/Firespread/IN_seeded"
@@ -54,18 +56,29 @@ OPENFLUID_ADD_TEST(NAME examples-Firespread-seeded
                                                   "basic_output_check"
                    )
 
+OPENFLUID_ADD_TEST(NAME examples-Firespread-reduced 
+                   COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
+                              "run"
+                              "${CMAKE_SOURCE_DIR}/resources/tests/datasets/OPENFLUID.IN.FirespreadReduced"
+                              "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.FirespreadReduced"
+                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.FirespreadReduced"
+                    POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.FirespreadReduced/openfluid-messages.log"
+                              COMPARE_DIRECTORIES "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.FirespreadReduced" 
+                              "${CMAKE_SOURCE_DIR}/resources/tests/refs/OPENFLUID.REF.FirespreadReduced"
+                              "basic_output_check"
+                   )
+
 OPENFLUID_ADD_TEST(NAME examples-MhydasRoujan
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}" 
                               "run"
                               "${CMAKE_CURRENT_SOURCE_DIR}/projects/MHYDAS_Roujan/IN"
                               "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan"
-                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.MHYDAS_Roujan"
+                    PRE_TEST REMOVE_DIRECTORY "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan"
                     POST_TEST CHECK_FILE_EXIST "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan/openfluid-messages.log"
                               COMPARE_DIRECTORIES "${OFBUILD_TESTS_OUTPUT_DATA_DIR}/OPENFLUID.OUT.Examples.MHYDAS_Roujan" 
                                                   "${CMAKE_CURRENT_SOURCE_DIR}/projects/MHYDAS_Roujan/REF"
                                                   "basic_output_check"
                    )  
-
 
  INSTALL(DIRECTORY "${OFBUILD_DIST_DIR}/${OPENFLUID_EXAMPLES_INSTALL_PATH}" 
          DESTINATION "${OPENFLUID_DOC_INSTALL_PATH}/")

@@ -114,11 +114,16 @@ ENDMACRO()
 FUNCTION(OPENFLUID_ADD_TEST)
 
   SET(_ONEARGS_CMDS NAME)
+  SET(_OPTIONS HEAVY)
   SET(_MANYARGS_CMDS COMMAND PRE_TEST POST_TEST)
 
   SET(_ADD_TEST)
 
-  CMAKE_PARSE_ARGUMENTS(_ADD_TEST "" "${_ONEARGS_CMDS}" "${_MANYARGS_CMDS}" ${ARGN})
+  CMAKE_PARSE_ARGUMENTS(_ADD_TEST "${_OPTIONS}" "${_ONEARGS_CMDS}" "${_MANYARGS_CMDS}" ${ARGN})
+
+  IF(_ADD_TEST_HEAVY AND NOT OFBUILD_TESTS_ENABLE_HEAVY)
+    RETURN()
+  ENDIF()
 
   ADD_TEST(NAME ${_ADD_TEST_NAME} COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_CURRENT_BINARY_DIR}"
                                           "${CMAKE_COMMAND}"
@@ -126,6 +131,10 @@ FUNCTION(OPENFLUID_ADD_TEST)
                                           "-DPRECMDS=${_ADD_TEST_PRE_TEST}"
                                           "-DPOSTCMDS=${_ADD_TEST_POST_TEST}"
                                           "-P" "${OpenFLUID_DIR}/OpenFLUIDTestScript.cmake")
+
+  IF(_ADD_TEST_HEAVY)
+    SET_PROPERTY(TEST ${_ADD_TEST_NAME} APPEND PROPERTY LABELS HEAVYTEST)
+  ENDIF()
 
   # add env vars for tests if present
 
@@ -609,7 +618,7 @@ ENDFUNCTION()
 
 ###########################################################################
 
-FUNCTION(OPENFLUID_ADD_DATASETTEST _OPENFLUID_PATH _DATASET_PATH _METHOD _TESTPREFIX)
+FUNCTION(OPENFLUID_ADD_DATASETTEST _OPENFLUID_PATH _DATASET_PATH _METHOD _TESTPREFIX _HEAVY_TEST)
   # Dataset comparison can use internal method or any script provided by the user.
   # It can be set through OPENFLUID_COMPARE_TOOL variable with following precedence:
   #   1) CMake variable (through `-DOPENFLUID_COMPARE_TOOL=foo` in cmake configure command)
@@ -624,17 +633,21 @@ FUNCTION(OPENFLUID_ADD_DATASETTEST _OPENFLUID_PATH _DATASET_PATH _METHOD _TESTPR
   SET(IS_REF 0)
   # IF REF FOUND
   IF(EXISTS "${_DIRNAME}/${_DATASET_NAME}.REF")
-      SET(IS_REF 1)
+    SET(IS_REF 1)
   ENDIF()
 
   IF("${_TESTPREFIX}" STREQUAL "")
     SET(_TESTNAME "${_DATASET_NAME}")
   ELSE()
-  SET(_TESTSUFFIX "-no-ref")
+    SET(_TESTSUFFIX "-no-ref")
     IF(IS_REF)
       SET(_TESTSUFFIX "-with-ref")
     ENDIF()
     SET(_TESTNAME "${_TESTPREFIX}-${_DATASET_NAME}${_TESTSUFFIX}")
+  ENDIF()
+
+  IF(_HEAVY_TEST AND NOT OFBUILD_TESTS_ENABLE_HEAVY)
+    RETURN()
   ENDIF()
 
   IF(${_METHOD} STREQUAL "custom_or_basic")
@@ -664,6 +677,11 @@ FUNCTION(OPENFLUID_ADD_DATASETTEST _OPENFLUID_PATH _DATASET_PATH _METHOD _TESTPR
                       "-p" "${CMAKE_BINARY_DIR}"
                       "-n" "${CMAKE_BINARY_DIR}")
   ENDIF()
+
+  IF(_HEAVY_TEST)
+    SET_PROPERTY(TEST ${_TESTNAME} APPEND PROPERTY LABELS HEAVYTEST)
+  ENDIF()
+
 ENDFUNCTION()
 
 
@@ -697,7 +715,7 @@ FUNCTION(OPENFLUID_ADD_WARETESTS)
   FOREACH(_CURRTEST ${_DATASETS})
     MESSAGE(STATUS "  ${_CURRTEST}")
     OPENFLUID_ADD_DATASETTEST("${OpenFLUID_CMD_PROGRAM}" "${CMAKE_CURRENT_SOURCE_DIR}/${_CURRTEST}" "${_METHOD}"
-                              "dataset")
+                              "dataset" FALSE)
   ENDFOREACH()
 
 ENDFUNCTION()
