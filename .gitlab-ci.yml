@@ -13,6 +13,17 @@ test-of:
     - make -j `nproc`
     - ctest -j 4 --output-on-failure
 
+test-of:
+  stage: test
+  when: manual
+  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
+  script:
+    - mkdir ./_build
+    - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
+    - make stylecheck
+    - make -j `nproc`
+    - ctest -j 4 --output-on-failure
+
 test-of-unix-full:
   stage: test
   when: manual
@@ -25,7 +36,7 @@ test-of-unix-full:
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/$TAG"
   script:
     - mkdir ./_build
-    - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
+    - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF -DOFBUILD_TESTS_ENABLE_HEAVY=ON
     - make -j `nproc`
     - ctest -j 4 --output-on-failure
 
@@ -39,7 +50,7 @@ pkg-of-no-ui:
     - cpack -j `nproc`
   artifacts:
     paths:
-      - /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
+      - _build_noui/*.deb
 
 pkg-of-full-deb:
   stage: package
@@ -57,7 +68,7 @@ pkg-of-full-deb:
     - cpack -j `nproc`
   artifacts:
     paths:
-      - /builds/openfluid/incubateur/openfluid/_build_release/*.deb
+      - _build_release/*.deb
 
 
 pkg-of-full-rpm:
@@ -75,13 +86,13 @@ pkg-of-full-rpm:
     - cpack -j `nproc`
   artifacts:
     paths:
-      - /builds/openfluid/incubateur/openfluid/_build_release/*.rpm
+      - _build_release/*.rpm
 
 pkg-bindings-r:
   stage: downstream
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
   before_script:
-    - sudo apt-get update && sudo apt-get install -y /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
+    - sudo apt-get update && sudo apt-get install -y ./_build_noui/*.deb
   script:
     - mkdir downstream && cd downstream
     - git clone https://forge.inrae.fr/openfluid/ropenfluid.git
@@ -90,14 +101,14 @@ pkg-bindings-r:
     - cmake -P build.cmake
   artifacts:
     paths:
-      - /builds/openfluid/incubateur/openfluid/downstream/ropenfluid/_build/*.tar.gz
+      - downstream/ropenfluid/_build/*.tar.gz
 
 
 pkg-bindings-py:
   stage: downstream
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
   before_script:
-    - sudo apt-get update && sudo apt-get install -y /builds/openfluid/incubateur/openfluid/_build_noui/*.deb
+    - sudo apt-get update && sudo apt-get install -y ./_build_noui/*.deb
   script:
     - mkdir downstream && cd downstream
     - git clone https://forge.inrae.fr/openfluid/pyopenfluid.git
@@ -108,7 +119,7 @@ pkg-bindings-py:
     - python3 setup.py sdist bdist
   artifacts:
     paths:
-      - /builds/openfluid/incubateur/openfluid/downstream/pyopenfluid/dist/*.tar.gz
+      - downstream/pyopenfluid/dist/*.tar.gz
 
 
 # build-of-container-ubuntu-22-04:
@@ -149,6 +160,6 @@ test-of-windows:
   artifacts:
     when: always
     paths:
-      - ./_build/*.log
+      - _build/*.log
 
 # TODO add Windows-package
