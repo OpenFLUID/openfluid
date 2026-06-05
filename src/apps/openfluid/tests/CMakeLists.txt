@@ -449,8 +449,8 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-ImportSimulator
 
 
 ###########################################################################
-# TOIMPL declare as heavy test?
-# TOIMPL fix ambiguity: parent path or root path?
+
+
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-SetupWareset-FromLocal 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
                            "setup-wareset"
@@ -474,7 +474,18 @@ SET_PROPERTY(TEST cmdline-openfluid-SetupWareset-FromLocal
 
 
 ###########################################################################
-# TOIMPL fix ambiguity: parent path or root path?
+
+
+#TODO test this in a more isolated fashion
+
+ADD_TEST(NAME integration-CMakeModuleMultiWare
+                   COMMAND "make" "docalyze" "-j" "2"
+                   WORKING_DIRECTORY  "${OFBUILD_TMP_DIR}/cmdline/create-wareset/from-dataset/wares-dev/_build-release-${OPENFLUID_VERSION_MAJOR}.${OPENFLUID_VERSION_MINOR}")
+
+SET_PROPERTY(TEST integration-CMakeModuleMultiWare APPEND PROPERTY DEPENDS cmdline-openfluid-SetupWareset-FromLocal)
+
+###########################################################################
+
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-SetupWareset-FromLocal-Strict 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"
@@ -493,7 +504,7 @@ SET_PROPERTY(TEST cmdline-openfluid-SetupWareset-FromLocal-Strict APPEND PROPERT
 
 
 ###########################################################################
-# TOIMPL fix ambiguity: parent path or root path?
+
 
 OPENFLUID_ADD_TEST(NAME cmdline-openfluid-SetupWareset-FromGit-Strict 
                    COMMAND "${OFBUILD_DIST_BIN_DIR}/${OPENFLUID_CMD_APP}"

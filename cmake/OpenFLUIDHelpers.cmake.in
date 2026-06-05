@@ -420,7 +420,7 @@ FUNCTION(_OPENFLUID_WAREPLUGIN_BUILD)
 
 
   SET(IS_SOLO_WARE 1)
-  IF (DEFINED ENV{MULTI_WARE} OR DEFINED MULTI_WARE)
+  IF (DEFINED ENV{OPENFLUID_MULTI_WARE} OR DEFINED OPENFLUID_MULTI_WARE)
     SET(IS_SOLO_WARE 0)
   ENDIF()
 
@@ -473,6 +473,12 @@ FUNCTION(_OPENFLUID_WAREPLUGIN_BUILD)
                       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
                       DEPENDS "${CMAKE_BINARY_DIR}/${WARE_ID}.pdf"
                       COMMENT "Docalyzing and installing...")
+
+    IF(NOT IS_SOLO_WARE)
+      SET_PROPERTY(GLOBAL APPEND PROPERTY DOCALYZE_TARGETS docalyze${TARGET_WAREID_SUFFIX})
+      SET_PROPERTY(GLOBAL APPEND PROPERTY DOCALYZE_INSTALL_TARGETS docalyze-install${TARGET_WAREID_SUFFIX})
+    ENDIF()
+
   ENDIF()
 
 
@@ -509,6 +515,10 @@ FUNCTION(_OPENFLUID_WAREPLUGIN_BUILD)
         ADD_DEPENDENCIES(update-translations-strings${TARGET_WAREID_SUFFIX} update-translation-strings${TARGET_WAREID_SUFFIX}-${_LANG})
 
       ENDFOREACH()
+
+      IF(NOT IS_SOLO_WARE)
+        SET_PROPERTY(GLOBAL APPEND PROPERTY I18N_UPDATE_TARGETS update-translations-strings${TARGET_WAREID_SUFFIX})
+      ENDIF()
     ELSE()
       MESSAGE(STATUS "  Unable to add target for translations (lupdate not found)")
     ENDIF()
@@ -554,6 +564,10 @@ FUNCTION(_OPENFLUID_WAREPLUGIN_BUILD)
 
       ENDFOREACH()
 
+      IF(NOT IS_SOLO_WARE)
+        SET_PROPERTY(GLOBAL APPEND PROPERTY I18N_RELEASE_TARGETS release-translations-strings${TARGET_WAREID_SUFFIX})
+      ENDIF()
+
       MESSAGE(STATUS "  Registered translations: ${_ALL_LANGS}")
 
     ELSE()
@@ -563,6 +577,35 @@ FUNCTION(_OPENFLUID_WAREPLUGIN_BUILD)
 
 ENDFUNCTION()
 
+
+# TODO replace by function that will iterate over wares given as args and trigger this afterwards
+FUNCTION(OPENFLUID_ADD_MULTIWARE_TARGETS)
+  # MULTI DOCALYZE
+  GET_PROPERTY(DOCALYZE_TARGETS GLOBAL PROPERTY DOCALYZE_TARGETS)
+  GET_PROPERTY(DOCALYZE_INSTALL_TARGETS GLOBAL PROPERTY DOCALYZE_INSTALL_TARGETS)
+
+  ADD_CUSTOM_TARGET(docalyze
+              DEPENDS ${DOCALYZE_TARGETS}
+              COMMENT "Docalyzing...")
+
+  ADD_CUSTOM_TARGET(docalyze-install 
+              DEPENDS ${DOCALYZE_INSTALL_TARGETS}
+              COMMENT "Docalyzing and installing...")
+
+  # MULTI I18N
+  GET_PROPERTY(I18N_UPDATE_TARGETS GLOBAL PROPERTY I18N_UPDATE_TARGETS)
+          
+  ADD_CUSTOM_TARGET(update-translations-strings
+              DEPENDS ${I18N_UPDATE_TARGETS}
+              COMMENT "Updating translations...")
+
+  GET_PROPERTY(I18N_RELEASE_TARGETS GLOBAL PROPERTY I18N_RELEASE_TARGETS)
+          
+  ADD_CUSTOM_TARGET(release-translations-strings
+              DEPENDS ${I18N_RELEASE_TARGETS}
+              COMMENT "Releasing translations...")
+
+ENDFUNCTION()
 
 ###########################################################################
 
