@@ -13,17 +13,6 @@ test-of:
     - make -j `nproc`
     - ctest -j 4 --output-on-failure
 
-test-of:
-  stage: test
-  when: manual
-  image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
-  script:
-    - mkdir ./_build
-    - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF
-    - make stylecheck
-    - make -j `nproc`
-    - ctest -j 4 --output-on-failure
-
 test-of-unix-full:
   stage: test
   when: manual

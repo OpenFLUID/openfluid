@@ -61,21 +61,27 @@
 namespace openfluid { namespace waresdev {
 
 
-#define THROW_OR_PRINT(M)                      \
-{                                          \
-  if (IsStrict) \
-  { \
-    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, M); \
-  } \
-  else \
-  { \
-    openfluid::tools::Console::setErrorColor(); \
-    std::cout << M; \
-    openfluid::tools::Console::resetAttributes(); \
-    std::cout << std::endl; \
-    openfluid::base::log::error("Wareset setup", M); \
-    m_Problems++; \
-  } \
+void logAndPrint(std::string M, unsigned int& Problems)
+{
+  openfluid::tools::Console::setErrorColor();
+  std::cout << M;
+  openfluid::tools::Console::resetAttributes();
+  std::cout << std::endl;
+  openfluid::base::log::error("Wareset setup", M);
+  Problems++;
+}
+
+void throwOrPrint(bool IsStrict, std::string M, unsigned int& Problems)
+{
+  if (IsStrict)
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, M);
+  }
+  else
+  {
+    logAndPrint(M, Problems);
+    Problems++;
+  }
 }
 
 
@@ -278,9 +284,8 @@ WareSetManager::WareSetManager(const std::string& WareSourceType, const std::str
       }
     }
   }
-  else if (m_WaresetSourceType == "json")
+  else if (m_WaresetSourceType == "lockfile")
   {
-
     std::ifstream FileStream;
     FileStream.open(SetOption,std::ifstream::in);
     if (!FileStream.is_open())
@@ -353,7 +358,10 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
   }
   for (const auto& Ware : m_JSONWareset)
   {
+    // --------------------------------------
     //   1.1- Checking presence/git
+    // --------------------------------------
+
     std::string WareType = Ware["type"];
     std::string WareID = Ware["id"];
     std::string WareVersion = Ware["version"];
@@ -380,7 +388,7 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
           else
           {
             m_WareStatus[WareKey]["fetch"] = KO_STRING;
-            THROW_OR_PRINT("Error while cloning ware "+WareID+" from "+GitUrl);
+            throwOrPrint(IsStrict, "Error while cloning ware "+WareID+" from "+GitUrl, m_Problems);
           }
         }
         else if (!m_WaresOrigin.empty()) // fallback on hub if provided
@@ -393,7 +401,7 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
           else
           {
             m_WareStatus[WareKey]["fetch"] = KO_STRING;
-            THROW_OR_PRINT("Error while cloning ware "+WareID);
+            throwOrPrint(IsStrict, "Error while cloning ware "+WareID, m_Problems);
           }
         }
         else
@@ -411,7 +419,7 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
         {
           if (!WarePath.makeDirectory())
           {
-            THROW_OR_PRINT("Error while creating temporary ware source dir");
+            throwOrPrint(IsStrict, "Error while creating temporary ware source dir", m_Problems);
           }
           if (openfluid::tools::Filesystem::copyDirectoryContent(
                 CurrentWareOrigin.stdPath(), WarePath.stdPath()))
@@ -421,13 +429,14 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
           else
           {
             m_WareStatus[WareKey]["fetch"] = KO_STRING;
-            THROW_OR_PRINT("Error while copying ware source");
+            throwOrPrint(IsStrict, "Error while copying ware source", m_Problems);
           }
         }
         else
         {
           m_WareStatus[WareKey]["fetch"] = KO_STRING;
-          THROW_OR_PRINT("Unable to find given ware in origin folder: " + CurrentWareOrigin.toGeneric());
+          throwOrPrint(IsStrict, "Unable to find given ware in origin folder: " + CurrentWareOrigin.toGeneric(), 
+                       m_Problems);
         }
       }
     }
@@ -443,10 +452,13 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
     }
     else
     {
-      THROW_OR_PRINT("Ware path not found: " + WarePath.toGeneric());
+      throwOrPrint(IsStrict, "Ware path not found: " + WarePath.toGeneric(), m_Problems);
     }
     
+    // --------------------------------------
     //   1.2- Checking version/checkout 
+    // --------------------------------------
+
     if (!WareVersion.empty())
     {
       openfluid::utils::GitProxy Git;
@@ -456,18 +468,18 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
         .WorkDir = WarePath.toGeneric()
       };
       openfluid::utils::Process PCheckout(CmdCheckout);
-      if (!PCheckout.run() || !(PCheckout.getExitCode() == 0))//TOIMPL better logging
+      if (!PCheckout.run() || !(PCheckout.getExitCode() == 0))
       {
+        m_WareStatus[WareKey]["ckout"] = KO_STRING;
         for (const auto& l : PCheckout.stdOutLines())
         {
-          std::cout << l << std::endl;
+          logAndPrint(l, m_Problems);
         }
         for (const auto& l : PCheckout.stdErrLines())
         {
-          std::cout << l << std::endl;
+          logAndPrint(l, m_Problems);
         }
-        m_WareStatus[WareKey]["ckout"] = KO_STRING;
-        THROW_OR_PRINT("error during ware checkout");
+        throwOrPrint(IsStrict, "error during ware checkout", m_Problems);
       }
       else
       {
@@ -497,7 +509,11 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
   {
     WaresetCmake.close();
   }
-  // 2- Building ware 
+
+  // --------------------------------------
+  // 2- Configuring / building ware 
+  // --------------------------------------
+
   std::cout << "Configuring wares..." << std::endl;
   std::string BuildType = "Release";
   std::string Target = "install";
@@ -541,7 +557,7 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
     else
     {
       m_WareStatus[MULTIBUILD_STR]["config"] = KO_STRING;
-      THROW_OR_PRINT("Configure failure");
+      throwOrPrint(IsStrict, "Configure failure", m_Problems);
     }
     
     //   2.2- Build ware
@@ -558,7 +574,7 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
     {
       m_WareStatus[MULTIBUILD_STR]["build"] = KO_STRING;
       m_WareStatus[MULTIBUILD_STR]["install"] = KO_STRING;
-      THROW_OR_PRINT("Build failure");
+      throwOrPrint(IsStrict, "Build failure", m_Problems);
     }          
   }
   else
@@ -589,7 +605,7 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
       else
       {
         m_WareStatus[WareKey]["config"] = KO_STRING;
-        THROW_OR_PRINT("Configure failure");
+        throwOrPrint(IsStrict, "Configure failure", m_Problems);
       }
       
       //   2.2- Build ware
@@ -604,7 +620,7 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
       else
       {
         m_WareStatus[WareKey]["build"] = KO_STRING;
-        THROW_OR_PRINT("Build failure");
+        throwOrPrint(IsStrict, "Build failure", m_Problems);
       }          
       // 3- Check if binary valid
       //   3.1- check if found in <userdata>/wares/
@@ -616,8 +632,6 @@ int WareSetManager::scaffoldWareset(const std::string& ParentPathStr, const std:
   }
   return 0;
 }
-
-#undef THROW_OR_PRINT
 
 
 // =====================================================================

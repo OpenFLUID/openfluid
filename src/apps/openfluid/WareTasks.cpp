@@ -328,7 +328,7 @@ int WareTasks::processImport() const
 // =====================================================================
 
 
-int WareTasks::processSetup() const
+int WareTasks::processSetupWareset() const
 {
   int Problems = 0;
 
@@ -352,9 +352,9 @@ int WareTasks::processSetup() const
   {
     WaresetSourceType = "hub";
   }
-  else if (SetOption.substr(SetOption.length()-5, 5) == ".json")
+  else if (SetOption.substr(SetOption.length()-10, 10) == "-lock.json")
   {
-    WaresetSourceType = "json";
+    WaresetSourceType = "lockfile";
   }
   if (!WaresOrigin.empty() && WaresOrigin.substr(0,4) == "http")
   {
@@ -1015,7 +1015,7 @@ int WareTasks::process() const
   }
   else if (m_Cmd.getName() == "setup-wareset")
   {
-    return processSetup();
+    return processSetupWareset();
   }
   else if (m_Cmd.getName() == "check")
   {

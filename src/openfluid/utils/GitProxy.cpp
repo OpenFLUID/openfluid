@@ -203,6 +203,14 @@ const std::string GitProxy::getCurrentPosition(const std::string& Path, bool AsB
   {
     std::string ErrorMsg = "Error with git branch command in path : " + Path;
     openfluid::base::log::error("Git", ErrorMsg);
+    for (const auto& L : Process.stdOutLines())
+    {
+      openfluid::base::log::debug("Git", L);
+    }
+    for (const auto& L : Process.stdErrLines())
+    {
+      openfluid::base::log::debug("Git", L);
+    }
     throw GitOperationException(ErrorMsg);
   }
 }

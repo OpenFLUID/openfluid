@@ -55,7 +55,7 @@ class WareTasks : public TasksBase
 
     int processImport() const;
 
-    int processSetup() const;
+    int processSetupWareset() const;
 
     int processConfigure() const;
 

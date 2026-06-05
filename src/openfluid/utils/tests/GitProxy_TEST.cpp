@@ -98,7 +98,6 @@ BOOST_AUTO_TEST_CASE(check_ops)
   {
     BOOST_REQUIRE_EQUAL(Git.getCurrentPosition(RepoPath.toGeneric()), "foo");
   }
-
   RepoPath.removeDirectory();
 }
 
