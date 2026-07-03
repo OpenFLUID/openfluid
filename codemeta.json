@@ -1,0 +1,151 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "type": "SoftwareSourceCode",
+    "applicationCategory": "Modeling",
+    "author": [
+        {
+            "id": "_:author_1",
+            "type": "Person",
+            "email": "jean-christophe.fabre@inrae.fr",
+            "familyName": "Fabre",
+            "givenName": "Jean-Christophe"
+        },
+        {
+            "type": "schema:Role",
+            "schema:author": "_:author_1",
+            "schema:endDate": "2023-08-31",
+            "schema:roleName": "developer",
+            "schema:startDate": "2006-08-26"
+        },
+        {
+            "id": "_:author_2",
+            "type": "Person",
+            "email": "armel.thoni@inrae.fr",
+            "familyName": "Thoni",
+            "givenName": "Armel"
+        },
+        {
+            "type": "schema:Role",
+            "schema:author": "_:author_2",
+            "schema:roleName": "developer"
+        }
+    ],
+    "codeRepository": "https://forge.inrae.fr/openfluid/openfluid",
+    "contributor": [
+        {
+            "id": "_:contributor_1",
+            "type": "Person",
+            "email": "michael.rabotin@inrae.fr",
+            "familyName": "Rabotin",
+            "givenName": "Michael"
+        },
+        {
+            "type": "schema:Role",
+            "contributor": "_:contributor_1",
+            "schema:roleName": "developer"
+        },
+        {
+            "id": "_:contributor_2",
+            "type": "Person",
+            "email": "benghabrit.mehdi@gmail.com",
+            "familyName": "Benghabrit",
+            "givenName": "Mehdi"
+        },
+        {
+            "type": "schema:Role",
+            "contributor": "_:contributor_2",
+            "schema:roleName": "developer"
+        },
+        {
+            "id": "_:contributor_3",
+            "type": "Person",
+            "email": "dams.vivien@gmail.com",
+            "familyName": "Chabbert",
+            "givenName": "Damien"
+        },
+        {
+            "type": "schema:Role",
+            "contributor": "_:contributor_3",
+            "schema:roleName": "developer"
+        },
+        {
+            "id": "_:contributor_4",
+            "type": "Person",
+            "email": "manuel.cha34@gmail.com",
+            "familyName": "Chataigner",
+            "givenName": "Manuel"
+        },
+        {
+            "type": "schema:Role",
+            "contributor": "_:contributor_4",
+            "schema:roleName": "developer"
+        },
+        {
+            "id": "_:contributor_5",
+            "type": "Person",
+            "email": "macmanuch@hotmail.fr",
+            "familyName": "Tarrou",
+            "givenName": "Emmanuel"
+        },
+        {
+            "type": "schema:Role",
+            "contributor": "_:contributor_5",
+            "schema:roleName": "developer"
+        },
+        {
+            "id": "_:contributor_6",
+            "type": "Person",
+            "email": "dorian.gerardin@gmail.com",
+            "familyName": "Gerardin",
+            "givenName": "Dorian"
+        },
+        {
+            "type": "schema:Role",
+            "contributor": "_:contributor_6",
+            "schema:roleName": "developer"
+        },
+        {
+            "id": "_:contributor_7",
+            "type": "Person",
+            "email": "aline.libres@gmail.com",
+            "familyName": "Libres",
+            "givenName": "Aline"
+        },
+        {
+            "type": "schema:Role",
+            "contributor": "_:contributor_7",
+            "schema:roleName": "developer"
+        }
+    ],
+    "dateCreated": "2006-08-26",
+    "dateModified": "2025-11-27",
+    "datePublished": "2009-03-01",
+    "downloadUrl": "https://www.openfluid-project.org/downloads/",
+    "funder": {
+        "type": "Organization",
+        "name": "INRAE"
+    },
+    "keywords": [
+        "spatial modeling",
+        "science",
+        "hydrology",
+        "landscape"
+    ],
+    "license": "https://spdx.org/licenses/GPL-3.0-or-later",
+    "name": "OpenFLUID",
+    "operatingSystem": [
+        "Linux",
+        "Windows"
+    ],
+    "programmingLanguage": "C++17",
+    "relatedLink": "https://www.openfluid-project.org/",
+    "schema:releaseNotes": "Added ability to open internal observers code in Builder\nAdded multiline indentation and comment in DevStudio\nAdded capacity to duplicate a ware (CLI and DevStudio)\nAdded script to fetch reference wares from dedicated repositories\nAdded ability to inherit from InjectGenerator\nAdded capacity to import a ware from CLI\nAdded pragma once handling in stylecheck\nAdded option to select all fields in spatial import builderext\nAdded filter to forbid dot in set name field\nAdded support of secundary wares in ware repository\nAdded ability to compare dataset output to a reference\nAdded env var and cmake var OPENFLUID_COMPARE_TOOL for custom OUT/REF comparison\nAdded skip block markup to ignore portions of code during ware migration\nAdded multitype to injection generator for all OpenFLUID types\nAdded ware test integration in DevStudio\nAdded gitlab-ci pipelines for automatic test and packaging of OpenFLUID\nUpdated Windows Github action\nUpdated test autodiscovery to automatically compare output to ref when available\nUpdated internal datasets and simulators for integration test\nUpdated cmake operations coloring in DevStudio to handle console symbols\nUpdated multitype generator management by passing vartype to parameter\nChanged generator ID when double type from \"genscalar\" suffix to \"gendouble\"\nChanged internal logs location from 'utils' to 'base' library\nFixed missing \"data\" case in ware signature\nFixed wrong symbol check on signature attributes\nFixed multicolumn CSV observer early delete segfault\nFixed migration to keep custom content of main CMakeLists.txt\nFixed accidental scroll in signature window comboboxes\nFixed decimal point issue in attribute edit dialog (set to C locale)\nFixed WSL path support\nFixed dialog for migration when non versioned\nFixed precision in string-related conversion functions (from 6 to 17 digits)\nFixed fragment unauthenticated import\nFixed examples installation operations (especially for observers)\nFixed param change in ware param list not detected in Builder",
+    "schema:review": {
+        "type": "schema:Review",
+        "schema:reviewAspect": "Software conference paper",
+        "schema:reviewBody": "OpenFLUID : a software environment for modelling fluxes in landscapes"
+    },
+    "version": "2.2.1",
+    "developmentStatus": "active",
+    "referencePublication": "https://www.openfluid-project.org/resources/biblio/LANDMOD2010_OpenFLUID.pdf"
+}
