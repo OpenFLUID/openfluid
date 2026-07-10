@@ -45,6 +45,7 @@
 #include <filesystem>
 #include <fstream>
 #include <regex>
+#include <unordered_set>
 
 #include <boost/algorithm/string.hpp>
 
@@ -936,6 +937,34 @@ void WareSrcMigrator::dispatchExistingFiles(const WareSrcMigrator::WareMigration
     }
   }
 
+  // ==== remove skippable blocks
+
+  mp_Listener->stageMessage("removing blocks to be skipped in 2.2");
+  
+  for (const auto& E : std::filesystem::recursive_directory_iterator{m_DestPathObj.stdPath()})
+  {
+    auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
+    
+    // ensure we exclude any _* and .* folder
+    if (FileObj.isFile() && \
+        FileObj.toGeneric().find(m_DestPathObj.toGeneric()+"/_") == std::string::npos && \
+        FileObj.toGeneric().find(m_DestPathObj.toGeneric()+"/.") == std::string::npos) 
+    {
+      auto FileContent = openfluid::tools::Filesystem::readFile(FileObj);
+      auto Modified = false;
+      const std::regex re(R"([#/]* \[SKIP-2\.2]>-------[\S\s]*?<\[SKIP-2\.2])");
+      while (std::regex_search(FileContent, re)) 
+      {
+        FileContent = std::regex_replace(FileContent, re, "");
+        Modified = true;
+      }
+  
+      if (Modified)
+      {
+        openfluid::tools::Filesystem::writeFile(FileContent, FileObj);
+      }
+    }
+  }
 
   mp_Listener->onCleanSrcFilesEnd(openfluid::base::Listener::Status::OK_STATUS);
 }
@@ -1007,6 +1036,50 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
 
   if (ConfigFileObj.isFile())
   {
+    const std::unordered_set<std::string> DefautConfigComments = {"Observer ID","ex: SET(OBS_ID \"my.observer.id\")",
+      "list of CPP files", "ex: SET(OBS_CPP MyObserver.cpp)", "list of Fortran files, if any",
+      "ex: SET(OBS_FORTRAN Calc.f)", "list of extra OpenFLUID libraries required", "SET(OBS_INCLUDE_DIRS )",
+      "ex: SET(OBS_OPENFLUID_COMPONENTS tools)","set this to add include directories", "SET(OBS_FORTRAN )",
+      "ex: SET(OBS_INCLUDE_DIRS /path/to/include/A/ /path/to/include/B/)", "set this to add libraries directories",
+      "ex: SET(OBS_LIBRARY_DIRS /path/to/libA/ /path/to/libB/)", "set this to add linked libraries",
+      "ex: SET(OBS_INCLUDE_DIRS /path/to/libA/ /path/to/libB/)", "SET(OBS_LIBRARY_DIRS )", "SET(OBS_LINK_LIBS )",
+      "ex: SET(OBS_LINK_LIBS libA libB)", "set this to add definitions", "ex: SET(OBS_DEFINITIONS \"-DDebug\")",
+      "unique ID for linking parameterization UI extension (if any)","set this to ON to enable parameterization widget",
+      "ex: SET(OBS_PARAMSUI_ENABLED ON)", "list of CPP files for parameterization widget, if any", 
+      "ex: SET(OBS_DEFINITIONS \"-DDebug\")", "SET(OBS_DEFINITIONS )", "SET(OBS_TRANSLATIONS_ENABLED ON)",
+      "SET(OBS_TRANSLATIONS_LANGS fr_FR)", "SET(OBS_TRANSLATIONS_EXTRASCANS )",
+      "SET(OBS_INSTALL_PATH \"/my/install/path/\")",
+      "ex: SET(OBS_PARAMSUI_CPP MyWidget.cpp)", "list of UI files for parameterization widget, if any",
+      "ex: SET(OBS_PARAMSUI_UI MyWidget.ui)", "list of RC files for parameterization widget, if any",
+      "ex: SET(OBS_PARAMSUI_RC MyWidget.rc)", "set this to ON to enable translations",
+      "set this to list the languages for translations",
+      "set this to list the extra files or directories to scan for strings to translate",
+      "set this to force an install path to replace the default one", "set this if you want to add tests",
+      "given tests names must be datasets placed in a subdir named \"tests\"",
+      "each dataset in the subdir must be names using the test name and suffixed by .IN",
+      "ex for tests/test01.IN and tests/test02.IN: SET(OBS_TESTS_DATASETS test01 test02)", "SET(OBS_TESTS_DATASETS )",
+      "Simulator ID", "ex: SET(SIM_ID \"my.simulator.id\")", "ex: SET(SIM_FORTRAN Calc.f)", "SET(SIM_FORTRAN )",
+      "SET(SIM_INCLUDE_DIRS )", "ex: SET(SIM_INCLUDE_DIRS /path/to/libA/ /path/to/libB/)", "SET(SIM_LIBRARY_DIRS )",
+      "SET(SIM_LINK_LIBS )", "SET(SIM_DEFINITIONS )", "SET(SIM_TRANSLATIONS_ENABLED ON)",
+      "SET(SIM_TRANSLATIONS_LANGS fr_FR)", "SET(SIM_TRANSLATIONS_EXTRASCANS )", 
+      "SET(SIM_INSTALL_PATH \"/my/install/path/\")", "SET(SIM_TESTS_DATASETS )",
+      "list of CPP files, the sim2doc tag must be contained in the first one", "ex: SET(SIM_CPP MySimulator.cpp)",
+      "ex: SET(SIM_OPENFLUID_COMPONENTS tools)", "ex: SET(SIM_INCLUDE_DIRS /path/to/include/A/ /path/to/include/B/)",
+      "ex: SET(SIM_LIBRARY_DIRS /path/to/libA/ /path/to/libB/)", "ex: SET(SIM_LINK_LIBS libA libB)",
+      "ex: SET(SIM_DEFINITIONS \"-DDebug\")", "ex: SET(SIM_PARAMSUI_ENABLED ON)",
+      "ex: SET(SIM_PARAMSUI_CPP MyWidget.cpp)", "ex: SET(SIM_PARAMSUI_UI MyWidget.ui)",
+      "ex: SET(SIM_PARAMSUI_RC MyWidget.rc)", "set this if you want to use a specific sim2doc template",
+      "SET(SIM_SIM2DOC_TPL \"/path/to/template\")",
+      "ex for tests/test01.IN and tests/test02.IN: SET(SIM_TESTS_DATASETS test01 test02)",
+      "Builder-extension ID", "ex: SET(BEXT_ID \"my.builderext.id\")", "ex: SET(BEXT_CPP MyBuilderext.cpp)",
+      "ex: SET(BEXT_UI MyWidget.ui)", "ex: SET(BEXT_RC MyWidget.rc)", "ex: SET(BEXT_OPENFLUID_COMPONENTS tools)",
+      "ex: SET(BEXT_INCLUDE_DIRS /path/to/include/A/ /path/to/include/B/)","ex: SET(BEXT_LINK_LIBS libA libB)",
+      "ex: SET(BEXT_INCLUDE_DIRS /path/to/libA/ /path/to/libB/)", "SET(BEXT_LIBRARY_DIRS )", "SET(BEXT_LINK_LIBS )",
+      "ex: SET(BEXT_DEFINITIONS \"-DDebug\")", "SET(BEXT_DEFINITIONS )", "SET(BEXT_TRANSLATIONS_ENABLED ON)",
+      "SET(BEXT_TRANSLATIONS_LANGS fr_FR)", "SET(BEXT_TRANSLATIONS_EXTRASCANS )",
+      "SET(BEXT_INSTALL_PATH \"/my/install/path/\")"
+    };
+
     auto ConfigLines = getFileLines(ConfigFileObj);
 
     if (!ConfigLines.empty())
@@ -1018,9 +1091,17 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
 
       // remove empty or commented lines
       ConfigLines.erase(std::remove_if(ConfigLines.begin(),ConfigLines.end(),
-                                       [](const std::string& L) 
+                                       [&DefautConfigComments](const std::string& L) 
                                        {
-                                         return (L.empty() || L[0] == '#');
+                                          const auto HashPos = L.find('#');
+                                          if (HashPos == std::string::npos ||
+                                              L.substr(0, HashPos).find_first_not_of(" \t") != std::string::npos)
+                                          {
+                                            return L.empty();
+                                          }
+                                          std::string Comment = L.substr(HashPos + 1);
+                                          Comment.erase(0, Comment.find_first_not_of(" \t")); // left trim
+                                          return ((L.empty()||(L[0] == '#' && DefautConfigComments.count(Comment)>0)));
                                        }), 
                         ConfigLines.end());
       
@@ -1246,36 +1327,6 @@ void WareSrcMigrator::processSources(const WareSrcMigrator::WareMigrationInfo& I
   // ==== dispatch existing files
 
   dispatchExistingFiles(Info);
-
-  
-  // ==== remove skippable blocks
-  
-  mp_Listener->stageMessage("removing blocks to be skipped in 2.2");
-  
-  for (const auto& E : std::filesystem::recursive_directory_iterator{m_DestPathObj.stdPath()})
-  {
-    auto FileObj = openfluid::tools::Path::fromStdPath(E.path());
-    
-    // ensure we exclude any _* and .* folder
-    if (FileObj.isFile() && \
-        FileObj.toGeneric().find(m_DestPathObj.toGeneric()+"/_") == std::string::npos && \
-        FileObj.toGeneric().find(m_DestPathObj.toGeneric()+"/.") == std::string::npos) 
-    {
-      auto FileContent = openfluid::tools::Filesystem::readFile(FileObj);
-        
-      auto Modified = false;
-      const std::regex re(R"([#/]* \[SKIP-2\.2]>-------[\S\s]*?<\[SKIP-2\.2])");
-      while (std::regex_search(FileContent, re)) {
-          FileContent = std::regex_replace(FileContent, re, "");
-          Modified = true;
-      }
-  
-      if (Modified)
-      {
-        openfluid::tools::Filesystem::writeFile(FileContent, FileObj);
-      }
-    }
-  }
 }
 
 

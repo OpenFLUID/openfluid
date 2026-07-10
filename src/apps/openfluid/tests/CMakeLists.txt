@@ -710,10 +710,16 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-MigrateSimulator
                                                  "SET(CUSTOM_VAR foo)"
                    POST_TEST CHECK_FILE_CONTAINS "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt" 
                                                  "MESSAGE(STATUS 'custom message')"
+                   POST_TEST CHECK_FILE_CONTAINS "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt" 
+                                                 "# important 1"
+                   POST_TEST CHECK_FILE_CONTAINS "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt" 
+                                                 "# important 2"
                    POST_TEST CHECK_FILE_NOT_CONTAINS "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt" 
                                                  "SET(SKIPPABLE 2)"
                    POST_TEST CHECK_FILE_NOT_CONTAINS "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/Simulator.cpp" 
-                                                 "TO BE SKIPPED B")
+                                                 "TO BE SKIPPED B"
+                   POST_TEST CHECK_FILE_NOT_CONTAINS "${OFBUILD_TMP_DIR}/cmdline/migrate-ware/sim/tests.cmdline.sim-migration/src/CMakeLists.txt" 
+                                                     "SET(SKIPPABLE cmakeinconfig)")
 SET_PROPERTY(TEST cmdline-openfluid-MigrateSimulator
              APPEND PROPERTY ENVIRONMENT "OpenFLUID_DIR=${OFBUILD_DIST_CMAKE_MODULES_DIR};OpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src\;${OFBUILD_DIST_DIR};OpenFLUID_MIGRATION_INCLUDE_PATHS=${CMAKE_SOURCE_DIR}/src")
 set_tests_properties(cmdline-openfluid-MigrateSimulator PROPERTIES FIXTURES_SETUP SimulatorMigrated)
