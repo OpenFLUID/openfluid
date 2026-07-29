@@ -99,8 +99,23 @@
       },
       "variables": {
         "required": [],
-        "used": [],
+        "used": [
+          {
+            "name": "varU",
+            "unitsclass": "TUA",
+            "description": "variable U",
+            "siunit": "m",
+            "type": "double"
+          }
+        ],
         "produced": [
+          {
+            "name": "varV",
+            "unitsclass": "TUA",
+            "description": "variable V",
+            "siunit": "m",
+            "type": "vector"
+          },
           {
             "name": "varA",
             "unitsclass": "TUA",

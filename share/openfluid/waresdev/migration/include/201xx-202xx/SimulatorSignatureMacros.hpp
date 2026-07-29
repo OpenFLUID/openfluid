@@ -143,7 +143,7 @@
 */
 #define DECLARE_REQUIRED_VARIABLE(name,uclass,description,unit) \
   Signature->HandledData.RequiredVars\
-  .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
+  .push_back(openfluid::ware::SignatureVariableItem((name),uclass,description,unit));
 
 /**
   @deprecated Since version 2.1.0. Use #DECLARE_REQUIRED_VARIABLE instead
@@ -155,7 +155,7 @@
 */
 #define DECLARE_USED_VARIABLE(name,uclass,description,unit) \
   Signature->HandledData.UsedVars\
-  .push_back(openfluid::ware::SignatureSpatialDataItem((name),uclass,description,unit));
+  .push_back(openfluid::ware::SignatureVariableItem((name),uclass,description,unit));
 
 /**
   @deprecated Since version 2.1.0. Use #DECLARE_USED_VARIABLE instead

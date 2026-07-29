@@ -76,6 +76,8 @@ BEGIN_SIMULATOR_SIGNATURE("tests.cmdline.sim-migration")
 
   DECLARE_PRODUCED_ATTRIBUTE("attr1","TUA","attribute 1","")
  
+  DECLARE_USED_VARIABLE("varU[double]","TUA","variable U","m")
+  DECLARE_PRODUCED_VARIABLE("varV[]","TUA","variable V","m")
   DECLARE_PRODUCED_VARIABLE("varA","TUA","variable A","m")
   DECLARE_PRODUCED_VARIABLE("varA","TUB","variable A","m")
   DECLARE_PRODUCED_VARIABLE("varB","TUA","","")  
