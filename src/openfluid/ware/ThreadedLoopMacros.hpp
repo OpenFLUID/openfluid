@@ -70,44 +70,45 @@
 // =====================================================================
 
 
+#define _RUN_UNIT_GROUP_THREADED(id,iter,end,unitptr,funcptr,cond,...) \
+  std::vector<std::thread> _THREADGROUPID(id); \
+  while ((iter) != (end) && (cond)) \
+  { \
+    try \
+    { \
+      _THREADGROUPID(id).push_back(std::thread(std::bind(&funcptr,this,unitptr,## __VA_ARGS__))); \
+      if (_THREADGROUPID(id).size() == (unsigned int)OPENFLUID_GetSimulatorMaxThreads()) \
+      { \
+        for (auto& _THREADID(id) : _THREADGROUPID(id)) \
+          _THREADID(id).join(); \
+        _THREADGROUPID(id).clear(); \
+      } \
+    } \
+    catch (std::system_error& E) \
+    { \
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, \
+                                                "Error in threaded loop (" + std::string(E.what()) + ")"); \
+    } \
+    ++(iter); \
+  } \
+  for (auto& _THREADID(id) : _THREADGROUPID(id)) \
+    _THREADID(id).join(); \
+
+
+// =====================================================================
+// =====================================================================
+
+
 #define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitsclass,funcptr,...) \
   openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitsclass)->list(); \
   if (_UNITSLISTID(id) != nullptr) \
   { \
     openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
-    if (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
+    while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
     { \
       openfluid::core::PcsOrd_t _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
-      while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
-      { \
-        std::vector<std::thread> _THREADGROUPID(id); \
-        while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end() && \
-               _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id)) \
-        { \
-          try \
-          { \
-            _THREADGROUPID(id).push_back(std::thread(std::bind(&funcptr,this,\
-                                                    &(*_UNITSLISTITERID(id)),## __VA_ARGS__))); \
-            if (_THREADGROUPID(id).size() == (unsigned int)OPENFLUID_GetSimulatorMaxThreads()) \
-            { \
-              for (auto& _THREADID(id) : _THREADGROUPID(id)) \
-                _THREADID(id).join(); \
-              _THREADGROUPID(id).clear(); \
-            } \
-          } \
-          catch (std::system_error& E) \
-          { \
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, \
-                                                      "Error in threaded loop (" + std::string(E.what()) +")"); \
-          } \
-          ++_UNITSLISTITERID(id); \
-        } \
-        for (auto& _THREADID(id) : _THREADGROUPID(id)) \
-          _THREADID(id).join(); \
-        _THREADGROUPID(id).clear(); \
-        if (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
-          _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
-      } \
+      _RUN_UNIT_GROUP_THREADED(id,_UNITSLISTITERID(id),_UNITSLISTID(id)->end(), &(*_UNITSLISTITERID(id)), funcptr, \
+                               _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id), ## __VA_ARGS__); \
     } \
   }
 
@@ -134,44 +135,49 @@
 // =====================================================================
 
 
+#define _APPLY_UNITS_UNORDERED_LOOP_THREADED_WITHID(id,unitsclass,funcptr,...) \
+  openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->spatialUnits(unitsclass)->list(); \
+  if (_UNITSLISTID(id) != nullptr) \
+  { \
+    openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
+    _RUN_UNIT_GROUP_THREADED(id,_UNITSLISTITERID(id),_UNITSLISTID(id)->end(),&(*_UNITSLISTITERID(id)),funcptr, \
+                            true,## __VA_ARGS__); \
+  }
+
+/**
+  Macro for applying a threaded simulator to each unit of a class, without considering process order
+  @param[in] unitsclass name of the units class
+  @param[in] funcptr member simulator name
+  @param[in] ... extra parameters to pass to the member simulator
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Loops"],
+    "title" : "Threaded loop on spatial units of a class",
+    "text" : "APPLY_UNITS_LOOP_THREADED(\"%%SEL_START%%UnitsClass%%SEL_END%%\",FuncPtr)"
+  }
+  @endcond
+*/
+#define APPLY_UNITS_UNORDERED_LOOP_THREADED(unitsclass,funcptr,...) \
+    _APPLY_UNITS_UNORDERED_LOOP_THREADED_WITHID(__LINE__,unitsclass,funcptr,## __VA_ARGS__)
+
+
+// =====================================================================
+// =====================================================================
+
+
+/* TODO May factorize UnitsPtrList_t to UnitsList_t ? */
 #define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,funcptr,...) \
   openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_SpatialData->allSpatialUnits(); \
   if (_UNITSPTRLISTID(id) != nullptr) \
   { \
     openfluid::core::UnitsPtrList_t::iterator _UNITSPTRLISTITERID(id) = _UNITSPTRLISTID(id)->begin(); \
-    if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
+    while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
     { \
       openfluid::core::PcsOrd_t _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
-      while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
-      { \
-        std::vector<std::thread> _THREADGROUPID(id); \
-        while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end() && \
-              (*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id)) \
-        { \
-          try \
-          { \
-            _THREADGROUPID(id).push_back(std::thread(std::bind(&funcptr,this,\
-                                                    (*_UNITSPTRLISTITERID(id)),## __VA_ARGS__))); \
-            if (_THREADGROUPID(id).size() == (unsigned int)OPENFLUID_GetSimulatorMaxThreads()) \
-            { \
-              for (auto& _THREADID(id) : _THREADGROUPID(id)) \
-                _THREADID(id).join(); \
-              _THREADGROUPID(id).clear(); \
-            } \
-          }\
-          catch (std::system_error& E) \
-          { \
-            throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, \
-                                                      "Error in threaded loop (" + std::string(E.what()) +")"); \
-          } \
-          ++_UNITSPTRLISTITERID(id); \
-        } \
-        for (auto& _THREADID(id) : _THREADGROUPID(id)) \
-          _THREADID(id).join(); \
-        _THREADGROUPID(id).clear(); \
-        if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end())\
-          _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
-      } \
+      _RUN_UNIT_GROUP_THREADED(id,_UNITSPTRLISTITERID(id),_UNITSPTRLISTID(id)->end(),(*_UNITSPTRLISTITERID(id)), \
+                              funcptr,(*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id), ## __VA_ARGS__); \
     } \
   }
 
@@ -195,6 +201,33 @@
 
 // =====================================================================
 // =====================================================================
+
+
+#define _APPLY_ALLUNITS_UNORDERED_LOOP_THREADED_WITHID(id,funcptr,...) \
+  openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_SpatialData->allSpatialUnits(); \
+  if (_UNITSPTRLISTID(id) != nullptr) \
+  { \
+    openfluid::core::UnitsPtrList_t::iterator _UNITSPTRLISTITERID(id) = _UNITSPTRLISTID(id)->begin(); \
+    _RUN_UNIT_GROUP_THREADED(id,_UNITSPTRLISTITERID(id),_UNITSPTRLISTID(id)->end(),(*_UNITSPTRLISTITERID(id)), \
+                             funcptr,true,## __VA_ARGS__); \
+  }
+
+/**
+  Macro for applying a threaded simulator to each unit of the domain, without considering process order
+  @param[in] funcptr member simulator name
+  @param[in] ... extra parameters to pass to the member simulator
+
+  @cond OpenFLUID:completion
+  {
+    "contexts" : ["SIMULATOR", "OBSERVER"],
+    "menupath" : ["Loops"],
+    "title" : "Threaded ordered loop on all spatial units",
+    "text" : "APPLY_ALLUNITS_LOOP_THREADED(%%SEL_START%%FuncPtr%%SEL_END%%)"
+  }
+  @endcond
+*/
+#define APPLY_ALLUNITS_UNORDERED_LOOP_THREADED(funcptr,...) \
+    _APPLY_ALLUNITS_UNORDERED_LOOP_THREADED_WITHID(__LINE__,funcptr,## __VA_ARGS__)
 
 
 #endif /* __OPENFLUID_WARE_THREADEDLOOPMACROS_HPP__ */
