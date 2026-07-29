@@ -52,6 +52,8 @@ class OPENFLUID_API CompoundValue : public Value
 {
   public:
 
+     using Value::operator=;
+
     inline bool isSimple() const override
     {
       return false;

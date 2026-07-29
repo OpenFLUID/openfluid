@@ -25,7 +25,7 @@ test-of-unix-full:
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/$TAG"
   script:
     - mkdir ./_build
-    - cd ./_build && cmake .. -DOFBUILD_ENABLE_DOCS=OFF -DOFBUILD_ENABLE_GUI=OFF -DOFBUILD_TESTS_ENABLE_HEAVY=ON
+    - cd ./_build && cmake .. -DOFBUILD_TESTS_ENABLE_HEAVY=ON
     - make -j `nproc`
     - ctest -j 4 --output-on-failure
 

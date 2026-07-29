@@ -52,6 +52,8 @@ class OPENFLUID_API SimpleValue : public Value
 {
   public:
 
+    using Value::operator=;
+
     inline bool isSimple() const override
     {
       return true;

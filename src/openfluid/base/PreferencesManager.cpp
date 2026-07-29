@@ -118,7 +118,7 @@ void PreferencesManager::updateSettingsFile(const std::string& FilePath) const
       auto cleanKeyValue = [](const std::string& Key, const std::string& Value)
       {
          std::string UnquotedVal = Value;
-         if (Value.front() == '"' && Value.back() == '"')
+         if (!Value.empty() && Value.front() == '"' && Value.back() == '"')
          {
            UnquotedVal = Value.substr(1,UnquotedVal.length()-2);
          }

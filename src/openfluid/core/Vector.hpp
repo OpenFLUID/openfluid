@@ -209,7 +209,7 @@ class OPENFLUID_API Vector
     */
     inline iterator begin()
     {
-      return &m_Data[0];
+      return m_Data.get();
     }
 
     /**
@@ -218,7 +218,7 @@ class OPENFLUID_API Vector
     */
     inline const_iterator begin() const
     {
-      return &m_Data[0];
+      return m_Data.get();
     }
 
     /**
@@ -227,7 +227,7 @@ class OPENFLUID_API Vector
     */
     inline iterator end()
     {
-      return &m_Data[m_Size];
+      return m_Data.get()+m_Size;
     }
 
     /**
@@ -236,7 +236,7 @@ class OPENFLUID_API Vector
     */
     inline const_iterator end() const
     {
-      return &m_Data[m_Size]; 
+      return m_Data.get()+m_Size;
     }
 
 };

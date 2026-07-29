@@ -365,7 +365,11 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
                                                           nullptr);
 
         OGRFieldDefn IDField("OFLD_ID",OFTInteger);
-        CreatedLayer->CreateField(&IDField);
+        OGRErr Err = CreatedLayer->CreateField(&IDField);
+        if (Err != OGRERR_NONE)
+        {
+          OPENFLUID_LogWarning("OGR field creation error "+std::to_string(Err)); 
+        }
 
 
         GeoVectorSerie::VariablesSet_t::const_iterator itV;
@@ -380,7 +384,11 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
           VarField.SetWidth(24);
           VarField.SetPrecision(15);
 
-          CreatedLayer->CreateField(&VarField);
+          OGRErr Err = CreatedLayer->CreateField(&VarField);
+          if (Err != OGRERR_NONE)
+          {
+            OPENFLUID_LogWarning("OGR field creation error "+std::to_string(Err)); 
+          }
         }
 
 
