@@ -84,6 +84,8 @@ class OPENFLUID_API WaresSrcImportDialog: public AbstractSrcImportDialog
 
     void onSelectFromFileClicked();
 
+    void onSelectToFileClicked();
+
     void updateWareSelectionCount();
 
 

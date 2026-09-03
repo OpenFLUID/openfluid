@@ -38,6 +38,8 @@
 */
 
 
+#include <fstream>
+
 #include <QFileDialog>
 #include <QThread>
 #include <QMessageBox>
@@ -88,7 +90,8 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
 
   m_HubLoginWidgets << ui->UsernameLineEdit << ui->PasswordLineEdit
                                   << ui->UsernameLabel << ui->PasswordLabel;
-  m_HubLoginWidgetsAndButton << m_HubLoginWidgets << ui->HubLoginButton << ui->SelectFromFileButton;
+  m_HubLoginWidgetsAndButton << m_HubLoginWidgets << ui->HubLoginButton << ui->SelectFromFileButton 
+                             << ui->SelectToFileButton;
   m_HubConnectionInfoWidgets << ui->HubUrlLineEdit << m_HubLoginWidgets;
 
   ui->HubConnectButton->setText(m_HubButtonConnectLabel);
@@ -97,6 +100,7 @@ WaresSrcImportDialog::WaresSrcImportDialog(QWidget* Parent) :
       QString::fromStdString(openfluid::base::PreferencesManager::instance()->getWaresdevImportHubUrl()));
 
   connect(ui->SelectFromFileButton, SIGNAL(clicked()), this, SLOT(onSelectFromFileClicked()));
+  connect(ui->SelectToFileButton, SIGNAL(clicked()), this, SLOT(onSelectToFileClicked()));
 
   connect(&m_SourceBtGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onSourceChanged(QAbstractButton*)));
 
@@ -477,7 +481,8 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
 
   if (ClickedButton == ui->PackageRadioButton)
   {
-    ui->WaresGroupBox->setTitle(tr("Available wares in package"));
+    ui->AvailableWaresLabel->setText(tr("Available wares in package"));
+    ui->SelectFromFileButton->setVisible(false); // not supported yet
 
     for (auto& Widget : m_HubConnectionInfoWidgets)
     {
@@ -494,7 +499,7 @@ void WaresSrcImportDialog::onSourceChanged(QAbstractButton* ClickedButton)
   }
   else
   {
-    ui->WaresGroupBox->setTitle(tr("Available wares on Hub"));
+    ui->AvailableWaresLabel->setText(tr("Available wares on Hub"));
     ui->HubUrlLineEdit->setEnabled(!m_HubManager.isConnected());
     for (const auto& Pair : m_FilterWidgetsByWareType)
     {
@@ -585,22 +590,59 @@ void WaresSrcImportDialog::onHubConnectButtonClicked()
 // =====================================================================
 
 
-void WaresSrcImportDialog::onSelectFromFileClicked()
+void WaresSrcImportDialog::onSelectToFileClicked()
 {
-  QString WaresetFilePath = QFileDialog::getOpenFileName(this, tr("Select ware set file"),
-                                                         QDir::homePath(),
+  QString WaresetFilePath = QFileDialog::getSaveFileName(this, tr("Storing ware selection in a file"),
+                                                         "wareset-import-devstudio.txt",
                                                          tr("Ware set files (*.txt)")); 
-  // TODO allow lock file format
-
   if (WaresetFilePath.isEmpty())
   {
     std::cout << "Wareset file empty: " << WaresetFilePath.toStdString() << std::endl;
     return;
   }
+
+  std::ofstream Out(WaresetFilePath.toStdString());
+
+  if (Out.is_open())
+  {
+    for (const auto& WareName : getSelectedWares())
+    {
+      Out << WareName.toStdString() << std::endl;
+    }
+    Out.close();
+  }
+  else
+  {
+    std::cout << "\nCan not open " << WaresetFilePath.toStdString() << std::endl;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WaresSrcImportDialog::onSelectFromFileClicked()
+{
+  QString WaresetFilePath = QFileDialog::getOpenFileName(this, tr("Select ware set file"),
+                                                         QDir::homePath(),
+                                                         tr("Ware set files (*.txt *.json)")); 
+  std::string WaresetFilePathStd = WaresetFilePath.toStdString();
+  if (WaresetFilePath.isEmpty())
+  {
+    std::cout << "Wareset file empty: " << WaresetFilePathStd << std::endl;
+    return;
+  }
   // TODO handle case package + file
+
   // case hub + file
   std::string ID = "devstudio-wareset";
-  openfluid::waresdev::WareSetManager WSManager("hub", "listfile", WaresetFilePath.toStdString(), 
+  std::string FileType = "listfile";
+  if (WaresetFilePath.endsWith(".json"))
+  {
+    FileType = "lockfile";
+  }
+  openfluid::waresdev::WareSetManager WSManager("hub", FileType, WaresetFilePathStd, 
                                                         ui->HubUrlLineEdit->text().toStdString(), ID);
   std::map<openfluid::ware::WareType, openfluid::thirdparty::json> WaresNotCheckedByType;
   

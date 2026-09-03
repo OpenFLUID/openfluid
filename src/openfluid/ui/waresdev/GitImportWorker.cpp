@@ -112,7 +112,7 @@ bool GitImportWorker::runImports()
     if (!importElement(Element))
     {
       OK = false;
-      //break; // FIXME advanced handling of failing imports
+      // FIXME advanced handling of failing imports
     }
 
     m_Progress += m_ProgressRatio;

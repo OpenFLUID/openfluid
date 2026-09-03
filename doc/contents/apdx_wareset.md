@@ -2,7 +2,23 @@
 
 In OpenFLUID since version 2.2.2, a ware set is a group of simulators and observers for which we do coordinate operations. The most frequent use case is the rebuild of setup to run a given dataset.
 
-## How to rerun a simulation based on dataset information
+## DevStudio: Batch operations on wares since import
+
+Back in OpenFLUDI 2.1 days, it was aready possible to do group operations on wares, either to fetch them from a remote location with import dialog or to operate locally for configuration/build/doc generation with dashboard.
+
+Since 2.2.2 it is possible to make these group operations easier: in DevStudio ware import dialog, once connected to a Hub instance, it is possible to select wares via a file instead of picking them one by one. The file can be either a lock json file (cf "Wareset lock file" section below) or a basic text file. The format of such file is very straightforward: 
+```
+https://hub.url/.../simulators/foo
+https://hub.url/.../simulators/bar#openfluid2.1-custom /local/path
+```
+In this example two wares will be selected in the list, `foo` and `bar`, for the second one the `openfluid2.1-custom` branch will be checked out after fetch of the given git URL. Notice that the `/local/path` will be ignored since the wares will be stored in the current workspace in the corresponding ware category folder.
+
+Once the wares are selected, the import can be triggered as before, but an option has been added to open the Dashboard with the same selected wares (if successfully imported) to run any Dashboard operation.
+
+For more customization and advanced operations about these groups of wares, we advise to use CLI command described in next section instead of relying on DevStudio features.
+
+
+## Command line: How to rerun a simulation based on dataset information
 
 Since most information required to rebuild a simulation environment is contained in the fluidx files (enabled simulators and obsevers), we can use it to rebuild from scratch all these wares.
 
