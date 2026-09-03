@@ -6,7 +6,6 @@ stages:
 
 test-of:
   stage: test
-  when: manual
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/debian-13-qt6"
   script:
     - mkdir ./_build
@@ -14,6 +13,7 @@ test-of:
     - make stylecheck
     - make -j `nproc`
     - ctest -j 3 --output-on-failure
+    - ctest --rerun-failed --output-on-failure
 
 test-of-unix-full:
   stage: test
@@ -30,10 +30,10 @@ test-of-unix-full:
     - cd ./_build && cmake .. -DOFBUILD_TESTS_ENABLE_HEAVY=ON
     - make -j `nproc`
     - ctest -j 3 --output-on-failure
+    - ctest --rerun-failed --output-on-failure
 
 pkg-of-no-ui:
   stage: package
-  when: manual
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/ubuntu-26.04-qt6"
   script:
     - mkdir ./_build_noui
@@ -50,6 +50,8 @@ pkg-of-full-deb:
   parallel:
     matrix:
       - TAG: ["debian-13-qt6",
+              "ubuntu-22.04-qt6",
+              "ubuntu-24.04-qt6",
               "ubuntu-24.10-qt6"]
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/$TAG"
   script:

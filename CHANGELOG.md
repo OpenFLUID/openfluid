@@ -1,3 +1,22 @@
+## 2.2.2
+
+  * Added option for non-GPL build
+  * Added support for boost process v2
+  * Added new wareset management in CLI
+  * Added bridge option between ware import dialog and ware dashboard
+  * Changed DevStudio dialog to support wareset injection
+  * Added openfluid run "compact" display mode
+  * Added support for multiple ware build
+  * Added gitlab pipeline for docker image generation
+  * Added support of tag in checkout validation
+  * Cleaned C++ deprecation warnings
+  * Fixed OpenFLUID macro loss in ware configuration
+  * Updated shipped wares repositories
+  * Changed test button in DevStudio to be always enabled
+  * Fixed ware migration of vector variables
+  * Fixed logic for blocks to be skipped during ware migration
+
+
 ## 2.2.1
 
   * Added ability to open internal observers code in Builder
