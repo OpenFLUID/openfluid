@@ -152,7 +152,8 @@ bool FragmentsImportWorker::importElement(const GitElementToImport& Element)
     if (!Success)
     {
       // Git cleanup of failed submodule add through GitProxy removal operation
-      auto GitRmCodeOutput = Git.removeSubmodule(Element.LocalPath, QString::fromStdString(DestSubPath.toNative())).second;
+      auto GitRmCodeOutput = Git.removeSubmodule(Element.LocalPath, 
+                                                 QString::fromStdString(DestSubPath.toNative())).second;
       emit info(GitRmCodeOutput);
 
       // Manual removal if git operations were unable to do it

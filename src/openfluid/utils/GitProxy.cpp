@@ -174,18 +174,22 @@ int GitProxy::clone(const std::string& Path, const std::string& URL, const std::
 // =====================================================================
 
 
-const std::string GitProxy::getCurrentPosition(const std::string& Path, bool AsBranch)
+const std::string GitProxy::getCurrentPosition(const std::string& Path, GIT_POSITION Mode)
 {
-  if (AsBranch && !canGetBranch())
+  if (Mode == GIT_POSITION::BRANCH && !canGetBranch())
   {
     std::string ErrorMsg = "Error with git branch command: Git version not supported (" + m_Version + ")";
     openfluid::base::log::error("Git", ErrorMsg);
     throw GitOperationException(ErrorMsg);
   }
   std::vector<std::string> Args = {"branch", "--show-current"};
-  if (!AsBranch)
+  if (Mode == GIT_POSITION::COMMIT)
   {
     Args = {"rev-parse", "HEAD"}; // returns commit hash
+  }
+  else if (Mode == GIT_POSITION::TAG)
+  {
+    Args = {"tag", "--points-at", "HEAD"};
   }
   openfluid::utils::Process::Command Cmd{
     .Program = m_ExecutablePath,
@@ -201,7 +205,7 @@ const std::string GitProxy::getCurrentPosition(const std::string& Path, bool AsB
   }
   else
   {
-    std::string ErrorMsg = "Error with git branch command in path : " + Path;
+    std::string ErrorMsg = "Error with git current position command in path : " + Path;
     openfluid::base::log::error("Git", ErrorMsg);
     for (const auto& L : Process.stdOutLines())
     {

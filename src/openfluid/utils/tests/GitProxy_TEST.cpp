@@ -42,6 +42,7 @@
 #define BOOST_TEST_MODULE unittest_process
 
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -79,13 +80,14 @@ BOOST_AUTO_TEST_CASE(check_ops)
   BOOST_CHECK(P.run());
   BOOST_CHECK_EQUAL(P.getExitCode(),0);
   BOOST_REQUIRE(Git.isPathGitRepo(RepoPath.toGeneric()));
+  std::cout << "Created git repository at " << RepoPath.toGeneric() << std::endl;
 
   if (Git.canGetBranch())
   {
     BOOST_REQUIRE_EQUAL(Git.getCurrentPosition(RepoPath.toGeneric()), "master");
   }
 
-
+  // checkout operation
   openfluid::utils::Process::Command CmdCheckout{
     .Program = Git.getExecutablePath(),
     .Args = {"checkout", "-b", "foo"},
@@ -98,6 +100,61 @@ BOOST_AUTO_TEST_CASE(check_ops)
   {
     BOOST_REQUIRE_EQUAL(Git.getCurrentPosition(RepoPath.toGeneric()), "foo");
   }
-  RepoPath.removeDirectory();
+
+  // adding files
+  std::ofstream File;
+  File.open(RepoPath.fromThis("a.txt").toGeneric());
+  BOOST_CHECK(File.is_open());
+  File.close();
+  openfluid::utils::Process::Command CmdAdd{
+    .Program = Git.getExecutablePath(),
+    .Args = {"add", "-A"},
+    .WorkDir = RepoPath.toGeneric()
+  };
+  openfluid::utils::Process PAdd(CmdAdd);
+  BOOST_CHECK(PAdd.run());
+  BOOST_CHECK_EQUAL(PAdd.getExitCode(),0);
+
+  //   setup user ID
+  openfluid::utils::Process::Command CmdSetupMail{
+    .Program = Git.getExecutablePath(),
+    .Args = {"config", "user.email", "\"you@example.com\""},
+    .WorkDir = RepoPath.toGeneric()
+  };
+  openfluid::utils::Process PSetupMail(CmdSetupMail);
+  BOOST_CHECK(PSetupMail.run());
+  BOOST_CHECK_EQUAL(PSetupMail.getExitCode(),0);
+  openfluid::utils::Process::Command CmdSetupName{
+    .Program = Git.getExecutablePath(),
+    .Args = {"config", "user.name","\"Your Name\""},
+    .WorkDir = RepoPath.toGeneric()
+  };
+  openfluid::utils::Process PSetupName(CmdSetupName);
+  BOOST_CHECK(PSetupName.run());
+  BOOST_CHECK_EQUAL(PSetupName.getExitCode(),0);
+  
+  openfluid::utils::Process::Command CmdCommit{
+    .Program = Git.getExecutablePath(),
+    .Args = {"commit", "-m", "\"initiating with A\""},
+    .WorkDir = RepoPath.toGeneric()
+  };
+  //   committing
+  openfluid::utils::Process PCommit(CmdCommit);
+  BOOST_CHECK(PCommit.run());
+  BOOST_CHECK_EQUAL(PCommit.getExitCode(),0);
+
+  // tag operation
+  openfluid::utils::Process::Command CmdTag{
+    .Program = Git.getExecutablePath(),
+    .Args = {"tag", "custom"},
+    .WorkDir = RepoPath.toGeneric()
+  };
+  openfluid::utils::Process PTag(CmdTag);
+  BOOST_CHECK(PTag.run());
+  BOOST_CHECK_EQUAL(PTag.getExitCode(),0);
+  BOOST_REQUIRE_EQUAL(Git.getCurrentPosition(RepoPath.toGeneric(), openfluid::utils::GitProxy::GIT_POSITION::TAG), 
+                      "custom");
+
+  //RepoPath.removeDirectory();
 }
 

@@ -400,35 +400,43 @@ bool GitUIProxy::clone(const QString& FromUrl, const QString& ToPath,
 // =====================================================================
 
 
-bool GitUIProxy::checkout(const QString& Path, const QString& BranchName, bool New)
+bool GitUIProxy::checkout(const QString& Path, const QString& PositionName, bool New)
 {
   std::pair<int, QString> ExitData;
   if (New)
   {
-    QStringList Args = {"checkout", "-b", BranchName, "--progress"};
+    QStringList Args = {"checkout", "-b", PositionName, "--progress"};
     ExitData = launchLocalCommand(Path, Args);
   }
   else
   {
-    QStringList Args = {"checkout", BranchName, "--progress"};
+    QStringList Args = {"checkout", PositionName, "--progress"};
     ExitData = launchLocalCommand(Path, Args);
   }
   if (canGetBranch())
   {
     try
     {
-      std::string CurrentBranch = GitUIProxy::getCurrentPosition(Path.toStdString());
-      if (QString::fromStdString(CurrentBranch) != BranchName)
+      std::string CurrentBranch = getCurrentPosition(Path.toStdString());
+      if (QString::fromStdString(CurrentBranch) != PositionName)
       {
-        openfluid::base::log::debug("Git", ExitData.second.toStdString());
-        return 0;
+        std::string CurrentTag = getCurrentPosition(Path.toStdString(), GIT_POSITION::TAG);
+        if (QString::fromStdString(CurrentTag) != PositionName)
+        {
+          openfluid::base::log::debug("Git", ExitData.second.toStdString());
+          return false;
+        }
+        else
+        {
+          return true;
+        }
       }
-      return 1;
+      return true;
     }
     catch (openfluid::utils::GitOperationException)
     {
       openfluid::base::log::debug("Git", "Exception during checkout");
-      return 0;
+      return false;
     }
   }
   else
@@ -437,9 +445,9 @@ bool GitUIProxy::checkout(const QString& Path, const QString& BranchName, bool N
     if (ExitData.first != 0)
     {
       openfluid::base::log::debug("Git", ExitData.second.toStdString());
-      return 0;
+      return false;
     }
-    return 1;
+    return true;
   }
 }
 

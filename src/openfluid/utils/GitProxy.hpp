@@ -64,6 +64,8 @@ class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
 
   public:
 
+    enum class GIT_POSITION {COMMIT, BRANCH, TAG};
+
     GitProxy();
 
     virtual ~GitProxy();
@@ -82,7 +84,7 @@ class OPENFLUID_API GitProxy : public ProgramProxy<GitProxy>
 
     int clone(const std::string& Path, const std::string& URL, const std::string& LocalName="");
 
-    static const std::string getCurrentPosition(const std::string& Path, bool AsBranch=true);
+    static const std::string getCurrentPosition(const std::string& Path, GIT_POSITION Mode=GIT_POSITION::BRANCH);
 
     static int setRemote(const std::string RepoPath, const std::string RemoteUrl);
 

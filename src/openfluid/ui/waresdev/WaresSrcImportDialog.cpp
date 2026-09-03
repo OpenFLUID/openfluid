@@ -653,7 +653,8 @@ void WaresSrcImportDialog::onSelectFromFileClicked()
   }
   // asks if we want to add wares not checked at user own risks
   std::vector<std::string> FirstWareNames = WareNames;
-  if (WareNames.size() >= 10) {
+  if (WareNames.size() >= 10)
+  {
     FirstWareNames = {WareNames.begin(), WareNames.begin()+9};
     FirstWareNames.push_back("...");
   }
