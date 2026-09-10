@@ -635,6 +635,9 @@ void WaresSrcImportDialog::onSelectFromFileClicked()
   }
   // TODO handle case package + file
 
+  // when from file, auto set the dashboard checkbox to true
+  ui->TryBuildCheckbox->setChecked(true);
+
   // case hub + file
   std::string ID = "devstudio-wareset";
   std::string FileType = "listfile";
@@ -678,9 +681,9 @@ void WaresSrcImportDialog::onSelectFromFileClicked()
             else
             {
               NotChecked++;
+              WareNames.push_back(Ware["id"]);
+              m_WaresNotFoundByType[Type].push_back(Ware);
             }
-            m_WaresNotFoundByType[Type].push_back(Ware);
-            WareNames.push_back(Ware["id"]);
           }
         }
         if (!FoundInList)
@@ -695,21 +698,26 @@ void WaresSrcImportDialog::onSelectFromFileClicked()
   }
   // asks if we want to add wares not checked at user own risks
   std::vector<std::string> FirstWareNames = WareNames;
-  if (WareNames.size() >= 10)
+  bool OK = NotFound+NotChecked == 0;
+  if (!OK)
   {
-    FirstWareNames = {WareNames.begin(), WareNames.begin()+9};
-    FirstWareNames.push_back("...");
-  }
-  std::string WareListStd = openfluid::tools::join(FirstWareNames, ",\n");
-  QString WareList = QString::fromStdString(WareListStd);
+    if (WareNames.size() >= 10)
+    {
+      FirstWareNames = {WareNames.begin(), WareNames.begin()+9};
+      FirstWareNames.push_back("...");
+    }
+    std::string WareListStd = openfluid::tools::join(FirstWareNames, "\n- ");
+    QString WareList = QString::fromStdString(WareListStd);
 
-  if (QMessageBox::question(this,
-                              tr("Adding unchecked items"),
-                              tr("Selection from file contains %1 wares that were either already present in workspace"
-                                 " or possibly not reachable: \n\n%2\n").arg(NotChecked+NotFound).arg(WareList)+"\n"+
-                              tr("Would you still want to check them in the list for import and checkout?")+"\n"+
-                              tr("Resulting ware state can not be guaranteed, check logs to identify any issue."),
-                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+    OK = QMessageBox::question(this,
+                                tr("Adding unchecked items"),
+                                tr("Selection from file contains %1 wares that were either already present in workspace"
+                                  " or possibly not reachable: \n\n- %2\n").arg(NotChecked+NotFound).arg(WareList)+"\n"+
+                                tr("Would you still want to check them in the list for import and checkout?")+"\n"+
+                                tr("Resulting ware state can not be guaranteed, check logs to identify any issue."),
+                                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
+  }
+  if (OK)
   {
     updateHubElementsList();
     for (const auto& UncheckedWares :m_WaresNotFoundByType)

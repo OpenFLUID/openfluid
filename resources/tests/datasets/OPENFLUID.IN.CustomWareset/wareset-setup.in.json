@@ -12,6 +12,10 @@
       "pre-configure-commands": 
         [
           {
+            "program": "%OF%",
+            "args": ["--version"]
+          },
+          {
             "program": "%%OF%%",
             "args": ["--version"]
           }

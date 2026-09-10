@@ -351,20 +351,20 @@ int WareTasks::processSetupWareset() const
   {
     return error("Set URL or path required");
   }
-  if (SetOption.substr(0,4) == "http" || SetOption.find("/") == std::string::npos)
+  if ((SetOption.size() > 4 && SetOption.substr(0,4) == "http") || SetOption.find("/") == std::string::npos)
   {
     WaresetSourceType = "hub";
   }
-  else if (SetOption.substr(SetOption.length()-10, 10) == "-lock.json")
+  else if (SetOption.size() > 10 && SetOption.substr(SetOption.length()-10, 10) == "-lock.json")
   {
     WaresetSourceType = "lockfile";
   }
-  else if (SetOption.substr(SetOption.length()-4, 4) == ".txt")
+  else if (SetOption.size() > 4 && SetOption.substr(SetOption.length()-4, 4) == ".txt")
   {
     WaresetSourceType = "listfile";
   }
 
-  if (!WaresOrigin.empty() && WaresOrigin.substr(0,4) == "http")
+  if (WaresOrigin.size() > 4 && WaresOrigin.substr(0,4) == "http")
   {
     WareSourceType = "remote";
   }
@@ -375,8 +375,16 @@ int WareTasks::processSetupWareset() const
   std::string WaresetName;
   std::string WaresetListJson;
   std::map<std::string, std::map<std::string, std::string>> WareStatus;
+  openfluid::waresdev::WareSetManager WareSetMgr;
 
-  openfluid::waresdev::WareSetManager WareSetMgr(WareSourceType, WaresetSourceType, SetOption, WaresOrigin, ID);
+  try
+  {
+    WareSetMgr = openfluid::waresdev::WareSetManager(WareSourceType, WaresetSourceType, SetOption, WaresOrigin, ID);
+  } 
+  catch(openfluid::base::FrameworkException& E)
+  {
+    return error("Wareset initializing failed. "+std::string(E.what()));
+  }
   
   // 0- Setup userdata
   std::cout << "Setup userdata at " << WorkPathStr << std::endl;
@@ -496,7 +504,7 @@ int WareTasks::processSetupWareset() const
 
   WareSetMgr.displayStatus();
   
-  return success("Wareset setup successfully completed");
+  return success("Wareset setup finished");
 }
 
 #undef RETURN_ERROR_OR_PRINT

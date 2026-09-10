@@ -71,6 +71,8 @@ class OPENFLUID_API WareSetManager
   public:
     unsigned int m_Problems;
 
+    WareSetManager() {}
+
     // constructor also deduce expected wares from set and complementary information from eventual datasetinfo.json
     WareSetManager(const std::string& WareSourceType, const std::string& WaresetSourceType, 
                    const std::string& SetOption, const std::string& WaresOrigin, std::string& ID);

@@ -154,12 +154,12 @@ WareSetManager::WareSetManager(const std::string& WareSourceType, const std::str
     // Define source URL
     std::string SourceURL;
     // 1) from set full URL
-    if (SetOption.substr(0,4) == "http")
+    if (SetOption.size() > 4 && SetOption.substr(0,4) == "http")
     {
       SourceURL = openfluid::tools::split(SetOption, "/api/").front()+"/api/";
     }
     // 2) from wares origin
-    else if (m_WaresOrigin.substr(0,4) == "http")
+    else if (SetOption.size() > 4 && m_WaresOrigin.substr(0,4) == "http")
     {
       SourceURL = m_WaresOrigin;
     }
@@ -222,7 +222,15 @@ WareSetManager::WareSetManager(const std::string& WareSourceType, const std::str
     std::set<std::string> AddedWares;
     std::unique_ptr<openfluid::base::IOListener> Listener = std::make_unique<openfluid::base::IOListener>();
     openfluid::fluidx::FluidXIO FXIO(Listener.get());
-    auto FXDesc = FXIO.loadFromDirectory(SetOption);
+    openfluid::fluidx::FluidXDescriptor FXDesc;
+    try {
+      FXDesc = FXIO.loadFromDirectory(SetOption);
+    } 
+    catch(openfluid::base::FrameworkException& E)
+    {
+      throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION, 
+                                                "Set load failure: "+std::string(E.what()));
+    }
     for (const auto& i : FXDesc.model().items())
     {
       if (i->isType(openfluid::ware::WareType::SIMULATOR) && i->isEnabled()) 
@@ -503,6 +511,7 @@ int WareSetManager::scaffoldWareset(const std::string& UserdataPathStr,
     CallerCmake.close();
 
   }
+  openfluid::thirdparty::json UsableWareset = openfluid::thirdparty::json::array();
   for (auto& Ware : m_JSONWareset)
   {
     // --------------------------------------
@@ -611,40 +620,40 @@ int WareSetManager::scaffoldWareset(const std::string& UserdataPathStr,
     //   1.2- Checking version/checkout 
     // --------------------------------------
 
-    if (!WarePath.exists())
+    if (WarePath.exists())
     {
-      // can't work without ware path
-    }
-    else if (!WareVersion.empty())
-    {
-      openfluid::utils::GitProxy Git;
-      openfluid::utils::Process::Command CmdCheckout{
-        .Program = Git.getExecutablePath(),
-        .Args = {"checkout", WareVersion},
-        .WorkDir = WarePath.toGeneric()
-      };
-      openfluid::utils::Process PCheckout(CmdCheckout);
-      if (!PCheckout.run() || !(PCheckout.getExitCode() == 0))
+      UsableWareset.push_back(Ware);
+      if (!WareVersion.empty())
       {
-        m_WareStatus[WareKey]["ckout"] = KO_STRING;
-        for (const auto& l : PCheckout.stdOutLines())
+        openfluid::utils::GitProxy Git;
+        openfluid::utils::Process::Command CmdCheckout{
+          .Program = Git.getExecutablePath(),
+          .Args = {"checkout", WareVersion},
+          .WorkDir = WarePath.toGeneric()
+        };
+        openfluid::utils::Process PCheckout(CmdCheckout);
+        if (!PCheckout.run() || !(PCheckout.getExitCode() == 0))
         {
-          logAndPrint(l, m_Problems);
+          m_WareStatus[WareKey]["ckout"] = KO_STRING;
+          for (const auto& l : PCheckout.stdOutLines())
+          {
+            logAndPrint(l, m_Problems);
+          }
+          for (const auto& l : PCheckout.stdErrLines())
+          {
+            logAndPrint(l, m_Problems);
+          }
+          throwOrPrint(IsStrict, "error during ware checkout", m_Problems);
         }
-        for (const auto& l : PCheckout.stdErrLines())
+        else
         {
-          logAndPrint(l, m_Problems);
+          m_WareStatus[WareKey]["ckout"] = OK_STRING;
         }
-        throwOrPrint(IsStrict, "error during ware checkout", m_Problems);
       }
       else
       {
-        m_WareStatus[WareKey]["ckout"] = OK_STRING;
+        m_WareStatus[WareKey]["ckout"] = "skip";
       }
-    }
-    else
-    {
-      m_WareStatus[WareKey]["ckout"] = "skip";
     }
   }
   freeze(UserdataPathStr);
@@ -656,7 +665,7 @@ int WareSetManager::scaffoldWareset(const std::string& UserdataPathStr,
 
   // 1.3 Custom pre-configure commands
 
-  for (const auto& Ware : m_JSONWareset)
+  for (const auto& Ware : UsableWareset)
   {
     if (Ware.contains("pre-configure-commands"))
     {
@@ -723,16 +732,28 @@ int WareSetManager::scaffoldWareset(const std::string& UserdataPathStr,
         openfluid::utils::Process::Environment Env;
         std::cout << "Ware " << WareID << ": Triggering custom command " << PreConfigureCommand << \
                      " " << openfluid::tools::join(Args, " ") << std::endl;
-        int ReturnCode = openfluid::utils::Process::system(PreConfigureCommand, Args, Env);
-        if (ReturnCode == 0)
+        try
         {
-          m_WareStatus[WareKey]["custom"] = OK_STRING;
-          std::cout << "[OK]" << std::endl;
-        }
-        else
+          int ReturnCode = openfluid::utils::Process::system(PreConfigureCommand, Args, Env);
+
+          if (ReturnCode == 0)
+          {
+            if (m_WareStatus[WareKey].find("custom") == m_WareStatus[WareKey].end())
+            {
+              m_WareStatus[WareKey]["custom"] = OK_STRING;
+            }
+            std::cout << "[OK]" << std::endl;
+          }
+          else
+          {
+            m_WareStatus[WareKey]["custom"] = KO_STRING;
+            throwOrPrint(IsStrict, "Custom command failed", m_Problems);
+          }
+        } 
+        catch(const std::exception& E)
         {
-          m_WareStatus[WareKey]["custom"] = KO_STRING;//TODO keep worst of all commands
-          throwOrPrint(IsStrict, "Custom command failed", m_Problems);
+          m_WareStatus[WareKey]["custom"] = KO_STRING;
+            throwOrPrint(IsStrict, "Custom command exception: " + std::string(E.what()), m_Problems);
         }
       }
     }
@@ -759,7 +780,7 @@ int WareSetManager::scaffoldWareset(const std::string& UserdataPathStr,
   }
 
 
-  for (const auto& Ware : m_JSONWareset)
+  for (const auto& Ware : UsableWareset)
   {
     //TODO FIX CONTAMINATING OTHER WARES
     if (Ware.contains("configure-options") || Ware.contains("cmake-content"))
@@ -899,7 +920,7 @@ int WareSetManager::scaffoldWareset(const std::string& UserdataPathStr,
   }
   else
   {
-    for (const auto& Ware : m_JSONWareset)
+    for (const auto& Ware : UsableWareset)
     {
       //   2.1- Configure ware for installation 
       std::string WareType = Ware["type"];

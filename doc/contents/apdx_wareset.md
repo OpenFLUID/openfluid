@@ -29,8 +29,13 @@ A simple use case: we want to rerun Firespread example dataset in an isolated en
 
 ### Arguments
 
-- `-w`: ware source, can be a remote (git or hub) or local *primary* source containing source code for listed wares
-- `-s`: set source, can be a remote or local dataset or a wareset-lock file
+- `-w`: ware source, can be:
+  - a remote (git or hub) URL
+  - a local *primary* source path containing source code for listed wares having the structure of an OpenFLUID workspace
+- `-s`: "set" list information, can be:
+  -  a remote wareset name to be fetch from hub location (if provided)
+  -  a local dataset folder path
+  -  a wareset-lock file
 - `-p`: path to new location to build the new userdata path (isolated workspace and wares folders)
 - `-r`: to run simulation after build
 
@@ -85,7 +90,7 @@ Example:
   ]
 }
 ```
-
+In this example the setup will create two simulator repositories. For the first it will checkout the version from common section ("*"), for the second this value is overwritten so it will checkout the "for-test" branch.
 
 
 ### Workflow of setup-wareset
@@ -102,7 +107,7 @@ For each ware:
 
 Global:
 
-- Write `wareset-lock` file
+- Write `wareset-lock` file at the root of the location provided in `-p` parameter
 - Run simulation from given dataset in the new environment (optional)
 - Display **summary** table for each step and each ware
 
