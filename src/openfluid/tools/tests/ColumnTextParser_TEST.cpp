@@ -89,13 +89,13 @@ BOOST_AUTO_TEST_CASE(check_from_string)
 {
   openfluid::tools::ColumnTextParser Parser("#");
 
-  Parser.setFromString(
+  BOOST_CHECK(Parser.setFromString(
     "1 12.3\t 15.3 \"so far, so long\"\n"
     "2 true false {\\\"k1\\\":18.3,\\\"k2\\\":\\\"yes\\ we\\ can!\\\"}\n"
     "3 1 2 [1.5,2,3.6]\n\n\n\n\n  \t"
-    "4 0 0 [[0,0],[3.6,6.3],[1,1]]",
+    "4 0  0 [[0,0],[3.6,6.3],[1,1]]",
     4
-  );
+  ));
 
   Parser.streamContents(std::cout);
 
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(check_from_file)
 {
   openfluid::tools::ColumnTextParser Parser("#");
 
-  Parser.loadFromFile(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ColumnTextParser/test01.txt");
+  BOOST_CHECK(Parser.loadFromFile(CONFIGTESTS_INPUT_MISCDATA_DIR+"/ColumnTextParser/test01.txt"));
 
   Parser.streamContents(std::cout);
 
