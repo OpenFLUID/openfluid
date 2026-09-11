@@ -150,7 +150,7 @@ bool Process::run()
 
   try
   {
-#if (Boost_VERSION_MINOR > 85)  
+#if (Boost_VERSION_MINOR > 85)
     std::ofstream StdOutFile;
     std::ofstream StdErrFile;
     std::string LineOut;
@@ -434,10 +434,26 @@ int Process::system(const Command& Cmd, const Environment& Env)
   {
     WorkDir = Cmd.WorkDir;
   }
-  boost::process::v2::process Proc(Ctx, Cmd.Program, Cmd.Args, 
-                                     boost::process::v2::process_start_dir(WorkDir),
-                                     boost::process::v2::process_environment(ProcessEnv));
-  return Proc.wait();
+  
+  openfluid::tools::Path WorkPath(WorkDir);
+  if (!WorkPath.exists())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Process error: work directory does not exist: "+WorkPath.toGeneric());
+  }
+
+  try
+  {
+    boost::process::v2::process Proc(Ctx, Cmd.Program, Cmd.Args, 
+                                      boost::process::v2::process_start_dir(WorkDir),
+                                      boost::process::v2::process_environment(ProcessEnv));
+    return Proc.wait();
+  }
+  catch(const std::exception& E)
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Process error: " + std::string(E.what()));
+  }
 #else
   boost::process::environment ProcessEnv;
 
@@ -465,10 +481,25 @@ int Process::system(const Command& Cmd, const Environment& Env)
     WorkDir = Cmd.WorkDir;
   }
 
-  return boost::process::system(boost::process::exe = Cmd.Program,
-                                boost::process::args = Cmd.Args,
-                                boost::process::start_dir = WorkDir,
-                                ProcessEnv);
+  openfluid::tools::Path WorkPath(WorkDir);
+  if (!WorkPath.exists())
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Process error: work directory does not exist: "+WorkPath.toGeneric());
+  }
+
+  try
+  {
+    return boost::process::system(boost::process::exe = Cmd.Program,
+                                  boost::process::args = Cmd.Args,
+                                  boost::process::start_dir = WorkDir,
+                                  ProcessEnv);
+  }
+  catch(const std::exception& E)
+  {
+    throw openfluid::base::FrameworkException(OPENFLUID_CODE_LOCATION,
+                                              "Process error: " + std::string(E.what()));
+  }
 #endif
 }
 
