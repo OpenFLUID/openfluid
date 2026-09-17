@@ -250,7 +250,7 @@ bool ExamplesManager::installAllProjects(const std::string& ResourcesPath, const
   }
   else
   {
-    openfluid::base::log::debug("Example installation", "The resources project path does not exist");
+    openfluid::base::log::debug("Example installation", "The resources project path "+ProjectsPath+" does not exist");
   }
   
   return false;
@@ -284,7 +284,7 @@ bool ExamplesManager::installAllSimulators(const std::string& ResourcesPath, con
   }
   else
   {
-    openfluid::base::log::debug("Example installation", "The resources simulators path does not exist");
+    openfluid::base::log::debug("Example installation", "The resources simulators path "+SimulatorsPath+" does not exist");
   }
   
   return false;
@@ -318,7 +318,7 @@ bool ExamplesManager::installAllObservers(const std::string& ResourcesPath, cons
   }
   else 
   {
-    openfluid::base::log::debug("Example installation", "The resources observers path does not exist");
+    openfluid::base::log::debug("Example installation", "The resources observers path "+ObserversPath+" does not exist");
   }
 
   return false;
