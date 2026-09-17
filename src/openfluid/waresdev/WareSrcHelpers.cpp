@@ -78,16 +78,18 @@ bool hasUserAccess(const std::string& UserName, bool IsLoggedIn,
                    const std::set<std::string>& ROUsers, 
                    const std::set<std::string>& RWUsers)
 {
+  if (ROUsers.count("**"))
+  {
+    return true;
+  }
   std::set<std::string> Users = ROUsers;
   Users.insert(RWUsers.begin(), RWUsers.end());
   if(IsLoggedIn)
   {
     return Users.count("*") || Users.count(UserName);
   }
-  else
-  {
-    return ROUsers.count("**");
-  }
+
+  return false;
 }
 
 

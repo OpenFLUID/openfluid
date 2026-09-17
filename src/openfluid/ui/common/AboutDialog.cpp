@@ -142,10 +142,16 @@ QString AboutDialog::generateBuildInfoText()
   std::string CFlags = openfluid::config::BUILD_COMPILATION_FLAGS;
   std::replace(CFlags.begin(),CFlags.end(),';',' ');
 
+  std::string StrDesc = OPENFLUID_OS_STRDESC;
+#if OPENFLUID_OS_ISWSL_FLAG == 1
+  StrDesc += " (WSL)";
+#endif
+  
+
   InfoList SystemInfoList = 
   {
     { tr("Processor family"), OPENFLUID_PROCESSOR_STRDESC },
-    { tr("Operating system family"), OPENFLUID_OS_STRDESC }
+    { tr("Operating system family"), StrDesc }
   };
 
   InfoList BuildEnvInfoList = 

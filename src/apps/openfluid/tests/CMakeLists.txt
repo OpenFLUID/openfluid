@@ -563,7 +563,7 @@ OPENFLUID_ADD_TEST(NAME cmdline-openfluid-SetupWareset-FromFreeze
                                        "${CMAKE_BINARY_DIR}/resources/tests/datasets/OPENFLUID.IN.CustomWareset/REF/"
                                        "wareset-lock.json")
 
-SET_PROPERTY(TEST cmdline-openfluid-SetupWareset-FromFreeze APPEND PROPERTY DEPENDS cmdline-openfluid-SetupWareset-FromGit-Strict)
+SET_PROPERTY(TEST cmdline-openfluid-SetupWareset-FromFreeze APPEND PROPERTY DEPENDS cmdline-openfluid-SetupWareset-FromGit)
 
 
 ###########################################################################

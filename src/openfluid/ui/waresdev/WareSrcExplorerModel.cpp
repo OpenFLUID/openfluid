@@ -32,7 +32,6 @@
 
 /**
  @file WareSrcExplorerModel.cpp
- @brief Implements ...
 
  @author Aline LIBRES <aline.libres@gmail.com>
  */
@@ -242,7 +241,7 @@ void WareSrcExplorerModel::updateGitStatusInfo(const QString& WarePath)
     }
   }
 
-  emit dataChanged(index(0, 0), index(rowCount(), 0));
+  emit dataChanged(index(0, 0), index(rowCount()-1, 0));
 }
 
 
