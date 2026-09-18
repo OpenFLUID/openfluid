@@ -1143,7 +1143,7 @@ WareSrcMigrator::processCMakeFiles(const WareSrcMigrator::WareMigrationInfo& Inf
       std::map<std::string,std::string> ConfigVariables;
 
       std::smatch Matches;
-      std::string ValuesRegStr = "SET\\s*\\(("+CMakeWareVar+"|WARE)_(\\w*)\\s*([\\s\\w\\.\"\\=\\-\\$\\/\\{\\}]*)\\)";
+      std::string ValuesRegStr = "SET\\s*\\(("+CMakeWareVar+"|WARE)_(\\w*)\\s*([\\s\\w\\:\\.\"\\=\\-\\$\\/\\{\\}]*)\\)";
       std::regex ValuesRegex(ValuesRegStr,std::regex_constants::ECMAScript|std::regex_constants::icase);
 
       auto ConfigStart = ConfigContent.begin();
