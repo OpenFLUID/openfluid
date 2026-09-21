@@ -518,6 +518,12 @@ void WareSrcExplorer::createFragment(std::string WarePath, std::string FragmentI
     NewFragmentPath.makeFile(FragmentFilename);
     openfluid::tools::FilesystemPath FragmentFilePath({NewFragmentPath.toGeneric(),
                                                        FragmentFilename});
+
+    openfluid::tools::Filesystem::writeFile("// For code fragment use with OpenFLUID: " + \
+      openfluid::config::URL_OFFICIAL + "/resources/docs/manuals/en/openfluid/" + \
+      openfluid::base::Environment::getVersion() + \
+      "/main/html/dev_fragment.html", FragmentFilePath);
+
     emit fileOpeningAsked(QString::fromStdString(FragmentFilePath.toGeneric()));
 
     // Create fragment signature

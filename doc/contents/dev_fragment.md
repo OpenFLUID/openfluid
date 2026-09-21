@@ -60,7 +60,7 @@ If you create the fragment as part of a ware in DevStudio, it will give the opti
 
 ### Good practices
 - Metadata: a `openfluid-fragment.json` file should be added at root directory of the fragment to describe useful information, especially the field `openfluid-components` in `fragment` sub-dictionary to inform the simulator developer to add any required OpenFLUID components to ware `CMakeLists.txt` file.
-- Namespace: it is advised to use a two level namespace to encapsulate the code with "fragment" as first level. For example:
+- Namespace: it is advised to use a two level namespace to encapsulate the code with "fragment" as first level. For example a fragment file in path `src/fragments/MyHydroFunctions/HydroFuncs.hpp`:
 ```
 namespace fragment { namespace hydro {
 
@@ -82,6 +82,10 @@ myHydroClass
 
 these function will then be usable in the simulator code as follows:
 ```
+#include "MyHydroFunctions/HydroFuncs.hpp"
+
+...
+
 double b = fragment::hydro::myHydroVar + 2;
 int result = fragment::hydro::myHydroFunction(3, b);
 ```

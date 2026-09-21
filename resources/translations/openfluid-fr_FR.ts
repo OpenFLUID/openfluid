@@ -4736,57 +4736,57 @@ Continuer quand même?</translation>
 <context>
     <name>openfluid::ui::common::AboutDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="147"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="153"/>
         <source>Processor family</source>
         <translation>Famille de processeur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="148"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="154"/>
         <source>Operating system family</source>
         <translation>Famille de système d&apos;exploitation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="153"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="159"/>
         <source>Build type</source>
         <translation>Type de construction</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="154"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="160"/>
         <source>CMake version</source>
         <translation>Version de CMake</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="155"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="161"/>
         <source>C++ standard</source>
         <translation>Standard C++</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="156"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="162"/>
         <source>Compiler ID</source>
         <translation>ID du compilateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="157"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="163"/>
         <source>Compiler version</source>
         <translation>Version du compilateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="158"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="164"/>
         <source>Compilation flags</source>
         <translation>Flags de compilation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="173"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="179"/>
         <source>System</source>
         <translation>Système</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="174"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="180"/>
         <source>Build environment</source>
         <translation>Environnement de build</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="175"/>
+        <location filename="../../src/openfluid/ui/common/AboutDialog.cpp" line="181"/>
         <source>Dependencies</source>
         <translation>Dépendances</translation>
     </message>
@@ -7110,13 +7110,13 @@ Do you want to replace it?</source>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="164"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="673"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="679"/>
         <source>Delete folder</source>
         <translation>Suppression du dossier</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="169"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="719"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="725"/>
         <source>Delete file</source>
         <translation>Supprimer le fichier</translation>
     </message>
@@ -7156,66 +7156,66 @@ Do you want to replace it?</source>
         <translation>Nom de dossier :</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="552"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="579"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="558"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="585"/>
         <source>Import not available</source>
         <translation>Import non disponible</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="552"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="579"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="558"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="585"/>
         <source>Git program can not be found.</source>
         <translation>Le programme Git ne peut pas être trouvé.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="621"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="627"/>
         <source>Delete fragment</source>
         <translation>Suppression de fragment</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="621"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="627"/>
         <source>Are you sure you want to delete the fragment &quot;%1&quot;?
 Any open file of the fragment will be closed and deleted, even unsaved ones.</source>
         <translation>Voulez-vous vraiment supprimer le fragment &quot;%1&quot; ?
 Tous les fichiers ouverts du fragment vont être fermés et supprimés, y compris ceux non sauvegardés.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="647"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="653"/>
         <source>Unable to remove the fragment &quot;%1&quot;</source>
         <translation>Impossible de supprimer le fragment &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="674"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="680"/>
         <source>Are you sure you want to delete &quot;%1&quot;?
 Any open file of the folder will be closed and deleted, even unsaved ones.</source>
         <translation>Voulez-vous vraiment supprimer &quot;%1&quot; ?
 Tous les fichiers du dossier vont être fermés et supprimés, y compris ceux non sauvegardés.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="689"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="695"/>
         <source>Removal of the folder &quot;%1&quot; cancelled: the folder is not in the current workspace</source>
         <translation>Suppression du dossier &quot;%1&quot; annulée : le dossier n&apos;est pas dans l&apos;espace de travail actuel</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="701"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="707"/>
         <source>Unable to remove the folder &quot;%1&quot;</source>
         <translation>Impossible de supprimer le dossier &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="719"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="725"/>
         <source>Are you sure you want to delete &quot;%1&quot;?</source>
         <translation>Etes-vous sûr de vouloir supprimer &quot;%1&quot; ?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="736"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="742"/>
         <source>Unable to remove the file &quot;%1&quot;</source>
         <translation>Impossible de supprimer le fichier &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="647"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="688"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="701"/>
-        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="736"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="653"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="694"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="707"/>
+        <location filename="../../src/openfluid/ui/waresdev/WareSrcExplorer.cpp" line="742"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -7981,7 +7981,7 @@ Le paquet peut contenir des erreurs.</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="437"/>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="879"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="887"/>
         <source>&quot;%1&quot; already exists in the workspace</source>
         <translation>&quot;%1&quot; existe déjà dans le workspace</translation>
     </message>
@@ -8006,38 +8006,38 @@ Le paquet peut contenir des erreurs.</translation>
         <translation>Fichiers de liste de ware (*.txt *.json)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="707"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="713"/>
         <source>Adding unchecked items</source>
         <translation>Ajouter les items non cochés</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="708"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="714"/>
         <source>Selection from file contains %1 wares that were either already present in workspace or possibly not reachable: 
 
-%2
+- %2
 </source>
-        <translation>La sélection du fichier contient %1 wares qui sont soit déjà présents dans l&apos;espace de travail ou possiblement inaccessible : 
+        <translation>La sélection issue du fichier contient %1 wares qui sont soit déjà présents dans l&apos;espace de travail ou possiblement inaccessibles : 
 
-%2
+- %2
 </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="710"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="716"/>
         <source>Would you still want to check them in the list for import and checkout?</source>
         <translation>Voulez-vous quand même les cocher dans la liste pour import et checkout ?</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="711"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="717"/>
         <source>Resulting ware state can not be guaranteed, check logs to identify any issue.</source>
         <translation>L&apos;état des wares résultants ne peut être certifié, vérifier les messages pour identifier tout problème potentiel.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="940"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="948"/>
         <source>Importing wares sources:</source>
         <translation>Importation des sources de wares :</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="989"/>
+        <location filename="../../src/openfluid/ui/waresdev/WaresSrcImportDialog.cpp" line="997"/>
         <source>Development dashboard - from source import dialog</source>
         <translation>Panneau de développement - à partir de la fenêtre d&apos;import de sources</translation>
     </message>
