@@ -65,6 +65,7 @@ pkg-of-full-deb:
 
 pkg-of-lts:
   stage: package
+  when: manual
   image: "registry.forge.inrae.fr/openfluid/interne/openfluid-devtools/ofbuild/ubuntu-26.04-qt6"
   script:
     - mkdir ./_build_lts
@@ -194,4 +195,21 @@ test-of-windows:
     paths:
       - _build/*.log
 
-# TODO add Windows-package
+
+pkg-of-windows:
+  stage: package
+  when: manual
+  timeout: 120m
+  tags: [ windows ]
+  variables:
+    MINGW64_EXE: "C:\\msys64_for_ofbuild_qt6\\mingw64.exe"
+
+  script: 
+    - Start-Process -FilePath "$MINGW64_EXE" -ArgumentList "/usr/bin/bash", "./.gitlab/buildOFwin_ci_cpack.sh" -NoNewWindow -Wait
+    - Test-Path -Path _build_install/*.exe
+  
+  artifacts:
+    when: always
+    paths:
+      - _build_install/*.exe
+      - _build_install/*.log
